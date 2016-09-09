@@ -1,0 +1,16 @@
+# Cache and logs
+/cache/*
+/logs/*
+/splash.log
+
+# Managed by Composer
+/var/
+/bin/
+/vendor/
+/components/
+
+# PHPUnit
+/phpunit.xml
+
+# Build data
+/build/
