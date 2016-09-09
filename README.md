@@ -8,5 +8,4 @@ It is designed as a complete toolbox for Splash PHP Clients Modules.
 - All Client operations are merged in a single static class *Splash::*
 - Provide base classes for creating Objects,Widgets & More...
 
-## Features
 This module is part of [SplashSync](https://splashsync.com) project.
