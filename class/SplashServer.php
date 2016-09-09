@@ -1,0 +1,301 @@
+<?php
+/*
+ * This file is part of SplashSync Project.
+ *
+ * Copyright (C) Splash Sync <www.splashsync.com>
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/**
+ * @abstract    Splash Sync Server. Manage Splash Requests & Responses.
+ *              This file is included only in case on NuSOAP call to slave server.
+ * @author      B. Paquier <contact@splashsync.com>
+ */
+
+//====================================================================//
+//   INCLUDES 
+//====================================================================//  
+
+// Core Class
+require_once("Splash.php");
+
+//====================================================================//
+//   WebService Available Functions
+//====================================================================//  
+
+function Ping($id)                      {   return SplashServer::Ping($id);     }
+function Connect($id,$data)             {   $server = new SplashServer(); return $server->Connect($id,$data);   }
+function Admin($id,$data)               {   $server = new SplashServer(); return $server->Admin($id,$data);     }
+function Objects($id,$data)             {   $server = new SplashServer(); return $server->Objects($id,$data);   }
+function Files($id,$data)               {   $server = new SplashServer(); return $server->Files($id,$data);     }
+function Widgets($id,$data)             {   $server = new SplashServer(); return $server->Widgets($id,$data);   }
+
+//====================================================================//
+//  CLASS DEFINITION
+//====================================================================//  
+ 
+class SplashServer 
+{
+    
+    //====================================================================//
+    // Webservice I/O Buffers     
+    //====================================================================//
+    private static $_In;                   // Input Buffer
+    private static $_Out;                  // Output Buffer
+    
+    
+    /**
+     *      @abstract       Class Constructor
+     *      @return         bool
+     */
+    public function __construct()
+    {
+        //====================================================================//
+        // Initialize I/O Data Buffers
+        self::$_In          = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        self::$_Out         = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);        
+        return True;
+    }    
+    
+//====================================================================//
+//  WEBSERVICE REGISTERED REQUEST FUNCTIONS
+//====================================================================//
+    
+    /**
+     *      @abstract      Minimal Test of Webservice connexion 
+     * 
+     *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
+     */
+    public function Ping()
+    {
+        //====================================================================//
+        // Simple Message reply, No Encryption
+        Splash::Log()->Msg("Ping Successful.");
+        self::$_Out->result  = True;
+        //====================================================================//
+        // Transmt Answer without No Encryption
+        return Splash::Ws()->Pack( self::$_Out , 1 ); 
+    }   
+    
+    /**
+     *      @abstract      Connect Webservice and fetch server informations 
+     * 
+     *      @param         string   $id         OsWs WebService Node Identifier
+     *      @param         string   $data       OsWs WebService Packaged Data Inputs
+     * 
+     *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
+     */
+    public function Connect($id,$data)
+    {
+        //====================================================================//
+        // Verify Node Id 
+        //====================================================================//
+        if ( Splash::Configuration()->WsIdentifier !== $id ) {
+            return $this->Transmit(False);
+        }
+        //====================================================================//
+        // Unpack NuSOAP Request
+        //====================================================================//
+        if (self::Receive($data) != True) {
+            return $this->Transmit(False);
+        }
+        //====================================================================//
+        // Execute Request
+        //====================================================================// 
+        Splash::Log()->Msg("Connection Successful (" . Splash::getName() . " V" . Splash::getVersion() . ")");
+        //====================================================================//
+        // Transmit Answers To Master
+        //====================================================================//         
+        return self::Transmit(True); 
+    }
+    
+    /**
+     *      @abstract      Administrative server functions 
+     * 
+     *      @param         string   $id         OsWs WebService Node Identifier
+     *      @param         string   $data       OsWs WebService Packaged Data Inputs
+     * 
+     *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
+
+     */
+    public function Admin($id,$data)
+    {
+        return $this->Run($id,$data,__FUNCTION__);
+    }	
+
+    /**
+     *      @abstract      Objects server functions 
+     * 
+     *      @param         string   $id         OsWs WebService Node Identifier
+     *      @param         string   $data       OsWs WebService Packaged Data Inputs
+     * 
+     *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
+     */
+    public function Objects($id,$data)
+    {
+        return $this->Run($id,$data,__FUNCTION__);
+    }	    
+
+    /**
+     *      @abstract      Files Transfers server functions 
+     * 
+     *      @param         string   $id         OsWs WebService Node Identifier
+     *      @param         string   $data       OsWs WebService Packaged Data Inputs
+     * 
+     *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
+     */
+    public function Files($id,$data)
+    {
+        return $this->Run($id,$data,__FUNCTION__);
+    }
+
+    /**
+     *      @abstract      Widgets Retrieval server functions 
+     * 
+     *      @param         string   $id         OsWs WebService Node Identifier
+     *      @param         string   $data       OsWs WebService Packaged Data Inputs
+     * 
+     *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
+     */
+    public function Widgets($id,$data)
+    {
+        return $this->Run($id,$data,__FUNCTION__);
+    }
+        
+//====================================================================//
+//  WEBSERVICE SERVER MANAGEMENT
+//====================================================================//
+   
+    /**
+     *      @abstract   Register available methods 
+     * 
+     *      @return     bool
+     */
+    public static function Register()
+    {
+        //====================================================================//
+        // Register a method available for clients
+        Splash::Server()->register(SPL_S_PING);         // Check Slave Availability
+        Splash::Server()->register(SPL_S_CONNECT);      // Verify Connection Parameters
+        Splash::Server()->register(SPL_S_ADMIN);        // Administrative requests
+        Splash::Server()->register(SPL_S_OBJECTS);      // Main Object management requests
+        Splash::Server()->register(SPL_S_FILE);        	// Files management requests
+        Splash::Server()->register(SPL_S_WIDGETS);        	// Informations requests
+        return;
+    }    
+    
+    /**
+     *      @abstract   Treat Received Data and Initialize Server before request exectution 
+     * 
+     *      @param      string      $data       Received Raw Data 
+     * 
+     *      @return     bool
+     */
+    private function Receive($data) {
+        
+        //====================================================================//
+        // Unpack Raw received data 
+        self::$_In = Splash::Ws()->unPack($data);
+        if (empty(self::$_In)) {
+            return False;
+        }
+        
+        //====================================================================//
+        // Import Server request Configuration
+        if ( isset(self::$_In->cfg) && !empty(self::$_In->cfg) ) {
+            //====================================================================//
+            // Store Server Request Configuration 
+            Splash::Configuration()->server = self::$_In->cfg;
+            
+            //====================================================================//
+            // Setup Debug allowed or not
+            Splash::Log()->SetDebug(self::$_In->cfg->debug);
+        } else {
+            //====================================================================//
+            // Store Server Request Configuration 
+            Splash::Configuration()->server = array();
+        }
+        
+        
+        //====================================================================//
+        // Fill Static Server Informations To Output 
+        self::$_Out->server = Splash::Ws()->getServerInfos();
+        
+        return True;
+    }
+
+    /**
+     *      @abstract   Treat Computed Data and return packaged data buffer for tranmit to master 
+     * 
+     *      @param      bool        $result     Global Operation Result (0 if KO, 1 if OK) 
+     * 
+     *      @return     string      To Transmit Raw Data or False if KO
+     */
+    private function Transmit($result) {
+        
+        //====================================================================//
+        // Safety Check 
+        if (empty(self::$_Out)) {
+            return False;
+        }
+        
+        //====================================================================//
+        // Prepare Data Output Buffer
+        //====================================================================//
+        
+        //====================================================================//
+        // Set Global Operation Result
+        self::$_Out->result = $result;
+        
+        //====================================================================//
+        // Transfers Log Reccords to _Out Buffer
+        self::$_Out->log = Splash::Log();
+
+        //====================================================================//
+        // Package data and return to Server
+        return Splash::Ws()->Pack(self::$_Out);
+    }
+  
+    /**
+     *      @abstract       All-In-One SOAP Server Messages Reception & Dispaching 
+     *                      Unpack all pending tasks and send order to local task routers for execution. 
+     * 
+     *      @param          string      $Id         WebService Node Identifier
+     *      @param          string      $Data       WebService Packaged Data Inputs
+     *      @param          string      $Router     Name of the router function to use for task execution
+     * 
+     *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
+     */
+    private function Run($Id,$Data,$Router)
+    {
+        //====================================================================//
+        // Verify Node Id 
+        //====================================================================//
+        if ( Splash::Configuration()->WsIdentifier !== $Id ) {
+            return $this->Transmit(False);
+        }
+        //====================================================================//
+        // Unpack NuSOAP Request
+        //====================================================================//
+        if ($this->Receive($Data) != True) {
+            return $this->Transmit(False);
+        }
+        //====================================================================//
+        // Execute Request
+        //====================================================================//
+        $GlobalResult = Splash::Router()->Execute($Router, self::$_In, self::$_Out);
+        //====================================================================//
+        // Transmit Answers To Master
+        //====================================================================//         
+        return $this->Transmit($GlobalResult); 
+    }
+    
+}
+
+?>
