@@ -32,6 +32,7 @@ class SplashFieldsFactory
         "id"        =>  Null,                   //  Field Object Unique Identifier
         "name"      =>  Null,                   //  Field Humanized Name (String)
         "desc"      =>  Null,                   //  Field Description (String)
+        "group"     =>  Null,                   //  Field Section/Group (String)
         //==============================================================================
         //      ACCES PROPS
         "read"      =>  True,                   //  Field is Readable (Bool)
@@ -236,6 +237,28 @@ class SplashFieldsFactory
             //====================================================================//
             // Update New Field structure
             $this->new->desc    = Splash::Trans(trim($desc)); 
+        }
+        
+        return $this;      
+    }   
+    
+    /**
+     *  @abstract   Update Current New Field with Field Group Name (Translated)
+     * 
+     *  @param      string      $group       Data Group (Will Be Translated if Possible)
+     * 
+     *  @return     SplashFieldFactory
+     */
+    public function Group($group)
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {    
+            Splash::Log()->Err("ErrFieldsNoNew");  
+        } else {
+            //====================================================================//
+            // Update New Field structure
+            $this->new->group    = Splash::Trans(trim($group)); 
         }
         
         return $this;      
