@@ -648,12 +648,25 @@ class SplashWs
 
         //====================================================================//
         // Server Urls
-        $r->ServerHost      = filter_input(INPUT_SERVER, "SERVER_NAME");        // CRITICAL - Server Host Name 
-        $r->ServerIP        = filter_input(INPUT_SERVER, "SERVER_ADDR");        // Server IPv4 Address 
-        
-        $FullPath           =   dirname(__DIR__);
-        $RelativePath       =   explode($r->ServerRoot,$FullPath);
-        $r->ServerPath      =   $RelativePath[1] . "/soap.php";
+        //====================================================================//
+        // CRITICAL - Server Host Name 
+        if ( isset(Splash::Configuration()->ServerHost) ) {
+            $r->ServerHost      =   Splash::Configuration()->ServerHost;
+        } else {
+            $r->ServerHost      = filter_input(INPUT_SERVER, "SERVER_NAME");         
+        }
+        //====================================================================//
+        // Server IPv4 Address 
+        $r->ServerIP        = filter_input(INPUT_SERVER, "SERVER_ADDR");        
+        //====================================================================//
+        // Server WebService Path 
+        if ( isset(Splash::Configuration()->ServerPath) ) {
+            $r->ServerPath      =   Splash::Configuration()->ServerPath;
+        } else {
+            $FullPath           =   dirname(__DIR__);
+            $RelativePath       =   explode($r->ServerRoot,$FullPath);
+            $r->ServerPath      =   (isset($RelativePath[1])?$RelativePath[1]:"") . "/soap.php";
+        }
         
         $r->setFlags(ArrayObject::STD_PROP_LIST);
         return $r;

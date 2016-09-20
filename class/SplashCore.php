@@ -477,6 +477,28 @@ class SplashCore
         return self::Core()->widgets[$WidgetType];
     }
     
+    /**
+     *      @abstract   Fully Restart Splash Module
+     * 
+     *      @return     void
+     */
+    public static function Reboot()
+    {
+        //====================================================================//
+        // Clear Module Configuration Array
+        if (isset(self::Core()->conf)) {
+            unset(\Splash::Core()->conf);             
+        }
+        //====================================================================//
+        // Clear Webservice Configuration
+        if (isset(self::Core()->ws)) {
+            unset(\Splash::Core()->ws);             
+        }
+        //====================================================================//
+        // Clear Module Log
+        self::Log()->CleanLog();
+    }
+    
 //====================================================================//
 //  COMMON CLASS INFORMATIONS
 //====================================================================//

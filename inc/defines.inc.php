@@ -41,20 +41,22 @@ define("SPLASH_AUTHOR"        ,   'Splash Official <www.splashsync.com>');
 
 //====================================================================//
 // NuSOAP Messaging Parameters
-define("SPLASH_TIMEOUT"       ,   30);                // Client response timout in seconds
-define("SPLASH_CRYPT_METHOD"  ,   "AES-256-CBC");     // Define Data Encryption Method
-define("SPLASH_ENCODE"        ,   "XML");             // Messages Encoding Format (XML, JSON)
-define("SPLASH_CLASS_PREFIX"  ,   "Splash");          // Prefix To be Applied to all Local Class
+define("SPLASH_TIMEOUT"       ,   30);                  // Client response timout in seconds
+define("SPLASH_CRYPT_METHOD"  ,   "AES-256-CBC");       // Define Data Encryption Method
+define("SPLASH_ENCODE"        ,   "XML");               // Messages Encoding Format (XML, JSON)
+define("SPLASH_CLASS_PREFIX"  ,   "Splash");            // Prefix To be Applied to all Local Class
 
 //====================================================================//
 // Show Debug Messages
-define("SPLASH_DEBUG"           ,   False);                 // Activate Debug Mode or Not
+if (!defined('SPLASH_DEBUG')) {
+    define("SPLASH_DEBUG"           ,   False);         // Activate Debug Mode or Not
+}
 
 //====================================================================//
 // Defaults Parameters
-define("SPLASH_LOCALPATH"       ,   "/..");                             // Relative Address to Local Library Folder
-define("SPLASH_DF_LANG"         ,   "en_US");                           // Module Default Translation Language 
-define("SPLASH_LOGGING"         ,   False);                              // Enable activity logging on INI file
-define("SPLASH_TRACE_IN"        ,   False);                              // Log Inputs Messages
-define("SPLASH_TRACE_OUT"       ,   False);                              // Log Outputs Messages
-define("SPLASH_TRACE_TASKS"     ,   False);                              // Log Tasks Execution Events
+define("SPLASH_LOCALPATH"       ,   "/..");             // Relative Address to Local Library Folder
+define("SPLASH_DF_LANG"         ,   "en_US");           // Module Default Translation Language 
+define("SPLASH_LOGGING"         ,   False);             // Enable activity logging on INI file
+define("SPLASH_TRACE_IN"        ,   False);             // Log Inputs Messages
+define("SPLASH_TRACE_OUT"       ,   False);             // Log Outputs Messages
+define("SPLASH_TRACE_TASKS"     ,   False);             // Log Tasks Execution Events

@@ -63,8 +63,10 @@ if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE
     define("SPLASH_SERVER_MODE"   ,   1);    
     
     //====================================================================//
-    // OsWs Constants Definitions
-    require_once(SPLASH_DIR."/inc/Splash.Inc.php");
+    // Splash Constants Definitions
+    if (!defined('SPL_PROTOCOL')) {
+        require_once(SPLASH_DIR."/inc/Splash.Inc.php");
+    }
     
     //====================================================================//
     // Setup Php Specific Settings
