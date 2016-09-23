@@ -35,7 +35,9 @@ define("SPLASH_SERVER_MODE"   ,   0);
 
 //====================================================================//
 // Include Splash Constants Definitions
-require_once(SPLASH_DIR."/inc/Splash.Inc.php");
+if (!defined('SPL_PROTOCOL')) {
+    require_once(SPLASH_DIR."/inc/Splash.Inc.php");
+}
 
 //====================================================================//
 // Include Required Files

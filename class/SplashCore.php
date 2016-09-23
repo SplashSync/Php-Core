@@ -424,9 +424,18 @@ class SplashCore
         }
         
         //====================================================================//
-        // Initialize Class
-        $ClassName = SPLASH_CLASS_PREFIX . $ObjectType;
-        self::Core()->objects[$ObjectType]        = new $ClassName();
+        // Check if Object Manager is Overriden
+        if ( Splash::Validate()->isValidLocalOverride("Object")) {
+            //====================================================================//
+            // Initialize Local Object Manager
+            self::Core()->objects[$ObjectType] = Splash::Local()->Object($ObjectType);
+        } else {
+            //====================================================================//
+            // Initialize Standard Class
+            $ClassName = SPLASH_CLASS_PREFIX . $ObjectType;
+            self::Core()->objects[$ObjectType]        = new $ClassName();
+        }
+        
         
         //====================================================================//
         //  Load Translation File
@@ -493,6 +502,16 @@ class SplashCore
         // Clear Webservice Configuration
         if (isset(self::Core()->ws)) {
             unset(\Splash::Core()->ws);             
+        }
+        //====================================================================//
+        // Clear Module Local Core Class
+        if (isset(self::Core()->localcore)) {
+            unset(\Splash::Core()->localcore);             
+        }
+        //====================================================================//
+        // Clear Module Local Objects Classes
+        if (isset(self::Core()->objects)) {
+            unset(\Splash::Core()->objects);             
         }
         //====================================================================//
         // Clear Module Log

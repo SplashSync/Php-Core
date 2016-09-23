@@ -55,6 +55,11 @@ if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE
 //if ( TRUE )
 {
     //====================================================================//
+    // Setup Php Specific Settings
+    ini_set('display_errors', 0);
+    error_reporting(E_ERROR);
+    
+    //====================================================================//
     // Save Library Home folder Detected
     define('SPLASH_DIR' , dirname(__FILE__));
     
@@ -67,11 +72,6 @@ if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE
     if (!defined('SPL_PROTOCOL')) {
         require_once(SPLASH_DIR."/inc/Splash.Inc.php");
     }
-    
-    //====================================================================//
-    // Setup Php Specific Settings
-    ini_set('display_errors', 0);
-    error_reporting(E_ERROR);
     
     //====================================================================//
     // Include Required Files ==> Server Class

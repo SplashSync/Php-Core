@@ -143,10 +143,14 @@ class SplashValidate
         $this->ValidLocalObject[$ObjectType] = False;
         
         //====================================================================//
-        // Verify Object File Exist & is Valid
-        if ( !$this->isValidObjectFile($ObjectType) ) {
-            return False;
-        }
+        // Check if Object Manager is NOT Overriden
+        if ( !$this->isValidLocalOverride("Objects")) {
+            //====================================================================//
+            // Verify Object File Exist & is Valid
+            if ( !$this->isValidObjectFile($ObjectType) ) {
+                return False;
+            }
+        }        
         
         //====================================================================//
         // Verify Object Class Exist & is Valid
@@ -194,7 +198,15 @@ class SplashValidate
      */
     private function isValidObjectClass($ObjectType)
     {
-        $ClassName = SPLASH_CLASS_PREFIX . $ObjectType;
+        //====================================================================//
+        // Check if Object Manager is Overriden
+        if ( $this->isValidLocalOverride("Object")) {
+            //====================================================================//
+            // Retrieve Object Manager ClassName
+            $ClassName = get_class(Splash::Local()->Object($ObjectType));
+        } else {
+            $ClassName = SPLASH_CLASS_PREFIX . $ObjectType;
+        }
 
         //====================================================================//
         // Verify Splash Local Core Class Exists
@@ -227,12 +239,6 @@ class SplashValidate
             $this->ValidLocalObject[$ObjectType] = false;
             return false;
         }
-//        //====================================================================//
-//        // Read Object Available Filterss List   
-//        if ($this->isValidLocalFunction(SPL_F_FILTERS,$ClassName) == FALSE) {
-//            $this->ValidLocalObject[$ObjectType] = false;
-//            return false;
-//        }
         //====================================================================//
         // Read Object List 
         if ($this->isValidLocalFunction(SPL_F_LIST,$ClassName) == FALSE) {
@@ -321,7 +327,6 @@ class SplashValidate
         //====================================================================//
         // Checks List Type
         if ( !is_array($List) && !is_a($List,"ArrayObject") ) {
-//            Splash::Log()->www("Fields List", $List);
             return Splash::Log()->Err("ErrWrongFieldList");
         }
         
@@ -477,8 +482,14 @@ class SplashValidate
      *      @param        string    $ClassName     Optionnal Class Name 
      *      @return       int                       0 if KO, 1 if OK
      */
-    public function isValidLocalFunction($Method,$ClassName)
+    public function isValidLocalFunction($Method,$ClassName = Null)
     {
+        //====================================================================//
+        // Prefill ClassName
+        if (is_null($ClassName) ) {
+            $ClassName = SPLASH_CLASS_PREFIX . "Local";
+        }
+        
         //====================================================================//
         // Verify Result in Cache
         if ( isset($this->ValidLocalFunctions[$ClassName][$Method]) ) {
@@ -496,5 +507,26 @@ class SplashValidate
         return $this->ValidLocalFunctions[$ClassName][$Method];
     }    
 
+    /**
+     *      @abstract     Verify Availability of a local method/function prior to local overriding. 
+     * 
+     *      @param        string    $Method         Function Name 
+     * 
+     *      @return       bool                      
+     */
+    public function isValidLocalOverride($Method)
+    {
+        //====================================================================//
+        // Verify Local Core Class Exist & Is Valid
+        if ( $this->isValidLocalClass() ){
+            //====================================================================//
+            // Check if Local Core Class Include Overriding Functions
+            return $this->isValidLocalFunction($Method);                
+        }
+        
+        return False;
+    }       
+    
+   
 }
 ?>
