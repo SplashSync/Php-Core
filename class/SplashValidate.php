@@ -477,12 +477,15 @@ class SplashValidate
     }        
     
     /**
-     *      @abstract     Verify Availability of a local method/function prior to task execution. 
+     *      @abstract     Verify Availability of a local method/function prior to task execution.
+     *  
      *      @param        string    $Method         Function Name 
-     *      @param        string    $ClassName     Optionnal Class Name 
-     *      @return       int                       0 if KO, 1 if OK
+     *      @param        string    $ClassName      Optionnal Class Name 
+     *      @param        bool      $Required       Indicate this Function is Required by Module (Or Optional) 
+     * 
+     *      @return       bool
      */
-    public function isValidLocalFunction($Method,$ClassName = Null)
+    public function isValidLocalFunction($Method,$ClassName = Null, $Required = True)
     {
         //====================================================================//
         // Prefill ClassName
@@ -500,7 +503,7 @@ class SplashValidate
         // Verify Class Method Exists
         if (method_exists($ClassName, $Method) == FALSE) {
             $this->ValidLocalFunctions[$ClassName][$Method] = False;
-            return Splash::Log()->Err( Splash::Trans("ErrLocalFunction",$ClassName,$Method) );
+            return $Required?Splash::Log()->Err( Splash::Trans("ErrLocalFunction",$ClassName,$Method) ):False;
         }
         $this->ValidLocalFunctions[$ClassName][$Method] = True;
 
@@ -521,7 +524,7 @@ class SplashValidate
         if ( $this->isValidLocalClass() ){
             //====================================================================//
             // Check if Local Core Class Include Overriding Functions
-            return $this->isValidLocalFunction($Method);                
+            return $this->isValidLocalFunction($Method,Null,False);                
         }
         
         return False;
