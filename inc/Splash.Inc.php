@@ -77,7 +77,6 @@ define('SPL_T_LANG'         ,  'lang');          // Iso Language code (en_US / f
 define('SPL_T_COUNTRY'      ,  'country');       // Iso country code (FR / US ...)
 define('SPL_T_STATE'        ,  'state');         // Iso state code (CA / FR ...)
 define('SPL_T_CURRENCY'     ,  'currency');      // Iso Currency code (EUR / USD ... )
-define('SPL_T_FILE'         ,  'file');          // Internal FileName with path for file exchenges
 define('SPL_T_URL'          ,  'url');           // External Url
 
 //====================================================================//
@@ -85,6 +84,19 @@ define('SPL_T_URL'          ,  'url');           // External Url
 // Structured Fields, Shared in a standard array of named variable 
 //====================================================================//
 //====================================================================//
+
+//====================================================================//
+// File Structure
+//====================================================================//
+// Sample :
+// $data["file"]["name"]           =>      File Name/Description             
+// $data["file"]["filename"]       =>      Filename with Extension
+// $data["file"]["path"]           =>      Full File path on client system
+// $data["file"]["url"]            =>      Complete Public Url, Usable for Direct Download
+// $data["file"]["md5"]            =>      File Md5 Checksum
+// $data["file"]["size"]           =>      File Size in Bytes
+//====================================================================//
+define('SPL_T_FILE'         ,  'file');
 
 //====================================================================//
 // Image Structure
