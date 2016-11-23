@@ -119,6 +119,23 @@ class SplashBlocksFactory
     }     
     
     /**
+     *  @abstract   Extract Block Data From Content Input Arra
+     *               
+     *  @param      array       $Contents    
+     *  @param      string      $Name       
+     * 
+     *  @return     $this
+     */
+    public function extractData($Contents, $Name )
+    {
+        if ( isset($Contents[$Name]) ) {
+            $this->setData($Name,     $Contents[$Name]);
+        }
+        
+        return $this;
+    }    
+    
+    /**
      *  @abstract   Set Block Options Array Key
      *               
      *  @param      string      $Name       
@@ -261,6 +278,34 @@ class SplashBlocksFactory
     {
         $this->addBlock("TableBlock", $Options);
         $this->setData("rows", $Contents);
+    }
+    
+    
+//====================================================================//
+//  BLOCKS || SPARRK INFOS BLOCK
+//====================================================================//
+    
+    /**
+     *  @abstract   Create a new Table Block
+     *               
+     *  @param      array   $Contents           Array of Rows Contents (Text or Html) 
+     * 
+     *  @param      array   $Options            Block Options
+     * 
+     *  @return     $this
+     */
+    public function addSparkInfoBlock($Contents, $Options = self::COMMONS_OPTIONS )
+    {
+        $this->addBlock("SparkInfoBlock", $Options);
+        
+        //====================================================================//
+        //  Add Contents
+        $this->extractData($Contents, "title");
+        $this->extractData($Contents, "fa_icon");
+        $this->extractData($Contents, "glyph_icon");
+        $this->extractData($Contents, "value");
+        $this->extractData($Contents, "chart");
+        
     }
     
 }
