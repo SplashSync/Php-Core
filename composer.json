@@ -6,6 +6,17 @@
 
     "require": {
         "php": "^5.6"
+    },
+    
+    "autoload": {
+        "psr-4": { "Splash\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    
+    "suggest": {
+        "splash/phptester": "Allows Automated Testing of you Custom Php Modules using PhpUnit"
     }
     
 }
