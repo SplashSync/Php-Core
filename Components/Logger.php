@@ -17,6 +17,11 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace   Splash\Components;
+
+use Splash\Core\SplashCore      as Splash;
+use ArrayObject;
+
 //====================================================================//
 //  CLASS DEFINITION
 //====================================================================//
@@ -25,7 +30,7 @@
  *	\class      SplashLog
  *	\brief      Simple Logging Functions for OsWs Classes
  */
-class SplashLog 
+class Logger 
 {
     /**
      *      @abstract   Store Show Debug Messages
@@ -274,6 +279,47 @@ class SplashLog
             $this->CleanLog();
         }
         return $html;
+   }    
+   
+   /**
+    *      @abstract    Return All WebServer current Log WebServer Console Colored format
+    *      @return      string		All existing log messages in an human readable Html format
+    */
+   public function GetConsole($msgarray,$title = "", $Color = "") 
+   {
+        $Out  = "";
+        
+        if (count($msgarray) > 0 )  {
+            //====================================================================//
+            // Add Messages
+            foreach( $msgarray as $txt) {
+                $Out .= PHP_EOL . $Color . $title . $txt;
+            }
+        }
+        
+        return $Out;
+   }
+   
+   /**
+    *      @abstract    Return All WebServer current Log WebServer in Console Colored format
+    *      @param       bool            True if messages needs to be cleaned after reading.
+    *      @return      string		All existing log messages in an human readable Html format
+    */
+   public function GetConsoleLog( $clean = False ) 
+   {
+        $Out  = NULL;
+        //====================================================================//
+        // Read All Messages as Html
+        $Out .= $this->GetConsole($this->err, " - Error    => ",   "\e[31m");
+        $Out .= $this->GetConsole($this->war, " - Warning  => ",   "\e[33m");
+        $Out .= $this->GetConsole($this->msg, " - Messages => ",   "\e[32m");
+        $Out .= $this->GetConsole($this->deb, " - Debug    => ",   "\e[34m");
+        //====================================================================//
+        // Clear Log Buffer If Requiered
+        if ($clean) {
+            $this->CleanLog();
+        }
+        return $Out;
    }    
    
    /**

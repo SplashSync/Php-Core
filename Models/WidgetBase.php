@@ -17,6 +17,12 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace   Splash\Models;
+
+use Splash\Core\SplashCore      as Splash;
+use Splash\Components\FieldsFactory;
+use Splash\Components\BlocksFactory;
+
 //====================================================================//
 //********************************************************************//
 //====================================================================//
@@ -25,7 +31,7 @@
 //********************************************************************//
 //====================================================================//
 
-abstract class SplashWidget
+abstract class WidgetBase
 {
     //====================================================================//
     // *******************************************************************//
@@ -111,12 +117,8 @@ abstract class SplashWidget
         }
         
         //====================================================================//
-        // Include Class
-        require_once("SplashFieldsFactory.php");
-        
-        //====================================================================//
         // Initialize Class
-        self::$fields        = new SplashFieldsFactory();  
+        self::$fields        = new FieldsFactory();  
         
         //====================================================================//
         //  Load Translation File
@@ -139,12 +141,8 @@ abstract class SplashWidget
         }
         
         //====================================================================//
-        // Include Class
-        require_once("SplashBlocksFactory.php");
-        
-        //====================================================================//
         // Initialize Class
-        self::$blocks        = new SplashBlocksFactory();  
+        self::$blocks        = new BlocksFactory();  
         
         return self::$blocks;
     }     

@@ -12,10 +12,15 @@
  * file that was distributed with this source code.
  */
 
+//namespace Splash;
+
 /**
  * @abstract    This is Head include file for Splash PHP Module on WebService Request
  * @author      B. Paquier <contact@splashsync.com>
  */
+
+use Splash\Core\SplashCore      as Splash;
+use Splash\Server\SplashServer;
 
 //====================================================================//
 //   INCLUDES 
@@ -23,7 +28,7 @@
 
 //====================================================================//
 // Declare fatal Error Handler => Called in case of Script Exceptions
-function Splash_fatal_handler() {
+function fatal_handler() {
     
    //====================================================================//
    // Detect If Any Response Message Exists.
@@ -45,7 +50,6 @@ function Splash_fatal_handler() {
    
    return;
 } 
-    
 
 //====================================================================//  
 //  SERVER MODE - Answer NuSOAP Requests
@@ -54,38 +58,44 @@ function Splash_fatal_handler() {
 if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
 //if ( TRUE )
 {
+    
     //====================================================================//
     // Setup Php Specific Settings
     ini_set('display_errors', 0);
     error_reporting(E_ERROR);
     
-    //====================================================================//
-    // Save Library Home folder Detected
-    define('SPLASH_DIR' , dirname(__FILE__));
     
+    //====================================================================//
+    //   WebService Available Functions
+    //====================================================================//  
+
+    function Ping($id)                      {   return SplashServer::Ping($id);     }
+    function Connect($id,$data)             {   $server = new SplashServer(); return $server->Connect($id,$data);   }
+    function Admin($id,$data)               {   $server = new SplashServer(); return $server->Admin($id,$data);     }
+    function Objects($id,$data)             {   $server = new SplashServer(); return $server->Objects($id,$data);   }
+    function Files($id,$data)               {   $server = new SplashServer(); return $server->Files($id,$data);     }
+    function Widgets($id,$data)             {   $server = new SplashServer(); return $server->Widgets($id,$data);   }
+
     //====================================================================//  
     // Notice internal routines we are in server request mode
     define("SPLASH_SERVER_MODE"   ,   1);    
-    
+
     //====================================================================//
-    // Splash Constants Definitions
-    if (!defined('SPL_PROTOCOL')) {
-        require_once(SPLASH_DIR."/inc/Splash.Inc.php");
-    }
+    // Splash Module & Dependecies Autoloader
+    require_once( dirname(dirname(dirname(__FILE__))) . "/autoload.php");
     
-    //====================================================================//
-    // Include Required Files ==> Server Class
-    require_once(SPLASH_DIR."/class/SplashServer.php");
     Splash::Log()->Deb("Splash Started In Server Mode");    
     
     //====================================================================//
     // Register a method available for clients
     SplashServer::Register();
-    
+
     //====================================================================//
     // Register shuttdown method available for fatal errors reteival
-    register_shutdown_function( 'Splash_fatal_handler' );
-    ob_start();                     // Turn on output buffering
+    register_shutdown_function( __NAMESPACE__ . '\fatal_handler' );
+    //====================================================================//
+    // Turn on output buffering
+    ob_start();                     
     
     //====================================================================//
     // Process methods & Return the results.

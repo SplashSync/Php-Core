@@ -23,7 +23,7 @@
  *  \ingroup    Splash Php Module 
  *  \brief      Main constant definitions
  *  \remarks	
-*/
+*/ 
 
 //====================================================================//
 //====================================================================//
@@ -44,7 +44,7 @@ define("SPLASH_AUTHOR"        ,   'Splash Official <www.splashsync.com>');
 define("SPLASH_TIMEOUT"       ,   30);                  // Client response timout in seconds
 define("SPLASH_CRYPT_METHOD"  ,   "AES-256-CBC");       // Define Data Encryption Method
 define("SPLASH_ENCODE"        ,   "XML");               // Messages Encoding Format (XML, JSON)
-define("SPLASH_CLASS_PREFIX"  ,   "Splash");            // Prefix To be Applied to all Local Class
+define("SPLASH_CLASS_PREFIX"  ,   "\Splash\Local");            // Prefix To be Applied to all Local Class
 
 //====================================================================//
 // Show Debug Messages
@@ -60,3 +60,15 @@ define("SPLASH_LOGGING"         ,   False);             // Enable activity loggi
 define("SPLASH_TRACE_IN"        ,   False);             // Log Inputs Messages
 define("SPLASH_TRACE_OUT"       ,   False);             // Log Outputs Messages
 define("SPLASH_TRACE_TASKS"     ,   False);             // Log Tasks Execution Events
+
+//====================================================================//
+// Include Splash Constants Definitions
+if (!defined('SPL_PROTOCOL')) {
+    require_once("Splash.Inc.php");
+}
+
+//====================================================================//  
+// Notice internal routines we are in server request mode
+if (!defined('SPLASH_SERVER_MODE')) {
+    define("SPLASH_SERVER_MODE"   ,   0);     
+}

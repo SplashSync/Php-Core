@@ -12,12 +12,17 @@
  * file that was distributed with this source code.
  */
 
+namespace   Splash\Components;
+
+use Splash\Core\SplashCore      as Splash;
+use ArrayObject;
+
 /**
  * @abstract    This Class is a Generator for Widget Blocks Contents 
  * @author      B. Paquier <contact@splashsync.com>
  */
 
-class SplashBlocksFactory 
+class BlocksFactory 
 {
     /**
      * Default Option For Commons Blocks

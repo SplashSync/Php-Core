@@ -18,6 +18,11 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace   Splash\Components;
+
+use Splash\Core\SplashCore      as Splash;
+use ArrayObject;
+
 //====================================================================//
 //   INCLUDES 
 //====================================================================//  
@@ -27,7 +32,7 @@
 //  CLASS DEFINITION
 //====================================================================//  
  
-class SplashRouter 
+class Router 
 {
     
     //====================================================================//

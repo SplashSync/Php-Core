@@ -17,6 +17,19 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace   Splash\Core;
+
+use ArrayObject;
+
+use Splash\Components\FileManager;
+use Splash\Components\Translator;
+use Splash\Components\Validator;
+use Splash\Components\Logger;
+use Splash\Components\Webservice;
+use Splash\Components\XmlManager;
+use Splash\Components\Router;
+
+use Splash\Local\Local;
 
 //====================================================================//
 //   INCLUDES 
@@ -24,14 +37,14 @@
 
 //====================================================================//
 // Include Splash Constants Definitions
-require_once(SPLASH_DIR."/inc/defines.inc.php");
+require_once( dirname(dirname(__FILE__)) . "/inc/defines.inc.php");
 
 //====================================================================//
 // Include Objects Base Class
-require_once("SplashObject.php");
+//require_once("SplashObject.php");
 //====================================================================//
 // Include Widgets Base Class
-require_once("SplashWidget.php");
+//require_once("SplashWidget.php");
 
 //====================================================================//
 //********************************************************************//
@@ -62,12 +75,9 @@ class SplashCore
         //====================================================================//
         // Init Logger with Debug Mode
         if ($debug) {
-           //====================================================================//
-            // Include Class
-            require_once("SplashLog.php");
             //====================================================================//
             // Initialize Log & Debug
-            self::$instance->log        = new SplashLog($debug);         
+            self::$instance->log        = new Logger($debug);         
         }       
         
         return True;
@@ -89,11 +99,8 @@ class SplashCore
             
             //====================================================================//
             //  Load OsWs Core Class
-            self::$instance = new Splash();
+            self::$instance = new self();
             
-//            //====================================================================//
-//            //  Load Translation File
-//            self::Tools()->Load("main");
         }
         return self::$instance;
     }
@@ -123,27 +130,24 @@ class SplashCore
         //====================================================================//
         // Load Module Core Configuration from Definition File
         //====================================================================//
-        // Local Libraries Path
-        $Conf->localpath    =   dirname(dirname(__FILE__)) . SPLASH_LOCALPATH;
-        //====================================================================//
         // Translations Parameters
         $Conf->DefaultLanguage      =   SPLASH_DF_LANG;
         //====================================================================//
         // WebService Core Parameters
-        $Conf->WsTimout     =   SPLASH_TIMEOUT;
-        $Conf->WsCrypt      =   SPLASH_CRYPT_METHOD;
-        $Conf->WsEncode     =   SPLASH_ENCODE;
-        $Conf->WsHost       =   "soap.splashsync.com/";
+        $Conf->WsTimout             =   SPLASH_TIMEOUT;
+        $Conf->WsCrypt              =   SPLASH_CRYPT_METHOD;
+        $Conf->WsEncode             =   SPLASH_ENCODE;
+        $Conf->WsHost               =   "soap.splashsync.com/";
         //====================================================================//
         // Activity Logging Parameters
-        $Conf->Logging      =   SPLASH_LOGGING;
-        $Conf->TraceIn      =   SPLASH_TRACE_IN;
-        $Conf->TraceOut     =   SPLASH_TRACE_OUT;
-        $Conf->TraceTasks   =   SPLASH_TRACE_TASKS;
+        $Conf->Logging              =   SPLASH_LOGGING;
+        $Conf->TraceIn              =   SPLASH_TRACE_IN;
+        $Conf->TraceOut             =   SPLASH_TRACE_OUT;
+        $Conf->TraceTasks           =   SPLASH_TRACE_TASKS;
         
         //====================================================================//
         // Server Requests Configuration
-        $Conf->server       =   array();
+        $Conf->server               =   array();
 
         //====================================================================//
         // Load Module Local Configuration (In Safe Mode)
@@ -174,16 +178,15 @@ class SplashCore
     public static function Log()
     {
         if (!isset(self::Core()->log)) {
-            //====================================================================//
-            // Include Class
-            require_once("SplashLog.php");
+            
             //====================================================================//
             // Initialize Log & Debug
-            self::Core()->log        = new SplashLog();   
+            self::Core()->log        = new Logger();   
+            
             //====================================================================//
             //  Define Standard Messages Prefix if Not Overiden
-            if ( isset(Splash::Configuration()->localname) ) {
-                self::Core()->log->SetPrefix(Splash::Configuration()->localname);
+            if ( isset(self::Configuration()->localname) ) {
+                self::Core()->log->SetPrefix(self::Configuration()->localname);
             }           
             
         }
@@ -204,10 +207,10 @@ class SplashCore
             //====================================================================//
             // Include ClassNuSOAP WebService Classes
             // NuSOAP WebService Classes
-            require_once(SPLASH_DIR."/inc/nusoap/nusoap.php");
+            require_once( dirname(dirname(__FILE__)) . "/inc/nusoap/nusoap.php");
             //====================================================================//
             // Initialize NuSOAP Server Class
-            self::Core()->Server           = new soap_server();
+            self::Core()->Server           = new \soap_server();
         }
         return self::Core()->Server;
     } 
@@ -220,20 +223,21 @@ class SplashCore
     public static function Ws()
     {
         if (!isset(self::Core()->ws)) {
-            //====================================================================//
-            // Include Class
-            require_once("SplashWs.php");
+            
             //====================================================================//
             // WEBSERVICE INITIALISATION
             //====================================================================//
             // Initialize SOAP WebServices Class
-            self::Core()->ws           = new SplashWs();
+            self::Core()->ws           = new Webservice();
+            
             //====================================================================//
             // Initialize WebService Configuration Array
             self::Core()->ws->Setup();
+            
             //====================================================================//
             //  Load Translation File
             self::Translator()->Load("ws");
+            
         }
         return self::Core()->ws;
     } 
@@ -250,11 +254,8 @@ class SplashCore
         }
         
         //====================================================================//
-        // Include Class
-        require_once("SplashRouter.php");
-        //====================================================================//
         // Initialize Tasks List
-        self::Core()->router        = new SplashRouter();
+        self::Core()->router        = new Router();
         
         return self::Core()->router;
     } 
@@ -267,14 +268,14 @@ class SplashCore
     public static function File()
     {
         if (!isset(self::Core()->file)) {
-            
-            //====================================================================//
-            // Include Class
-            require_once("SplashFile.php");
+//            
+//            //====================================================================//
+//            // Include Class
+//            require_once("SplashFile.php");
             
             //====================================================================//
             // Initialize Tasks List
-            self::Core()->file        = new SplashFile();
+            self::Core()->file        = new FileManager();
             
             //====================================================================//
             //  Load Translation File
@@ -296,14 +297,10 @@ class SplashCore
         if ( isset(self::Core()->valid) ) {
             return self::Core()->valid;
         }
-        
-        //====================================================================//
-        // Include Class
-        require_once("SplashValidate.php");
             
         //====================================================================//
         // Initialize Tasks List
-        self::Core()->valid        = new SplashValidate();
+        self::Core()->valid        = new Validator();
             
         //====================================================================//
         //  Load Translation File
@@ -326,12 +323,8 @@ class SplashCore
         }
         
         //====================================================================//
-        // Include Class
-        require_once("SplashXml.php");
-            
-        //====================================================================//
         // Initialize Tasks List
-        self::Core()->xml        = new SplashXml();
+        self::Core()->xml        = new XmlManager();
             
         return self::Core()->xml;
     }     
@@ -346,12 +339,8 @@ class SplashCore
         if (!isset(self::Core()->translator)) {
             
             //====================================================================//
-            // Include Class
-            require_once("SplashTranslator.php");
-            
-            //====================================================================//
             // Initialize Tasks List
-            self::Core()->translator        = new SplashTranslator();
+            self::Core()->translator        = new Translator();
             
         }
         
@@ -377,7 +366,7 @@ class SplashCore
             
             //====================================================================//
             // Initialize Class
-            self::Core()->localcore        = new SplashLocal();  
+            self::Core()->localcore        = new Local();  
 
             //====================================================================//
             //  Load Translation File
@@ -419,20 +408,20 @@ class SplashCore
 
         //====================================================================//
         // Verify if Object Class is Valid
-        if ( !Splash::Validate()->isValidObject($ObjectType) ) {
+        if ( !self::Validate()->isValidObject($ObjectType) ) {
             return Null;
         }
         
         //====================================================================//
         // Check if Object Manager is Overriden
-        if ( Splash::Validate()->isValidLocalOverride("Object")) {
+        if ( self::Validate()->isValidLocalOverride("Object")) {
             //====================================================================//
             // Initialize Local Object Manager
-            self::Core()->objects[$ObjectType] = Splash::Local()->Object($ObjectType);
+            self::Core()->objects[$ObjectType] = self::Local()->Object($ObjectType);
         } else {
             //====================================================================//
             // Initialize Standard Class
-            $ClassName = SPLASH_CLASS_PREFIX . $ObjectType;
+            $ClassName = SPLASH_CLASS_PREFIX . "\Objects\\" . $ObjectType;
             self::Core()->objects[$ObjectType]        = new $ClassName();
         }
         
@@ -470,13 +459,13 @@ class SplashCore
 
         //====================================================================//
         // Verify if Object Class is Valid
-        if ( !Splash::Validate()->isValidWidget($WidgetType) ) {
+        if ( !self::Validate()->isValidWidget($WidgetType) ) {
             return Null;
         }
         
         //====================================================================//
         // Initialize Class
-        $ClassName = SPLASH_CLASS_PREFIX . $WidgetType;
+        $ClassName = SPLASH_CLASS_PREFIX . "\Widgets\\" . $WidgetType;
         self::Core()->widgets[$WidgetType]        = new $ClassName();
         
         //====================================================================//
@@ -496,22 +485,22 @@ class SplashCore
         //====================================================================//
         // Clear Module Configuration Array
         if (isset(self::Core()->conf)) {
-            unset(\Splash::Core()->conf);             
+            unset(self::Core()->conf);             
         }
         //====================================================================//
         // Clear Webservice Configuration
         if (isset(self::Core()->ws)) {
-            unset(\Splash::Core()->ws);             
+            unset(self::Core()->ws);             
         }
         //====================================================================//
         // Clear Module Local Core Class
         if (isset(self::Core()->localcore)) {
-            unset(\Splash::Core()->localcore);             
+            unset(self::Core()->localcore);             
         }
         //====================================================================//
         // Clear Module Local Objects Classes
         if (isset(self::Core()->objects)) {
-            unset(\Splash::Core()->objects);             
+            unset(self::Core()->objects);             
         }
         //====================================================================//
         // Clear Module Log
@@ -549,6 +538,27 @@ class SplashCore
         return SPLASH_VERSION;
     }  
   
+    /**
+     *      @abstract   Version of the module ('x.y.z' or 'dolibarr' or 'experimental' or 'development')
+     *      @return string
+     */
+    public static function getLocalPath()
+    {
+        //====================================================================//
+        // Safety Check => Verify Local Class is Valid
+        if ( self::Local() == Null ) {
+            return Null;
+        }
+        
+        //====================================================================//
+        // Create A Reflection Class of Local Class
+        $reflector = new \ReflectionClass(get_class(self::Local()));
+        
+        //====================================================================//
+        // Return Class Local Path
+        return dirname($reflector->getFileName());
+    }  
+    
 //====================================================================//
 //  TRANSLATIONS MANAGEMENT
 //====================================================================//
@@ -622,9 +632,9 @@ class SplashCore
         
         //====================================================================//
         // Server Logo & Ico
-        $Response->icoraw           =   Splash::File()->ReadFileContents(SPLASH_DIR . "/img/Splash-ico.png");
+        $Response->icoraw           =   self::File()->ReadFileContents( dirname(dirname(__FILE__))  . "/img/Splash-ico.png");
         $Response->logourl          =   NUll;
-        $Response->logoraw          =   Splash::File()->ReadFileContents(SPLASH_DIR . "/img/Splash-ico.jpg");
+        $Response->logoraw          =   self::File()->ReadFileContents( dirname(dirname(__FILE__)) . "/img/Splash-ico.jpg");
         
         //====================================================================//
         // Server Informations
@@ -638,14 +648,14 @@ class SplashCore
 
         //====================================================================//
         // Verify Local Module Class Is Valid
-        if ( !Splash::Validate()->isValidLocalClass() ) {
+        if ( !self::Validate()->isValidLocalClass() ) {
             return $Response;
         }
         
         //====================================================================//
         // Merge Informations with Local Module Informations
-        $LocalArray = Splash::Local()->Informations($Response);
-        if ( !is_array($LocalArray) && !is_a($LocalArray, "arrayobject") ) {
+        $LocalArray = self::Local()->Informations($Response);
+        if ( !is_array($LocalArray) && !is_a($LocalArray, "ArrayObject") ) {
             $Response   =   $LocalArray;
         }
         
@@ -664,7 +674,7 @@ class SplashCore
         
         //====================================================================//
         // Safety Check => Verify Objects Folder Exists
-        $path    =   Splash::Configuration()->localpath . "/Objects";
+        $path    =   self::getLocalPath() . "/Objects";
         if ( !is_dir($path)) {
             return $ObjectsList;
         }
@@ -700,16 +710,16 @@ class SplashCore
     {
         //====================================================================//
         //  Perform Local Core Class Test
-        if ( !Splash::Validate()->isValidLocalClass()) {
+        if ( !self::Validate()->isValidLocalClass()) {
             return False;
         }
         
         //====================================================================//
         //  Read Local Objects List
-        $ObjectsList   =   Splash::Objects();
+        $ObjectsList   =   self::Objects();
         if (is_array($ObjectsList)) {
             foreach ($ObjectsList as $ObjectType) {
-                if ( !Splash::Validate()->isValidObject($ObjectType)) {
+                if ( !self::Validate()->isValidObject($ObjectType)) {
                     return False;
                 }
             }
@@ -717,19 +727,13 @@ class SplashCore
         
         //====================================================================//
         //  Perform Local SelfTest
-        if ( !Splash::Local()->Selftest() ) {
+        if ( !self::Local()->Selftest() ) {
             return False;
         }
         
         return True;
     }       
 
-//--------------------------------------------------------------------//
-//--------------------------------------------------------------------//
-//----  WIDGETS WEBSERVICE FUNCTIONS                              ----//
-//--------------------------------------------------------------------//
-//--------------------------------------------------------------------//
-    
     /**
      *      @abstract   Build list of Available Widgets
      * 
@@ -742,7 +746,7 @@ class SplashCore
         
         //====================================================================//
         // Safety Check => Verify Objects Folder Exists
-        $path    =   Splash::Configuration()->localpath . "/Widgets";
+        $path    =   self::getLocalPath() . "/Widgets";
         if ( !is_dir($path)) {
             return $WidgetsList;
         }

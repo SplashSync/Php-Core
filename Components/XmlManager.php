@@ -17,11 +17,17 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace   Splash\Components;
+
+use XmlWriter;
+use stdClass;
+use ArrayObject;
+
 //====================================================================//
 //  CLASS DEFINITION
 //====================================================================//
 
-class SplashXml 
+class XmlManager 
 {
 
     /**

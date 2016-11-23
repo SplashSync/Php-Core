@@ -18,23 +18,16 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace Splash\Server;
+
+use Splash\Core\SplashCore  as Splash;
+use ArrayObject;
+
 //====================================================================//
 //   INCLUDES 
 //====================================================================//  
 
-// Core Class
-require_once("Splash.php");
 
-//====================================================================//
-//   WebService Available Functions
-//====================================================================//  
-
-function Ping($id)                      {   return SplashServer::Ping($id);     }
-function Connect($id,$data)             {   $server = new SplashServer(); return $server->Connect($id,$data);   }
-function Admin($id,$data)               {   $server = new SplashServer(); return $server->Admin($id,$data);     }
-function Objects($id,$data)             {   $server = new SplashServer(); return $server->Objects($id,$data);   }
-function Files($id,$data)               {   $server = new SplashServer(); return $server->Files($id,$data);     }
-function Widgets($id,$data)             {   $server = new SplashServer(); return $server->Widgets($id,$data);   }
 
 //====================================================================//
 //  CLASS DEFINITION
@@ -56,11 +49,7 @@ class SplashServer
      */
     public function __construct()
     {
-        //====================================================================//
-        // Initialize I/O Data Buffers
-        self::$_In          = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        self::$_Out         = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);        
-        return True;
+        return self::Init();
     }    
     
 //====================================================================//
@@ -74,12 +63,15 @@ class SplashServer
      */
     public function Ping()
     {
+        self::Init();
+        
         //====================================================================//
         // Simple Message reply, No Encryption
         Splash::Log()->Msg("Ping Successful.");
         self::$_Out->result  = True;
+        
         //====================================================================//
-        // Transmt Answer without No Encryption
+        // Transmit Answer with No Encryption
         return Splash::Ws()->Pack( self::$_Out , 1 ); 
     }   
     
@@ -97,13 +89,13 @@ class SplashServer
         // Verify Node Id 
         //====================================================================//
         if ( Splash::Configuration()->WsIdentifier !== $id ) {
-            return $this->Transmit(False);
+            return self::Transmit(False);
         }
         //====================================================================//
         // Unpack NuSOAP Request
         //====================================================================//
         if (self::Receive($data) != True) {
-            return $this->Transmit(False);
+            return self::Transmit(False);
         }
         //====================================================================//
         // Execute Request
@@ -173,6 +165,20 @@ class SplashServer
 //====================================================================//
    
     /**
+     *      @abstract       Class Initialisation
+     *      @return         bool
+     */
+    public static function Init()
+    {
+        //====================================================================//
+        // Initialize I/O Data Buffers
+        self::$_In          = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        self::$_Out         = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);        
+        return True;
+    }    
+
+    
+    /**
      *      @abstract   Register available methods 
      * 
      *      @return     bool
@@ -181,12 +187,12 @@ class SplashServer
     {
         //====================================================================//
         // Register a method available for clients
-        Splash::Server()->register(SPL_S_PING);         // Check Slave Availability
+        Splash::Server()->register(SPL_S_PING );        // Check Slave Availability
         Splash::Server()->register(SPL_S_CONNECT);      // Verify Connection Parameters
         Splash::Server()->register(SPL_S_ADMIN);        // Administrative requests
         Splash::Server()->register(SPL_S_OBJECTS);      // Main Object management requests
         Splash::Server()->register(SPL_S_FILE);        	// Files management requests
-        Splash::Server()->register(SPL_S_WIDGETS);        	// Informations requests
+        Splash::Server()->register(SPL_S_WIDGETS);      // Informations requests
         return;
     }    
     

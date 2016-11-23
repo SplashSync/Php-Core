@@ -12,12 +12,17 @@
  * file that was distributed with this source code.
  */
 
+namespace   Splash\Components;
+
+use Splash\Core\SplashCore      as Splash;
+use ArrayObject;
+
 /**
  * @abstract    This Class is a Generator for Objects Fields Definition
  * @author      B. Paquier <contact@splashsync.com>
  */
 
-class SplashFieldsFactory 
+class FieldsFactory 
 {
     /**
      * Default Field Definition Resolver Array

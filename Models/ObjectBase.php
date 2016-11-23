@@ -17,6 +17,11 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace   Splash\Models;
+
+use Splash\Core\SplashCore      as Splash;
+use Splash\Components\FieldsFactory;
+
 //====================================================================//
 //********************************************************************//
 //====================================================================//
@@ -25,7 +30,7 @@
 //********************************************************************//
 //====================================================================//
 
-class SplashObject
+class ObjectBase
 {
     /**
      * @var Static Class Storage
@@ -130,12 +135,8 @@ class SplashObject
         }
         
         //====================================================================//
-        // Include Class
-        require_once("SplashFieldsFactory.php");
-        
-        //====================================================================//
         // Initialize Class
-        self::$fields        = new SplashFieldsFactory();  
+        self::$fields        = new FieldsFactory();  
         
         //====================================================================//
         //  Load Translation File

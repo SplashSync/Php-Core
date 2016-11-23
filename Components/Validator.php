@@ -17,11 +17,15 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace   Splash\Components;
+
+use Splash\Core\SplashCore      as Splash;
+
 //====================================================================//
 //  CLASS DEFINITION
 //====================================================================//
 
-class SplashValidate
+class Validator
 {
 
 //====================================================================//
@@ -37,7 +41,7 @@ class SplashValidate
     */
     public function isValidLocalClass() 
     {   
-        $ClassName = SPLASH_CLASS_PREFIX . "Local";
+        $ClassName = SPLASH_CLASS_PREFIX . "\Local";
         //====================================================================//
         // Verify Results in Cache
         if ( isset($this->ValidLocalClass[$ClassName]) ) {
@@ -45,24 +49,6 @@ class SplashValidate
         }
         
         $this->ValidLocalClass[$ClassName] = False;
-
-        //====================================================================//
-        // Verify Local Path Exist
-        if (  $this->isValidLocalPath() == false ) {
-            return False;
-        }   
-
-        //====================================================================//
-        // Verify Local Class File Exist
-        $path    =   dirname(dirname(__FILE__)) . SPLASH_LOCALPATH;
-        $filename = $path . "/Core/Local.php";
-        if ( !file_exists($filename) ) {
-            return Splash::Log()->Err(Splash::Trans("ErrLocalClass",$filename));                
-        }
-
-        //====================================================================//
-        // Include File
-        include_once($filename);
 
         //====================================================================//
         // Verify Splash Local Core Class Exists
@@ -177,16 +163,12 @@ class SplashValidate
         
         //====================================================================//
         // Verify Object File Exist
-        $filename = Splash::Configuration()->localpath . "/Objects/" . $ObjectType . ".php";
+        $filename = Splash::getLocalPath() . "/Objects/" . $ObjectType . ".php";
         if (file_exists($filename) == FALSE) {
             $msg = "Local Object File Not Found.</br>";
             $msg.= "Current Filename : " . $filename . "";
             return Splash::Log()->Err($msg);
         } 
-        
-        //====================================================================//
-        // Include File
-        include_once($filename);
         
         return True;
     }        
@@ -205,9 +187,8 @@ class SplashValidate
             // Retrieve Object Manager ClassName
             $ClassName = get_class(Splash::Local()->Object($ObjectType));
         } else {
-            $ClassName = SPLASH_CLASS_PREFIX . $ObjectType;
+            $ClassName = SPLASH_CLASS_PREFIX . "\Objects\\" . $ObjectType;
         }
-
         //====================================================================//
         // Verify Splash Local Core Class Exists
         if (class_exists( $ClassName ) == False) {
@@ -386,7 +367,7 @@ class SplashValidate
         }         
         //====================================================================//
         // Verify Object File Exist
-        $filename = Splash::Configuration()->localpath . "/Widgets/" . $WidgetType . ".php";
+        $filename = Splash::getLocalPath() . "/Widgets/" . $WidgetType . ".php";
         if (file_exists($filename) == FALSE) {
             $msg = "Local Widget File Not Found.</br>";
             $msg.= "Current Filename : " . $filename . "";
@@ -406,7 +387,7 @@ class SplashValidate
      */
     private function isValidWidgetClass($WidgetType)
     {
-        $ClassName = SPLASH_CLASS_PREFIX . $WidgetType;
+        $ClassName = SPLASH_CLASS_PREFIX . "\Widgets\\" .$WidgetType;
 
         //====================================================================//
         // Verify Splash Local Core Class Exists
@@ -463,13 +444,14 @@ class SplashValidate
         //====================================================================//
         // Verify no result in Cache
         if ( !isset($this->ValidLocalPath) ) {
-            $path    =   dirname(dirname(__FILE__)) . SPLASH_LOCALPATH;
+            $path    = Splash::getLocalPath();
             //====================================================================//
             // Verify Local Path Exist
-            if ( !is_dir($path)) {
+            if ( !is_dir($path) ) {
                 $this->ValidLocalPath = False;
                 return Splash::Log()->Err(Splash::Trans("ErrLocalPath",$path));
             }     
+            
             $this->ValidLocalPath = true;
             
         }
@@ -490,15 +472,14 @@ class SplashValidate
         //====================================================================//
         // Prefill ClassName
         if (is_null($ClassName) ) {
-            $ClassName = SPLASH_CLASS_PREFIX . "Local";
+            $ClassName = SPLASH_CLASS_PREFIX . "\Local";
         }
-        
         //====================================================================//
         // Verify Result in Cache
         if ( isset($this->ValidLocalFunctions[$ClassName][$Method]) ) {
             return $this->ValidLocalFunctions[$ClassName][$Method];
         }
-        
+
         //====================================================================//
         // Verify Class Method Exists
         if (method_exists($ClassName, $Method) == FALSE) {

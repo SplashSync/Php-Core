@@ -17,19 +17,25 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace   Splash\Components;
+
+use ArrayObject;
+
+use Splash\Core\SplashCore      as Splash;
+
 //====================================================================//
 //   INCLUDES 
 //====================================================================//
 
 //====================================================================//
 // NuSOAP WebService Classes
-require_once(SPLASH_DIR."/inc/nusoap/nusoap.php");
+require_once( dirname(dirname(__FILE__)) . "/inc/nusoap/nusoap.php");
 
 //====================================================================//
 //  CLASS DEFINITION
 //====================================================================//
 
-class SplashWs 
+class Webservice 
 {
     //====================================================================//
     // WebService Parameters	
@@ -407,7 +413,7 @@ class SplashWs
      * 
      *      @return     bool
      */
-    private function Call_Init($service) {
+    public function Call_Init($service) {
         
         //====================================================================//
         // Debug 
@@ -444,7 +450,7 @@ class SplashWs
      * 
      *      @return     bool
      */
-    private function Call_AddTasks($tasks = NULL) {
+    public function Call_AddTasks($tasks = NULL) {
         
         //====================================================================//
         // No tasks to Add
@@ -494,7 +500,7 @@ class SplashWs
         
         //====================================================================//
         // Initiate new NuSoap Client
-        $this->client = new nusoap_client($this->url);
+        $this->client = new \nusoap_client($this->url);
         
         //====================================================================//
         // Setup NuSOAP Debug Level
@@ -622,7 +628,6 @@ class SplashWs
 //  INFORMATION RETRIEVAL
 //====================================================================//
 
-
     /**
      * @abstract     Return Server Informations
      * @return       array   $result
@@ -672,4 +677,12 @@ class SplashWs
         return $r;
     }
 
+    /**
+     * @abstract     Return Server Outputs Buffer
+     * @return       array   $result
+     */
+    public function getOutputBuffer() {
+        return $this->_Out;
+    }
+    
 }

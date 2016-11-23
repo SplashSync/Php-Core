@@ -17,6 +17,10 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+namespace   Splash\Components;
+
+use Splash\Core\SplashCore      as Splash;
+
 //====================================================================//
 //  CLASS DEFINITION
 //====================================================================//
@@ -25,7 +29,7 @@
  *	\class      SplashTranslator
  *	\brief      Text Translations Functions Collector Class
  */
-class SplashTranslator
+class Translator
 {
     /**
      *      @abstract   Translations Storage Array
@@ -221,10 +225,10 @@ class SplashTranslator
         // Directory of translation files
         if ( !empty($IsLocal) )
         {
-            return Splash::Configuration()->localpath."/Translations/".$Language."/".$FileName.".ini";
+            return Splash::getLocalPath()."/Translations/".$Language."/".$FileName.".ini";
         }
         
-        return SPLASH_DIR . "/langs/" . $Language . "/" . $FileName . ".ini";
+        return dirname(dirname(__FILE__)) . "/langs/" . $Language . "/" . $FileName . ".ini";
     }
     
     /**
