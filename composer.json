@@ -9,7 +9,10 @@
     },
     
     "autoload": {
-        "psr-4": { "Splash\\": "" },
+        "psr-4": { 
+            "Splash\\": "",
+            "Splash\\Local\\": "../../../Ressources"
+        },
         "exclude-from-classmap": [
             "/Tests/"
         ]
