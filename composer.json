@@ -11,7 +11,7 @@
     "autoload": {
         "psr-4": { 
             "Splash\\": "",
-            "Splash\\Local\\": "../../../Ressources"
+            "Splash\\Local\\": "../../../Resources"
         },
         "exclude-from-classmap": [
             "/Tests/"
