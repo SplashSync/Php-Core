@@ -1,0 +1,11 @@
+{
+    "name": "splash/phpcore",
+    "description": "Splash Core Module for Php Applications",
+
+    "license": "GPL",
+
+    "require": {
+        "php": "^5.6",
+    }
+    
+}
