@@ -610,13 +610,17 @@ class Webservice
         // Create a new task
         $task 	= 	new ArrayObject(array(),  ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
+        // Prepare Task Id
+        $Id                     =       $this->tasks->count() + 1;
+        //====================================================================//
         // Fill task with informations
+        $task["id"] 		= 	$Id;
         $task["name"] 		= 	$name;
         $task["desc"] 		= 	$desc;
         $task["params"]         = 	$params;
         //====================================================================//
-        // Add node to node list
-        $this->tasks[$this->tasks->count() + 1]          = $task;
+        // Add Task to Tasks list
+        $this->tasks[$Id]       = $task;
         //====================================================================//
         // Debug
         Splash::Log()->Deb("TasksAdd", $task["name"],$task["desc"]); 

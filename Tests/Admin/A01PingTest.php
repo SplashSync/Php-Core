@@ -1,26 +1,16 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Splash\Tests\Tools\BaseClass;
 
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
-
-if ( !defined("SPLASH_DEBUG") ) {
-    define("SPLASH_DEBUG" , True);
-} 
 
 /**
  * @abstract    Admin Test Suite - Ping Client Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A01PingTest extends TestCase {
-    
-    protected function onNotSuccessfulTest(Exception $e)
-    {
-        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
-        throw $e;
-    }    
+class A01PingTest extends BaseClass { 
     
     public function testDummy()
     {

@@ -72,13 +72,21 @@ class Router
             //====================================================================//
             //  READING OF SERVER OBJECT LIST            
             case SPL_F_GET_OBJECTS:
-                $data = Splash::Objects();
-                if ( $data != False ) {
-                    $Response->data	= $data;
+                $Response->data = Splash::Objects();
+                if ( $Response->data != False ) {
                     $Response->result   = True;
                 }
                 break; 
                 
+            //====================================================================//
+            //  READING OF SERVER WIDGETS LIST            
+            case SPL_F_GET_WIDGETS:
+                $Response->data = Splash::Widgets();
+                if ( $Response->data != False ) {
+                    $Response->result   = True;
+                }
+                break;  
+            
             //====================================================================//
             //  READING OF SERVER SELFTEST RESULTS            
             case SPL_F_GET_SELFTEST:
@@ -89,11 +97,11 @@ class Router
             //====================================================================//
             //  READING OF SERVER INFORMATIONS            
             case SPL_F_GET_INFOS:
-                $data = Splash::Informations();
-                if ( $data != False ) {
-                    $Response->data	= $data;
+                $Response->data = Splash::Informations();
+                if ( $Response->data != False ) {
                     $Response->result   = True;
                 }
+
                 break;             
                 
             default:
@@ -374,7 +382,7 @@ class Router
         }
         
         //====================================================================//
-        // Task results prot treatment
+        // Task results post treatment
         if ( $Response->data != False )  {   
             $Response->result = True; 
         }

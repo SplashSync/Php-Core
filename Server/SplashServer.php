@@ -89,13 +89,16 @@ class SplashServer
         // Verify Node Id 
         //====================================================================//
         if ( Splash::Configuration()->WsIdentifier !== $id ) {
-            return self::Transmit(False);
+            return Null;
+//            return self::Transmit(False);
         }
+        self::Init();
         //====================================================================//
         // Unpack NuSOAP Request
         //====================================================================//
         if (self::Receive($data) != True) {
-            return self::Transmit(False);
+            return Null;
+//            return self::Transmit(False);
         }
         //====================================================================//
         // Execute Request
@@ -116,9 +119,9 @@ class SplashServer
      *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
 
      */
-    public function Admin($id,$data)
+    public static function Admin($id,$data)
     {
-        return $this->Run($id,$data,__FUNCTION__);
+        return self::Run($id,$data,__FUNCTION__);
     }	
 
     /**
@@ -131,7 +134,7 @@ class SplashServer
      */
     public function Objects($id,$data)
     {
-        return $this->Run($id,$data,__FUNCTION__);
+        return self::Run($id,$data,__FUNCTION__);
     }	    
 
     /**
@@ -144,7 +147,7 @@ class SplashServer
      */
     public function Files($id,$data)
     {
-        return $this->Run($id,$data,__FUNCTION__);
+        return self::Run($id,$data,__FUNCTION__);
     }
 
     /**
@@ -157,7 +160,7 @@ class SplashServer
      */
     public function Widgets($id,$data)
     {
-        return $this->Run($id,$data,__FUNCTION__);
+        return self::Run($id,$data,__FUNCTION__);
     }
         
 //====================================================================//
@@ -203,7 +206,7 @@ class SplashServer
      * 
      *      @return     bool
      */
-    private function Receive($data) {
+    private static function Receive($data) {
         
         //====================================================================//
         // Unpack Raw received data 
@@ -243,7 +246,7 @@ class SplashServer
      * 
      *      @return     string      To Transmit Raw Data or False if KO
      */
-    private function Transmit($result) {
+    private static function Transmit($result) {
         
         //====================================================================//
         // Safety Check 
@@ -278,19 +281,20 @@ class SplashServer
      * 
      *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
      */
-    private function Run($Id,$Data,$Router)
+    private static function Run($Id,$Data,$Router)
     {
         //====================================================================//
         // Verify Node Id 
         //====================================================================//
         if ( Splash::Configuration()->WsIdentifier !== $Id ) {
-            return $this->Transmit(False);
+            return self::Transmit(False);
         }
+        self::Init();
         //====================================================================//
         // Unpack NuSOAP Request
         //====================================================================//
-        if ($this->Receive($Data) != True) {
-            return $this->Transmit(False);
+        if (self::Receive($Data) != True) {
+            return self::Transmit(False);
         }
         //====================================================================//
         // Execute Request
@@ -299,7 +303,7 @@ class SplashServer
         //====================================================================//
         // Transmit Answers To Master
         //====================================================================//         
-        return $this->Transmit($GlobalResult); 
+        return self::Transmit($GlobalResult); 
     }
     
 }
