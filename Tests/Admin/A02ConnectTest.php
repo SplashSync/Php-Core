@@ -1,6 +1,6 @@
 <?php
 
-use Splash\Tests\Tools\BaseClass;
+use Splash\Tests\Tools\BaseCase;
 
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
@@ -11,7 +11,7 @@ use Splash\Server\SplashServer;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A02ConnectTest extends BaseClass {
+class A02ConnectTest extends BaseCase {
     
     
     public function testConnectClientAction()

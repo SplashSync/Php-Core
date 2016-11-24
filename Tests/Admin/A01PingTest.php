@@ -1,6 +1,6 @@
 <?php
 
-use Splash\Tests\Tools\BaseClass;
+use Splash\Tests\Tools\BaseCase;
 
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
@@ -10,7 +10,7 @@ use Splash\Server\SplashServer;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A01PingTest extends BaseClass { 
+class A01PingTest extends BaseCase { 
     
     public function testDummy()
     {

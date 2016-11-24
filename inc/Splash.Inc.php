@@ -208,10 +208,10 @@ define('SPL_S_WIDGETS'    ,  "Widgets");                // Information Blocks Re
 //====================================================================//
 //  Available Functions
 //====================================================================//
-define("SPL_F_GET_INFOS"           ,   'infos');
-define("SPL_F_GET_OBJECTS"         ,   'objects');
-define("SPL_F_GET_SELFTEST"        ,   'selftest');
-define("SPL_F_GET_WIDGETS"         ,   'widgets');
+define("SPL_F_GET_INFOS"           ,   'infos');    // Get Server Informations (Name, Address and more...)
+define("SPL_F_GET_OBJECTS"         ,   'objects');  // Get List of Available Objects
+define("SPL_F_GET_SELFTEST"        ,   'selftest'); // Get Result of SelfTest Sequence
+define("SPL_F_GET_WIDGETS"         ,   'widgets');  // Get List of Available Widgets
 
 //====================================================================//
 //--------------------------------------------------------------------//
@@ -220,6 +220,7 @@ define("SPL_F_GET_WIDGETS"         ,   'widgets');
 //====================================================================//
 //  Available Functions
 //====================================================================//
+define("SPL_F_OBJECTS"      ,   'Objects');         // Get List of Available Objects
 define("SPL_F_COMMIT"       ,   'Commit');          // Commit Object Change on Server 
 define("SPL_F_DESC"         ,   'Description');     // Read Object Description
 define("SPL_F_FIELDS"       ,   'Fields');          // Read Object Available Fields List
@@ -248,7 +249,7 @@ define("SPL_F_DELFILE"     ,   'DeleteFile');      // Delete file from slave
 //  Available Functions
 //====================================================================//
 define("SPL_F_WIDGET_LIST"          ,   'WidgetsList');     // Get List of Available Widgets
-define("SPL_F_WIDGET_DEFINITION"    ,   'Description');      // Get Widget Definition  
+define("SPL_F_WIDGET_DEFINITION"    ,   'Description');     // Get Widget Definition  
 define("SPL_F_WIDGET_GET"           ,   'Get');             // Get Informations 
 
 ?>

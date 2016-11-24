@@ -21,6 +21,12 @@
 namespace   Splash\Components;
 
 use Splash\Core\SplashCore      as Splash;
+
+use Splash\Router\Admin;
+use Splash\Router\Objects;
+use Splash\Router\Widgets;
+use Splash\Router\Files;
+
 use ArrayObject;
 
 //====================================================================//
@@ -129,7 +135,18 @@ class Router
         //====================================================================//
         // Initial Response
         $Response  = $this->getEmptyResponse($Task);
-
+        
+        //====================================================================//
+        //  READING OF SERVER OBJECT LIST            
+        //====================================================================//
+        if ( $Task->name === SPL_F_GET_OBJECTS ) {
+            $Response->data = Splash::Objects();
+            if ( $Response->data != False ) {
+                $Response->result   = True;
+            }
+            return $Response;
+        }
+        
         //====================================================================//
         // Safety Check - Minimal Parameters
         //====================================================================//
@@ -426,8 +443,8 @@ class Router
         }
         
         //====================================================================//
-        // Safety Check - Verify Router Method Exists
-        if ( !method_exists($this, $Router)) {
+        // Safety Check - Verify Router Exists
+        if ( !class_exists( "\Splash\Router\\" . $Router)) {
             return Splash::Log()->Err("Unable to perform requested tasks, given router doesn't exist(" . $Router . "). Check your server configuration & methods");
         }
         
@@ -469,7 +486,7 @@ class Router
 
             //====================================================================//
             // Tasks Execution                    
-            $Output->tasks[$Id]    =   $this->ExecuteTask($Router, $Task);
+            $Output->tasks[$Id]    =   $this->ExecuteTask("\Splash\Router\\" . $Router, $Task);
             
         }
         
@@ -510,7 +527,7 @@ class Router
         //====================================================================//
         // Tasks Execution 
         try {
-            $Result = $this->$Router($Task);
+            $Result = $Router::Action($Task);
         } catch (Exception $exc) {
             $Result  = $this->getEmptyResponse($Task);
             Splash::Log()->Err($exc->getMessage());  
@@ -569,32 +586,6 @@ class Router
     private function getDelayTaskStarted()
     {    
         return 1000 * (microtime(TRUE) - $this->TaskTimer);
-    }    
-    
-    /**
-     *      @abstract     Build an Empty Task Response
-     *  
-     *      @param  arrayobject     $Task       Task To Execute
-     * 
-     *      @return arrayobject   Task Result ArrayObject
-     */
-    private function getEmptyResponse($Task)
-    {    
-        //====================================================================//
-        // Initial Tasks results ArrayObject
-        $Response = new ArrayObject(array(),  ArrayObject::ARRAY_AS_PROPS);
-        
-        //====================================================================//
-        // Set Default Result to False
-        $Response->result       =   False;
-        $Response->data         =   Null;
-        
-        //====================================================================//
-        // Insert Task Description Informations
-        $Response->name         =   $Task->name;
-        $Response->desc         =   $Task->desc;
-
-        return $Response;
     }    
     
 }

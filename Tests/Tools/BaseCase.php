@@ -16,7 +16,7 @@ if ( !defined("SPLASH_DEBUG") ) {
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class BaseClass extends TestCase {
+class BaseCase extends TestCase {
 
     protected function onNotSuccessfulTest($e)
     {
@@ -31,7 +31,13 @@ class BaseClass extends TestCase {
         Splash::Reboot();
     }    
     
-    
+    public function assertIsSplashBool($Data , $Comment)
+    {
+        $Test = is_bool($Data) || ($Data === "0") || ($Data === "1");
+        
+        $this->assertTrue( $Test , $Comment );
+    }
+
     
     /**
      *      @abstract      Verify Response Is Valid
