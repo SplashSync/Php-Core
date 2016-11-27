@@ -31,11 +31,81 @@ class BaseCase extends TestCase {
         Splash::Reboot();
     }    
     
+    /**
+     * @abstract        Verify if Data is present in Array and in right Internal Format
+     * 
+     * @param mixed     $Data           Tested Array
+     * @param mixed     $Key            Tested Array Key
+     * @param mixed     $Type           Expected Data Type
+     * @param string    $Comment
+     */    
+    public function assertArrayInternalType($Data , $Key, $Type, $Comment)
+    {
+        $this->assertArrayHasKey(   $Key,   $Data,      $Comment . " => Key '" . $Key . "' not defined");
+        $this->assertNotEmpty(      $Data[$Key],        $Comment . " => Key '" . $Key . "' is Empty");
+        $this->assertInternalType($Type, $Data[$Key],   $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
+    }
+    
+    /**
+     * @abstract        Verify if Data is present in Array and in right Internal Format
+     * 
+     * @param mixed     $Data           Tested Array
+     * @param mixed     $Key            Tested Array Key
+     * @param mixed     $Type           Expected Data Type
+     * @param string    $Comment
+     */    
+    public function assertArrayInstanceOf($Data , $Key, $Type, $Comment)
+    {
+        $this->assertArrayHasKey(   $Key,   $Data,      $Comment . " => Key '" . $Key . "' not defined");
+        $this->assertNotEmpty(      $Data[$Key],        $Comment . " => Key '" . $Key . "' is Empty");
+        $this->assertInstanceOf($Type, $Data[$Key],     $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
+    }
+    
+
+    /**
+     * @abstract        Verify if Data is a valid Splash Data Block Bool Value
+     * 
+     * @param mixed     $Data
+     * @param string    $Comment
+     */    
     public function assertIsSplashBool($Data , $Comment)
     {
         $Test = is_bool($Data) || ($Data === "0") || ($Data === "1");
         
         $this->assertTrue( $Test , $Comment );
+    }
+    
+    /**
+     * @abstract        Verify if Data is present in Array and is Splash Bool
+     * 
+     * @param mixed     $Data           Tested Array
+     * @param mixed     $Key            Tested Array Key
+     * @param string    $Comment
+     */    
+    public function assertArraySplashBool($Data , $Key, $Comment)
+    {
+        $this->assertArrayHasKey(   $Key,   $Data,      $Comment . " => Key '" . $Key . "' not defined");
+        $this->assertNotEmpty(      $Data[$Key],        $Comment . " => Key '" . $Key . "' is Empty");
+        $this->assertIsSplashBool($Data[$Key],          $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
+    }
+
+    /**
+     * @abstract        Verify if Data is a valid Splash Field Data Value
+     * 
+     * @param mixed     $Data
+     * @param string    $Type
+     * @param string    $Comment
+     */    
+    public function assertIsValidSplashFieldData($Data, $Type, $Comment)
+    {
+        //====================================================================//
+        // Verify Type is Valid
+        $ClassName = self::isValidType( $Type );
+        $this->assertNotEmpty(  $ClassName , "Field Type '" . $Type . "' is not a Valid Splash Field Type.");
+    
+        //====================================================================//
+        // Verify Data is Valid
+        $this->assertTrue(  $ClassName::validate($Data), "Data is not a Valid Splash '" . $Type . "'. (" . print_r($Data,True) . ")");
     }
 
     
@@ -251,7 +321,47 @@ class BaseCase extends TestCase {
         return $Task["data"];
     }
     
-    
+    /**
+     *      @abstract   Perform generic Server Side Action
+     *  
+     *      @return     mixed            
+     */
+    protected function GenericErrorAction($Service, $Action, $Description, array $Parameters = array(True))   
+    {
+        //====================================================================//
+        //   Prepare Request Data
+        Splash::Ws()->AddTask( $Action, $Parameters , $Description );
+        Splash::Ws()->Call_Init( $Service );
+        Splash::Ws()->Call_AddTasks();
+        //====================================================================//
+        //   Encode Request Data
+        $Request    =   Splash::Ws()->Pack( Splash::Ws()->getOutputBuffer() );
+        //====================================================================//
+        //   Execute Action From Splash Server to Module  
+        $Response   =   SplashServer::$Service(Splash::Configuration()->WsIdentifier, $Request);
+        //====================================================================//
+        // RESPONSE BLOCK IS NOT EMPTY
+        $this->assertNotEmpty( $Response                    , "Response Block is Empty");
+        //====================================================================//
+        // DECODE BLOCK 
+        $Data       =   Splash::Ws()->unPack( $Response ); 
+        //====================================================================//
+        // CHECK RESPONSE DATA
+        $this->assertNotEmpty( $Data                        , "Response Data is Empty or Malformed");
+        $this->assertInstanceOf( "ArrayObject" , $Data      , "Response Data is Not an ArrayObject");
+        $this->assertArrayHasKey( "result", $Data           , "Request Result is Missing");
+        $this->assertEmpty( $Data->result                   , "Expect Errors but Request Result is True, Why??");
+        
+        //====================================================================//
+        //   Extract Task Result 
+        if (is_a($Data->tasks, "ArrayObject")) {
+            $Task = array_shift($Data->tasks->getArrayCopy());
+        } elseif (is_array($Data->tasks)) {
+            $Task = array_shift($Data->tasks);
+        }
+
+        return $Task["data"];
+    }
     
     
     

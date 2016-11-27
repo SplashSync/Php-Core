@@ -1,0 +1,156 @@
+<?php
+namespace Splash\Tests\Tools\Fields;
+
+/**
+ * @abstract    File Field : Define Access to a File
+ * 
+ * @example     
+ * 
+//====================================================================//
+// File Structure
+// Sample :
+// $data["file"]["name"]           =>      File Name             
+// $data["file"]["filename"]       =>      File Filename with Extension
+// $data["file"]["path"]           =>      File Full path on local system
+// $data["file"]["md5"]            =>      File Md5 Checksum
+// $data["file"]["size"]           =>      File Size
+//====================================================================//
+ * 
+ */
+class file
+{
+    //==============================================================================
+    //      Structural Data  
+    //==============================================================================
+
+    const FORMAT        =   'File';
+    
+    //==============================================================================
+    //      DATA VALIDATION  
+    //==============================================================================   
+
+    /**
+     * Verify given Raw Data is Valid
+     *
+     * @param   array   $File      Splash Image definition Array
+     * 
+     * @return bool     True if OK, Error String if KO
+     */
+    static public function validate($File)
+    {
+        //==============================================================================
+        //      Verify Data is an Array 
+        if ( !is_array($File) && !is_a( $File , "ArrayObject") ) {
+            return "Field Data is not an Array.";
+        }
+
+        //====================================================================//
+        // Check Contents Available
+        if ( !array_key_exists("name",$File) ) {
+            return "File Field => 'name' is missing.";
+        }
+        if ( !array_key_exists("filename",$File) ) {
+            return "File Field => 'filename' is missing.";
+        }
+        if ( !array_key_exists("path",$File) && !array_key_exists("file",$File) ) {
+            return "File Field => 'path' is missing.";
+        }
+        if ( !array_key_exists("md5",$File) ) {
+            return "File Field => 'md5' is missing.";
+        }
+        if ( !array_key_exists("size",$File) ) {
+            return "File Field => 'size' is missing.";
+        }
+        
+        return True;
+    }
+    
+    //==============================================================================
+    //      FAKE DATA GENERATOR  
+    //==============================================================================   
+
+    /**
+     * Generate Fake Raw Field Data for Debugger Simulations
+     *
+     * @param      array   $Settings   User Defined Faker Settings
+     * 
+     * @return mixed   
+     */
+    static public function fake($Settings)
+    {
+        //====================================================================//
+        // Image Faker Parameters
+        $i          = (int) mt_rand(0,count($Settings["Files"]) - 1);
+        $Dir        = dirname(dirname(__DIR__)) . "/files/";  
+        $File       = $Settings["Files"][$i];
+        $FullPath   = $Dir . $File;
+        $Name       = "Fake File " . $i;
+        
+        //====================================================================//
+        // Build Image Array
+        $FakeFile = array();
+        //====================================================================//
+        // ADD MAIN INFOS
+        //====================================================================//
+        // Image Name
+        $FakeFile["name"]          = $Name;
+        //====================================================================//
+        // Image Filename
+        $FakeFile["filename"]      = $File;
+        //====================================================================//
+        // Image File Identifier (Full Path Here)
+        $FakeFile["path"]          = $FullPath;
+        
+        //====================================================================//
+        // ADD COMPUTED INFOS
+        //====================================================================//
+        $FakeFile["md5"]           = md5_file($FullPath);
+        $FakeFile["size"]          = filesize($FullPath);
+        
+        return $FakeFile;
+    }      
+    
+    //==============================================================================
+    //      DATA COMPARATOR (OPTIONNAL)  
+    //==============================================================================   
+    
+    /**
+     * Compare Two Data Block to See if similar (Update Required)
+     * 
+     * !important : Target Data is always validated before compare
+     * 
+     * @param   mixed   $Source     Original Data Block
+     * @param   mixed   $Target     New Data Block
+     *
+     * @return  bool                TRUE if both Data Block Are Similar
+     */
+    public static function compare($Source,$Target) {
+        //====================================================================//
+        // Smart Validate Arrays
+        if ( !is_array($Source) && !is_a( $Source , "ArrayObject") ) {
+            return False;
+        }
+        if ( !is_array($Target) && !is_a( $Target , "ArrayObject") ) {
+            return False;
+        }
+        
+        if (    !array_key_exists("md5" , $Source) || !array_key_exists("md5" , $Target) 
+            || !array_key_exists("size" , $Source) || !array_key_exists("size" , $Target) 
+            ) {
+            return False;
+        }
+        
+        //====================================================================//
+        // Compare File CheckSum
+        if ( $Source["md5"] != $Target["md5"] ) {
+            return False;
+        }
+        //====================================================================//
+        // Compare File Size
+        if ( $Source["size"] != $Target["size"] ) {
+            return False;
+        }
+        return True;
+    }    
+    
+}

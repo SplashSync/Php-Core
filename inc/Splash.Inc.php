@@ -69,8 +69,8 @@ define('SPL_T_VARCHAR'      ,  'varchar');       // Short texts (Inf 256 char)
 define('SPL_T_TEXT'         ,  'text');          // Long text
 define('SPL_T_EMAIL'        ,  'email');         // Email Address
 define('SPL_T_PHONE'        ,  'phone');         // Phone Number
-define('SPL_T_DATE'         , 'date');          // Day Timestamps 
-define('SPL_T_DATECAST'     , 'Y-m-d');         // Day Timestamps Format
+define('SPL_T_DATE'         ,  'date');          // Day Timestamps 
+define('SPL_T_DATECAST'     ,  'Y-m-d');         // Day Timestamps Format
 define('SPL_T_DATETIME'     ,  'datetime');      // Timestamps 
 define('SPL_T_DATETIMECAST' ,  'Y-m-d G:i:s');   // Timestamps Format
 define('SPL_T_LANG'         ,  'lang');          // Iso Language code (en_US / fr_FR ...)

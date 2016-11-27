@@ -5,7 +5,7 @@ use Splash\Client\Splash;
 //use ArrayObject;
 
 /**
- * @abstract    Objects Test Suite - Fields List Verifications
+ * @abstract    Objects Test Suite - Object Description Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -24,28 +24,35 @@ class O01DescriptionTest extends ObjectsCase {
         if (is_array($Data)) {
             $Data   =   new ArrayObject($Data);
         } 
-        
-        
-        var_dump($Data);
-        
         //====================================================================//
         //   Verify Response
         $this->VerifyResponse($Data);
         
     }
     
-//    public function testObjectsFromObjectsService()
-//    {
-//        //====================================================================//
-//        //   Execute Action From Splash Server to Module  
-//        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_OBJECTS, __METHOD__);
-//        
-//        //====================================================================//
-//        //   Verify Response
-//        $this->VerifyResponse($Data);
-//        
-//    }
-//    
+    /**
+     * @dataProvider ObjectTypesProvider
+     */
+    public function testFromObjectsService($ObjectType)
+    {
+        //====================================================================//
+        //   Execute Action From Splash Server to Module  
+        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__, [ "type" => $ObjectType]);
+        
+        //====================================================================//
+        //   Verify Response
+        $this->VerifyResponse($Data);
+        
+    }
+
+    public function testFromObjectsServiceErrors()
+    {
+        //====================================================================//
+        //      Request definition without Sending ObjectType  
+        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__);
+        
+    }
+    
     public function VerifyResponse($Data)
     {
         //====================================================================//
