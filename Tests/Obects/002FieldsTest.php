@@ -22,7 +22,7 @@ class O02FieldsTest extends ObjectsCase {
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService) 
         if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);
+            $Data   =   new ArrayObject($Data);            
         } 
         //====================================================================//
         //   Verify Response
@@ -66,13 +66,20 @@ class O02FieldsTest extends ObjectsCase {
         // All Fields Definitions are is right format
         //====================================================================//
         foreach ($Data as $Field) {
-            $this->VerifyField($Field);
+            $this->VerifyFieldRequired($Field);
+            $this->VerifyFieldOptional($Field);
+            $this->VerifyFieldAssociations($Field, $Data);
         }
 
     }
     
     
-    public function VerifyField($Field)
+    /**
+     * @abstract    Verify Main Field Informations are in right format
+     * 
+     * @param array $Field
+     */
+    public function VerifyFieldRequired($Field)
     {
         //====================================================================//
         // Verify Field Type Name Exists
@@ -107,38 +114,80 @@ class O02FieldsTest extends ObjectsCase {
         $this->assertArraySplashBool($Field ,   "write",                    "Field Write Flag");
         $this->assertArraySplashBool($Field ,   "read",                     "Field Read Flag");
         $this->assertArraySplashBool($Field ,   "inlist",                   "Field In List Flag");
-        
+    }
+    
+    /**
+     * @abstract    Verify Optional Field Informations are in right format
+     * 
+     * @param array $Field
+     */
+    public function VerifyFieldOptional($Field)
+    {
         //====================================================================//
-        // All Optional Informations are in right format
-                
-
+        // Field Description
         if (array_key_exists("desc",$Field)) {
             $this->assertArrayInternalType($Field , "desc",     "string",   "Field Description");
         }
             
-        if (array_key_exists("itemtype",$Field)) {
-            $this->assertArrayInternalType($Field , "itemtype",     "string",   "Field Schema URL");
-            $this->assertArrayInternalType($Field , "itemprop",     "string",   "Field Schema Property");
+        //====================================================================//
+        // Field MicroData Infos
+        if (array_key_exists("itemtype",$Field) && !empty($Field["itemtype"])) {
+            $this->assertArrayInternalType($Field , "itemtype",     "string",   "Field MicroData URL");
+            $this->assertArrayInternalType($Field , "itemprop",     "string",   "Field MicroData Property");
 //                $this->isExtUrl         ($Field["itemtype"], "itemtype");
-                $this->isArrayString    ($Field, "itemprop");
-//                $this->isValidMicroData($Field["itemtype"],$Field["itemprop"]);
-                
-            }
-            if (array_key_exists("tag",$Field)) {
-                $this->isArrayString    ($Field, "tag");
-            }
-            if (array_key_exists("format",$Field)) {
-                $this->isArrayString    ($Field, "format");
-            }
-            if (array_key_exists("notest",$Field)) {
-                $this->isArrayBool      ($Field, "notest");
-            }
-            if (array_key_exists("asso",$Field) && !empty($Field["asso"])) {
-                $this->isArray          ($Field["asso"], "asso");
-            }
+        }
         
+        //====================================================================//
+        // Field Tag
+        if (array_key_exists("tag",$Field) && !empty($Field["tag"])) {
+            $this->assertArrayInternalType($Field , "tag",          "string",   "Field Linking Tag");
+        }
+        if (array_key_exists("tag",$Field) && array_key_exists("itemtype",$Field) && !empty($Field["itemtype"])) {
+            $this->assertEquals(
+                    $Field["tag"], 
+                    md5( $Field["itemprop"] . IDSPLIT . $Field["itemtype"] ),     
+                    "Field Tag do not match with defined MicroData. Expected Format: md5('itemprop'@'itemptype') ");
+        }
+
+        //====================================================================//
+        // Field Format
+        if (array_key_exists("format",$Field)) {
+            $this->assertArrayInternalType($Field , "format",       "string",   "Field Format Description");
+        }
         
+        //====================================================================//
+        // Field No Test Flag
+        if (array_key_exists("notest",$Field)) {
+            $this->assertArraySplashBool($Field , "notest",                     "Field NoTest Flag");
+        }
         
-        return;
     }    
+    
+    public function VerifyFieldAssociations($Field, $Fields)
+    {
+        if (!array_key_exists("asso",$Field)) {
+            return;
+        }            
+        
+        //====================================================================//
+        // Field Associated Fields List
+        foreach ( $Field["asso"] as $FieldType) {
+            
+            //====================================================================//
+            // Check FieldType Name
+            $this->assertInternalType("string", $FieldType,   "Associated FieldType must be String Format");                
+
+            //====================================================================//
+            // Check FieldType Exists
+            $AssoField = Null; 
+            foreach ( $Fields as $Item) {
+                if ( $Item["id"] === $FieldType ) {
+                    $AssoField = $Item;
+                }
+            }
+            $this->assertNotEmpty($AssoField,   "Associated Field " . $FieldType . " isn't an existing Field Id String.");                
+        }
+        
+    }
+    
 }

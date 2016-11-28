@@ -171,10 +171,4 @@ class ObjectsCase extends BaseCase {
         return $Result;
     }
     
-    public function testDummy()
-    {
-        $this->assertTrue(True);
-    }
-
-    
 }

@@ -32,7 +32,7 @@ class FieldsFactory
     private static $FIELDS_DEFAULTS = array(
         //==============================================================================
         //      GENERAL FIELD PROPS
-        "required"  =>  Null,                   //  Field is Required to Create a New Object (Bool)
+        "required"  =>  False,                  //  Field is Required to Create a New Object (Bool)
         "type"      =>  Null,                   //  Field Fomat Type Name
         "id"        =>  Null,                   //  Field Object Unique Identifier
         "name"      =>  Null,                   //  Field Humanized Name (String)

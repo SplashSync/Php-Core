@@ -71,7 +71,6 @@ class BaseCase extends TestCase {
     public function assertIsSplashBool($Data , $Comment)
     {
         $Test = is_bool($Data) || ($Data === "0") || ($Data === "1");
-        
         $this->assertTrue( $Test , $Comment );
     }
     
@@ -85,7 +84,7 @@ class BaseCase extends TestCase {
     public function assertArraySplashBool($Data , $Key, $Comment)
     {
         $this->assertArrayHasKey(   $Key,   $Data,      $Comment . " => Key '" . $Key . "' not defined");
-        $this->assertNotEmpty(      $Data[$Key],        $Comment . " => Key '" . $Key . "' is Empty");
+//        $this->assertNotEmpty(      $Data[$Key],        $Comment . " => Key '" . $Key . "' is Empty");
         $this->assertIsSplashBool($Data[$Key],          $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
     }
 
@@ -364,6 +363,10 @@ class BaseCase extends TestCase {
     }
     
     
+    public function testDummy()
+    {
+        $this->assertTrue(True);
+    }
     
     
 }
