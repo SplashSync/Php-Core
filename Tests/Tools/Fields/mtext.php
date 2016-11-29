@@ -46,7 +46,7 @@ class mtext
                 return "Multi-Language Key must be a non empty String.";
             }            
             
-            if ( !empty($value) && ( !is_string($value) || !is_numeric($value) ) ) {
+            if ( !empty($value) && !is_string($value) && !is_numeric($value) ) {
                 return "Multi-Language Data is not a String.";
             }    
             

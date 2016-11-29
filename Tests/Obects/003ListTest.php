@@ -26,7 +26,7 @@ class O03ListTest extends ObjectsCase {
         } 
         //====================================================================//
         //   Verify Response
-        $this->VerifyResponse($Data);
+        $this->VerifyResponse($Data, $ObjectType);
         
     }
     
@@ -41,7 +41,7 @@ class O03ListTest extends ObjectsCase {
         
         //====================================================================//
         //   Verify Response
-        $this->VerifyResponse($Data);
+        $this->VerifyResponse($Data, $ObjectType);
         
     }
 
@@ -53,24 +53,24 @@ class O03ListTest extends ObjectsCase {
         
     }
     
-    public function VerifyResponse($Data)
+    public function VerifyResponse($Data, $ObjectType)
     {
         //====================================================================//
         //   Verify Response
         $this->assertNotEmpty( $Data                        , "Objects List is Empty");
         $this->assertInstanceOf( "ArrayObject" , $Data      , "Objects List is Not an ArrayObject");
         
-        $this->VerifyMetaInformations($Data);
+        $this->VerifyMetaInformations($Data, $ObjectType);
         $this->VerifyAvailableFields($Data, $ObjectType);
         
         
         
-        //====================================================================//
-        // CHECK ITEMS
-        foreach ($Data as $ObjectType) {
-            $this->assertNotEmpty( $ObjectType              , "Objects Type is Empty");
-            $this->assertInternalType("string", $ObjectType , "Objects Type is Not an String. (Given" . print_r($ObjectType , True) . ")");
-        }        
+//        //====================================================================//
+//        // CHECK ITEMS
+//        foreach ($Data as $ObjectType) {
+//            $this->assertNotEmpty( $ObjectType              , "Objects Type is Empty");
+//            $this->assertInternalType("string", $ObjectType , "Objects Type is Not an String. (Given" . print_r($ObjectType , True) . ")");
+//        }        
     }
     
 
@@ -83,31 +83,31 @@ class O03ListTest extends ObjectsCase {
             return False;
         }        
 
-        //====================================================================//
-        // Verify List Datas
-        $Object = reset($this->objectlist);
+//        //====================================================================//
+//        // Verify List Datas
+//        $Object = reset($Data);
         
-        if ( $this->isArray($Object,"Object in List") ) {
+        //====================================================================//
+        // Verify List Data Items
+        foreach ( $Data as $Item ) {
+            
             //====================================================================//
             // Verify Object Id field is available
-            $this->addResult("inlist", 
-                            array_key_exists("id",$Object), 
-                            False,
-                            array("%FieldName%" => "Object Identifier (id)" ));
+            $this->assertArrayHasKey( "id",     $Item,          $ObjectType . " List => Object Identifier (id) is not defined in List.");
+            $this->assertInternalType( "scalar" , $Item["id"],  $ObjectType . " List => Object Identifier (id) is not String convertible.");
+
              
             //====================================================================//
             // Verify all "inlist" fields are available
-            foreach ($this->Fields[$ObjectType] as $field) {
-                if ($field->inlist) {
-                    $this->addResult("inlist", 
-                                    array_key_exists($field->id,$Object), 
-                                    False,
-                                    array("%FieldName%" => $field->name ));
+            foreach ($Fields as $Field) {
+                if ( isset($Field['inlist']) && !empty($Field['inlist']) ) {
+                    $this->assertArrayHasKey( $Field["id"],     $Item,      $ObjectType . " List => Object Field (" . $Field["name"]. ") is marked as 'inlist' but not found in List.");
+                    $this->assertInternalType( "scalar" , $Item["id"],      $ObjectType . " List => Object Field (" . $Field["name"]. ") is not String convertible.");
                 }
             }
-        }          
-
-        
+            
+            
+        }
         
         return True;
     }
@@ -121,35 +121,20 @@ class O03ListTest extends ObjectsCase {
         
         //====================================================================//
         // Verify List Meta Format
-        $this->assertArrayInternalType($Meta,   "current",  "integer",       $ObjectType . " List => Current Object Count not an Integer");
-        $this->assertArrayInternalType($Meta,   "total",    "integer",       $ObjectType . " List => Total Object Count not an Integer");
-        
-        
-        //====================================================================//
-        // Store List For Next Steps
-        $this->objectlistMeta = $ObjectsList["meta"];
-        unset($ObjectsList["meta"]);
-        if ( is_a($ObjectsList, "ArrayObject") ) {
-            $this->objectlist = $ObjectsList->getArrayCopy();
-        } else {
-            $this->objectlist = $ObjectsList;
-        }
-        
+        $this->assertArrayInternalType($Meta,   "current",  "numeric",       $ObjectType . " List => Current Object Count not an Integer");
+        $this->assertArrayInternalType($Meta,   "total",    "numeric",       $ObjectType . " List => Total Object Count not an Integer");
         
         //====================================================================//
-        // Verify List Meta Is Not Empty...
-        if ($this->objectlistMeta["total"] == 0 ) {
-            $this->addResult("empty", !count($this->objectlist));
-            return $this->Complete();
-        } 
+        // Verify List Meta Informations
+        unset($Data["meta"]);
+        $this->assertEquals(
+                $Meta["current"],   
+                count($Data),    
+                $ObjectType . " List => Current Object Count is different from Given Meta['current'] count.");
     
     }
 
     
-
-        
-        
-
 
     
     

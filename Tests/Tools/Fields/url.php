@@ -41,10 +41,10 @@ class url {
         }
 
         //==============================================================================
-        //      Verify Data is an Email Address
-        if (!filter_var($Data, FILTER_VALIDATE_URL) !== False) {
-            return "Field Data is not a Valid Url";
-        }
+        //      Verify Data is a Valid URI
+//        if (!filter_var($Data, FILTER_VALIDATE_URL) !== False) {
+//            return "Field Data is not a Valid Url";
+//        }
 
         return True;
     }

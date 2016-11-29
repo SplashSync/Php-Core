@@ -199,11 +199,16 @@ class ObjectBase
      * 
      *  @param        string    $FieldName              Field Identifier / Name
      *  @param        string    $Object                 Name of private object to read (Default : "object")
+     *  @param        mixed     $Default                Default Value if non-existant
      *  
      *  @return       SplashObject
      */
-    protected function getSingleField($FieldName, $Object = "Object") {
-        $this->Out[$FieldName] = trim($this->{$Object}->$FieldName);
+    protected function getSingleField($FieldName, $Object = "Object", $Default = Null) {
+        if ( isset( $this->{$Object}->$FieldName ) ) {
+            $this->Out[$FieldName] = trim($this->{$Object}->$FieldName);
+        } else {
+            $this->Out[$FieldName] = $Default;
+        }
         return $this;
     }
     

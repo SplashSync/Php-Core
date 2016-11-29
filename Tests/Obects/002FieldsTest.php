@@ -165,10 +165,9 @@ class O02FieldsTest extends ObjectsCase {
     
     public function VerifyFieldAssociations($Field, $Fields)
     {
-        if (!array_key_exists("asso",$Field)) {
+        if (!array_key_exists("asso",$Field) || empty($Field["asso"]) ) {
             return;
         }            
-        
         //====================================================================//
         // Field Associated Fields List
         foreach ( $Field["asso"] as $FieldType) {

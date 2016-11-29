@@ -16,47 +16,80 @@ if ( !defined("SPLASH_DEBUG") ) {
  */
 class ObjectsCase extends BaseCase {
 
+    /**
+     * Fields Classes Name Prefix
+     * @var string
+     */
     const       CLASS_PREFIX        =   'Splash\Tests\Tools\Fields\\';
     
     /**
-     *      @abstract   Perform generic Server Side Action
-     *  
-     *      @return     mixed            
+     * Formater Fake Field Generator Options
+     * @var array
      */
-    protected function GenericAction($Service, $Action, $Description, array $Parameters = array(True))   
-    {
+    private $settings = array(
         
-        //====================================================================//
-        //   Prepare Request Data
-        Splash::Ws()->AddTask( $Action, $Parameters , $Description );
-        Splash::Ws()->Call_Init( $Service );
-        Splash::Ws()->Call_AddTasks();
+            //==============================================================================
+            //  List generation
+            'ListItems'                 =>  2,               // Number of Items to Add in Lists
+            //
+            //==============================================================================
+            //  Currency Fields
+            "Currency"                  =>  "EUR",          // Default Currency
+            
+            //==============================================================================
+            //  Price Fields
+            "Vat"                       =>  0,              // Default Vat Rate
+            
+            //==============================================================================
+            //  Multilanguage Fields
+            "Langs"                     =>  array(          // Available Languages for Multilang Fields
+                "en_US", 
+                "fr_FR",
+                "fr_BE",
+                "fr_CA",
+                ),
+            
+            //==============================================================================
+            //  Country Fields
+            "Country"                    =>  array(          // Defaults State Iso Codes
+                "US",
+                "FR",
+                "BE",
+                "CA",
+                ),
+            
+            //==============================================================================
+            //  State Fields
+            "States"                    =>  array(          // Defaults State Iso Codes
+                "CA",
+                "FL"
+                ),   
+           
+            //==============================================================================
+            //  Files Fields
+            "Files"                    =>  array(          // Defaults Raw Files
+                "fake-file1.pdf",
+                "fake-file2.pdf",
+                "fake-file3.pdf",
+                "fake-file4.pdf",
+                ),   
+            
+            //==============================================================================
+            //  Images Fields
+            "Images"                    =>  array(          // Defaults Image Files
+                "fake-image1.jpg",
+                "fake-image2.jpg",
+                "fake-image3.jpg",
+                "fake-image4.jpg",
+                ),   
+            
+            //==============================================================================
+            //  Objects Id Fields
+            //  Default is An Empty List To be completed by User Before Generation
+            "Objects"                   =>  array(),
         
-        //====================================================================//
-        //   Encode Request Data
-        $Request =  Splash::Ws()->Pack( Splash::Ws()->getOutputBuffer() );
+    );
         
-        //====================================================================//
-        //   Execute Action From Splash Server to Module  
-        $Response   =   SplashServer::$Service(Splash::Configuration()->WsIdentifier, $Request);
-        
-        //====================================================================//
-        //   Check Response 
-        $Data       =   $this->CheckResponse( $Response ); 
-//var_dump($Data);        
-        
-        //====================================================================//
-        //   Extract Task Result 
-        if (is_a($Data->tasks, "ArrayObject")) {
-            $Task = array_shift($Data->tasks->getArrayCopy());
-        } elseif (is_array($Data->tasks)) {
-            $Task = array_shift($Data->tasks);
-        }
-//var_dump($Task);        
-
-        return $Task["data"];
-    }
-    
     //==============================================================================
     //      VALIDATION FUNCTIONS
     //==============================================================================       
@@ -156,6 +189,129 @@ class ObjectsCase extends BaseCase {
         return False;
     }     
     
+   /**
+    *   @abstract   Verify Data a valid Raw field data
+    *   @param      mixed   $Data       Object Field Data  
+    *   @param      string  $Type       Object Field Type 
+    *   @return     int     $result     0 if KO, 1 if OK
+    */
+    public static function isValidData($Data,$Type) 
+    {
+        //====================================================================//
+        // Verify Field Type is Valid
+        $ClassName = self::isValidType($Type);
+        if ( $ClassName == False ) {
+            return False;
+        }
+        
+        //====================================================================//
+        // Verify Single Field Data Type is not Null
+        if (is_null($Data)) {
+            return TRUE;
+        }
+
+        //====================================================================//
+        // Verify Single Field Data Type is Valid
+        return $ClassName::validate($Data);
+    }        
+    
+    
+   /**
+    *   @abstract   Verify Data a valid field data
+    *   @param      mixed   $Data       Object Field Data  
+    *   @param      string  $Id         Object Field Identifier 
+    *   @param      string  $Type       Object Field Type 
+    *   @return     int     $result     0 if KO, 1 if OK
+    */
+    public function isValidFieldData($Data,$Id,$Type) 
+    {  
+        //====================================================================//
+        // Safety Check 
+        $this->assertNotEmpty($Data ,   "Field Data Block is Empty");
+        $this->assertNotEmpty($Id   ,   "Field Id is Empty");
+        $this->assertNotEmpty($Type ,   "Field Type Name is Empty");
+        
+        //====================================================================//
+        // Detects Lists Fields
+        $List       = self::isListField( $Id );
+        if ( $List ) {
+            //====================================================================//
+            // Verify List Field Data
+            return $this->isValidListFieldData($Data,$Id,$Type);
+        }
+        
+        //====================================================================//
+        // Verify Field is in Data Response
+        $this->assertArrayHasKey(   $Id,   $Data,      "Field '" . $Id . "' is not defined in returned Data Block.");
+        
+        //====================================================================//
+        // Verify Single Field Data Type is not Null
+        if ( is_null($Data[$Id]) ) {
+            return;
+        }        
+        
+        //====================================================================//
+        // Verify Raw Field Data
+        $this->assertTrue( 
+                self::isValidData($Data[$Id],$Type),    
+                $Id . " => Field Raw Data is not a valid " . $Type .  ". (" . print_r($Data[$Id], True) . ")"
+            );
+    }     
+        
+    /**
+    *   @abstract   Verify Data a valid list field data
+    *   @param      mixed   $Data       Object Field Data  
+    *   @param      string  $Id         Object Field Identifier 
+    *   @param      string  $Type       Object Field Type 
+    *   @return     int     $result     0 if KO, 1 if OK
+    */
+    public function isValidListFieldData($Data,$Id,$Type) 
+    {  
+        $ListId     = self::isListField ( $Id );
+        $ListType   = self::isListField ( $Type );
+        if ( !$ListId ) {
+            return FALSE;
+        }
+        
+        //====================================================================//
+        // Verify List is in Data Response
+        $this->assertArrayHasKey(   $ListId["listname"],   $Data,      "List '" . $ListId["listname"] . "' is not defined in returned Data Block.");
+        
+        //====================================================================//
+        // Verify Field Type is List Type Identifier
+        $this->assertEquals( $ListType["listname"], SPL_T_LIST,   
+                "List Field Type Must match Format 'type'@list. (Given " . print_r($Type, True) . ")"
+            );
+        
+        //====================================================================//
+        // Verify Field Type is Valid Splahs Field type
+        $this->assertNotEmpty( 
+                self::isValidType($ListType["fieldname"]),    
+                "List Field Type is not a valid Splash Field Type. (Given " . print_r($ListType["fieldname"], True) . ")"
+            );
+        
+        $ListData = $Data[$ListId["listname"]]; 
+        //====================================================================//
+        // Verify if Field Data is Null 
+        if ( empty($ListData) ) {
+            return TRUE;
+        }
+        
+        //====================================================================//
+        // Verify if Field Data is an Array
+        $this->assertTrue(
+                is_array($ListData) || is_a($ListData, "ArrayObject"),
+                "List Field '" . $ListId["listname"] . "' is not of Array Type. (Given " . get_class($ListData). ")"
+            );
+        
+        //====================================================================//
+        // Verify all List Data Are Valid 
+        foreach ($ListData as $Value) {
+            $this->isValidFieldData($Value, $ListId["fieldname"], $Type);
+        }
+        return True;    
+    }    
+    
     //====================================================================//
     //   Data Provider Functions  
     //====================================================================//
@@ -170,5 +326,695 @@ class ObjectsCase extends BaseCase {
         
         return $Result;
     }
+
+    public function ObjectFieldsProvider()
+    {
+        $Result = array();
+        
+        //====================================================================//
+        //   For Each Object Type  
+        foreach (Splash::Objects() as $ObjectType) {
+            //====================================================================//
+            //   For Each Field Type  
+            foreach (Splash::Object($ObjectType)->Fields() as $Field) {                
+                $Result[] = array($ObjectType,$Field);            
+            }
+        }
+        
+        return $Result;
+    }
+    
+    //==============================================================================
+    //      FAKE DATA GENERATORS  
+    //==============================================================================   
+    
+    /**
+     *   @abstract   Create Fake/Dummy Object Data
+     * 
+     *   @param      array   $FieldsList     Object Field List
+     *  
+     *   @return     int     $result     0 if KO, 1 if OK
+     */
+    public function fakeObjectData($FieldsList) 
+    {
+        //====================================================================//
+        // Create Dummy Data Array
+        $Out = array();
+        if (empty($FieldsList)) {
+            return $Out;
+        }
+        
+        //====================================================================//
+        // Create Dummy Fields Data
+        foreach ($FieldsList as $Field) {
+            
+            //====================================================================//
+            // Generate Single Fields Dummy Data (is Not a List Field)
+            if (!Field::isListField($Field->id)) {
+                $Out[$Field->id] = self::fakeFieldData($Field->type);
+                continue;
+            }
+            
+            //====================================================================//
+            // Generate Dummy List  Data
+            $List       =   Field::isListField($Field->id);
+            $ListName   =   $List["listname"];
+            $FieldName  =   $List["fieldname"];
+            $ListData   =   self::fakeListData($Field);
+            //====================================================================//
+            // Create List 
+            if ( !array_key_exists($ListName, $Out)) {
+                $Out[$ListName] = array();
+            }
+            //====================================================================//
+            // Parse Data in List 
+            foreach ($ListData as $Key => $Data) {
+                if ( !array_key_exists($Key, $Out[$ListName]) ) {
+                    $Out[$ListName][$Key] = array();
+                }
+                $Out[$ListName][$Key][$FieldName] = $Data[$FieldName];  
+            }
+
+        }
+        return $Out;
+    }  
+    
+    /**
+     *   @abstract   Create Fake/Dummy Object List Data
+     * 
+     *   @param      array   $Field          Object Field Definition
+     *  
+     *   @return     int     $result     0 if KO, 1 if OK
+     */
+    public function fakeListData($Field) 
+    {
+        //====================================================================//
+        // Read Number of Items to Put in Lists
+        $NbItems =  $this->settings["ListItems"]?$this->settings["ListItems"]:2;
+        //====================================================================//
+        // Parse List Identifiers
+        $List   =   Field::isListField($Field->id);
+        $Type   =   Field::isListField($Field->type);
+        
+        //====================================================================//
+        // Create Dummy List Data
+        $Out = array();
+        
+        //====================================================================//
+        // Create Dummy Fields Data
+        for ($i = 0; $i < $NbItems; $i++)
+        {
+            $Out[][$List["fieldname"]] = self::fakeFieldData($Type["fieldname"]);  
+        }
+        return $Out;
+    }        
+    
+    /**
+     *   @abstract   Create Fake Field data
+     * 
+     *   @param      string  $Type       Object Field Type 
+     * 
+     *   @return     int     $result     0 if KO, 1 if OK
+     */
+    public function fakeFieldData($Type) 
+    {  
+        //====================================================================//
+        // Safety Check 
+        if (empty($Type))   {   
+            return False;
+        }
+        //====================================================================//
+        // Verify Field Type is Valid
+        $ClassName = Field::isValidType($Type);
+        if ( $ClassName == False ) {
+            return False;
+        }       
+        //====================================================================//
+        // Detects Id Fields    => Cannot Generate Fake for Id Fields Here... 
+        if ( ($id = Field::isIdField($Type)) ) {
+            return $ClassName::fake($id["ObjectType"], $this->getSettings());
+        }
+        
+        //====================================================================//
+        // Generate Single Field Data Type is Valid
+        return $ClassName::fake($this->getSettings());        
+    } 
+    
+    //==============================================================================
+    //      FIELDS LIST FUNCTIONS 
+    //==============================================================================   
+    
+    /**
+     *   @abstract   Filter a Fields List to keap only given Fields Ids
+     * 
+     *   @param      array      $FieldsList     Object Field List
+     *   @param      array      $Filters        Array of Fields Ids
+     * 
+     *   @return     array
+     */
+    public static function filterFieldList($FieldsList, $Filters = array()) 
+    {  
+        $Result =   array();
+        
+        foreach ($FieldsList as $Field) {
+            if (in_array($Field->id, $Filters)) {
+                $Result[] = $Field;
+            } 
+        }
+        
+        return $Result;        
+    } 
+    
+    /**
+     *   @abstract   Find a Field Definition in List by Id
+     * 
+     *   @param      array      $FieldsList     Object Field List
+     *   @param      array      $FieldId        Field Id
+     * 
+     *   @return     array
+     */
+    public static function findField($FieldsList, $FieldId ) 
+    {  
+        $Fields = self::filterFieldList($FieldsList, $FieldId);
+        
+        if (count($Fields) != 1 ){
+            return Null;
+        } 
+                
+        return array_shift($Fields);        
+    } 
+
+    /**
+     *   @abstract   Redure a Fields List to an Array of Field Ids
+     * 
+     *   @param      array      $FieldsList     Object Field List
+     *   @param      bool       $isRead         Filter non Readable Fields  
+     *   @param      bool       $isWrite        Filter non Writable Fields  
+     * 
+     *   @return     array
+     */
+    public static function reduceFieldList($FieldsList, $isRead = False, $isWrite = False) 
+    {  
+        $Result =   array();
+       
+        foreach ($FieldsList as $Field) {
+            
+            //==============================================================================
+            //      Filter Non-Readable Fields
+            if ( $isRead && !$Field->read ) {
+                continue;
+            }
+            //==============================================================================
+            //      Filter Non-Writable Fields
+            if ( $isWrite && !$Field->write ) {
+                continue;
+            }
+            $Result[] = $Field->id;
+        }
+            
+        return $Result;        
+    } 
+    
+    //==============================================================================
+    //      OBJECTS DATA BLOCKS FUNCTIONS 
+    //==============================================================================   
+        
+    /**
+     *   @abstract   Extract Raw Field Data from an Object Data Block
+     * 
+     *   @param      array      $DataBlock          Object Data Block
+     *   @param      string      $Filter            Single Fields Id
+     * 
+     *   @return     array
+     */
+    public static function extractRawData($DataBlock, $Filter) 
+    {
+        $FilteredData   =   self::filterData($DataBlock , array($Filter) );
+        
+        //====================================================================//
+        // Explode List Field Id
+        $List       =   Field::isListField($Filter);
+        
+        //====================================================================//
+        // Simple Single Field
+        if (!$List) {
+            if(isset($FilteredData[$Filter])){
+                return $FilteredData[$Filter];
+            }
+            
+        //====================================================================//
+        // List Field
+        } else {
+            //====================================================================//
+            // Check List Exists
+            if(!array_key_exists($List["listname"], $FilteredData)){
+                return Null;
+            }
+            
+            //====================================================================//
+            // Parse Raw List Data
+            $Result = array();
+            foreach ($FilteredData[$List["listname"]] as $Key => $ListItem) {
+                $Result[$Key]   =   $ListItem[$List["fieldname"]];
+            }
+            return $Result;
+        }
+        
+        //====================================================================//
+        // Field Not Received or is Empty 
+        return Null;
+    }   
+    
+    /**
+     *   @abstract   Filter a Object Data Block to keap only given Fields
+     * 
+     *   @param      array      $DataBlock      Object Data Block
+     *   @param      array      $Filters        Array of Fields Ids
+     * 
+     *   @return     array
+     */
+    public static function filterData($DataBlock, $Filters = array()) 
+    {  
+        $Result         =   array();
+        $ListFilters    =   array();
+        
+        //====================================================================//
+        // Process All Single Fields Ids & Store Sorted List Fields Ids
+        foreach ($Filters as $FieldId) {
+            
+            //====================================================================//
+            // Explode List Field Id
+            $List       =   Field::isListField($FieldId);
+            //====================================================================//
+            // Single Field Data Type
+            if ( ( !$List ) && ( array_key_exists($FieldId, $DataBlock) ) )  {
+                $Result[$FieldId] = $DataBlock[$FieldId];
+            } elseif ( !$List ) {
+                continue;
+            }
+            //====================================================================//
+            // List Field Data Type
+            $ListName   =   $List["listname"];
+            $FieldName  =   $List["fieldname"];
+            //====================================================================//
+            // Check List Data are Present in Block
+            if ( !array_key_exists($ListName, $DataBlock) ) {
+                continue;
+            }            
+            //====================================================================//
+            // Create List 
+            if ( !array_key_exists($ListName, $ListFilters)) {
+                $ListFilters[$ListName] = array();
+            }
+            $ListFilters[$ListName][] = $FieldName;  
+        }
+        
+        //====================================================================//
+        // Process All List Fields Ids Filters
+        foreach ($ListFilters as $ListName => $ListFilters) {
+            $Result[$ListName] = self::filterListData($DataBlock[$ListName], $ListFilters);
+        }
+        
+        return $Result;        
+    }     
+    
+    /**
+     *   @abstract   Filter a Object List Data Block to keap only given Fields
+     * 
+     *   @param      array      $ListBlock  Object Data Block
+     *   @param      array      $Filters    Array of Fields Ids
+     * 
+     *   @return     array
+     */
+    public static function filterListData($ListBlock, $Filters = array()) 
+    {  
+        $Result =   array();
+        
+        foreach ($ListBlock as $ItemBlock) {
+            
+            $FilteredItems = array();
+            
+            //====================================================================//
+            // Search for Field in Item Block
+            if ( !is_array($ItemBlock) && !is_a($ItemBlock, "ArrayObject")){
+                dump($ListBlock);
+                dump($ItemBlock);
+                
+                continue;
+            }
+            
+            //====================================================================//
+            // Search for Field in Item Block
+            foreach ($Filters as $FieldId) {
+                if ( array_key_exists($FieldId, $ItemBlock) )  {
+                    $FilteredItems[$FieldId] = $ItemBlock[$FieldId];
+                }
+            }
+            
+            $Result[] = $FilteredItems;
+        }              
+        
+        return $Result;        
+    }       
+    
+    /**
+     *  @abstract   Normalize An Object Data Block (ie: before Compare)
+     *   
+     *  @param      mixed       $array      Input Array     
+     * 
+     *  @return     array                   Sorted Array
+     */    
+    public static function Normalize( &$In ) {
+       
+        //==============================================================================
+        //      Convert ArrayObjects To Simple Array 
+        if (is_a($In, "ArrayObject")) {
+            $In = $In->getArrayCopy();
+            //==============================================================================
+            // Normalize Contents 
+            self::Normalize($In);
+            
+        //==============================================================================
+        // Normalize Array Contents 
+        }else if (is_array($In)) {
+            foreach ($In as &$value) {
+                self::Normalize($value);
+            }
+            
+        //==============================================================================
+        // Normalize Bool as Strings
+        } else if (is_bool($In)) {
+            $In = $In?"1":"0";
+            
+        //==============================================================================
+        // Normalize Numbers as Strings
+        } else if (is_numeric($In)) {
+            $In = strval($In);
+        }
+        
+        return $In;
+    } 
+    
+    /**
+    *   @abstract   kSort of An Object Data Block (ie: before Compare)
+    * 
+    *   @param      array       $array      Input Array     
+    * 
+    *   @return     array                   Sorted Array
+    */    
+    public static function Sort( &$In ) {
+       
+        if ( !is_array($In) )  {
+            return $In;
+        }
+            
+        //==============================================================================
+        // Sort All Sub-Contents 
+        foreach ($In as &$value) {
+            if (is_array($value)) {
+                self::Sort($value);
+            }
+        }
+        return ksort($In);
+    }       
+    
+    /**
+     * @abstract    Check Two Data Blocks Have Similar Data 
+     * 
+     * @param   array   $Block1             Raw Data to Compare
+     * @param   array   $Block2             Raw Data to Compare
+     * @param   object  $TestController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
+     * @param   string  $Comment            Comment on this Test
+     * 
+     * @return bool 
+     */
+    public function compareRawData($Block1, $Block2, $TestController = Null, $Comment = Null)
+    {
+        //====================================================================//
+        // Filter ArrayObjects    
+        if (is_a($Block1, "ArrayObject")) {
+            $Block1 = $Block1->getArrayCopy();
+        } 
+        if (is_a($Block2, "ArrayObject")) {
+            $Block2 = $Block2->getArrayCopy();
+        } 
+        
+        //====================================================================//
+        // Remove Id Data if Present on Block
+        if (is_array($Block1)) {
+            unset($Block1['id']);
+        }
+        if (is_array($Block2)) {
+            unset($Block2['id']);
+        }
+        
+        //====================================================================//
+        // Normalize Data Blocks
+        $this->Normalize($Block1);
+        $this->Normalize($Block2);
+        //====================================================================//
+        // If Test Controller Given     
+        if ($TestController) {
+            $TestController->assertEquals($Block1,$Block2,$Comment);
+            return True;
+        } 
+            
+        //====================================================================//
+        // If NO Test Controller Given => Do Raw Array Compare
+        //====================================================================//
+        
+        //====================================================================//
+        // Sort Data Blocks
+        $this->Sort($Block1);
+        $this->Sort($Block2);
+
+        $Serialized1 = serialize($Block1);
+        $Serialized2 = serialize($Block2);
+        
+        return ($Serialized1 === $Serialized2);
+    }      
+    
+    /**
+     * @abstract    Check Two Object Data Blocks using Field's Compare functions 
+     * 
+     * @param   array   $Fields             Array of OpenObject Fields Definitions
+     * @param   array   $Block1             Raw Data to Compare
+     * @param   array   $Block2             Raw Data to Compare
+     * @param   object  $TestController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
+     * @param   string  $Comment            Comment on this Test
+     * 
+     * @return bool 
+     */
+    public function compareDataBlocks($Fields, $Block1, $Block2, $TestController = Null, $Comment = Null)
+    {
+
+        //====================================================================//
+        // For Each Object Fields
+        foreach ($Fields as $Field) {
+
+            //====================================================================//
+            // Extract Field Data
+            $Data1        =  $this->filterData($Block1, array($Field->id));    
+            $Data2        =  $this->filterData($Block2, array($Field->id));   
+
+//dump($Data1);            
+//dump($Data2);            
+            //====================================================================//
+            // Compare List Data
+            $FieldType      =  Field::isListField($Field->type);
+            if ($FieldType) {
+                $Result = $this->compareListField($FieldType["fieldname"], $Field->id, $Data1, $Data2, $TestController, $Comment);
+            }    
+            //====================================================================//
+            // Compare Single Fields                   
+            else {
+                $Result = $this->compareField($Field->type, $Data1[$Field->id], $Data2[$Field->id], $TestController, $Comment);
+//                $Result = $this->compareField($Field->type, $Data1, $Data2, $TestController, $Comment);
+            }
+                
+            //====================================================================//
+            // If Compare Failled => Return Fail Code                   
+            if( $Result !== True ){
+                return $Result;
+            } 
+            
+        }
+        
+        return True;
+    }  
+    
+    /**
+     * @abstract    Check Two Object Data Blocks using Field's Compare functions 
+     * 
+     * @param   string  $FieldType          Field Type Name
+     * @param   array   $Block1             Raw Data to Compare
+     * @param   array   $Block2             Raw Data to Compare
+     * @param   object  $TestController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
+     * @param   string  $Comment            Comment on this Test
+     * 
+     * @return string   error / success translator string for debugger 
+     */
+    private function compareField($FieldType, $Block1, $Block2, $TestController = Null, $Comment = Null)
+    {
+//dump($FieldType);        
+//dump($Block1);        
+        
+        //====================================================================//
+        // Build Full ClassName
+        if ( Field::decodeIdField($FieldType) ) {
+            $ClassName      = "OpenObject\CoreBundle\Document\FieldsType\objectid";
+        } else {
+            $ClassName      = Field::CLASS_PREFIX . $FieldType;
+        }
+        
+        //====================================================================//
+        // Detect if Class has its own Compare Function
+        $UseFieldComparator = False;
+        if (class_exists( $ClassName )) {
+            $FieldClass = new \ReflectionClass($ClassName);
+            $FieldMethod = $FieldClass->getMethod("compare");
+            if ($FieldMethod->class == $ClassName) {
+                $UseFieldComparator = True;
+            }
+        }     
+
+        //====================================================================//
+        // IF NO SPECIAL COMPARATOR DEFINED => COMPARE SERIALIZED OBJECT
+        //====================================================================//
+        if ( !$UseFieldComparator || !method_exists( $ClassName , "compare" )) {
+            
+            //====================================================================//
+            // Compare Raw Data Blocks
+            if ( !$this->compareRawData($Block1, $Block2, $TestController, $Comment) ) {
+                return "main.compare.result";
+            }
+            
+            return True;
+        }
+            
+        //====================================================================//
+        // IF FIELD TYPE EXIST AND DEFINE A SPECIAL COMPARATOR
+        //====================================================================//
+        
+        //====================================================================//
+        // If PhpUnit Test Controller Given
+        if ($TestController) {
+
+            //====================================================================//
+            // Validate Data Using Field Type Validator
+            $TestController->assertTrue(
+                    $ClassName::validate($Block1), 
+                    "Source Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block1,1) . ")");
+            $TestController->assertTrue(
+                    $ClassName::validate($Block2), 
+                    "Target Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block2,1) . ")");
+            
+            //====================================================================//
+            // Compare Data Using Field Type Comparator
+            if ( !$ClassName::compare($Block1,$Block2) ) {
+                dump($Block1);
+                dump($Block2);
+            } 
+            $TestController->assertTrue(
+                    $ClassName::compare($Block1,$Block2), 
+                    "Source and Target Data are not similar " . $FieldType . " Field Data Block");
+
+        } else {
+
+            //====================================================================//
+            // Validate Data Using Field Type Validator
+            if ( $ClassName::validate($Block1) !== True ) {
+                return "main.compare.valid";
+            } elseif ( $ClassName::validate($Block2) !== True ) {
+                return "main.compare.valid";
+            //====================================================================//
+            // Compare Data Using Field Type Comparator
+            } elseif ( $ClassName::compare($Block1,$Block2) ) {
+                return "main.compare.result";  
+            }            
+            
+        }
+            
+        return True;        
+    }
+    
+    /**
+     * @abstract    Check Two List Data Blocks using Field's Compare functions 
+     * 
+     * @param   string  $FieldType          Field Type Name
+     * @param   string  $FieldId            Field Identifier
+     * @param   array   $Block1             Raw Data to Compare
+     * @param   array   $Block2             Raw Data to Compare
+     * @param   object  $TestController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
+     * @param   string  $Comment            Comment on this Test
+     * 
+     * @return string   error / success translator string for debugger 
+     */
+    private function compareListField($FieldType, $FieldId, $Block1, $Block2, $TestController = Null, $Comment = Null)
+    {
+        //====================================================================//
+        // Explode List Field Id
+        $FieldIdArray      =  Field::isListField($FieldId);
+        if ($TestController) {
+            $TestController->assertNotEmpty($FieldIdArray);
+        } elseif ( !$FieldIdArray ) {
+           return "main.compare.params";            
+        }
+        $FieldName  = $FieldIdArray["fieldname"];
+        $ListName   = $FieldIdArray["listname"];
+
+        //====================================================================//
+        // Extract List Data 
+        $List1 = $Block1[$ListName];
+        $List2 = $Block2[$ListName];
+        
+        //====================================================================//
+        // Verify Data Count is similar 
+        if ($TestController) {
+            $TestController->assertEquals(
+                    count($List1), 
+                    count($List2), 
+                    "Source and Target List Data have diffrent number of Items");
+        } elseif ( count($List1) != count($List2) ) {
+           return "main.compare.params";            
+        }
+
+        //====================================================================//
+        // Normalize Data Blocks
+        $this->Normalize($List1);
+        $this->Normalize($List2);
+
+        while ( !empty ($List1) )
+        {
+            //====================================================================//
+            // Extract Next Item
+            $Item1  =   array_shift($List1); 
+            $Item2  =   array_shift($List2);
+
+            //====================================================================//
+            // Verify List field is Available 
+            if ($TestController) {
+                $TestController->assertArrayHasKey($FieldName, $Item1, 
+                        "Field " . $FieldType . " not found in Source List Data ");
+                $TestController->assertArrayHasKey($FieldName, $Item2, 
+                        "Field " . $FieldType . " not found in Target List Data ");
+            } else if ( !array_key_exists($FieldName, $Item1) ) {
+                return "main.compare.result";  
+            } elseif ( !array_key_exists($FieldName, $Item2) ) {
+                return "main.compare.result";  
+            }
+            
+            //====================================================================//
+            // Compare Items
+            $Result = $this->compareField($FieldType, $Item1[$FieldName], $Item2[$FieldName], $TestController, $Comment);
+            if ( $Result !== True ) {
+                return $Result;
+            }
+        }   
+        
+        return True;
+    }
+    
+
     
 }

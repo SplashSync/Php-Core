@@ -35,7 +35,7 @@ class int
         
         //==============================================================================
         //      Verify Data is an Integer 
-        if ( !is_numeric($Data) || !is_integer($Data) ) {
+        if ( ($Data !== "0") && !is_integer($Data) ) {
             return "Field Data is not an Integer.";
         }
         

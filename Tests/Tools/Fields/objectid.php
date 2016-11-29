@@ -40,7 +40,8 @@ class objectid
         
         //==============================================================================
         //      Verify Data is an Id Field 
-        if (self::isIdField($Data) ) {    
+        $list = explode ( IDSPLIT , $Data );
+        if (is_array($list) && (count($list)==2) ) {
             return True;
         }
         
