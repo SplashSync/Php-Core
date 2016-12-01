@@ -20,6 +20,7 @@
 namespace Splash\Client;
 
 use Splash\Core\SplashCore;
+use ArrayObject;
 
 //====================================================================//
 //   INCLUDES 
@@ -39,7 +40,12 @@ use Splash\Core\SplashCore;
 
 class Splash extends SplashCore 
 {
-  
+    /**
+     * @abstract    list of all Commits done inside this current session
+     * @var         array
+     */
+    public static $Commited = array();
+    
 //--------------------------------------------------------------------//
 //--------------------------------------------------------------------//
 //----  PING WEBSERVICE FUNCTIONS                                 ----//
@@ -159,6 +165,19 @@ class Splash extends SplashCore
         }
         
         //====================================================================//
+        // Initiate Tasks parameters array 
+        $params                 = new ArrayObject(array(),  ArrayObject::ARRAY_AS_PROPS);
+        $params->type           = $ObjectType;                              // Type of the Object
+        $params->id             = $local;                                   // Id of Modified object
+        $params->action         = $action;                                  // Action Type On this Object 
+        $params->user           = $user;                                    // Operation User Name for Historics 
+        $params->comment        = $comment;                                 // Operation Comment for Historics 
+
+        //====================================================================//
+        // Add This Commit to Session Logs
+        self::$Commited[] = $params;
+        
+        //====================================================================//
         // Verify this Object is Locked ==> No Action on this Node
         //====================================================================//
         if ( is_array($local) || is_a($local, "ArrayObject") ) {
@@ -179,15 +198,6 @@ class Splash extends SplashCore
             return True;
         }        
         
-        //====================================================================//
-        // Initiate Tasks parameters array 
-        $params                 = new ArrayObject(array(),  ArrayObject::ARRAY_AS_PROPS);
-        $params->type           = $ObjectType;                              // Type of the Object
-        $params->id             = $local;                                   // Id of Modified object
-        $params->action         = $action;                                  // Action Type On this Object 
-        $params->user           = $user;                                    // Operation User Name for Historics 
-        $params->comment        = $comment;                                 // Operation Comment for Historics 
-
         //====================================================================//
         // Add Task to Ws Task List
         Splash::Ws()->AddTask(SPL_F_COMMIT, $params, Splash::Trans("MsgSchRemoteCommit",$action,$ObjectType,count($local)) );

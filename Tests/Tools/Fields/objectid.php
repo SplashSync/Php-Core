@@ -2,6 +2,8 @@
 
 namespace Splash\Tests\Tools\Fields;
 
+use Splash\Client\Splash;
+
 /**
  * @abstract    Object ID Field : price definition Array 
  */
@@ -62,22 +64,43 @@ class objectid
      */
     static public function fake($ObjectType, $Settings)
     {
+        
         //====================================================================//
-        // Verify Enough Parameters to Generate an Object Id
-        if ( empty($ObjectType) 
-                || !array_key_exists($ObjectType,$Settings["Objects"]) 
-                || empty($Settings["Objects"][$ObjectType]) ) {
-            return Null;
-        } 
-        $ObjectsList    =   $Settings["Objects"][$ObjectType];
+        // Get Object List
+        $ObjectsList    =   Splash::Object($ObjectType)->ObjectsList();
+        
+        if( isset($ObjectsList["meta"]) ) {
+            unset($ObjectsList["meta"]);
+        }
         
         //====================================================================//
         // Select an Object in Given List
-        $index          = (int) mt_rand(0,count($ObjectsList) - 1);
+        $Index          = (int) mt_rand(0,count($ObjectsList) - 1);
+        $Item           = $ObjectsList[$Index];
         
-        //====================================================================//
-        // Generate Object Id String
-        return self::encodeIdField($ObjectsList[$index],$ObjectType);
+        if ( isset($Item["id"]) && !empty($Item["id"])) {
+            //====================================================================//
+            // Generate Object Id String
+            return self::encodeIdField($Item["id"],$ObjectType);
+        } 
+        return Null;        
+                
+//        //====================================================================//
+//        // Verify Enough Parameters to Generate an Object Id
+//        if ( empty($ObjectType) 
+//                || !array_key_exists($ObjectType,$Settings["Objects"]) 
+//                || empty($Settings["Objects"][$ObjectType]) ) {
+//            return Null;
+//        } 
+//        $ObjectsList    =   $Settings["Objects"][$ObjectType];
+//        
+//        //====================================================================//
+//        // Select an Object in Given List
+//        $index          = (int) mt_rand(0,count($ObjectsList) - 1);
+//        
+//        //====================================================================//
+//        // Generate Object Id String
+//        return self::encodeIdField($ObjectsList[$index],$ObjectType);
     }     
     
     //==============================================================================
@@ -109,6 +132,52 @@ class objectid
         }
         return False;
     }     
+    
+    //====================================================================//
+    //  OBJECTID FIELDS MANAGEMENT
+    //====================================================================//
+
+    /**
+     *      @abstract   Encode an Object Identifier Field
+     * 
+     *      @param      string       $ObjectId             Object Id
+     *      @param      string       $ObjectType           Object Type Name
+     * 
+     *      @return     string
+     */
+    public static function encodeIdField($ObjectId,$ObjectType)
+    {
+        //====================================================================//
+        // Safety Checks
+        if (empty($ObjectType))             {   return Null;     }
+        if (empty($ObjectId))               {   return Null;     }
+        
+        //====================================================================//
+        // Create & Return Field Id Data String        
+        return $ObjectId  . IDSPLIT . $ObjectType;
+    }  
+    
+    /**
+     *      @abstract   Retrieve Id form an Object Identifier Data
+     *      @param      string      $ObjectId       OsWs Object Identifier. 
+     *      @return     int         $Id             0 if KO or Object Identifier
+     */
+    public static function decodeIdField($ObjectId)
+    {
+        //====================================================================//
+        // Checks if Given String is an Object Id String
+        $Array = self::isIdField($ObjectId);
+        
+        //====================================================================//
+        // Return Object Id
+        if ($Array != False)                 
+        {   
+            return $Array["ObjectId"];     
+        }
+        
+        return   False; 
+    }      
+    
     
 }
 

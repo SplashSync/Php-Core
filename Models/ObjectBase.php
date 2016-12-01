@@ -21,6 +21,7 @@ namespace   Splash\Models;
 
 use Splash\Core\SplashCore      as Splash;
 use Splash\Components\FieldsFactory;
+use ArrayObject;
 
 //====================================================================//
 //********************************************************************//

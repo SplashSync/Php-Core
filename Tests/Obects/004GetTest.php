@@ -51,57 +51,59 @@ class O04getTest extends ObjectsCase {
         $this->VerifyResponse($Data,array($Field),$ObjectId);
         
     }
-
     
-//    /**
-//     * @dataProvider ObjectTypesProvider
-//     */
-//    public function testAllFieldsFromModule($ObjectType)
-//    {
-//        
-//        //====================================================================//
-//        //   Get next Available Object ID from Module  
-//        $ObjectId = $this->getNextObjectId($ObjectType);
-//
-//        //====================================================================//
-//        //   Get Readable Object Fields List  
-//        $Fields = $this->reduceFieldList(Splash::Object($ObjectType)->Fields(), True, False);
-//        
-//        //====================================================================//
-//        //   Execute Action Directly on Module  
-//        $Data = Splash::Object($ObjectType)->Get($ObjectId, $Fields);
-//        
-//        //====================================================================//
-//        //   Module May Return an Array (ArrayObject created by WebService) 
-//        if (is_array($Data)) {
-//            $Data   =   new ArrayObject($Data);            
-//        } 
-//        
-//        //====================================================================//
-//        //   Verify Response
-//        $this->VerifyResponse($Data);
-//        
-//    }
-//    
-//    /**
-//     * @dataProvider ObjectTypesProvider
-//     */
-//    public function testFromObjectsService($ObjectType)
-//    {
-//return;
-//        //====================================================================//
-//        //   Get next Available Object ID from Module  
-//        $ObjectId = $this->getNextObjectId($ObjectType);
-//        
-//        //====================================================================//
-//        //   Execute Action From Splash Server to Module  
-//        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $ObjectType, "id" => $ObjectId, "list" => array()]);
-//        
-//        //====================================================================//
-//        //   Verify Response
-//        $this->VerifyResponse($Data);
-//        
-//    }
+    /**
+     * @dataProvider ObjectTypesProvider
+     */
+    public function testAllFieldsFromModule($ObjectType)
+    {
+        
+        //====================================================================//
+        //   Get next Available Object ID from Module  
+        $ObjectId = $this->getNextObjectId($ObjectType);
+
+        //====================================================================//
+        //   Get Readable Object Fields List  
+        $Fields = $this->reduceFieldList(Splash::Object($ObjectType)->Fields(), True, False);
+        
+        //====================================================================//
+        //   Execute Action Directly on Module  
+        $Data = Splash::Object($ObjectType)->Get($ObjectId, $Fields);
+        
+        //====================================================================//
+        //   Module May Return an Array (ArrayObject created by WebService) 
+        if (is_array($Data)) {
+            $Data   =   new ArrayObject($Data);            
+        } 
+        
+        //====================================================================//
+        //   Verify Response
+        $this->VerifyResponse($Data,Splash::Object($ObjectType)->Fields(),$ObjectId);
+        
+    }
+    
+    /**
+     * @dataProvider ObjectTypesProvider
+     */
+    public function testFromObjectsService($ObjectType)
+    {
+        //====================================================================//
+        //   Get next Available Object ID from Module  
+        $ObjectId = $this->getNextObjectId($ObjectType);
+        
+        //====================================================================//
+        //   Get Readable Object Fields List  
+        $Fields = $this->reduceFieldList(Splash::Object($ObjectType)->Fields(), True, False);
+        
+        //====================================================================//
+        //   Execute Action From Splash Server to Module  
+        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $ObjectType, "id" => $ObjectId, "fields" => $Fields]);
+        
+        //====================================================================//
+        //   Verify Response
+        $this->VerifyResponse($Data,Splash::Object($ObjectType)->Fields(),$ObjectId);
+        
+    }
 
     /**
      * @dataProvider ObjectTypesProvider

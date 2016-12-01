@@ -57,7 +57,7 @@ class date
     {
         //==============================================================================
         //      Generate a random DateTime
-        $date = new PhpDateTime("now");
+        $date = new \DateTime("now");
         $date->modify( '-' . mt_rand(1,10) . ' months' );
         //==============================================================================
         //      Return DateTime is Right Format

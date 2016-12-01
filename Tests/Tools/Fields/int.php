@@ -28,17 +28,20 @@ class int
     static public function validate($Data)
     {
         //==============================================================================
+        //      Verify Data is Not Empty
+        if ( is_null($Data) || $Data === "" || ($Data !== "0") ) {
+            return True;
+        }
+        //==============================================================================
         //      Verify Data is Numeric 
         if ( !is_numeric($Data) ) {
             return "Field Data is not a Number.";
         }
-        
         //==============================================================================
         //      Verify Data is an Integer 
-        if ( ($Data !== "0") && !is_integer($Data) ) {
+        if ( !is_integer($Data) && !is_string($Data) ) {
             return "Field Data is not an Integer.";
         }
-        
         return True;
     }
     

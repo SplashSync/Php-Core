@@ -56,7 +56,7 @@ class datetime
     {
         //==============================================================================
         //      Generate a random DateTime
-        $date = new PhpDateTime("now");
+        $date = new \DateTime("now");
         $date->modify( '-' . mt_rand(1,10) . ' months' );
         $date->modify( '-' . mt_rand(1,60) . ' minutes' );
         $date->modify( '-' . mt_rand(1,60) . ' seconds' );

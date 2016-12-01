@@ -83,13 +83,59 @@ class ObjectsCase extends BaseCase {
                 "fake-image4.jpg",
                 ),   
             
-            //==============================================================================
-            //  Objects Id Fields
-            //  Default is An Empty List To be completed by User Before Generation
-            "Objects"                   =>  array(),
+//            //==============================================================================
+//            //  Objects Id Fields
+//            //  Default is An Empty List To be completed by User Before Generation
+//            "Objects"                   =>  array(),
         
     );
         
+    /**
+     * @abstract        Verify Last Commit is Valid and Conform to Expected 
+     * 
+     * @param string    $Action         Expected Action
+     * @param string    $ObjectType     Expected Object Type
+     * @param string    $ObjectId       Expected Object Id
+     */    
+    public function assertIsLastCommited($Action,  $ObjectType , $ObjectId)
+    {
+        //====================================================================//
+        //   Verify Object Change Was Commited
+        $this->assertNotEmpty( Splash::$Commited                    , "No Object Change Commited by your Module. Please check your triggers.");
+        
+        //====================================================================//
+        //   Get Last Commited
+        $LastCommit = array_pop(Splash::$Commited);
+        
+        //====================================================================//
+        //   Check Object Type is OK
+        $this->assertEquals( 
+                $LastCommit->action,
+                $Action, 
+                "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action );
+        
+        //====================================================================//
+        //   Check Object Type is OK
+        $this->assertEquals( 
+                $LastCommit->type,
+                $ObjectType, 
+                "Change Commit => Object Type is wrong. (Expected " . $ObjectType . " / Given " . $LastCommit->type );
+        
+        //====================================================================//
+        //   Check Object Id is OK
+        $this->assertEquals( 
+                $LastCommit->id,
+                $ObjectId, 
+                "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id );
+        
+        //====================================================================//
+        //   Check Infos are Not Empty
+        $this->assertNotEmpty( $LastCommit->user                    , "Change Commit => User Name is Empty");
+        $this->assertNotEmpty( $LastCommit->comment                 , "Change Commit => Action Comment is Empty");
+        
+    }
+
+    
     //==============================================================================
     //      VALIDATION FUNCTIONS
     //==============================================================================       
@@ -301,7 +347,7 @@ class ObjectsCase extends BaseCase {
         // Verify if Field Data is an Array
         $this->assertTrue(
                 is_array($ListData) || is_a($ListData, "ArrayObject"),
-                "List Field '" . $ListId["listname"] . "' is not of Array Type. (Given " . get_class($ListData). ")"
+                "List Field '" . $ListId["listname"] . "' is not of Array Type. (Given " . print_r($ListData, True). ")"
             );
         
         //====================================================================//
@@ -445,19 +491,19 @@ class ObjectsCase extends BaseCase {
         }
         //====================================================================//
         // Verify Field Type is Valid
-        $ClassName = Field::isValidType($Type);
+        $ClassName = self::isValidType($Type);
         if ( $ClassName == False ) {
             return False;
         }       
         //====================================================================//
         // Detects Id Fields    => Cannot Generate Fake for Id Fields Here... 
-        if ( ($id = Field::isIdField($Type)) ) {
-            return $ClassName::fake($id["ObjectType"], $this->getSettings());
+        if ( ($id = self::isIdField($Type)) ) {
+            return $ClassName::fake($id["ObjectType"], $this->settings);
         }
         
         //====================================================================//
         // Generate Single Field Data Type is Valid
-        return $ClassName::fake($this->getSettings());        
+        return $ClassName::fake($this->settings);        
     } 
     
     //==============================================================================

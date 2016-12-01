@@ -128,6 +128,7 @@ class Objects
                 //====================================================================//
                 // Verify Object Field List 
                 if (!Splash::Validate()->isValidObjectFieldsList($Task->params->fields)) {
+                    var_dump("Field List");
                     break;
                 }
                 $Response->data     =   $ObjectClass->Get($ObjectId,$Task->params->fields);
