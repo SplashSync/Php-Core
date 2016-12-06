@@ -62,4 +62,21 @@ class bool
         return (mt_rand()%2)?True:False;
     }
     
+    /**
+     * Compare Two Data Block to See if similar (Update Required)
+     * 
+     * !important : Target Data is always validated before compare
+     * 
+     * @param   mixed   $Source     Original Data Block
+     * @param   mixed   $Target     New Data Block
+     *
+     * @return  bool                TRUE if both Data Block Are Similar
+     */
+    public static function compare($Source,$Target) {
+        //====================================================================//
+        //  Raw text Compare
+        return ( $Source == $Target )?True:False;
+    }
+    
+    
 }

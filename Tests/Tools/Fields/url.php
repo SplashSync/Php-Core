@@ -7,7 +7,8 @@ namespace Splash\Tests\Tools\Fields;
  * @abstract    Url Field : Full Link, generic URI
  * @see http://www.faqs.org/rfcs/rfc2396.html
  */
-class url {
+class url extends varchar
+{
 
     //==============================================================================
     //      Structural Data  

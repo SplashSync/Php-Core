@@ -197,7 +197,7 @@ class Splash extends SplashCore
         if ( ($action === SPL_A_CREATE) && Splash::Object($ObjectType)->isLocked())    {
             return True;
         }        
-        
+var_dump($params->action);        
         //====================================================================//
         // Add Task to Ws Task List
         Splash::Ws()->AddTask(SPL_F_COMMIT, $params, Splash::Trans("MsgSchRemoteCommit",$action,$ObjectType,count($local)) );

@@ -7,7 +7,7 @@ namespace Splash\Tests\Tools\Fields;
  * 
  * @example     2016-12-25
  */
-class date
+class date extends varchar
 {
     //==============================================================================
     //      Structural Data  

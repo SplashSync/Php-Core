@@ -178,6 +178,33 @@ class objectid
         return   False; 
     }      
     
+    /**
+     *      @abstract   Identify if field is Object Identifier Data & Decode Field
+     * 
+     *      @param      string       $In             Id Field String
+     * 
+     *      @return     array       $result         0 if KO or Exploded Field Array
+     */
+    public static function isIdField($In)
+    {
+        //====================================================================//
+        // Safety Check 
+        if (empty($In)) {
+            return False;
+        }       
+        
+        //====================================================================//
+        // Detects ObjectId
+        $list = explode ( IDSPLIT , $In );
+        if (is_array($list) && (count($list)==2) ) {
+            //====================================================================//
+            // If List Detected, Prepare Field List Information Array
+            $Out["ObjectId"]        = $list[0];
+            $Out["ObjectType"]      = $list[1];
+            return $Out;
+        }
+        return False;
+    }     
     
 }
 

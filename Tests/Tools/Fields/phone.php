@@ -5,7 +5,7 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * @abstract    Phone Field : Define a Contact Phone Number
  */
-class phone
+class phone extends varchar
 {
     //==============================================================================
     //      Structural Data  
@@ -61,5 +61,6 @@ class phone
     static public function fake()
     {
         return preg_replace('/^[+0-9. ()-]*$/', '', mt_rand(12345678,123456789));
-    }    
+    }        
+    
 }

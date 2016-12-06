@@ -9,7 +9,7 @@ namespace Splash\Tests\Tools\Fields;
  * 
  * @see         ISO 3166 : http://www.iso.org/iso/home/standards/country_codes.htm
  */
-class country
+class country extends varchar
 {
     //==============================================================================
     //      Structural Data  

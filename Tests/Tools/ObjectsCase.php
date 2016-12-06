@@ -4,6 +4,7 @@ namespace Splash\Tests\Tools;
 
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
+use Splash\Tests\Tools\Fields\objectid as ObjectId;
 
 if ( !defined("SPLASH_DEBUG") ) {
     define("SPLASH_DEBUG" , True);
@@ -90,6 +91,17 @@ class ObjectsCase extends BaseCase {
         
     );
         
+    protected function setUp()
+    {
+        //====================================================================//
+        // BOOT or REBOOT MODULE
+        Splash::Reboot();
+        
+        //====================================================================//
+        // FAKE SPLASH SERVER HOST URL
+        Splash::Configuration()->WsHost = "No.Commit.allowed.not";
+    }       
+    
     /**
      * @abstract        Verify Last Commit is Valid and Conform to Expected 
      * 
@@ -383,7 +395,7 @@ class ObjectsCase extends BaseCase {
             //====================================================================//
             //   For Each Field Type  
             foreach (Splash::Object($ObjectType)->Fields() as $Field) {                
-                $Result[] = array($ObjectType,$Field);            
+                $Result[] = array($ObjectType, $Field, $Field->id);            
             }
         }
         
@@ -393,6 +405,101 @@ class ObjectsCase extends BaseCase {
     //==============================================================================
     //      FAKE DATA GENERATORS  
     //==============================================================================   
+    
+    /**
+     *   @abstract   Generate Fake Object Fields List 
+     * 
+     *   @param      string     $ObjectType     Object Type Name
+     *   @param      array      $FieldsList     Object Field Ids List
+     *   @param      bool       $Associate      Include Associated Fields
+     *  
+     *   @return     array      $Out            Array of Fields
+     */
+    public function fakeFieldsList($ObjectType, $FieldsList = False, $Associate = False) 
+    {
+        //====================================================================//
+        // Safety Check => $ObjectType is a valid
+        $this->assertTrue( in_array($ObjectType , Splash::Objects())       ,"Invalid Object Type Name. (" . $ObjectType . ")");
+
+        //====================================================================//
+        // Create Empty Object Data Array
+        $Out    = array();
+        $Write  = False;
+        
+        //====================================================================//
+        // Load Object Fields Definition
+        $Fields = Splash::Object($ObjectType)->Fields();
+        if (empty($Fields)) {
+            return $Out;
+        }
+        
+        //====================================================================//
+        // Generate Fields Data
+        foreach ( $Fields as $Field) {
+            
+            //====================================================================//
+            // Check if Fields is Writable
+            if ( !$Field->write ) {   
+                continue;
+            }            
+            $Write = True;
+
+            //====================================================================//
+            // Check if Fields is Needed
+            //====================================================================//
+
+            $Needed = False;
+            //====================================================================//
+            // Required Field
+            if ( $Field->required ) {
+                $Needed = True;
+            }
+            //====================================================================//
+            // If NO Fields List is Given => Select All Write Fields
+            if ( ($FieldsList == False) || !is_array($FieldsList) ) {
+                $Needed = True;
+            } else {
+                //====================================================================//
+                // Field is in Requested List
+                if ( in_array($Field->id, $FieldsList)) {
+                    $Needed = True;
+                }                
+            }
+            if ( !$Needed ) {
+                continue;
+            }
+                
+            //====================================================================//
+            // Add Fields to List
+            $Out[$Field->id] = $Field;
+        }
+        
+        //====================================================================//
+        // No Associated Fields
+        if ( !$Associate ) {
+            return $Out;
+        }
+        
+        //====================================================================//
+        // Add Associated Fields to List
+        foreach ($Out as $OutField) {
+            
+            //====================================================================//
+            // No Associated Field
+            if ( empty($OutField->asso) ) {
+                continue;
+            }
+            //====================================================================//
+            // For Associated Fields
+            foreach ($Fields as $Field) {
+                if ( in_array($Field->id, $OutField->asso)) {
+                    $Out[$Field->id] = $Field;
+                }
+            }
+        }
+        
+        return $Out;
+    }
     
     /**
      *   @abstract   Create Fake/Dummy Object Data
@@ -416,14 +523,14 @@ class ObjectsCase extends BaseCase {
             
             //====================================================================//
             // Generate Single Fields Dummy Data (is Not a List Field)
-            if (!Field::isListField($Field->id)) {
+            if (!self::isListField($Field->id)) {
                 $Out[$Field->id] = self::fakeFieldData($Field->type);
                 continue;
             }
             
             //====================================================================//
             // Generate Dummy List  Data
-            $List       =   Field::isListField($Field->id);
+            $List       =   self::isListField($Field->id);
             $ListName   =   $List["listname"];
             $FieldName  =   $List["fieldname"];
             $ListData   =   self::fakeListData($Field);
@@ -459,8 +566,8 @@ class ObjectsCase extends BaseCase {
         $NbItems =  $this->settings["ListItems"]?$this->settings["ListItems"]:2;
         //====================================================================//
         // Parse List Identifiers
-        $List   =   Field::isListField($Field->id);
-        $Type   =   Field::isListField($Field->type);
+        $List   =   self::isListField($Field->id);
+        $Type   =   self::isListField($Field->type);
         
         //====================================================================//
         // Create Dummy List Data
@@ -650,7 +757,7 @@ class ObjectsCase extends BaseCase {
             
             //====================================================================//
             // Explode List Field Id
-            $List       =   Field::isListField($FieldId);
+            $List       =   self::isListField($FieldId);
             //====================================================================//
             // Single Field Data Type
             if ( ( !$List ) && ( array_key_exists($FieldId, $DataBlock) ) )  {
@@ -846,12 +953,11 @@ class ObjectsCase extends BaseCase {
      * @param   array   $Fields             Array of OpenObject Fields Definitions
      * @param   array   $Block1             Raw Data to Compare
      * @param   array   $Block2             Raw Data to Compare
-     * @param   object  $TestController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
      * @param   string  $Comment            Comment on this Test
      * 
      * @return bool 
      */
-    public function compareDataBlocks($Fields, $Block1, $Block2, $TestController = Null, $Comment = Null)
+    public function compareDataBlocks($Fields, $Block1, $Block2, $Comment = Null)
     {
 
         //====================================================================//
@@ -867,15 +973,14 @@ class ObjectsCase extends BaseCase {
 //dump($Data2);            
             //====================================================================//
             // Compare List Data
-            $FieldType      =  Field::isListField($Field->type);
+            $FieldType      =  self::isListField($Field->type);
             if ($FieldType) {
-                $Result = $this->compareListField($FieldType["fieldname"], $Field->id, $Data1, $Data2, $TestController, $Comment);
+                $Result = $this->compareListField($FieldType["fieldname"], $Field->id, $Data1, $Data2, $Comment);
             }    
             //====================================================================//
             // Compare Single Fields                   
             else {
-                $Result = $this->compareField($Field->type, $Data1[$Field->id], $Data2[$Field->id], $TestController, $Comment);
-//                $Result = $this->compareField($Field->type, $Data1, $Data2, $TestController, $Comment);
+                $Result = $this->compareField($Field->type, $Data1[$Field->id], $Data2[$Field->id], $Comment . "->" . $Field->id);
             }
                 
             //====================================================================//
@@ -895,92 +1000,47 @@ class ObjectsCase extends BaseCase {
      * @param   string  $FieldType          Field Type Name
      * @param   array   $Block1             Raw Data to Compare
      * @param   array   $Block2             Raw Data to Compare
-     * @param   object  $TestController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
      * @param   string  $Comment            Comment on this Test
      * 
      * @return string   error / success translator string for debugger 
      */
-    private function compareField($FieldType, $Block1, $Block2, $TestController = Null, $Comment = Null)
+    private function compareField($FieldType, $Block1, $Block2, $Comment = Null)
     {
 //dump($FieldType);        
 //dump($Block1);        
         
         //====================================================================//
         // Build Full ClassName
-        if ( Field::decodeIdField($FieldType) ) {
-            $ClassName      = "OpenObject\CoreBundle\Document\FieldsType\objectid";
+        if ( ObjectId::decodeIdField($FieldType) ) {
+            $ClassName      = self::isValidType("objectid");
         } else {
-            $ClassName      = Field::CLASS_PREFIX . $FieldType;
+            $ClassName      = self::isValidType($FieldType);
         }
         
         //====================================================================//
-        // Detect if Class has its own Compare Function
-        $UseFieldComparator = False;
-        if (class_exists( $ClassName )) {
-            $FieldClass = new \ReflectionClass($ClassName);
-            $FieldMethod = $FieldClass->getMethod("compare");
-            if ($FieldMethod->class == $ClassName) {
-                $UseFieldComparator = True;
-            }
-        }     
-
-        //====================================================================//
-        // IF NO SPECIAL COMPARATOR DEFINED => COMPARE SERIALIZED OBJECT
-        //====================================================================//
-        if ( !$UseFieldComparator || !method_exists( $ClassName , "compare" )) {
-            
-            //====================================================================//
-            // Compare Raw Data Blocks
-            if ( !$this->compareRawData($Block1, $Block2, $TestController, $Comment) ) {
-                return "main.compare.result";
-            }
-            
-            return True;
-        }
-            
-        //====================================================================//
-        // IF FIELD TYPE EXIST AND DEFINE A SPECIAL COMPARATOR
-        //====================================================================//
+        // Verify Class has its own Validate & Compare Function*
+        $this->assertTrue( method_exists( $ClassName , "validate" ) , "Field of type " . $FieldType . " has no Validate Function.");
+        $this->assertTrue( method_exists( $ClassName , "compare" )  , "Field of type " . $FieldType . " has no Compare Function.");
         
         //====================================================================//
-        // If PhpUnit Test Controller Given
-        if ($TestController) {
-
-            //====================================================================//
-            // Validate Data Using Field Type Validator
-            $TestController->assertTrue(
-                    $ClassName::validate($Block1), 
-                    "Source Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block1,1) . ")");
-            $TestController->assertTrue(
-                    $ClassName::validate($Block2), 
-                    "Target Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block2,1) . ")");
+        // Validate Data Using Field Type Validator
+        $this->assertTrue(
+                $ClassName::validate($Block1), 
+                "Source Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block1,1) . ")");
+        $this->assertTrue(
+                $ClassName::validate($Block2), 
+                "Target Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block2,1) . ")");
             
-            //====================================================================//
-            // Compare Data Using Field Type Comparator
-            if ( !$ClassName::compare($Block1,$Block2) ) {
-                dump($Block1);
-                dump($Block2);
-            } 
-            $TestController->assertTrue(
-                    $ClassName::compare($Block1,$Block2), 
-                    "Source and Target Data are not similar " . $FieldType . " Field Data Block");
+        //====================================================================//
+        // Compare Data Using Field Type Comparator
+        if ( !$ClassName::compare($Block1,$Block2) ) {
+            echo PHP_EOL . "Source :" . print_r($Block1, True);
+            echo PHP_EOL . "Target :" . print_r($Block2, True);
+        } 
+        $this->assertTrue(
+                $ClassName::compare($Block1,$Block2), 
+                $Comment . " Source and Target Data are not similar " . $FieldType . " Field Data Block");
 
-        } else {
-
-            //====================================================================//
-            // Validate Data Using Field Type Validator
-            if ( $ClassName::validate($Block1) !== True ) {
-                return "main.compare.valid";
-            } elseif ( $ClassName::validate($Block2) !== True ) {
-                return "main.compare.valid";
-            //====================================================================//
-            // Compare Data Using Field Type Comparator
-            } elseif ( $ClassName::compare($Block1,$Block2) ) {
-                return "main.compare.result";  
-            }            
-            
-        }
-            
         return True;        
     }
     
@@ -991,21 +1051,16 @@ class ObjectsCase extends BaseCase {
      * @param   string  $FieldId            Field Identifier
      * @param   array   $Block1             Raw Data to Compare
      * @param   array   $Block2             Raw Data to Compare
-     * @param   object  $TestController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
      * @param   string  $Comment            Comment on this Test
      * 
      * @return string   error / success translator string for debugger 
      */
-    private function compareListField($FieldType, $FieldId, $Block1, $Block2, $TestController = Null, $Comment = Null)
+    private function compareListField($FieldType, $FieldId, $Block1, $Block2, $Comment = Null)
     {
         //====================================================================//
         // Explode List Field Id
-        $FieldIdArray      =  Field::isListField($FieldId);
-        if ($TestController) {
-            $TestController->assertNotEmpty($FieldIdArray);
-        } elseif ( !$FieldIdArray ) {
-           return "main.compare.params";            
-        }
+        $FieldIdArray      =  self::isListField($FieldId);
+        $this->assertNotEmpty($FieldIdArray);
         $FieldName  = $FieldIdArray["fieldname"];
         $ListName   = $FieldIdArray["listname"];
 
@@ -1016,14 +1071,10 @@ class ObjectsCase extends BaseCase {
         
         //====================================================================//
         // Verify Data Count is similar 
-        if ($TestController) {
-            $TestController->assertEquals(
-                    count($List1), 
-                    count($List2), 
-                    "Source and Target List Data have diffrent number of Items");
-        } elseif ( count($List1) != count($List2) ) {
-           return "main.compare.params";            
-        }
+        $this->assertEquals(
+                count($List1), 
+                count($List2), 
+                "Source and Target List Data have diffrent number of Items");
 
         //====================================================================//
         // Normalize Data Blocks
@@ -1039,20 +1090,14 @@ class ObjectsCase extends BaseCase {
 
             //====================================================================//
             // Verify List field is Available 
-            if ($TestController) {
-                $TestController->assertArrayHasKey($FieldName, $Item1, 
-                        "Field " . $FieldType . " not found in Source List Data ");
-                $TestController->assertArrayHasKey($FieldName, $Item2, 
-                        "Field " . $FieldType . " not found in Target List Data ");
-            } else if ( !array_key_exists($FieldName, $Item1) ) {
-                return "main.compare.result";  
-            } elseif ( !array_key_exists($FieldName, $Item2) ) {
-                return "main.compare.result";  
-            }
+            $this->assertArrayHasKey($FieldName, $Item1, 
+                    "Field " . $FieldType . " not found in Source List Data ");
+            $this->assertArrayHasKey($FieldName, $Item2, 
+                    "Field " . $FieldType . " not found in Target List Data ");
             
             //====================================================================//
             // Compare Items
-            $Result = $this->compareField($FieldType, $Item1[$FieldName], $Item2[$FieldName], $TestController, $Comment);
+            $Result = $this->compareField($FieldType, $Item1[$FieldName], $Item2[$FieldName], $Comment);
             if ( $Result !== True ) {
                 return $Result;
             }
@@ -1060,7 +1105,5 @@ class ObjectsCase extends BaseCase {
         
         return True;
     }
-    
-
     
 }

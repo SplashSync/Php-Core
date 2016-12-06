@@ -265,7 +265,6 @@ class SplashServer
         //====================================================================//
         // Transfers Log Reccords to _Out Buffer
         self::$_Out->log = Splash::Log();
-
         //====================================================================//
         // Package data and return to Server
         return Splash::Ws()->Pack(self::$_Out);

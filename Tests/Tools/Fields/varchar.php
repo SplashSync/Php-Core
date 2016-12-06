@@ -48,4 +48,31 @@ class varchar
     {
         return preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900,mt_getrandmax ()/10)));
     }
+    
+    //==============================================================================
+    //      DATA COMPARATOR (OPTIONNAL)  
+    //==============================================================================   
+    
+    /**
+     * Compare Two Data Block to See if similar (Update Required)
+     * 
+     * !important : Target Data is always validated before compare
+     * 
+     * @param   mixed   $Source     Original Data Block
+     * @param   mixed   $Target     New Data Block
+     *
+     * @return  bool                TRUE if both Data Block Are Similar
+     */
+    public static function compare($Source,$Target) {
+        //====================================================================//
+        //  Both Texts Are Empty
+        if ( empty($Source) && empty($Target) ) {
+            return True;
+        } 
+        //====================================================================//
+        //  Raw text Compare
+        return ( $Source === $Target )?True:False;
+    }
+    
+    
 }

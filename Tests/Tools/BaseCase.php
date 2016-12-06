@@ -10,6 +10,9 @@ use Splash\Server\SplashServer;
 if ( !defined("SPLASH_DEBUG") ) {
     define("SPLASH_DEBUG" , True);
 } 
+if ( !defined("SPLASH_SERVER_MODE") ) {
+    define("SPLASH_SERVER_MODE", True);
+} 
 
 /**
  * @abstract    Admin Test Suite - Ping Client Verifications
@@ -84,7 +87,6 @@ class BaseCase extends TestCase {
     public function assertArraySplashBool($Data , $Key, $Comment)
     {
         $this->assertArrayHasKey(   $Key,   $Data,      $Comment . " => Key '" . $Key . "' not defined");
-//        $this->assertNotEmpty(      $Data[$Key],        $Comment . " => Key '" . $Key . "' is Empty");
         $this->assertIsSplashBool($Data[$Key],          $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
     }
 
@@ -129,7 +131,6 @@ class BaseCase extends TestCase {
         $this->assertNotEmpty( $Data                      , "Response Data is Empty or Malformed");
         $this->assertInstanceOf( "ArrayObject" , $Data    , "Response Data is Not an ArrayObject");
         $this->assertArrayHasKey( "result", $Data         , "Request Result is Missing");
-        $this->assertNotEmpty( $Data->result              , "Request Result is not True, Why??");
         
         //====================================================================//
         // CHECK RESPONSE LOG
@@ -149,6 +150,9 @@ class BaseCase extends TestCase {
             $this->CheckResponseTasks($Data->tasks , $Cfg);
         }
         
+        //====================================================================//
+        // CHECK RESPONSE RESULT
+        $this->assertNotEmpty( $Data->result              , "Request Result is not True, Why??");
         return $Data;
     }
     
@@ -191,6 +195,12 @@ class BaseCase extends TestCase {
             $this->assertEmpty( $Log->deb            , "Requested Non Debug operation but Received Debug Traces, Why??");
         }            
             
+        //====================================================================//
+        //   Extract Logs From Response 
+        Splash::Log()->Merge($Log);
+//var_dump($Log->deb);
+        
+
     }
     /**
      *      @abstract      Verify Response Log Is Valid
@@ -306,8 +316,7 @@ class BaseCase extends TestCase {
         //====================================================================//
         //   Check Response 
         $Data       =   $this->CheckResponse( $Response ); 
-//var_dump($Data);        
-        
+
         //====================================================================//
         //   Extract Task Result 
         if (is_a($Data->tasks, "ArrayObject")) {

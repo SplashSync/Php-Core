@@ -5,7 +5,7 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * @abstract    Email Field : Standard Email Address
  */
-class email
+class email extends varchar
 {
     //==============================================================================
     //      Structural Data  
@@ -64,5 +64,5 @@ class email
         $ext    = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(100,1000)));
         return $name . "@" . $domain . "." . $ext;        
     }    
-    
+     
 }
