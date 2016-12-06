@@ -98,7 +98,7 @@ class SplashCore
         if (!isset(self::$instance)) {
             
             //====================================================================//
-            //  Load OsWs Core Class
+            //  Load SplashCore Class
             self::$instance = new self();
             
         }
@@ -178,11 +178,10 @@ class SplashCore
     public static function Log()
     {
         if (!isset(self::Core()->log)) {
-            
             //====================================================================//
             // Initialize Log & Debug
             self::Core()->log        = new Logger();   
-            
+
             //====================================================================//
             //  Define Standard Messages Prefix if Not Overiden
             if ( isset(self::Configuration()->localname) ) {
@@ -505,6 +504,8 @@ class SplashCore
         //====================================================================//
         // Clear Module Log
         self::Log()->CleanLog();
+        self::Log()->Deb("Splash Module Rebooted");
+
     }
     
 //====================================================================//
