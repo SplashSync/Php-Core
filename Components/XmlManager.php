@@ -246,7 +246,7 @@ class XmlManager
             // Element Already Exists => Store as Array Element
             //====================================================================//
             // Convert Single Element to Array Element
-            if ( !isset($Result[$elementName][0])) {
+            if ( !is_array($Result[$elementName])) {
                 $SingleElement          =   $Result[$elementName];       // Store Firts Element
                 $Result[$elementName]    =   array();                    // Create New Array
                 $Result[$elementName][]  =   $SingleElement;             // Append To Array          
@@ -293,13 +293,13 @@ class XmlManager
             // Element Already Exists => Store as Array Element
             //====================================================================//
             // Convert Single Element to Array Element
-            if ( !isset($Result[$elementName][0])) {
-                $SingleElement          =   $Result[$elementName];       // Store Firts Element
+            if ( !is_array($Result[$elementName])) {
+                $SingleElement           =   $Result[$elementName];       // Store First Element
                 $Result[$elementName]    =   array();                    // Create New Array
                 $Result[$elementName][]  =   $SingleElement;             // Append To Array          
-            }
+            }            
             //====================================================================//
-            // Append Array Element
+            // Append Array Element     
             $Result[$elementName][] = self::SimpleXmlToArrayObject($node);
         }
         //====================================================================//

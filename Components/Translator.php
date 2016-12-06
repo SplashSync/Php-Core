@@ -69,9 +69,7 @@ class Translator
         //====================================================================//
         // Check if File is Already in Cache
         //====================================================================//
-        if (! empty($this->trans_loaded[$FileName]))	
-        {
-                Splash::Log()->Deb("MsgLangAlreadyLoad",$FileName);
+        if (! empty($this->trans_loaded[$FileName]))    {
                 return True;
         }
 
@@ -97,7 +95,7 @@ class Translator
         }
         //====================================================================//
         // Log Action
-        Splash::Log()->Deb(get_class($this)."::Load Translations from <b>" . $FileName . "</b> with Language <b> " . $Language . "</b>");
+        Splash::Log()->Deb(get_class($this)."::Load Translations from " . $FileName . " with Language " . $Language . ".");
 
         //====================================================================//
         // Build Language File Path

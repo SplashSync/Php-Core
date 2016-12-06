@@ -48,25 +48,25 @@ class Logger
      *      @abstract   Success Messages
      *      @var        Array
      */    
-    public  $msg;
+    public  $msg = array();
     
     /**
      *      @abstract   Warning Messages
      *      @var        Array
      */    
-    public  $war;
+    public  $war = array();
     
     /**
      *      @abstract   Error Messages
      *      @var        Array
      */    
-    public  $err;
+    public  $err = array();
     
     /**
      *      @abstract   Debug Messages
      *      @var        Array
      */    
-    public  $deb;
+    public  $deb = array();
     
     /**
      *      @abstract      Class Constructor
@@ -99,8 +99,7 @@ class Logger
      */
    public function CleanLog() 
    {
-       $this->War("CleanLog");
-       if (isset($this->err)) {
+        if (isset($this->err)) {
             $this->err = array();
         }
         if (isset($this->war)) {
@@ -112,6 +111,7 @@ class Logger
         if (isset($this->deb)) {
             $this->deb = array();
         }
+        $this->Deb("Log Messages Buffer Cleaned");
         return   True;
    }   
 
@@ -127,8 +127,8 @@ class Logger
      * 
      *      @return     False
      */
-   public function Err($text, $param1='', $param2='', $param3='', $param4='', $param5='') 
-   {
+    public function Err($text, $param1='', $param2='', $param3='', $param4='', $param5='') 
+    {
         //====================================================================//
         // Initialise buffer if unset 
         if (!isset($this->err)) {
@@ -142,7 +142,7 @@ class Logger
         // Add Message To Log File
         self::Log($Text,"ERROR"); 
         return   False;
-   }   
+    }   
    
    /**
      *      @abstract      Log WebServer Warning Messages
@@ -329,7 +329,7 @@ class Logger
     * 
     *      @return      ArrayObject         All existing log messages in an arrayobject structure
     */
-   public function GetRawLog( $clean = 0 ) 
+   public function GetRawLog( $clean = False ) 
    {
         $raw = new ArrayObject();
         if ($this->err) {   $raw->err = $this->err;        }
@@ -384,7 +384,7 @@ class Logger
    {
         if ( !empty($In) )     
         {
-            if (is_object($In)) {
+            if (is_a($In, "ArrayObject")) {
                 $In = $In->getArrayCopy();
             }
             
