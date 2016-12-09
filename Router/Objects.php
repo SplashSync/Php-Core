@@ -113,7 +113,9 @@ class Objects
             //  READING OF OBJECT LIST
             //====================================================================//
             case SPL_F_LIST:
-                $Response->data     =   $ObjectClass->ObjectsList($Task->params->filters,$Task->params->params);
+                $Response->data     =   $ObjectClass->ObjectsList(
+                        isset($Task->params->filters)   ?   $Task->params->filters  : Null,
+                        isset($Task->params->params)    ?   $Task->params->params   : Null);
                 break;
             
             //====================================================================//

@@ -61,7 +61,7 @@ class SplashServer
      * 
      *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
      */
-    public function Ping()
+    public static function Ping()
     {
         self::Init();
         
@@ -83,7 +83,7 @@ class SplashServer
      * 
      *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
      */
-    public function Connect($id,$data)
+    public static function Connect($id,$data)
     {
         //====================================================================//
         // Verify Node Id 
@@ -132,7 +132,7 @@ class SplashServer
      * 
      *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
      */
-    public function Objects($id,$data)
+    public static function Objects($id,$data)
     {
         return self::Run($id,$data,__FUNCTION__);
     }	    
@@ -145,7 +145,7 @@ class SplashServer
      * 
      *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
      */
-    public function Files($id,$data)
+    public static function Files($id,$data)
     {
         return self::Run($id,$data,__FUNCTION__);
     }
@@ -158,7 +158,7 @@ class SplashServer
      * 
      *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
      */
-    public function Widgets($id,$data)
+    public static function Widgets($id,$data)
     {
         return self::Run($id,$data,__FUNCTION__);
     }

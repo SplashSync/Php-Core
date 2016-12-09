@@ -17,7 +17,7 @@ class C11LocalCoreClassTest extends TestCase {
         throw $e;
     }
     
-    public function testParametesFunction()
+    public function testParameterFunction()
     {
         
         //====================================================================//
@@ -41,7 +41,6 @@ class C11LocalCoreClassTest extends TestCase {
         
     }
     
-
     public function testIncludesFunction()
     {
         //====================================================================//

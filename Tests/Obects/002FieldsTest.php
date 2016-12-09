@@ -37,7 +37,7 @@ class O02FieldsTest extends ObjectsCase {
     {
         //====================================================================//
         //   Execute Action From Splash Server to Module  
-        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__, [ "type" => $ObjectType]);
+        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__, [ "id" => Null, "type" => $ObjectType]);
         
         //====================================================================//
         //   Verify Response

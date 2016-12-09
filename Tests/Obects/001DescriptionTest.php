@@ -37,7 +37,7 @@ class O01DescriptionTest extends ObjectsCase {
     {
         //====================================================================//
         //   Execute Action From Splash Server to Module  
-        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__, [ "type" => $ObjectType]);
+        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__, [ "id" => Null, "type" => $ObjectType]);
         
         //====================================================================//
         //   Verify Response

@@ -69,7 +69,7 @@ class O05CreateTest extends ObjectsCase {
         //====================================================================//
         //   Verify Test is Required   
         if ( !$this->VerifyTestIsAllowed($ObjectType) ) {
-            return True;
+            return False;
         }
         
         //====================================================================//

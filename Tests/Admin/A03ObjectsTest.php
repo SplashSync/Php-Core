@@ -3,7 +3,6 @@
 use Splash\Tests\Tools\BaseCase;
 
 use Splash\Client\Splash;
-use ArrayObject;
 
 /**
  * @abstract    Admin Test Suite - Get Objects List Client Verifications
@@ -20,7 +19,7 @@ class A03ObjectsTest extends BaseCase {
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService) 
         if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);
+            $Data   =   new \ArrayObject($Data);
         } 
         //====================================================================//
         //   Verify Response

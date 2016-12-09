@@ -61,7 +61,8 @@ class email extends varchar
     {
         $name   = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand()));
         $domain = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(100,1000)));
-        $ext    = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(100,1000)));
+//        $ext    = preg_replace('/[^A-Za-z\-]/', '', str_pad( base64_encode(mt_rand(100,1000)) , 3) );
+        $ext    = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(10,100)));
         return $name . "@" . $domain . "." . $ext;        
     }    
      

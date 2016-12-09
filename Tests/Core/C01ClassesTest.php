@@ -113,7 +113,7 @@ class C01ClassesTest extends TestCase {
         //====================================================================//
         //   VERIFY SPLASH MODULE LOCAL CLASS 
         //====================================================================//
-
+        //
         //====================================================================//
         //   Verify Local Class Exists & Correctly Mapped
         $this->assertTrue( class_exists( SPLASH_CLASS_PREFIX. "\Local" ) , "Splash Local Class Not found. Check you local class is defined and autoloaded from Namespace Splash\Local\Local.");  

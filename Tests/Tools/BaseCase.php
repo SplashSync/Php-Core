@@ -320,11 +320,9 @@ class BaseCase extends TestCase {
         //====================================================================//
         //   Extract Task Result 
         if (is_a($Data->tasks, "ArrayObject")) {
-            $Task = array_shift($Data->tasks->getArrayCopy());
-        } elseif (is_array($Data->tasks)) {
-            $Task = array_shift($Data->tasks);
+            $Data->tasks = $Data->tasks->getArrayCopy();
         }
-//var_dump($Task);        
+        $Task = array_shift($Data->tasks);
 
         return $Task["data"];
     }
@@ -363,10 +361,9 @@ class BaseCase extends TestCase {
         //====================================================================//
         //   Extract Task Result 
         if (is_a($Data->tasks, "ArrayObject")) {
-            $Task = array_shift($Data->tasks->getArrayCopy());
-        } elseif (is_array($Data->tasks)) {
-            $Task = array_shift($Data->tasks);
+            $Data->tasks = $Data->tasks->getArrayCopy();
         }
+        $Task = array_shift($Data->tasks);
 
         return $Task["data"];
     }
