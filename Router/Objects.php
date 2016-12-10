@@ -88,7 +88,7 @@ class Objects
         //====================================================================//
         // Load Parameters
         $ObjectClass    = Splash::Object($Task->params->type);
-        $ObjectId       = $Task->params->id;
+        $ObjectId       = isset($Task->params->id) ? $Task->params->id : Null;
 
         //====================================================================//
         // Execute Requested Task

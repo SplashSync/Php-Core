@@ -85,7 +85,7 @@ class O06DeleteTest extends ObjectsCase {
         $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, []);
         //====================================================================//
         //      Request definition without Sending ObjectType  
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "id" => Null]);
+        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "id" => Null ]);
         //====================================================================//
         //      Request definition without Sending ObjectId  
         $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $ObjectType]);
@@ -117,7 +117,7 @@ class O06DeleteTest extends ObjectsCase {
         //====================================================================//
         //   Verify Test is Required   
         if ( !$this->VerifyTestIsAllowed($ObjectType) ) {
-            return True;
+            return False;
         }
         
         //====================================================================//

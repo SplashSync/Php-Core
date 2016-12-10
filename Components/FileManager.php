@@ -20,6 +20,7 @@
 namespace   Splash\Components;
 
 use Splash\Core\SplashCore      as Splash;
+use ArrayObject;
 
 //====================================================================//
 //   INCLUDES 
@@ -31,6 +32,70 @@ use Splash\Core\SplashCore      as Splash;
 
 class FileManager 
 {
+
+    /**
+     *      @abstract   Read a file from Splash Server
+     * 
+     *      @param      string      $file       File Identifier (Given by Splash Server)
+     *      @param      string      $md5        Local FileName 
+     * 
+     *      @return     array       $file       False if not found, else file contents array
+     */    
+    function GetFile($file,$md5)
+    {
+        //====================================================================//
+        // Stack Trace
+        Splash::Log()->Trace(__CLASS__,__FUNCTION__);  
+        
+        //====================================================================//
+        // PHPUNIT Exception => Look First in Local FileSystem  
+        //====================================================================//
+        if ( SPLASH_DEBUG ) {
+            $FilePath   = dirname(__DIR__) . "/Resources/files/"  . $file;
+            if ( is_file( $FilePath ) && ( md5_file( $FilePath ) == $md5 ) ) {
+                return $this->ReadFile(dirname($FilePath), basename($FilePath));
+            }
+            $ImgPath    = dirname(__DIR__) . "/Resources/img/"  . $file;
+            if ( is_file( $ImgPath ) && ( md5_file( $ImgPath ) == $md5 ) ) {
+                return $this->ReadFile(dirname($ImgPath), basename($ImgPath));
+            }
+        }
+        
+        //====================================================================//
+        // Initiate Tasks parameters array 
+        $params             = new ArrayObject(array(),  ArrayObject::ARRAY_AS_PROPS);
+        $params->file       = $file;     
+        $params->md5        = $md5;       
+        //====================================================================//
+        // Add Task to Ws Task List
+        Splash::Ws()->AddTask(SPL_F_GETFILE, $params, Splash::Trans("MsgSchRemoteReadFile",$file) );
+        //====================================================================//
+        // Execute Task
+        $Response   =   Splash::Ws()->Call(SPL_S_FILE);
+        //====================================================================//
+        // Analyze NuSOAP results
+        if ( !isset ($Response->result) || ($Response->result != True) ) {
+            return False;
+        }     
+
+        //====================================================================//
+        // Get Next Task Result 
+        if ( count($Response->tasks) ) {
+            //====================================================================//
+            // Shift Task Array 
+            if ( is_a($Response->tasks, "ArrayObject") ) {
+                $Task = array_shift ( $Response->tasks->getArrayCopy() );
+            } else {
+                $Task = array_shift ( $Response->tasks );
+            }
+            //====================================================================//
+            // Return Task Data 
+            return   isset($Task->data)?$Task->data:False;
+        }
+        return False;     
+    }    
+    
+
     
     /**
      *  @abstract   Check whether if a file exists or not
@@ -120,43 +185,34 @@ class FileManager
         }
         //====================================================================//
         // Assemble full Filename
-        $fullpath = $dir.$file;
-        //====================================================================//
-        // Check if file is readable
-        if (!is_readable($fullpath)) {
-            return Splash::Log()->Err("ErrFileReadable",$file);
-        }
+        $fullpath = $dir . "/" . $file;
         //====================================================================//
         // Check if folder exists
-        if (is_dir($dir)) {
-            //====================================================================//
-            // Check if file exists 
-            if (is_file($fullpath) && is_readable($fullpath) ) {
-                Splash::Log()->Deb("MsgFileExists",__FUNCTION__,$file);
-                //====================================================================//
-                // Open File 
-                $filehandle = fopen($fullpath, "rb");
-                if ($filehandle != FALSE) {
-                    //====================================================================//
-                    // Fill file Informations 
-                    $infos = array();
-                    $infos["filename"]     = $file;
-                    $infos["raw"]       = base64_encode(fread($filehandle, filesize($fullpath)));
-                    fclose($filehandle);
-                    $infos["md5"]       = md5_file ($fullpath);
-                    $infos["size"]      = filesize($fullpath);
-                    Splash::Log()->Deb("MsgFileRead",$file);
-                    return $infos;
-                } else {
-                    Splash::Log()->Err("ErrFileRead",$fullpath);
-                }
-            } else {
-                Splash::Log()->War("ErrFileReadable",__FUNCTION__,$fullpath);
-            }
-        } else {
-            Splash::Log()->War("ErrFileDirNoExists",__FUNCTION__,$dir);
+        if (!is_dir($dir)) {
+            return Splash::Log()->War("ErrFileDirNoExists",$dir);
         }
-        return False;
+        //====================================================================//
+        // Check if file exists 
+        if ( !is_file($fullpath) || !is_readable($fullpath) ) {
+            return  Splash::Log()->War("ErrFileReadable",$fullpath);
+        }
+        Splash::Log()->Deb("MsgFileExists",$file);
+        //====================================================================//
+        // Open File 
+        $filehandle = fopen($fullpath, "rb");
+        if ($filehandle == FALSE) {
+            return  Splash::Log()->Err("ErrFileRead",$fullpath);
+        }
+        //====================================================================//
+        // Fill file Informations 
+        $infos = array();
+        $infos["filename"]      = $file;
+        $infos["raw"]           = base64_encode(fread($filehandle, filesize($fullpath)));
+        fclose($filehandle);
+        $infos["md5"]           = md5_file ($fullpath);
+        $infos["size"]          = filesize($fullpath);
+        Splash::Log()->Deb("MsgFileRead",$file);
+        return $infos;
     }
 
     /**
@@ -310,6 +366,12 @@ class FileManager
         }
         return OSWS_KO;
     }
+    
+    
+    
+    
+    
+    
     
 }
 ?>

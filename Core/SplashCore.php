@@ -267,10 +267,6 @@ class SplashCore
     public static function File()
     {
         if (!isset(self::Core()->file)) {
-//            
-//            //====================================================================//
-//            // Include Class
-//            require_once("SplashFile.php");
             
             //====================================================================//
             // Initialize Tasks List

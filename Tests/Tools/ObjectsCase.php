@@ -90,7 +90,31 @@ class ObjectsCase extends BaseCase {
 //            "Objects"                   =>  array(),
         
     );
+
+    protected function loadLocalTestParameters()
+    {
+        //====================================================================//
+        // Safety Check
+        if ( is_null(Splash::Local()) || !method_exists(Splash::Local(), "TestParameters") ) {
+            return;
+        } 
+        //====================================================================//
+        // Read Local Parameters
+        $LocalTestSettings  =   Splash::Local()->TestParameters();
         
+        //====================================================================//
+        // Validate Local Parameters
+        if ( !Splash::Validate()->isValidLocalTestParameterArray($LocalTestSettings) ) {
+            return;
+        } 
+        //====================================================================//
+        // Import Local Parameters
+        foreach ($LocalTestSettings as $key => $value) {
+            $this->settings[$key]   =   $value;
+        }
+    }   
+    
+    
     protected function setUp()
     {
         //====================================================================//
@@ -100,6 +124,11 @@ class ObjectsCase extends BaseCase {
         //====================================================================//
         // FAKE SPLASH SERVER HOST URL
         Splash::Configuration()->WsHost = "No.Commit.allowed.not";
+        
+        //====================================================================//
+        // Load Module Local Configuration (In Safe Mode)
+        //====================================================================//
+        $this->loadLocalTestParameters();
     }       
     
     /**
@@ -120,7 +149,7 @@ class ObjectsCase extends BaseCase {
         $LastCommit = array_pop(Splash::$Commited);
         
         //====================================================================//
-        //   Check Object Type is OK
+        //   Check Object Action is OK
         $this->assertEquals( 
                 $LastCommit->action,
                 $Action, 
@@ -134,11 +163,38 @@ class ObjectsCase extends BaseCase {
                 "Change Commit => Object Type is wrong. (Expected " . $ObjectType . " / Given " . $LastCommit->type );
         
         //====================================================================//
-        //   Check Object Id is OK
-        $this->assertEquals( 
-                $LastCommit->id,
-                $ObjectId, 
-                "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id );
+        //   Check Object Id value Format
+        $this->assertTrue( 
+                is_scalar($LastCommit->id) || is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject"),
+                "Change Commit => Object Id Value is in wrong Format. (Expected String or Array of Strings. / Given " . print_r($LastCommit->id, True) );
+        
+        //====================================================================//
+        //   If Commited an Array of Ids
+        if ( is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject") ) {
+            //====================================================================//
+            //   Check each Object Ids
+            foreach ($LastCommit->id as $Id ) {
+                $this->assertTrue( 
+                        is_scalar($Id), 
+                        "Change Commit => Object Id Array Value is in wrong Format. (Expected String or Integer. / Given " . print_r($Id, True) );
+            }
+            //====================================================================//
+            //   Extract First Object Id
+            $FirstId = array_shift($LastCommit->id);
+            //====================================================================//
+            //   Verify First Object Id is OK
+            $this->assertEquals( 
+                    $FirstId,
+                    $ObjectId, 
+                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $FirstId );
+        } else {
+            //====================================================================//
+            //   Check Object Id is OK
+            $this->assertEquals( 
+                    $LastCommit->id,
+                    $ObjectId, 
+                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id );
+        }
         
         //====================================================================//
         //   Check Infos are Not Empty
@@ -1080,7 +1136,6 @@ class ObjectsCase extends BaseCase {
         // Normalize Data Blocks
         $this->Normalize($List1);
         $this->Normalize($List2);
-
         while ( !empty ($List1) )
         {
             //====================================================================//

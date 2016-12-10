@@ -11,7 +11,7 @@ use Splash\Core\SplashCore     as Splash;
  */
 class C01ClassesTest extends TestCase {
     
-    protected function onNotSuccessfulTest(Exception $e)
+    protected function onNotSuccessfulTest($e)
     {
         fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
         throw $e;

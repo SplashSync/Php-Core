@@ -454,6 +454,12 @@ class ObjectBase
     function Unlock($Identifier = "new")
     {
         //====================================================================//
+        // Verify Object Identifier is not Empty
+        if ( !$Identifier ) {
+            $Identifier = "new";
+        }
+        
+        //====================================================================//
         //  Verify Object Already Locked
         if ( !$this->isLocked($Identifier) )    { 
             return True; 

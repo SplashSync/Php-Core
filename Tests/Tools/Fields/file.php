@@ -81,7 +81,7 @@ class file
         //====================================================================//
         // Image Faker Parameters
         $i          = (int) mt_rand(0,count($Settings["Files"]) - 1);
-        $Dir        = dirname(dirname(__DIR__)) . "/files/";  
+        $Dir        = dirname(dirname(__DIR__)) . "/Resources/files/";  
         $File       = $Settings["Files"][$i];
         $FullPath   = $Dir . $File;
         $Name       = "Fake File " . $i;

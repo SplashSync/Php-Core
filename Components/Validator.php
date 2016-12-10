@@ -107,6 +107,21 @@ class Validator
         
     } 
 
+    /**
+    *   @abstract   Verify Local Test Parameters are Valid 
+    *  
+    *   @return     int         $result     0 if KO, 1 if OK
+    */
+    public function isValidLocalTestParameterArray($In) 
+    {   
+        //====================================================================//
+        // Verify Array Given
+        if ( !is_array( $In ) ) {
+            return Splash::Log()->Err( Splash::Trans("ErrorCfgNotAnArray",  get_class($In) ) );
+        }
+        return True;
+    } 
+    
 //====================================================================//
 // *******************************************************************//
 //  VALIDATE OBJECTS CLASSES & FUNCTIONS
