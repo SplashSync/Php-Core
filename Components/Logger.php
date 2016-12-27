@@ -506,6 +506,27 @@ class Logger
         
         $this->Deb("DebTraceMsg",$Class,$Fucntion); 
     }
+
+    /**
+     *  @abstract    Read & Store Outputs Buffer Contents in a warning message 
+     */
+    function FlushOuputBuffer()
+    {
+        
+        //====================================================================//
+        // Read the contents of the output buffer
+        $Contents = ob_get_contents();         
+        
+        //====================================================================//
+        // Clean (erase) the output buffer and turn off output buffering
+        ob_end_clean();                 
+
+        if ( $Contents ) {
+            $this->War("UnexOutputs" , $Contents);    
+            $this->War("UnexOutputsMsg");    
+        } 
+    }    
+
     
 //====================================================================//
 //  LOG FILE MANAGEMENT

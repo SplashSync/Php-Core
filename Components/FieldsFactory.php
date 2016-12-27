@@ -487,8 +487,8 @@ class FieldsFactory
     /**
      *  @abstract   Add Possible Choice to Current New Field Name (Translated)
      * 
-     *  @param      string      $Value      Possible Choice Value 
-     *  @param      string      $Desc       Choice Description for Display (Will Be Translated if Possible)
+     *  @param      string      $Value          Possible Choice Value 
+     *  @param      string      $Description    Choice Description for Display (Will Be Translated if Possible)
      * 
      *  @return     SplashFieldFactory
      */
