@@ -686,12 +686,18 @@ class SplashCore
         //====================================================================//
         // Scan Each File in Folder  
         foreach ($scan as $filename) {
+            //====================================================================//
+            // Verify Filename is a File (Not a Directory)
+            if (!is_file($path . "/" . $filename)) {
+                continue;
+            }
+            //====================================================================//
+            // Extract Class Name 
             $ClassName = pathinfo($path . "/" . $filename, PATHINFO_FILENAME );
-
             //====================================================================//
             // Verify ClassName is a Valid Object File
             if (self::Validate()->isValidObject($ClassName) == False) {
-                break;
+                continue;
             }
             $ObjectsList[] = $ClassName;
         }

@@ -75,8 +75,7 @@ class objectid
         
         //====================================================================//
         // Select an Object in Given List
-        $Index          = (int) mt_rand(0,count($ObjectsList) - 1);
-        $Item           = $ObjectsList[$Index];
+        $Item           = $ObjectsList[array_rand($ObjectsList,1)];
         
         if ( isset($Item["id"]) && !empty($Item["id"])) {
             //====================================================================//
@@ -84,23 +83,6 @@ class objectid
             return self::encodeIdField($Item["id"],$ObjectType);
         } 
         return Null;        
-                
-//        //====================================================================//
-//        // Verify Enough Parameters to Generate an Object Id
-//        if ( empty($ObjectType) 
-//                || !array_key_exists($ObjectType,$Settings["Objects"]) 
-//                || empty($Settings["Objects"][$ObjectType]) ) {
-//            return Null;
-//        } 
-//        $ObjectsList    =   $Settings["Objects"][$ObjectType];
-//        
-//        //====================================================================//
-//        // Select an Object in Given List
-//        $index          = (int) mt_rand(0,count($ObjectsList) - 1);
-//        
-//        //====================================================================//
-//        // Generate Object Id String
-//        return self::encodeIdField($ObjectsList[$index],$ObjectType);
     }     
     
     //==============================================================================

@@ -313,6 +313,7 @@ class BaseCase extends TestCase {
         //   Execute Action From Splash Server to Module  
         $Response   =   SplashServer::$Service(Splash::Configuration()->WsIdentifier, $Request);
         
+        
         //====================================================================//
         //   Check Response 
         $Data       =   $this->CheckResponse( $Response ); 
@@ -324,6 +325,10 @@ class BaseCase extends TestCase {
         }
         $Task = array_shift($Data->tasks);
 
+        //====================================================================//
+        //   Turn On Output Buffering Again  
+        ob_start();
+        
         return $Task["data"];
     }
     
@@ -365,6 +370,10 @@ class BaseCase extends TestCase {
         }
         $Task = array_shift($Data->tasks);
 
+        //====================================================================//
+        //   Turn On Output Buffering Again  
+        ob_start();
+        
         return $Task["data"];
     }
     

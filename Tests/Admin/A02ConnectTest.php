@@ -49,6 +49,9 @@ class A02ConnectTest extends BaseCase {
         $WrongId    =   SplashServer::Connect( rand( 1E6, 1E10 ), $Request);
         $this->assertEmpty( $WrongId    , "Connection with Wrong Server Id MUST be rejected => Empty Response");
         
+        //====================================================================//
+        //   Turn On Output Buffering Again  
+        ob_start();        
     }
     
     public function testConnectServerWrongDataAction()

@@ -227,7 +227,7 @@ class O07SetTest extends ObjectsCase {
         
         //====================================================================//
         //   Verify Object Change Was Commited
-        $this->assertIsLastCommited($Action,  $ObjectType , $ObjectId);
+        $this->assertIsFirstCommited($Action,  $ObjectType , $ObjectId);
         
         //====================================================================//
         //   Read Object Data

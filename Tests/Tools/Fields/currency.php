@@ -9,7 +9,7 @@ namespace Splash\Tests\Tools\Fields;
  * 
  * @see ISO 4217 : http://www.iso.org/iso/home/standards/currency_codes.htm
  */
-class currency
+class currency extends varchar
 {
     //==============================================================================
     //      Structural Data  
@@ -48,6 +48,6 @@ class currency
     static public function fake($Settings)
     {
         return  !empty($Settings["Currency"])?$Settings["Currency"]:"EUR";
-    }   
+    }     
     
 }

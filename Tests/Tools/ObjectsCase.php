@@ -149,18 +149,18 @@ class ObjectsCase extends BaseCase {
         $LastCommit = array_pop(Splash::$Commited);
         
         //====================================================================//
-        //   Check Object Action is OK
-        $this->assertEquals( 
-                $LastCommit->action,
-                $Action, 
-                "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action );
-        
-        //====================================================================//
         //   Check Object Type is OK
         $this->assertEquals( 
                 $LastCommit->type,
                 $ObjectType, 
                 "Change Commit => Object Type is wrong. (Expected " . $ObjectType . " / Given " . $LastCommit->type );
+        
+        //====================================================================//
+        //   Check Object Action is OK
+        $this->assertEquals( 
+                $LastCommit->action,
+                $Action, 
+                "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action );
         
         //====================================================================//
         //   Check Object Id value Format
@@ -203,6 +203,77 @@ class ObjectsCase extends BaseCase {
         
     }
 
+    /**
+     * @abstract        Verify First Commit is Valid and Conform to Expected 
+     * 
+     * @param string    $Action         Expected Action
+     * @param string    $ObjectType     Expected Object Type
+     * @param string    $ObjectId       Expected Object Id
+     */    
+    public function assertIsFirstCommited($Action,  $ObjectType , $ObjectId)
+    {
+        //====================================================================//
+        //   Verify Object Change Was Commited
+        $this->assertNotEmpty( Splash::$Commited                    , "No Object Change Commited by your Module. Please check your triggers.");
+        
+        //====================================================================//
+        //   Get Last Commited
+        $LastCommit = array_shift(Splash::$Commited);
+        
+        //====================================================================//
+        //   Check Object Type is OK
+        $this->assertEquals( 
+                $LastCommit->type,
+                $ObjectType, 
+                "Change Commit => Object Type is wrong. (Expected " . $ObjectType . " / Given " . $LastCommit->type );
+        
+        //====================================================================//
+        //   Check Object Action is OK
+        $this->assertEquals( 
+                $LastCommit->action,
+                $Action, 
+                "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action );
+        
+        //====================================================================//
+        //   Check Object Id value Format
+        $this->assertTrue( 
+                is_scalar($LastCommit->id) || is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject"),
+                "Change Commit => Object Id Value is in wrong Format. (Expected String or Array of Strings. / Given " . print_r($LastCommit->id, True) );
+        
+        //====================================================================//
+        //   If Commited an Array of Ids
+        if ( is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject") ) {
+            //====================================================================//
+            //   Check each Object Ids
+            foreach ($LastCommit->id as $Id ) {
+                $this->assertTrue( 
+                        is_scalar($Id), 
+                        "Change Commit => Object Id Array Value is in wrong Format. (Expected String or Integer. / Given " . print_r($Id, True) );
+            }
+            //====================================================================//
+            //   Extract First Object Id
+            $FirstId = array_shift($LastCommit->id);
+            //====================================================================//
+            //   Verify First Object Id is OK
+            $this->assertEquals( 
+                    $FirstId,
+                    $ObjectId, 
+                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $FirstId );
+        } else {
+            //====================================================================//
+            //   Check Object Id is OK
+            $this->assertEquals( 
+                    $LastCommit->id,
+                    $ObjectId, 
+                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id );
+        }
+        
+        //====================================================================//
+        //   Check Infos are Not Empty
+        $this->assertNotEmpty( $LastCommit->user                    , "Change Commit => User Name is Empty");
+        $this->assertNotEmpty( $LastCommit->comment                 , "Change Commit => Action Comment is Empty");
+        
+    }    
     
     //==============================================================================
     //      VALIDATION FUNCTIONS
@@ -434,10 +505,18 @@ class ObjectsCase extends BaseCase {
     {
         $Result = array();
         
+        //====================================================================//
+        //   For Each Object Type  
         foreach (Splash::Objects() as $ObjectType) {
+            //====================================================================//
+            //   If Object Type Is Disabled Type  =>> Skip
+            if ( Splash::Object($ObjectType)->getIsDisabled() ) {
+                continue;
+            } 
+            //====================================================================//
+            //   Add Object Type to List
             $Result[] = array($ObjectType);            
         }
-        
         return $Result;
     }
 
@@ -448,6 +527,11 @@ class ObjectsCase extends BaseCase {
         //====================================================================//
         //   For Each Object Type  
         foreach (Splash::Objects() as $ObjectType) {
+            //====================================================================//
+            //   If Object Type Is Disabled Type  =>> Skip
+            if ( Splash::Object($ObjectType)->getIsDisabled() ) {
+                continue;
+            } 
             //====================================================================//
             //   For Each Field Type  
             foreach (Splash::Object($ObjectType)->Fields() as $Field) {                
