@@ -107,8 +107,8 @@ class Webservice
         $this->key  =   Splash::Configuration()->WsEncryptionKey;
         
         //====================================================================//
-        // If Debug Mode => Allow Overide of Server Host Address
-        if ( (SPLASH_DEBUG) && !empty(Splash::Configuration()->WsHost) ) {
+        // If Another Host is Defined => Allow Overide of Server Host Address
+        if ( !empty(Splash::Configuration()->WsHost) ) {
             $this->host     =   Splash::Configuration()->WsHost;
         }
 
