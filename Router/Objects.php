@@ -177,7 +177,7 @@ class Objects
                 break;
         }  
         //====================================================================//
-        // Task results prot treatment
+        // Task results post treatment
         if ( $Response->data != False )  {   
             $Response->result = True; 
         }
