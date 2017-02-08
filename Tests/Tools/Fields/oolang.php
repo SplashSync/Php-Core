@@ -3,24 +3,24 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Currency Field : ISO Currency Code  
+ * @abstract    Language Field : ISO Language Code
  * 
- * @example     USD, EUR.
+ * @example     en_US, fr_FR, fr_BE
  * 
- * @see ISO 4217 : http://www.iso.org/iso/home/standards/currency_codes.htm
+ * @see         ISO 639-1 : http://www.iso.org/iso/language_codes
  */
-class currency extends varchar
+class oolang
 {
     //==============================================================================
     //      Structural Data  
     //==============================================================================
 
-    const FORMAT        =   'Currency';
+    const FORMAT        =   'Lang';
     
     //==============================================================================
     //      DATA VALIDATION  
     //==============================================================================   
-
+    
     /**
      * Verify given Raw Data is Valid
      *
@@ -33,9 +33,10 @@ class currency extends varchar
         if ( !empty($Data) && !is_string($Data) ) {
             return "Field  Data is not a String.";
         }
+        
         return True;
     }
-    
+        
     //==============================================================================
     //      FAKE DATA GENERATOR  
     //==============================================================================   
@@ -47,7 +48,22 @@ class currency extends varchar
      */
     static public function fake($Settings)
     {
-        return  !empty($Settings["Currency"])?$Settings["Currency"]:"EUR";
-    }     
+        //==============================================================================
+        //      Use Formater Settings  
+        if (!empty($Settings["Langs"])) {
+            
+            //==============================================================================
+            //      Select Random Language  
+            $index = rand( 0 , count($Settings["Langs"]) -1 );
+            //==============================================================================
+            //      Return Language Code  
+            return $Settings["Langs"][$index];
+            
+        }
+        
+        //==============================================================================
+        //      Return Language Code  
+        return (mt_rand()%2)?"en_US":"fr_FR";
+    }    
     
 }

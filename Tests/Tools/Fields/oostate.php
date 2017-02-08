@@ -3,19 +3,19 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Language Field : ISO Language Code
+ * @abstract    State Field : ISO State Code 
  * 
- * @example     en_US, fr_FR, fr_BE
+ * @example     US-CA : California
  * 
- * @see         ISO 639-1 : http://www.iso.org/iso/language_codes
+ * @see         ISO 3166 Standard : www.iso.org/iso/country_codes
  */
-class lang
+class oostate extends oovarchar
 {
     //==============================================================================
     //      Structural Data  
     //==============================================================================
 
-    const FORMAT        =   'Lang';
+    const FORMAT        =   'State';
     
     //==============================================================================
     //      DATA VALIDATION  
@@ -46,24 +46,9 @@ class lang
      *
      * @return mixed   
      */
-    static public function fake($Settings)
+    static public function fake()
     {
-        //==============================================================================
-        //      Use Formater Settings  
-        if (!empty($Settings["Langs"])) {
-            
-            //==============================================================================
-            //      Select Random Language  
-            $index = rand( 0 , count($Settings["Langs"]) -1 );
-            //==============================================================================
-            //      Return Language Code  
-            return $Settings["Langs"][$index];
-            
-        }
-        
-        //==============================================================================
-        //      Return Language Code  
-        return (mt_rand()%2)?"en_US":"fr_FR";
+        return (mt_rand()%2)?"CA":"FL";
     }    
     
 }

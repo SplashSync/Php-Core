@@ -7,9 +7,6 @@ use PHPUnit\Framework\TestCase;
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
 
-if ( !defined("SPLASH_DEBUG") ) {
-    define("SPLASH_DEBUG" , True);
-} 
 if ( !defined("SPLASH_SERVER_MODE") ) {
     define("SPLASH_SERVER_MODE", True);
 } 
@@ -152,6 +149,9 @@ class BaseCase extends TestCase {
         
         //====================================================================//
         // CHECK RESPONSE RESULT
+        if ( empty($Data->result) ) {
+            print_r($Data);
+        }
         $this->assertNotEmpty( $Data->result              , "Request Result is not True, Why??");
         return $Data;
     }

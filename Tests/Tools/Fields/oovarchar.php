@@ -2,17 +2,20 @@
 
 namespace Splash\Tests\Tools\Fields;
 
+
 /**
- * @abstract    Double Field : Float Value as Text  
+ * @abstract    Varchar Field : Basic text 
  */
-class double
+class oovarchar 
 {
+
     //==============================================================================
     //      Structural Data  
     //==============================================================================
 
-    protected $FORMAT        =   'Double';
-    
+    protected $FORMAT           =   'Varchar';
+    static    $IS_SCALAR        =   True;
+
     //==============================================================================
     //      DATA VALIDATION  
     //==============================================================================   
@@ -26,17 +29,10 @@ class double
      */
     static public function validate($Data)
     {
-        //==============================================================================
-        //      Verify Data is a Double or Zero 
-        if (is_double($Data) || ($Data == 0) ) {
-            return True;
+        if ( !empty($Data) && !is_string($Data) ) {
+            return "Field  Data is not a String.";
         }
-        //==============================================================================
-        //      Verify Data is a Double as String 
-        elseif (is_string($Data) && (is_double(floatval($Data))) ) {
-            return True;
-        }        
-        return "Field Data is not Double or Float Value.";
+        return True;
     }
     
     //==============================================================================
@@ -50,7 +46,7 @@ class double
      */
     static public function fake()
     {
-        return (double) mt_rand(1,1000) / 10;
+        return preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900,mt_getrandmax ()/10)));
     }
     
     //==============================================================================
@@ -69,11 +65,14 @@ class double
      */
     public static function compare($Source,$Target) {
         //====================================================================//
-        // Compare Float Values
-        if ( abs( $Source - $Target) > 1E-6 ) {
-            return False;
-        }
-        return True;
-    }    
+        //  Both Texts Are Empty
+        if ( empty($Source) && empty($Target) ) {
+            return True;
+        } 
+        //====================================================================//
+        //  Raw text Compare
+        return ( $Source === $Target )?True:False;
+    }
     
- }
+    
+}

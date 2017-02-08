@@ -3,22 +3,24 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Phone Field : Define a Contact Phone Number
+ * @abstract    Contry Field : ISO Country Code (ISO 3166-1 alpha-2)
+ * 
+ * @example     US, FR, DE
+ * 
+ * @see         ISO 3166 : http://www.iso.org/iso/home/standards/country_codes.htm
  */
-class phone extends varchar
+class oocountry extends oovarchar
 {
     //==============================================================================
     //      Structural Data  
     //==============================================================================
 
-    protected   $FORMAT         =   'Phone';
-    static      $IS_SCALAR      =   True;
-    
+    protected $FORMAT        =   'Country';
     
     //==============================================================================
     //      DATA VALIDATION  
     //==============================================================================   
-
+    
     /**
      * Verify given Raw Data is Valid
      *
@@ -28,27 +30,13 @@ class phone extends varchar
      */
     static public function validate($Data)
     {
-        //==============================================================================
-        //      Verify Data is not Empty
-        if ( empty($Data) ) {
-            return True;
-        }
-
-        //==============================================================================
-        //      Verify Data is a String
-        if ( !is_string($Data) ) {
-            return "Phone Number Field Data is not a String.";
+        if ( !empty($Data) && !is_string($Data) ) {
+            return "Field  Data is not a String.";
         }
         
-        //==============================================================================
-        //      Verify Data is a Phone Number
-        if ( preg_match('/^[+0-9. ()-]*$/', $Data) ) {
-            return True;
-        }
-
-        return "Field Data is not a Phone Number.";
-    }   
-    
+        return True;
+    }
+        
     //==============================================================================
     //      FAKE DATA GENERATOR  
     //==============================================================================   
@@ -60,7 +48,7 @@ class phone extends varchar
      */
     static public function fake()
     {
-        return preg_replace('/^[+0-9. ()-]*$/', '', mt_rand(12345678,123456789));
-    }        
+        return (mt_rand()%2)?"FR":"US";
+    }    
     
 }

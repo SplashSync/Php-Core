@@ -3,24 +3,22 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    State Field : ISO State Code 
- * 
- * @example     US-CA : California
- * 
- * @see         ISO 3166 Standard : www.iso.org/iso/country_codes
+ * @abstract    Phone Field : Define a Contact Phone Number
  */
-class state extends varchar
+class oophone extends oovarchar
 {
     //==============================================================================
     //      Structural Data  
     //==============================================================================
 
-    const FORMAT        =   'State';
+    protected   $FORMAT         =   'Phone';
+    static      $IS_SCALAR      =   True;
+    
     
     //==============================================================================
     //      DATA VALIDATION  
     //==============================================================================   
-    
+
     /**
      * Verify given Raw Data is Valid
      *
@@ -30,13 +28,27 @@ class state extends varchar
      */
     static public function validate($Data)
     {
-        if ( !empty($Data) && !is_string($Data) ) {
-            return "Field  Data is not a String.";
+        //==============================================================================
+        //      Verify Data is not Empty
+        if ( empty($Data) ) {
+            return True;
+        }
+
+        //==============================================================================
+        //      Verify Data is a String
+        if ( !is_string($Data) ) {
+            return "Phone Number Field Data is not a String.";
         }
         
-        return True;
-    }
-        
+        //==============================================================================
+        //      Verify Data is a Phone Number
+        if ( preg_match('/^[+0-9. ()-]*$/', $Data) ) {
+            return True;
+        }
+
+        return "Field Data is not a Phone Number.";
+    }   
+    
     //==============================================================================
     //      FAKE DATA GENERATOR  
     //==============================================================================   
@@ -48,7 +60,7 @@ class state extends varchar
      */
     static public function fake()
     {
-        return (mt_rand()%2)?"CA":"FL";
-    }    
+        return preg_replace('/^[+0-9. ()-]*$/', '', mt_rand(12345678,123456789));
+    }        
     
 }

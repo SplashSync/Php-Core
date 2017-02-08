@@ -6,10 +6,6 @@ use Splash\Client\Splash;
 use Splash\Server\SplashServer;
 use Splash\Tests\Tools\Fields\objectid as ObjectId;
 
-if ( !defined("SPLASH_DEBUG") ) {
-    define("SPLASH_DEBUG" , True);
-} 
-
 /**
  * @abstract    Splash Test Tools - Objects Test Case Base Class
  *
@@ -21,7 +17,7 @@ class ObjectsCase extends BaseCase {
      * Fields Classes Name Prefix
      * @var string
      */
-    const       CLASS_PREFIX        =   'Splash\Tests\Tools\Fields\\';
+    const       CLASS_PREFIX        =   'Splash\Tests\Tools\Fields\oo';
     
     /**
      * Formater Fake Field Generator Options

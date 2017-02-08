@@ -3,18 +3,20 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Text Field : Long Text Data Block
+ * @abstract    Currency Field : ISO Currency Code  
+ * 
+ * @example     USD, EUR.
+ * 
+ * @see ISO 4217 : http://www.iso.org/iso/home/standards/currency_codes.htm
  */
-class text
+class oocurrency extends oovarchar
 {
-
     //==============================================================================
     //      Structural Data  
     //==============================================================================
 
-    protected $FORMAT        =   'Text';
-    static    $IS_SCALAR     =   True;
-
+    const FORMAT        =   'Currency';
+    
     //==============================================================================
     //      DATA VALIDATION  
     //==============================================================================   
@@ -31,7 +33,6 @@ class text
         if ( !empty($Data) && !is_string($Data) ) {
             return "Field  Data is not a String.";
         }
-        
         return True;
     }
     
@@ -44,9 +45,9 @@ class text
      *
      * @return mixed   
      */
-    static public function fake()
+    static public function fake($Settings)
     {
-        return preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(1000,mt_getrandmax ()/10)));
-    }
+        return  !empty($Settings["Currency"])?$Settings["Currency"]:"EUR";
+    }     
     
 }

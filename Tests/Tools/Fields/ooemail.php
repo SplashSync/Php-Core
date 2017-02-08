@@ -3,17 +3,17 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Bool Field : Basic Boolean
+ * @abstract    Email Field : Standard Email Address
  */
-class bool
+class ooemail extends oovarchar
 {
-    
     //==============================================================================
     //      Structural Data  
     //==============================================================================
 
-    protected $FORMAT        =   'Bool';
-
+    protected   $FORMAT         =   'Email';
+    static      $IS_SCALAR      =   True;
+    
     //==============================================================================
     //      DATA VALIDATION  
     //==============================================================================   
@@ -34,18 +34,18 @@ class bool
         }
 
         //==============================================================================
-        //      Verify Data is a Bool Type
-        if (is_bool($Data) ) {
-            return True;
+        //      Verify Data is a String
+        if ( !empty($Data) && !is_string($Data) ) {
+            return "Field  Data is not a String.";
         }
 
         //==============================================================================
-        //      Verify Data is an Int as Bool
-        if ( ( $Data === 0 ) || ( $Data === 1 ) || ( $Data === "0" )|| ( $Data === "1" ) ) {
-            return True;
+        //      Verify Data is an Email Address
+        if (!filter_var($Data, FILTER_VALIDATE_EMAIL) !== False)   {   
+            return "Field Data is not an Email Address";
         }
         
-        return "Field Data is not a Boolean.";
+        return True;
     }    
     
     //==============================================================================
@@ -59,24 +59,11 @@ class bool
      */
     static public function fake()
     {
-        return (mt_rand()%2)?True:False;
-    }
-    
-    /**
-     * Compare Two Data Block to See if similar (Update Required)
-     * 
-     * !important : Target Data is always validated before compare
-     * 
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
-     */
-    public static function compare($Source,$Target) {
-        //====================================================================//
-        //  Raw text Compare
-        return ( $Source == $Target )?True:False;
-    }
-    
-    
+        $name   = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand()));
+        $domain = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(100,1000)));
+//        $ext    = preg_replace('/[^A-Za-z\-]/', '', str_pad( base64_encode(mt_rand(100,1000)) , 3) );
+        $ext    = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(10,100)));
+        return $name . "@" . $domain . "." . $ext;        
+    }    
+     
 }

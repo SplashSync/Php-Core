@@ -5,7 +5,7 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * @abstract    Integer Field
  */
-class int
+class ooint
 {
     //==============================================================================
     //      Structural Data  

@@ -1,9 +1,8 @@
 <?php
-
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Multilangual Text Field : Multilangual Short Text Array 
+ * @abstract    Multilangual Text Field : Multilangual Long Text Array 
  * 
 //====================================================================//
 // Sample :
@@ -12,13 +11,13 @@ namespace Splash\Tests\Tools\Fields;
 //====================================================================//
  * 
  */
-class mvarchar
+class oomtext
 {
     //==============================================================================
     //      Structural Data  
     //==============================================================================
 
-    protected $FORMAT        =   'MVarchar';
+    protected $FORMAT        =   'MText';
     
     //==============================================================================
     //      DATA VALIDATION  
@@ -74,7 +73,7 @@ class mvarchar
             $fake[$lang] = preg_replace('/[^A-Za-z0-9\-]/', '', utf8_encode(mt_rand()));
         }
         return $fake;
-    }    
+    } 
     
     //==============================================================================
     //      DATA COMPARATOR (OPTIONNAL)  

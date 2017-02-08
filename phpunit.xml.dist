@@ -46,6 +46,9 @@
 
     <php>
         <server name="SERVER_NAME" value="localhost" />
+        
+        <!-- UNCOMMENT TO ACTIVATE DEBUG -->
+        <!--<const name="SPLASH_DEBUG" value="true" />-->
     </php>
     
 </phpunit>

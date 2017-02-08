@@ -3,24 +3,22 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Contry Field : ISO Country Code (ISO 3166-1 alpha-2)
- * 
- * @example     US, FR, DE
- * 
- * @see         ISO 3166 : http://www.iso.org/iso/home/standards/country_codes.htm
+ * @abstract    Text Field : Long Text Data Block
  */
-class country extends varchar
+class ootext
 {
+
     //==============================================================================
     //      Structural Data  
     //==============================================================================
 
-    protected $FORMAT        =   'Country';
-    
+    protected $FORMAT        =   'Text';
+    static    $IS_SCALAR     =   True;
+
     //==============================================================================
     //      DATA VALIDATION  
     //==============================================================================   
-    
+
     /**
      * Verify given Raw Data is Valid
      *
@@ -36,7 +34,7 @@ class country extends varchar
         
         return True;
     }
-        
+    
     //==============================================================================
     //      FAKE DATA GENERATOR  
     //==============================================================================   
@@ -48,7 +46,7 @@ class country extends varchar
      */
     static public function fake()
     {
-        return (mt_rand()%2)?"FR":"US";
-    }    
+        return preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(1000,mt_getrandmax ()/10)));
+    }
     
 }

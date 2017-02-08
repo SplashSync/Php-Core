@@ -7,7 +7,7 @@ use Splash\Client\Splash;
 /**
  * @abstract    Object ID Field : price definition Array 
  */
-class objectid
+class ooobjectid
 {
     //==============================================================================
     //      Structural Data  
