@@ -439,6 +439,12 @@ class SplashCore
     public static function Widget($WidgetType)
     {
         //====================================================================//
+        // Check if Overriding Functions Exist
+        if ( self::Validate()->isValidLocalOverride("Widget")) {
+            return self::Local()->Widget($WidgetType);                
+        }        
+        
+        //====================================================================//
         // First Access to Local Objects
         if (!isset(self::Core()->widgets)) {
             //====================================================================//
@@ -667,6 +673,12 @@ class SplashCore
      */
     public static function Objects()
     {
+        //====================================================================//
+        // Check if Overriding Functions Exist
+        if ( self::Validate()->isValidLocalOverride("Objects")) {
+            return self::Local()->Objects();                
+        }      
+        
         $ObjectsList = array();
         
         //====================================================================//
@@ -745,6 +757,12 @@ class SplashCore
      */
     public static function Widgets()
     {
+        //====================================================================//
+        // Check if Overriding Functions Exist
+        if ( self::Validate()->isValidLocalOverride("Widgets")) {
+            return self::Local()->Widgets();                
+        }    
+        
         $WidgetsList = array();
         
         //====================================================================//
