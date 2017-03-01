@@ -328,7 +328,7 @@ class ObjectBase
     /**
      *  @abstract   Get Description Array for requested Object Type
      * 
-     *  @return     bool
+     *  @return     array
      */    
     public function Description()
     {
@@ -488,7 +488,7 @@ class ObjectBase
      * 
      *      @return     string      
      */
-    protected static function ObjectId_Encode($ObjectType,$Identifier)
+    public static function ObjectId_Encode($ObjectType,$Identifier)
     {
         //====================================================================//
         // Safety Checks
@@ -507,7 +507,7 @@ class ObjectBase
      * 
      *      @return     string
      */
-    protected static function ObjectId_DecodeId($ObjectId)
+    public static function ObjectId_DecodeId($ObjectId)
     {
         //====================================================================//
         // Safety Checks
@@ -533,7 +533,7 @@ class ObjectBase
      * 
      *      @return     string
      */
-    protected static function ObjectId_DecodeType($ObjectId)
+    public static function ObjectId_DecodeType($ObjectId)
     {
         //====================================================================//
         // Safety Checks

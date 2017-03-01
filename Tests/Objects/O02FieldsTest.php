@@ -1,8 +1,9 @@
 <?php
+namespace Splash\Tests\Objects;
 
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Client\Splash;
-//use ArrayObject;
+use ArrayObject;
 
 /**
  * @abstract    Objects Test Suite - Fields List Verifications

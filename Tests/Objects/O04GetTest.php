@@ -1,15 +1,16 @@
 <?php
+namespace Splash\Tests\Objects;
 
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Client\Splash;
-//use ArrayObject;
+use ArrayObject;
 
 /**
  * @abstract    Objects Test Suite - Object Reading Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class O04getTest extends ObjectsCase {
+class O04GetTest extends ObjectsCase {
     
 
     /**

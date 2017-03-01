@@ -1,4 +1,5 @@
 <?php
+namespace Splash\Tests\Admin;
 
 use Splash\Tests\Tools\BaseCase;
 

@@ -1,4 +1,5 @@
 <?php
+namespace Splash\Tests\Core;
 
 use PHPUnit\Framework\TestCase;
 
@@ -17,10 +18,20 @@ class C01ClassesTest extends TestCase {
         throw $e;
     }    
     
-    public function testDummy()
+    /**
+     * @abstract    Stop All Supervisor & Worker Process
+     */    
+    public function testDisplayLogo()
     {
+        echo PHP_EOL;
+        echo " ______     ______   __         ______     ______     __  __    " . PHP_EOL;
+        echo "/\  ___\   /\  == \ /\ \       /\  __ \   /\  ___\   /\ \_\ \   " . PHP_EOL;
+        echo "\ \___  \  \ \  _-/ \ \ \____  \ \  __ \  \ \___  \  \ \  __ \  " . PHP_EOL;
+        echo " \/\_____\  \ \_\    \ \_____\  \ \_\ \_\  \/\_____\  \ \_\ \_\ " . PHP_EOL;
+        echo "  \/_____/   \/_/     \/_____/   \/_/\/_/   \/_____/   \/_/\/_/ " . PHP_EOL;
+        echo "                                                                " . PHP_EOL;
         $this->assertTrue(True);
-    }
+    }    
 
     public function testSplashCoreClass()
     {

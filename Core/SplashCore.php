@@ -439,16 +439,10 @@ class SplashCore
     public static function Widget($WidgetType)
     {
         //====================================================================//
-        // Check if Overriding Functions Exist
-        if ( self::Validate()->isValidLocalOverride("Widget")) {
-            return self::Local()->Widget($WidgetType);                
-        }        
-        
-        //====================================================================//
         // First Access to Local Objects
         if (!isset(self::Core()->widgets)) {
             //====================================================================//
-            // Initialize Local Objects Class Array
+            // Initialize Local Widget Class Array
             self::Core()->widgets = Array();
         }
         
@@ -459,15 +453,24 @@ class SplashCore
         }
 
         //====================================================================//
-        // Verify if Object Class is Valid
+        // Verify if Widget Class is Valid
         if ( !self::Validate()->isValidWidget($WidgetType) ) {
             return Null;
         }
         
         //====================================================================//
-        // Initialize Class
-        $ClassName = SPLASH_CLASS_PREFIX . "\Widgets\\" . $WidgetType;
-        self::Core()->widgets[$WidgetType]        = new $ClassName();
+        // Check if Widget Manager is Overriden
+        if ( self::Validate()->isValidLocalOverride("Object")) {
+            //====================================================================//
+            // Initialize Local Widget Manager
+            self::Core()->widgets[$WidgetType]      = self::Local()->Widget($WidgetType);
+        } else {
+            //====================================================================//
+            // Initialize Class
+            $ClassName = SPLASH_CLASS_PREFIX . "\Widgets\\" . $WidgetType;
+            self::Core()->widgets[$WidgetType]      = new $ClassName();
+        }        
+        
         
         //====================================================================//
         //  Load Translation File
@@ -495,9 +498,9 @@ class SplashCore
         }
         //====================================================================//
         // Clear Module Local Core Class
-        if (isset(self::Core()->localcore)) {
-            unset(self::Core()->localcore);             
-        }
+//        if (isset(self::Core()->localcore)) {
+//            unset(self::Core()->localcore);             
+//        }
         //====================================================================//
         // Clear Module Local Objects Classes
         if (isset(self::Core()->objects)) {

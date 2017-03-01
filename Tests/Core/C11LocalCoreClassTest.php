@@ -1,8 +1,12 @@
 <?php
+namespace Splash\Tests\Core;
 
 use PHPUnit\Framework\TestCase;
 
 use Splash\Core\SplashCore     as Splash;
+
+
+use ArrayObject;
 
 /**
  * @abstract    Core Test Suite - Module's Local Class Basics Verifications

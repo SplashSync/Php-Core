@@ -4,7 +4,7 @@ namespace Splash\Tests\Tools;
 
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
-use Splash\Tests\Tools\Fields\objectid as ObjectId;
+use Splash\Tests\Tools\Fields\ooobjectid as ObjectId;
 
 /**
  * @abstract    Splash Test Tools - Objects Test Case Base Class

@@ -175,7 +175,7 @@ class Splash extends SplashCore
 
         //====================================================================//
         // Add This Commit to Session Logs
-        self::$Commited[] = $params;
+        static::$Commited[] = $params;
         
         //====================================================================//
         // Verify this Object is Locked ==> No Action on this Node

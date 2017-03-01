@@ -1,4 +1,5 @@
 <?php
+namespace Splash\Tests\Core;
 
 use PHPUnit\Framework\TestCase;
 

@@ -1,8 +1,11 @@
 <?php
 
+namespace Splash\Tests\Admin;
+
 use Splash\Tests\Tools\BaseCase;
 
 use Splash\Client\Splash;
+use ArrayObject;
 
 /**
  * @abstract    Admin Test Suite - Get Objects List Client Verifications
