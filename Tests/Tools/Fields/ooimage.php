@@ -95,7 +95,7 @@ class ooimage
         $Dir        = dirname(dirname(dirname(__DIR__))) . "/Resources/img/";  
         $File       = $Settings["Images"][$i];
         $FullPath   = $Dir . $File;
-        $Name       = "Fake Image " . $i;
+        $Name       = "Fake Image " . substr(preg_replace('/[^A-Za-z0-9\-]/', '', utf8_encode(mt_rand())), 0, 3);
         
         //====================================================================//
         // Build Image Array

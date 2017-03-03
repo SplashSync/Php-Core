@@ -283,7 +283,7 @@ class FileManager
         $fullpath = $dir.$file;
         //====================================================================//
         // Check if folder exists or create it
-        if (!is_dir($dir)) {    mkdir($dir,0777,TRUE);    }
+        if (!is_dir($dir)) {    mkdir($dir,0775,TRUE);    }
         //====================================================================//
         // Check if folder exists
         if (is_dir($dir)) {
