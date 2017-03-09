@@ -1,6 +1,6 @@
 <?php
 
-namespace Splash\Tests\Admin;
+namespace Splash\Tests\WsAdmin;
 
 use Splash\Tests\Tools\BaseCase;
 
@@ -15,6 +15,17 @@ use Splash\Server\SplashServer;
  */
 class A02ConnectTest extends BaseCase {
     
+    protected function setUp()
+    {
+        //====================================================================//
+        // BOOT or REBOOT MODULE
+        Splash::Reboot();
+        
+        //====================================================================//
+        // FAKE SPLASH SERVER HOST URL
+        Splash::Configuration()->WsHost = $this->getLocalServerSoapUrl();        
+        Splash::Ws()->Setup();
+    }       
     
     public function testConnectClientAction()
     {

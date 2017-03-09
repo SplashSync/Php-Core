@@ -32,6 +32,38 @@ class BaseCase extends TestCase {
     }    
 
     /**
+     * @abstract        GENERATE FAKE SPLASH SERVER HOST URL 
+     * 
+     * @see             SERVER_NAME parameter that must be defined in PhpUnit Configuration File
+     * 
+     * @return string   Local Server Soap Url
+     */   
+    public function getLocalServerSoapUrl()
+    {
+        //====================================================================//
+        // Get ServerInfos from WebService Componant
+        $Infos = Splash::Ws()->getServerInfos();
+        
+        //====================================================================//
+        //   SAFETY CHECK 
+        //====================================================================//
+
+        //====================================================================//
+        //   Verify ServerPath is  Not Empty
+        $this->assertNotEmpty( $Infos["ServerPath"]         , "Splash Core Module was unable to detect your Soap root Server Path. Verify you do not overload 'ServerPath' parameter in your local confirguration.");
+        //====================================================================//
+        //   Verify ServerPath is  Not Empty
+        $this->assertTrue( isset($_SERVER['SERVER_NAME'])   , "'SERVER_NAME' not defined in your PhpUnit XML configuration. Please define '<server name=\"SERVER_NAME\" value=\"http://localhost/Path/to/Your/Server\"/>'");
+        $this->assertNotEmpty( $_SERVER['SERVER_NAME']      , "'SERVER_NAME' not defined in your PhpUnit XML configuration. Please define '<server name=\"SERVER_NAME\" value=\"http://localhost/Path/to/Your/Server\"/>'");
+        
+        //====================================================================//
+        // GENERATE FAKE SPLASH SERVER HOST URL 
+        $SoapUrl    =    $_SERVER['SERVER_NAME'] . $Infos["ServerPath"];
+        
+        return  $SoapUrl;
+    }
+    
+    /**
      * @abstract        Verify if Data is present in Array and in right Internal Format
      * 
      * @param mixed     $Data           Tested Array
@@ -378,10 +410,10 @@ class BaseCase extends TestCase {
     }
     
     
-    public function testDummy()
-    {
-        $this->assertTrue(True);
-    }
+//    public function testDummy()
+//    {
+//        $this->assertTrue(True);
+//    }
     
     
 }

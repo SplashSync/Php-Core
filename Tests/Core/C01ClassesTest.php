@@ -12,14 +12,8 @@ use Splash\Core\SplashCore     as Splash;
  */
 class C01ClassesTest extends TestCase {
     
-    protected function onNotSuccessfulTest($e)
-    {
-        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
-        throw $e;
-    }    
-    
     /**
-     * @abstract    Stop All Supervisor & Worker Process
+     * @abstract    Display of Splash Logo 
      */    
     public function testDisplayLogo()
     {

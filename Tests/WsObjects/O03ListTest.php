@@ -1,5 +1,5 @@
 <?php
-namespace Splash\Tests\Objects;
+namespace Splash\Tests\WsObjects;
 
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Client\Splash;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Splash\Tests\Admin;
+namespace Splash\Tests\WsAdmin;
 
 use Splash\Tests\Tools\BaseCase;
 
@@ -19,8 +19,22 @@ class A01PingTest extends BaseCase {
         $this->assertTrue(True);
     }
 
+    protected function setUp()
+    {
+        //====================================================================//
+        // BOOT or REBOOT MODULE
+        Splash::Reboot();
+
+        //====================================================================//
+        // FAKE SPLASH SERVER HOST URL
+        Splash::Configuration()->WsHost = $this->getLocalServerSoapUrl();        
+        Splash::Ws()->Setup();
+    }    
+    
     public function testPingClientAction()
     {
+
+        
         //====================================================================//
         //   Execute Ping From Module to Splash Server  
         $this->assertTrue(Splash::Ping(), " Test of Splash Server Ping Fail. Maybe this server is not connected? Check your configuration.");
@@ -30,7 +44,7 @@ class A01PingTest extends BaseCase {
     
     public function testPingServerAction()
     {
-
+        
         //====================================================================//
         //   Execute Ping From Splash Server to Module  
         $Response   =   SplashServer::Ping();
@@ -44,15 +58,5 @@ class A01PingTest extends BaseCase {
         $this->assertArrayHasKey( "result", $Data               , "Ping Result is Missing");
         $this->assertNotEmpty( $Data->result                    , "Ping Result is not True");
 
-        
-        //====================================================================//
-        //   SAFETY CHECK 
-        //====================================================================//
-
-        
-
     }
-    
-    
-    
 }

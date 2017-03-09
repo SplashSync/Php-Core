@@ -314,6 +314,8 @@ class Logger
         $Out .= $this->GetConsole($this->war, " - Warning  => ",   "\e[33m");
         $Out .= $this->GetConsole($this->msg, " - Messages => ",   "\e[32m");
         $Out .= $this->GetConsole($this->deb, " - Debug    => ",   "\e[34m");
+        $Out .= "\e[0m";
+        
         //====================================================================//
         // Clear Log Buffer If Requiered
         if ($clean) {

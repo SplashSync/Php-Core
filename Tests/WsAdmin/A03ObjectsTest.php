@@ -1,41 +1,38 @@
 <?php
 
-namespace Splash\Tests\Admin;
+namespace Splash\Tests\WsAdmin;
 
 use Splash\Tests\Tools\BaseCase;
 
 use Splash\Client\Splash;
-use ArrayObject;
 
 /**
  * @abstract    Admin Test Suite - Get Objects List Client Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A04WidgetsTest extends BaseCase {
+class A03ObjectsTest extends BaseCase {
     
     public function testObjectsFromClass()
     {
         //====================================================================//
         //   Execute Action From Module  
-        $Data = Splash::Widgets();
+        $Data = Splash::Objects();
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService) 
         if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);
+            $Data   =   new \ArrayObject($Data);
         } 
         //====================================================================//
         //   Verify Response
         $this->VerifyResponse($Data);
     }
 
-    
-    public function testWidgetsActionFromAdmin()
+    public function testObjectsFromAdminService()
     {
-        
         //====================================================================//
         //   Execute Action From Splash Server to Module  
-        $Data = $this->GenericAction(SPL_S_ADMIN, SPL_F_GET_WIDGETS, __METHOD__);
+        $Data = $this->GenericAction(SPL_S_ADMIN, SPL_F_GET_OBJECTS, __METHOD__);
         
         //====================================================================//
         //   Verify Response
@@ -43,12 +40,11 @@ class A04WidgetsTest extends BaseCase {
         
     }
     
-    public function testWidgetsActionFromWidgets()
+    public function testObjectsFromObjectsService()
     {
-        
         //====================================================================//
         //   Execute Action From Splash Server to Module  
-        $Data = $this->GenericAction(SPL_S_WIDGETS, SPL_F_WIDGET_LIST, __METHOD__);
+        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_OBJECTS, __METHOD__);
         
         //====================================================================//
         //   Verify Response
@@ -58,19 +54,17 @@ class A04WidgetsTest extends BaseCase {
     
     public function VerifyResponse($Data)
     {
-        
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty( $Data                        , "Widgets List is Empty");
-        $this->assertInstanceOf( "ArrayObject" , $Data      , "Widgets List is Not an ArrayObject");
+        $this->assertNotEmpty( $Data                        , "Objects List is Empty");
+        $this->assertInstanceOf( "ArrayObject" , $Data      , "Objects List is Not an ArrayObject");
         
         //====================================================================//
         // CHECK ITEMS
-        foreach ($Data as $WidgetType) {
-            $this->assertNotEmpty( $WidgetType              , "Widgets Type is Empty");
-            $this->assertInternalType("string", $WidgetType , "Widgets Type is Not an String. (Given" . print_r($WidgetType , True) . ")");
+        foreach ($Data as $ObjectType) {
+            $this->assertNotEmpty( $ObjectType              , "Objects Type is Empty");
+            $this->assertInternalType("string", $ObjectType , "Objects Type is Not an String. (Given" . print_r($ObjectType , True) . ")");
         }        
-        
     }
     
 }

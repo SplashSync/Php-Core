@@ -226,6 +226,8 @@ class BlocksFactory
     {
         $this->addBlock("TextBlock", $Options);
         $this->setData("text", $Text);
+        
+        return $this;
     }
     
 //====================================================================//
@@ -264,6 +266,8 @@ class BlocksFactory
         if ( isset($Contents["success"]) ) {
             $this->setData("success",   $Contents["success"]);
         }
+        
+        return $this;
     }
     
 //====================================================================//
@@ -283,6 +287,8 @@ class BlocksFactory
     {
         $this->addBlock("TableBlock", $Options);
         $this->setData("rows", $Contents);
+        
+        return $this;
     }
     
     
@@ -311,6 +317,7 @@ class BlocksFactory
         $this->extractData($Contents, "value");
         $this->extractData($Contents, "chart");
         
+        return $this;
     }
     
 }
