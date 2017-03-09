@@ -354,11 +354,17 @@ class Validator
             return $this->ValidLocalWidget[$WidgetType];
         }        
         $this->ValidLocalWidget[$WidgetType] = False;
+        
         //====================================================================//
-        // Verify Widget File Exist & is Valid
-        if ( !$this->isValidWidgetFile($WidgetType) ) {
-            return False;
-        }
+        // Check if Widget Manager is NOT Overriden
+        if ( !$this->isValidLocalOverride("Widgets")) {
+            //====================================================================//
+            // Verify Widget File Exist & is Valid
+            if ( !$this->isValidWidgetFile($WidgetType) ) {
+                return False;
+            }
+        }        
+        
         //====================================================================//
         // Verify Widget Class Exist & is Valid
         if ( !$this->isValidWidgetClass($WidgetType) ) {
@@ -402,7 +408,15 @@ class Validator
      */
     private function isValidWidgetClass($WidgetType)
     {
-        $ClassName = SPLASH_CLASS_PREFIX . "\Widgets\\" .$WidgetType;
+        //====================================================================//
+        // Check if Widget Manager is Overriden
+        if ( $this->isValidLocalOverride("Widget")) {
+            //====================================================================//
+            // Retrieve Widget Manager ClassName
+            $ClassName = get_class(Splash::Local()->Widget($WidgetType));
+        } else {
+            $ClassName = SPLASH_CLASS_PREFIX . "\Widgets\\" .$WidgetType;
+        }        
 
         //====================================================================//
         // Verify Splash Local Core Class Exists
