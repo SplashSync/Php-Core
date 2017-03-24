@@ -41,7 +41,7 @@ class FileManager
      * 
      *      @return     array       $file       False if not found, else file contents array
      */    
-    function GetFile($file,$md5)
+    function GetFile($file=NULL,$md5=NULL)
     {
         //====================================================================//
         // Stack Trace
@@ -95,12 +95,12 @@ class FileManager
         return False;     
     }    
     
-
-    
     /**
      *  @abstract   Check whether if a file exists or not
-     *  @param      string      $dir        Local File Directory 
-     *  @param      string      $file       Local FileName 
+     * 
+     *  @param      string      $Path       Full Path to Local File 
+     *  @param      string      $Md5        Local File Checksum 
+     * 
      *  @return     array       $infos      0 if not found, else file informations array
      *  
      *              File Information Array Structure            
@@ -112,55 +112,63 @@ class FileManager
      *              $infos["md5"]       =>  File MD5 Checksum
      *              $infos["size"]      =>  File Size in bytes
      * 
-     *  @remark     For all function used remotly, all parameters have default predefined values
-     *              in order to avoid remote execution errors. 
+     * 
+     *  @remark     For all file access functions, File Checksumm is used to ensure 
+     *              the server who send request was allowed by local server to read 
+     *              the specified file. 
      * 
      */
-    public function isFile($dir=NULL,$file=NULL)
+    public function isFile($Path=NULL,$Md5=NULL)
     {
         //====================================================================//
         // Safety Checks 
-        if (empty($dir)) {
-            return Splash::Log()->Err("ErrFileDirMissing",__FUNCTION__);
-        }
-        if (empty($file)) {
+        if (empty($Path)) {
             return Splash::Log()->Err("ErrFileFileMissing",__FUNCTION__);
         }
-        //====================================================================//
-        // Assemble full Filename
-        $fullpath = $dir.$file;
+        if (empty(dirname($Path))) {
+            return Splash::Log()->Err("ErrFileDirMissing",__FUNCTION__);
+        }
+        if (empty($Md5)) {
+            return Splash::Log()->Err("ErrFileMd5Missing",__FUNCTION__);
+        }
+        
         //====================================================================//
         // Check if folder exists
-        if (is_dir($dir)) {
-            //====================================================================//
-            // Check if file exists 
-            if (is_file($fullpath)) {
-                Splash::Log()->Deb("OsWs Local - Get File Infos : File ".$file." exists.");
-                //====================================================================//
-                // Read file Informations 
-                $infos = array();
-                $owner = posix_getpwuid ( fileowner($fullpath) );
-                $infos["owner"]     = $owner["name"];
-                $infos["readable"]  = is_readable($fullpath);
-                $infos["writable"]  = is_writable($fullpath);
-                $infos["mtime"]     = filemtime($fullpath);
-                $infos["modified"]  = date ("F d Y H:i:s.", $infos["mtime"]);
-                $infos["md5"]       = md5_file ($fullpath);
-                $infos["size"]      = filesize($fullpath);
-                return $infos;
-            } else {
-                Splash::Log()->War("ErrFileNoExists",__FUNCTION__,$fullpath);
-            }
-        } else {
-            Splash::Log()->War("ErrFileDirNoExists",__FUNCTION__,$dir);
+        if ( !is_dir( dirname($Path) ) ) {
+            return Splash::Log()->War("ErrFileDirNoExists",__FUNCTION__,dirname($Path));
         }
-        return OSWS_KO;
+        //====================================================================//
+        // Check if file exists 
+        if ( !is_file($Path) ) {
+            return Splash::Log()->War("ErrFileNoExists",__FUNCTION__,$Path);
+        }                
+        //====================================================================//
+        // Check File CheckSum => No Diff with Previous Error for Higher Safety Level
+        if ( md5_file($Path) != $Md5) {
+            return Splash::Log()->War("ErrFileNoExists",__FUNCTION__,$Path);
+        }                
+        
+        //====================================================================//
+        // Read file Informations 
+        Splash::Log()->Deb("Splash - Get File Infos : File ".$Path." exists.");
+        $infos = array();
+        $owner = posix_getpwuid ( fileowner($Path) );
+        $infos["owner"]     = $owner["name"];
+        $infos["readable"]  = is_readable($Path);
+        $infos["writable"]  = is_writable($Path);
+        $infos["mtime"]     = filemtime($Path);
+        $infos["modified"]  = date ("F d Y H:i:s.", $infos["mtime"]);
+        $infos["md5"]       = md5_file ($Path);
+        $infos["size"]      = filesize($Path);
+        return $infos;
     }
 
     /**
      *  @abstract   Read a file from local filesystem
-     *  @param      string      $dir        Local File Directory 
-     *  @param      string      $file       Local FileName 
+     * 
+     *  @param      string      $Path       Full Path to Local File 
+     *  @param      string      $Md5        Local File Checksum 
+     * 
      *  @return     array       $file       0 if not found, else file contents array
      *  
      *              File Information Array Structure            
@@ -169,49 +177,57 @@ class FileManager
      *              $infos["md5"]       =>  File MD5 Checksum
      *              $infos["size"]      =>  File Size in bytes
      * 
-     *  @remark     For all function used remotly, all parameters have default predefined values
-     *              in order to avoid remote execution errors. 
+     *  @remark     For all file access functions, File Checksumm is used to ensure 
+     *              the server who send request was allowed by local server to read 
+     *              the specified file. 
      * 
      */
-    public function ReadFile($dir=NULL,$file=NULL)
+    public function ReadFile($Path=NULL,$Md5=NULL)
     {
         //====================================================================//
         // Safety Checks 
-        if (empty($dir)) {
-            return Splash::Log()->Err("ErrFileDirMissing",__FUNCTION__);
-        }
-        if (empty($file)) {
+        if (empty($Path)) {
             return Splash::Log()->Err("ErrFileFileMissing",__FUNCTION__);
         }
-        //====================================================================//
-        // Assemble full Filename
-        $fullpath = $dir . "/" . $file;
+        if (empty(dirname($Path))) {
+            return Splash::Log()->Err("ErrFileDirMissing",__FUNCTION__);
+        }
+        if (empty($Md5)) {
+            return Splash::Log()->Err("ErrFileMd5Missing",__FUNCTION__);
+        }
+
         //====================================================================//
         // Check if folder exists
-        if (!is_dir($dir)) {
-            return Splash::Log()->War("ErrFileDirNoExists",$dir);
+        if ( !is_dir( dirname($Path)) ) {
+            return Splash::Log()->War("ErrFileDirNoExists",__FUNCTION__,dirname($Path));
         }
         //====================================================================//
         // Check if file exists 
-        if ( !is_file($fullpath) || !is_readable($fullpath) ) {
-            return  Splash::Log()->War("ErrFileReadable",$fullpath);
+        if ( !is_file($Path) || !is_readable($Path) ) {
+            return Splash::Log()->War("ErrFileReadable",__FUNCTION__,$Path);
         }
-        Splash::Log()->Deb("MsgFileExists",$file);
+        //====================================================================//
+        // Check File CheckSum => No Diff with Previous Error for Higher Safety Level
+        if ( md5_file($Path) != $Md5) {
+            return Splash::Log()->War("ErrFileNoExists",__FUNCTION__,$Path);
+        }                       
+        
         //====================================================================//
         // Open File 
-        $filehandle = fopen($fullpath, "rb");
+        $filehandle = fopen($Path, "rb");
         if ($filehandle == FALSE) {
-            return  Splash::Log()->Err("ErrFileRead",$fullpath);
+            return Splash::Log()->Err("ErrFileRead",__FUNCTION__,$Path);
         }
+        
         //====================================================================//
         // Fill file Informations 
         $infos = array();
-        $infos["filename"]      = $file;
-        $infos["raw"]           = base64_encode(fread($filehandle, filesize($fullpath)));
+        $infos["filename"]  = basename($Path);
+        $infos["raw"]       = base64_encode(fread($filehandle, filesize($Path)));
         fclose($filehandle);
-        $infos["md5"]           = md5_file ($fullpath);
-        $infos["size"]          = filesize($fullpath);
-        Splash::Log()->Deb("MsgFileRead",$file);
+        $infos["md5"]       = md5_file ($Path);
+        $infos["size"]      = filesize($Path);
+        Splash::Log()->Deb("MsgFileRead",__FUNCTION__,basename($Path));
         return $infos;
     }
 
@@ -252,6 +268,7 @@ class FileManager
     
     /**
      *  @abstract   Write a file on local filesystem
+     * 
      *  @param      string      $dir        Local File Directory 
      *  @param      string      $file       Local FileName 
      *  @param      string      $md5        File MD5 Checksum
@@ -286,92 +303,85 @@ class FileManager
         if (!is_dir($dir)) {    mkdir($dir,0775,TRUE);    }
         //====================================================================//
         // Check if folder exists
-        if (is_dir($dir)) {
-            //====================================================================//
-            // Check if file exists 
-            if (is_file($fullpath) ) {
-                Splash::Log()->Deb("MsgFileExists",__FUNCTION__,$file);
-                //====================================================================//
-                // Check if file is writable
-                if (!is_writable($file)) {
-                    return Splash::Log()->Err("ErrFileWriteable",$file);
-                }
-            }
-            //====================================================================//
-            // Open File 
-            $filehandle = fopen($fullpath, 'wb');
-            if ($filehandle != FALSE) {
-                //====================================================================//
-                // Write file
-                fwrite($filehandle, base64_decode($raw));
-                fclose($filehandle);
-                //====================================================================//
-                // Verify file checksum
-                if ( $md5 === md5_file ($fullpath) ) {
-                    return Splash::Log()->Msg("MsgFileWrite",$file);
-                } else {
-                    return Splash::Log()->Err("ErrFileWrite",$file);
-                }
-            } else {
-                Splash::Log()->War("ErrFileOpen",__FUNCTION__,$fullpath);
-            }
-        } else {
+        if (!is_dir($dir)) {
             Splash::Log()->War("ErrFileDirNoExists",__FUNCTION__,$dir);
         }
-        return OSWS_KO;
+        //====================================================================//
+        // Check if file exists 
+        if (is_file($fullpath) ) {
+            Splash::Log()->Deb("MsgFileExists",__FUNCTION__,$file);
+            //====================================================================//
+            // Check if file is writable
+            if (!is_writable($file)) {
+                return Splash::Log()->Err("ErrFileWriteable",__FUNCTION__,$file);
+            }
+        }
+        //====================================================================//
+        // Open File 
+        $filehandle = fopen($fullpath, 'w');
+        if ($filehandle == FALSE) {
+            return Splash::Log()->War("ErrFileOpen",__FUNCTION__,$fullpath);
+        }
+        
+        //====================================================================//
+        // Write file
+        fwrite($filehandle, base64_decode($raw));
+        fclose($filehandle);
+        
+        //====================================================================//
+        // Verify file checksum
+        if ( $md5 !== md5_file ($fullpath) ) {
+            return Splash::Log()->Err("ErrFileWrite",__FUNCTION__,$file);
+        }
+        return True;
     }
-    
+
     /**
      *  @abstract   Delete a file exists or not
-     *  @param      string      $dir        Local File Directory 
-     *  @param      string      $file       Local FileName 
-     *  @return     int         $result     0 if OK, 1 if OK
      * 
-     *  @remark     For all function used remotly, all parameters have default predefined values
-     *              in order to avoid remote execution errors. 
+     *  @param      string      $Path       Full Path to Local File 
+     *  @param      string      $Md5        Local File Checksum 
+     * 
+     *  @return     bool
+     * 
+     *  @remark     For all file access functions, File Checksumm is used to ensure 
+     *              the server who send request was allowed by local server to read 
+     *              the specified file. 
      * 
      */
-    public function DeleteFile($dir=NULL,$file=NULL)
+    public function DeleteFile($Path=NULL,$Md5=NULL)
     {
         //====================================================================//
         // Safety Checks 
-        if (empty($dir)) {
+        if (empty(dirname($Path))) {
             return Splash::Log()->Err("ErrFileDirMissing",__FUNCTION__);
         }
-        if (empty($file)) {
+        if (empty(basename($Path))) {
             return Splash::Log()->Err("ErrFileFileMissing",__FUNCTION__);
         }
-        //====================================================================//
-        // Assemble full Filename
-        $fullpath = $dir.$file;
+        if (empty($Md5)) {
+            return Splash::Log()->Err("ErrFileMd5Missing",__FUNCTION__);
+        }        
         //====================================================================//
         // Check if folder exists
-        if (is_dir($dir)) {
-            //====================================================================//
-            // Check if file exists 
-            if (is_file($fullpath)) {
-                Splash::Log()->Deb("MsgFileExists",__FUNCTION__,$file);
-                //====================================================================//
-                // Delete File 
-                if ( unlink ( $fullpath ) ) {
-                    return Splash::Log()->Msg("MsgFileDeleted",$file);
-                } else {
-                    return Splash::Log()->Err("ErrFileDeleted",$file);
-                }
-            } else {
-                Splash::Log()->War("ErrFileNoExists",__FUNCTION__,$file);
-            }
-        } else {
-            Splash::Log()->War("ErrFileDirNoExists",__FUNCTION__,$dir);
+        if (is_dir(dirname($Path))) {
+            Splash::Log()->War("ErrFileDirNoExists",__FUNCTION__,dirname($Path));
         }
-        return OSWS_KO;
+
+        //====================================================================//
+        // Check if file exists 
+        if (is_file($Path) && (md5_file($Path) === $Md5) ) {
+            Splash::Log()->Deb("MsgFileExists",__FUNCTION__,basename($Path));
+            //====================================================================//
+            // Delete File 
+            if ( unlink ( $Path ) ) {
+                return Splash::Log()->Msg("MsgFileDeleted",__FUNCTION__,basename($Path));
+            }
+            return Splash::Log()->Err("ErrFileDeleted",__FUNCTION__,basename($Path));
+        }
+        
+        return True;
     }
-    
-    
-    
-    
-    
-    
     
 }
 ?>

@@ -862,7 +862,7 @@ class ObjectBase
         $Image["filename"]      = $FileName;
         //====================================================================//
         // Image Full Path
-        $Image["path"]          = $Path;
+        $Image["path"]          = $FullPath;
         //====================================================================//
         // Image Publics Url
         $Image["url"]           = $PublicUrl;

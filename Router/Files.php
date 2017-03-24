@@ -47,7 +47,6 @@ class Files
         //====================================================================//
         // Stack Trace
         Splash::Log()->Trace(__CLASS__,__FUNCTION__);   
-        Splash::Log()->War("File => " . $Task->name );
         
         //====================================================================//
         // Initial Response
@@ -59,11 +58,6 @@ class Files
         // Verify Requested Object Type is Available 
         if (empty($Task->params)) {
             Splash::Log()->Err("File Router - Missing Task Parameters... ");
-            return $Response;
-        //====================================================================//
-        // Verify Requested File Name is Available 
-        } elseif (empty($Task->params->filename)) {
-            Splash::Log()->Err("File Router - Missing FileName... ");
             return $Response;
         //====================================================================//
         // Verify Requested File Path is Available 
@@ -86,12 +80,12 @@ class Files
             //====================================================================//
             //  READING A FILE INFORMATIONS
             case SPL_F_ISFILE:
-                $Response->data	= Splash::File()->is_File($File->path,$File->filename);
+                $Response->data	= Splash::File()->isFile($File->path,$File->md5);
                 break;
             //====================================================================//
             //  READING A FILE CONTENTS
             case SPL_F_GETFILE:
-                $Response->data	= Splash::File()->ReadFile($File->path,$File->filename);
+                $Response->data	= Splash::File()->ReadFile($File->path,$File->md5);
                 break;
 //            //====================================================================//
 //            //  WRITE A FILE CONTENTS
