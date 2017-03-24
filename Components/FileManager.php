@@ -364,7 +364,7 @@ class FileManager
         }        
         //====================================================================//
         // Check if folder exists
-        if (is_dir(dirname($Path))) {
+        if (!is_dir(dirname($Path))) {
             Splash::Log()->War("ErrFileDirNoExists",__FUNCTION__,dirname($Path));
         }
 
