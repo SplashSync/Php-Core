@@ -20,8 +20,11 @@
 namespace   Splash\Models;
 
 use Splash\Core\SplashCore      as Splash;
+
 use Splash\Components\FieldsFactory;
 use Splash\Components\BlocksFactory;
+
+use Splash\Models\Widgets\DatesManagerTrait;
 
 //====================================================================//
 //********************************************************************//
@@ -33,6 +36,8 @@ use Splash\Components\BlocksFactory;
 
 abstract class WidgetBase
 {
+    use DatesManagerTrait;
+    
     //====================================================================//
     // *******************************************************************//
     //  WIDGET GENERICS PARAMETERS

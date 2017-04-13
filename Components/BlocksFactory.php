@@ -293,7 +293,7 @@ class BlocksFactory
     
     
 //====================================================================//
-//  BLOCKS || SPARRK INFOS BLOCK
+//  BLOCKS || SPARK INFOS BLOCK
 //====================================================================//
     
     /**
@@ -319,6 +319,44 @@ class BlocksFactory
         
         return $this;
     }
+
+//====================================================================//
+//  BLOCKS || MORRIS GRAPHS BLOCK
+//====================================================================//
+    
+    /**
+     *  @abstract   Create a new Morris Bar Graph Block
+     *               
+     *  @param      array   $Contents           Array of Rows Contents (Text or Html) 
+     * 
+     *  @param      array   $Options            Block Options
+     * 
+     *  @return     $this
+     */
+    public function addMorrisGraphBlock($DataSet, $Type = "Bar", $ChartOptions = array(), $Options = self::COMMONS_OPTIONS )
+    {
+        
+        if (!in_array($Type, ["Bar", "Area", "Line"])) {
+            $Contents   = array("warning"   => "Wrong Morris Chart Block Type (ie: Bar, Area, Line)");
+            $this->BlocksFactory()->addNotificationsBlock($Contents);
+        }
+        //====================================================================//
+        //  Create Block
+        $this->addBlock("Morris" . $Type . "Block", $Options);
+       //====================================================================//
+        //  Add Set Chart Data
+        $this->setData("dataset",     $DataSet);
+        
+        //====================================================================//
+        //  Add Chart Parameters
+        $this->extractData($ChartOptions,   "title");
+        $this->extractData($ChartOptions,   "xkey");
+        $this->extractData($ChartOptions,   "ykeys");
+        $this->extractData($ChartOptions,   "labels");
+        
+        return $this;
+    }
+
     
 }
 

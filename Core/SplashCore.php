@@ -790,7 +790,7 @@ class SplashCore
             //====================================================================//
             // Verify ClassName is a Valid Object File
             if (self::Validate()->isValidWidget($ClassName) == False) {
-                break;
+                continue;
             }
             $WidgetsList[] = $ClassName;
         }
