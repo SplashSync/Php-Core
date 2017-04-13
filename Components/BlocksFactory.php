@@ -357,6 +357,29 @@ class BlocksFactory
         return $this;
     }
 
+    /**
+     *  @abstract   Create a new Morris Donut Graph Block
+     *               
+     *  @param      array   $Contents           Array of Rows Contents (Text or Html) 
+     * 
+     *  @param      array   $Options            Block Options
+     * 
+     *  @return     $this
+     */
+    public function addMorrisDonutBlock($DataSet, $ChartOptions = array(), $Options = self::COMMONS_OPTIONS )
+    {
+        //====================================================================//
+        //  Create Block
+        $this->addBlock("MorrisDonutBlock", $Options);
+       //====================================================================//
+        //  Add Set Chart Data
+        $this->setData("dataset",     $DataSet);
+        //====================================================================//
+        //  Add Chart Parameters
+        $this->extractData($ChartOptions,   "title");
+        
+        return $this;
+    }    
     
 }
 
