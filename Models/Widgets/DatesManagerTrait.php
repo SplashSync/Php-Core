@@ -72,9 +72,13 @@ trait DatesManagerTrait
     
     protected function parseDatedData($In)   {
         
+        $Out       = array();
+        if ( !isset($this->DateStart) || !isset($this->DateEnd) ) {
+            return $Out;
+        }
+        
         $Start      = $Current    = new \Datetime($this->DateStart);
         $End        = new \Datetime($this->DateEnd);
-        $Out       = array();
         
         while ($Current < $End) {
             
