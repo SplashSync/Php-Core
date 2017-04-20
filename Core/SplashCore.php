@@ -137,7 +137,7 @@ class SplashCore
         $Conf->WsTimout             =   SPLASH_TIMEOUT;
         $Conf->WsCrypt              =   SPLASH_CRYPT_METHOD;
         $Conf->WsEncode             =   SPLASH_ENCODE;
-        $Conf->WsHost               =   "soap.splashsync.com/";
+        $Conf->WsHost               =   "www.splashsync.com/ws/soap";
         //====================================================================//
         // Activity Logging Parameters
         $Conf->Logging              =   SPLASH_LOGGING;

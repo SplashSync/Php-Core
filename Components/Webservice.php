@@ -43,7 +43,7 @@ class Webservice
     
     //====================================================================//
     // Remote Server Address
-    private $host   = "soap.splashsync.com/";                           
+    private $host   = "www.splashsync.com/ws/soap";                           
     //====================================================================//
     // Unik Client Identifier ( 1 to 8 Char)
     private $id     = "";               
