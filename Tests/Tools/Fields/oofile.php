@@ -10,6 +10,7 @@ namespace Splash\Tests\Tools\Fields;
 // File Structure
 // Sample :
 // $data["file"]["name"]           =>      File Name             
+// $data["file"]["file"]           =>      File Identifier to Require File from Server
 // $data["file"]["filename"]       =>      File Filename with Extension
 // $data["file"]["path"]           =>      File Full path on local system
 // $data["file"]["md5"]            =>      File Md5 Checksum
@@ -97,6 +98,7 @@ class oofile
         //====================================================================//
         // Image Filename
         $FakeFile["filename"]      = $File;
+        $FakeFile["file"]          = $File;
         //====================================================================//
         // Image File Identifier (Full Path Here)
         $FakeFile["path"]          = $FullPath;

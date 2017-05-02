@@ -11,6 +11,7 @@ namespace Splash\Tests\Tools\Fields;
 // Image Structure
 // Sample :
 // $data["image"]["name"]           =>      Image Name             
+// $data["image"]["file"]           =>      Image Identifier to Require File from Server
 // $data["image"]["filename"]       =>      Image Filename with Extension
 // $data["image"]["path"]           =>      Image Full path on local system
 // $data["image"]["url"]            =>      Complete Public Url, Used to display image
@@ -108,6 +109,7 @@ class ooimage
         //====================================================================//
         // Image Filename
         $Image["filename"]      = $File;
+        $Image["file"]          = $File;
         //====================================================================//
         // Image File Identifier (Full Path Here)
         $Image["path"]          = $Dir . $File;

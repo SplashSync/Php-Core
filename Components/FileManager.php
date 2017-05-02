@@ -52,12 +52,12 @@ class FileManager
         //====================================================================//
         if ( SPLASH_DEBUG ) {
             $FilePath   = dirname(__DIR__) . "/Resources/files/"  . $file;
-            if ( is_file( $FilePath ) && ( md5_file( $FilePath ) == $md5 ) ) {
-                return $this->ReadFile(dirname($FilePath), basename($FilePath));
+            if ( is_file( $FilePath ) ) {
+                return $this->ReadFile($FilePath, $md5);
             }
             $ImgPath    = dirname(__DIR__) . "/Resources/img/"  . $file;
-            if ( is_file( $ImgPath ) && ( md5_file( $ImgPath ) == $md5 ) ) {
-                return $this->ReadFile(dirname($ImgPath), basename($ImgPath));
+            if ( is_file( $ImgPath )  ) {
+                return $this->ReadFile($ImgPath, $md5);
             }
         }
         

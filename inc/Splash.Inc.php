@@ -89,7 +89,8 @@ define('SPL_T_URL'          ,  'url');           // External Url
 // File Structure
 //====================================================================//
 // Sample :
-// $data["file"]["name"]           =>      File Name/Description             
+// $data["file"]["name"]           =>      File Name/Description   
+// $data["file"]["file"]           =>      File Identifier to Require File from Server        
 // $data["file"]["filename"]       =>      Filename with Extension
 // $data["file"]["path"]           =>      Full File path on client system
 // $data["file"]["url"]            =>      Complete Public Url, Usable for Direct Download
@@ -102,7 +103,8 @@ define('SPL_T_FILE'         ,  'file');
 // Image Structure
 //====================================================================//
 // Sample :
-// $data["image"]["name"]           =>      Image Name             
+// $data["image"]["name"]           =>      Image Name 
+// $data["image"]["file"]           =>      Image Identifier to Require File from Server    
 // $data["image"]["filename"]       =>      Image Filename with Extension
 // $data["image"]["path"]           =>      Image Full path on local system
 // $data["image"]["url"]            =>      Complete Public Url, Used to display image

@@ -394,10 +394,6 @@ class Validator
             $msg.= "Current Filename : " . $filename . "";
             return Splash::Log()->Err($msg);
         } 
-        //====================================================================//
-        // Include File
-        include_once($filename);
-        
         return True;
     }    
     
