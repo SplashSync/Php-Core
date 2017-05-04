@@ -18,10 +18,10 @@ if ( !defined("SPLASH_SERVER_MODE") ) {
  */
 class BaseCase extends TestCase {
 
-    protected function onNotSuccessfulTest($e)
+    protected function onNotSuccessfulTest(\Throwable $t)
     {
         fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
-        throw $e;
+        throw $t;
     }    
     
     protected function setUp()

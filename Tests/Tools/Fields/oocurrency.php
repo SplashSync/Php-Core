@@ -17,7 +17,7 @@ class oocurrency extends oovarchar
 
     const FORMAT        =   'Currency';
     
-    private $FakeData   =   array("EUR", "USD", "INR");
+    static $FakeData   =   array("EUR", "USD", "INR");
     
     //==============================================================================
     //      DATA VALIDATION  
@@ -49,7 +49,7 @@ class oocurrency extends oovarchar
      */
     static public function fake()
     {
-        return $this->FakeData[ (mt_rand(0, count($this->FakeData) )) ];
+        return static::$FakeData[ (mt_rand(0, count(static::$FakeData) - 1 )) ];
     }     
     
 }
