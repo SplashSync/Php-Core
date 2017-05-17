@@ -61,9 +61,10 @@ class O05CreateTest extends ObjectsCase {
         //====================================================================//
         //   Verify Create is Allowed
         if ( $Definition["allow_push_created"] ) {
-            $this->assertTrue( True , "Object Creation not Allowed, Test Skipped.");
             return True;
         }    
+        $this->assertTrue( True , "Object Creation not Allowed, Test Skipped.");
+        return false;
     }
 
     public function PrepareForTesting($ObjectType)

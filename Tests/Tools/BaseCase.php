@@ -3,7 +3,7 @@
 namespace Splash\Tests\Tools;
 
 use PHPUnit\Framework\TestCase;
-
+    
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
 
