@@ -206,7 +206,7 @@ class SplashCore
             //====================================================================//
             // Include ClassNuSOAP WebService Classes
             // NuSOAP WebService Classes
-            require_once( dirname(dirname(__FILE__)) . "/inc/nusoap/nusoap.php");
+            require_once( dirname(dirname(__FILE__)) . "/inc/nusoap.php");
             //====================================================================//
             // Initialize NuSOAP Server Class
             self::Core()->Server           = new \soap_server();

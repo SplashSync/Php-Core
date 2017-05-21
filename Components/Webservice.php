@@ -29,7 +29,7 @@ use Splash\Core\SplashCore      as Splash;
 
 //====================================================================//
 // NuSOAP WebService Classes
-require_once( dirname(dirname(__FILE__)) . "/inc/nusoap/nusoap.php");
+require_once( dirname(dirname(__FILE__)) . "/inc/nusoap.php");
 
 //====================================================================//
 //  CLASS DEFINITION
@@ -50,8 +50,12 @@ class Webservice
     //====================================================================//
     // Unik Key for encrypt data transmission with this Server
     private $key    = "";              
-    
+    //====================================================================//
+    // Webservice tasks     
     private $tasks;
+    //====================================================================//
+    // Webservice Call Url     
+    public $url;    
     //====================================================================//
     // Webservice buffers     
     private $_In;                   // Input Buffer
