@@ -34,7 +34,7 @@ class Validator
 // *******************************************************************//
 //====================================================================//
 
-   /**
+    /**
     *   @abstract   Verify Local Core Class Exists & Is Valid 
     *  
     *   @return     int         $result     0 if KO, 1 if OK
@@ -120,6 +120,43 @@ class Validator
             return Splash::Log()->Err( Splash::Trans("ErrorCfgNotAnArray",  get_class($In) ) );
         }
         return True;
+    } 
+    
+    /**
+    *   @abstract   Verify Webserver Informations are Valid 
+    *  
+    *   @return     int         $result     0 if KO, 1 if OK
+    */
+    public function isValidServerInfos() 
+    {   
+        $In     = Splash::Ws()->getServerInfos();
+        
+        //====================================================================//
+        // Verify Array Given
+        if ( !is_a($In, "ArrayObject") ) {
+            return Splash::Log()->Err( Splash::Trans("ErrInfosNotArrayObject",  get_class($In) ) );
+        }
+        
+        if ( SPLASH_DEBUG ) {
+            Splash::Log()->War( "Host : " .  $In['ServerHost'] );
+            Splash::Log()->War( "Path : " .  $In['ServerPath'] );
+        }
+        
+        //====================================================================//
+        // Required Parameters are Available
+        //====================================================================//
+        if ( !isset($In['ServerHost']) || empty($In['ServerHost']) ) {
+            Splash::Log()->Err( Splash::Trans("ErrEmptyServerHost" ) );
+            return Splash::Log()->Err( Splash::Trans("ErrEmptyServerHostDesc" ) );
+        }
+
+        if ( !isset($In['ServerPath']) || empty($In['ServerPath']) )  {
+            return Splash::Log()->Err( Splash::Trans("ErrEmptyServerPath" ) );
+        }
+
+        
+        return True;
+        
     } 
     
 //====================================================================//
@@ -453,7 +490,8 @@ class Validator
         }
 
         return True;
-    }     
+    }  
+    
 //====================================================================//
 // *******************************************************************//
 //  VALIDATE COMMONS FUNCTIONS

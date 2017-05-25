@@ -173,7 +173,7 @@ class SplashCore
     /**
      *      @abstract   Get a singleton Log Class
      *                  Acces to Module Logging Functions
-     *      @return     SplashLog
+     *      @return     \Splash\Components\Logger
      */
     public static function Log()
     {
@@ -217,7 +217,7 @@ class SplashCore
     /**
      *      @abstract   Get a singleton WebService Class
      *                  Acces to NuSOAP WebService Communication Functions
-     *      @return     SplashWs
+     *      @return     \Splash\Components\Webservice
      */
     public static function Ws()
     {
@@ -244,7 +244,7 @@ class SplashCore
     /**
      *      @abstract   Get a singleton Router Class
      *                  Acces to Server Tasking Management Functions
-     *      @return     SplashTasks
+     *      @return     \Splash\Components\Router
      */
     public static function Router()
     {
@@ -262,7 +262,7 @@ class SplashCore
     /**
      *      @abstract   Get a singleton File Class
      *                  Acces to File Management Functions
-     *      @return     SplashFile
+     *      @return     \Splash\Components\FileManager
      */
     public static function File()
     {
@@ -285,7 +285,7 @@ class SplashCore
      * 
      *                  Acces to Module Validation Functions
      * 
-     *      @return     SplashValidate
+     *      @return     \Splash\Components\Validator
      */
     public static function Validate()
     {
@@ -309,7 +309,7 @@ class SplashCore
      * 
      *                  Acces to Module Xml Parser Functions
      * 
-     *      @return     SplashXml
+     *      @return     \Splash\Components\XmlManager
      */
     public static function Xml()
     {
@@ -327,7 +327,7 @@ class SplashCore
     /**
      *      @abstract   Get a singleton Translator Class
      *                  Acces to Translation Functions
-     *      @return     SplashTranslator
+     *      @return     \Splash\Components\Translator
      */
     public static function Translator()
     {
@@ -345,7 +345,7 @@ class SplashCore
     /**
      *      @abstract   Acces Server Local Class
      * 
-     *      @return     SplashLocal
+     *      @return     \Splash\Local
      */
     public static function Local()
     {
@@ -383,7 +383,7 @@ class SplashCore
      * 
      *      @params     $type       Specify Object Class Name
      * 
-     *      @return     OsWs_LinkerCore
+     *      @return     \Splash\Models\ObjectBase
      */
     public static function Object($ObjectType)
     {
@@ -434,7 +434,7 @@ class SplashCore
      * 
      *      @params     $WidgetType         Specify Widget Class Name
      * 
-     *      @return     SplashWidget
+     *      @return     \Splash\Models\WidgetBase
      */
     public static function Widget($WidgetType)
     {
@@ -746,6 +746,18 @@ class SplashCore
         //====================================================================//
         //  Perform Local SelfTest
         if ( !self::Local()->Selftest() ) {
+            return False;
+        }
+        
+        //====================================================================//
+        //  Verify Detected Server Informations 
+        if ( !self::Validate()->isValidServerInfos()) {
+            return False;
+        }
+        
+        //====================================================================//
+        //  Verify Server Webservice Connection 
+        if ( !self::Ws()->SelfTest()) {
             return False;
         }
         

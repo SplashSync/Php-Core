@@ -54,10 +54,10 @@ class Splash extends SplashCore
    
     /**
      *      @abstract      Check Connexion with NuSOAP Client
-     *      @param      int     $silent     No message display if non errors
+     *      @param      bool    $silent     No message display if non errors
      *      @return     int         	0 if KO, 1 if OK
      */
-    public static function Ping($silent=0)
+    public static function Ping( $silent = False )
     {
         //====================================================================//
         // Stack Trace

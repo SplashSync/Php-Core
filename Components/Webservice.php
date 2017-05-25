@@ -40,16 +40,17 @@ class Webservice
     //====================================================================//
     // WebService Parameters	
     //====================================================================//
-    
+ 
+    const SplashHost    =   "www.splashsync.com/ws/soap";
     //====================================================================//
     // Remote Server Address
-    private $host   = "www.splashsync.com/ws/soap";                           
+    private $host       =   self::SplashHost;                           
     //====================================================================//
     // Unik Client Identifier ( 1 to 8 Char)
-    private $id     = "";               
+    private $id         = "";               
     //====================================================================//
     // Unik Key for encrypt data transmission with this Server
-    private $key    = "";              
+    private $key        = "";              
     //====================================================================//
     // Webservice tasks     
     private $tasks;
@@ -74,11 +75,6 @@ class Webservice
         $this->_Out         = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
     }
 
-//====================================================================//
-//  WEBSERVICE PARAMETERS MANAGEMENT
-//====================================================================//
-    
-    
 //====================================================================//
 //  WEBSERVICE PARAMETERS MANAGEMENT
 //====================================================================//
@@ -114,6 +110,8 @@ class Webservice
         // If Another Host is Defined => Allow Overide of Server Host Address
         if ( !empty(Splash::Configuration()->WsHost) ) {
             $this->host     =   Splash::Configuration()->WsHost;
+        } else {
+            $this->host     =   self::SplashHost;   
         }
 
         //====================================================================//
@@ -668,6 +666,7 @@ class Webservice
         } else {
             $r->ServerHost      = filter_input(INPUT_SERVER, "SERVER_NAME");         
         }
+        
         //====================================================================//
         // Server IPv4 Address 
         $r->ServerIP        = filter_input(INPUT_SERVER, "SERVER_ADDR");        
@@ -692,5 +691,45 @@ class Webservice
     public function getOutputBuffer() {
         return $this->_Out;
     }
+    
+//====================================================================//
+//  WEBSERVICE SELF-TESTS
+//====================================================================//
+    
+    /**
+     *      @abstract   Check Reverse Connexion with THIS Client
+     *      @param      bool    $Silent     No message display if non errors
+     *      @return     int         	0 if KO, 1 if OK
+     */
+    public function SelfTest( $Silent = True )
+    {
+        //====================================================================//
+        // Stack Trace
+        Splash::Log()->Trace(__CLASS__,__FUNCTION__);              
+        //====================================================================//
+        // Fetch Server Informations 
+        $ServerInfos    = $this->getServerInfos();
+        //====================================================================//
+        // Clone Webservice Class 
+        $TestsClient = clone $this;
+        //====================================================================//
+        // Setup Webservice Class 
+        $TestsClient->host  = $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
+        //====================================================================//
+        // Run NuSOAP Call - Reverse Ping 
+        $Ping = $TestsClient->Call(SPL_S_PING,NULL,1);
+        if ( empty($Ping) || !isset($Ping->result) || !$Ping->result ) {
+            return Splash::Log()->Err( Splash::Trans("ErrReversePing" , $TestsClient->host) );
+        }
+        //====================================================================//
+        // Run NuSOAP Call - Reverse Ping 
+        $Connect = $TestsClient->Call(SPL_S_CONNECT,array());
+        if ( empty($Connect) || !isset($Connect->result) || !$Connect->result ) {
+            return Splash::Log()->Err( Splash::Trans("ErrReverseConnect" , $TestsClient->host) );
+        }
+        
+        return True;
+    }
+    
     
 }
