@@ -661,10 +661,15 @@ class Webservice
         // Server Urls
         //====================================================================//
         // CRITICAL - Server Host Name 
+        // Check if Overiden by Application Module
         if ( isset(Splash::Configuration()->ServerHost) ) {
             $r->ServerHost      =   Splash::Configuration()->ServerHost;
-        } else {
+        // Check if Available with Secured Reading
+        } elseif(!empty(filter_input(INPUT_SERVER, "SERVER_NAME"))) {
             $r->ServerHost      = filter_input(INPUT_SERVER, "SERVER_NAME");         
+        // Fallback to Unsecured Mode (Required for Phpunit)
+        } else {
+            $r->ServerHost      = $_SERVER["SERVER_NAME"];         
         }
         
         //====================================================================//
