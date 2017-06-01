@@ -313,7 +313,7 @@ class Logger
         $Out .= $this->GetConsole($this->err, " - Error    => ",   "\e[31m");
         $Out .= $this->GetConsole($this->war, " - Warning  => ",   "\e[33m");
         $Out .= $this->GetConsole($this->msg, " - Messages => ",   "\e[32m");
-        $Out .= $this->GetConsole($this->deb, " - Debug    => ",   "\e[34m");
+        $Out .= $this->GetConsole($this->deb, " - Debug    => ",   "\e[97m");
         $Out .= "\e[0m";
         
         //====================================================================//

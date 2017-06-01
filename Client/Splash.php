@@ -156,7 +156,7 @@ class Splash extends SplashCore
     {
         //====================================================================//
         // Stack Trace
-        self::Log()->Trace(__CLASS__,__FUNCTION__);  
+        self::Log()->Trace(__CLASS__,__FUNCTION__ . " (" . $action . ", " . $ObjectType . ")");  
         
         //====================================================================//
         // Verify this Object Class is Valid ==> No Action on this Node

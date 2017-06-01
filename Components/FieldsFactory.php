@@ -150,7 +150,7 @@ class FieldsFactory
      * 
      *  @param      string      $id         Local Data Identifier (Shall be unik on local machine)
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function Identifier($id)
     {
@@ -172,7 +172,7 @@ class FieldsFactory
      * 
      *  @param      string      $ListName         Name of List
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function InList($ListName)
     {
@@ -205,7 +205,7 @@ class FieldsFactory
      * 
      *  @param      string      $name       Data Name (Will Be Translated if Possible)
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function Name($name)
     {
@@ -230,7 +230,7 @@ class FieldsFactory
      * 
      *  @param      string      $desc       Data Description (Will Be Translated if Possible)
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function Description($desc)
     {
@@ -252,7 +252,7 @@ class FieldsFactory
      * 
      *  @param      string      $group       Data Group (Will Be Translated if Possible)
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function Group($group)
     {
@@ -272,7 +272,7 @@ class FieldsFactory
     /**
      *  @abstract   Update Current New Field set as Read Only Field 
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function ReadOnly()
     {
@@ -293,7 +293,7 @@ class FieldsFactory
     /**
      *  @abstract   Update Current New Field set as Write Only Field 
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function WriteOnly()
     {
@@ -314,7 +314,7 @@ class FieldsFactory
     /**
      *  @abstract   Update Current New Field set as required for creation 
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function isRequired()
     {
@@ -336,7 +336,7 @@ class FieldsFactory
      * 
      *  @param      string                  Objects Fields Identifiers
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function Association()
     {
@@ -365,7 +365,7 @@ class FieldsFactory
     /**
      *  @abstract   Update Current New Field set as available in objects list 
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function isListed()
     {
@@ -385,7 +385,7 @@ class FieldsFactory
     /**
      *  @abstract   Update Current New Field set as recommended for logging 
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function isLogged()
     {
@@ -408,7 +408,7 @@ class FieldsFactory
      *  @param      string      $ItemType   Field Microdata Type Url
      *  @param      string      $ItemProp   Field Microdata Property Name
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function MicroData($ItemType,$ItemProp)
     {
@@ -432,7 +432,7 @@ class FieldsFactory
      * 
      *  @param      string      $Tag       Field Unik Tag
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function Tag($Tag)
     {
@@ -452,7 +452,7 @@ class FieldsFactory
     /**
      *  @abstract   Update Current New Field set as not possible to test 
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function NotTested()
     {
@@ -474,7 +474,7 @@ class FieldsFactory
      * 
      *  @param      array      $Choices      Possible Choice Array (Value => Decsription) 
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function AddChoices($Choices)
     {
@@ -490,7 +490,7 @@ class FieldsFactory
      *  @param      string      $Value          Possible Choice Value 
      *  @param      string      $Description    Choice Description for Display (Will Be Translated if Possible)
      * 
-     *  @return     SplashFieldFactory
+     *  @return     FieldsFactory
      */
     public function AddChoice($Value, $Description)
     {

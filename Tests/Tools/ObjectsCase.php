@@ -660,7 +660,7 @@ class ObjectsCase extends BaseCase {
             //====================================================================//
             // Generate Single Fields Dummy Data (is Not a List Field)
             if (!self::isListField($Field->id)) {
-                $Out[$Field->id] = self::fakeFieldData($Field->type);
+                $Out[$Field->id] = self::fakeFieldData($Field->type, $Field->choices);
                 continue;
             }
             
@@ -713,7 +713,7 @@ class ObjectsCase extends BaseCase {
         // Create Dummy Fields Data
         for ($i = 0; $i < $NbItems; $i++)
         {
-            $Out[][$List["fieldname"]] = self::fakeFieldData($Type["fieldname"]);  
+            $Out[][$List["fieldname"]] = self::fakeFieldData($Type["fieldname"], $Field->choices);  
         }
         return $Out;
     }        
@@ -722,10 +722,11 @@ class ObjectsCase extends BaseCase {
      *   @abstract   Create Fake Field data
      * 
      *   @param      string  $Type       Object Field Type 
+     *   @param      array   $Choices    Object Field Possible Values 
      * 
      *   @return     int     $result     0 if KO, 1 if OK
      */
-    public function fakeFieldData($Type) 
+    public function fakeFieldData($Type, $Choices = Null) 
     {  
         //====================================================================//
         // Safety Check 
@@ -743,6 +744,15 @@ class ObjectsCase extends BaseCase {
         if ( ($id = self::isIdField($Type)) ) {
             return $ClassName::fake($id["ObjectType"], $this->settings);
         }
+        
+        //====================================================================//
+        // Take Values From Given Choices 
+        if ( !empty($Choices) ) {
+            $Index = mt_rand(0, count($Choices) - 1 );
+            if ( isset($Choices[$Index]["key"]) ) {
+                return $Choices[$Index]["key"];
+            }
+        } 
         
         //====================================================================//
         // Generate Single Field Data Type is Valid

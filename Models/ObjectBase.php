@@ -403,7 +403,7 @@ class ObjectBase
         
         //====================================================================//
         //  Log 
-        Splash::Log()->Deb("MsgLockObject", __CLASS__ ,$Identifier);
+        Splash::Log()->Deb("MsgLockObject", static::$NAME ,$Identifier);
         
         return True;        
     }   
@@ -417,7 +417,7 @@ class ObjectBase
      */
     function isLocked($Identifier = "new")
     {
-        Splash::Log()->Deb("MsgisLockedStart", __CLASS__ ,$Identifier);
+        Splash::Log()->Deb("MsgisLockedStart", static::$NAME ,$Identifier);
         
         //====================================================================//
         // Verify Object Identifier is not Empty
@@ -440,7 +440,7 @@ class ObjectBase
         
         //====================================================================//
         //  Log 
-        Splash::Log()->Deb("MsgisLocked", __CLASS__ ,$Identifier);
+        Splash::Log()->Deb("MsgisLocked", static::$NAME ,$Identifier);
         return True;        
     }   
     
@@ -471,7 +471,7 @@ class ObjectBase
         
         //====================================================================//
         //  Log 
-        Splash::Log()->Deb("MsgUnlockSuccess", __CLASS__ ,$Identifier);
+        Splash::Log()->Deb("MsgUnlockSuccess", static::$NAME ,$Identifier);
         
         return True;        
     }  
