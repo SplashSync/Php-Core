@@ -706,6 +706,16 @@ class ObjectsCase extends BaseCase {
         $Type   =   self::isListField($Field->type);
         
         //====================================================================//
+        // Generate Unik Dummy Fields Data
+        $ListData = array();
+        while ( count($ListData) < $NbItems)
+        {
+            $Data           =   self::fakeFieldData($Type["fieldname"], $Field->choices);
+            $Md5            =   md5(serialize($Data)); 
+            $ListData[$Md5] =   $Data; 
+        }
+
+        //====================================================================//
         // Create Dummy List Data
         $Out = array();
         
@@ -713,7 +723,7 @@ class ObjectsCase extends BaseCase {
         // Create Dummy Fields Data
         for ($i = 0; $i < $NbItems; $i++)
         {
-            $Out[][$List["fieldname"]] = self::fakeFieldData($Type["fieldname"], $Field->choices);  
+            $Out[][$List["fieldname"]] = array_shift($ListData); 
         }
         return $Out;
     }        
