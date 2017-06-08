@@ -61,7 +61,7 @@ class oourl extends oovarchar
      */
     static public function fake() {
         $domain = preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode(mt_rand(100, 1000))));
-        return "www." . $domain . ".splashsync.com";
+        return "http://www." . $domain . ".splashsync.com";
     }
 
 }
