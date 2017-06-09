@@ -123,6 +123,9 @@ trait IntelParserTrait
         //====================================================================//
         // Return Data
         //====================================================================//
+//        if ( SPLASH_DEBUG ) {
+//            Splash::Log()->www("Read Data", $this->Out);
+//        } 
         return $this->Out; 
     }  
     
@@ -134,7 +137,9 @@ trait IntelParserTrait
         //====================================================================//
         // Stack Trace
         Splash::Log()->Trace(__CLASS__,__FUNCTION__);
-        
+//        if ( SPLASH_DEBUG ) {
+//            Splash::Log()->www("Write Data", $List);
+//        } 
         //====================================================================//
         // Init Reading
         $this->In           =   $List;

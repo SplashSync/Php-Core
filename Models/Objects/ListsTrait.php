@@ -20,7 +20,7 @@ namespace   Splash\Models\Objects;
 /**
  * @abstract    This class implements access to List Fields Helper.
  */
-trait ListTrait
+trait ListsTrait
 {
     /**
      * @var Static Class Storage
@@ -153,11 +153,11 @@ class ListHelper
         //====================================================================//
         // Check List Name
         if ($this->ListName($FieldName) !== $ListName) {
-            return True;
+            return False;
         }
         //====================================================================//
         // Create List Array If Needed
-        if (!array_key_exists($ListName,$this->Out)) {
+        if (!array_key_exists($ListName,$Buffer)) {
             $Buffer[$ListName] = array();
         }
         //====================================================================//
@@ -176,17 +176,22 @@ class ListHelper
      * 
      *      @return     string
      */
-    protected function List_Insert( &$Buffer, $ListName, $FieldName, $Key, $Data) 
+    public function Insert( &$Buffer, $ListName, $FieldName, $Key, $Data) 
     {
-            //====================================================================//
-            // Create Line Array If Needed
-            if (!array_key_exists($Key,$this->Out[$ListName])) {
-                $Buffer[$ListName][$Key] = array();
-            }    
-            //====================================================================//
-            // Store Data in Array
-            $FieldIndex = explode("@",$FieldName);
-            $Buffer[$ListName][$Key][$FieldIndex[0]] = $Data;
+        //====================================================================//
+        // Create List Array If Needed
+        if (!array_key_exists($ListName,$Buffer)) {
+            $Buffer[$ListName] = array();
+        }        
+        //====================================================================//
+        // Create Line Array If Needed
+        if (!array_key_exists($Key,$Buffer[$ListName])) {
+            $Buffer[$ListName][$Key] = array();
+        }    
+        //====================================================================//
+        // Store Data in Array
+        $FieldIndex = explode("@",$FieldName);
+        $Buffer[$ListName][$Key][$FieldIndex[0]] = $Data;
     }
     
             

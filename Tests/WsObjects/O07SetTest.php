@@ -99,7 +99,8 @@ class O07SetTest extends ObjectsCase {
         if ( $NewData == False ) {
             return True;
         }
-        
+        $NewFieldData = md5( serialize( $this->filterData($NewData, [$Field->id] )));
+                
         //====================================================================//
         //   OBJECT CREATE TEST  
         //====================================================================//
@@ -127,12 +128,20 @@ class O07SetTest extends ObjectsCase {
         //   OBJECT UPDATE TEST  
         //====================================================================//
         
-        //====================================================================//
-        //   Update Focused Field Data
-        $UpdateData = $this->PrepareForTesting($ObjectType,$Field);
-        if ( $UpdateData == False ) {
-            return True;
-        }
+        $Try = 0;
+        do {
+            //====================================================================//
+            //   Update Focused Field Data
+            $UpdateData = $this->PrepareForTesting($ObjectType,$Field);
+            if ( $UpdateData == False ) {
+                return True;
+            }
+            $UpdateFieldData = md5( serialize( $this->filterData($UpdateData, [$Field->id] )));
+
+            //====================================================================//
+            //   Ensure Field Data was modified
+            $Try++;
+        } while ( ( $UpdateFieldData === $NewFieldData ) && ($Try < 5 ) ); 
         
         //====================================================================//
         // Clean Objects Commited Array 

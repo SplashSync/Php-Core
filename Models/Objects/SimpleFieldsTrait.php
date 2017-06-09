@@ -88,7 +88,6 @@ trait SimpleFieldsTrait
      *  @return       self
      */
     protected function setSimple($FieldName, $Data, $Object = "Object") {
-        
         //====================================================================//
         //  Compare Field Data
         if ( $this->{$Object}->$FieldName != $Data ) {
@@ -100,12 +99,12 @@ trait SimpleFieldsTrait
         return $this;
     }
     
-     /**
-     *  @abstract     Common Reading of a Single Field
+    /**
+     *  @abstract     Common Writing of a Single Field
      * 
      *  @param        string    $FieldName              Field Identifier / Name
-     *  @param        string    $Object                 Name of private object to read (Default : "object")
      *  @param        mixed     $Data                   Field Data
+     *  @param        string    $Object                 Name of private object to read (Default : "object")
      * 
      *  @return       SplashObject
      */
@@ -118,6 +117,43 @@ trait SimpleFieldsTrait
             $this->{$Object}->$FieldName = $Data;
             $this->needUpdate();
         }  
+        return $this;
+    }
+    
+    
+    /**
+     *  @abstract     Common reading of a Field using Generic Getters & Setters
+     * 
+     *  @param        string    $FieldName              Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
+     *  @param        string    $Object                 Name of private object to read (Default : "object")
+     * 
+     *  @return       self
+     */
+    protected function getGeneric($FieldName, $Object = "Object") {
+        $this->Out[$FieldName] = $this->{$Object}->{ "get" . $FieldName} ();
+        return $this;
+    }
+    
+    /**
+     *  @abstract     Common Writing of a Field using Generic Getters & Setters
+     * 
+     *  @param        string    $FieldName              Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
+     *  @param        mixed     $Data                   Field Data
+     *  @param        string    $Object                 Name of private object to read (Default : "object")
+     * 
+     *  @return       self
+     */
+    protected function setGeneric($FieldName, $Data, $Object = "Object") {
+        //====================================================================//
+        //  Compare Field Data
+        $Current    =   $this->{$Object}->{ "get" . $FieldName}();
+        if ( $Current == $Data ) {
+            return $this;
+        }
+        //====================================================================//
+        //  Update Field Data
+        $this->{$Object}->{ "set" . $FieldName} ($Data);
+        $this->needUpdate();
         return $this;
     }
 }
