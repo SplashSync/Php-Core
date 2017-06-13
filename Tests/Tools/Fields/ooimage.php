@@ -44,12 +44,16 @@ class ooimage
      */
     static public function validate($Image)
     {
-        //==============================================================================
+        //====================================================================//
+        //      Verify Data is NOT Empty 
+        if ( empty( $Image ) ) {
+            return True;
+        }
+        //====================================================================//
         //      Verify Data is an Array 
         if ( !is_array($Image) && !is_a( $Image , "ArrayObject") ) {
             return "Field Data is not an Array.";
         }
-
         //====================================================================//
         // Check Contents Available
         if ( !array_key_exists("name",$Image) ) {

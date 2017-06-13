@@ -39,6 +39,11 @@ class oofile
      */
     static public function validate($File)
     {
+        //====================================================================//
+        //      Verify Data is NOT Empty 
+        if ( empty( $File ) ) {
+            return True;
+        }
         //==============================================================================
         //      Verify Data is an Array 
         if ( !is_array($File) && !is_a( $File , "ArrayObject") ) {
