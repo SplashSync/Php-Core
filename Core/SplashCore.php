@@ -693,7 +693,7 @@ class SplashCore
         
         //====================================================================//
         // Scan Local Objects Folder  
-        $scan = array_diff(scandir($path,1), array('..', '.'));
+        $scan = array_diff(scandir($path,1), array('..', '.', 'index.php', 'index.html'));
         if ( $scan == FALSE ) {
             return $ObjectsList;
         }
@@ -789,7 +789,7 @@ class SplashCore
         
         //====================================================================//
         // Scan Local Objects Folder  
-        $scan = array_diff(scandir($path,1), array('..', '.'));
+        $scan = array_diff(scandir($path,1), array('..', '.', 'index.php', 'index.html'));
         if ( $scan == FALSE ) {
             return $WidgetsList;
         }
