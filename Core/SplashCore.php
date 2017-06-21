@@ -564,6 +564,33 @@ class SplashCore
         // Return Class Local Path
         return dirname($reflector->getFileName());
     }  
+
+    /**
+     * @abstract   Secured reading of Server SuperGlobals
+     * 
+     * @param   string      $Name
+     * @param   string      $Type
+     * 
+     * @return string
+     */
+    public static function Input($Name, $Type = INPUT_SERVER)
+    {
+        //====================================================================//
+        // Standard Safe Reading
+        $Result =   filter_input($Type, $Name);
+        if ($Result !== Null) {
+            return $Result;
+        } 
+        //====================================================================//
+        // Fallback Reading
+        if ( ($Type === INPUT_SERVER) && isset($_SERVER[$Name]) )  {
+            return $_SERVER[$Name];
+        } 
+        if ( ($Type === INPUT_GET) && isset($_GET[$Name]) )  {
+            return $_GET[$Name];
+        } 
+        return Null;
+    }  
     
 //====================================================================//
 //  TRANSLATIONS MANAGEMENT

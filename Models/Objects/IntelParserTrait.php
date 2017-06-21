@@ -201,4 +201,25 @@ trait IntelParserTrait
         return $Result;
     } 
     
+    /**
+     * @abstract    Check Required Fields
+     * 
+     * @return      bool
+     */
+    public function verifyRequiredFields()
+    {
+        foreach ($this->Fields() as $Field) {
+            // Field is NOT required
+            if ( !$Field["required"] ){
+                continue;
+            }
+            
+            // Fiel is Required but not available
+            if ( empty($this->In[$Field["id"]]) ) {
+                return Splash::Log()->Err("ErrLocalFieldMissing",__CLASS__,__FUNCTION__, $Field["name"] . "(" . $Field["id"] . ")");
+            }
+        }
+        return True;
+    }     
+    
 }

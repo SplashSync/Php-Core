@@ -651,11 +651,11 @@ class Webservice
         
         //====================================================================//
         // Server Infos
-        $r->Self            = filter_input(INPUT_SERVER, "PHP_SELF");           // INFO - Current Url 
-        $r->ServerAddress   = filter_input(INPUT_SERVER, "SERVER_ADDR");        // INFO - Server IP Address
+        $r->Self            = Splash::Input( "PHP_SELF");           // INFO - Current Url 
+        $r->ServerAddress   = Splash::Input( "SERVER_ADDR");        // INFO - Server IP Address
         // Read System Folder without symlinks
-        $r->ServerRoot      = realpath(filter_input(INPUT_SERVER, "DOCUMENT_ROOT") );  
-        $r->UserAgent       = filter_input(INPUT_SERVER, "HTTP_USER_AGENT");    // INFO - Browser User Agent 
+        $r->ServerRoot      = realpath(Splash::Input( "DOCUMENT_ROOT") );  
+        $r->UserAgent       = Splash::Input( "HTTP_USER_AGENT");    // INFO - Browser User Agent 
 
         //====================================================================//
         // Server Urls
@@ -665,8 +665,8 @@ class Webservice
         if ( isset(Splash::Configuration()->ServerHost) ) {
             $r->ServerHost      =   Splash::Configuration()->ServerHost;
         // Check if Available with Secured Reading
-        } elseif(!empty(filter_input(INPUT_SERVER, "SERVER_NAME"))) {
-            $r->ServerHost      = filter_input(INPUT_SERVER, "SERVER_NAME");         
+        } elseif(!empty(Splash::Input( "SERVER_NAME"))) {
+            $r->ServerHost      = Splash::Input( "SERVER_NAME");         
         // Fallback to Unsecured Mode (Required for Phpunit)
         } else {
             $r->ServerHost      = $_SERVER["SERVER_NAME"];         
@@ -674,7 +674,7 @@ class Webservice
         
         //====================================================================//
         // Server IPv4 Address 
-        $r->ServerIP        = filter_input(INPUT_SERVER, "SERVER_ADDR");        
+        $r->ServerIP        = Splash::Input( "SERVER_ADDR");        
         //====================================================================//
         // Server WebService Path 
         if ( isset(Splash::Configuration()->ServerPath) ) {
@@ -682,7 +682,11 @@ class Webservice
         } else {
             $FullPath           =   dirname(__DIR__);
             $RelativePath       =   explode($r->ServerRoot,$FullPath);
-            $r->ServerPath      =   (isset($RelativePath[1])?$RelativePath[1]:"") . "/soap.php";
+            if ( isset($RelativePath[1]) ) {
+                $r->ServerPath  =   $RelativePath[1] . "/soap.php";
+            } else {
+                $r->ServerPath  =   Null;
+            }
         }
         
         $r->setFlags(ArrayObject::STD_PROP_LIST);

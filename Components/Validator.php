@@ -151,8 +151,20 @@ class Validator
         }
 
         if ( !isset($In['ServerPath']) || empty($In['ServerPath']) )  {
-            return Splash::Log()->Err( Splash::Trans("ErrEmptyServerPath" ) );
+            Splash::Log()->Err( Splash::Trans("ErrEmptyServerPath" ) );
+            return Splash::Log()->Err( Splash::Trans("ErrEmptyServerPathDesc" ) );
         }
+        
+        //====================================================================//
+        // Detect Local Instalations
+        //====================================================================//
+        
+        if ( strpos($In['ServerHost'] , "localhost" ) !== FALSE )  {
+            Splash::Log()->War( Splash::Trans("WarIsLocalhostServer" ) );
+        } else if ( strpos($In['ServerIP'] , "127.0.0.1" ) !== FALSE )  {
+            Splash::Log()->War( Splash::Trans("WarIsLocalhostServer" ) );
+        }
+        
 
         
         return True;

@@ -27,6 +27,10 @@ use Splash\Server\SplashServer;
 //====================================================================//  
 
 //====================================================================//
+// Splash Module & Dependecies Autoloader
+require_once( dirname(dirname(dirname(__FILE__))) . "/autoload.php");
+    
+//====================================================================//
 // Declare fatal Error Handler => Called in case of Script Exceptions
 function fatal_handler() {
     
@@ -56,14 +60,12 @@ function fatal_handler() {
 //====================================================================//  
 // Detect NuSOAP requests send by Splash Server 
 if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
-//if ( TRUE )
 {
     
     //====================================================================//
     // Setup Php Specific Settings
     ini_set('display_errors', 0);
-    error_reporting(E_ERROR);
-    
+    error_reporting(E_ERROR);    
     
     //====================================================================//
     //   WebService Available Functions
@@ -79,10 +81,6 @@ if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE
     //====================================================================//  
     // Notice internal routines we are in server request mode
     define("SPLASH_SERVER_MODE"   ,   1);    
-
-    //====================================================================//
-    // Splash Module & Dependecies Autoloader
-    require_once( dirname(dirname(dirname(__FILE__))) . "/autoload.php");
     
     Splash::Log()->Deb("Splash Started In Server Mode");    
     
@@ -102,8 +100,10 @@ if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE
     Splash::Log()->ddd("Received Data",file_get_contents('php://input'));     
     Splash::Server()->service(file_get_contents('php://input'));
     
+
+} elseif ( Splash::Input("node", INPUT_GET) === Splash::Configuration()->WsIdentifier ) {
+    echo "Server Informations";
+    var_dump(Splash::Ws()->getServerInfos());
 } else {
     echo "This WebService Provide no Description.";
 }
-//====================================================================//  
-?>
