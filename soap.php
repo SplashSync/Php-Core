@@ -29,6 +29,15 @@ use Splash\Server\SplashServer;
 //====================================================================//
 // Splash Module & Dependecies Autoloader
 require_once( dirname(dirname(dirname(__FILE__))) . "/autoload.php");
+
+//====================================================================//
+// Setup Php Specific Settings
+ini_set('display_errors', 0);
+error_reporting(E_ERROR);    
+    
+//====================================================================//  
+// Notice internal routines we are in server request mode
+define("SPLASH_SERVER_MODE"   ,   1);    
     
 //====================================================================//
 // Declare fatal Error Handler => Called in case of Script Exceptions
@@ -59,13 +68,8 @@ function fatal_handler() {
 //  SERVER MODE - Answer NuSOAP Requests
 //====================================================================//  
 // Detect NuSOAP requests send by Splash Server 
-if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
+if ( strpos(Splash::Input("HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
 {
-    
-    //====================================================================//
-    // Setup Php Specific Settings
-    ini_set('display_errors', 0);
-    error_reporting(E_ERROR);    
     
     //====================================================================//
     //   WebService Available Functions
@@ -78,10 +82,6 @@ if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE
     function Files($id,$data)               {   $server = new SplashServer(); return $server->Files($id,$data);     }
     function Widgets($id,$data)             {   $server = new SplashServer(); return $server->Widgets($id,$data);   }
 
-    //====================================================================//  
-    // Notice internal routines we are in server request mode
-    define("SPLASH_SERVER_MODE"   ,   1);    
-    
     Splash::Log()->Deb("Splash Started In Server Mode");    
     
     //====================================================================//
@@ -103,7 +103,9 @@ if ( strpos(filter_input(INPUT_SERVER, "HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE
 
 } elseif ( Splash::Input("node", INPUT_GET) === Splash::Configuration()->WsIdentifier ) {
     echo "Server Informations";
-    var_dump(Splash::Ws()->getServerInfos());
+    echo "<PRE>";
+    print_r(Splash::Ws()->getServerInfos());
+    echo "</PRE>";
 } else {
     echo "This WebService Provide no Description.";
 }
