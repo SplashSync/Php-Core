@@ -114,12 +114,12 @@ class PricesHelper
     {
         //====================================================================//
         // Check Both Prices are valid
-        if ( !self::Price_isValid($Price1) || !self::Price_isValid($Price2))  {
+        if ( !self::isValid($Price1) || !self::isValid($Price2))  {
             Splash::Log()->War(__FUNCTION__ . " : Given Prices are invalid" );
-            if ( !self::Price_isValid($Price1) )  {
+            if ( !self::isValid($Price1) )  {
                 Splash::Log()->www(__FUNCTION__ . " Price 1" , $Price1 );
             }
-            if ( !self::Price_isValid($Price2) )  {
+            if ( !self::isValid($Price2) )  {
                 Splash::Log()->www(__FUNCTION__ . " Price 2" , $Price2 );
             }
             return False;
@@ -132,11 +132,11 @@ class PricesHelper
         //====================================================================//
         // Compare Price
         if ( $Price1["base"] ) {
-            if ( !self::Float_Compare($Price1["ttc"],$Price2["ttc"]) ) {
+            if ( abs($Price1["ttc"] - $Price2["ttc"]) > 1E-6 ) {
                 return False;
             }
         } else {
-            if ( !self::Float_Compare($Price1["ht"],$Price2["ht"]) ) {
+            if ( abs($Price1["ht"] - $Price2["ht"]) > 1E-6 ) {
                 return False;
             }
         }
