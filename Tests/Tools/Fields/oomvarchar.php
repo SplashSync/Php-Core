@@ -63,7 +63,7 @@ class oomvarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     *  @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $Settings   User Defined Faker Settings
      * 
      * @return mixed   
      */

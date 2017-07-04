@@ -28,6 +28,7 @@ use Splash\Components\Logger;
 use Splash\Components\Webservice;
 use Splash\Components\XmlManager;
 use Splash\Components\Router;
+use Splash\Models\CommunicationInterface;
 
 use Splash\Local\Local;
 
@@ -134,6 +135,7 @@ class SplashCore
         $Conf->DefaultLanguage      =   SPLASH_DF_LANG;
         //====================================================================//
         // WebService Core Parameters
+        $Conf->WsMethod             =   SPLASH_WS_METHOD;
         $Conf->WsTimout             =   SPLASH_TIMEOUT;
         $Conf->WsCrypt              =   SPLASH_CRYPT_METHOD;
         $Conf->WsEncode             =   SPLASH_ENCODE;
@@ -193,25 +195,28 @@ class SplashCore
     } 
     
     /**
-     *      @abstract   Get a singleton NuSOAP Server Class
-     *                  Acces to all server side Module Functions
-     *      @return     soap_server
+     *      @abstract   Get a singleton Communication Class
+     * 
+     *      @return     CommunicationInterface
      */
-    public static function Server()
+    public static function Com()
     {
-        if (!isset(self::Core()->Server)) {
-            //====================================================================//
-            // NUSOAP SERVER INITIALISATION
-            //====================================================================//
-            //====================================================================//
-            // Include ClassNuSOAP WebService Classes
-            // NuSOAP WebService Classes
-            require_once( dirname(dirname(__FILE__)) . "/inc/nusoap.php");
-            //====================================================================//
-            // Initialize NuSOAP Server Class
-            self::Core()->Server           = new \soap_server();
+        if (isset(self::Core()->Com)) {
+            return self::Core()->Com;
         }
-        return self::Core()->Server;
+        
+        switch ( self::Configuration()->WsMethod ) {
+            case "SOAP";
+                self::Core()->Com           = new \Splash\Components\SOAP\SOAPInterface();
+                break;
+
+            case "NuSOAP";
+            default:
+                self::Core()->Com           = new \Splash\Components\NuSOAP\NuSOAPInterface();
+                break;
+        }            
+
+        return self::Core()->Com;
     } 
     
     /**

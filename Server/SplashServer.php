@@ -24,12 +24,6 @@ use Splash\Core\SplashCore  as Splash;
 use ArrayObject;
 
 //====================================================================//
-//   INCLUDES 
-//====================================================================//  
-
-
-
-//====================================================================//
 //  CLASS DEFINITION
 //====================================================================//  
  
@@ -90,7 +84,6 @@ class SplashServer
         //====================================================================//
         if ( Splash::Configuration()->WsIdentifier !== $id ) {
             return Null;
-//            return self::Transmit(False);
         }
         self::Init();
         //====================================================================//
@@ -98,7 +91,6 @@ class SplashServer
         //====================================================================//
         if (self::Receive($data) != True) {
             return Null;
-//            return self::Transmit(False);
         }
         //====================================================================//
         // Execute Request
@@ -178,27 +170,8 @@ class SplashServer
         self::$_In          = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         self::$_Out         = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);        
         return True;
-    }    
-
-    
-    /**
-     *      @abstract   Register available methods 
-     * 
-     *      @return     bool
-     */
-    public static function Register()
-    {
-        //====================================================================//
-        // Register a method available for clients
-        Splash::Server()->register(SPL_S_PING );        // Check Slave Availability
-        Splash::Server()->register(SPL_S_CONNECT);      // Verify Connection Parameters
-        Splash::Server()->register(SPL_S_ADMIN);        // Administrative requests
-        Splash::Server()->register(SPL_S_OBJECTS);      // Main Object management requests
-        Splash::Server()->register(SPL_S_FILE);        	// Files management requests
-        Splash::Server()->register(SPL_S_WIDGETS);      // Informations requests
-        return;
-    }    
-    
+    }   
+ 
     /**
      *      @abstract   Treat Received Data and Initialize Server before request exectution 
      * 

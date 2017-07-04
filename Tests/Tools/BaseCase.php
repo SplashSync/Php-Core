@@ -229,10 +229,7 @@ class BaseCase extends TestCase {
             
         //====================================================================//
         //   Extract Logs From Response 
-        Splash::Log()->Merge($Log);
-//var_dump($Log->deb);
-        
-
+        Splash::Log()->Merge($Log);        
     }
     /**
      *      @abstract      Verify Response Log Is Valid
@@ -330,26 +327,15 @@ class BaseCase extends TestCase {
      */
     protected function GenericAction($Service, $Action, $Description, array $Parameters = array(True))   
     {
-        
         //====================================================================//
         //   Prepare Request Data
         Splash::Ws()->AddTask( $Action, $Parameters , $Description );
-        Splash::Ws()->Call_Init( $Service );
-        Splash::Ws()->Call_AddTasks();
-        
-        //====================================================================//
-        //   Encode Request Data
-        $Request =  Splash::Ws()->Pack( Splash::Ws()->getOutputBuffer() );
-        
         //====================================================================//
         //   Execute Action From Splash Server to Module  
-        $Response   =   SplashServer::$Service(Splash::Configuration()->WsIdentifier, $Request);
-        
-        
+        $Response   =   Splash::Ws()->Simulate($Service);
         //====================================================================//
         //   Check Response 
         $Data       =   $this->CheckResponse( $Response ); 
-
         //====================================================================//
         //   Extract Task Result 
         if (is_a($Data->tasks, "ArrayObject")) {
@@ -374,14 +360,9 @@ class BaseCase extends TestCase {
         //====================================================================//
         //   Prepare Request Data
         Splash::Ws()->AddTask( $Action, $Parameters , $Description );
-        Splash::Ws()->Call_Init( $Service );
-        Splash::Ws()->Call_AddTasks();
-        //====================================================================//
-        //   Encode Request Data
-        $Request    =   Splash::Ws()->Pack( Splash::Ws()->getOutputBuffer() );
         //====================================================================//
         //   Execute Action From Splash Server to Module  
-        $Response   =   SplashServer::$Service(Splash::Configuration()->WsIdentifier, $Request);
+        $Response   =   Splash::Ws()->Simulate($Service);        
         //====================================================================//
         // RESPONSE BLOCK IS NOT EMPTY
         $this->assertNotEmpty( $Response                    , "Response Block is Empty");
@@ -408,12 +389,4 @@ class BaseCase extends TestCase {
         
         return $Task["data"];
     }
-    
-    
-//    public function testDummy()
-//    {
-//        $this->assertTrue(True);
-//    }
-    
-    
 }

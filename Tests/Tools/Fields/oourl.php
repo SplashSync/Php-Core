@@ -57,11 +57,16 @@ class oourl extends oovarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @return mixed   
+     * @param      array   $Settings   User Defined Faker Settings
+     * 
+     * @return string  
      */
-    static public function fake() {
-        $domain = preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode(mt_rand(100, 1000))));
-        return "http://www." . $domain . ".splashsync.com";
+    static public function fake($Settings) {
+        $Domain =   preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode(mt_rand(100, 1000))));
+        $Prefix =   !empty ($Settings["Url_Prefix"]) ? $Settings["Url_Prefix"] : Null;
+        $Sufix  =   !empty ($Settings["Url_Sufix"])   ? $Settings["Url_Sufix"] : ".splashsync.com";
+        
+        return $Prefix . $Domain . $Sufix;
     }
 
 }

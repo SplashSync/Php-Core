@@ -39,29 +39,31 @@ error_reporting(E_ERROR);
 // Notice internal routines we are in server request mode
 define("SPLASH_SERVER_MODE"   ,   1);    
     
-//====================================================================//
-// Declare fatal Error Handler => Called in case of Script Exceptions
+/*
+ * @abstract   Declare fatal Error Handler => Called in case of Script Exceptions
+ */
 function fatal_handler() {
-    
-   //====================================================================//
-   // Detect If Any Response Message Exists.
-   if( !empty(Splash::Server()->response) ) { return; }
-   
-   //====================================================================//
-   // Prepare Fault Message.
-   $error = error_get_last();
-   $content  = "NuSOAP call: service died unexpectedly!! ";
-   $content .= $error["message"] . " on File " . $error["file"] . " Line " . $error["line"];
-   
-   //====================================================================//
-   // Log Fault Details In NuSOAP Structure.
-   Splash::Server()->fault($error["type"], $content);
-   
-   //====================================================================//
-   // Process methods & Return the results.
-   Splash::Server()->service(file_get_contents('php://input'));
-   
-   return;
+    //====================================================================//
+    // Read Last Error
+    $Error  =   error_get_last();
+    if ( !$Error ) {
+        return;
+    }
+    //====================================================================//
+    // Fatal Error
+    if ( $Error["type"] == E_ERROR) {
+        //====================================================================//
+        // Parse Error in Response.
+        Splash::Com()->Fault($Error);
+        //====================================================================//
+        // Process methods & Return the results.
+        Splash::Com()->Handle();
+    //====================================================================//
+    // Non Fatal Error
+    } else {
+        Splash::Log()->War($Error["message"] . " on File " . $Error["file"] . " Line " . $Error["line"]);
+    }        
+    return;
 } 
 
 //====================================================================//  
@@ -70,7 +72,8 @@ function fatal_handler() {
 // Detect NuSOAP requests send by Splash Server 
 if ( strpos(Splash::Input("HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
 {
-    
+    Splash::Log()->Deb("Splash Started In Server Mode");    
+            
     //====================================================================//
     //   WebService Available Functions
     //====================================================================//  
@@ -82,30 +85,24 @@ if ( strpos(Splash::Input("HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
     function Files($id,$data)               {   $server = new SplashServer(); return $server->Files($id,$data);     }
     function Widgets($id,$data)             {   $server = new SplashServer(); return $server->Widgets($id,$data);   }
 
-    Splash::Log()->Deb("Splash Started In Server Mode");    
-    
     //====================================================================//
-    // Register a method available for clients
-    SplashServer::Register();
-
+    // Build SOAP Server & Register a method available for clients
+    Splash::Com()->BuildServer();
     //====================================================================//
     // Register shuttdown method available for fatal errors reteival
     register_shutdown_function( __NAMESPACE__ . '\fatal_handler' );
     //====================================================================//
     // Turn on output buffering
-    ob_start();                     
-    
+    ob_start();         
     //====================================================================//
     // Process methods & Return the results.
-    Splash::Log()->ddd("Received Data",file_get_contents('php://input'));     
-    Splash::Server()->service(file_get_contents('php://input'));
+    Splash::Com()->Handle();
     
-
 } elseif ( Splash::Input("node", INPUT_GET) === Splash::Configuration()->WsIdentifier ) {
     echo "Server Informations";
     echo "<PRE>";
     print_r(Splash::Ws()->getServerInfos());
     echo "</PRE>";
 } else {
-    echo "This WebService Provide no Description.";
+    echo "This WebService Provide no Description";
 }

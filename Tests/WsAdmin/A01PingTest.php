@@ -24,7 +24,11 @@ class A01PingTest extends BaseCase {
         //====================================================================//
         // BOOT or REBOOT MODULE
         Splash::Reboot();
-
+        //====================================================================//
+        // Force Module to Use NuSOAP if Php SOAP Selected
+        if ( Splash::Configuration()->WsMethod == "SOAP"  ) {
+            Splash::Configuration()->WsMethod = "NuSOAP";
+        } 
         //====================================================================//
         // FAKE SPLASH SERVER HOST URL
         Splash::Configuration()->WsHost = $this->getLocalServerSoapUrl();        
@@ -33,8 +37,6 @@ class A01PingTest extends BaseCase {
     
     public function testPingClientAction()
     {
-
-        
         //====================================================================//
         //   Execute Ping From Module to Splash Server  
         $this->assertTrue(Splash::Ping(), " Test of Splash Server Ping Fail. Maybe this server is not connected? Check your configuration.");

@@ -106,7 +106,7 @@ class C01ClassesTest extends TestCase {
 
         //====================================================================//
         //   Server Splash Module  
-        $this->assertInstanceOf( "soap_server" , Splash::Server() , "Splash Server Class is Not from of Right Instance"); 
+        $this->assertInstanceOf( "Splash\Models\CommunicationInterface" , Splash::Com() , "Splash Communication Interface is Not from of Right Instance"); 
         
     }
     

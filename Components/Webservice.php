@@ -22,14 +22,11 @@ namespace   Splash\Components;
 use ArrayObject;
 
 use Splash\Core\SplashCore      as Splash;
+use Splash\Server\SplashServer;
 
 //====================================================================//
 //   INCLUDES 
 //====================================================================//
-
-//====================================================================//
-// NuSOAP WebService Classes
-require_once( dirname(dirname(__FILE__)) . "/inc/nusoap.php");
 
 //====================================================================//
 //  CLASS DEFINITION
@@ -44,13 +41,13 @@ class Webservice
     const SplashHost    =   "www.splashsync.com/ws/soap";
     //====================================================================//
     // Remote Server Address
-    private $host       =   self::SplashHost;                           
+    private $host       =   self::SplashHost; 
     //====================================================================//
     // Unik Client Identifier ( 1 to 8 Char)
-    private $id         = "";               
+    private $id         =   "";               
     //====================================================================//
     // Unik Key for encrypt data transmission with this Server
-    private $key        = "";              
+    private $key        =   "";              
     //====================================================================//
     // Webservice tasks     
     private $tasks;
@@ -103,8 +100,8 @@ class Webservice
         
         //====================================================================//
         // Read Parameters
-        $this->id   =   Splash::Configuration()->WsIdentifier;
-        $this->key  =   Splash::Configuration()->WsEncryptionKey;
+        $this->id       =   Splash::Configuration()->WsIdentifier;
+        $this->key      =   Splash::Configuration()->WsEncryptionKey;
         
         //====================================================================//
         // If Another Host is Defined => Allow Overide of Server Host Address
@@ -348,66 +345,72 @@ class Webservice
 
     /**
      *      @abstract   Perform operation with WebService Client
-     *      @param      string      $service        server method to use
-     *      @param      array       $tasks          list of task to perform inside this request. is NULL, internal task list is used.
+     *      @param      string      $Service        server method to use
+     *      @param      array       $Tasks          list of task to perform inside this request. is NULL, internal task list is used.
      *      @param      bool        $Uncrypted      force message not to be crypted (Used for Ping Only)
-     *      @param      bool        $clean          Clean task buffer at the end of this function
+     *      @param      bool        $Clean          Clean task buffer at the end of this function
      *      @return     int         $result         0 if KO, 1 if OK
      */
-    public function Call($service, $tasks = NULL, $Uncrypted = 0, $clean = 1) {
-        
+    public function Call($Service, $Tasks = NULL, $Uncrypted = False, $Clean = True) 
+    {
         //====================================================================//
         // WebService Call =>> Initialisation 
-        if ( !$this->Call_Init($service) ) {
-            return False;
-        }
-
+        if ( !$this->__Init($Service) )     { return False; }
         //====================================================================//
         // WebService Call =>> Add Tasks 
-        if ( !$this->Call_AddTasks($tasks) ) {
-            return False;
-        }
-
+        if ( !$this->__AddTasks($Tasks) )   { return False; }
         //====================================================================//
         // Prepare Raw Request Data 
         //====================================================================//
         $this->RawOut = array(
             'id' => $this->id , 
             'data' => $this->Pack($this->_Out, $Uncrypted));
-
         //====================================================================//
-        // Prepare NuSOAP Client 
+        // Prepare Webservice Client 
         //====================================================================//
-        if ( !$this->Call_BuildClient() ) {
-            return False;
-        }
-        
-        //====================================================================//
-        // Log NuSOAP Call Informations in debug buffer
-        Splash::Log()->Deb("[NuSOAP] Call Url= '" . $this->url . "' Service='" . $service . "'");
-
-        //====================================================================//
-        // Execute NuSOAP Call
+        if ( !$this->__BuildClient() )      { return False; }
         //====================================================================//
         // Call Execution
-        $this->RawIn = $this->client->call($service, $this->RawOut);
-        
+        $this->RawIn = Splash::Com()->Call($this->_Out->service, $this->RawOut);
         //====================================================================//
-        // Analyze & Decode NuSOAP Response
+        // Analyze & Decode Response
         //====================================================================//
-        if ( !$this->Call_DecodeResponse($Uncrypted) ) {
-            return False;
-        }
-
+        if ( !$this->__DecodeResponse($Uncrypted) )      { return False; }
         //====================================================================//
         // If required, lean _Out buffer parameters before exit
-        if ($clean) {
+        if ($Clean) {
             $this->CleanOut();
         }
-        
         return $this->_In;
     }
 
+    /**
+     *      @abstract   Simulate operation on Local WebService Client
+     *      @param      string      $Service        server method to use
+     *      @param      array       $Tasks          list of task to perform inside this request. is NULL, internal task list is used.
+     *      @param      bool        $Uncrypted      force message not to be crypted (Used for Ping Only)
+     *      @param      bool        $Clean          Clean task buffer at the end of this function
+     *      @return     int         $result         0 if KO, 1 if OK
+     */
+    public function Simulate($Service, $Tasks = NULL, $Uncrypted = False, $Clean = True) 
+    {
+        //====================================================================//
+        // WebService Call =>> Initialisation 
+        if ( !$this->__Init($Service) )     { return False; }
+        //====================================================================//
+        // WebService Call =>> Add Tasks 
+        if ( !$this->__AddTasks($Tasks) )   { return False; }
+        //====================================================================//
+        //   Execute Action From Splash Server to Module  
+        $Response   =   SplashServer::$Service(Splash::Configuration()->WsIdentifier, $this->Pack($this->_Out, $Uncrypted));   
+        //====================================================================//
+        // If required, lean _Out buffer parameters before exit
+        if ($Clean) {
+            $this->CleanOut();
+        }
+        return $Response;
+    }
+    
     /**
      *      @abstract   Init WebService Call
      * 
@@ -415,7 +418,7 @@ class Webservice
      * 
      *      @return     bool
      */
-    public function Call_Init($service) {
+    private function __Init($service) {
         
         //====================================================================//
         // Debug 
@@ -452,7 +455,7 @@ class Webservice
      * 
      *      @return     bool
      */
-    public function Call_AddTasks($tasks = NULL) {
+    private function __AddTasks($tasks = NULL) {
         
         //====================================================================//
         // No tasks to Add
@@ -490,103 +493,59 @@ class Webservice
      * 
      *      @return     NuSOAP_Client
      */
-    private function Call_BuildClient() {    
-        
+    private function __BuildClient() 
+    {
         //====================================================================//
         // Compute target client url
-        if (strpos($this->host, "http://") === FALSE) {
+        if ( (strpos($this->host, "http://") === FALSE) && (strpos($this->host, "https://") === FALSE) ) {
             $this->url = 'http://' . $this->host;
         } else {
             $this->url = $this->host;
         }        
-        
         //====================================================================//
-        // Initiate new NuSoap Client
-        $this->client = new \nusoap_client($this->url);
-        
-        //====================================================================//
-        // Setup NuSOAP Debug Level
-        if (SPLASH_DEBUG) {
-            $this->client->setDebugLevel(2);
-        }
-        
-        //====================================================================//
-        // Setup NuSOAP Curl Option if Possible
-        if  (in_array  ('curl', get_loaded_extensions())) {
-            $this->client->setUseCURL(true);
-        }
-        
-        //====================================================================//
-        // Enable NuSOAP PersistentConnection
-        $this->client->useHTTPPersistentConnection();
-        
-        //====================================================================//
-        // Define Timeout for client response
-        $this->client->response_timeout = Splash::Configuration()->WsTimout;
+        // Build Webservice Client
+        Splash::Com()->BuildClient($this->url);
         
         return True;
     }
     
     
     /**
-     *      @abstract   Create & Setup WebService Client
+     *      @abstract   Decode WebService Client Response
      * 
      *      @param      bool        $Uncrypted      force message not to be crypted (Used for Ping Only)
      * 
-     *      @return     NuSOAP_Client
+     *      @return     bool
      */
-    private function Call_DecodeResponse($Uncrypted) {
-        
-        //====================================================================//
-        // Analyze NuSOAP Response
-        //====================================================================//
+    private function __DecodeResponse($Uncrypted) {
                 
         //====================================================================//
         // Decode & Store NuSOAP Errors if present
-        if ($this->client->fault) {
-            
+        if ( isset($this->client->fault) && !empty($this->client->fault) ) {
             //====================================================================//
             //  Debug Informations            
-//            Splash::Log()->Deb("[NuSOAP] Data='"            . print_r($this->_Out, TRUE) . "'");
-//            Splash::Log()->Deb("[NuSOAP] Response='"        . print_r($this->RawIn, TRUE) . "'");
             Splash::Log()->Deb("[NuSOAP] Fault Details='"   . $this->client->faultdetail . "'");
-            
             //====================================================================//
             //  Errro Message
             return Splash::Log()->Err("ErrWsNuSOAPFault",$this->client->faultcode ,$this->client->faultstring);
-            
         }
-        
-        //====================================================================//
-        //  Debug Informations   
-//        if (SPLASH_DEBUG) {            
-//            Splash::Log()->Deb("[NuSOAP] Debug => '" . $this->client->getDebugAsXMLComment() . "'");
-//        }
         
         //====================================================================//
         // Unpack NuSOAP Answer
         //====================================================================//        
         if (!empty($this->RawIn)) {
-            
             //====================================================================//
             // Unpack Data from Raw packet
             $this->_In = $this->unPack($this->RawIn, $Uncrypted);
-            
             //====================================================================//
             // Merge Logging Messages from remote with current class messages
             if (isset($this->_In->log)) {
                 Splash::Log()->Merge($this->_In->log);
             }
-            
         } else {
-            
             //====================================================================//
             //  Add Information to Debug Log            
             Splash::Log()->Deb("[NuSOAP] Id='"          . print_r($this->id, TRUE) . "'");
-//            Splash::Log()->Deb("[NuSOAP] Data='"        . print_r($this->_Out,TRUE) . "'");
-//            Splash::Log()->Deb("[NuSOAP] Raw='"         . print_r($this->RawOut, TRUE) . "'");
-//            Splash::Log()->Deb("[NuSOAP] Response='"    . print_r($this->RawIn, TRUE) . "'");
-            
             //====================================================================//
             //  Error Message            
             return Splash::Log()->Err("ErrWsNoResponse",$this->_Out->service,$this->url);
@@ -606,7 +565,7 @@ class Webservice
      *      \param      string      $desc    	Task Name/Description
      *      \return     SplashWs
      */
-    function AddTask($name,$params,$desc = "No Description")
+    public function AddTask($name,$params,$desc = "No Description")
     {
         //====================================================================//
         // Create a new task
@@ -647,8 +606,6 @@ class Webservice
         $r->ServerType      = "PHP";                            // INFO - Server Language Type
         $r->ServerVersion   = phpversion();                     // INFO - Server Language Version 
         $r->ProtocolVersion = SPL_PROTOCOL;                     // INFO - Server Protocal Version 
-
-        
         //====================================================================//
         // Server Infos
         $r->Self            = Splash::Input( "PHP_SELF");           // INFO - Current Url 
@@ -656,7 +613,6 @@ class Webservice
         // Read System Folder without symlinks
         $r->ServerRoot      = realpath(Splash::Input( "DOCUMENT_ROOT") );  
         $r->UserAgent       = Splash::Input( "HTTP_USER_AGENT");    // INFO - Browser User Agent 
-
         //====================================================================//
         // Server Urls
         //====================================================================//
@@ -671,7 +627,6 @@ class Webservice
         } else {
             $r->ServerHost      = $_SERVER["SERVER_NAME"];         
         }
-        
         //====================================================================//
         // Server IPv4 Address 
         $r->ServerIP        = Splash::Input( "SERVER_ADDR");        
@@ -688,7 +643,6 @@ class Webservice
                 $r->ServerPath  =   Null;
             }
         }
-        
         $r->setFlags(ArrayObject::STD_PROP_LIST);
         return $r;
     }

@@ -44,9 +44,11 @@ class oostate extends oovarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @return mixed   
+     * @param      array   $Settings   User Defined Faker Settings
+     * 
+     * @return string   
      */
-    static public function fake()
+    static public function fake($Settings)
     {
         return (mt_rand()%2)?"CA":"FL";
     }    

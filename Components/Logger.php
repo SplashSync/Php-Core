@@ -293,7 +293,7 @@ class Logger
             //====================================================================//
             // Add Messages
             foreach( $msgarray as $txt) {
-                $Out .= PHP_EOL . $Color . $title . $txt;
+                $Out .= PHP_EOL . $Color . $title . html_entity_decode($txt);
             }
         }
         

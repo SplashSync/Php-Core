@@ -38,6 +38,11 @@ class ObjectsCase extends BaseCase {
             "Vat"                       =>  0,              // Default Vat Rate
             
             //==============================================================================
+            //  Url Generator Parameters
+            "Url_Prefix"                => "",               // Add a prefix to generated Url (i.e: http://)
+            "Url_Sufix"                 => ".splashsync.com",// Add a sufix to generated Url 
+            
+            //==============================================================================
             //  Multilanguage Fields
             "Langs"                     =>  array(          // Available Languages for Multilang Fields
                 "en_US", 
@@ -725,6 +730,7 @@ class ObjectsCase extends BaseCase {
         {
             $Out[][$List["fieldname"]] = array_shift($ListData); 
         }
+        
         return $Out;
     }        
     

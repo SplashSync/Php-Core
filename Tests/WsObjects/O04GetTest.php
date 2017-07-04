@@ -115,12 +115,12 @@ class O04GetTest extends ObjectsCase {
         //      Request definition without Sending ObjectType  
         $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__);
         //====================================================================//
-        //      Request definition without Sending ObjectID  
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__, [ "type" => $ObjectType, "fields" => array()]);
+        //      Request Reading without Sending ObjectID  
+        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $ObjectType, "fields" => array()]);
         //====================================================================//
-        //      Request definition but Sending NUll ObjectID  
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__, [ "type" => $ObjectType, "id" => Null, "fields" => array()]);
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__, [ "type" => $ObjectType, "id" => 0, "fields" => array()]);
+        //      Request Reading but Sending NUll ObjectID  
+        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $ObjectType, "id" => Null, "fields" => array()]);
+        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $ObjectType, "id" => 0, "fields" => array()]);
     }
 
     public function getNextObjectId($ObjectType)

@@ -214,11 +214,56 @@ trait IntelParserTrait
                 continue;
             }
             
-            // Fiel is Required but not available
-            if ( empty($this->In[$Field["id"]]) ) {
+            // Field is Required but not available
+            if ( !$this->verifyRequiredFieldIsAvailable($Field["id"]) ) {
                 return Splash::Log()->Err("ErrLocalFieldMissing",__CLASS__,__FUNCTION__, $Field["name"] . "(" . $Field["id"] . ")");
             }
         }
+        return True;
+    }     
+
+    /**
+     * @abstract    Check Required Fields
+     * 
+     * @return      bool
+     */
+    private function verifyRequiredFieldIsAvailable( $FieldId )
+    {
+
+        // Detect List Field Names
+        if ( !method_exists($this,"Lists") || !self::Lists()->ListName($FieldId)) {
+            
+
+            //====================================================================//
+            // Simple Field is Required but not available
+            if ( empty($this->In[$FieldId]) ) {
+                    return False;
+            }
+            return True;
+        }
+        
+
+        //====================================================================//
+        // List Field is required 
+        $ListName   = self::Lists()->ListName($FieldId);
+        $FieldName  = self::Lists()->FieldName($FieldId);
+
+        // Check List is available
+        if ( empty($this->In[$ListName]) ) {
+            return False;
+        }                
+        // list is a List... 
+        if ( !is_array($this->In[$ListName]) && !is_a($this->In[$ListName], "ArrayObject") ) {
+            return False;
+        }     
+        
+        // Check Field is Available
+        foreach ($this->In[$ListName] as $Item) {
+            if ( empty($Item[$FieldName]) ) {
+                    return False;
+            }
+        }
+
         return True;
     }     
     

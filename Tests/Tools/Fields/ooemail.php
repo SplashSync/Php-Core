@@ -55,9 +55,11 @@ class ooemail extends oovarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @return mixed   
+     * @param      array   $Settings   User Defined Faker Settings
+     * 
+     * @return string   
      */
-    static public function fake()
+    static public function fake($Settings)
     {
         $name   = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand()));
         $domain = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(100,1000)));

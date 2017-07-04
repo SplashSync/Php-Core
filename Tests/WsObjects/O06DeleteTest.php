@@ -124,31 +124,20 @@ class O06DeleteTest extends ObjectsCase {
         //====================================================================//
         // Read Required Fields & Prepare Dummy Data
         //====================================================================//
-        $DummyObject = [];
-        $Write = False;
-        foreach ( Splash::Object($ObjectType)->Fields() as $Field) {
+        $Write          = False;
+        $Fields         = Splash::Object($ObjectType)->Fields();
+        foreach ( $Fields as $Key => $Field) {
             
             //====================================================================//
             // Skip Non Required Fields
             if ( !$Field->required ) {
-                continue;
+                unset( $Fields[$Key] );
             }
             //====================================================================//
             // Check if Write Fields
             if ( $Field->write ) {   
                 $Write = True;
             }            
-            
-            //====================================================================//
-            // Generate Fields Dummy Data
-            if ( self::isListField($Field->id) ) {
-                $id     = self::isListField($Field->id);
-                $type   = self::isListField($Field->type);
-                $DummyObject[$id["fieldname"]][$id["listname"]] = $this->fakeFieldData($type["fieldname"]);    
-            } else {
-                $DummyObject[$Field->id] = $this->fakeFieldData($Field->type);    
-            }
-            
         }
         
         //====================================================================//
@@ -165,8 +154,7 @@ class O06DeleteTest extends ObjectsCase {
         // Clean Objects Commited Array 
         Splash::$Commited = Array();
         
-        return $DummyObject;
-        
+        return $this->fakeObjectData($Fields);
     }
 
     public function VerifyCreateResponse($ObjectId)
