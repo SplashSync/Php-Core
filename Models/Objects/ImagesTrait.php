@@ -17,6 +17,8 @@
 
 namespace   Splash\Models\Objects;
 
+use Splash\Core\SplashCore      as Splash;
+
 /**
  * @abstract    This class implements access to Images Fields Helper.
  */
