@@ -311,6 +311,11 @@ class FileManager
         if (is_file($fullpath) ) {
             Splash::Log()->Deb("MsgFileExists",__FUNCTION__,$file);
             //====================================================================//
+            // Check if file is different
+            if ( $md5 === md5_file ($fullpath) ) {
+                return True;
+            }
+            //====================================================================//
             // Check if file is writable
             if (!is_writable($file)) {
                 return Splash::Log()->Err("ErrFileWriteable",__FUNCTION__,$file);
