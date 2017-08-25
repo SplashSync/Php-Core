@@ -24,6 +24,7 @@ class C01ClassesTest extends TestCase {
         echo " \/\_____\  \ \_\    \ \_____\  \ \_\ \_\  \/\_____\  \ \_\ \_\ " . PHP_EOL;
         echo "  \/_____/   \/_/     \/_____/   \/_/\/_/   \/_____/   \/_/\/_/ " . PHP_EOL;
         echo "                                                                " . PHP_EOL;
+        echo ".";
         $this->assertTrue(True);
     }    
 
