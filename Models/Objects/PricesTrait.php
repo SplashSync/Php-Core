@@ -240,6 +240,32 @@ class PricesHelper
     {
         return self::Extract($Price, 'vat');
     }    
+    
+    /**
+     *  @abstract   Extract Price VAT Ratio from Price Array
+     *  
+     *  @param      array       $Price          Price field definition Array
+     *  
+     *  @return     double                       
+     */    
+    public static function TaxRatio($Price)
+    {
+        return (double) self::Extract($Price, 'vat') / 100;
+    }    
+    
+    
+    /**
+     *  @abstract   Extract Price Tax Amount from Price Array
+     *  
+     *  @param      array       $Price          Price field definition Array
+     *  
+     *  @return     double                       
+     */    
+    public static function TaxAmount($Price)
+    {
+        return self::Extract($Price, 'tax');
+    }    
+    
 }
 
 ?>

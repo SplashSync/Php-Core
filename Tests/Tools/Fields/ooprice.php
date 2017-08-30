@@ -108,8 +108,15 @@ class ooprice
     {
         $Price      =   mt_rand(1000,100000)/100;
         $Currency   =   !empty($Settings["Currency"])?$Settings["Currency"]:"EUR";
-        $VAT        =   !empty($Settings["VAT"])?$Settings["VAT"]:20;
-        return  self::encodePrice( (double) $Price, (double) $VAT,Null,$Currency,"","");
+        $Symbol     =   !empty($Settings["CurrencySymbol"])?$Settings["CurrencySymbol"]:"&euro";
+        $VAT        =   !isset($Settings["VAT"])?$Settings["VAT"]:20;
+        $Type       =   !empty($Settings["PriceBase"])?$Settings["PriceBase"]:"HT";
+        
+        if ( $Type == "HT") {
+            return  self::encodePrice( (double) $Price, (double) $VAT, Null, $Currency, $Symbol, "");
+        } else {
+            return  self::encodePrice( NUll, (double) $VAT, (double) $Price, $Currency, $Symbol, "");
+        }
     }         
     
     //==============================================================================
@@ -136,9 +143,9 @@ class ooprice
         
         //====================================================================//
         // Compare Base Price
-        if ( ((bool) $Source["base"]) != ((bool) $Target["base"]) ) {
-            return False;
-        }
+//        if ( ((bool) $Source["base"]) != ((bool) $Target["base"]) ) {
+//            return False;
+//        }
         //====================================================================//
         // Compare Price
         if ( $Source["base"] ) {
