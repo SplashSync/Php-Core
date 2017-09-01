@@ -16,8 +16,10 @@ class O03ListTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromModule($ObjectType)
+    public function testFromModule($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   Execute Action Directly on Module  
         $Data = Splash::Object($ObjectType)->ObjectsList();
@@ -35,8 +37,10 @@ class O03ListTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromObjectsService($ObjectType)
+    public function testFromObjectsService($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   Execute Action From Splash Server to Module  
         $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__, [ "id" => Null, "type" => $ObjectType]);

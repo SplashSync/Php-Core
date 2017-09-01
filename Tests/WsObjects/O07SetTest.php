@@ -14,8 +14,10 @@ class O07SetTest extends ObjectsCase {
     /**
      * @dataProvider ObjectFieldsProvider
      */
-    public function testSingleFieldFromModule($ObjectType, $Field)
+    public function testSingleFieldFromModule($Sequence, $ObjectType, $Field, $ForceObjectId = Null)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)   
         $NewData = $this->PrepareForTesting($ObjectType,$Field);
@@ -29,17 +31,17 @@ class O07SetTest extends ObjectsCase {
         
         //====================================================================//
         // Lock New Objects To Avoid Action Commit 
-        Splash::Object($ObjectType)->Lock();
+        Splash::Object($ObjectType)->Lock($ForceObjectId);
         //====================================================================//
         // Clean Objects Commited Array 
         Splash::$Commited = Array();
         //====================================================================//
         //   Create a New Object on Module  
-        $ObjectId = Splash::Object($ObjectType)->Set(Null, $NewData);
+        $ObjectId = Splash::Object($ObjectType)->Set($ForceObjectId, $NewData);
 
         //====================================================================//
         //   Verify Response
-        $this->VerifyResponse($ObjectType, $ObjectId, SPL_A_CREATE, $NewData);        
+        $this->VerifyResponse($ObjectType, $ObjectId, ( $ForceObjectId ? SPL_A_UPDATE : SPL_A_CREATE ) , $NewData);        
         
         //====================================================================//
         // UnLock New Objects To Avoid Action Commit 
@@ -74,6 +76,12 @@ class O07SetTest extends ObjectsCase {
         //====================================================================//
         
         //====================================================================//
+        // If Test was Forced on a Specific Object (Local Sequences)  
+        if ( !is_null($ForceObjectId) ) {
+            return;
+        }
+        
+        //====================================================================//
         // Lock New Objects To Avoid Action Commit 
         Splash::Object($ObjectType)->Lock($ObjectId);
         
@@ -91,8 +99,10 @@ class O07SetTest extends ObjectsCase {
     /**
      * @dataProvider ObjectFieldsProvider
      */
-    public function testSingleFieldFromService($ObjectType, $Field)
+    public function testSingleFieldFromService($Sequence, $ObjectType, $Field, $ForceObjectId = Null)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)   
         $NewData = $this->PrepareForTesting($ObjectType,$Field);
@@ -110,11 +120,11 @@ class O07SetTest extends ObjectsCase {
         Splash::$Commited = Array();
         //====================================================================//
         //   Create a New Object via Service  
-        $ObjectId = $this->GenericAction(SPL_S_OBJECTS, SPL_F_SET, __METHOD__, [ "id" => Null, "type" => $ObjectType, "fields" => $NewData]);
+        $ObjectId = $this->GenericAction(SPL_S_OBJECTS, SPL_F_SET, __METHOD__, [ "id" => $ForceObjectId, "type" => $ObjectType, "fields" => $NewData]);
 
         //====================================================================//
         //   Verify Response
-        $this->VerifyResponse($ObjectType, $ObjectId, SPL_A_CREATE, $NewData);        
+        $this->VerifyResponse($ObjectType, $ObjectId, ( $ForceObjectId ? SPL_A_UPDATE : SPL_A_CREATE ), $NewData);        
         
         //====================================================================//
         // UnLock New Objects To Avoid Action Commit 
@@ -157,6 +167,12 @@ class O07SetTest extends ObjectsCase {
         //====================================================================//
         //   OBJECT DELETE  
         //====================================================================//
+        
+        //====================================================================//
+        // If Test was Forced on a Specific Object (Local Sequences)  
+        if ( !is_null($ForceObjectId) ) {
+            return;
+        }        
         
         //====================================================================//
         // Lock New Objects To Avoid Action Commit 
@@ -229,6 +245,10 @@ class O07SetTest extends ObjectsCase {
         //   Verify Object Id Is Not Empty
         $this->assertNotEmpty( $ObjectId                    , "Returned New Object Id is Empty");
 
+        //====================================================================//
+        //   Add Object Id to Created List
+        $this->AddTestedObject($ObjectType,$ObjectId);
+        
         //====================================================================//
         //   Verify Object Id Is in Right Format
         $this->assertTrue( 

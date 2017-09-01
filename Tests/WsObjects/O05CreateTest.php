@@ -14,8 +14,10 @@ class O05CreateTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromModule($ObjectType)
+    public function testFromModule($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)   
         $DummyData = $this->PrepareForTesting($ObjectType);
@@ -32,12 +34,13 @@ class O05CreateTest extends ObjectsCase {
         $this->VerifyResponse($ObjectType,$ObjectId);
     }
 
-    
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromService($ObjectType)
+    public function testFromService($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)   
         $DummyData = $this->PrepareForTesting($ObjectType);
@@ -117,6 +120,10 @@ class O05CreateTest extends ObjectsCase {
         //   Verify Object Id Is Not Empty
         $this->assertNotEmpty( $ObjectId                    , "Returned New Object Id is Empty");
 
+        //====================================================================//
+        //   Add Object Id to Created List
+        $this->AddTestedObject($ObjectType,$ObjectId);
+    
         //====================================================================//
         //   Verify Object Id Is in Right Format
         $this->assertTrue( 

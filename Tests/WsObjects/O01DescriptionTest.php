@@ -15,8 +15,9 @@ class O01DescriptionTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromModule($ObjectType)
+    public function testFromModule($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
         //====================================================================//
         //   Execute Action Directly on Module  
         $Data = Splash::Object($ObjectType)->Description();
@@ -34,8 +35,9 @@ class O01DescriptionTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromObjectsService($ObjectType)
+    public function testFromObjectsService($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
         //====================================================================//
         //   Execute Action From Splash Server to Module  
         $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__, [ "id" => Null, "type" => $ObjectType]);

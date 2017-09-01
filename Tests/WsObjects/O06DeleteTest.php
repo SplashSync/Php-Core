@@ -15,8 +15,10 @@ class O06DeleteTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromModule($ObjectType)
+    public function testFromModule($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)   
         $DummyData = $this->PrepareForTesting($ObjectType);
@@ -30,7 +32,7 @@ class O06DeleteTest extends ObjectsCase {
         
         //====================================================================//
         //   Verify Response
-        $this->VerifyCreateResponse($ObjectId);
+        $this->VerifyCreateResponse($ObjectType, $ObjectId);
 
         //====================================================================//
         // Lock New Objects To Avoid Action Commit 
@@ -49,8 +51,10 @@ class O06DeleteTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromService($ObjectType)
+    public function testFromService($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)   
         $DummyData = $this->PrepareForTesting($ObjectType);
@@ -64,7 +68,7 @@ class O06DeleteTest extends ObjectsCase {
         
         //====================================================================//
         //   Verify Response
-        $this->VerifyCreateResponse($ObjectId);
+        $this->VerifyCreateResponse($ObjectType, $ObjectId);
         
         //====================================================================//
         //   Execute Action Directly on Module  
@@ -79,8 +83,10 @@ class O06DeleteTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromObjectsServiceErrors($ObjectType)
+    public function testFromObjectsServiceErrors($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //      Request definition without Sending Parameters  
         $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, []);
@@ -157,12 +163,16 @@ class O06DeleteTest extends ObjectsCase {
         return $this->fakeObjectData($Fields);
     }
 
-    public function VerifyCreateResponse($ObjectId)
+    public function VerifyCreateResponse($ObjectType, $ObjectId)
     {
         //====================================================================//
         //   Verify Object Id Is Not Empty
         $this->assertNotEmpty( $ObjectId                    , "Returned New Object Id is Empty");
 
+        //====================================================================//
+        //   Add Object Id to Created List
+        $this->AddTestedObject($ObjectType,$ObjectId);
+        
         //====================================================================//
         //   Verify Object Id Is in Right Format
         $this->assertTrue( 

@@ -13,6 +13,11 @@ use Splash\Tests\Tools\Fields\ooobjectid as ObjectId;
  */
 class ObjectsCase extends BaseCase {
 
+    /*
+     * @abstract    List of Created & Tested Object used to delete if test failled.
+     */
+    private $CreatedObjects  =   array();
+    
     /**
      * Fields Classes Name Prefix
      * @var string
@@ -36,6 +41,7 @@ class ObjectsCase extends BaseCase {
             //==============================================================================
             //  Price Fields
             "Vat"                       =>  0,              // Default Vat Rate
+            "PriceBase"                 =>  "HT",            // Default Price base
             
             //==============================================================================
             //  Url Generator Parameters
@@ -89,7 +95,6 @@ class ObjectsCase extends BaseCase {
 //            //  Objects Id Fields
 //            //  Default is An Empty List To be completed by User Before Generation
 //            "Objects"                   =>  array(),
-        
     );
 
     protected function loadLocalTestParameters()
@@ -115,6 +120,26 @@ class ObjectsCase extends BaseCase {
         }
     }   
     
+    protected function loadLocalTestSequence($Sequence)
+    {
+        //====================================================================//
+        // Check if Local Tests Sequences are defined
+        if ( is_null(Splash::Local()) || !method_exists(Splash::Local(), "TestSequences") ) {
+            return;
+        }
+        //====================================================================//
+        // Setup Test Sequence
+        Splash::Local()->TestSequences($Sequence);
+    }
+
+    protected function onNotSuccessfulTest(\Throwable $t)
+    {
+        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
+        
+        $this->CleanTestedObjects();
+        
+        throw $t;
+    }  
     
     protected function setUp()
     {
@@ -507,16 +532,31 @@ class ObjectsCase extends BaseCase {
         $Result = array();
         
         //====================================================================//
-        //   For Each Object Type  
-        foreach (Splash::Objects() as $ObjectType) {
+        // Check if Local Tests Sequences are defined
+        if ( !is_null(Splash::Local()) && method_exists(Splash::Local(), "TestSequences") ) {
+            $Sequences  =   Splash::Local()->TestSequences("List");
+        } else {
+            $Sequences  =   array( 1 => "None");
+        }
+        
+        //====================================================================//
+        //   For Each Test Sequence  
+        foreach ($Sequences as $Sequence) {
+            
+            $this->loadLocalTestSequence($Sequence);
+            
             //====================================================================//
-            //   If Object Type Is Disabled Type  =>> Skip
-            if ( Splash::Object($ObjectType)->getIsDisabled() ) {
-                continue;
-            } 
-            //====================================================================//
-            //   Add Object Type to List
-            $Result[] = array($ObjectType);            
+            //   For Each Object Type  
+            foreach (Splash::Objects() as $ObjectType) {
+                //====================================================================//
+                //   If Object Type Is Disabled Type  =>> Skip
+                if ( Splash::Object($ObjectType)->getIsDisabled() ) {
+                    continue;
+                } 
+                //====================================================================//
+                //   Add Object Type to List
+                $Result[] = array($Sequence, $ObjectType);            
+            }
         }
         return $Result;
     }
@@ -526,20 +566,32 @@ class ObjectsCase extends BaseCase {
         $Result = array();
         
         //====================================================================//
-        //   For Each Object Type  
-        foreach (Splash::Objects() as $ObjectType) {
-            //====================================================================//
-            //   If Object Type Is Disabled Type  =>> Skip
-            if ( Splash::Object($ObjectType)->getIsDisabled() ) {
-                continue;
-            } 
-            //====================================================================//
-            //   For Each Field Type  
-            foreach (Splash::Object($ObjectType)->Fields() as $Field) {                
-                $Result[] = array($ObjectType, $Field, $Field->id);            
-            }
+        // Check if Local Tests Sequences are defined
+        if ( !is_null(Splash::Local()) && method_exists(Splash::Local(), "TestSequences") ) {
+            $Sequences  =   Splash::Local()->TestSequences("List");
+        } else {
+            $Sequences  =   array( 1 => "None");
         }
         
+        //====================================================================//
+        //   For Each Test Sequence  
+        foreach ($Sequences as $Sequence) {        
+            $this->loadLocalTestSequence($Sequence);
+            //====================================================================//
+            //   For Each Object Type  
+            foreach (Splash::Objects() as $ObjectType) {
+                //====================================================================//
+                //   If Object Type Is Disabled Type  =>> Skip
+                if ( Splash::Object($ObjectType)->getIsDisabled() ) {
+                    continue;
+                } 
+                //====================================================================//
+                //   For Each Field Type  
+                foreach (Splash::Object($ObjectType)->Fields() as $Field) {                
+                    $Result[] = array($Sequence, $ObjectType, $Field);            
+                }
+            }
+        }
         return $Result;
     }
     
@@ -1267,4 +1319,30 @@ class ObjectsCase extends BaseCase {
         return True;
     }
     
+    //==============================================================================
+    //      OBJECTS DELETE AT THE END OF TESTS 
+    //==============================================================================   
+    
+    protected function AddTestedObject($ObjectType, $ObjectId = Null) {
+        $this->CreatedObjects[] =   array(
+            "ObjectType"    =>  $ObjectType,
+            "ObjectId"      =>  $ObjectId,
+        );
+    }
+    
+    protected function CleanTestedObjects() {
+        
+        foreach ($this->CreatedObjects as $Object) {
+            if ( empty($Object["ObjectId"])) {
+                continue;
+            }
+            //====================================================================//
+            //   Verify Delete is Allowed
+            $Definition = Splash::Object($Object["ObjectType"])->Description();
+            if ( $Definition["allow_push_deleted"] ) {
+                continue;
+            }   
+            Splash::Object($Object["ObjectType"])->Delete($Object["ObjectId"]);
+        }
+    }
 }
