@@ -155,7 +155,7 @@ class C01ClassesTest extends TestCase {
         $WidgetPath = Splash::getLocalPath() . "/Widgets";
         $this->assertTrue( is_dir($WidgetPath) ,    "Splash Local Widgets folder MUST be define in " . $WidgetPath . "."); 
         $TranslationPath = Splash::getLocalPath() . "/Translations";
-        $this->assertTrue( is_dir($TranslationPath) ,    "Splash Local Tanslations folder MUST be define in " . $TranslationPath . "."); 
+        $this->assertTrue( is_dir($TranslationPath) ,    "Splash Local Translations folder MUST be define in " . $TranslationPath . "."); 
         
     }    
     
