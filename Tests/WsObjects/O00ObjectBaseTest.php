@@ -15,7 +15,7 @@ class O00ObjectBaseTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testLockFeature($ObjectType)
+    public function testLockFeature($Sequence, $ObjectType)
     {
         //====================================================================//
         //   FOR NEW OBJECTS  

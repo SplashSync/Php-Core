@@ -26,8 +26,10 @@ class O04GetTest extends ObjectsCase {
     /**
      * @dataProvider ObjectFieldsProvider
      */
-    public function testSingleFieldFromModule($ObjectType, $Field)
+    public function testSingleFieldFromModule($Sequence, $ObjectType, $Field)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         
         //====================================================================//
         //   Get next Available Object ID from Module  
@@ -56,8 +58,9 @@ class O04GetTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testAllFieldsFromModule($ObjectType)
+    public function testAllFieldsFromModule($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
         
         //====================================================================//
         //   Get next Available Object ID from Module  
@@ -86,8 +89,10 @@ class O04GetTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromObjectsService($ObjectType)
+    public function testFromObjectsService($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   Get next Available Object ID from Module  
         $ObjectId = $this->getNextObjectId($ObjectType);
@@ -109,8 +114,10 @@ class O04GetTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testFromObjectsServiceErrors($ObjectType)
+    public function testFromObjectsServiceErrors($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //      Request definition without Sending ObjectType  
         $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__);

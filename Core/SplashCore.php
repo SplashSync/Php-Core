@@ -207,13 +207,13 @@ class SplashCore
         
         switch ( self::Configuration()->WsMethod ) {
             case "SOAP";
-                self::Log()->War("Selected SOAP PHP Protocol for Communication");
+                self::Log()->Deb("Selected SOAP PHP Protocol for Communication");
                 self::Core()->Com           = new \Splash\Components\SOAP\SOAPInterface();
                 break;
 
             case "NuSOAP";
             default:
-                self::Log()->War("Selected NuSOAP PHP Librarie for Communication");
+                self::Log()->Deb("Selected NuSOAP PHP Librarie for Communication");
                 self::Core()->Com           = new \Splash\Components\NuSOAP\NuSOAPInterface();
                 break;
         }            
