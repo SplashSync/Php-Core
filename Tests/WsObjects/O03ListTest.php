@@ -132,8 +132,6 @@ class O03ListTest extends ObjectsCase {
             // Verify List Meta Format
             $this->assertArrayInternalType($Meta,   "current",  "numeric",       $ObjectType . " List => Current Object Count not an Integer");
             $this->assertArrayInternalType($Meta,   "total",    "numeric",       $ObjectType . " List => Total Object Count not an Integer");
-        } else {
-            $this->markTestSkipped('No Objects in Database.');
         }
         
         //====================================================================//

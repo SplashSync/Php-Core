@@ -30,7 +30,6 @@ class O04GetTest extends ObjectsCase {
     {
         $this->loadLocalTestSequence($Sequence);
         
-        
         //====================================================================//
         //   Get next Available Object ID from Module  
         $ObjectId = $this->getNextObjectId($ObjectType);
@@ -65,7 +64,7 @@ class O04GetTest extends ObjectsCase {
         //====================================================================//
         //   Get next Available Object ID from Module  
         $ObjectId = $this->getNextObjectId($ObjectType);
-
+        
         //====================================================================//
         //   Get Readable Object Fields List  
         $Fields = $this->reduceFieldList(Splash::Object($ObjectType)->Fields(), True, False);
@@ -160,6 +159,7 @@ class O04GetTest extends ObjectsCase {
         //====================================================================//
         //   Verify Objects List is Not Empty  
         if ( $this->ObjectCount[$ObjectType] <= 0 ) {
+            $this->markTestSkipped('No Objects in Database.');
             return False;
         }
         
