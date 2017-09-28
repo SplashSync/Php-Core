@@ -132,10 +132,18 @@ class ObjectsCase extends BaseCase {
         Splash::Local()->TestSequences($Sequence);
     }
 
-    protected function onNotSuccessfulTest(\Throwable $t)
+//    protected function onNotSuccessfulTest(\Throwable $t)
+    protected function onNotSuccessfulTest($t)
     {
-        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
+        //====================================================================//
+        // Do not display log on Skipped Tests
+        if ( is_a($t, "PHPUnit\Framework\SkippedTestError") ) {
+            throw $t;
+        }
         
+        //====================================================================//
+        // Display & Clear Module's Log
+        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
         $this->CleanTestedObjects();
         
         throw $t;
