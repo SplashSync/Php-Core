@@ -124,11 +124,17 @@ class O03ListTest extends ObjectsCase {
         // Verify List Meta Are Available
         $this->assertArrayHasKey( "meta",   $Data,      $ObjectType . " List => Meta Informations are not defined");
         $Meta   =   $Data["meta"];
+        $this->assertArrayHasKey( "current",   $Meta,   $ObjectType . " List => Meta current value not defined");
+        $this->assertArrayHasKey( "total",   $Meta,     $ObjectType . " List => Meta total value are not defined");
         
-        //====================================================================//
-        // Verify List Meta Format
-        $this->assertArrayInternalType($Meta,   "current",  "numeric",       $ObjectType . " List => Current Object Count not an Integer");
-        $this->assertArrayInternalType($Meta,   "total",    "numeric",       $ObjectType . " List => Total Object Count not an Integer");
+        if ( !empty($Meta["current"]) && !empty($Meta["total"]) ) {
+            //====================================================================//
+            // Verify List Meta Format
+            $this->assertArrayInternalType($Meta,   "current",  "numeric",       $ObjectType . " List => Current Object Count not an Integer");
+            $this->assertArrayInternalType($Meta,   "total",    "numeric",       $ObjectType . " List => Total Object Count not an Integer");
+        } else {
+            $this->markTestSkipped('No Objects in Database.');
+        }
         
         //====================================================================//
         // Verify List Meta Informations
