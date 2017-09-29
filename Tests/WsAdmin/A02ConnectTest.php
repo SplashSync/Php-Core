@@ -29,6 +29,9 @@ class A02ConnectTest extends BaseCase {
     
     public function testConnectClientAction()
     {
+        if ( defined("SPLASH_TRAVIS") ) {
+            $this->markTestSkipped('No HTTP Calls in Travis Mode');
+        }        
         //====================================================================//
         //   Execute Connect From Module to Splash Server  
         $this->assertTrue(Splash::Connect(), " Test of Splash Server Connect Fail. Maybe this server is not connected? Check your configuration.");

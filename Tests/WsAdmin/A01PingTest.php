@@ -37,6 +37,10 @@ class A01PingTest extends BaseCase {
     
     public function testPingClientAction()
     {
+        if ( defined("SPLASH_TRAVIS") ) {
+            $this->markTestSkipped('No HTTP Calls in Travis Mode');
+        }
+
         //====================================================================//
         //   Execute Ping From Module to Splash Server  
         $this->assertTrue(Splash::Ping(), " Test of Splash Server Ping Fail. Maybe this server is not connected? Check your configuration.");
