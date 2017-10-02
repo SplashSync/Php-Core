@@ -10,7 +10,7 @@ use ArrayObject;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class O04GetTest extends ObjectsCase {
+class O07GetTest extends ObjectsCase {
     
 
     /**
@@ -26,7 +26,7 @@ class O04GetTest extends ObjectsCase {
     /**
      * @dataProvider ObjectFieldsProvider
      */
-    public function testSingleFieldFromModule($Sequence, $ObjectType, $Field)
+    public function testGetSingleFieldFromModule($Sequence, $ObjectType, $Field)
     {
         $this->loadLocalTestSequence($Sequence);
         
@@ -57,7 +57,7 @@ class O04GetTest extends ObjectsCase {
     /**
      * @dataProvider ObjectTypesProvider
      */
-    public function testAllFieldsFromModule($Sequence, $ObjectType)
+    public function testGetAllFieldsFromModule($Sequence, $ObjectType)
     {
         $this->loadLocalTestSequence($Sequence);
         

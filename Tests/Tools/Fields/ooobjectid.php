@@ -64,19 +64,30 @@ class ooobjectid
      */
     static public function fake($ObjectType, $Settings)
     {
-        
         //====================================================================//
         // Get Object List
-        $ObjectsList    =   Splash::Object($ObjectType)->ObjectsList();
-        
+        $ObjectsList    =   Splash::Object($ObjectType)->ObjectsList();   
+        //====================================================================//
+        // Unset MetaData from Objects List
         if( isset($ObjectsList["meta"]) ) {
             unset($ObjectsList["meta"]);
         }
-        
+        //====================================================================//
+        // Filter Objects List to Remove Current Tested
+        $FilterObjectId   = Null;
+        if ( isset($Settings["CurrentType"]) && ($ObjectType == $Settings["CurrentType"]) ) {
+            $FilterObjectId   = $Settings["CurrentId"];
+        }
+        if ( !empty($FilterObjectId) ) {       
+            foreach ($ObjectsList as $Index => $Item) {
+                if ($Item["id"] == $FilterObjectId) {
+                    unset ($ObjectsList[$Index]);
+                }
+            }
+        }
         //====================================================================//
         // Select an Object in Given List
         $Item           = $ObjectsList[array_rand($ObjectsList,1)];
-        
         if ( isset($Item["id"]) && !empty($Item["id"])) {
             //====================================================================//
             // Generate Object Id String

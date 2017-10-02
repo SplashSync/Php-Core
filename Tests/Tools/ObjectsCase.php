@@ -130,23 +130,6 @@ class ObjectsCase extends BaseCase {
         //====================================================================//
         // Setup Test Sequence
         Splash::Local()->TestSequences($Sequence);
-    }
-
-//    protected function onNotSuccessfulTest(\Throwable $t)
-    protected function onNotSuccessfulTest($t)
-    {
-        //====================================================================//
-        // Do not display log on Skipped Tests
-        if ( is_a($t, "PHPUnit\Framework\SkippedTestError") ) {
-            throw $t;
-        }
-        
-        //====================================================================//
-        // Display & Clear Module's Log
-        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
-        $this->CleanTestedObjects();
-        
-        throw $t;
     }  
     
     protected function setUp()
@@ -309,6 +292,16 @@ class ObjectsCase extends BaseCase {
         
     }    
     
+    /**
+     * @abstract        Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation 
+     * 
+     * @param string    $ObjectType     Expected Object Type
+     * @param string    $ObjectId       Expected Object Id
+     */       
+    protected function setCurrentObject(string $ObjectType, string $ObjectId) {
+        $this->settings["CurrentType"]  =   $ObjectType;
+        $this->settings["CurrentId"]    =   $ObjectId;
+    }
     //==============================================================================
     //      VALIDATION FUNCTIONS
     //==============================================================================       
@@ -433,7 +426,6 @@ class ObjectsCase extends BaseCase {
         // Verify Single Field Data Type is Valid
         return $ClassName::validate($Data);
     }        
-    
     
    /**
     *   @abstract   Verify Data a valid field data

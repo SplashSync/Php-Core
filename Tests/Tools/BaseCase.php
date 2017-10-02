@@ -18,8 +18,15 @@ if ( !defined("SPLASH_SERVER_MODE") ) {
  */
 class BaseCase extends TestCase {
 
-    protected function onNotSuccessfulTest(\Throwable $t)
+//    protected function onNotSuccessfulTest(\Throwable $t)
+    protected function onNotSuccessfulTest($t)
     {
+        //====================================================================//
+        // Do not display log on Skipped Tests
+        if ( is_a($t, "PHPUnit\Framework\SkippedTestError") ) {
+            throw $t;
+        }
+        
         fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
         
         throw $t;

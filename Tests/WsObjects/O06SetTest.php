@@ -3,18 +3,19 @@ namespace Splash\Tests\WsObjects;
 
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Client\Splash;
+use Splash\Tests\Tools\Fields\ooobjectid;
 
 /**
  * @abstract    Objects Test Suite - Verify Read/Write of any R/W fields is Ok. 
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class O07SetTest extends ObjectsCase {
+class O06SetTest extends ObjectsCase {
     
     /**
      * @dataProvider ObjectFieldsProvider
      */
-    public function testSingleFieldFromModule($Sequence, $ObjectType, $Field, $ForceObjectId = Null)
+    public function testSetSingleFieldFromModule($Sequence, $ObjectType, $Field, $ForceObjectId = Null)
     {
         $this->loadLocalTestSequence($Sequence);
         
@@ -47,6 +48,10 @@ class O07SetTest extends ObjectsCase {
         // UnLock New Objects To Avoid Action Commit 
         Splash::Object($ObjectType)->Unlock();
 
+        //====================================================================//
+        // Lock This Object To Avoid Being Selected for Linking 
+        $this->setCurrentObject($ObjectType, $ObjectId);
+                
         //====================================================================//
         //   OBJECT UPDATE TEST  
         //====================================================================//
@@ -99,7 +104,7 @@ class O07SetTest extends ObjectsCase {
     /**
      * @dataProvider ObjectFieldsProvider
      */
-    public function testSingleFieldFromService($Sequence, $ObjectType, $Field, $ForceObjectId = Null)
+    public function testSetSingleFieldFromService($Sequence, $ObjectType, $Field, $ForceObjectId = Null)
     {
         $this->loadLocalTestSequence($Sequence);
         
@@ -130,6 +135,10 @@ class O07SetTest extends ObjectsCase {
         // UnLock New Objects To Avoid Action Commit 
         Splash::Object($ObjectType)->Unlock();
 
+        //====================================================================//
+        // Lock This Object To Avoid Being Selected for Linking 
+        $this->setCurrentObject($ObjectType, $ObjectId);
+        
         //====================================================================//
         // BOOT or REBOOT MODULE
         $this->setUp();

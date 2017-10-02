@@ -29,8 +29,8 @@ class A02ConnectTest extends BaseCase {
     
     public function testConnectClientAction()
     {
-        if ( defined("SPLASH_TRAVIS") ) {
-            $this->markTestSkipped('No HTTP Calls in Travis Mode');
+        if ( empty(Splash::Input("SPLASH_TRAVIS")) ) {
+            $this->markTestSkipped('No HTTP Calls in Client Mode');
         }        
         //====================================================================//
         //   Execute Connect From Module to Splash Server  
