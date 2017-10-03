@@ -298,7 +298,7 @@ class ObjectsCase extends BaseCase {
      * @param string    $ObjectType     Expected Object Type
      * @param string    $ObjectId       Expected Object Id
      */       
-    protected function setCurrentObject(string $ObjectType, string $ObjectId) {
+    protected function setCurrentObject( $ObjectType, $ObjectId) {
         $this->settings["CurrentType"]  =   $ObjectType;
         $this->settings["CurrentId"]    =   $ObjectId;
     }
