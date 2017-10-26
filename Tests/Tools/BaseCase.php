@@ -5,7 +5,6 @@ namespace Splash\Tests\Tools;
 use PHPUnit\Framework\TestCase;
     
 use Splash\Client\Splash;
-use Splash\Server\SplashServer;
 
 if ( !defined("SPLASH_SERVER_MODE") ) {
     define("SPLASH_SERVER_MODE", True);
@@ -16,21 +15,70 @@ if ( !defined("SPLASH_SERVER_MODE") ) {
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class BaseCase extends TestCase {
 
-//    protected function onNotSuccessfulTest(\Throwable $t)
-    protected function onNotSuccessfulTest($t)
-    {
-        //====================================================================//
-        // Do not display log on Skipped Tests
-        if ( is_a($t, "PHPUnit\Framework\SkippedTestError") ) {
-            throw $t;
+
+/**
+ * Compatibility Patch for PhpUnit before PHP7
+ */
+if (PHP_VERSION_ID < 70000) {
+    class BaseCase extends AbstractBaseCase {
+        use \Splash\Tests\Tools\Traits\onSuccessfulTest_PHP7;
+    }
+} else {
+    class BaseCase extends AbstractBaseCase {
+        use \Splash\Tests\Tools\Traits\onSuccessfulTest_PHP5;
+    }
+}  
+        
+/**
+ * @abstract    Abstract Base Class for Splash Modules Tests 
+ */
+abstract class AbstractBaseCase extends TestCase {
+
+        function onNotSuccessfulTestCore($Exception)
+        {
+            //====================================================================//
+            // Do not display log on Skipped Tests
+            if ( is_a($Exception, "PHPUnit\Framework\SkippedTestError") ) {
+                throw $Exception;
+            }
+            //====================================================================//
+            // OutPut Splash Logs
+            fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
+            //====================================================================//
+            // OutPut Phpunit Exeption
+            throw $Exception;
         }
-        
-        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
-        
-        throw $t;
-    }    
+            
+    /**
+     * This method is called before the first test of this test class is run.
+     */
+    public static function setUpBeforeClass()
+    {
+        if (defined(__CLASS__ . ":" . __FUNCTION__)) {
+            return;
+        } 
+        if (PHP_VERSION_ID < 70000) {
+            function onNotSuccessfulTest($Exception) { $this->onNotSuccessfulTestCore($Exception); }
+        } else {
+            function onNotSuccessfulTest(\Throwable $Exception) { $this->onNotSuccessfulTestCore($Exception); }
+        }  
+        define(__CLASS__ . ":" . __FUNCTION__, True);
+    }
+    
+//    protected function onNotSuccessfulTest(\Throwable $t)
+//    protected function onNotSuccessfulTest($t)
+//    {
+//        //====================================================================//
+//        // Do not display log on Skipped Tests
+//        if ( is_a($t, "PHPUnit\Framework\SkippedTestError") ) {
+//            throw $t;
+//        }
+//        
+//        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
+//        
+//        throw $t;
+//    }    
     
     protected function setUp()
     {
