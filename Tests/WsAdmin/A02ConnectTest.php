@@ -29,7 +29,7 @@ class A02ConnectTest extends BaseCase {
     
     public function testConnectClientAction()
     {
-        if ( empty(Splash::Input("SPLASH_TRAVIS")) ) {
+        if ( !empty(Splash::Input("SPLASH_TRAVIS")) ) {
             $this->markTestSkipped('No HTTP Calls in Client Mode');
         }        
         //====================================================================//

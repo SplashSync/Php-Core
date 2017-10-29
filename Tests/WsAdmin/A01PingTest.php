@@ -37,7 +37,7 @@ class A01PingTest extends BaseCase {
     
     public function testPingClientAction()
     {
-        if ( empty(Splash::Input("SPLASH_TRAVIS")) ) {
+        if ( !empty(Splash::Input("SPLASH_TRAVIS")) ) {
             $this->markTestSkipped('No HTTP Calls in Client Mode');
         }
 

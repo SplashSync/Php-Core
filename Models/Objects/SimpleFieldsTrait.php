@@ -78,6 +78,25 @@ trait SimpleFieldsTrait
     }
     
     /**
+     *  @abstract     Common Reading of a Single Bit Field
+     * 
+     *  @param        string    $FieldName              Field Identifier / Name
+     *  @param        int       $Position               Bit position (Starting form 0)
+     *  @param        string    $Object                 Name of private object to read (Default : "object")
+     *  @param        mixed     $Default                Default Value if unset
+     * 
+     *  @return       self
+     */
+    protected function getSimpleBit($FieldName, $Position, $Object = "Object", $Default = False) {
+        if ( isset( $this->{$Object}->$FieldName ) ) {
+            $this->Out[$FieldName] = (bool) (( $this->{$Object}->$FieldName >> $Position ) & 1);
+        } else {
+            $this->Out[$FieldName] = (bool) $Default;
+        }
+        return $this;
+    }
+    
+    /**
      *  @abstract     Common Reading of a Single Field
      *                  => If Field Needs to be Updated, do Object Update & Set $this->update to true
      * 
@@ -119,7 +138,34 @@ trait SimpleFieldsTrait
         }  
         return $this;
     }
-    
+
+    /**
+     *  @abstract     Common Writing of a Single Bit Field
+     * 
+     *  @param        string    $FieldName              Field Identifier / Name
+     *  @param        int       $Position               Bit position (Starting form 0)
+     *  @param        mixed     $Data                   Field Data
+     *  @param        string    $Object                 Name of private object to read (Default : "object")
+     * 
+     *  @return       self
+     */
+    protected function setSimpleBit($FieldName, $Position, $Data, $Object = "Object") {
+        
+        //====================================================================//
+        //  Compare Field Data
+        if ( $this->getSimpleBit($FieldName, $Position, $Object) !== $Data ) {
+            //====================================================================//
+            //  Update Field Data
+            if ($Data) {
+                $this->{$Object}->$FieldName =  $this->{$Object}->$FieldName | ( 1 << $Position);
+            } else {
+                $this->{$Object}->$FieldName =  $this->{$Object}->$FieldName & ~ ( 1 << $Position);
+            }            
+            $this->needUpdate();
+        }         
+        
+        return $this;
+    }    
     
     /**
      *  @abstract     Common reading of a Field using Generic Getters & Setters
