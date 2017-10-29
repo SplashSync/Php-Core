@@ -17,6 +17,8 @@
 
 namespace Splash\Tests\Tools\Traits;
 
+use Splash\Client\Splash;
+
 /**
  * Description of onSuccessfulTest_PHP7
  *
