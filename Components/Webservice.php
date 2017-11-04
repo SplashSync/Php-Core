@@ -613,6 +613,7 @@ class Webservice
         // Read System Folder without symlinks
         $r->ServerRoot      = realpath(Splash::Input( "DOCUMENT_ROOT") );  
         $r->UserAgent       = Splash::Input( "HTTP_USER_AGENT");    // INFO - Browser User Agent 
+        $r->WsMethod        = Splash::Configuration()->WsMethod;    // Current Splash WebService Component 
         //====================================================================//
         // Server Urls
         //====================================================================//

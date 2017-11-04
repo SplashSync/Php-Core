@@ -165,7 +165,7 @@ class SplashCore
             //====================================================================//
             // Import Local Parameters
             foreach ($LocalConf as $key => $value) {
-                $Conf->$key =   $value;
+                $Conf->$key =   trim($value);
             }
             
         }
