@@ -107,10 +107,10 @@ class ooprice
     static public function fake($Settings)
     {
         $Price      =   mt_rand(1000,100000)/100;
-        $Currency   =   !empty($Settings["Currency"])?$Settings["Currency"]:"EUR";
-        $Symbol     =   !empty($Settings["CurrencySymbol"])?$Settings["CurrencySymbol"]:"&euro";
-        $VAT        =   !isset($Settings["VAT"])?$Settings["VAT"]:20;
-        $Type       =   !empty($Settings["PriceBase"])?$Settings["PriceBase"]:"HT";
+        $Currency   =   !empty($Settings["Currency"])       ?   $Settings["Currency"]       :"EUR";
+        $Symbol     =   !empty($Settings["CurrencySymbol"]) ?   $Settings["CurrencySymbol"] :"&euro";
+        $VAT        =   isset($Settings["VAT"])             ?   $Settings["VAT"]            :20;
+        $Type       =   !empty($Settings["PriceBase"])      ?   $Settings["PriceBase"]      :"HT";
         
         if ( $Type == "HT") {
             return  self::encodePrice( (double) $Price, (double) $VAT, Null, $Currency, $Symbol, "");
