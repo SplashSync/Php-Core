@@ -90,7 +90,7 @@ class Splash extends SplashCore
         else if ( isset ($r->result) && ($r->result == True) ) {
             return self::Log()->Msg("Remote Client Ping Passed (" . self::Ws()->url . ")");
         } else {
-            return self::Log()->Err("Remote Client Ping Failled (" . self::Ws()->url . ")");
+            return self::Log()->Err("Remote Client Ping Failed (" . self::Ws()->url . ")");
         }
     }
     
@@ -127,7 +127,7 @@ class Splash extends SplashCore
         //====================================================================//
         // Analyze NuSOAP results
         if ( !isset ($r->result) || ($r->result != True) ) {
-            return self::Log()->Err("Remote Client Connection Failled (" . self::Ws()->url . ")");
+            return self::Log()->Err("Remote Client Connection Failed (" . self::Ws()->url . ")");
         }
         //====================================================================//
         // If Not Silent, Display result
