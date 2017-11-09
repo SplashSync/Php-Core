@@ -72,6 +72,9 @@ class ooobjectid
         if( isset($ObjectsList["meta"]) ) {
             unset($ObjectsList["meta"]);
         }
+        if ( empty($ObjectsList) ) {       
+            return Null;        
+        }
         //====================================================================//
         // Filter Objects List to Remove Current Tested
         $FilterObjectId   = Null;
