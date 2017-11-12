@@ -1189,7 +1189,7 @@ class ObjectsCase extends BaseCase {
             // Compare List Data
             $FieldType      =  self::isListField($Field->type);
             if ($FieldType) {
-                $Result = $this->compareListField($FieldType["fieldname"], $Field->id, $Data1, $Data2, $Comment);
+                $Result = $this->compareListField($FieldType["fieldname"], $Field->id, $Data1, $Data2, $Comment . "->" . $Field->id);
             }    
             //====================================================================//
             // Compare Single Fields                   
