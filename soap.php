@@ -99,6 +99,12 @@ if ( strpos(Splash::Input("HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
     Splash::Com()->Handle();
     
 } elseif ( Splash::Input("node", INPUT_GET) === Splash::Configuration()->WsIdentifier ) {
+    //====================================================================//
+    // Setup Php Errors Settings
+    ini_set('display_errors', 0);
+    error_reporting(E_ERROR);
+    //====================================================================//
+    // Output Server Informations
     echo "Server Informations";
     echo "<PRE>";
     print_r(Splash::Ws()->getServerInfos());
