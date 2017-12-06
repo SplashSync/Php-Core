@@ -1,7 +1,7 @@
 <?php
 namespace Splash\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Splash\Tests\Tools\TestCase;
 
 use Splash\Core\SplashCore     as Splash;
 

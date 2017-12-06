@@ -2,7 +2,7 @@
 
 namespace Splash\Tests\Tools;
 
-use PHPUnit\Framework\TestCase;
+use Splash\Tests\Tools\TestCase;
     
 use Splash\Client\Splash;
 
@@ -55,6 +55,8 @@ abstract class AbstractBaseCase extends TestCase {
      */
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass(); 
+        
         if (defined(__CLASS__ . ":" . __FUNCTION__)) {
             return;
         } 
@@ -66,22 +68,8 @@ abstract class AbstractBaseCase extends TestCase {
         define(__CLASS__ . ":" . __FUNCTION__, True);
     }
     
-//    protected function onNotSuccessfulTest(\Throwable $t)
-//    protected function onNotSuccessfulTest($t)
-//    {
-//        //====================================================================//
-//        // Do not display log on Skipped Tests
-//        if ( is_a($t, "PHPUnit\Framework\SkippedTestError") ) {
-//            throw $t;
-//        }
-//        
-//        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
-//        
-//        throw $t;
-//    }    
-    
     protected function setUp()
-    {
+    {       
         //====================================================================//
         // BOOT or REBOOT MODULE
         Splash::Reboot();
