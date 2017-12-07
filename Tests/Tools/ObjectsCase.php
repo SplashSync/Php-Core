@@ -134,6 +134,8 @@ class ObjectsCase extends BaseCase {
     
     protected function setUp()
     {
+        parent::setUp();
+        
         //====================================================================//
         // BOOT or REBOOT MODULE
         Splash::Reboot();
@@ -531,6 +533,8 @@ class ObjectsCase extends BaseCase {
     {
         $Result = array();
         
+        self::setUp();
+
         //====================================================================//
         // Check if Local Tests Sequences are defined
         if ( !is_null(Splash::Local()) && method_exists(Splash::Local(), "TestSequences") ) {
@@ -558,12 +562,17 @@ class ObjectsCase extends BaseCase {
                 $Result[] = array($Sequence, $ObjectType);            
             }
         }
+        
+        self::tearDown();
+        
         return $Result;
     }
 
     public function ObjectFieldsProvider()
     {
         $Result = array();
+        
+        self::setUp();
         
         //====================================================================//
         // Check if Local Tests Sequences are defined
@@ -592,6 +601,9 @@ class ObjectsCase extends BaseCase {
                 }
             }
         }
+        
+        self::tearDown();
+        
         return $Result;
     }
     

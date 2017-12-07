@@ -27,5 +27,5 @@ use PHPUnit\Framework\TestCase      as BaseTestCase;
  *              May be overriden for Using Splash Core Test in Specific Environements 
  */
 abstract class TestCase extends BaseTestCase {
-
+    
 }

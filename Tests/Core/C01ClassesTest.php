@@ -74,9 +74,6 @@ class C01ClassesTest extends TestCase {
         
     }
     
-    /**
-     * @runInSeparateProcess
-     */
     public function testSplashClientClass()
     {
         
@@ -91,9 +88,6 @@ class C01ClassesTest extends TestCase {
     }
 
     
-    /**
-     * @runInSeparateProcess
-     */
     public function testSplashServerClass()
     {
         

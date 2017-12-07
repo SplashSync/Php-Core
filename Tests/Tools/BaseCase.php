@@ -70,6 +70,8 @@ abstract class AbstractBaseCase extends TestCase {
     
     protected function setUp()
     {       
+        parent::setUp();
+        
         //====================================================================//
         // BOOT or REBOOT MODULE
         Splash::Reboot();
