@@ -678,7 +678,7 @@ class Webservice
         $TestsClient = clone $this;
         //====================================================================//
         // Setup Webservice Class 
-        $TestsClient->host  = $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
+        $TestsClient->host  = Splash::Input("REQUEST_SCHEME"). "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
         //====================================================================//
         // Run NuSOAP Call - Reverse Ping 
         $Ping = $TestsClient->Call(SPL_S_PING,NULL,1);

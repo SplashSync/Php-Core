@@ -791,7 +791,7 @@ class SplashCore
         
         //====================================================================//
         //  Verify Server Webservice Connection 
-        if ( !defined("SPLASH_SERVER_MODE") && !self::Ws()->SelfTest()) {
+        if ( !SPLASH_SERVER_MODE && !self::Ws()->SelfTest()) {
             return False;
         }
         
