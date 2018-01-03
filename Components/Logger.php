@@ -282,6 +282,71 @@ class Logger
    }    
    
    /**
+    *      @abstract    Return WebServer Log Item in Html Checklist format
+    *      @return      string		Log message in an human readable Html format
+    */
+   public function GetHtmlListItem($Message, $Type = Null) 
+   {
+        switch ( $Type ) {
+            case "Error":
+                $Color = "#FF3300";
+                $Text  = "&nbsp;KO&nbsp;";
+                Break;
+            case "Warning":
+                $Color = "#FF9933";
+                $Text  = "&nbsp;WAR&nbsp;";
+                Break;
+            default:
+                $Color = "#006600";
+                $Text  = "&nbsp;OK&nbsp;";
+                Break;
+        } 
+        
+        return '[<font color="' . $Color . '">' . $Text . '</font>]&nbsp;&nbsp;&nbsp;' . $Message . PHP_EOL . "</br>";
+    }   
+    
+   /**
+    *      @abstract    Return All WebServer current Log WebServer in Html Checklist format
+    *      @return      string		All existing log messages in an human readable Html format
+    */
+   public function GetHtmlList($Msgarray,$Type) 
+   {
+        $html  = Null;
+        
+        if (count($Msgarray) > 0 )  {
+            //====================================================================//
+            // Add Messages
+            foreach( $Msgarray as $Message) {
+                $html .= $this->GetHtmlListItem($Message, $Type);
+            }
+        }
+        
+        return $html;
+   }
+   
+   /**
+    *      @abstract    Return All WebServer current Log WebServer in Html Checklist format
+    *      @param       bool            True if messages needs to be cleaned after reading.
+    *      @return      string		All existing log messages in an human readable Html format
+    */
+   public function GetHtmlLogList( $clean = False ) 
+   {
+        $html  = NULL;
+        //====================================================================//
+        // Read All Messages as Html
+        $html .= $this->GetHtmlList($this->err, "Error");
+        $html .= $this->GetHtmlList($this->war, "Warning");
+        $html .= $this->GetHtmlList($this->msg, "Message");
+        $html .= $this->GetHtmlList($this->deb, "Debug");
+        //====================================================================//
+        // Clear Log Buffer If Requiered
+        if ($clean) {
+            $this->CleanLog();
+        }
+        return $html;
+   }       
+   
+   /**
     *      @abstract    Return All WebServer current Log WebServer Console Colored format
     *      @return      string		All existing log messages in an human readable Html format
     */

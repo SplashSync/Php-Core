@@ -282,6 +282,36 @@ class SplashServer
         //====================================================================//         
         return self::Transmit($GlobalResult); 
     }
+   
+//====================================================================//
+//  SERVER STATUS & CONFIG DEBUG FUNCTIONS
+//====================================================================//
+        
+    /**
+     *      @abstract      Analyze & Debug Server Status 
+     * 
+     *      @return        html
+     */
+    public static function GetStatusInformations()    {
+        
+        
+        $Html = Null;
+
+        //====================================================================//
+        // Exectute Splash Local SelfTest
+        if (!Splash::SelfTest()) {
+            $Html   .=      Splash::Log()->GetHtmlListItem("Splash Module SelfTest as Failed" , "Error");
+        } else {
+            $Html   .=      Splash::Log()->GetHtmlListItem("Splash Module SelfTest is Passed");
+        }
+        
+        //====================================================================//
+        // Output Server Informations
+        $Html   .=      Splash::Log()->GetHtmlListItem("Server Informations");
+        $Html   .=      "<PRE>" . print_r(Splash::Ws()->getServerInfos()->getArrayCopy() , True) . "</PRE>";
+
+        return $Html;
+    }
     
 }
 

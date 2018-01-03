@@ -99,16 +99,23 @@ if ( strpos(Splash::Input("HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
     Splash::Com()->Handle();
     
 } elseif ( Splash::Input("node", INPUT_GET) === Splash::Configuration()->WsIdentifier ) {
+    
+    Splash::Log()->Deb("Splash Started In System Debug Mode");    
     //====================================================================//
     // Setup Php Errors Settings
-    ini_set('display_errors', 0);
-    error_reporting(E_ERROR);
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
     //====================================================================//
-    // Output Server Informations
-    echo "Server Informations";
-    echo "<PRE>";
-    print_r(Splash::Ws()->getServerInfos());
-    echo "</PRE>";
+    // Output Server Analyze & Debug
+    echo SplashServer::GetStatusInformations();
+
+    //====================================================================//
+    // Output Module Complete Log
+    echo Splash::Log()->GetHtmlLogList();
+    
+    
+    
+            
 } else {
     echo "This WebService Provide no Description";
 }
