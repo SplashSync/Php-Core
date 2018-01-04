@@ -34,14 +34,14 @@
 //====================================================================//
 // Global Definitions 
 //====================================================================//
-define("SPLASH_VERSION"       ,   '1.1.0');
+define("SPLASH_VERSION"       ,   '1.2.0');
 define("SPLASH_NAME"          ,   'Splash Php Client Module');
 define("SPLASH_DESC"          ,   'Splash Open-Source & Universal Synchronisation WebService.');
 define("SPLASH_AUTHOR"        ,   'Splash Official <www.splashsync.com>');
 
 //====================================================================//
 // NuSOAP Messaging Parameters
-define("SPLASH_WS_METHOD"     ,   "NuSOAP");            // Module Webservice Method
+define("SPLASH_WS_METHOD"     ,   "SOAP");              // Module Webservice Method
 define("SPLASH_TIMEOUT"       ,   30);                  // Client response timout in seconds
 define("SPLASH_CRYPT_METHOD"  ,   "AES-256-CBC");       // Define Data Encryption Method
 define("SPLASH_ENCODE"        ,   "XML");               // Messages Encoding Format (XML, JSON)

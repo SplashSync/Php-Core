@@ -498,7 +498,7 @@ class Webservice
         //====================================================================//
         // Compute target client url
         if ( (strpos($this->host, "http://") === FALSE) && (strpos($this->host, "https://") === FALSE) ) {
-            $this->url = 'http://' . $this->host;
+            $this->url = 'https://' . $this->host;
         } else {
             $this->url = $this->host;
         }        
@@ -508,7 +508,7 @@ class Webservice
         
         return True;
     }
-    
+
     
     /**
      *      @abstract   Decode WebService Client Response
@@ -656,6 +656,35 @@ class Webservice
         return $this->_Out;
     }
     
+    /**
+     *      @abstract   Build WebService Client Url
+     * 
+     *      @return     string
+     */
+    private function getClientUrl() 
+    {
+        //====================================================================//
+        // Fetch Server Informations 
+        $ServerInfos    = $this->getServerInfos();
+        //====================================================================//
+        // Build Server Url 
+        return Splash::Input("REQUEST_SCHEME"). "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
+    } 
+    
+    /**
+     *      @abstract   Build WebService Client Debug Html Link
+     * 
+     *      @return     string
+     */
+    private function getClientDebugLink() 
+    {
+        //====================================================================//
+        // Compute target client debug url
+        $Url    = $this->getClientUrl();
+        $Params = "?node=" . $this->id;
+        return '<a href="' . $Url . $Params . '" target="_blank" >' . $Url . '</a>';
+    }    
+    
 //====================================================================//
 //  WEBSERVICE SELF-TESTS
 //====================================================================//
@@ -671,26 +700,26 @@ class Webservice
         // Stack Trace
         Splash::Log()->Trace(__CLASS__,__FUNCTION__);              
         //====================================================================//
-        // Fetch Server Informations 
-        $ServerInfos    = $this->getServerInfos();
-        //====================================================================//
         // Clone Webservice Class 
         $TestsClient = clone $this;
         //====================================================================//
         // Setup Webservice Class 
-        $TestsClient->host  = Splash::Input("REQUEST_SCHEME"). "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
+        $TestsClient->host  = $this->getClientUrl();
         //====================================================================//
         // Run NuSOAP Call - Reverse Ping 
         $Ping = $TestsClient->Call(SPL_S_PING,NULL,1);
         if ( empty($Ping) || !isset($Ping->result) || !$Ping->result ) {
-            return Splash::Log()->Err( Splash::Trans("ErrReversePing" , $TestsClient->host) );
+            Splash::Log()->Err( Splash::Trans("ErrReversePing" , $TestsClient->host) );
+            return Splash::Log()->Err( Splash::Trans("ErrReverseDebug" , $this->getClientDebugLink()) );
         }
         //====================================================================//
         // Run NuSOAP Call - Reverse Ping 
         $Connect = $TestsClient->Call(SPL_S_CONNECT,array());
         if ( empty($Connect) || !isset($Connect->result) || !$Connect->result ) {
-            return Splash::Log()->Err( Splash::Trans("ErrReverseConnect" , $TestsClient->host) );
+            Splash::Log()->Err( Splash::Trans("ErrReverseConnect" , $TestsClient->host) );
+            return Splash::Log()->Err( Splash::Trans("ErrReverseDebug" , $this->getClientDebugLink()) );
         }
+        Splash::Log()->Msg( Splash::Trans("MsgReverseConnect") );
         
         return True;
     }

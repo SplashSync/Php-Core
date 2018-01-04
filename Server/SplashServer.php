@@ -296,21 +296,37 @@ class SplashServer
         
         $Html = Null;
 
-        //====================================================================//
-        // Verify PHP Version
-        Splash::Validate()->isValidPHPVersion();
-        $Html  .=   Splash::Log()->GetHtmlLogList(True);
-        
-        //====================================================================//
-        // Execute Splash Local SelfTest
-        Splash::SelfTest();
-        $Html  .=   Splash::Log()->GetHtmlLogList(True);
+        try {
 
-        //====================================================================//
-        // Output Server Informations
-        $Html   .=      Splash::Log()->GetHtmlListItem("Server Informations");
-        $Html   .=      "<PRE>" . print_r(Splash::Ws()->getServerInfos()->getArrayCopy() , True) . "</PRE>";
+            //====================================================================//
+            // Output Server Informations
+            $Html   .=      Splash::Log()->GetHtmlListItem("Server Informations");
+            $Html   .=      "<PRE>" . print_r(Splash::Ws()->getServerInfos()->getArrayCopy() , True) . "</PRE>";
+            
+            //====================================================================//
+            // Verify PHP Version
+            Splash::Validate()->isValidPHPVersion();
+            //====================================================================//
+            // Verify PHP Extensions
+            Splash::Validate()->isValidPHPExtensions();
+            //====================================================================//
+            // Verify SOAP Method
+            Splash::Validate()->isValidSOAPMethod();
+            //====================================================================//
+            // Execute Splash Local SelfTest
+            Splash::SelfTest();
+            //====================================================================//
+            //  Verify Server Webservice Connection 
+            Splash::Ws()->SelfTest();
+            
+        } catch (\Exception $ex) {
+            echo $ex->getMessage();
+            $Html  .=   Splash::Log()->GetHtmlLogList(True);
+            echo $Html;
+            exit;
+        }
 
+        $Html  .=   Splash::Log()->GetHtmlLogList(True);
         return $Html;
     }
     
