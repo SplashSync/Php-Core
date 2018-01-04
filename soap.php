@@ -108,14 +108,10 @@ if ( strpos(Splash::Input("HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
     //====================================================================//
     // Output Server Analyze & Debug
     echo SplashServer::GetStatusInformations();
-
     //====================================================================//
     // Output Module Complete Log
     echo Splash::Log()->GetHtmlLogList();
     
-    
-    
-            
 } else {
     echo "This WebService Provide no Description";
 }

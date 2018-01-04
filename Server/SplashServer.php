@@ -294,17 +294,18 @@ class SplashServer
      */
     public static function GetStatusInformations()    {
         
-        
         $Html = Null;
 
         //====================================================================//
-        // Exectute Splash Local SelfTest
-        if (!Splash::SelfTest()) {
-            $Html   .=      Splash::Log()->GetHtmlListItem("Splash Module SelfTest as Failed" , "Error");
-        } else {
-            $Html   .=      Splash::Log()->GetHtmlListItem("Splash Module SelfTest is Passed");
-        }
+        // Verify PHP Version
+        Splash::Validate()->isValidPHPVersion();
+        $Html  .=   Splash::Log()->GetHtmlLogList(True);
         
+        //====================================================================//
+        // Execute Splash Local SelfTest
+        Splash::SelfTest();
+        $Html  .=   Splash::Log()->GetHtmlLogList(True);
+
         //====================================================================//
         // Output Server Informations
         $Html   .=      Splash::Log()->GetHtmlListItem("Server Informations");

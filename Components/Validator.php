@@ -586,6 +586,26 @@ class Validator
         return False;
     }       
     
+//====================================================================//
+// *******************************************************************//
+//  VALIDATE LOCAL SERVER
+// *******************************************************************//
+//====================================================================//
    
+    /**
+     *      @abstract     Verify PHP Version is Compatible. 
+     * 
+     *      @return       bool                      
+     */
+    public function isValidPHPVersion()
+    {
+        if (version_compare(PHP_VERSION, '5.6.0') < 0) {
+            return Splash::Log()->Err( "PHP : Your PHP version is too low to use Splash (" . PHP_VERSION . "). PHP >5.6 is Requiered."  );
+        }
+        return Splash::Log()->Msg( "PHP : Your PHP version is compatible with Splash (" . PHP_VERSION . ")"  );
+    }       
+    
+    
+    
 }
 ?>
