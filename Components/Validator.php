@@ -156,13 +156,17 @@ class Validator
         }
         
         //====================================================================//
-        // Detect Local Instalations
+        // Detect Local Installations
         //====================================================================//
         
         if ( strpos($In['ServerHost'] , "localhost" ) !== FALSE )  {
             Splash::Log()->War( Splash::Trans("WarIsLocalhostServer" ) );
         } else if ( strpos($In['ServerIP'] , "127.0.0.1" ) !== FALSE )  {
             Splash::Log()->War( Splash::Trans("WarIsLocalhostServer" ) );
+        }
+        
+        if ( Splash::Input("REQUEST_SCHEME") === "https" )  {
+            Splash::Log()->War( Splash::Trans("WarIsHttpsServer" ) );
         }
         
 
