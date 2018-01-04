@@ -791,7 +791,7 @@ class SplashCore
         
         //====================================================================//
         //  No HTTP Calls on SERVER MODE, nor in TRAVIS tests
-        if ( SPLASH_SERVER_MODE || !empty(Splash::Input("SPLASH_TRAVIS") ) ) {
+        if ( SPLASH_SERVER_MODE || !empty(self::Input("SPLASH_TRAVIS") ) ) {
             return True;
         }
 
