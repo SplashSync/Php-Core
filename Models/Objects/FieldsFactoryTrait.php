@@ -23,7 +23,7 @@ use Splash\Components\FieldsFactory;
 /**
  * @abstract    Implement Access to Fields Factory using Splash Static Class
  */
-trait FieldsfactoryTrait
+trait FieldsFactoryTrait
 {
     /**
      * @var Static Class Storage
