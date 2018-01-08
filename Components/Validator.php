@@ -156,13 +156,17 @@ class Validator
         }
         
         //====================================================================//
-        // Detect Local Instalations
+        // Detect Local Installations
         //====================================================================//
         
         if ( strpos($In['ServerHost'] , "localhost" ) !== FALSE )  {
             Splash::Log()->War( Splash::Trans("WarIsLocalhostServer" ) );
         } else if ( strpos($In['ServerIP'] , "127.0.0.1" ) !== FALSE )  {
             Splash::Log()->War( Splash::Trans("WarIsLocalhostServer" ) );
+        }
+        
+        if ( Splash::Input("REQUEST_SCHEME") === "https" )  {
+            Splash::Log()->War( Splash::Trans("WarIsHttpsServer" ) );
         }
         
 
@@ -604,6 +608,35 @@ class Validator
         }
         return Splash::Log()->Msg( "PHP : Your PHP version is compatible with Splash (" . PHP_VERSION . ")"  );
     }       
+    
+    /**
+     *      @abstract     Verify PHP Required are Installed & Active
+     * 
+     *      @return       bool                      
+     */
+    public function isValidPHPExtensions()
+    {
+        $Extensions = array("xml", "soap", "curl");
+        foreach ($Extensions as $Extension) {
+            if ( !extension_loaded($Extension) ) {
+                return Splash::Log()->Err( "PHP :" . $Extension . " PHP Extension is required to use Splash PHP Module."  );
+            }
+        }
+        return Splash::Log()->Msg( "PHP : Required PHP Extension are installed (" . implode(', ', $Extensions) . ")"  );
+    }  
+    
+    /**
+     *      @abstract     Verify WebService Library is Valid. 
+     * 
+     *      @return       bool                      
+     */
+    public function isValidSOAPMethod()
+    {
+        if (!in_array(Splash::Configuration()->WsMethod, ["SOAP", "NuSOAP"] )) {
+            return Splash::Log()->Err( "Config : Your selected an unknown SOAP Method (" . Splash::Configuration()->WsMethod . ")."  );
+        }
+        return Splash::Log()->Msg( "Config : SOAP Method is Ok (" . Splash::Configuration()->WsMethod . ")."  );
+    }        
     
     
     

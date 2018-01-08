@@ -790,12 +790,14 @@ class SplashCore
         }
         
         //====================================================================//
-        //  Verify Server Webservice Connection 
-        if ( !SPLASH_SERVER_MODE && !self::Ws()->SelfTest()) {
-            return False;
+        //  No HTTP Calls on SERVER MODE, nor in TRAVIS tests
+        if ( SPLASH_SERVER_MODE || !empty(self::Input("SPLASH_TRAVIS") ) ) {
+            return True;
         }
-        
-        return True;
+
+        //====================================================================//
+        //  Verify Server Webservice Connection 
+        return self::Ws()->SelfTest();
     }       
 
     /**

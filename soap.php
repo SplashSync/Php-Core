@@ -34,10 +34,10 @@ require_once( dirname(dirname(dirname(__FILE__))) . "/autoload.php");
 // Setup Php Specific Settings
 ini_set('display_errors', 0);
 error_reporting(E_ERROR);    
-    
+
 //====================================================================//  
 // Notice internal routines we are in server request mode
-define("SPLASH_SERVER_MODE"   ,   1);    
+define("SPLASH_SERVER_MODE"   ,   1); 
     
 /*
  * @abstract   Declare fatal Error Handler => Called in case of Script Exceptions
@@ -70,7 +70,7 @@ function fatal_handler() {
 //  SERVER MODE - Answer NuSOAP Requests
 //====================================================================//  
 // Detect NuSOAP requests send by Splash Server 
-if ( strpos(Splash::Input("HTTP_USER_AGENT") , "NuSOAP" ) !== FALSE )
+if ( strpos(Splash::Input("HTTP_USER_AGENT") , "SOAP" ) !== FALSE )
 {
     Splash::Log()->Deb("Splash Started In Server Mode");    
             
