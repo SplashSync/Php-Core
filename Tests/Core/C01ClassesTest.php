@@ -87,7 +87,6 @@ class C01ClassesTest extends TestCase {
 
     }
 
-    
     public function testSplashServerClass()
     {
         
@@ -104,8 +103,6 @@ class C01ClassesTest extends TestCase {
         $this->assertInstanceOf( "Splash\Models\CommunicationInterface" , Splash::Com() , "Splash Communication Interface is Not from of Right Instance"); 
         
     }
-    
-    
     
     public function testModuleLocalClass()
     {

@@ -26,6 +26,13 @@ use PHPUnit\Framework\TestCase      as BaseTestCase;
  * @abstract    Base PhpUnit Test Class for Splash Modules Tests
  *              May be overriden for Using Splash Core Test in Specific Environements 
  */
-abstract class TestCase extends BaseTestCase {
-    
-}
+if (PHP_VERSION_ID > 70000) {
+    abstract class TestCase extends BaseTestCase {
+        use \Splash\Tests\Tools\Traits\onSuccessfulTest_PHP7;
+    }
+} else {
+    abstract class TestCase extends BaseTestCase {
+        use \Splash\Tests\Tools\Traits\onSuccessfulTest_PHP5;
+    }
+}  
+   

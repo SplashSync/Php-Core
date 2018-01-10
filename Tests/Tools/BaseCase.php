@@ -35,38 +35,38 @@ if (PHP_VERSION_ID > 70000) {
  */
 abstract class AbstractBaseCase extends TestCase {
 
-        function onNotSuccessfulTestCore($Exception)
-        {
-            //====================================================================//
-            // Do not display log on Skipped Tests
-            if ( is_a($Exception, "PHPUnit\Framework\SkippedTestError") ) {
-                throw $Exception;
-            }
-            //====================================================================//
-            // OutPut Splash Logs
-            fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
-            //====================================================================//
-            // OutPut Phpunit Exeption
-            throw $Exception;
-        }
-            
-    /**
-     * This method is called before the first test of this test class is run.
-     */
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass(); 
-        
-        if (defined(__CLASS__ . ":" . __FUNCTION__)) {
-            return;
-        } 
-        if (PHP_VERSION_ID < 70000) {
-            function onNotSuccessfulTest($Exception) { $this->onNotSuccessfulTestCore($Exception); }
-        } else {
-            function onNotSuccessfulTest(\Throwable $Exception) { $this->onNotSuccessfulTestCore($Exception); }
-        }  
-        define(__CLASS__ . ":" . __FUNCTION__, True);
-    }
+//    function onNotSuccessfulTestCore($Exception)
+//    {
+//        //====================================================================//
+//        // Do not display log on Skipped Tests
+//        if ( is_a($Exception, "PHPUnit\Framework\SkippedTestError") ) {
+//            throw $Exception;
+//        }
+//        //====================================================================//
+//        // OutPut Splash Logs
+//        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
+//        //====================================================================//
+//        // OutPut Phpunit Exeption
+//        throw $Exception;
+//    }
+//            
+//    /**
+//     * This method is called before the first test of this test class is run.
+//     */
+//    public static function setUpBeforeClass()
+//    {
+//        parent::setUpBeforeClass(); 
+//        
+//        if (defined(__CLASS__ . ":" . __FUNCTION__)) {
+//            return;
+//        } 
+//        if (PHP_VERSION_ID < 70000) {
+//            function onNotSuccessfulTest($Exception) { $this->onNotSuccessfulTestCore($Exception); }
+//        } else {
+//            function onNotSuccessfulTest(\Throwable $Exception) { $this->onNotSuccessfulTestCore($Exception); }
+//        }  
+//        define(__CLASS__ . ":" . __FUNCTION__, True);
+//    }
     
     protected function setUp()
     {       
