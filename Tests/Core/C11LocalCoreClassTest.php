@@ -15,12 +15,6 @@ use ArrayObject;
  */
 class C11LocalCoreClassTest extends TestCase {
     
-//    protected function onNotSuccessfulTest(\Throwable $t)
-//    {
-//        fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
-//        throw $t;
-//    }
-    
     public function testParameterFunction()
     {
         
