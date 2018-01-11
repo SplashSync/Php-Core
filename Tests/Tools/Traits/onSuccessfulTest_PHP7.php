@@ -34,6 +34,9 @@ trait onSuccessfulTest_PHP7 {
             throw $Exception;
         }
         //====================================================================//
+        // Remove Debug From Splash Logs
+        Splash::Log()->deb = array();
+        //====================================================================//
         // OutPut Splash Logs
         fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
         //====================================================================//
