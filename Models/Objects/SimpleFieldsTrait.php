@@ -109,7 +109,7 @@ trait SimpleFieldsTrait
     protected function setSimple($FieldName, $Data, $Object = "Object") {
         //====================================================================//
         //  Compare Field Data
-        if ( $this->{$Object}->$FieldName != $Data ) {
+        if ( !isset($this->{$Object}->$FieldName) || ($this->{$Object}->$FieldName != $Data) ) {
             //====================================================================//
             //  Update Field Data
             $this->{$Object}->$FieldName = $Data;
@@ -130,7 +130,7 @@ trait SimpleFieldsTrait
     protected function setSimpleFloat($FieldName, $Data, $Object = "Object") {
         //====================================================================//
         //  Compare Field Data
-        if ( abs($this->{$Object}->$FieldName - $Data) > 1E-6 ) {
+        if ( !isset($this->{$Object}->$FieldName) || (abs($this->{$Object}->$FieldName - $Data) > 1E-6) ) {
             //====================================================================//
             //  Update Field Data
             $this->{$Object}->$FieldName = $Data;
