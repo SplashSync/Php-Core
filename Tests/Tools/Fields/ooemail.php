@@ -68,4 +68,28 @@ class ooemail extends oovarchar
         return $name . "@" . $domain . "." . $ext;        
     }    
      
+    //==============================================================================
+    //      DATA COMPARATOR (OPTIONNAL)  
+    //==============================================================================   
+    
+    /**
+     * Compare Two Data Block to See if similar (Update Required)
+     * 
+     * !important : Target Data is always validated before compare
+     * 
+     * @param   mixed   $Source     Original Data Block
+     * @param   mixed   $Target     New Data Block
+     *
+     * @return  bool                TRUE if both Data Block Are Similar
+     */
+    public static function compare($Source,$Target) {
+        //====================================================================//
+        //  Both Texts Are Empty
+        if ( empty($Source) && empty($Target) ) {
+            return True;
+        } 
+        //====================================================================//
+        //  Raw text Compare
+        return ( strtolower($Source) === strtolower($Target) )?True:False;
+    }    
 }
