@@ -2,7 +2,7 @@
     "name": "splash/phpcore",
     "description": "Splash Core Module for Php Applications",
 
-    "license": "GPL",
+    "license": "GPL-3.0+",
 
     "autoload": {
         "psr-4": { 
