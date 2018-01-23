@@ -62,15 +62,16 @@ class oodouble
      * 
      * !important : Target Data is always validated before compare
      * 
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
+     * @param       mixed   $Source     Original Data Block
+     * @param       mixed   $Target     New Data Block
+     * @param       array   $Settings   User Defined Faker Settings
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source,$Target) {
+    public static function compare($Source, $Target, $Settings) {
         //====================================================================//
         // Compare Float Values
-        if ( abs( $Source - $Target) > 1E-6 ) {
+        if ( abs( round($Source, $Settings["DoublesPrecision"]) - round($Target, $Settings["DoublesPrecision"])) > 1E-6 ) {
             return False;
         }
         return True;

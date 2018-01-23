@@ -98,9 +98,9 @@ class ooprice
     //==============================================================================   
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
+     * @abstract    Generate Fake Raw Field Data for Debugger Simulations
      *
-     *  @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $Settings   User Defined Faker Settings
      *  
      * @return mixed   
      */
@@ -128,39 +128,34 @@ class ooprice
      * 
      * !important : Target Data is always validated before compare
      * 
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
+     * @param       mixed   $Source     Original Data Block
+     * @param       mixed   $Target     New Data Block
+     * @param       array   $Settings   User Defined Faker Settings
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source,$Target) {
+    public static function compare($Source, $Target, $Settings) {
         
         //====================================================================//
         //  If Raw Text received, Not Array ==> Raw text Compare
         if ( !is_array($Source) && !is_a($Target,"ArrayObject") && !is_array($Target) && !is_a($Target,"ArrayObject") )  {
             return ( $Source === $Target )?True:False;
-        } 
-        
-        //====================================================================//
-        // Compare Base Price
-//        if ( ((bool) $Source["base"]) != ((bool) $Target["base"]) ) {
-//            return False;
-//        }
+        }  
         //====================================================================//
         // Compare Price
         if ( $Source["base"] ) {
-            if ( abs($Source["ttc"] - $Target["ttc"]) > 1E-6 ) {
+            if ( !self::isEqualFloat($Source["ttc"], $Target["ttc"], $Settings) ) {
                 return False;
             }
         } else {
-            if ( abs($Source["ht"] - $Target["ht"]) > 1E-6 ) {
+            if ( !self::isEqualFloat($Source["ht"], $Target["ht"], $Settings) ) {
                 return False;
             }
         }
         //====================================================================//
         // Compare VAT
         if ( !empty($Source["vat"]) && !empty($Target["vat"]) &&
-                ( abs($Source["vat"] - $Target["vat"]) > 1E-6 ) ) {
+                ( !self::isEqualFloat($Source["vat"], $Target["vat"], $Settings) ) ) {
             return False;
         }
         //====================================================================//
@@ -175,6 +170,14 @@ class ooprice
         return True;
     }
     
+    private static function isEqualFloat($Source, $Target, $Settings) {
+        //====================================================================//
+        // Compare Float Values
+        if ( abs( round($Source, $Settings["PricesPrecision"]) - round($Target, $Settings["PricesPrecision"])) > 1E-6 ) {
+            return False;
+        }
+        return True;
+    }        
     
 //====================================================================//
 //  PRICE TYPES MANAGEMENT

@@ -33,15 +33,20 @@ class ObjectsCase extends BaseCase {
             //==============================================================================
             //  List generation
             'ListItems'                 =>  2,               // Number of Items to Add in Lists
-            //
+
+            //==============================================================================
+            //  Double & Prices Fields
+            "DoublesPrecision"          =>  6,              // Default Doubles Compare Precision (Number of Digits)
+        
             //==============================================================================
             //  Currency Fields
             "Currency"                  =>  "EUR",          // Default Currency
             
             //==============================================================================
             //  Price Fields
-            "Vat"                       =>  0,              // Default Vat Rate
+            "VAT"                       =>  20,              // Default Vat Rate
             "PriceBase"                 =>  "HT",            // Default Price base
+            "PricesPrecision"           =>  6,               // Default Prices Compare Precision (Number of Digits)
             
             //==============================================================================
             //  Url Generator Parameters
@@ -1259,12 +1264,12 @@ class ObjectsCase extends BaseCase {
             
         //====================================================================//
         // Compare Data Using Field Type Comparator
-        if ( !$ClassName::compare($Block1,$Block2) ) {
+        if ( !$ClassName::compare($Block1,$Block2, $this->settings) ) {
             echo PHP_EOL . "Source :" . print_r($Block1, True);
             echo PHP_EOL . "Target :" . print_r($Block2, True);
         } 
         $this->assertTrue(
-                $ClassName::compare($Block1,$Block2), 
+                $ClassName::compare($Block1,$Block2, $this->settings), 
                 $Comment . " Source and Target Data are not similar " . $FieldType . " Field Data Block");
 
         return True;        
