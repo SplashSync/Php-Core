@@ -667,8 +667,11 @@ class Webservice
         // Fetch Server Informations 
         $ServerInfos    = $this->getServerInfos();
         //====================================================================//
+        // Fetch Server Protocol 
+        $Schema         = empty(Splash::Input("REQUEST_SCHEME")) ? "http" : Splash::Input("REQUEST_SCHEME");
+        //====================================================================//
         // Build Server Url 
-        return Splash::Input("REQUEST_SCHEME"). "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
+        return $Schema . "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
     } 
     
     /**
