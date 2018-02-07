@@ -45,7 +45,7 @@ define("SPLASH_WS_METHOD"     ,   "SOAP");              // Module Webservice Met
 define("SPLASH_TIMEOUT"       ,   30);                  // Client response timout in seconds
 define("SPLASH_CRYPT_METHOD"  ,   "AES-256-CBC");       // Define Data Encryption Method
 define("SPLASH_ENCODE"        ,   "XML");               // Messages Encoding Format (XML, JSON)
-define("SPLASH_CLASS_PREFIX"  ,   "\Splash\Local");            // Prefix To be Applied to all Local Class
+define("SPLASH_CLASS_PREFIX"  ,   "\Splash\Local");     // Prefix To be Applied to all Local Class
 
 //====================================================================//
 // Show Debug Messages
