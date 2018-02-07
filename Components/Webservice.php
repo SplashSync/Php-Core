@@ -657,6 +657,16 @@ class Webservice
     }
     
     /**
+     *      @abstract   Get Client Server Schema (http or https)
+     * 
+     *      @return     string
+     */
+    public function getServerScheme() 
+    {
+        return empty(Splash::Input("REQUEST_SCHEME")) ? "http" : Splash::Input("REQUEST_SCHEME");
+    } 
+    
+    /**
      *      @abstract   Build WebService Client Url
      * 
      *      @return     string
@@ -667,11 +677,8 @@ class Webservice
         // Fetch Server Informations 
         $ServerInfos    = $this->getServerInfos();
         //====================================================================//
-        // Fetch Server Protocol 
-        $Schema         = empty(Splash::Input("REQUEST_SCHEME")) ? "http" : Splash::Input("REQUEST_SCHEME");
-        //====================================================================//
         // Build Server Url 
-        return $Schema . "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
+        return $this->getServerScheme() . "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
     } 
     
     /**
