@@ -834,7 +834,9 @@ class ObjectsCase extends BaseCase {
         // Take Values From Given Choices 
         if ( !empty($Choices) ) {
             $Index = mt_rand(0, count($Choices) - 1 );
-            if ( isset($Choices[$Index]["key"]) ) {
+            if ( isset($Choices[$Index]["key"]) && ($Type == SPL_T_VARCHAR)) {
+                return (string) $Choices[$Index]["key"];
+            } else if ( isset($Choices[$Index]["key"]) ) {
                 return $Choices[$Index]["key"];
             }
         } 
@@ -1257,10 +1259,10 @@ class ObjectsCase extends BaseCase {
         // Validate Data Using Field Type Validator
         $this->assertTrue(
                 $ClassName::validate($Block1), 
-                "Source Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block1,1) . ")");
+                $Comment . " Source Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block1,1) . ")");
         $this->assertTrue(
                 $ClassName::validate($Block2), 
-                "Target Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block2,1) . ")");
+                $Comment . " Target Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block2,1) . ")");
             
         //====================================================================//
         // Compare Data Using Field Type Comparator
