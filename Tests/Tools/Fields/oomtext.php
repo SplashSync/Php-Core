@@ -34,7 +34,7 @@ class oomtext
     {
         //==============================================================================
         //      Verify Data is Not Empty 
-        if ( is_null($Data) ) {
+        if ( is_null($Data) || $Data === "" ) {
             return True;
         }        
         
