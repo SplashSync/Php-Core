@@ -42,11 +42,13 @@ class ootext
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
+     * @param      array   $Settings   User Defined Faker Settings
+     * 
      * @return mixed   
      */
-    static public function fake()
+    static public function fake($Settings)
     {
-        return preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(1000,mt_getrandmax ()/10)));
+        return oovarchar::fake($Settings);
     }
     
     //==============================================================================

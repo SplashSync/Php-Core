@@ -48,7 +48,26 @@ class oovarchar
      */
     static public function fake($Settings)
     {
-        return preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900,mt_getrandmax ()/10)));
+        //==============================================================================
+        //      generate Random String  
+        $Data   =   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900,mt_getrandmax ())));
+        $Data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900,mt_getrandmax ())));
+        
+        //==============================================================================
+        //      Apply Min Length Constraint  
+        if ( isset($Settings["minLength"]) && is_numeric($Settings["minLength"]) ) {
+            while( strlen($Data) < $Settings["minLength"] ) {
+                $Data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900,mt_getrandmax ())));
+            }
+        }
+        
+        //==============================================================================
+        //      Apply Max Length Constraint  
+        if ( isset($Settings["maxLength"]) && is_numeric($Settings["maxLength"]) ) {
+            $Data   =   substr($Data, 0, $Settings["maxLength"]);
+        }
+        
+        return $Data;
     }
     
     //==============================================================================

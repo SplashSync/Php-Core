@@ -70,7 +70,7 @@ class oomtext
     {
         $fake = array();
         foreach($Settings["Langs"] as $lang) {
-            $fake[$lang] = preg_replace('/[^A-Za-z0-9\-]/', '', utf8_encode(mt_rand()));
+            $fake[$lang] = ootext::fake($Settings);
         }
         return $fake;
     } 

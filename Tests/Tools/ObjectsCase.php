@@ -734,7 +734,7 @@ class ObjectsCase extends BaseCase {
             //====================================================================//
             // Generate Single Fields Dummy Data (is Not a List Field)
             if (!self::isListField($Field->id)) {
-                $Out[$Field->id] = self::fakeFieldData($Field->type, $Field->choices);
+                $Out[$Field->id] = self::fakeFieldData($Field->type, $Field->choices, $Field->options);
                 continue;
             }
             
@@ -784,7 +784,7 @@ class ObjectsCase extends BaseCase {
         $ListData = array();
         while ( count($ListData) < $NbItems)
         {
-            $Data           =   self::fakeFieldData($Type["fieldname"], $Field->choices);
+            $Data           =   self::fakeFieldData($Type["fieldname"], $Field->choices, $Field->options);
             $Md5            =   md5(serialize($Data)); 
             $ListData[$Md5] =   $Data; 
         }
@@ -808,10 +808,11 @@ class ObjectsCase extends BaseCase {
      * 
      *   @param      string  $Type       Object Field Type 
      *   @param      array   $Choices    Object Field Possible Values 
+     *   @param      array   $Options     Object Field Values Options 
      * 
      *   @return     int     $result     0 if KO, 1 if OK
      */
-    public function fakeFieldData($Type, $Choices = Null) 
+    public function fakeFieldData($Type, $Choices = Null, $Options = array() ) 
     {  
         //====================================================================//
         // Safety Check 
@@ -827,7 +828,7 @@ class ObjectsCase extends BaseCase {
         //====================================================================//
         // Detects Id Fields    => Cannot Generate Fake for Id Fields Here... 
         if ( ($id = self::isIdField($Type)) ) {
-            return $ClassName::fake($id["ObjectType"], $this->settings);
+            return $ClassName::fake($id["ObjectType"], array_merge_recursive($this->settings, $Options) );
         }
         
         //====================================================================//
@@ -841,7 +842,7 @@ class ObjectsCase extends BaseCase {
         
         //====================================================================//
         // Generate Single Field Data Type is Valid
-        return $ClassName::fake($this->settings);        
+        return $ClassName::fake(array_merge_recursive($this->settings, $Options));        
     } 
     
     //==============================================================================

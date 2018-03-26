@@ -34,7 +34,7 @@
 //====================================================================//
 // Global Definitions 
 //====================================================================//
-define("SPLASH_VERSION"       ,   '1.3.3');
+define("SPLASH_VERSION"       ,   '1.4.0');
 define("SPLASH_NAME"          ,   'Splash Php Client Module');
 define("SPLASH_DESC"          ,   'Splash Open-Source & Universal Synchronisation WebService.');
 define("SPLASH_AUTHOR"        ,   'Splash Official <www.splashsync.com>');

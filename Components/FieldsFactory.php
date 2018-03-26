@@ -57,6 +57,7 @@ class FieldsFactory
         //==============================================================================
         //      DEBUGGER PROPS
         "asso"      =>  array(),                //  Associated Fields. Fields to Generate When Generating Random value of this field.
+        "options"   =>  array(),                //  Fields Constraints to Generate Fake Data during Tests
         "notest"    =>  False,                  //  Do No Perform Tests for this Field
     );    
     
@@ -509,6 +510,45 @@ class FieldsFactory
         
         return $this;      
     }  
+    
+    /**
+     *  @abstract   Add New Options Array for Current Field
+     * 
+     *  @param      array      $Options     Array of Options (Type => Value) 
+     * 
+     *  @return     FieldsFactory
+     */
+    public function AddOptions($Options)
+    {
+        foreach ($Options as $Type => $Value) {
+            $this->AddConstrain($Type, $Value);
+        }
+        return $this;      
+    }  
+
+    /**
+     *  @abstract   Add New Option for Current Field
+     * 
+     *  @param      string      $Type           Constrain Type
+     *  @param      string      $Value          Constrain Value
+     * 
+     *  @return     FieldsFactory
+     */
+    public function AddOption($Type, $Value = True)
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {    
+            Splash::Log()->Err("ErrFieldsNoNew");  
+        } else if (empty($Type)) {    
+            Splash::Log()->Err("Field Option Type Cannot be Empty");  
+        } else {
+            //====================================================================//
+            // Update New Field structure
+            $this->new->options[$Type]   = $Value; 
+        }
+        return $this;      
+    } 
     
     /**
      *  @abstract   Verify Current New Field data 
