@@ -34,6 +34,11 @@ class oomvarchar
     static public function validate($Data)
     {
         //==============================================================================
+        //      Verify Data is Not Empty 
+        if ( is_null($Data) || $Data === "" ) {
+            return True;
+        }        
+        //==============================================================================
         //      Verify Data is an Array 
         if ( !is_array($Data) && !is_a( $Data , "ArrayObject") ) {
             return "Field Data is not an Array.";

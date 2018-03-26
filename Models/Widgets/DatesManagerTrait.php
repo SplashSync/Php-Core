@@ -34,19 +34,19 @@ trait DatesManagerTrait
         if (isset($params["DateStart"]) && !empty($params["DateStart"])) {
             $this->DateStart    =   $params["DateStart"];
         } else {
-            $this->DateStart    =   (new \DateTime("first day of this month"))->format(SPL_T_DATE);
+            $this->DateStart    =   (new \DateTime("first day of this month"))->format(SPL_T_DATECAST);
         }
         if (isset($params["DateEnd"]) && !empty($params["DateEnd"])) {
             $this->DateEnd      =   $params["DateEnd"];
         } else {
-            $this->DateEnd      =   (new \DateTime("last day of this month"))->format(SPL_T_DATE);
+            $this->DateEnd      =   (new \DateTime("last day of this month"))->format(SPL_T_DATECAST);
         }
         if (isset($params["GroupBy"]) && !empty($params["GroupBy"])) {
             $this->GroupBy      =   $params["GroupBy"];
         } else {
             $this->GroupBy      =   "d";
         }
-        
+
         //====================================================================//
         //  Generate Dates Formater String
         switch($this->GroupBy) 
