@@ -8,11 +8,11 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  *  @author    Splash Sync <www.splashsync.com>
  *  @copyright 2015-2017 Splash Sync
  *  @license   GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
- * 
+ *
  **/
 
 namespace   Splash\Models;
@@ -30,41 +30,41 @@ abstract class AbstractObject implements ObjectInterface
 {
     use FieldsFactoryTrait;
     use LockTrait;
-    use TranslatorTrait;    
+    use TranslatorTrait;
     
     /**
      *  Object Disable Flag. Override this flag to disable Object.
      */
-    protected static    $DISABLED        =  False;
+    protected static $DISABLED        =  false;
     /**
      *  Object Name
      */
-    protected static    $NAME            =  __CLASS__;
+    protected static $NAME            =  __CLASS__;
     /**
-     *  Object Description 
+     *  Object Description
      */
-    protected static    $DESCRIPTION     =  __CLASS__;
+    protected static $DESCRIPTION     =  __CLASS__;
     /**
-     *  Object Icon (FontAwesome or Glyph ico tag) 
+     *  Object Icon (FontAwesome or Glyph ico tag)
      */
-    protected static    $ICO            =  "fa fa-cubes";
+    protected static $ICO            =  "fa fa-cubes";
     /**
-     *  Object Synchronization Limitations 
-     *  
+     *  Object Synchronization Limitations
+     *
      *  This Flags are Used by Splash Server to Prevent Unexpected Operations on Remote Server
      */
-    protected static    $ALLOW_PUSH_CREATED         =  TRUE;        // Allow Creation Of New Local Objects
-    protected static    $ALLOW_PUSH_UPDATED         =  TRUE;        // Allow Update Of Existing Local Objects
-    protected static    $ALLOW_PUSH_DELETED         =  TRUE;        // Allow Delete Of Existing Local Objects
+    protected static $ALLOW_PUSH_CREATED         =  true;        // Allow Creation Of New Local Objects
+    protected static $ALLOW_PUSH_UPDATED         =  true;        // Allow Update Of Existing Local Objects
+    protected static $ALLOW_PUSH_DELETED         =  true;        // Allow Delete Of Existing Local Objects
     /**
-     *  Object Synchronization Recommended Configuration 
+     *  Object Synchronization Recommended Configuration
      */
-    protected static    $ENABLE_PUSH_CREATED       =  TRUE;         // Enable Creation Of New Local Objects when Not Existing
-    protected static    $ENABLE_PUSH_UPDATED       =  TRUE;         // Enable Update Of Existing Local Objects when Modified Remotly
-    protected static    $ENABLE_PUSH_DELETED       =  TRUE;         // Enable Delete Of Existing Local Objects when Deleted Remotly
-    protected static    $ENABLE_PULL_CREATED       =  TRUE;         // Enable Import Of New Local Objects 
-    protected static    $ENABLE_PULL_UPDATED       =  TRUE;         // Enable Import of Updates of Local Objects when Modified Localy
-    protected static    $ENABLE_PULL_DELETED       =  TRUE;         // Enable Delete Of Remotes Objects when Deleted Localy
+    protected static $ENABLE_PUSH_CREATED       =  true;         // Enable Creation Of New Local Objects when Not Existing
+    protected static $ENABLE_PUSH_UPDATED       =  true;         // Enable Update Of Existing Local Objects when Modified Remotly
+    protected static $ENABLE_PUSH_DELETED       =  true;         // Enable Delete Of Existing Local Objects when Deleted Remotly
+    protected static $ENABLE_PULL_CREATED       =  true;         // Enable Import Of New Local Objects
+    protected static $ENABLE_PULL_UPDATED       =  true;         // Enable Import of Updates of Local Objects when Modified Localy
+    protected static $ENABLE_PULL_DELETED       =  true;         // Enable Delete Of Remotes Objects when Deleted Localy
     
     //====================================================================//
     //  COMMON CLASS INFORMATIONS
@@ -75,7 +75,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public static function getType()
     {
-        return pathinfo(__FILE__,PATHINFO_FILENAME);
+        return pathinfo(__FILE__, PATHINFO_FILENAME);
     }
     
     /**
@@ -112,14 +112,14 @@ abstract class AbstractObject implements ObjectInterface
     
     /**
      *  @abstract   Get Description Array for requested Object Type
-     * 
+     *
      *  @return     array
-     */    
+     */
     public function Description()
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__,__FUNCTION__);  
+        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
         
         //====================================================================//
         // Build & Return Object Description Array
@@ -145,6 +145,5 @@ abstract class AbstractObject implements ObjectInterface
             "enable_pull_updated"     =>  (bool) static::$ENABLE_PULL_UPDATED,
             "enable_pull_deleted"     =>  (bool) static::$ENABLE_PULL_DELETED
         );
-    }     
-   
+    }
 }

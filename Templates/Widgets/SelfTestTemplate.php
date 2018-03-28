@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright (C) 2011-2014  Bernard Paquier       <bernard.paquier@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -30,7 +30,7 @@ use Splash\Models\WidgetBase;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    SelfTest Template Widget for Splash Modules 
+ * @abstract    SelfTest Template Widget for Splash Modules
  *
  * @author B. Paquier <contact@splashsync.com>
  */
@@ -39,26 +39,26 @@ class SelfTestTemplate extends WidgetBase
     /**
      * @abstract  Widget Name
      */
-    protected static    $NAME            =  "Server SelfTest";
+    protected static $NAME            =  "Server SelfTest";
     
     /**
-     * @abstract  Widget Description 
+     * @abstract  Widget Description
      */
-    protected static    $DESCRIPTION     =  "Results of your Server SelfTests";
+    protected static $DESCRIPTION     =  "Results of your Server SelfTests";
     
     /**
-     * @abstract  Widget Icon (FontAwesome or Glyph ico tag) 
+     * @abstract  Widget Icon (FontAwesome or Glyph ico tag)
      */
-    protected static    $ICO     =  "fa fa-info-circle";
+    protected static $ICO     =  "fa fa-info-circle";
     
     //====================================================================//
     // Define Standard Options for this Widget
     // Override this array to change default options for your widget
-    static $OPTIONS       = array(
+    public static $OPTIONS       = array(
         "Width"     =>      self::SIZE_DEFAULT,
-        'UseCache'      =>  True,
+        'UseCache'      =>  true,
         'CacheLifeTime' =>  1,
-    ); 
+    );
     
     //====================================================================//
     // Class Main Functions
@@ -70,37 +70,37 @@ class SelfTestTemplate extends WidgetBase
     public function Options()
     {
         return self::$OPTIONS;
-    }   
+    }
         
     /**
      * @abstract    Return requested Customer Data
-     * 
+     *
      * @param       array   $params               Widget Inputs Parameters
-     * 
+     *
      * @return      array
      */
-    public function Get($params=NULL)
+    public function Get($params=null)
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__,__FUNCTION__);  
+        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
         
         //====================================================================//
         // Setup Widget Core Informations
         //====================================================================//
 
-        $this->setTitle($this->getName()); 
-        $this->setIcon($this->getIcon()); 
+        $this->setTitle($this->getName());
+        $this->setIcon($this->getIcon());
         
         //====================================================================//
         // Build Intro Text Block
         //====================================================================//
-        $this->buildIntroBlock();    
+        $this->buildIntroBlock();
         
         //====================================================================//
         // Build Inputs Block
         //====================================================================//
-        $this->buildNotificationsBlock();        
+        $this->buildNotificationsBlock();
 
         //====================================================================//
         // Set Blocks to Widget
@@ -119,7 +119,8 @@ class SelfTestTemplate extends WidgetBase
     /**
     *   @abstract     Block Building - Text Intro
     */
-    private function buildIntroBlock()   {
+    private function buildIntroBlock()
+    {
         //====================================================================//
         // Into Text Block
         $this->BlocksFactory()->addTextBlock("This widget show results of Local Server SelfTest");
@@ -128,16 +129,17 @@ class SelfTestTemplate extends WidgetBase
     /**
     *   @abstract     Block Building - Notifications Parameters
     */
-    private function buildNotificationsBlock()   {
+    private function buildNotificationsBlock()
+    {
         //====================================================================//
         // Execute Loacl SelfTest Function
-        Splash::SelfTest();       
+        Splash::SelfTest();
         //====================================================================//
         // Get Log
         $Log = Splash::Log();
         //====================================================================//
         // If test was passed
-        if ( empty($Log->err) ) {
+        if (empty($Log->err)) {
             $this->BlocksFactory()->addNotificationsBlock(["success" => "Self-Test Passed!"]);
         }
         //====================================================================//
@@ -160,10 +162,9 @@ class SelfTestTemplate extends WidgetBase
         foreach ($Log->deb as $Text) {
             $this->BlocksFactory()->addNotificationsBlock(["info" => $Text]);
         }
-    } 
+    }
     
     //====================================================================//
     // Class Tooling Functions
     //====================================================================//
-
 }

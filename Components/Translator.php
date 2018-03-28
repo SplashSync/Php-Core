@@ -13,7 +13,7 @@
  */
 
 /**
- * @abstract    Splash Core Integrated Translation Management Class. 
+ * @abstract    Splash Core Integrated Translation Management Class.
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -34,19 +34,19 @@ class Translator
     /**
      *      @abstract   Translations Storage Array
      *      @var        Array
-     */    
-    private     $trans;       
+     */
+    private $trans;
     
     /**
      *      @abstract   Loaded Translation Files array
      *      @var        Array
-     */    
-    private     $trans_loaded;
+     */
+    private $trans_loaded;
 
-	
-//====================================================================//
-//  TRANSLATIONS MANAGEMENT
-//====================================================================//
+    
+    //====================================================================//
+    //  TRANSLATIONS MANAGEMENT
+    //====================================================================//
 
     
     /**
@@ -54,44 +54,44 @@ class Translator
      *                      If data for file already loaded, do nothing.
      *                      All data in translation array are stored in UTF-8 format.
      *                      trans_loaded is completed with $file key.
-     * 
+     *
      *      @param	string	$FileName   File name to load (.ini file). Must be "file" or "file@local" for local language files:
      *                                      If $FileName is "file@local" instead of "file" then we look for local lang file
      *                                      in localpath/langs/code_CODE/file.lang
-     * 
+     *
      *      @param	string	$Language   Forec Loading of a specific ISO Language Code (Example en_US or fr_FR or es_ES)
-     * 
+     *
      *      @return	bool
-     * 
+     *
      */
-    public function Load($FileName, $Language = Null)
-    {        
+    public function Load($FileName, $Language = null)
+    {
         //====================================================================//
         // Check if File is Already in Cache
         //====================================================================//
-        if (! empty($this->trans_loaded[$FileName]))    {
-                return True;
+        if (! empty($this->trans_loaded[$FileName])) {
+            return true;
         }
 
         
         //====================================================================//
         // Check parameters
-        if (empty($FileName))   {
+        if (empty($FileName)) {
             return Splash::Log()->Err("ErrLangFileEmpty");
         }
         
         //====================================================================//
         // Select Language to Load
-        if ( $Language == Null ) {
+        if ($Language == null) {
             //====================================================================//
             // Load Default Language from Local System
             if (empty(Splash::Configuration()->DefaultLanguage)) {
                 return Splash::Log()->Err(get_class($this)."::Load Translations Error No Default Lang Defined");
             }
             $Language = Splash::Configuration()->DefaultLanguage;
-            $IsForced = False;
+            $IsForced = false;
         } else {
-            $IsForced = True;
+            $IsForced = true;
         }
         //====================================================================//
         // Log Action
@@ -103,25 +103,24 @@ class Translator
         
         //====================================================================//
         // Load Language File Translations
-        $Loaded = $this->LoadLangFile($FullPath);        
+        $Loaded = $this->LoadLangFile($FullPath);
         
         //====================================================================//
         // If Default Language Used
-        if ( $IsForced == Null ) {
+        if ($IsForced == null) {
             
             //====================================================================//
             // Load English Language Fallback Translations
-            if ( $Language != SPLASH_DF_LANG ) {
-                $this->Load($FileName,SPLASH_DF_LANG);
+            if ($Language != SPLASH_DF_LANG) {
+                $this->Load($FileName, SPLASH_DF_LANG);
             }
 
             //====================================================================//
-            // Mark this file as Loaded (1) or Not Found (2)            
+            // Mark this file as Loaded (1) or Not Found (2)
             $this->trans_loaded[$FileName] = $Loaded?1:2;
-                
         }
         
-        return True;
+        return true;
     }
 
     /**
@@ -139,28 +138,27 @@ class Translator
      *      @param	int		$maxsize	Max length of text
      *      @return string      		Translated string (encoded into HTML entities and UTF8)
      */
-    function Translate($key, $param1='', $param2='', $param3='', $param4='', $param5='', $maxsize=0)
+    public function Translate($key, $param1='', $param2='', $param3='', $param4='', $param5='', $maxsize=0)
     {
         //====================================================================//
         // Translation is available
-        if (! empty($this->trans[$key]))	
-        {
+        if (! empty($this->trans[$key])) {
             $str = $this->trans[$key];
             //====================================================================//
             // Replace arrays by counts strings.
-            if (is_array($param1) || is_a($param1,"ArrayObject")) {
+            if (is_array($param1) || is_a($param1, "ArrayObject")) {
                 $param1 = "x " . count($param1);
             }
-            if (is_array($param2) || is_a($param2,"ArrayObject")) {
+            if (is_array($param2) || is_a($param2, "ArrayObject")) {
                 $param2 = "x " . count($param2);
             }
-            if (is_array($param3) || is_a($param3,"ArrayObject")) {
+            if (is_array($param3) || is_a($param3, "ArrayObject")) {
                 $param3 = "x " . count($param3);
             }
-            if (is_array($param4) || is_a($param4,"ArrayObject")) {
+            if (is_array($param4) || is_a($param4, "ArrayObject")) {
                 $param4 = "x " . count($param4);
             }
-            if (is_array($param5) || is_a($param5,"ArrayObject")) {
+            if (is_array($param5) || is_a($param5, "ArrayObject")) {
                 $param5 = "x " . count($param5);
             }
                 
@@ -171,37 +169,39 @@ class Translator
             }
             //====================================================================//
             // Truncate string if too long.
-            if ($maxsize) $str = substr($str,0,$maxsize);
+            if ($maxsize) {
+                $str = substr($str, 0, $maxsize);
+            }
             //====================================================================//
             // We replace some HTML tags by __xx__ to avoid having them encoded by htmlentities
-            $str = str_replace(array('<','>','"',),array('__lt__','__gt__','__quot__'),$str);
+            $str = str_replace(array('<','>','"',), array('__lt__','__gt__','__quot__'), $str);
             //====================================================================//
             // Crypt string into HTML
-            $str = htmlentities($str,ENT_QUOTES);
+            $str = htmlentities($str, ENT_QUOTES);
             //====================================================================//
             // Restore HTML tags
-            $str = str_replace(array('__lt__','__gt__','__quot__'),array('<','>','"',),$str);
+            $str = str_replace(array('__lt__','__gt__','__quot__'), array('<','>','"',), $str);
 
-        return $str;
+            return $str;
         //====================================================================//
         // Translation is not available
         } else {
             return $key;
         }
-    }        
+    }
 
     
     /**
      *      @abstract       Build Translation filename based on specified $file and ISO Language Code.
-     * 
+     *
      *      @param	string	$FileName   File name to load (.ini file). Must be "file" or "file@local" for local language files:
      *                                      If $FileName is "file@local" instead of "file" then we look for local lang file
      *                                      in localpath/langs/code_CODE/file.lang
-     * 
+     *
      *      @param	string	$Language   ISO Language Code (Example en_US or fr_FR or es_ES)
-     * 
+     *
      *      @return	bool
-     * 
+     *
      */
     private function getLangFileName($FileName, $Language)
     {
@@ -210,19 +210,17 @@ class Translator
         // Search for Local Redirection
         //====================================================================//
         $IsLocal    =   '';
-        $regs       =   Null;
+        $regs       =   null;
         //====================================================================//
         // Search if a local directory is required into lang file name
-        if (preg_match('/^([^@]+)@([^@]+)$/i',$FileName,$regs))
-        {
-                $FileName = $regs[1];
-                $IsLocal = $regs[2];
+        if (preg_match('/^([^@]+)@([^@]+)$/i', $FileName, $regs)) {
+            $FileName = $regs[1];
+            $IsLocal = $regs[2];
         }
 
         //====================================================================//
         // Directory of translation files
-        if ( !empty($IsLocal) )
-        {
+        if (!empty($IsLocal)) {
             return Splash::getLocalPath()."/Translations/".$Language."/".$FileName.".ini";
         }
         
@@ -231,52 +229,49 @@ class Translator
     
     /**
      *      @abstract   Load Speficied file onto static language collection
-     * 
+     *
      *      @param	string	$FullPath   Full path to language file to load (.ini file).
-     * 
+     *
      *      @return	bool
-     * 
+     *
      */
     private function LoadLangFile($FullPath)
     {
         //====================================================================//
         // Check if File Exists
         if (!is_file($FullPath)) {
-            return False;
+            return false;
         }
 
         //====================================================================//
         // Open File
-        $fp = @fopen($FullPath,"rt");
-        if ( !$fp ) {
-            return False;
+        $fp = @fopen($FullPath, "rt");
+        if (!$fp) {
+            return false;
         }
 
         //====================================================================//
         // Import All New Translation Keys
         // Ex: Need 225ms for all fgets on all lang file for Third party page. Same speed than file_get_contents
-        while ($line = fgets($fp,4096))	
-        {
+        while ($line = fgets($fp, 4096)) {
             //====================================================================//
             // Filter empty lines
-            if ( ($line[0] == "\n") || ($line[0] == " ") || ($line[0] == "#") || ($line[0] == ";") )
-            {
+            if (($line[0] == "\n") || ($line[0] == " ") || ($line[0] == "#") || ($line[0] == ";")) {
                 continue;
-            }                
+            }
             //====================================================================//
             // Explode Lines
-            $tab=explode('=',$line,2);
+            $tab=explode('=', $line, 2);
             $key=trim($tab[0]);
             //====================================================================//
             // Debug Line
             //print "Domain=$file, found a string for $tab[0] with value $tab[1]<br>";
             //====================================================================//
             // If translation was already found, we must not continue
-            if ( empty($this->trans[$key]) && isset($tab[1]) )    
-            {
+            if (empty($this->trans[$key]) && isset($tab[1])) {
                 //====================================================================//
                 // Store Line Translation Key
-                $value=trim(preg_replace('/\\n/',"\n",$tab[1]));
+                $value=trim(preg_replace('/\\n/', "\n", $tab[1]));
                 $this->trans[$key]=$value;
             }
         }
@@ -284,8 +279,5 @@ class Translator
         //====================================================================//
         // Close File
         fclose($fp);
-
-    }    
-    
+    }
 }
-?>

@@ -8,11 +8,11 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  *  @author    Splash Sync <www.splashsync.com>
  *  @copyright 2015-2017 Splash Sync
  *  @license   GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
- * 
+ *
  **/
 
 namespace   Splash\Models\Objects;
@@ -25,13 +25,13 @@ trait ObjectsTrait
     /**
      * @var Static Class Storage
      */
-    private static    $ObjectsHelper;
+    private static $ObjectsHelper;
     
     /**
      *      @abstract   Get a singleton Objects Helper Class
-     * 
+     *
      *      @return     ObjectsHelper
-     */    
+     */
     public static function Objects()
     {
         // Helper Class Exists
@@ -39,10 +39,10 @@ trait ObjectsTrait
             return self::$ObjectsHelper;
         }
         // Initialize Class
-        self::$ObjectsHelper        = new ObjectsHelper();  
+        self::$ObjectsHelper        = new ObjectsHelper();
         // Return Helper Class
         return self::$ObjectsHelper;
-    }  
+    }
 }
 
 /**
@@ -53,52 +53,56 @@ class ObjectsHelper
    
     /**
      *      @abstract   Create an Object Identifier String
-     * 
-     *      @param      string      $ObjectType     Object Type Name. 
+     *
+     *      @param      string      $ObjectType     Object Type Name.
      *      @param      string      $Identifier     Object Identifier
-     * 
-     *      @return     string      
+     *
+     *      @return     string
      */
-    public static function Encode($ObjectType,$Identifier)
+    public static function Encode($ObjectType, $Identifier)
     {
         //====================================================================//
         // Safety Checks
-        if (empty($ObjectType))                 {   return False;     }
-        if (empty($Identifier))                 {   return False;     }
+        if (empty($ObjectType)) {
+            return false;
+        }
+        if (empty($Identifier)) {
+            return false;
+        }
         
         //====================================================================//
         // Create & Return Field Id Data String
-        return   $Identifier . IDSPLIT . $ObjectType; 
-    }    
+        return   $Identifier . IDSPLIT . $ObjectType;
+    }
     
     /**
      *      @abstract   Decode an Object Identifier String
-     * 
-     *      @param      string      $ObjectId           Object Identifier String. 
-     * 
+     *
+     *      @param      string      $ObjectId           Object Identifier String.
+     *
      *      @return     string
      */
     private static function Decode($ObjectId)
     {
         // Safety Checks
-        if (empty($ObjectId)) {   
-            return False;     
+        if (empty($ObjectId)) {
+            return false;
         }
         // Explode Object String
-        $Result = explode ( IDSPLIT , $ObjectId);
+        $Result = explode(IDSPLIT, $ObjectId);
         // Check result is Valid
-        if (count($Result) != 2) {   
-            return False;     
+        if (count($Result) != 2) {
+            return false;
         }
         // Return Object Array
-        return   $Result; 
-    }  
+        return   $Result;
+    }
     
     /**
      *      @abstract   Retrieve Identifier from an Object Identifier String
-     * 
-     *      @param      string      $ObjectId           Object Identifier String. 
-     * 
+     *
+     *      @param      string      $ObjectId           Object Identifier String.
+     *
      *      @return     string
      */
     public static function Id($ObjectId)
@@ -106,19 +110,19 @@ class ObjectsHelper
         //====================================================================//
         // Decode
         $Result     = self::Decode($ObjectId);
-        if (empty($Result))                 {   
-            return False;     
+        if (empty($Result)) {
+            return false;
         }
         //====================================================================//
         // Return Object Identifier
-        return   $Result[0]; 
-    }     
+        return   $Result[0];
+    }
 
     /**
      *      @abstract   Retrieve Object Type Name from an Object Identifier String
-     * 
-     *      @param      string      $ObjectId           Object Identifier String. 
-     * 
+     *
+     *      @param      string      $ObjectId           Object Identifier String.
+     *
      *      @return     string
      */
     public static function Type($ObjectId)
@@ -126,14 +130,11 @@ class ObjectsHelper
         //====================================================================//
         // Decode
         $Result     = self::Decode($ObjectId);
-        if (empty($Result))                 {   
-            return False;     
+        if (empty($Result)) {
+            return false;
         }
         //====================================================================//
         // Return Object Type Name
-        return   $Result[1]; 
-
-    }     
+        return   $Result[1];
+    }
 }
-
-?>

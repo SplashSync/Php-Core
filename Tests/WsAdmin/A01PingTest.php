@@ -12,11 +12,11 @@ use Splash\Server\SplashServer;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A01PingTest extends BaseCase { 
-    
+class A01PingTest extends BaseCase
+{
     public function testDummy()
     {
-        $this->assertTrue(True);
+        $this->assertTrue(true);
     }
 
     protected function setUp()
@@ -26,23 +26,23 @@ class A01PingTest extends BaseCase {
         Splash::Reboot();
         //====================================================================//
         // Force Module to Use NuSOAP if Php SOAP Selected
-        if ( Splash::Configuration()->WsMethod == "SOAP"  ) {
+        if (Splash::Configuration()->WsMethod == "SOAP") {
             Splash::Configuration()->WsMethod = "NuSOAP";
-        } 
+        }
         //====================================================================//
         // FAKE SPLASH SERVER HOST URL
-        Splash::Configuration()->WsHost = $this->getLocalServerSoapUrl();        
+        Splash::Configuration()->WsHost = $this->getLocalServerSoapUrl();
         Splash::Ws()->Setup();
-    }    
+    }
     
     public function testPingClientAction()
     {
-        if ( !empty(Splash::Input("SPLASH_TRAVIS")) ) {
+        if (!empty(Splash::Input("SPLASH_TRAVIS"))) {
             $this->markTestSkipped('No HTTP Calls in Client Mode');
         }
 
         //====================================================================//
-        //   Execute Ping From Module to Splash Server  
+        //   Execute Ping From Module to Splash Server
         $this->assertTrue(Splash::Ping(), " Test of Splash Server Ping Fail. Maybe this server is not connected? Check your configuration.");
         
         Splash::Log()->CleanLog();
@@ -52,17 +52,16 @@ class A01PingTest extends BaseCase {
     {
         
         //====================================================================//
-        //   Execute Ping From Splash Server to Module  
+        //   Execute Ping From Splash Server to Module
         $Response   =   SplashServer::Ping();
-        $Data       =   Splash::Ws()->unPack( $Response , 1 );     
+        $Data       =   Splash::Ws()->unPack($Response, 1);
 
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty( $Response                        , "Ping Response Block is Empty");
-        $this->assertNotEmpty( $Data                            , "Ping Response Data is Empty");
-        $this->assertInstanceOf( "ArrayObject" , $Data          , "Ping Response Data is Not an ArrayObject");
-        $this->assertArrayHasKey( "result", $Data               , "Ping Result is Missing");
-        $this->assertNotEmpty( $Data->result                    , "Ping Result is not True");
-
+        $this->assertNotEmpty($Response, "Ping Response Block is Empty");
+        $this->assertNotEmpty($Data, "Ping Response Data is Empty");
+        $this->assertInstanceOf("ArrayObject", $Data, "Ping Response Data is Not an ArrayObject");
+        $this->assertArrayHasKey("result", $Data, "Ping Result is Missing");
+        $this->assertNotEmpty($Data->result, "Ping Result is not True");
     }
 }

@@ -25,20 +25,20 @@ class NuSOAPInterface implements CommunicationInterface
 {
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
-    //====================================================================//        
+    //====================================================================//
     
     /**
      * @abstract   Create & Setup WebService Client
-     * 
+     *
      * @param   string  $Url    Target Url
-     * 
+     *
      * @return self
      */
     public function BuildClient($Url)
     {
         //====================================================================//
         // Include NuSOAP Classes
-        require_once( dirname(__FILE__) . "/nusoap.php");        
+        require_once(dirname(__FILE__) . "/nusoap.php");
         //====================================================================//
         // Initiate new NuSoap Client
         $this->client = new \nusoap_client($Url);
@@ -49,7 +49,7 @@ class NuSOAPInterface implements CommunicationInterface
         }
         //====================================================================//
         // Setup NuSOAP Curl Option if Possible
-        if  (in_array  ('curl', get_loaded_extensions())) {
+        if (in_array('curl', get_loaded_extensions())) {
             $this->client->setUseCURL(true);
         }
         //====================================================================//
@@ -62,29 +62,29 @@ class NuSOAPInterface implements CommunicationInterface
         
     /**
      * @abstract   Execute WebService Client Request
-     * 
+     *
      * @param string    $Service   Target Service
      * @param string    $Data      Request Raw Data
-     * 
+     *
      * @return     mixed    Raw Response
      */
     public function Call($Service, $Data)
     {
         //====================================================================//
         // Log Call Informations in debug buffer
-        Splash::Log()->Deb("[NuSOAP] Call Url= '" . $this->client->endpoint . "' Service='" . $Service . "'");        
+        Splash::Log()->Deb("[NuSOAP] Call Url= '" . $this->client->endpoint . "' Service='" . $Service . "'");
         //====================================================================//
         // Execute NuSOAP Call
         $Response = $this->client->call($Service, $Data);
         //====================================================================//
         // Decode & Store NuSOAP Errors if present
-        if ( isset($this->client->fault) && !empty($this->client->fault) ) {
+        if (isset($this->client->fault) && !empty($this->client->fault)) {
             //====================================================================//
-            //  Debug Informations            
+            //  Debug Informations
             Splash::Log()->Deb("[NuSOAP] Fault Details='"   . $this->client->faultdetail . "'");
             //====================================================================//
             //  Log Error Message
-            Splash::Log()->Err("ErrWsNuSOAPFault",$this->client->faultcode ,$this->client->faultstring);
+            Splash::Log()->Err("ErrWsNuSOAPFault", $this->client->faultcode, $this->client->faultstring);
         }
 
         return $Response;
@@ -92,16 +92,16 @@ class NuSOAPInterface implements CommunicationInterface
         
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
-    //====================================================================//        
+    //====================================================================//
     
     /**
      * @abstract   Create & Setup WebService Server
      */
-    public function BuildServer()        
+    public function BuildServer()
     {
         //====================================================================//
         // Include NuSOAP Classes
-        require_once( dirname(__FILE__) . "/nusoap.php");
+        require_once(dirname(__FILE__) . "/nusoap.php");
         //====================================================================//
         // Initialize NuSOAP Server Class
         $this->server           = new \soap_server();
@@ -112,15 +112,15 @@ class NuSOAPInterface implements CommunicationInterface
         $this->server->register(SPL_S_ADMIN);           // Administrative requests
         $this->server->register(SPL_S_OBJECTS);         // Main Object management requests
         $this->server->register(SPL_S_FILE);            // Files management requests
-        $this->server->register(SPL_S_WIDGETS);         // Informations requests                
+        $this->server->register(SPL_S_WIDGETS);         // Informations requests
     }
     
     /**
      * @abstract   Responds to WebService Requests
      */
-    public function Handle()        
+    public function Handle()
     {
-        if ( isset($this->server) ) {
+        if (isset($this->server)) {
             $this->server->service(file_get_contents('php://input'));
         }
     }
@@ -128,18 +128,19 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * @abstract   Log Errors if Server fail during a request
      */
-    public function Fault($Error)     
+    public function Fault($Error)
     {
         //====================================================================//
         // Detect If Any Response Message Exists.
-        if( !empty($this->server->response) ) { return; }
+        if (!empty($this->server->response)) {
+            return;
+        }
         //====================================================================//
         // Prepare Fault Message.
         $content  = "NuSOAP call: service died unexpectedly!! ";
         $content .= $Error["message"] . " on File " . $Error["file"] . " Line " . $Error["line"];
         //====================================================================//
         // Log Fault Details In SOAP Structure.
-        $this->server->fault($Error["type"], $content);   
+        $this->server->fault($Error["type"], $content);
     }
-    
 }

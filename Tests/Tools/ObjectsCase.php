@@ -11,7 +11,8 @@ use Splash\Tests\Tools\Fields\ooobjectid as ObjectId;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class ObjectsCase extends BaseCase {
+class ObjectsCase extends BaseCase
+{
 
     /*
      * @abstract    List of Created & Tested Object used to delete if test failled.
@@ -51,12 +52,12 @@ class ObjectsCase extends BaseCase {
             //==============================================================================
             //  Url Generator Parameters
             "Url_Prefix"                => "",               // Add a prefix to generated Url (i.e: http://)
-            "Url_Sufix"                 => ".splashsync.com",// Add a sufix to generated Url 
+            "Url_Sufix"                 => ".splashsync.com",// Add a sufix to generated Url
             
             //==============================================================================
             //  Multilanguage Fields
             "Langs"                     =>  array(          // Available Languages for Multilang Fields
-                "en_US", 
+                "en_US",
                 "fr_FR",
                 "fr_BE",
                 "fr_CA",
@@ -76,7 +77,7 @@ class ObjectsCase extends BaseCase {
             "States"                    =>  array(          // Defaults State Iso Codes
                 "CA",
                 "FL"
-                ),   
+                ),
            
             //==============================================================================
             //  Files Fields
@@ -85,7 +86,7 @@ class ObjectsCase extends BaseCase {
                 "fake-file2.pdf",
                 "fake-file3.pdf",
                 "fake-file4.pdf",
-                ),   
+                ),
             
             //==============================================================================
             //  Images Fields
@@ -94,7 +95,7 @@ class ObjectsCase extends BaseCase {
                 "fake-image2.jpg",
                 "fake-image3.jpg",
                 "fake-image4.jpg",
-                ),   
+                ),
             
 //            //==============================================================================
 //            //  Objects Id Fields
@@ -106,36 +107,36 @@ class ObjectsCase extends BaseCase {
     {
         //====================================================================//
         // Safety Check
-        if ( is_null(Splash::Local()) || !method_exists(Splash::Local(), "TestParameters") ) {
+        if (is_null(Splash::Local()) || !method_exists(Splash::Local(), "TestParameters")) {
             return;
-        } 
+        }
         //====================================================================//
         // Read Local Parameters
         $LocalTestSettings  =   Splash::Local()->TestParameters();
         
         //====================================================================//
         // Validate Local Parameters
-        if ( !Splash::Validate()->isValidLocalTestParameterArray($LocalTestSettings) ) {
+        if (!Splash::Validate()->isValidLocalTestParameterArray($LocalTestSettings)) {
             return;
-        } 
+        }
         //====================================================================//
         // Import Local Parameters
         foreach ($LocalTestSettings as $key => $value) {
             $this->settings[$key]   =   $value;
         }
-    }   
+    }
     
     protected function loadLocalTestSequence($Sequence)
     {
         //====================================================================//
         // Check if Local Tests Sequences are defined
-        if ( is_null(Splash::Local()) || !method_exists(Splash::Local(), "TestSequences") ) {
+        if (is_null(Splash::Local()) || !method_exists(Splash::Local(), "TestSequences")) {
             return;
         }
         //====================================================================//
         // Setup Test Sequence
         Splash::Local()->TestSequences($Sequence);
-    }  
+    }
     
     protected function setUp()
     {
@@ -153,20 +154,20 @@ class ObjectsCase extends BaseCase {
         // Load Module Local Configuration (In Safe Mode)
         //====================================================================//
         $this->loadLocalTestParameters();
-    }       
+    }
     
     /**
-     * @abstract        Verify Last Commit is Valid and Conform to Expected 
-     * 
+     * @abstract        Verify Last Commit is Valid and Conform to Expected
+     *
      * @param string    $Action         Expected Action
      * @param string    $ObjectType     Expected Object Type
      * @param string    $ObjectId       Expected Object Id
-     */    
-    public function assertIsLastCommited($Action,  $ObjectType , $ObjectId)
+     */
+    public function assertIsLastCommited($Action, $ObjectType, $ObjectId)
     {
         //====================================================================//
         //   Verify Object Change Was Commited
-        $this->assertNotEmpty( Splash::$Commited                    , "No Object Change Commited by your Module. Please check your triggers.");
+        $this->assertNotEmpty(Splash::$Commited, "No Object Change Commited by your Module. Please check your triggers.");
         
         //====================================================================//
         //   Get Last Commited
@@ -174,71 +175,76 @@ class ObjectsCase extends BaseCase {
         
         //====================================================================//
         //   Check Object Type is OK
-        $this->assertEquals( 
+        $this->assertEquals(
                 $LastCommit->type,
-                $ObjectType, 
-                "Change Commit => Object Type is wrong. (Expected " . $ObjectType . " / Given " . $LastCommit->type );
+                $ObjectType,
+                "Change Commit => Object Type is wrong. (Expected " . $ObjectType . " / Given " . $LastCommit->type
+        );
         
         //====================================================================//
         //   Check Object Action is OK
-        $this->assertEquals( 
+        $this->assertEquals(
                 $LastCommit->action,
-                $Action, 
-                "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action );
+                $Action,
+                "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action
+        );
         
         //====================================================================//
         //   Check Object Id value Format
-        $this->assertTrue( 
+        $this->assertTrue(
                 is_scalar($LastCommit->id) || is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject"),
-                "Change Commit => Object Id Value is in wrong Format. (Expected String or Array of Strings. / Given " . print_r($LastCommit->id, True) );
+                "Change Commit => Object Id Value is in wrong Format. (Expected String or Array of Strings. / Given " . print_r($LastCommit->id, true)
+        );
         
         //====================================================================//
         //   If Commited an Array of Ids
-        if ( is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject") ) {
+        if (is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject")) {
             //====================================================================//
             //   Check each Object Ids
-            foreach ($LastCommit->id as $Id ) {
-                $this->assertTrue( 
-                        is_scalar($Id), 
-                        "Change Commit => Object Id Array Value is in wrong Format. (Expected String or Integer. / Given " . print_r($Id, True) );
+            foreach ($LastCommit->id as $Id) {
+                $this->assertTrue(
+                        is_scalar($Id),
+                        "Change Commit => Object Id Array Value is in wrong Format. (Expected String or Integer. / Given " . print_r($Id, true)
+                );
             }
             //====================================================================//
             //   Extract First Object Id
             $FirstId = array_shift($LastCommit->id);
             //====================================================================//
             //   Verify First Object Id is OK
-            $this->assertEquals( 
+            $this->assertEquals(
                     $FirstId,
-                    $ObjectId, 
-                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $FirstId );
+                    $ObjectId,
+                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $FirstId
+            );
         } else {
             //====================================================================//
             //   Check Object Id is OK
-            $this->assertEquals( 
+            $this->assertEquals(
                     $LastCommit->id,
-                    $ObjectId, 
-                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id );
+                    $ObjectId,
+                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id
+            );
         }
         
         //====================================================================//
         //   Check Infos are Not Empty
-        $this->assertNotEmpty( $LastCommit->user                    , "Change Commit => User Name is Empty");
-        $this->assertNotEmpty( $LastCommit->comment                 , "Change Commit => Action Comment is Empty");
-        
+        $this->assertNotEmpty($LastCommit->user, "Change Commit => User Name is Empty");
+        $this->assertNotEmpty($LastCommit->comment, "Change Commit => Action Comment is Empty");
     }
 
     /**
-     * @abstract        Verify First Commit is Valid and Conform to Expected 
-     * 
+     * @abstract        Verify First Commit is Valid and Conform to Expected
+     *
      * @param string    $Action         Expected Action
      * @param string    $ObjectType     Expected Object Type
      * @param string    $ObjectId       Expected Object Id
-     */    
-    public function assertIsFirstCommited($Action,  $ObjectType , $ObjectId)
+     */
+    public function assertIsFirstCommited($Action, $ObjectType, $ObjectId)
     {
         //====================================================================//
         //   Verify Object Change Was Commited
-        $this->assertNotEmpty( Splash::$Commited                    , "No Object Change Commited by your Module. Please check your triggers.");
+        $this->assertNotEmpty(Splash::$Commited, "No Object Change Commited by your Module. Please check your triggers.");
         
         //====================================================================//
         //   Get Last Commited
@@ -246,292 +252,300 @@ class ObjectsCase extends BaseCase {
         
         //====================================================================//
         //   Check Object Type is OK
-        $this->assertEquals( 
+        $this->assertEquals(
                 $LastCommit->type,
-                $ObjectType, 
-                "Change Commit => Object Type is wrong. (Expected " . $ObjectType . " / Given " . $LastCommit->type );
+                $ObjectType,
+                "Change Commit => Object Type is wrong. (Expected " . $ObjectType . " / Given " . $LastCommit->type
+        );
         
         //====================================================================//
         //   Check Object Action is OK
-        $this->assertEquals( 
+        $this->assertEquals(
                 $LastCommit->action,
-                $Action, 
-                "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action );
+                $Action,
+                "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action
+        );
         
         //====================================================================//
         //   Check Object Id value Format
-        $this->assertTrue( 
+        $this->assertTrue(
                 is_scalar($LastCommit->id) || is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject"),
-                "Change Commit => Object Id Value is in wrong Format. (Expected String or Array of Strings. / Given " . print_r($LastCommit->id, True) );
+                "Change Commit => Object Id Value is in wrong Format. (Expected String or Array of Strings. / Given " . print_r($LastCommit->id, true)
+        );
         
         //====================================================================//
         //   If Commited an Array of Ids
-        if ( is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject") ) {
+        if (is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject")) {
             //====================================================================//
             //   Check each Object Ids
-            foreach ($LastCommit->id as $Id ) {
-                $this->assertTrue( 
-                        is_scalar($Id), 
-                        "Change Commit => Object Id Array Value is in wrong Format. (Expected String or Integer. / Given " . print_r($Id, True) );
+            foreach ($LastCommit->id as $Id) {
+                $this->assertTrue(
+                        is_scalar($Id),
+                        "Change Commit => Object Id Array Value is in wrong Format. (Expected String or Integer. / Given " . print_r($Id, true)
+                );
             }
             //====================================================================//
             //   Extract First Object Id
             $FirstId = array_shift($LastCommit->id);
             //====================================================================//
             //   Verify First Object Id is OK
-            $this->assertEquals( 
+            $this->assertEquals(
                     $FirstId,
-                    $ObjectId, 
-                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $FirstId );
+                    $ObjectId,
+                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $FirstId
+            );
         } else {
             //====================================================================//
             //   Check Object Id is OK
-            $this->assertEquals( 
+            $this->assertEquals(
                     $LastCommit->id,
-                    $ObjectId, 
-                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id );
+                    $ObjectId,
+                    "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id
+            );
         }
         
         //====================================================================//
         //   Check Infos are Not Empty
-        $this->assertNotEmpty( $LastCommit->user                    , "Change Commit => User Name is Empty");
-        $this->assertNotEmpty( $LastCommit->comment                 , "Change Commit => Action Comment is Empty");
-        
-    }    
+        $this->assertNotEmpty($LastCommit->user, "Change Commit => User Name is Empty");
+        $this->assertNotEmpty($LastCommit->comment, "Change Commit => Action Comment is Empty");
+    }
     
     /**
-     * @abstract        Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation 
-     * 
+     * @abstract        Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation
+     *
      * @param string    $ObjectType     Expected Object Type
      * @param string    $ObjectId       Expected Object Id
-     */       
-    protected function setCurrentObject( $ObjectType, $ObjectId) {
+     */
+    protected function setCurrentObject($ObjectType, $ObjectId)
+    {
         $this->settings["CurrentType"]  =   $ObjectType;
         $this->settings["CurrentId"]    =   $ObjectId;
     }
     //==============================================================================
     //      VALIDATION FUNCTIONS
-    //==============================================================================       
+    //==============================================================================
 
-   /**
-    *   @abstract   Verify this parameter is a valid sync data type  
-    *   @param      string      $In         Data Type Name String     
-    *   @return     int         $result     0 if KO, Field Full Class Name if OK
-    */
-    public static function isValidType($In) 
-    {        
+    /**
+     *   @abstract   Verify this parameter is a valid sync data type
+     *   @param      string      $In         Data Type Name String
+     *   @return     int         $result     0 if KO, Field Full Class Name if OK
+     */
+    public static function isValidType($In)
+    {
         //====================================================================//
-        // Safety Check 
+        // Safety Check
         if (empty($In)) {
-            return False;
+            return false;
         }
         //====================================================================//
         // Detects Lists Fields
         //====================================================================//
         $list = self::isListField($In);
-        if ( $list != False ) {
-            $In = $list["fieldname"]; 
+        if ($list != false) {
+            $In = $list["fieldname"];
         }
         //====================================================================//
         // Detects Id Fields
         //====================================================================//
         $id = self::isIdField($In);
-        if ( $id != False ) {
+        if ($id != false) {
             $In = "objectid";
-        }        
+        }
         
         //====================================================================//
         // Verify Single Data Type is Valid
         //====================================================================//
 
         //====================================================================//
-        // Build Class Full Name        
+        // Build Class Full Name
         $ClassName = self::CLASS_PREFIX .  $In;
         
         //====================================================================//
-        // Build New Entity 
-        if (class_exists( $ClassName )) {
+        // Build New Entity
+        if (class_exists($ClassName)) {
             return  $ClassName;
         }
 
         return false;
-    }  
+    }
 
-   /**
-    *   @abstract   Check if this id is a list identifier & return decoded array if ok  
-    *   @param      string  $In         Data Type Name String     
-    *   @return     int     $result     0 if KO, 1 if OK
-    */
-    public static function isListField($In) 
-    {        
+    /**
+     *   @abstract   Check if this id is a list identifier & return decoded array if ok
+     *   @param      string  $In         Data Type Name String
+     *   @return     int     $result     0 if KO, 1 if OK
+     */
+    public static function isListField($In)
+    {
         //====================================================================//
-        // Safety Check 
+        // Safety Check
         if (empty($In)) {
-            return False;
+            return false;
         }
         //====================================================================//
         // Detects Lists
-        $list = explode ( LISTSPLIT , $In );
-        if (is_array($list) && (count($list)==2) ) {
+        $list = explode(LISTSPLIT, $In);
+        if (is_array($list) && (count($list)==2)) {
             //====================================================================//
             // If List Detected, Prepare Field List Information Array
             return array("fieldname" => $list[0],"listname" => $list[1]);
         }
-        return False;
-    }  
+        return false;
+    }
 
     /**
      *      @abstract   Identify if field is Object Identifier Data & Decode Field
-     * 
+     *
      *      @param      string       $In             Id Field String
-     * 
+     *
      *      @return     array       $result         0 if KO or Exploded Field Array
      */
     public static function isIdField($In)
     {
         //====================================================================//
-        // Safety Check 
+        // Safety Check
         if (empty($In)) {
-            return False;
-        }       
+            return false;
+        }
         
         //====================================================================//
         // Detects ObjectId
-        $list = explode ( IDSPLIT , $In );
-        if (is_array($list) && (count($list)==2) ) {
+        $list = explode(IDSPLIT, $In);
+        if (is_array($list) && (count($list)==2)) {
             //====================================================================//
             // If List Detected, Prepare Field List Information Array
             $Out["ObjectId"]        = $list[0];
             $Out["ObjectType"]      = $list[1];
             return $Out;
         }
-        return False;
-    }     
+        return false;
+    }
     
-   /**
-    *   @abstract   Verify Data a valid Raw field data
-    *   @param      mixed   $Data       Object Field Data  
-    *   @param      string  $Type       Object Field Type 
-    *   @return     int     $result     0 if KO, 1 if OK
-    */
-    public static function isValidData($Data,$Type) 
+    /**
+     *   @abstract   Verify Data a valid Raw field data
+     *   @param      mixed   $Data       Object Field Data
+     *   @param      string  $Type       Object Field Type
+     *   @return     int     $result     0 if KO, 1 if OK
+     */
+    public static function isValidData($Data, $Type)
     {
         //====================================================================//
         // Verify Field Type is Valid
         $ClassName = self::isValidType($Type);
-        if ( $ClassName == False ) {
-            return False;
+        if ($ClassName == false) {
+            return false;
         }
         
         //====================================================================//
         // Verify Single Field Data Type is not Null
         if (is_null($Data)) {
-            return TRUE;
+            return true;
         }
 
         //====================================================================//
         // Verify Single Field Data Type is Valid
         return $ClassName::validate($Data);
-    }        
+    }
     
-   /**
-    *   @abstract   Verify Data a valid field data
-    *   @param      mixed   $Data       Object Field Data  
-    *   @param      string  $Id         Object Field Identifier 
-    *   @param      string  $Type       Object Field Type 
-    *   @return     int     $result     0 if KO, 1 if OK
-    */
-    public function isValidFieldData($Data,$Id,$Type) 
-    {  
+    /**
+     *   @abstract   Verify Data a valid field data
+     *   @param      mixed   $Data       Object Field Data
+     *   @param      string  $Id         Object Field Identifier
+     *   @param      string  $Type       Object Field Type
+     *   @return     int     $result     0 if KO, 1 if OK
+     */
+    public function isValidFieldData($Data, $Id, $Type)
+    {
         //====================================================================//
-        // Safety Check 
-        $this->assertNotEmpty($Data ,   "Field Data Block is Empty");
-        $this->assertNotEmpty($Id   ,   "Field Id is Empty");
-        $this->assertNotEmpty($Type ,   "Field Type Name is Empty");
+        // Safety Check
+        $this->assertNotEmpty($Data, "Field Data Block is Empty");
+        $this->assertNotEmpty($Id, "Field Id is Empty");
+        $this->assertNotEmpty($Type, "Field Type Name is Empty");
         
         //====================================================================//
         // Detects Lists Fields
-        $List       = self::isListField( $Id );
-        if ( $List ) {
+        $List       = self::isListField($Id);
+        if ($List) {
             //====================================================================//
             // Verify List Field Data
-            return $this->isValidListFieldData($Data,$Id,$Type);
+            return $this->isValidListFieldData($Data, $Id, $Type);
         }
         
         //====================================================================//
         // Verify Field is in Data Response
-        $this->assertArrayHasKey(   $Id,   $Data,      "Field '" . $Id . "' is not defined in returned Data Block.");
+        $this->assertArrayHasKey($Id, $Data, "Field '" . $Id . "' is not defined in returned Data Block.");
         
         //====================================================================//
         // Verify Single Field Data Type is not Null
-        if ( is_null($Data[$Id]) ) {
+        if (is_null($Data[$Id])) {
             return;
-        }        
+        }
         
         //====================================================================//
         // Verify Raw Field Data
-        $this->assertTrue( 
-                self::isValidData($Data[$Id],$Type),    
-                $Id . " => Field Raw Data is not a valid " . $Type .  ". (" . print_r($Data[$Id], True) . ")"
+        $this->assertTrue(
+                self::isValidData($Data[$Id], $Type),
+                $Id . " => Field Raw Data is not a valid " . $Type .  ". (" . print_r($Data[$Id], true) . ")"
             );
-    }     
+    }
         
     /**
     *   @abstract   Verify Data a valid list field data
-    *   @param      mixed   $Data       Object Field Data  
-    *   @param      string  $Id         Object Field Identifier 
-    *   @param      string  $Type       Object Field Type 
+    *   @param      mixed   $Data       Object Field Data
+    *   @param      string  $Id         Object Field Identifier
+    *   @param      string  $Type       Object Field Type
     *   @return     int     $result     0 if KO, 1 if OK
     */
-    public function isValidListFieldData($Data,$Id,$Type) 
-    {  
-        $ListId     = self::isListField ( $Id );
-        $ListType   = self::isListField ( $Type );
-        if ( !$ListId ) {
-            return FALSE;
+    public function isValidListFieldData($Data, $Id, $Type)
+    {
+        $ListId     = self::isListField($Id);
+        $ListType   = self::isListField($Type);
+        if (!$ListId) {
+            return false;
         }
         
         //====================================================================//
         // Verify List is in Data Response
-        $this->assertArrayHasKey(   $ListId["listname"],   $Data,      "List '" . $ListId["listname"] . "' is not defined in returned Data Block.");
+        $this->assertArrayHasKey($ListId["listname"], $Data, "List '" . $ListId["listname"] . "' is not defined in returned Data Block.");
         
         //====================================================================//
         // Verify Field Type is List Type Identifier
-        $this->assertEquals( $ListType["listname"], SPL_T_LIST,   
-                "List Field Type Must match Format 'type'@list. (Given " . print_r($Type, True) . ")"
+        $this->assertEquals(
+            $ListType["listname"],
+            SPL_T_LIST,
+                "List Field Type Must match Format 'type'@list. (Given " . print_r($Type, true) . ")"
             );
         
         //====================================================================//
         // Verify Field Type is Valid Splahs Field type
-        $this->assertNotEmpty( 
-                self::isValidType($ListType["fieldname"]),    
-                "List Field Type is not a valid Splash Field Type. (Given " . print_r($ListType["fieldname"], True) . ")"
+        $this->assertNotEmpty(
+                self::isValidType($ListType["fieldname"]),
+                "List Field Type is not a valid Splash Field Type. (Given " . print_r($ListType["fieldname"], true) . ")"
             );
         
-        $ListData = $Data[$ListId["listname"]]; 
+        $ListData = $Data[$ListId["listname"]];
         //====================================================================//
-        // Verify if Field Data is Null 
-        if ( empty($ListData) ) {
-            return TRUE;
+        // Verify if Field Data is Null
+        if (empty($ListData)) {
+            return true;
         }
         
         //====================================================================//
         // Verify if Field Data is an Array
         $this->assertTrue(
                 is_array($ListData) || is_a($ListData, "ArrayObject"),
-                "List Field '" . $ListId["listname"] . "' is not of Array Type. (Given " . print_r($ListData, True). ")"
+                "List Field '" . $ListId["listname"] . "' is not of Array Type. (Given " . print_r($ListData, true). ")"
             );
         
         //====================================================================//
-        // Verify all List Data Are Valid 
+        // Verify all List Data Are Valid
         foreach ($ListData as $Value) {
             $this->isValidFieldData($Value, $ListId["fieldname"], $Type);
         }
-        return True;    
-    }    
+        return true;
+    }
     
     //====================================================================//
-    //   Data Provider Functions  
+    //   Data Provider Functions
     //====================================================================//
     
     public function ObjectTypesProvider()
@@ -542,29 +556,28 @@ class ObjectsCase extends BaseCase {
 
         //====================================================================//
         // Check if Local Tests Sequences are defined
-        if ( !is_null(Splash::Local()) && method_exists(Splash::Local(), "TestSequences") ) {
+        if (!is_null(Splash::Local()) && method_exists(Splash::Local(), "TestSequences")) {
             $Sequences  =   Splash::Local()->TestSequences("List");
         } else {
             $Sequences  =   array( 1 => "None");
         }
         
         //====================================================================//
-        //   For Each Test Sequence  
+        //   For Each Test Sequence
         foreach ($Sequences as $Sequence) {
-            
             $this->loadLocalTestSequence($Sequence);
             
             //====================================================================//
-            //   For Each Object Type  
+            //   For Each Object Type
             foreach (Splash::Objects() as $ObjectType) {
                 //====================================================================//
                 //   If Object Type Is Disabled Type  =>> Skip
-                if ( Splash::Object($ObjectType)->getIsDisabled() ) {
+                if (Splash::Object($ObjectType)->getIsDisabled()) {
                     continue;
-                } 
+                }
                 //====================================================================//
                 //   Add Object Type to List
-                $Result[] = array($Sequence, $ObjectType);            
+                $Result[] = array($Sequence, $ObjectType);
             }
         }
         
@@ -581,28 +594,28 @@ class ObjectsCase extends BaseCase {
         
         //====================================================================//
         // Check if Local Tests Sequences are defined
-        if ( !is_null(Splash::Local()) && method_exists(Splash::Local(), "TestSequences") ) {
+        if (!is_null(Splash::Local()) && method_exists(Splash::Local(), "TestSequences")) {
             $Sequences  =   Splash::Local()->TestSequences("List");
         } else {
             $Sequences  =   array( 1 => "None");
         }
         
         //====================================================================//
-        //   For Each Test Sequence  
-        foreach ($Sequences as $Sequence) {        
+        //   For Each Test Sequence
+        foreach ($Sequences as $Sequence) {
             $this->loadLocalTestSequence($Sequence);
             //====================================================================//
-            //   For Each Object Type  
+            //   For Each Object Type
             foreach (Splash::Objects() as $ObjectType) {
                 //====================================================================//
                 //   If Object Type Is Disabled Type  =>> Skip
-                if ( Splash::Object($ObjectType)->getIsDisabled() ) {
+                if (Splash::Object($ObjectType)->getIsDisabled()) {
                     continue;
-                } 
+                }
                 //====================================================================//
-                //   For Each Field Type  
-                foreach (Splash::Object($ObjectType)->Fields() as $Field) {                
-                    $Result[] = array($Sequence, $ObjectType, $Field);            
+                //   For Each Field Type
+                foreach (Splash::Object($ObjectType)->Fields() as $Field) {
+                    $Result[] = array($Sequence, $ObjectType, $Field);
                 }
             }
         }
@@ -613,28 +626,28 @@ class ObjectsCase extends BaseCase {
     }
     
     //==============================================================================
-    //      FAKE DATA GENERATORS  
-    //==============================================================================   
+    //      FAKE DATA GENERATORS
+    //==============================================================================
     
     /**
-     *   @abstract   Generate Fake Object Fields List 
-     * 
+     *   @abstract   Generate Fake Object Fields List
+     *
      *   @param      string     $ObjectType     Object Type Name
      *   @param      array      $FieldsList     Object Field Ids List
      *   @param      bool       $Associate      Include Associated Fields
-     *  
+     *
      *   @return     array      $Out            Array of Fields
      */
-    public function fakeFieldsList($ObjectType, $FieldsList = False, $Associate = False) 
+    public function fakeFieldsList($ObjectType, $FieldsList = false, $Associate = false)
     {
         //====================================================================//
         // Safety Check => $ObjectType is a valid
-        $this->assertTrue( in_array($ObjectType , Splash::Objects())       ,"Invalid Object Type Name. (" . $ObjectType . ")");
+        $this->assertTrue(in_array($ObjectType, Splash::Objects()), "Invalid Object Type Name. (" . $ObjectType . ")");
 
         //====================================================================//
         // Create Empty Object Data Array
         $Out    = array();
-        $Write  = False;
+        $Write  = false;
         
         //====================================================================//
         // Load Object Fields Definition
@@ -645,37 +658,37 @@ class ObjectsCase extends BaseCase {
         
         //====================================================================//
         // Generate Fields Data
-        foreach ( $Fields as $Field) {
+        foreach ($Fields as $Field) {
             
             //====================================================================//
             // Check if Fields is Writable
-            if ( !$Field->write ) {   
+            if (!$Field->write) {
                 continue;
-            }            
-            $Write = True;
+            }
+            $Write = true;
 
             //====================================================================//
             // Check if Fields is Needed
             //====================================================================//
 
-            $Needed = False;
+            $Needed = false;
             //====================================================================//
             // Required Field
-            if ( $Field->required ) {
-                $Needed = True;
+            if ($Field->required) {
+                $Needed = true;
             }
             //====================================================================//
             // If NO Fields List is Given => Select All Write Fields
-            if ( ($FieldsList == False) || !is_array($FieldsList) ) {
-                $Needed = True;
+            if (($FieldsList == false) || !is_array($FieldsList)) {
+                $Needed = true;
             } else {
                 //====================================================================//
                 // Field is in Requested List
-                if ( in_array($Field->id, $FieldsList)) {
-                    $Needed = True;
-                }                
+                if (in_array($Field->id, $FieldsList)) {
+                    $Needed = true;
+                }
             }
-            if ( !$Needed ) {
+            if (!$Needed) {
                 continue;
             }
                 
@@ -686,7 +699,7 @@ class ObjectsCase extends BaseCase {
         
         //====================================================================//
         // No Associated Fields
-        if ( !$Associate ) {
+        if (!$Associate) {
             return $Out;
         }
         
@@ -696,13 +709,13 @@ class ObjectsCase extends BaseCase {
             
             //====================================================================//
             // No Associated Field
-            if ( empty($OutField->asso) ) {
+            if (empty($OutField->asso)) {
                 continue;
             }
             //====================================================================//
             // For Associated Fields
             foreach ($Fields as $Field) {
-                if ( in_array($Field->id, $OutField->asso)) {
+                if (in_array($Field->id, $OutField->asso)) {
                     $Out[$Field->id] = $Field;
                 }
             }
@@ -713,12 +726,12 @@ class ObjectsCase extends BaseCase {
     
     /**
      *   @abstract   Create Fake/Dummy Object Data
-     * 
+     *
      *   @param      array   $FieldsList     Object Field List
-     *  
+     *
      *   @return     int     $result     0 if KO, 1 if OK
      */
-    public function fakeObjectData($FieldsList) 
+    public function fakeObjectData($FieldsList)
     {
         //====================================================================//
         // Create Dummy Data Array
@@ -745,31 +758,30 @@ class ObjectsCase extends BaseCase {
             $FieldName  =   $List["fieldname"];
             $ListData   =   self::fakeListData($Field);
             //====================================================================//
-            // Create List 
-            if ( !array_key_exists($ListName, $Out)) {
+            // Create List
+            if (!array_key_exists($ListName, $Out)) {
                 $Out[$ListName] = array();
             }
             //====================================================================//
-            // Parse Data in List 
+            // Parse Data in List
             foreach ($ListData as $Key => $Data) {
-                if ( !array_key_exists($Key, $Out[$ListName]) ) {
+                if (!array_key_exists($Key, $Out[$ListName])) {
                     $Out[$ListName][$Key] = array();
                 }
-                $Out[$ListName][$Key][$FieldName] = $Data[$FieldName];  
+                $Out[$ListName][$Key][$FieldName] = $Data[$FieldName];
             }
-
         }
         return $Out;
-    }  
+    }
     
     /**
      *   @abstract   Create Fake/Dummy Object List Data
-     * 
+     *
      *   @param      array   $Field          Object Field Definition
-     *  
+     *
      *   @return     int     $result     0 if KO, 1 if OK
      */
-    public function fakeListData($Field) 
+    public function fakeListData($Field)
     {
         //====================================================================//
         // Read Number of Items to Put in Lists
@@ -782,11 +794,10 @@ class ObjectsCase extends BaseCase {
         //====================================================================//
         // Generate Unik Dummy Fields Data
         $ListData = array();
-        while ( count($ListData) < $NbItems)
-        {
+        while (count($ListData) < $NbItems) {
             $Data           =   self::fakeFieldData($Type["fieldname"], $Field->choices, $Field->options);
-            $Md5            =   md5(serialize($Data)); 
-            $ListData[$Md5] =   $Data; 
+            $Md5            =   md5(serialize($Data));
+            $ListData[$Md5] =   $Data;
         }
 
         //====================================================================//
@@ -795,148 +806,147 @@ class ObjectsCase extends BaseCase {
         
         //====================================================================//
         // Create Dummy Fields Data
-        for ($i = 0; $i < $NbItems; $i++)
-        {
-            $Out[][$List["fieldname"]] = array_shift($ListData); 
+        for ($i = 0; $i < $NbItems; $i++) {
+            $Out[][$List["fieldname"]] = array_shift($ListData);
         }
         
         return $Out;
-    }        
+    }
     
     /**
      *   @abstract   Create Fake Field data
-     * 
-     *   @param      string  $Type       Object Field Type 
-     *   @param      array   $Choices    Object Field Possible Values 
-     *   @param      array   $Options     Object Field Values Options 
-     * 
+     *
+     *   @param      string  $Type       Object Field Type
+     *   @param      array   $Choices    Object Field Possible Values
+     *   @param      array   $Options     Object Field Values Options
+     *
      *   @return     int     $result     0 if KO, 1 if OK
      */
-    public function fakeFieldData($Type, $Choices = Null, $Options = array() ) 
-    {  
+    public function fakeFieldData($Type, $Choices = null, $Options = array())
+    {
         //====================================================================//
-        // Safety Check 
-        if (empty($Type))   {   
-            return False;
+        // Safety Check
+        if (empty($Type)) {
+            return false;
         }
         //====================================================================//
         // Verify Field Type is Valid
         $ClassName = self::isValidType($Type);
-        if ( $ClassName == False ) {
-            return False;
-        }       
+        if ($ClassName == false) {
+            return false;
+        }
         //====================================================================//
-        // Detects Id Fields    => Cannot Generate Fake for Id Fields Here... 
-        if ( ($id = self::isIdField($Type)) ) {
-            return $ClassName::fake($id["ObjectType"], array_merge_recursive($this->settings, $Options) );
+        // Detects Id Fields    => Cannot Generate Fake for Id Fields Here...
+        if (($id = self::isIdField($Type))) {
+            return $ClassName::fake($id["ObjectType"], array_merge_recursive($this->settings, $Options));
         }
         
         //====================================================================//
-        // Take Values From Given Choices 
-        if ( !empty($Choices) ) {
-            $Index = mt_rand(0, count($Choices) - 1 );
-            if ( isset($Choices[$Index]["key"]) && ($Type == SPL_T_VARCHAR)) {
+        // Take Values From Given Choices
+        if (!empty($Choices)) {
+            $Index = mt_rand(0, count($Choices) - 1);
+            if (isset($Choices[$Index]["key"]) && ($Type == SPL_T_VARCHAR)) {
                 return (string) $Choices[$Index]["key"];
-            } else if ( isset($Choices[$Index]["key"]) ) {
+            } elseif (isset($Choices[$Index]["key"])) {
                 return $Choices[$Index]["key"];
             }
-        } 
+        }
         
         //====================================================================//
         // Generate Single Field Data Type is Valid
-        return $ClassName::fake(array_merge_recursive($this->settings, $Options));        
-    } 
+        return $ClassName::fake(array_merge_recursive($this->settings, $Options));
+    }
     
     //==============================================================================
-    //      FIELDS LIST FUNCTIONS 
-    //==============================================================================   
+    //      FIELDS LIST FUNCTIONS
+    //==============================================================================
     
     /**
      *   @abstract   Filter a Fields List to keap only given Fields Ids
-     * 
+     *
      *   @param      array      $FieldsList     Object Field List
      *   @param      array      $Filters        Array of Fields Ids
-     * 
+     *
      *   @return     array
      */
-    public static function filterFieldList($FieldsList, $Filters = array()) 
-    {  
+    public static function filterFieldList($FieldsList, $Filters = array())
+    {
         $Result =   array();
         
         foreach ($FieldsList as $Field) {
             if (in_array($Field->id, $Filters)) {
                 $Result[] = $Field;
-            } 
+            }
         }
         
-        return $Result;        
-    } 
+        return $Result;
+    }
     
     /**
      *   @abstract   Find a Field Definition in List by Id
-     * 
+     *
      *   @param      array      $FieldsList     Object Field List
      *   @param      array      $FieldId        Field Id
-     * 
+     *
      *   @return     array
      */
-    public static function findField($FieldsList, $FieldId ) 
-    {  
+    public static function findField($FieldsList, $FieldId)
+    {
         $Fields = self::filterFieldList($FieldsList, $FieldId);
         
-        if (count($Fields) != 1 ){
-            return Null;
-        } 
+        if (count($Fields) != 1) {
+            return null;
+        }
                 
-        return array_shift($Fields);        
-    } 
+        return array_shift($Fields);
+    }
 
     /**
      *   @abstract   Redure a Fields List to an Array of Field Ids
-     * 
+     *
      *   @param      array      $FieldsList     Object Field List
-     *   @param      bool       $isRead         Filter non Readable Fields  
-     *   @param      bool       $isWrite        Filter non Writable Fields  
-     * 
+     *   @param      bool       $isRead         Filter non Readable Fields
+     *   @param      bool       $isWrite        Filter non Writable Fields
+     *
      *   @return     array
      */
-    public static function reduceFieldList($FieldsList, $isRead = False, $isWrite = False) 
-    {  
+    public static function reduceFieldList($FieldsList, $isRead = false, $isWrite = false)
+    {
         $Result =   array();
        
         foreach ($FieldsList as $Field) {
             
             //==============================================================================
             //      Filter Non-Readable Fields
-            if ( $isRead && !$Field->read ) {
+            if ($isRead && !$Field->read) {
                 continue;
             }
             //==============================================================================
             //      Filter Non-Writable Fields
-            if ( $isWrite && !$Field->write ) {
+            if ($isWrite && !$Field->write) {
                 continue;
             }
             $Result[] = $Field->id;
         }
             
-        return $Result;        
-    } 
+        return $Result;
+    }
     
     //==============================================================================
-    //      OBJECTS DATA BLOCKS FUNCTIONS 
-    //==============================================================================   
+    //      OBJECTS DATA BLOCKS FUNCTIONS
+    //==============================================================================
         
     /**
      *   @abstract   Extract Raw Field Data from an Object Data Block
-     * 
+     *
      *   @param      array      $DataBlock          Object Data Block
      *   @param      string      $Filter            Single Fields Id
-     * 
+     *
      *   @return     array
      */
-    public static function extractRawData($DataBlock, $Filter) 
+    public static function extractRawData($DataBlock, $Filter)
     {
-        $FilteredData   =   self::filterData($DataBlock , array($Filter) );
+        $FilteredData   =   self::filterData($DataBlock, array($Filter));
         
         //====================================================================//
         // Explode List Field Id
@@ -945,17 +955,17 @@ class ObjectsCase extends BaseCase {
         //====================================================================//
         // Simple Single Field
         if (!$List) {
-            if(isset($FilteredData[$Filter])){
+            if (isset($FilteredData[$Filter])) {
                 return $FilteredData[$Filter];
             }
             
-        //====================================================================//
+            //====================================================================//
         // List Field
         } else {
             //====================================================================//
             // Check List Exists
-            if(!array_key_exists($List["listname"], $FilteredData)){
-                return Null;
+            if (!array_key_exists($List["listname"], $FilteredData)) {
+                return null;
             }
             
             //====================================================================//
@@ -968,20 +978,20 @@ class ObjectsCase extends BaseCase {
         }
         
         //====================================================================//
-        // Field Not Received or is Empty 
-        return Null;
-    }   
+        // Field Not Received or is Empty
+        return null;
+    }
     
     /**
      *   @abstract   Filter a Object Data Block to keap only given Fields
-     * 
+     *
      *   @param      array      $DataBlock      Object Data Block
      *   @param      array      $Filters        Array of Fields Ids
-     * 
+     *
      *   @return     array
      */
-    public static function filterData($DataBlock, $Filters = array()) 
-    {  
+    public static function filterData($DataBlock, $Filters = array())
+    {
         $Result         =   array();
         $ListFilters    =   array();
         
@@ -994,9 +1004,9 @@ class ObjectsCase extends BaseCase {
             $List       =   self::isListField($FieldId);
             //====================================================================//
             // Single Field Data Type
-            if ( ( !$List ) && ( array_key_exists($FieldId, $DataBlock) ) )  {
+            if ((!$List) && (array_key_exists($FieldId, $DataBlock))) {
                 $Result[$FieldId] = $DataBlock[$FieldId];
-            } elseif ( !$List ) {
+            } elseif (!$List) {
                 continue;
             }
             //====================================================================//
@@ -1005,15 +1015,15 @@ class ObjectsCase extends BaseCase {
             $FieldName  =   $List["fieldname"];
             //====================================================================//
             // Check List Data are Present in Block
-            if ( !array_key_exists($ListName, $DataBlock) ) {
+            if (!array_key_exists($ListName, $DataBlock)) {
                 continue;
-            }            
+            }
             //====================================================================//
-            // Create List 
-            if ( !array_key_exists($ListName, $ListFilters)) {
+            // Create List
+            if (!array_key_exists($ListName, $ListFilters)) {
                 $ListFilters[$ListName] = array();
             }
-            $ListFilters[$ListName][] = $FieldName;  
+            $ListFilters[$ListName][] = $FieldName;
         }
         
         //====================================================================//
@@ -1022,28 +1032,27 @@ class ObjectsCase extends BaseCase {
             $Result[$ListName] = self::filterListData($DataBlock[$ListName], $ListFilters);
         }
         
-        return $Result;        
-    }     
+        return $Result;
+    }
     
     /**
      *   @abstract   Filter a Object List Data Block to keap only given Fields
-     * 
+     *
      *   @param      array      $ListBlock  Object Data Block
      *   @param      array      $Filters    Array of Fields Ids
-     * 
+     *
      *   @return     array
      */
-    public static function filterListData($ListBlock, $Filters = array()) 
-    {  
+    public static function filterListData($ListBlock, $Filters = array())
+    {
         $Result =   array();
         
         foreach ($ListBlock as $ItemBlock) {
-            
             $FilteredItems = array();
             
             //====================================================================//
             // Search for Field in Item Block
-            if ( !is_array($ItemBlock) && !is_a($ItemBlock, "ArrayObject")){
+            if (!is_array($ItemBlock) && !is_a($ItemBlock, "ArrayObject")) {
                 dump($ListBlock);
                 dump($ItemBlock);
                 
@@ -1053,98 +1062,99 @@ class ObjectsCase extends BaseCase {
             //====================================================================//
             // Search for Field in Item Block
             foreach ($Filters as $FieldId) {
-                if ( array_key_exists($FieldId, $ItemBlock) )  {
+                if (array_key_exists($FieldId, $ItemBlock)) {
                     $FilteredItems[$FieldId] = $ItemBlock[$FieldId];
                 }
             }
             
             $Result[] = $FilteredItems;
-        }              
+        }
         
-        return $Result;        
-    }       
+        return $Result;
+    }
     
     /**
      *  @abstract   Normalize An Object Data Block (ie: before Compare)
-     *   
-     *  @param      mixed       $array      Input Array     
-     * 
+     *
+     *  @param      mixed       $array      Input Array
+     *
      *  @return     array                   Sorted Array
-     */    
-    public static function Normalize( &$In ) {
+     */
+    public static function Normalize(&$In)
+    {
        
         //==============================================================================
-        //      Convert ArrayObjects To Simple Array 
+        //      Convert ArrayObjects To Simple Array
         if (is_a($In, "ArrayObject")) {
             $In = $In->getArrayCopy();
             //==============================================================================
-            // Normalize Contents 
+            // Normalize Contents
             self::Normalize($In);
             
         //==============================================================================
-        // Normalize Array Contents 
-        }else if (is_array($In)) {
+        // Normalize Array Contents
+        } elseif (is_array($In)) {
             foreach ($In as &$value) {
                 self::Normalize($value);
             }
             
-        //==============================================================================
+            //==============================================================================
         // Normalize Bool as Strings
-        } else if (is_bool($In)) {
+        } elseif (is_bool($In)) {
             $In = $In?"1":"0";
             
         //==============================================================================
         // Normalize Numbers as Strings
-        } else if (is_numeric($In)) {
+        } elseif (is_numeric($In)) {
             $In = strval($In);
         }
         
         return $In;
-    } 
+    }
     
     /**
     *   @abstract   kSort of An Object Data Block (ie: before Compare)
-    * 
-    *   @param      array       $array      Input Array     
-    * 
+    *
+    *   @param      array       $array      Input Array
+    *
     *   @return     array                   Sorted Array
-    */    
-    public static function Sort( &$In ) {
-       
-        if ( !is_array($In) )  {
+    */
+    public static function Sort(&$In)
+    {
+        if (!is_array($In)) {
             return $In;
         }
             
         //==============================================================================
-        // Sort All Sub-Contents 
+        // Sort All Sub-Contents
         foreach ($In as &$value) {
             if (is_array($value)) {
                 self::Sort($value);
             }
         }
         return ksort($In);
-    }       
+    }
     
     /**
-     * @abstract    Check Two Data Blocks Have Similar Data 
-     * 
+     * @abstract    Check Two Data Blocks Have Similar Data
+     *
      * @param   array   $Block1             Raw Data to Compare
      * @param   array   $Block2             Raw Data to Compare
      * @param   object  $TestController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
      * @param   string  $Comment            Comment on this Test
-     * 
-     * @return bool 
+     *
+     * @return bool
      */
-    public function compareRawData($Block1, $Block2, $TestController = Null, $Comment = Null)
+    public function compareRawData($Block1, $Block2, $TestController = null, $Comment = null)
     {
         //====================================================================//
-        // Filter ArrayObjects    
+        // Filter ArrayObjects
         if (is_a($Block1, "ArrayObject")) {
             $Block1 = $Block1->getArrayCopy();
-        } 
+        }
         if (is_a($Block2, "ArrayObject")) {
             $Block2 = $Block2->getArrayCopy();
-        } 
+        }
         
         //====================================================================//
         // Remove Id Data if Present on Block
@@ -1160,11 +1170,11 @@ class ObjectsCase extends BaseCase {
         $this->Normalize($Block1);
         $this->Normalize($Block2);
         //====================================================================//
-        // If Test Controller Given     
+        // If Test Controller Given
         if ($TestController) {
-            $TestController->assertEquals($Block1,$Block2,$Comment);
-            return True;
-        } 
+            $TestController->assertEquals($Block1, $Block2, $Comment);
+            return true;
+        }
             
         //====================================================================//
         // If NO Test Controller Given => Do Raw Array Compare
@@ -1179,19 +1189,19 @@ class ObjectsCase extends BaseCase {
         $Serialized2 = serialize($Block2);
         
         return ($Serialized1 === $Serialized2);
-    }      
+    }
     
     /**
-     * @abstract    Check Two Object Data Blocks using Field's Compare functions 
-     * 
+     * @abstract    Check Two Object Data Blocks using Field's Compare functions
+     *
      * @param   array   $Fields             Array of OpenObject Fields Definitions
      * @param   array   $Block1             Raw Data to Compare
      * @param   array   $Block2             Raw Data to Compare
      * @param   string  $Comment            Comment on this Test
-     * 
-     * @return bool 
+     *
+     * @return bool
      */
-    public function compareDataBlocks($Fields, $Block1, $Block2, $Comment = Null)
+    public function compareDataBlocks($Fields, $Block1, $Block2, $Comment = null)
     {
 
         //====================================================================//
@@ -1200,52 +1210,51 @@ class ObjectsCase extends BaseCase {
 
             //====================================================================//
             // Extract Field Data
-            $Data1        =  $this->filterData($Block1, array($Field->id));    
-            $Data2        =  $this->filterData($Block2, array($Field->id));   
+            $Data1        =  $this->filterData($Block1, array($Field->id));
+            $Data2        =  $this->filterData($Block2, array($Field->id));
 
-//dump($Data1);            
-//dump($Data2);            
+            //dump($Data1);
+            //dump($Data2);
             //====================================================================//
             // Compare List Data
             $FieldType      =  self::isListField($Field->type);
             if ($FieldType) {
                 $Result = $this->compareListField($FieldType["fieldname"], $Field->id, $Data1, $Data2, $Comment . "->" . $Field->id);
-            }    
+            }
             //====================================================================//
-            // Compare Single Fields                   
+            // Compare Single Fields
             else {
                 $Result = $this->compareField($Field->type, $Data1[$Field->id], $Data2[$Field->id], $Comment . "->" . $Field->id);
             }
                 
             //====================================================================//
-            // If Compare Failled => Return Fail Code                   
-            if( $Result !== True ){
+            // If Compare Failled => Return Fail Code
+            if ($Result !== true) {
                 return $Result;
-            } 
-            
+            }
         }
         
-        return True;
-    }  
+        return true;
+    }
     
     /**
-     * @abstract    Check Two Object Data Blocks using Field's Compare functions 
-     * 
+     * @abstract    Check Two Object Data Blocks using Field's Compare functions
+     *
      * @param   string  $FieldType          Field Type Name
      * @param   array   $Block1             Raw Data to Compare
      * @param   array   $Block2             Raw Data to Compare
      * @param   string  $Comment            Comment on this Test
-     * 
-     * @return string   error / success translator string for debugger 
+     *
+     * @return string   error / success translator string for debugger
      */
-    private function compareField($FieldType, $Block1, $Block2, $Comment = Null)
+    private function compareField($FieldType, $Block1, $Block2, $Comment = null)
     {
-//dump($FieldType);        
-//dump($Block1);        
+        //dump($FieldType);
+        //dump($Block1);
         
         //====================================================================//
         // Build Full ClassName
-        if ( ObjectId::decodeIdField($FieldType) ) {
+        if (ObjectId::decodeIdField($FieldType)) {
             $ClassName      = self::isValidType("objectid");
         } else {
             $ClassName      = self::isValidType($FieldType);
@@ -1253,43 +1262,47 @@ class ObjectsCase extends BaseCase {
         
         //====================================================================//
         // Verify Class has its own Validate & Compare Function*
-        $this->assertTrue( method_exists( $ClassName , "validate" ) , "Field of type " . $FieldType . " has no Validate Function.");
-        $this->assertTrue( method_exists( $ClassName , "compare" )  , "Field of type " . $FieldType . " has no Compare Function.");
+        $this->assertTrue(method_exists($ClassName, "validate"), "Field of type " . $FieldType . " has no Validate Function.");
+        $this->assertTrue(method_exists($ClassName, "compare"), "Field of type " . $FieldType . " has no Compare Function.");
         
         //====================================================================//
         // Validate Data Using Field Type Validator
         $this->assertTrue(
-                $ClassName::validate($Block1), 
-                $Comment . " Source Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block1,1) . ")");
+                $ClassName::validate($Block1),
+                $Comment . " Source Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block1, 1) . ")"
+        );
         $this->assertTrue(
-                $ClassName::validate($Block2), 
-                $Comment . " Target Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block2,1) . ")");
+                $ClassName::validate($Block2),
+                $Comment . " Target Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block2, 1) . ")"
+        );
             
         //====================================================================//
         // Compare Data Using Field Type Comparator
-        if ( !$ClassName::compare($Block1,$Block2, $this->settings) ) {
-            echo PHP_EOL . "Source :" . print_r($Block1, True);
-            echo PHP_EOL . "Target :" . print_r($Block2, True);
-        } 
+        if (!$ClassName::compare($Block1, $Block2, $this->settings)) {
+            echo PHP_EOL . "Source :" . print_r($Block1, true);
+            echo PHP_EOL . "Target :" . print_r($Block2, true);
+        }
         $this->assertTrue(
-                $ClassName::compare($Block1,$Block2, $this->settings), 
-                $Comment . " Source and Target Data are not similar " . $FieldType . " Field Data Block");
+                $ClassName::compare($Block1, $Block2, $this->settings),
+                $Comment . " Source and Target Data are not similar " . $FieldType . " Field Data Block"
+ 
+        );
 
-        return True;        
+        return true;
     }
     
     /**
-     * @abstract    Check Two List Data Blocks using Field's Compare functions 
-     * 
+     * @abstract    Check Two List Data Blocks using Field's Compare functions
+     *
      * @param   string  $FieldType          Field Type Name
      * @param   string  $FieldId            Field Identifier
      * @param   array   $Block1             Raw Data to Compare
      * @param   array   $Block2             Raw Data to Compare
      * @param   string  $Comment            Comment on this Test
-     * 
-     * @return string   error / success translator string for debugger 
+     *
+     * @return string   error / success translator string for debugger
      */
-    private function compareListField($FieldType, $FieldId, $Block1, $Block2, $Comment = Null)
+    private function compareListField($FieldType, $FieldId, $Block1, $Block2, $Comment = null)
     {
         //====================================================================//
         // Explode List Field Id
@@ -1299,69 +1312,80 @@ class ObjectsCase extends BaseCase {
         $ListName   = $FieldIdArray["listname"];
 
         //====================================================================//
-        // Extract List Data 
+        // Extract List Data
         $List1 = $Block1[$ListName];
         $List2 = $Block2[$ListName];
         
         //====================================================================//
-        // Verify Data Count is similar 
+        // Verify Data Count is similar
         $this->assertEquals(
-                count($List1), 
-                count($List2), 
-                "Source and Target List Data have diffrent number of Items");
+                count($List1),
+                count($List2),
+                "Source and Target List Data have diffrent number of Items"
+ 
+        );
 
         //====================================================================//
         // Normalize Data Blocks
         $this->Normalize($List1);
         $this->Normalize($List2);
-        while ( !empty ($List1) )
-        {
+        while (!empty($List1)) {
             //====================================================================//
             // Extract Next Item
-            $Item1  =   array_shift($List1); 
+            $Item1  =   array_shift($List1);
             $Item2  =   array_shift($List2);
 
             //====================================================================//
-            // Verify List field is Available 
-            $this->assertArrayHasKey($FieldName, $Item1, 
-                    "Field " . $FieldType . " not found in Source List Data ");
-            $this->assertArrayHasKey($FieldName, $Item2, 
-                    "Field " . $FieldType . " not found in Target List Data ");
+            // Verify List field is Available
+            $this->assertArrayHasKey(
+ 
+                $FieldName,
+ 
+                $Item1,
+                    "Field " . $FieldType . " not found in Source List Data "
+ 
+            );
+            $this->assertArrayHasKey(
+                $FieldName,
+                $Item2,
+                    "Field " . $FieldType . " not found in Target List Data "
+            );
             
             //====================================================================//
             // Compare Items
             $Result = $this->compareField($FieldType, $Item1[$FieldName], $Item2[$FieldName], $Comment);
-            if ( $Result !== True ) {
+            if ($Result !== true) {
                 return $Result;
             }
-        }   
+        }
         
-        return True;
+        return true;
     }
     
     //==============================================================================
-    //      OBJECTS DELETE AT THE END OF TESTS 
-    //==============================================================================   
+    //      OBJECTS DELETE AT THE END OF TESTS
+    //==============================================================================
     
-    protected function AddTestedObject($ObjectType, $ObjectId = Null) {
+    protected function AddTestedObject($ObjectType, $ObjectId = null)
+    {
         $this->CreatedObjects[] =   array(
             "ObjectType"    =>  $ObjectType,
             "ObjectId"      =>  $ObjectId,
         );
     }
     
-    protected function CleanTestedObjects() {
-        
+    protected function CleanTestedObjects()
+    {
         foreach ($this->CreatedObjects as $Object) {
-            if ( empty($Object["ObjectId"])) {
+            if (empty($Object["ObjectId"])) {
                 continue;
             }
             //====================================================================//
             //   Verify Delete is Allowed
             $Definition = Splash::Object($Object["ObjectType"])->Description();
-            if ( $Definition["allow_push_deleted"] ) {
+            if ($Definition["allow_push_deleted"]) {
                 continue;
-            }   
+            }
             Splash::Object($Object["ObjectType"])->Delete($Object["ObjectId"]);
         }
     }
