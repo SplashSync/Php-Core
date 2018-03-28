@@ -8,61 +8,60 @@ namespace Splash\Tests\Tools\Fields;
 class oophone extends oovarchar
 {
     //==============================================================================
-    //      Structural Data  
+    //      Structural Data
     //==============================================================================
 
-    protected   $FORMAT         =   'Phone';
-    static      $IS_SCALAR      =   True;
+    protected $FORMAT         =   'Phone';
+    public static $IS_SCALAR      =   true;
     
     
     //==============================================================================
-    //      DATA VALIDATION  
-    //==============================================================================   
+    //      DATA VALIDATION
+    //==============================================================================
 
     /**
      * Verify given Raw Data is Valid
      *
      * @param   string $Data
-     * 
+     *
      * @return bool     True if OK, Error String if KO
      */
-    static public function validate($Data)
+    public static function validate($Data)
     {
         //==============================================================================
         //      Verify Data is not Empty
-        if ( empty($Data) ) {
-            return True;
+        if (empty($Data)) {
+            return true;
         }
 
         //==============================================================================
         //      Verify Data is a String
-        if ( !is_string($Data) ) {
+        if (!is_string($Data)) {
             return "Phone Number Field Data is not a String.";
         }
         
         //==============================================================================
         //      Verify Data is a Phone Number
-        if ( preg_match('/^[+0-9. ()-]*$/', $Data) ) {
-            return True;
+        if (preg_match('/^[+0-9. ()-]*$/', $Data)) {
+            return true;
         }
 
         return "Field Data is not a Phone Number.";
-    }   
+    }
     
     //==============================================================================
-    //      FAKE DATA GENERATOR  
-    //==============================================================================   
+    //      FAKE DATA GENERATOR
+    //==============================================================================
 
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
      * @param      array   $Settings   User Defined Faker Settings
-     * 
-     * @return string   
+     *
+     * @return string
      */
-    static public function fake($Settings)
+    public static function fake($Settings)
     {
-        return preg_replace('/^[+0-9. ()-]*$/', '', mt_rand(12345678,123456789));
-    }        
-    
+        return preg_replace('/^[+0-9. ()-]*$/', '', mt_rand(12345678, 123456789));
+    }
 }

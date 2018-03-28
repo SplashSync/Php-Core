@@ -11,28 +11,29 @@ class oourl extends oovarchar
 {
 
     //==============================================================================
-    //      Structural Data  
+    //      Structural Data
     //==============================================================================
 
-    protected   $FORMAT         =   'Url';
-    static      $IS_SCALAR      =   True;
+    protected $FORMAT         =   'Url';
+    public static $IS_SCALAR      =   true;
 
     //==============================================================================
-    //      DATA VALIDATION  
-    //==============================================================================   
+    //      DATA VALIDATION
+    //==============================================================================
 
     /**
      * Verify given Raw Data is Valid
      *
      * @param   string $Data
-     * 
+     *
      * @return bool     True if OK, Error String if KO
      */
-    static public function validate($Data) {
+    public static function validate($Data)
+    {
         //==============================================================================
         //      Verify Data is not Empty
         if (empty($Data)) {
-            return True;
+            return true;
         }
 
         //==============================================================================
@@ -47,26 +48,26 @@ class oourl extends oovarchar
 //            return "Field Data is not a Valid Url";
 //        }
 
-        return True;
+        return true;
     }
 
     //==============================================================================
-    //      FAKE DATA GENERATOR  
-    //==============================================================================   
+    //      FAKE DATA GENERATOR
+    //==============================================================================
 
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
      * @param      array   $Settings   User Defined Faker Settings
-     * 
-     * @return string  
+     *
+     * @return string
      */
-    static public function fake($Settings) {
+    public static function fake($Settings)
+    {
         $Domain =   preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode(mt_rand(100, 1000))));
-        $Prefix =   !empty ($Settings["Url_Prefix"]) ? $Settings["Url_Prefix"] : Null;
-        $Sufix  =   !empty ($Settings["Url_Sufix"])   ? $Settings["Url_Sufix"] : ".splashsync.com";
+        $Prefix =   !empty($Settings["Url_Prefix"]) ? $Settings["Url_Prefix"] : null;
+        $Sufix  =   !empty($Settings["Url_Sufix"])   ? $Settings["Url_Sufix"] : ".splashsync.com";
         
         return $Prefix . $Domain . $Sufix;
     }
-
 }

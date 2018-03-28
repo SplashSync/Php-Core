@@ -8,11 +8,11 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  *  @author    Splash Sync <www.splashsync.com>
  *  @copyright 2015-2017 Splash Sync
  *  @license   GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
- * 
+ *
  **/
 
 namespace   Splash\Models\Objects;
@@ -27,13 +27,13 @@ trait ImagesTrait
     /**
      * @var Static Class Storage
      */
-    private static    $ImagesHelper;
+    private static $ImagesHelper;
     
     /**
      *      @abstract   Get a singleton List Helper Class
-     * 
+     *
      *      @return     ImagesHelper
-     */    
+     */
     public static function Images()
     {
         // Helper Class Exists
@@ -41,10 +41,10 @@ trait ImagesTrait
             return self::$ImagesHelper;
         }
         // Initialize Class
-        self::$ImagesHelper        = new ImagesHelper();  
+        self::$ImagesHelper        = new ImagesHelper();
         // Return Helper Class
         return self::$ImagesHelper;
-    }  
+    }
 }
 
 /**
@@ -52,43 +52,43 @@ trait ImagesTrait
  */
 class ImagesHelper
 {
-//====================================================================//
-//  IMAGE FIELDS MANAGEMENT
-//====================================================================//
+    //====================================================================//
+    //  IMAGE FIELDS MANAGEMENT
+    //====================================================================//
     
     /**
-     *  @abstract   Build a new image field array 
-     * 
+     *  @abstract   Build a new image field array
+     *
      *  @param      string      $Name           Image Name
      *  @param      string      $FileName       Image Filename with Extension
      *  @param      string      $Path           Image Full path on local system
      *  @param      string      $PublicUrl      Complete Public Url of this image if available
-     * 
+     *
      *  @return     array                       Splash Image Array or False
-     */    
-    public static function Encode($Name, $FileName, $Path, $PublicUrl = Null)
+     */
+    public static function Encode($Name, $FileName, $Path, $PublicUrl = null)
     {
         //====================================================================//
         // Safety Checks - Validate Inputs
-        if ( !is_string($Name) || empty($Name) ) {
-            return Splash::Log()->Err("ErrImgNoName",__FUNCTION__);
+        if (!is_string($Name) || empty($Name)) {
+            return Splash::Log()->Err("ErrImgNoName", __FUNCTION__);
         }
-        if ( !is_string($FileName) || empty($FileName) ) {
-            return Splash::Log()->Err("ErrImgNoFileName",__FUNCTION__);
+        if (!is_string($FileName) || empty($FileName)) {
+            return Splash::Log()->Err("ErrImgNoFileName", __FUNCTION__);
         }
-        if ( !is_string($Path) || empty($Path) ) {
-            return Splash::Log()->Err("ErrImgNoPath",__FUNCTION__);
+        if (!is_string($Path) || empty($Path)) {
+            return Splash::Log()->Err("ErrImgNoPath", __FUNCTION__);
         }
 
         $FullPath = $Path . $FileName;
         //====================================================================//
         // Safety Checks - Validate Image
-        if ( !file_exists($FullPath)  ) {
-            return Splash::Log()->Err("ErrImgNoPath",__FUNCTION__,$FullPath);
+        if (!file_exists($FullPath)) {
+            return Splash::Log()->Err("ErrImgNoPath", __FUNCTION__, $FullPath);
         }
         $ImageDims  = getimagesize($FullPath);
-        if ( empty($ImageDims) ) {
-            return Splash::Log()->Err("ErrImgNotAnImage",__FUNCTION__,$FullPath);
+        if (empty($ImageDims)) {
+            return Splash::Log()->Err("ErrImgNotAnImage", __FUNCTION__, $FullPath);
         }
         
         //====================================================================//
@@ -115,10 +115,8 @@ class ImagesHelper
         $Image["width"]         = $ImageDims[0];
         $Image["height"]        = $ImageDims[1];
         $Image["md5"]           = md5_file($FullPath);
-        $Image["size"]          = filesize($FullPath);        
+        $Image["size"]          = filesize($FullPath);
         
         return $Image;
-    }       
+    }
 }
-
-?>

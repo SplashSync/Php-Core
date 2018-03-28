@@ -10,11 +10,10 @@ use Splash\Core\SplashCore     as Splash;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class C02SplashCoreTest extends TestCase {
-    
+class C02SplashCoreTest extends TestCase
+{
     public function testDummy()
     {
-        $this->assertTrue(True);
+        $this->assertTrue(true);
     }
-
 }

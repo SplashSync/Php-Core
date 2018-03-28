@@ -3,6 +3,7 @@ namespace Splash\Tests\WsObjects;
 
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Client\Splash;
+
 //use ArrayObject;
 
 /**
@@ -10,7 +11,8 @@ use Splash\Client\Splash;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class O00ObjectBaseTest extends ObjectsCase {
+class O00ObjectBaseTest extends ObjectsCase
+{
     
     /**
      * @dataProvider ObjectTypesProvider
@@ -18,7 +20,7 @@ class O00ObjectBaseTest extends ObjectsCase {
     public function testLockFeature($Sequence, $ObjectType)
     {
         //====================================================================//
-        //   FOR NEW OBJECTS  
+        //   FOR NEW OBJECTS
         //====================================================================//
         Splash::Object($ObjectType)->Unlock();
         $this->assertFalse(Splash::Object($ObjectType)->isLocked());
@@ -28,12 +30,12 @@ class O00ObjectBaseTest extends ObjectsCase {
         $this->assertFalse(Splash::Object($ObjectType)->isLocked());
         
         //====================================================================//
-        //   FOR EXISTING OBJECTS  
+        //   FOR EXISTING OBJECTS
         //====================================================================//
 
         //====================================================================//
         //  Integer IDs
-        $IntObjectID = rand(1E3,1E4);
+        $IntObjectID = rand(1E3, 1E4);
         Splash::Object($ObjectType)->Unlock($IntObjectID);
         $this->assertFalse(Splash::Object($ObjectType)->isLocked($IntObjectID));
         Splash::Object($ObjectType)->Lock($IntObjectID);
@@ -43,7 +45,7 @@ class O00ObjectBaseTest extends ObjectsCase {
         
         //====================================================================//
         //  Integer IDs
-        $StrObjectID = base64_encode(rand(1E3,1E4));
+        $StrObjectID = base64_encode(rand(1E3, 1E4));
         Splash::Object($ObjectType)->Unlock($StrObjectID);
         $this->assertFalse(Splash::Object($ObjectType)->isLocked($StrObjectID));
         Splash::Object($ObjectType)->Lock($StrObjectID);
@@ -51,5 +53,4 @@ class O00ObjectBaseTest extends ObjectsCase {
         Splash::Object($ObjectType)->Unlock($StrObjectID);
         $this->assertFalse(Splash::Object($ObjectType)->isLocked($StrObjectID));
     }
-    
 }

@@ -10,12 +10,12 @@ use Splash\Client\Splash;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A05SelfTestsTest extends BaseCase {
-    
+class A05SelfTestsTest extends BaseCase
+{
     public function testFromLocalClass()
     {
         //====================================================================//
-        //   Execute Action From Module  
+        //   Execute Action From Module
         $Data = Splash::Local()->SelfTest();
         
         //====================================================================//
@@ -28,27 +28,25 @@ class A05SelfTestsTest extends BaseCase {
     {
         
         //====================================================================//
-        //   Execute Action From Splash Server to Module  
+        //   Execute Action From Splash Server to Module
         $Data = $this->GenericAction(SPL_S_ADMIN, SPL_F_GET_SELFTEST, __METHOD__);
         
         //====================================================================//
         //   Verify Response
         $this->VerifyResponse($Data);
-        
     }
     
     public function VerifyResponse($Data)
     {
         //====================================================================//
         //   Render Logs if Fails*
-        if ( !$Data) {
-            fwrite(STDOUT, Splash::Log()->GetConsoleLog() );
-        } 
+        if (!$Data) {
+            fwrite(STDOUT, Splash::Log()->GetConsoleLog());
+        }
         
         //====================================================================//
         //   Verify Response
-        $this->assertIsSplashBool(  $Data       , "SelfTest");
-        $this->assertNotEmpty(      $Data       , "SelfTest not Passed!! Check logs to see why!");
+        $this->assertIsSplashBool($Data, "SelfTest");
+        $this->assertNotEmpty($Data, "SelfTest not Passed!! Check logs to see why!");
     }
-    
 }
