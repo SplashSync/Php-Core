@@ -61,11 +61,24 @@ class ooemail extends oovarchar
      */
     static public function fake($Settings)
     {
-        $name   = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand()));
-        $domain = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(100,1000)));
-//        $ext    = preg_replace('/[^A-Za-z\-]/', '', str_pad( base64_encode(mt_rand(100,1000)) , 3) );
-        $ext    = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(10,100)));
-        return $name . "@" . $domain . "." . $ext;        
+        $Name   = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand()));        
+        //==============================================================================
+        //      Apply Domain Constraint  
+        if ( isset($Settings["emailDomain"]) && is_string($Settings["emailDomain"]) ) {
+            $Domain     = $Settings["emailDomain"];
+        } else {
+            $Domain     = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(100,1000)));
+        }
+        
+        //==============================================================================
+        //      Apply Extension Constraint  
+        if ( isset($Settings["emailExtension"]) && is_string($Settings["emailExtension"]) ) {
+            $Extension  = $Settings["emailExtension"];
+        } else {
+            $Extension  = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(10,100)));
+        }
+                
+        return $Name . "@" . $Domain . "." . $Extension;        
     }    
      
     //==============================================================================
