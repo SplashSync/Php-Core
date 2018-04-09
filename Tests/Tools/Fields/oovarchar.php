@@ -66,6 +66,15 @@ class oovarchar
         if ( isset($Settings["maxLength"]) && is_numeric($Settings["maxLength"]) ) {
             $Data   =   substr($Data, 0, $Settings["maxLength"]);
         }
+
+        //==============================================================================
+        //      Apply Case Constraint  
+        if ( isset($Settings["isLowerCase"]) && !empty($Settings["isLowerCase"]) ) {
+            $Data   = strtolower($Data);
+        }
+        if ( isset($Settings["isUpperCase"]) && !empty($Settings["isUpperCase"]) ) {
+            $Data   = strtoupper($Data);
+        }
         
         return $Data;
     }
