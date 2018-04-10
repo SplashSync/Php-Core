@@ -6,10 +6,8 @@ php:
     - 7.0
     - 7.1
     
-install:
-    - composer update
-
 script:
+    - composer update
     - php ./vendor/bin/grumphp run
         
 notifications:
