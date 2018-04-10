@@ -1,0 +1,36 @@
+parameters:
+    git_dir: .
+    bin_dir:        vendor/bin
+    ascii:
+        failed:     grumphp-grumpy.txt
+        succeeded:  grumphp-happy.txt
+    tasks:
+        composer:
+            file:           "./composer.json"
+        phplint:
+            exclude:        ['vendor']
+            triggered_by:   ['php']
+#        phpcs:
+#            standard:       "Build/phpcs.xml"
+#            triggered_by:   [php]
+#            warning_severity: 5            
+        git_blacklist:
+            keywords:
+                - "var_dump"
+                - "dump("
+                - "console.log"
+                - "print_r"
+                - "die("
+            triggered_by: [php, js, twig]
+        jsonlint:
+            detect_key_conflicts: true
+#        phpmd:
+#            ruleset:        ["Build/phpmd.xml"]
+        securitychecker: ~
+#        phpcpd:
+##            directory: 'app/code/local/SplashSync/Splash/src'
+#            exclude: ['vendor']
+        xmllint: ~
+        yamllint: ~
+#        phpstan:
+#            configuration: phpstan.neon
