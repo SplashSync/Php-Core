@@ -32,38 +32,7 @@ class Oomtext
      */
     public static function validate($Data)
     {
-        //==============================================================================
-        //      Verify Data is Not Empty
-        if (is_null($Data) || $Data === "") {
-            return true;
-        }
-        
-        //==============================================================================
-        //      Verify Data is an Array
-        if (!is_array($Data) && !is_a($Data, "ArrayObject")) {
-            return "Field Data is not an Array.";
-        }
-
-        //==============================================================================
-        //      Verify each Ligne is a String
-        foreach ($Data as $Key => $Value) {
-            if (!self::validateIsMultilangData($Key, $Value)) {
-                return self::validateIsMultilangData($Key, $Value);
-            }
-        }
-        
-        return true;
-    }
-    
-    private static function validateIsMultilangData($Key, $Value)
-    {
-        if (empty($Key) || !is_string($Key)) {
-            return "Multi-Language Key must be a non empty String.";
-        }
-        if (!empty($Value) && !is_string($Value) && !is_numeric($Value)) {
-            return "Multi-Language Data is not a String.";
-        }
-        return true;
+        return Oomvarchar::validate($Data);
     }
     
     //==============================================================================

@@ -35,12 +35,15 @@ parameters:
         phpmd:
             ruleset:        ["./Build/phpmd.xml"]
             exclude:        
-                - nusoap.php
+                - "nusoap.php"
+                - "vendor"
 #        securitychecker: ~
-#        phpcpd: ~
+        phpcpd: 
 #        phpcpd:
 ##            directory: 'app/code/local/SplashSync/Splash/src'
-#            exclude: ['vendor']
+            exclude:        
+                - "Components/NuSOAP"
+                - "vendor"               
         xmllint: ~
         yamllint: ~
 #        phpstan:

@@ -169,77 +169,7 @@ class ObjectsCase extends AbstractBaseCase
      */
     public function assertIsLastCommited($Action, $ObjectType, $ObjectId)
     {
-        //====================================================================//
-        //   Verify Object Change Was Commited
-        $this->assertNotEmpty(
-            Splash::$Commited,
-            "No Object Change Commited by your Module. Please check your triggers."
-        );
-        
-        //====================================================================//
-        //   Get Last Commited
-        $LastCommit = array_pop(Splash::$Commited);
-        
-        //====================================================================//
-        //   Check Object Type is OK
-        $this->assertEquals(
-            $LastCommit->type,
-            $ObjectType,
-            "Change Commit => Object Type is wrong. (Expected " . $ObjectType . " / Given " . $LastCommit->type
-        );
-        
-        //====================================================================//
-        //   Check Object Action is OK
-        $this->assertEquals(
-            $LastCommit->action,
-            $Action,
-            "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action
-        );
-        
-        //====================================================================//
-        //   Check Object Id value Format
-        $this->assertTrue(
-            is_scalar($LastCommit->id) || is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject"),
-            "Change Commit => Object Id Value is in wrong Format. "
-                . "(Expected String or Array of Strings. / Given " . print_r($LastCommit->id, true)
-        );
-        
-        //====================================================================//
-        //   If Commited an Array of Ids
-        if (is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject")) {
-            //====================================================================//
-            //   Check each Object Ids
-            foreach ($LastCommit->id as $Id) {
-                $this->assertTrue(
-                    is_scalar($Id),
-                    "Change Commit => Object Id Array Value is in wrong Format. "
-                        . "(Expected String or Integer. / Given " . print_r($Id, true)
-                );
-            }
-            //====================================================================//
-            //   Extract First Object Id
-            $FirstId = array_shift($LastCommit->id);
-            //====================================================================//
-            //   Verify First Object Id is OK
-            $this->assertEquals(
-                $FirstId,
-                $ObjectId,
-                "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $FirstId
-            );
-        } else {
-            //====================================================================//
-            //   Check Object Id is OK
-            $this->assertEquals(
-                $LastCommit->id,
-                $ObjectId,
-                "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id
-            );
-        }
-        
-        //====================================================================//
-        //   Check Infos are Not Empty
-        $this->assertNotEmpty($LastCommit->user, "Change Commit => User Name is Empty");
-        $this->assertNotEmpty($LastCommit->comment, "Change Commit => Action Comment is Empty");
+        $this->assertIsCommited($Action, $ObjectType, $ObjectId, false);
     }
 
     /**
@@ -251,6 +181,21 @@ class ObjectsCase extends AbstractBaseCase
      */
     public function assertIsFirstCommited($Action, $ObjectType, $ObjectId)
     {
+        $this->assertIsCommited($Action, $ObjectType, $ObjectId, true);
+    }
+    
+
+    /**
+     * @abstract        Verify First Commit is Valid and Conform to Expected
+     *
+     * @param string    $Action         Expected Action
+     * @param string    $ObjectType     Expected Object Type
+     * @param string    $ObjectId       Expected Object Id
+     * @param bool      $First          Check First or Last Commited
+     *
+     */
+    private function assertIsCommited($Action, $ObjectType, $ObjectId, $First = true)
+    {
         //====================================================================//
         //   Verify Object Change Was Commited
         $this->assertNotEmpty(
@@ -259,41 +204,41 @@ class ObjectsCase extends AbstractBaseCase
         );
         
         //====================================================================//
-        //   Get Last Commited
-        $LastCommit = array_shift(Splash::$Commited);
+        //   Get First / Last Commited
+        $Commited = $First ? array_shift(Splash::$Commited) : array_pop(Splash::$Commited);
         
         //====================================================================//
         //   Check Object Type is OK
         $this->assertEquals(
-            $LastCommit->type,
+            $Commited->type,
             $ObjectType,
             "Change Commit => Object Type is wrong. "
-                . "(Expected " . $ObjectType . " / Given " . $LastCommit->type
+                . "(Expected " . $ObjectType . " / Given " . $Commited->type
         );
         
         //====================================================================//
         //   Check Object Action is OK
         $this->assertEquals(
-            $LastCommit->action,
+            $Commited->action,
             $Action,
-            "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $LastCommit->action
+            "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $Commited->action
         );
         
         //====================================================================//
         //   Check Object Id value Format
         $this->assertTrue(
-            is_scalar($LastCommit->id) || is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject"),
+            is_scalar($Commited->id) || is_array($Commited->id) || is_a($Commited->id, "ArrayObject"),
             "Change Commit => Object Id Value is in wrong Format. "
                 . "(Expected String or Array of Strings. / Given "
-                . print_r($LastCommit->id, true)
+                . print_r($Commited->id, true)
         );
         
         //====================================================================//
         //   If Commited an Array of Ids
-        if (is_array($LastCommit->id) || is_a($LastCommit->id, "ArrayObject")) {
+        if (is_array($Commited->id) || is_a($Commited->id, "ArrayObject")) {
             //====================================================================//
             //   Check each Object Ids
-            foreach ($LastCommit->id as $Id) {
+            foreach ($Commited->id as $Id) {
                 $this->assertTrue(
                     is_scalar($Id),
                     "Change Commit => Object Id Array Value is in wrong Format. "
@@ -303,7 +248,7 @@ class ObjectsCase extends AbstractBaseCase
             }
             //====================================================================//
             //   Extract First Object Id
-            $FirstId = array_shift($LastCommit->id);
+            $FirstId = array_shift($Commited->id);
             //====================================================================//
             //   Verify First Object Id is OK
             $this->assertEquals(
@@ -315,16 +260,16 @@ class ObjectsCase extends AbstractBaseCase
             //====================================================================//
             //   Check Object Id is OK
             $this->assertEquals(
-                $LastCommit->id,
+                $Commited->id,
                 $ObjectId,
-                "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $LastCommit->id
+                "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $Commited->id
             );
         }
         
         //====================================================================//
         //   Check Infos are Not Empty
-        $this->assertNotEmpty($LastCommit->user, "Change Commit => User Name is Empty");
-        $this->assertNotEmpty($LastCommit->comment, "Change Commit => Action Comment is Empty");
+        $this->assertNotEmpty($Commited->user, "Change Commit => User Name is Empty");
+        $this->assertNotEmpty($Commited->comment, "Change Commit => Action Comment is Empty");
     }
     
     /**

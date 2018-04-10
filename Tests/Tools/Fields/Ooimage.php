@@ -161,39 +161,6 @@ class Ooimage
      */
     public static function compare($Source, $Target)
     {
-        //====================================================================//
-        // Smart Validate Arrays
-        if (!is_array($Source) && !is_a($Source, "ArrayObject")) {
-            return false;
-        }
-        if (!is_array($Target) && !is_a($Target, "ArrayObject")) {
-            return false;
-        }
-        //====================================================================//
-        // Compare File CheckSum
-        if (!self::compareMd5($Source, $Target)) {
-            return self::compareMd5($Source, $Target);
-        }
-        //====================================================================//
-        // Compare File Size
-        if ($Source["size"] != $Target["size"]) {
-            return false;
-        }
-        return true;
-    }
-    
-    private static function compareMd5($Source, $Target)
-    {
-        //====================================================================//
-        // Compare File CheckSum
-        if (!array_key_exists("md5", $Source) || !array_key_exists("md5", $Target)
-            || !array_key_exists("size", $Source) || !array_key_exists("size", $Target)
-            ) {
-            return false;
-        }
-        if ($Source["md5"] != $Target["md5"]) {
-            return false;
-        }
-        return true;
+        return Oofile::compare($Source, $Target);
     }
 }
