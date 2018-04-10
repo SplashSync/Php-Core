@@ -27,26 +27,26 @@ use ArrayObject;
 //  CLASS DEFINITION
 //====================================================================//
 
-class XmlManager 
+class XmlManager
 {
 
     /**
      *      @abstract   XMLWritter Class
      *      @var        XMLWritter
      *      @static
-     */    
+     */
     private static $xml;
     
     /*
      *  Fault String
      */
-    public $fault_str;     
+    public $fault_str;
 
     /**
      *      @abstract      Class Constructor
-     *      @return     int         	<0 if KO, >0 if OK
+     *      @return     int             <0 if KO, >0 if OK
      */
-    function __construct()
+    public function __construct()
     {
         //====================================================================//
         // Initialize XML Parser
@@ -55,26 +55,27 @@ class XmlManager
         self::$xml->startDocument('1.0');
         self::$xml->setIndent(true);
         
-        return True;
-    }   
+        return true;
+    }
 
-//====================================================================//
-//  XML Parser High Level User Functions
-//====================================================================//
+    //====================================================================//
+    //  XML Parser High Level User Functions
+    //====================================================================//
 
-     /**
-     * @abstract     Method to convert Object into XML string
-     * @param        array      $obj
-     * @return       array      $result
-     */
-    public function ObjectToXml($obj) {
+    /**
+    * @abstract     Method to convert Object into XML string
+    * @param        array      $obj
+    * @return       array      $result
+    */
+    public function objectToXml($obj)
+    {
         //====================================================================//
         // Create Transmition Object
         $tmp = new stdClass();
-        $tmp->SPLASH    =   $obj;        
+        $tmp->SPLASH    =   $obj;
         //====================================================================//
         // Convert Object to XML Recursively
-        $this->ObjectToXmlCore(self::$xml, $tmp);
+        $this->objectToXmlCore(self::$xml, $tmp);
         //====================================================================//
         // Put End Element on Xml
         self::$xml->endElement();
@@ -88,10 +89,11 @@ class XmlManager
      * @param        xml        $Xml
      * @return       array      $result
      */
-    protected function xmlToArray($Xml) {
+    protected function xmlToArray($Xml)
+    {
         //====================================================================//
         // SimpleXMLElement Object to Array
-        return self::SimpleXmlToArray($this->XmlToElements($Xml));
+        return self::simpleXmlToArray($this->xmlToElements($Xml));
     }
     
     /**
@@ -99,129 +101,132 @@ class XmlManager
      * @param        xml        $Xml
      * @return       array      $result
      */
-    public function xmlToArrayObject($Xml) {
+    public function xmlToArrayObject($Xml)
+    {
         //====================================================================//
         // SimpleXMLElement Object to Array
-        return  self::SimpleXmlToArrayObject($this->XmlToElements($Xml));
+        return  self::simpleXmlToArrayObject($this->xmlToElements($Xml));
     }
 
-//====================================================================//
-//  XML Parser Low Level Core Functions
-//====================================================================//
+    //====================================================================//
+    //  XML Parser Low Level Core Functions
+    //====================================================================//
     
     /**
      * @abstract     Method to convert XML string into SimpleXmlElement Object
      * @param        xml                    $Xml
      * @return       SimpleXMLElement       $result
      */
-    private function XmlToElements($Xml) {
+    private function xmlToElements($Xml)
+    {
         //====================================================================//
         // Convert XML to Object Recursively
         try {
-            $result = simplexml_load_string($Xml,"SimpleXMLElement", LIBXML_NOERROR);
+            $result = simplexml_load_string($Xml, "SimpleXMLElement", LIBXML_NOERROR);
         } catch (Exception $ex) {
             $this->fault_str = $ex->getMessage();
-            return Null;
-        }        
+            return null;
+        }
         return $result;
-    }    
+    }
     
-     /**
-     * @abstract     Recursive Method to Object  XML string 
-     * @param        XMLWriter  $xml
-     * @param        mixed      $Object
-     * @return       array      $result
-     */
-    private function ObjectToXmlCore(XMLWriter $xml, $Object) {
+    /**
+    * @abstract     Recursive Method to Object  XML string
+    * @param        XMLWriter  $xml
+    * @param        mixed      $Object
+    * @return       array      $result
+    */
+    private function objectToXmlCore(XMLWriter $xml, $Object)
+    {
         //====================================================================//
         // Read each entitie of an object
-        foreach($Object as $key => $value) {
+        foreach ($Object as $key => $value) {
             //====================================================================//
             // Insert Object
             //====================================================================//
-            if(is_object($value)) {
+            if (is_object($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
-                $key = self::KeysFilter($key, 'object-');
+                $key = self::keysFilter($key, 'object-');
                 //====================================================================//
                 // Recurcive Add Of This Object
                 $xml->startElement($key);
-                $this->ObjectToXmlCore($xml, $value);
+                $this->objectToXmlCore($xml, $value);
                 $xml->endElement();
                 continue;
-            }
-            //====================================================================//
+            } //====================================================================//
             // Insert Array
-            elseif(is_array($value)) {
+            elseif (is_array($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
-                $key = self::KeysFilter($key, 'array-');
+                $key = self::keysFilter($key, 'array-');
                 //====================================================================//
                 // Safety Check
-                if ( $xml->startElement($key) != TRUE ) {
-                    $this->logger->error("Xml Parser - Wrong StartElement Key : " . print_r($key,1) . " Value : " . print_r($value,1));    
+                if ($xml->startElement($key) != true) {
+                    $this->logger->error(
+                        "Xml Parser - Wrong StartElement Key : " . print_r($key, 1) . " Value : " . print_r($value, 1)
+                    );
                 }
                 //====================================================================//
                 // Recurcive Add Of This Array
-                $this->ObjectToXmlCore($xml, $value);
+                $this->objectToXmlCore($xml, $value);
                 $xml->endElement();
                 continue;
-            }
-            //====================================================================//
+            } //====================================================================//
             // Insert String
             //====================================================================//
             elseif (is_string($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
-                $key = self::KeysFilter($key, 'string-');
-            }
-            //====================================================================//
+                $key = self::keysFilter($key, 'string-');
+            } //====================================================================//
             // Insert Numeric
             elseif (is_numeric($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
-                $key = self::KeysFilter($key, 'int-');
-            }   
-            //====================================================================//
+                $key = self::keysFilter($key, 'int-');
+            } //====================================================================//
             // Insert Boolean
             elseif (is_bool($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
-                $key = self::KeysFilter($key, 'bool-');
+                $key = self::keysFilter($key, 'bool-');
                 //====================================================================//
                 // Convert Value To String
                 $value = $value?"1":"0";
-            }              
+            }
             //====================================================================//
             // Insert Data
-            $xml->writeElement($key, base64_encode($value));                
+            $xml->writeElement($key, base64_encode($value));
         }
     }
 
     /**
-     * @abstract     Filter XML Key to remove single numeric keys by adding a prefix  
+     * @abstract     Filter XML Key to remove single numeric keys by adding a prefix
      * @param        string     $key
      * @param        string     $prefix
      * @return       string     $result
      */
-    private static function KeysFilter($key, $prefix) {
+    private static function keysFilter($key, $prefix)
+    {
         //====================================================================//
         // Convert Numeric Keys with Prefix
-        if (is_numeric($key)) { 
+        if (is_numeric($key)) {
             return $prefix . $key;
         //====================================================================//
         // Keap Scalar Keys
-        } else {                
+        } else {
             return $key;
         }
-    }  
+    }
     
     /**
      * @abstract    Convert a SimpleXML object to an Array
      * @param       SimpleXMLElement    $Element
      * @return      array               $array
      */
-    private static function SimpleXmlToArray($Element) {
+    private static function simpleXmlToArray($Element)
+    {
         //====================================================================//
         // Init Result
         $Result = array();
@@ -234,44 +239,45 @@ class XmlManager
         foreach ($children as $elementName => $node) {
             //====================================================================//
             // This Element is an ArrayElement
-            $isArrayElement = true;  
+            $isArrayElement = true;
             //====================================================================//
             // If Element Doesn't Already Exists => Store as Single Element
-            if ( !isset($Result[$elementName]) ) {
+            if (!isset($Result[$elementName])) {
                 $Result[$elementName]    = array();
-                $Result[$elementName]    = self::SimpleXmlToArray($node);
+                $Result[$elementName]    = self::simpleXmlToArray($node);
                 continue;
-            }                
+            }
             //====================================================================//
             // Element Already Exists => Store as Array Element
             //====================================================================//
             // Convert Single Element to Array Element
-            if ( !is_array($Result[$elementName])) {
+            if (!is_array($Result[$elementName])) {
                 $SingleElement          =   $Result[$elementName];       // Store Firts Element
                 $Result[$elementName]    =   array();                    // Create New Array
-                $Result[$elementName][]  =   $SingleElement;             // Append To Array          
+                $Result[$elementName][]  =   $SingleElement;             // Append To Array
             }
             //====================================================================//
             // Append Array Element
-            $Result[$elementName][] = self::SimpleXmlToArray($node);
+            $Result[$elementName][] = self::simpleXmlToArray($node);
         }
         //====================================================================//
         // Return Single Element
         if (!$isArrayElement && $children->getName() == '') {
-            $Result =  base64_decode( (string) $Element);
+            $Result =  base64_decode((string) $Element);
         }
         return $Result;
-    }    
+    }
     
     /**
      * @abstract    Convert a SimpleXML object to an ArrayObject
      * @param       SimpleXMLElement    $Element
      * @return      array               $array
      */
-    private static function SimpleXmlToArrayObject($Element) {
+    private static function simpleXmlToArrayObject($Element)
+    {
         //====================================================================//
         // Init Result
-        $Result = new ArrayObject(array(),  ArrayObject::ARRAY_AS_PROPS);
+        $Result = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Get First Level Childrens
         $children = $Element->children();
@@ -281,34 +287,32 @@ class XmlManager
         foreach ($children as $elementName => $node) {
             //====================================================================//
             // This Element is an ArrayElement
-            $isArrayElement = true;  
+            $isArrayElement = true;
             //====================================================================//
             // If Element Doesn't Already Exists => Store as Single Element
-            if ( !isset($Result[$elementName]) ) {
+            if (!isset($Result[$elementName])) {
                 $Result[$elementName]    = array();
-                $Result[$elementName]    = self::SimpleXmlToArrayObject($node);
+                $Result[$elementName]    = self::simpleXmlToArrayObject($node);
                 continue;
-            }                
+            }
             //====================================================================//
             // Element Already Exists => Store as Array Element
             //====================================================================//
             // Convert Single Element to Array Element
-            if ( !is_array($Result[$elementName])) {
+            if (!is_array($Result[$elementName])) {
                 $SingleElement           =   $Result[$elementName];       // Store First Element
                 $Result[$elementName]    =   array();                    // Create New Array
-                $Result[$elementName][]  =   $SingleElement;             // Append To Array          
-            }            
+                $Result[$elementName][]  =   $SingleElement;             // Append To Array
+            }
             //====================================================================//
-            // Append Array Element     
-            $Result[$elementName][] = self::SimpleXmlToArrayObject($node);
+            // Append Array Element
+            $Result[$elementName][] = self::simpleXmlToArrayObject($node);
         }
         //====================================================================//
         // Return Single Element
         if (!$isArrayElement && $children->getName() == '') {
-            $Result =  base64_decode( (string) $Element);
+            $Result =  base64_decode((string) $Element);
         }
         return $Result;
-    }      
-    
+    }
 }
-?>

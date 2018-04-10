@@ -15,19 +15,23 @@
 namespace   Splash\Models\Widgets;
 
 /**
- * @abstract    Date Management for Splash Widgets.  
+ * @abstract    Date Management for Splash Widgets.
  * @author      B. Paquier <contact@splashsync.com>
  */
 trait DatesManagerTrait
 {
-
-    protected $DateStart, $DateEnd, $DateInterval, $GroupBy, $LabelFormat; 
+    protected $DateStart;
+    protected $DateEnd;
+    protected $DateInterval;
+    protected $GroupBy;
+    protected $LabelFormat;
     
-//====================================================================//
-//  DATES MANAGEMENT
-//====================================================================//
+    //====================================================================//
+    //  DATES MANAGEMENT
+    //====================================================================//
 
-    protected function importDates($params)   {
+    protected function importDates($params)
+    {
         
         //====================================================================//
         //  Import Dates Parameters
@@ -49,8 +53,7 @@ trait DatesManagerTrait
 
         //====================================================================//
         //  Generate Dates Formater String
-        switch($this->GroupBy) 
-        {
+        switch ($this->GroupBy) {
             case "m":
                 $this->LabelFormat  = "Y-m";
                 $this->DateInterval = new \DateInterval("P1M");
@@ -66,14 +69,14 @@ trait DatesManagerTrait
             default:
                 $this->LabelFormat  = "Y-m";
                 $this->DateInterval = new \DateInterval("P1M");
-                break;            
+                break;
         }
     }
     
-    protected function parseDatedData($In)   {
-        
+    protected function parseDatedData($In)
+    {
         $Out       = array();
-        if ( !isset($this->DateStart) || !isset($this->DateEnd) ) {
+        if (!isset($this->DateStart) || !isset($this->DateEnd)) {
             return $Out;
         }
         
@@ -81,7 +84,6 @@ trait DatesManagerTrait
         $End        = new \Datetime($this->DateEnd);
         
         while ($Current < $End) {
-            
             $Key = $Current->format($this->GroupBy);
 
             $Out[] = array(
@@ -94,7 +96,4 @@ trait DatesManagerTrait
 
         return $Out;
     }
- 
 }
-
-?>

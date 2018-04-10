@@ -8,11 +8,11 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  *  @author    Splash Sync <www.splashsync.com>
  *  @copyright 2015-2017 Splash Sync
  *  @license   GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
- * 
+ *
  **/
 
 namespace   Splash\Models\Objects;
@@ -28,15 +28,15 @@ trait FieldsFactoryTrait
     /**
      * @var Static Class Storage
      */
-    private static    $fields;
+    private static $fields;
     
     /**
      *      @abstract   Get a singleton FieldsFactory Class
      *                  Access to Object Fields Creation Functions
-     * 
+     *
      *      @return     Splash\Components\FieldsFactory
-     */    
-    public static function FieldsFactory()
+     */
+    public static function fieldsFactory()
     {
         //====================================================================//
         // Initialize Field Factory Class
@@ -46,15 +46,12 @@ trait FieldsFactoryTrait
         
         //====================================================================//
         // Initialize Class
-        self::$fields        = new FieldsFactory();  
+        self::$fields        = new FieldsFactory();
         
         //====================================================================//
         //  Load Translation File
-        Splash::Translator()->Load("objects");
+        Splash::translator()->load("objects");
         
         return self::$fields;
-    }   
-    
+    }
 }
-
-?>

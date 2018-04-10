@@ -10,10 +10,16 @@ parameters:
         phplint:
             exclude:        ['vendor']
             triggered_by:   ['php']
-#        phpcs:
+        phpcs:
+            standard:       "PSR2"
 #            standard:       "Build/phpcs.xml"
-#            triggered_by:   [php]
-#            warning_severity: 5            
+            triggered_by:   [php]
+#            warning_severity: 5  
+            ignore_patterns:
+                - nusoap.php
+                - BaseCase.php                
+                - TestCase.php
+#        phpcsfixer: ~s        
         git_blacklist:
             keywords:
                 - "var_dump"
@@ -24,9 +30,11 @@ parameters:
             triggered_by: [php, js, twig]
         jsonlint:
             detect_key_conflicts: true
+#        phpmd: ~ 
 #        phpmd:
 #            ruleset:        ["Build/phpmd.xml"]
 #        securitychecker: ~
+#        phpcpd: ~
 #        phpcpd:
 ##            directory: 'app/code/local/SplashSync/Splash/src'
 #            exclude: ['vendor']

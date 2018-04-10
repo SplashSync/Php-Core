@@ -13,7 +13,7 @@
  */
 
 /**
- * @abstract    This class is a base class for all Splash Widgets.  
+ * @abstract    This class is a base class for all Splash Widgets.
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -54,66 +54,66 @@ abstract class WidgetBase
     /**
      * @var Static Class Storage
      */
-    protected static    $fields;
+    protected static $fields;
     
     /**
      * @var Static Class Storage
      */
-    protected static    $blocks;
+    protected static $blocks;
     
     /**
      *  Widget Disable Flag. Override this flag to disable Widget.
      */
-    protected static    $DISABLED        =  False;
+    protected static $DISABLED        =  false;
     
     /**
      *  Widget Name
      */
-    protected static    $NAME            =  __CLASS__;
+    protected static $NAME            =  __CLASS__;
     
     /**
-     *  Widget Description 
+     *  Widget Description
      */
-    protected static    $DESCRIPTION     =  __CLASS__;
+    protected static $DESCRIPTION     =  __CLASS__;
 
     /**
-     *  Widget Icon (FontAwesome or Glyph ico tag) 
+     *  Widget Icon (FontAwesome or Glyph ico tag)
      */
-    protected static    $ICO     =  "fa fa-info";
+    protected static $ICO     =  "fa fa-info";
 
     //====================================================================//
     // Define Standard Options for this Widget
     // Override this array to change default options for your widget
-    static $OPTIONS       = array(
+    public static $OPTIONS       = array(
     );
 
     
     //====================================================================//
-    // General Class Variables	
+    // General Class Variables
     //====================================================================//
     
     
     /**
      * Get Operations Output Buffer
-     * 
+     *
      * @abstract This variable is used to store Widget Array during Get Operations
-     * 
+     *
      * @var ArrayObject
      */
-    private   $Out            = array();
+    private $Out            = array();
     
     
-//====================================================================//
-//  STATIC CLASS ACCESS
-//  Creation & Acces to all subclasses Instances
-//====================================================================//
+    //====================================================================//
+    //  STATIC CLASS ACCESS
+    //  Creation & Acces to all subclasses Instances
+    //====================================================================//
     
     /**
      *      @abstract   Get a singleton FieldsFactory Class
      *                  Acces to Object Fields Creation Functions
      *      @return     SplashFieldsFactory
-     */    
-    public static function FieldsFactory()
+     */
+    public static function fieldsFactory()
     {
         //====================================================================//
         // Initialize Field Factory Class
@@ -123,21 +123,21 @@ abstract class WidgetBase
         
         //====================================================================//
         // Initialize Class
-        self::$fields        = new FieldsFactory();  
+        self::$fields        = new FieldsFactory();
         
         //====================================================================//
         //  Load Translation File
-        Splash::Translator()->Load("objects");
+        Splash::translator()->load("objects");
         
         return self::$fields;
-    }   
+    }
     
     /**
      *      @abstract   Get a singleton BlocksFactory Class
      *                  Acces to Widgets Contents Blocks Functions
      *      @return     SplashBlocksFactory
-     */    
-    public static function BlocksFactory()
+     */
+    public static function blocksFactory()
     {
         //====================================================================//
         // Initialize Field Factory Class
@@ -147,21 +147,21 @@ abstract class WidgetBase
         
         //====================================================================//
         // Initialize Class
-        self::$blocks        = new BlocksFactory();  
+        self::$blocks        = new BlocksFactory();
         
         return self::$blocks;
-    }     
+    }
     
-//====================================================================//
-//  COMMON CLASS INFORMATIONS
-//====================================================================//
+    //====================================================================//
+    //  COMMON CLASS INFORMATIONS
+    //====================================================================//
 
     /**
      *      @abstract   Return type of this Widget Class
      */
     public static function getType()
     {
-        return pathinfo(__FILE__,PATHINFO_FILENAME);
+        return pathinfo(__FILE__, PATHINFO_FILENAME);
     }
     
     /**
@@ -169,7 +169,7 @@ abstract class WidgetBase
      */
     public function getName()
     {
-        return self::Trans(static::$NAME);
+        return self::trans(static::$NAME);
     }
 
     /**
@@ -177,7 +177,7 @@ abstract class WidgetBase
      */
     public function getDesc()
     {
-        return self::Trans(static::$DESCRIPTION);
+        return self::trans(static::$DESCRIPTION);
     }
     
     /**
@@ -210,139 +210,150 @@ abstract class WidgetBase
     public function getParameters()
     {
         return array();
-    }    
+    }
     
-//====================================================================//
-//  TRANSLATIONS MANAGEMENT
-//====================================================================//
+    //====================================================================//
+    //  TRANSLATIONS MANAGEMENT
+    //====================================================================//
 
     /**
      *      @abstract       Load translations from a specified INI file into Static array.
      *                      If data for file already loaded, do nothing.
      *                      All data in translation array are stored in UTF-8 format.
      *                      trans_loaded is completed with $file key.
-     * 
-     *      @param	string	$FileName   File name to load (.ini file). Must be "file" or "file@local" for local language files:
-     *                                      If $FileName is "file@local" instead of "file" then we look for local lang file
-     *                                      in localpath/langs/code_CODE/file.lang
-     * 
-     *      @return	bool
-     * 
+     *
+     *      @param  string  $FileName   File name to load (.ini file).
+     *                                  Must be "file" or "file@local" for local language files:
+     *                                  If $FileName is "file@local" instead of "file" then we look for local lang file
+     *                                  in localpath/langs/code_CODE/file.lang
+     *
+     *      @return bool
+     *
      */
-    public function Load($FileName) {
-        return Splash::Translator()->Load($FileName);
+    public function load($FileName)
+    {
+        return Splash::translator()->load($FileName);
     }
     
     /**
      *      @abstract   Return text translated of text received as parameter (and encode it into HTML)
      *
-     *      @param  string	$key        Key to translate
-     *      @param  string	$param1     chaine de param1
-     *      @param  string	$param2     chaine de param2
-     *      @param  string	$param3     chaine de param3
-     *      @param  string	$param4     chaine de param4
-     *      @param  string	$param5     chaine de param5
-     *      @param  int		$maxsize    Max length of text
-     *      @return string      		Translated string (encoded into HTML entities and UTF8)
+     *      @param  string  $key        Key to translate
+     *      @param  string  $param1     chaine de param1
+     *      @param  string  $param2     chaine de param2
+     *      @param  string  $param3     chaine de param3
+     *      @param  string  $param4     chaine de param4
+     *      @param  string  $param5     chaine de param5
+     *      @param  int     $maxsize    Max length of text
+     *      @return string              Translated string (encoded into HTML entities and UTF8)
      */
-    public static function Trans($key, $param1='', $param2='', $param3='', $param4='', $param5='', $maxsize=0)
-    {
-        return Splash::Translator()->Translate($key,$param1,$param2,$param3,$param4,$param5,$maxsize);
-    }  
+    public static function trans(
+        $key,
+        $param1 = '',
+        $param2 = '',
+        $param3 = '',
+        $param4 = '',
+        $param5 = '',
+        $maxsize = 0
+    ) {
+        return Splash::translator()
+                ->translate($key, $param1, $param2, $param3, $param4, $param5, $maxsize);
+    }
 
-//====================================================================//
-//  COMMON CLASS VALIDATION
-//====================================================================//
+    //====================================================================//
+    //  COMMON CLASS VALIDATION
+    //====================================================================//
 
     /**
      *      @abstract   Run Validation procedure on this object Class & Return return
-     * 
+     *
      *      @return     bool
      */
-    public function Validate() {
-        return Splash::Validate()->isValidWidget(__CLASS__);
+    public function validate()
+    {
+        return Splash::validate()->isValidWidget(__CLASS__);
     }
   
-//====================================================================//
-//  COMMON CLASS SETTERS
-//====================================================================//
+    //====================================================================//
+    //  COMMON CLASS SETTERS
+    //====================================================================//
 
     /**
      *  @abstract   Set Widget Title
-     * 
-     *  @param      string   $text                   
-     * 
+     *
+     *  @param      string   $text
+     *
      *  @return     $this
      */
     public function setTitle($text)
     {
-        $this->Out["title"]     =   self::Trans($text);
+        $this->Out["title"]     =   self::trans($text);
         return $this;
-    }    
+    }
     
     /**
      *  @abstract   Set Widget SubTitle
-     * 
-     *  @param      string   $text                   
-     * 
+     *
+     *  @param      string   $text
+     *
      *  @return     $this
      */
     public function setSubTitle($text)
     {
-        $this->Out["subtitle"]     =   self::Trans($text);
+        $this->Out["subtitle"]     =   self::trans($text);
         return $this;
-    }    
+    }
     
     /**
      *  @abstract   Set Widget Icon
-     * 
-     *  @param      string   $text                   
-     * 
+     *
+     *  @param      string   $text
+     *
      *  @return     $this
      */
     public function setIcon($text)
     {
         $this->Out["icon"]     =   $text;
         return $this;
-    }    
+    }
     
     /**
      *  @abstract   Set Widget Blocks
-     * 
-     *  @param      array   $blocks                   
-     * 
+     *
+     *  @param      array   $blocks
+     *
      *  @return     $this
      */
     public function setBlocks($blocks)
     {
         $this->Out["blocks"]     =   $blocks;
         return $this;
-    }       
+    }
     
     /**
      *  @abstract   Render / Return Widget Data Array
-     * 
+     *
      *  @return     array
      */
-    public function Render()
+    public function render()
     {
         return $this->Out;
-    }         
+    }
     
-//====================================================================//
-//  COMMON CLASS SERVER ACTIONS
-//====================================================================//
+    //====================================================================//
+    //  COMMON CLASS SERVER ACTIONS
+    //====================================================================//
 
     /**
      *  @abstract   Get Definition Array for requested Widget Type
-     * 
+     *
      *  @return     array
-     */    
-    public function Description()
+     */
+    public function description()
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__,__FUNCTION__);  
+        Splash::log()->trace(__CLASS__, __FUNCTION__);
         
         //====================================================================//
         // Build & Return Widget Description Array
@@ -361,8 +372,5 @@ abstract class WidgetBase
             // Widget Parameters
             "parameters"    =>  $this->getParameters(),             // Widget Default Options Array
         );
-    }     
-    
+    }
 }
-
-?>

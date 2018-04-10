@@ -25,61 +25,61 @@ class SOAPInterface implements CommunicationInterface
 {
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
-    //====================================================================//        
+    //====================================================================//
     
     /**
      * @abstract   Create & Setup WebService Client
-     * 
+     *
      * @param   string  $Url    Target Url
-     * 
+     *
      * @return self
      */
-    public function BuildClient($Url)
+    public function buildClient($Url)
     {
-        $this->client = new \SoapClient(Null, array(
+        $this->client = new \SoapClient(null, array(
             'location'              =>  $Url,
-            'uri'                   =>  Splash::Input("SERVER_NAME"),
-            'connection_timeout'    =>  Splash::Configuration()->WsTimout,
-            'exceptions'            =>  false,            
-        ));        
+            'uri'                   =>  Splash::input("SERVER_NAME"),
+            'connection_timeout'    =>  Splash::configuration()->WsTimout,
+            'exceptions'            =>  false,
+        ));
     }
         
     /**
      * @abstract   Execute WebService Client Request
-     * 
+     *
      * @param string    $Service   Target Service
      * @param string    $Data      Request Raw Data
-     * 
+     *
      * @return     mixed    Raw Response
      */
-    public function Call($Service, $Data)
+    public function call($Service, $Data)
     {
         //====================================================================//
         // Log Call Informations in debug buffer
-        Splash::Log()->Deb("[SOAP] Call Url= '" . $this->client->location . "' Service='" . $Service . "'");
+        Splash::log()->deb("[SOAP] Call Url= '" . $this->client->location . "' Service='" . $Service . "'");
         //====================================================================//
         // Execute Php SOAP Call
-        $Response = $this->client->__soapCall($Service, $Data);  
+        $Response = $this->client->__soapCall($Service, $Data);
         return $Response;
     }
         
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
-    //====================================================================//        
+    //====================================================================//
     
     /**
      * @abstract   Create & Setup WebService Server
      */
-    public function BuildServer()        
+    public function buildServer()
     {
         //====================================================================//
         // Initialize Php SOAP Server Class
-        $this->server           = new \SoapServer(Null, array(
-            'uri' => Splash::Input("REQUEST_URI"),
+        $this->server           = new \SoapServer(null, array(
+            'uri' => Splash::input("REQUEST_URI"),
                 ));
         //====================================================================//
         // Register a method available for clients
-        $this->server->addFunction(SPL_S_PING );        // Check Slave Availability
+        $this->server->addFunction(SPL_S_PING);        // Check Slave Availability
         $this->server->addFunction(SPL_S_CONNECT);      // Verify Connection Parameters
         $this->server->addFunction(SPL_S_ADMIN);        // Administrative requests
         $this->server->addFunction(SPL_S_OBJECTS);      // Main Object management requests
@@ -90,9 +90,9 @@ class SOAPInterface implements CommunicationInterface
     /**
      * @abstract   Responds to WebService Requests
      */
-    public function Handle()        
+    public function handle()
     {
-        if ( isset($this->server) ) {
+        if (isset($this->server)) {
             $this->server->handle(file_get_contents('php://input'));
         }
     }
@@ -100,7 +100,7 @@ class SOAPInterface implements CommunicationInterface
     /**
      * @abstract   Log Errors if Server fail during a request
      */
-    public function Fault($Error)     
+    public function fault($Error)
     {
         //====================================================================//
         // Prepare Fault Message.
@@ -108,7 +108,6 @@ class SOAPInterface implements CommunicationInterface
         $content .= $Error["message"] . " on File " . $Error["file"] . " Line " . $Error["line"];
         //====================================================================//
         // Log Fault Details In SOAP Structure.
-        $this->server->fault($Error["type"], $content);        
+        $this->server->fault($Error["type"], $content);
     }
-    
 }

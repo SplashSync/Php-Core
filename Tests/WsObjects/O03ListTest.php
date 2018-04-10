@@ -10,84 +10,73 @@ use ArrayObject;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class O03ListTest extends ObjectsCase {
+class O03ListTest extends ObjectsCase
+{
     
     
     /**
-     * @dataProvider ObjectTypesProvider
+     * @dataProvider objectTypesProvider
      */
     public function testFromModule($Sequence, $ObjectType)
     {
         $this->loadLocalTestSequence($Sequence);
         
         //====================================================================//
-        //   Execute Action Directly on Module  
-        $Data = Splash::Object($ObjectType)->ObjectsList();
+        //   Execute Action Directly on Module
+        $Data = Splash::object($ObjectType)->objectsList();
         //====================================================================//
-        //   Module May Return an Array (ArrayObject created by WebService) 
+        //   Module May Return an Array (ArrayObject created by WebService)
         if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);            
-        } 
+            $Data   =   new ArrayObject($Data);
+        }
         //====================================================================//
         //   Verify Response
-        $this->VerifyResponse($Data, $ObjectType);
-        
+        $this->verifyResponse($Data, $ObjectType);
     }
     
     /**
-     * @dataProvider ObjectTypesProvider
+     * @dataProvider objectTypesProvider
      */
     public function testFromObjectsService($Sequence, $ObjectType)
     {
         $this->loadLocalTestSequence($Sequence);
         
         //====================================================================//
-        //   Execute Action From Splash Server to Module  
-        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__, [ "id" => Null, "type" => $ObjectType]);
+        //   Execute Action From Splash Server to Module
+        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__, [ "id" => null, "type" => $ObjectType]);
         
         //====================================================================//
         //   Verify Response
-        $this->VerifyResponse($Data, $ObjectType);
-        
+        $this->verifyResponse($Data, $ObjectType);
     }
 
     public function testFromObjectsServiceErrors()
     {
         //====================================================================//
-        //      Request definition without Sending ObjectType  
+        //      Request definition without Sending ObjectType
         $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__);
-        
     }
     
-    public function VerifyResponse($Data, $ObjectType)
+    public function verifyResponse($Data, $ObjectType)
     {
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty( $Data                        , "Objects List is Empty");
-        $this->assertInstanceOf( "ArrayObject" , $Data      , "Objects List is Not an ArrayObject");
+        $this->assertNotEmpty($Data, "Objects List is Empty");
+        $this->assertInstanceOf("ArrayObject", $Data, "Objects List is Not an ArrayObject");
         
-        $this->VerifyMetaInformations($Data, $ObjectType);
-        $this->VerifyAvailableFields($Data, $ObjectType);
-        
-        
-        
-//        //====================================================================//
-//        // CHECK ITEMS
-//        foreach ($Data as $ObjectType) {
-//            $this->assertNotEmpty( $ObjectType              , "Objects Type is Empty");
-//            $this->assertInternalType("string", $ObjectType , "Objects Type is Not an String. (Given" . print_r($ObjectType , True) . ")");
-//        }        
+        $this->verifyMetaInformations($Data, $ObjectType);
+        $this->verifyAvailableFields($Data, $ObjectType);
     }
     
 
-    public function VerifyAvailableFields($Data, $ObjectType)
+    public function verifyAvailableFields($Data, $ObjectType)
     {
         //====================================================================//
         // Verify Fields are Available
-        $Fields = Splash::Object($ObjectType)->Fields();
-        if ( is_null( $Fields ) ) {
-            return False;
-        }        
+        $Fields = Splash::object($ObjectType)->fields();
+        if (is_null($Fields)) {
+            return false;
+        }
 
 //        //====================================================================//
 //        // Verify List Datas
@@ -95,57 +84,75 @@ class O03ListTest extends ObjectsCase {
         
         //====================================================================//
         // Verify List Data Items
-        foreach ( $Data as $Item ) {
-            
+        foreach ($Data as $Item) {
             //====================================================================//
             // Verify Object Id field is available
-            $this->assertArrayHasKey( "id",     $Item,          $ObjectType . " List => Object Identifier (id) is not defined in List.");
-            $this->assertInternalType( "scalar" , $Item["id"],  $ObjectType . " List => Object Identifier (id) is not String convertible.");
+            $this->assertArrayHasKey(
+                "id",
+                $Item,
+                $ObjectType . " List => Object Identifier (id) is not defined in List."
+            );
+            $this->assertInternalType(
+                "scalar",
+                $Item["id"],
+                $ObjectType . " List => Object Identifier (id) is not String convertible."
+            );
 
              
             //====================================================================//
             // Verify all "inlist" fields are available
             foreach ($Fields as $Field) {
-                if ( isset($Field['inlist']) && !empty($Field['inlist']) ) {
-                    $this->assertArrayHasKey( $Field["id"],     $Item,      $ObjectType . " List => Object Field (" . $Field["name"]. ") is marked as 'inlist' but not found in List.");
-                    $this->assertInternalType( "scalar" , $Item["id"],      $ObjectType . " List => Object Field (" . $Field["name"]. ") is not String convertible.");
+                if (isset($Field['inlist']) && !empty($Field['inlist'])) {
+                    $this->assertArrayHasKey(
+                        $Field["id"],
+                        $Item,
+                        $ObjectType . " List => Field (" . $Field["name"]. ") is marked as 'inlist' but not found."
+                    );
+                    $this->assertInternalType(
+                        "scalar",
+                        $Item["id"],
+                        $ObjectType . " List => Field (" . $Field["name"]. ") is not String convertible."
+                    );
                 }
             }
-            
-            
         }
         
-        return True;
+        return true;
     }
 
-    public function VerifyMetaInformations($Data, $ObjectType)
+    public function verifyMetaInformations($Data, $ObjectType)
     {
         //====================================================================//
         // Verify List Meta Are Available
-        $this->assertArrayHasKey( "meta",   $Data,      $ObjectType . " List => Meta Informations are not defined");
+        $this->assertArrayHasKey("meta", $Data, $ObjectType . " List => Meta Informations are not defined");
         $Meta   =   $Data["meta"];
-        $this->assertArrayHasKey( "current",   $Meta,   $ObjectType . " List => Meta current value not defined");
-        $this->assertArrayHasKey( "total",   $Meta,     $ObjectType . " List => Meta total value are not defined");
+        $this->assertArrayHasKey("current", $Meta, $ObjectType . " List => Meta current value not defined");
+        $this->assertArrayHasKey("total", $Meta, $ObjectType . " List => Meta total value are not defined");
         
-        if ( !empty($Meta["current"]) && !empty($Meta["total"]) ) {
+        if (!empty($Meta["current"]) && !empty($Meta["total"])) {
             //====================================================================//
             // Verify List Meta Format
-            $this->assertArrayInternalType($Meta,   "current",  "numeric",       $ObjectType . " List => Current Object Count not an Integer");
-            $this->assertArrayInternalType($Meta,   "total",    "numeric",       $ObjectType . " List => Total Object Count not an Integer");
+            $this->assertArrayInternalType(
+                $Meta,
+                "current",
+                "numeric",
+                $ObjectType . " List => Current Object Count not an Integer"
+            );
+            $this->assertArrayInternalType(
+                $Meta,
+                "total",
+                "numeric",
+                $ObjectType . " List => Total Object Count not an Integer"
+            );
         }
         
         //====================================================================//
         // Verify List Meta Informations
         unset($Data["meta"]);
         $this->assertEquals(
-                $Meta["current"],   
-                count($Data),    
-                $ObjectType . " List => Current Object Count is different from Given Meta['current'] count.");
-    
+            $Meta["current"],
+            count($Data),
+            $ObjectType . " List => Current Object Count is different from Given Meta['current'] count."
+        );
     }
-
-    
-
-    
-    
 }

@@ -3,6 +3,7 @@ namespace Splash\Tests\WsObjects;
 
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Client\Splash;
+
 //use ArrayObject;
 
 /**
@@ -10,46 +11,46 @@ use Splash\Client\Splash;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class O00ObjectBaseTest extends ObjectsCase {
+class O00ObjectBaseTest extends ObjectsCase
+{
     
     /**
-     * @dataProvider ObjectTypesProvider
+     * @dataProvider objectTypesProvider
      */
     public function testLockFeature($Sequence, $ObjectType)
     {
         //====================================================================//
-        //   FOR NEW OBJECTS  
+        //   FOR NEW OBJECTS
         //====================================================================//
-        Splash::Object($ObjectType)->Unlock();
-        $this->assertFalse(Splash::Object($ObjectType)->isLocked());
-        Splash::Object($ObjectType)->Lock();
-        $this->assertTrue(Splash::Object($ObjectType)->isLocked());
-        Splash::Object($ObjectType)->Unlock();
-        $this->assertFalse(Splash::Object($ObjectType)->isLocked());
+        Splash::object($ObjectType)->unLock();
+        $this->assertFalse(Splash::object($ObjectType)->isLocked());
+        Splash::object($ObjectType)->lock();
+        $this->assertTrue(Splash::object($ObjectType)->isLocked());
+        Splash::object($ObjectType)->unLock();
+        $this->assertFalse(Splash::object($ObjectType)->isLocked());
         
         //====================================================================//
-        //   FOR EXISTING OBJECTS  
+        //   FOR EXISTING OBJECTS
         //====================================================================//
 
         //====================================================================//
         //  Integer IDs
-        $IntObjectID = rand(1E3,1E4);
-        Splash::Object($ObjectType)->Unlock($IntObjectID);
-        $this->assertFalse(Splash::Object($ObjectType)->isLocked($IntObjectID));
-        Splash::Object($ObjectType)->Lock($IntObjectID);
-        $this->assertTrue(Splash::Object($ObjectType)->isLocked($IntObjectID));
-        Splash::Object($ObjectType)->Unlock($IntObjectID);
-        $this->assertFalse(Splash::Object($ObjectType)->isLocked($IntObjectID));
+        $IntObjectID = rand(1E3, 1E4);
+        Splash::object($ObjectType)->unLock($IntObjectID);
+        $this->assertFalse(Splash::object($ObjectType)->isLocked($IntObjectID));
+        Splash::object($ObjectType)->lock($IntObjectID);
+        $this->assertTrue(Splash::object($ObjectType)->isLocked($IntObjectID));
+        Splash::object($ObjectType)->unLock($IntObjectID);
+        $this->assertFalse(Splash::object($ObjectType)->isLocked($IntObjectID));
         
         //====================================================================//
         //  Integer IDs
-        $StrObjectID = base64_encode(rand(1E3,1E4));
-        Splash::Object($ObjectType)->Unlock($StrObjectID);
-        $this->assertFalse(Splash::Object($ObjectType)->isLocked($StrObjectID));
-        Splash::Object($ObjectType)->Lock($StrObjectID);
-        $this->assertTrue(Splash::Object($ObjectType)->isLocked($StrObjectID));
-        Splash::Object($ObjectType)->Unlock($StrObjectID);
-        $this->assertFalse(Splash::Object($ObjectType)->isLocked($StrObjectID));
+        $StrObjectID = base64_encode(rand(1E3, 1E4));
+        Splash::object($ObjectType)->unLock($StrObjectID);
+        $this->assertFalse(Splash::object($ObjectType)->isLocked($StrObjectID));
+        Splash::object($ObjectType)->lock($StrObjectID);
+        $this->assertTrue(Splash::object($ObjectType)->isLocked($StrObjectID));
+        Splash::object($ObjectType)->unLock($StrObjectID);
+        $this->assertFalse(Splash::object($ObjectType)->isLocked($StrObjectID));
     }
-    
 }

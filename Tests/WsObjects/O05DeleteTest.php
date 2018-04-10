@@ -9,197 +9,195 @@ use Splash\Client\Splash;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class O05DeleteTest extends ObjectsCase {
+class O05DeleteTest extends ObjectsCase
+{
     
     
     /**
-     * @dataProvider ObjectTypesProvider
+     * @dataProvider objectTypesProvider
      */
     public function testFromModule($Sequence, $ObjectType)
     {
         $this->loadLocalTestSequence($Sequence);
         
         //====================================================================//
-        //   Generate Dummy Object Data (Required Fields Only)   
-        $DummyData = $this->PrepareForTesting($ObjectType);
-        if ( $DummyData == False ) {
-            return True;
+        //   Generate Dummy Object Data (Required Fields Only)
+        $DummyData = $this->prepareForTesting($ObjectType);
+        if ($DummyData == false) {
+            return true;
         }
         
         //====================================================================//
-        //   Create a New Object on Module  
-        $ObjectId = Splash::Object($ObjectType)->Set(Null, $DummyData);
+        //   Create a New Object on Module
+        $ObjectId = Splash::object($ObjectType)->set(null, $DummyData);
         
         //====================================================================//
         //   Verify Response
-        $this->VerifyCreateResponse($ObjectType, $ObjectId);
+        $this->verifyCreateResponse($ObjectType, $ObjectId);
 
         //====================================================================//
-        // Lock New Objects To Avoid Action Commit 
-        Splash::Object($ObjectType)->Lock($ObjectId);
+        // Lock New Objects To Avoid Action Commit
+        Splash::object($ObjectType)->lock($ObjectId);
 
         //====================================================================//
-        //   Delete Object on Module  
-        $Data = Splash::Object($ObjectType)->Delete($ObjectId);
+        //   Delete Object on Module
+        $Data = Splash::object($ObjectType)->delete($ObjectId);
         
         //====================================================================//
         //   Verify Response
-        $this->VerifyDeleteResponse($ObjectType, $ObjectId, $Data);
-        
+        $this->verifyDeleteResponse($ObjectType, $ObjectId, $Data);
     }
 
     /**
-     * @dataProvider ObjectTypesProvider
+     * @dataProvider objectTypesProvider
      */
     public function testFromService($Sequence, $ObjectType)
     {
         $this->loadLocalTestSequence($Sequence);
         
         //====================================================================//
-        //   Generate Dummy Object Data (Required Fields Only)   
-        $DummyData = $this->PrepareForTesting($ObjectType);
-        if ( $DummyData == False ) {
-            return True;
+        //   Generate Dummy Object Data (Required Fields Only)
+        $DummyData = $this->prepareForTesting($ObjectType);
+        if ($DummyData == false) {
+            return true;
         }
         
         //====================================================================//
-        //   Create a New Object on Module  
-        $ObjectId = Splash::Object($ObjectType)->Set(Null, $DummyData);
+        //   Create a New Object on Module
+        $ObjectId = Splash::object($ObjectType)->set(null, $DummyData);
         
         //====================================================================//
         //   Verify Response
-        $this->VerifyCreateResponse($ObjectType, $ObjectId);
+        $this->verifyCreateResponse($ObjectType, $ObjectId);
         
         //====================================================================//
-        //   Execute Action Directly on Module  
+        //   Execute Action Directly on Module
         $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_DEL, __METHOD__, [ "id" => $ObjectId, "type" => $ObjectType]);
         
         //====================================================================//
         //   Verify Response
-        $this->VerifyDeleteResponse($ObjectType, $ObjectId, $Data);
-        
+        $this->verifyDeleteResponse($ObjectType, $ObjectId, $Data);
     }
     
     /**
-     * @dataProvider ObjectTypesProvider
+     * @dataProvider objectTypesProvider
      */
     public function testFromObjectsServiceErrors($Sequence, $ObjectType)
     {
         $this->loadLocalTestSequence($Sequence);
         
         //====================================================================//
-        //      Request definition without Sending Parameters  
+        //      Request definition without Sending Parameters
         $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, []);
         //====================================================================//
-        //      Request definition without Sending ObjectType  
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "id" => Null ]);
+        //      Request definition without Sending ObjectType
+        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "id" => null ]);
         //====================================================================//
-        //      Request definition without Sending ObjectId  
+        //      Request definition without Sending ObjectId
         $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $ObjectType]);
-        
     }
 
     
-    public function VerifyTestIsAllowed($ObjectType)
+    public function verifyTestIsAllowed($ObjectType)
     {
-        $Definition = Splash::Object($ObjectType)->Description();
+        $Definition = Splash::object($ObjectType)->description();
 
         $this->assertNotEmpty($Definition);
         //====================================================================//
         //   Verify Create is Allowed
-        if ( !$Definition["allow_push_created"] ) {
-            return False;
-        }    
+        if (!$Definition["allow_push_created"]) {
+            return false;
+        }
         //====================================================================//
         //   Verify Delete is Allowed
-        if ( !$Definition["allow_push_deleted"] ) {
-            return False;
-        }    
-        return True;
+        if (!$Definition["allow_push_deleted"]) {
+            return false;
+        }
+        return true;
     }
 
     
-    public function PrepareForTesting($ObjectType)
+    public function prepareForTesting($ObjectType)
     {
         //====================================================================//
-        //   Verify Test is Required   
-        if ( !$this->VerifyTestIsAllowed($ObjectType) ) {
-            return False;
+        //   Verify Test is Required
+        if (!$this->verifyTestIsAllowed($ObjectType)) {
+            return false;
         }
         
         //====================================================================//
         // Read Required Fields & Prepare Dummy Data
         //====================================================================//
-        $Write          = False;
-        $Fields         = Splash::Object($ObjectType)->Fields();
-        foreach ( $Fields as $Key => $Field) {
-            
+        $Write          = false;
+        $Fields         = Splash::object($ObjectType)->fields();
+        foreach ($Fields as $Key => $Field) {
             //====================================================================//
             // Skip Non Required Fields
-            if ( !$Field->required ) {
-                unset( $Fields[$Key] );
+            if (!$Field->required) {
+                unset($Fields[$Key]);
             }
             //====================================================================//
             // Check if Write Fields
-            if ( $Field->write ) {   
-                $Write = True;
-            }            
+            if ($Field->write) {
+                $Write = true;
+            }
         }
         
         //====================================================================//
-        // If No Writable Fields 
-        if ( !$Write ) {
-            return False;
-        } 
+        // If No Writable Fields
+        if (!$Write) {
+            return false;
+        }
         
         //====================================================================//
-        // Lock New Objects To Avoid Action Commit 
-        Splash::Object($ObjectType)->Lock();
+        // Lock New Objects To Avoid Action Commit
+        Splash::object($ObjectType)->lock();
         
         //====================================================================//
-        // Clean Objects Commited Array 
-        Splash::$Commited = Array();
+        // Clean Objects Commited Array
+        Splash::$Commited = array();
         
         return $this->fakeObjectData($Fields);
     }
 
-    public function VerifyCreateResponse($ObjectType, $ObjectId)
+    public function verifyCreateResponse($ObjectType, $ObjectId)
     {
         //====================================================================//
         //   Verify Object Id Is Not Empty
-        $this->assertNotEmpty( $ObjectId                    , "Returned New Object Id is Empty");
+        $this->assertNotEmpty($ObjectId, "Returned New Object Id is Empty");
 
         //====================================================================//
         //   Add Object Id to Created List
-        $this->AddTestedObject($ObjectType,$ObjectId);
+        $this->addTestedObject($ObjectType, $ObjectId);
         
         //====================================================================//
         //   Verify Object Id Is in Right Format
-        $this->assertTrue( 
-                is_integer($ObjectId) || is_string($ObjectId), 
-                "New Object Id is not an Integer or a Strings");
-        
+        $this->assertTrue(
+            is_integer($ObjectId) || is_string($ObjectId),
+            "New Object Id is not an Integer or a Strings"
+        );
     }
     
     
-    public function VerifyDeleteResponse($ObjectType,$ObjectId,$Data)
+    public function verifyDeleteResponse($ObjectType, $ObjectId, $Data)
     {
         //====================================================================//
         //   Verify Response
-        $this->assertIsSplashBool( $Data                    , "Object Delete Response Must be a Bool");
-        $this->assertNotEmpty( $Data                        , "Object Delete Response is Not True");
+        $this->assertIsSplashBool($Data, "Object Delete Response Must be a Bool");
+        $this->assertNotEmpty($Data, "Object Delete Response is Not True");
         
         //====================================================================//
         //   Verify Repeating Delete as Same Result
-        $RepeatedResponse    =   Splash::Object($ObjectType)->Delete($ObjectId);
-        $this->assertTrue( $RepeatedResponse                , "Object Repeated Delete, Must return True even if Object Already Deleted.");
+        $RepeatedResponse    =   Splash::object($ObjectType)->delete($ObjectId);
+        $this->assertTrue(
+            $RepeatedResponse,
+            "Object Repeated Delete, Must return True even if Object Already Deleted."
+        );
         
         //====================================================================//
         //   Verify Object not Present anymore
-        $Fields = $this->reduceFieldList(Splash::Object($ObjectType)->Fields(), True, False);
-        $GetResponse    =   Splash::Object($ObjectType)->Get($ObjectId, $Fields );
-        $this->assertFalse( $GetResponse                    , "Object Not Delete, I can still read it!!");
-        
+        $Fields = $this->reduceFieldList(Splash::object($ObjectType)->fields(), true, false);
+        $GetResponse    =   Splash::object($ObjectType)->get($ObjectId, $Fields);
+        $this->assertFalse($GetResponse, "Object Not Delete, I can still read it!!");
     }
-    
 }

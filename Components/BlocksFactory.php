@@ -18,15 +18,15 @@ use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
 
 /**
- * @abstract    This Class is a Generator for Widget Blocks Contents 
+ * @abstract    This Class is a Generator for Widget Blocks Contents
  * @author      B. Paquier <contact@splashsync.com>
  */
 
-class BlocksFactory 
+class BlocksFactory
 {
     /**
      * Default Option For Commons Blocks
-     * 
+     *
      * @var array
      */
     const COMMONS_OPTIONS = array(
@@ -35,64 +35,64 @@ class BlocksFactory
         'Width'             =>      "col-xs-12 col-sm-12 col-md-12 col-lg-12",
         //==============================================================================
         //      Allow Html Contents     => No
-        "AllowHtml"         =>      False        
-    );    
+        "AllowHtml"         =>      false
+    );
     
     
     //====================================================================//
-    // Data Storage 
+    // Data Storage
 
     /**
      *      @abstract   New Widget Block Storage
      *      @var        ArrayObject
-     */     
+     */
     private $new;
     
     /**
      *      @abstract   Widget Block List Storage
      *      @var        Array
-     */     
+     */
     private $blocks;
     
     /**
      *      @abstract     Initialise Class
      *      @return         int           <0 if KO, >0 if OK
      */
-    function __construct()
+    public function __construct()
     {
         //====================================================================//
         // Initialize Data Storage
-        $this->new            = Null;          
+        $this->new            = null;
         $this->fields         = array();
         
-        return True;
+        return true;
     }
 
-//====================================================================//
-//  BLOCKS CONTENTS MANAGEMENT
-//====================================================================//
+    //====================================================================//
+    //  BLOCKS CONTENTS MANAGEMENT
+    //====================================================================//
 
     /**
-     *  @abstract   Create a new block with default parameters 
-     *               
-     *  @param      string      $Type       Standard Widget Block Type 
+     *  @abstract   Create a new block with default parameters
+     *
+     *  @param      string      $Type       Standard Widget Block Type
      *  @param      array       $Options    Block Options
-     * 
+     *
      *  @return     $this
      */
-    private function addBlock($Type, $Options = Null )
+    private function addBlock($Type, $Options = null)
     {
         //====================================================================//
         // Commit Last Created if not already done
-        if (!empty($this->new)) {    
-            $this->Commit();  
-        }     
+        if (!empty($this->new)) {
+            $this->commit();
+        }
         //====================================================================//
         // Unset Current
         unset($this->new);
         //====================================================================//
         // Create new empty block
-        $this->new          =   new ArrayObject([],  ArrayObject::ARRAY_AS_PROPS);
+        $this->new          =   new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Set Block Type
         $this->new->type        =   $Type;
@@ -104,70 +104,70 @@ class BlocksFactory
         $this->new->data        =   array();
         
         return $this;
-    } 
+    }
     
     /**
      *  @abstract   Set Block Data Array Key
-     *               
-     *  @param      string      $Name       
-     *  @param      array       $Value    
-     * 
+     *
+     *  @param      string      $Name
+     *  @param      array       $Value
+     *
      *  @return     $this
      */
-    public function setData($Name, $Value )
+    public function setData($Name, $Value)
     {
         //====================================================================//
         // Impact Block Data Array
         $this->new->data[$Name]   = $Value;
         
         return $this;
-    }     
+    }
     
     /**
      *  @abstract   Extract Block Data From Content Input Arra
-     *               
-     *  @param      array       $Contents    
-     *  @param      string      $Name       
-     * 
+     *
+     *  @param      array       $Contents
+     *  @param      string      $Name
+     *
      *  @return     $this
      */
-    public function extractData($Contents, $Name )
+    public function extractData($Contents, $Name)
     {
-        if ( isset($Contents[$Name]) ) {
-            $this->setData($Name,     $Contents[$Name]);
+        if (isset($Contents[$Name])) {
+            $this->setData($Name, $Contents[$Name]);
         }
         
         return $this;
-    }    
+    }
     
     /**
      *  @abstract   Set Block Options Array Key
-     *               
-     *  @param      string      $Name       
-     *  @param      array       $Value    
-     * 
+     *
+     *  @param      string      $Name
+     *  @param      array       $Value
+     *
      *  @return     $this
      */
-    public function setOption($Name, $Value )
+    public function setOption($Name, $Value)
     {
         //====================================================================//
         // Impact Block Data Array
         $this->new->option[$Name]   = $Value;
         
         return $this;
-    }   
+    }
     
     /**
      *  @abstract   Save Current New Block in list & Clean
-     * 
+     *
      *  @return     bool
      */
-    private function Commit()
+    private function commit()
     {
         //====================================================================//
         // Safety Checks
-        if (empty($this->new)) {    
-            return True;  
+        if (empty($this->new)) {
+            return true;
         }
         //====================================================================//
         // Create Field List
@@ -179,50 +179,49 @@ class BlocksFactory
         $this->blocks[] = $this->new;
         unset($this->new);
         
-        return True;
-    }       
+        return true;
+    }
     
     /**
      *  @abstract   Save Current New Block in list & Clean
-     * 
+     *
      *  @return     int                     <0 if KO, >0 if OK
      */
-    public function Render()
+    public function render()
     {
         //====================================================================//
         // Commit Last Created if not already done
-        if (!empty($this->new)) {    
-            $this->Commit();  
+        if (!empty($this->new)) {
+            $this->commit();
         }
         //====================================================================//
         // Safety Checks
-        if (empty($this->blocks)) {    
-            return Splash::Log()->Err("ErrBlocksNoList");  
-        }
-        //====================================================================//
+        if (empty($this->blocks)) {
+            return Splash::log()->err("ErrBlocksNoList");
+        } //====================================================================//
         // Return fields List
-        else { 
+        else {
             $buffer = $this->blocks;
             unset($this->blocks);
-            return $buffer;   
+            return $buffer;
         }
         
-        return False;
-    }  
+        return false;
+    }
     
-//====================================================================//
-//  BLOCKS || SIMPLE TEXT BLOCK
-//====================================================================//
+    //====================================================================//
+    //  BLOCKS || SIMPLE TEXT BLOCK
+    //====================================================================//
     
     /**
      *  @abstract   Create a new Text Block
-     *               
+     *
      *  @param      string      $Text       Block Content Text
      *  @param      array       $Options    Block Options
-     * 
+     *
      *  @return     $this
      */
-    public function addTextBlock($Text, $Options = self::COMMONS_OPTIONS )
+    public function addTextBlock($Text, $Options = self::COMMONS_OPTIONS)
     {
         $this->addBlock("TextBlock", $Options);
         $this->setData("text", $Text);
@@ -230,60 +229,60 @@ class BlocksFactory
         return $this;
     }
     
-//====================================================================//
-//  BLOCKS || NOTIFICATIONS BLOCK
-//====================================================================//
+    //====================================================================//
+    //  BLOCKS || NOTIFICATIONS BLOCK
+    //====================================================================//
     
     /**
      *  @abstract   Create a new Notification Block
-     *               
+     *
      *  @param      array   $Contents           Block Contents
      *                          ["error"]       Error Message
      *                          ["warning"]     Warning Message
      *                          ["info"]        Info Message
      *                          ["success"]     Success Message
-     * 
+     *
      *  @param      array   $Options            Block Options
-     * 
+     *
      *  @return     $this
      */
-    public function addNotificationsBlock($Contents, $Options = self::COMMONS_OPTIONS )
+    public function addNotificationsBlock($Contents, $Options = self::COMMONS_OPTIONS)
     {
         //====================================================================//
         //  Create Block
         $this->addBlock("NotificationsBlock", $Options);
         //====================================================================//
         //  Add Contents
-        if ( isset($Contents["error"]) ) {
-            $this->setData("error",     $Contents["error"]);
+        if (isset($Contents["error"])) {
+            $this->setData("error", $Contents["error"]);
         }
-        if ( isset($Contents["warning"]) ) {
-            $this->setData("warning",   $Contents["warning"]);
+        if (isset($Contents["warning"])) {
+            $this->setData("warning", $Contents["warning"]);
         }
-        if ( isset($Contents["info"]) ) {
-            $this->setData("info",      $Contents["info"]);
+        if (isset($Contents["info"])) {
+            $this->setData("info", $Contents["info"]);
         }
-        if ( isset($Contents["success"]) ) {
-            $this->setData("success",   $Contents["success"]);
+        if (isset($Contents["success"])) {
+            $this->setData("success", $Contents["success"]);
         }
         
         return $this;
     }
     
-//====================================================================//
-//  BLOCKS || SIMPLE TABLE BLOCK
-//====================================================================//
+    //====================================================================//
+    //  BLOCKS || SIMPLE TABLE BLOCK
+    //====================================================================//
     
     /**
      *  @abstract   Create a new Table Block
-     *               
-     *  @param      array   $Contents           Array of Rows Contents (Text or Html) 
-     * 
+     *
+     *  @param      array   $Contents           Array of Rows Contents (Text or Html)
+     *
      *  @param      array   $Options            Block Options
-     * 
+     *
      *  @return     $this
      */
-    public function addTableBlock($Contents, $Options = self::COMMONS_OPTIONS )
+    public function addTableBlock($Contents, $Options = self::COMMONS_OPTIONS)
     {
         $this->addBlock("TableBlock", $Options);
         $this->setData("rows", $Contents);
@@ -292,20 +291,20 @@ class BlocksFactory
     }
     
     
-//====================================================================//
-//  BLOCKS || SPARK INFOS BLOCK
-//====================================================================//
+    //====================================================================//
+    //  BLOCKS || SPARK INFOS BLOCK
+    //====================================================================//
     
     /**
      *  @abstract   Create a new Table Block
-     *               
-     *  @param      array   $Contents           Array of Rows Contents (Text or Html) 
-     * 
+     *
+     *  @param      array   $Contents           Array of Rows Contents (Text or Html)
+     *
      *  @param      array   $Options            Block Options
-     * 
+     *
      *  @return     $this
      */
-    public function addSparkInfoBlock($Contents, $Options = self::COMMONS_OPTIONS )
+    public function addSparkInfoBlock($Contents, $Options = self::COMMONS_OPTIONS)
     {
         $this->addBlock("SparkInfoBlock", $Options);
         
@@ -320,22 +319,25 @@ class BlocksFactory
         return $this;
     }
 
-//====================================================================//
-//  BLOCKS || MORRIS GRAPHS BLOCK
-//====================================================================//
+    //====================================================================//
+    //  BLOCKS || MORRIS GRAPHS BLOCK
+    //====================================================================//
     
     /**
      *  @abstract   Create a new Morris Bar Graph Block
-     *               
-     *  @param      array   $Contents           Array of Rows Contents (Text or Html) 
-     * 
+     *
+     *  @param      array   $Contents           Array of Rows Contents (Text or Html)
+     *
      *  @param      array   $Options            Block Options
-     * 
+     *
      *  @return     $this
      */
-    public function addMorrisGraphBlock($DataSet, $Type = "Bar", $ChartOptions = array(), $Options = self::COMMONS_OPTIONS )
-    {
-        
+    public function addMorrisGraphBlock(
+        $DataSet,
+        $Type = "Bar",
+        $ChartOptions = array(),
+        $Options = self::COMMONS_OPTIONS
+    ) {
         if (!in_array($Type, ["Bar", "Area", "Line"])) {
             $Contents   = array("warning"   => "Wrong Morris Chart Block Type (ie: Bar, Area, Line)");
             $this->BlocksFactory()->addNotificationsBlock($Contents);
@@ -343,46 +345,41 @@ class BlocksFactory
         //====================================================================//
         //  Create Block
         $this->addBlock("Morris" . $Type . "Block", $Options);
-       //====================================================================//
+        //====================================================================//
         //  Add Set Chart Data
-        $this->setData("dataset",     $DataSet);
+        $this->setData("dataset", $DataSet);
         
         //====================================================================//
         //  Add Chart Parameters
-        $this->extractData($ChartOptions,   "title");
-        $this->extractData($ChartOptions,   "xkey");
-        $this->extractData($ChartOptions,   "ykeys");
-        $this->extractData($ChartOptions,   "labels");
+        $this->extractData($ChartOptions, "title");
+        $this->extractData($ChartOptions, "xkey");
+        $this->extractData($ChartOptions, "ykeys");
+        $this->extractData($ChartOptions, "labels");
         
         return $this;
     }
 
     /**
      *  @abstract   Create a new Morris Donut Graph Block
-     *               
-     *  @param      array   $Contents           Array of Rows Contents (Text or Html) 
-     * 
+     *
+     *  @param      array   $Contents           Array of Rows Contents (Text or Html)
+     *
      *  @param      array   $Options            Block Options
-     * 
+     *
      *  @return     $this
      */
-    public function addMorrisDonutBlock($DataSet, $ChartOptions = array(), $Options = self::COMMONS_OPTIONS )
+    public function addMorrisDonutBlock($DataSet, $ChartOptions = array(), $Options = self::COMMONS_OPTIONS)
     {
         //====================================================================//
         //  Create Block
         $this->addBlock("MorrisDonutBlock", $Options);
-       //====================================================================//
+        //====================================================================//
         //  Add Set Chart Data
-        $this->setData("dataset",     $DataSet);
+        $this->setData("dataset", $DataSet);
         //====================================================================//
         //  Add Chart Parameters
-        $this->extractData($ChartOptions,   "title");
+        $this->extractData($ChartOptions, "title");
         
         return $this;
-    }    
-    
+    }
 }
-
-
-
-
