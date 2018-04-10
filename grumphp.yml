@@ -17,6 +17,7 @@ parameters:
 #            warning_severity: 5  
             ignore_patterns:
                 - nusoap.php
+                - soap.php
                 - BaseCase.php                
                 - TestCase.php
 #        phpcsfixer: ~s        
@@ -31,8 +32,8 @@ parameters:
         jsonlint:
             detect_key_conflicts: true
 #        phpmd: ~ 
-#        phpmd:
-#            ruleset:        ["Build/phpmd.xml"]
+        phpmd:
+            ruleset:        ["./Build/phpmd.xml"]
 #        securitychecker: ~
 #        phpcpd: ~
 #        phpcpd:
