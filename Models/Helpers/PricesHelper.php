@@ -27,24 +27,24 @@ class PricesHelper
     /**
      * @abstract   Build a new price field array
      *
-     * @param      double      $HT             Price Without VAT (Or Null if Price Send with VAT)
+     * @param      double      $TaxExcl        Price Without VAT (Or Null if Price Send with VAT)
      * @param      double      $VAT            VAT percentile
-     * @param      double      $TTC            Price With VAT
+     * @param      double      $TaxIncl        Price With VAT
      * @param      string      $Code           Price Currency Code
      * @param      string      $Symbol         Price Currency Symbol
      * @param      string      $Name           Price Currency Name
      *
      * @return     array
      */
-    public static function encode($HT, $VAT, $TTC = null, $Code = "", $Symbol = "", $Name = "")
+    public static function encode($TaxExcl, $VAT, $TaxIncl = null, $Code = "", $Symbol = "", $Name = "")
     {
         //====================================================================//
         // Safety Checks
-        if (!is_double($HT) && !is_double($TTC)) {
+        if (!is_double($TaxExcl) && !is_double($TaxIncl)) {
             Splash::log()->err("ErrPriceInvalid", __FUNCTION__);
             return "Error Invalid Price";
         }
-        if (is_double($HT) && is_double($TTC)) {
+        if (is_double($TaxExcl) && is_double($TaxIncl)) {
             Splash::log()->err("ErrPriceBothValues", __FUNCTION__);
             return "Error Too Much Input Values";
         }
@@ -59,16 +59,16 @@ class PricesHelper
         //====================================================================//
         // Build Price Array
         $Price = array("vat" => $VAT, "code" => $Code,"symbol" => $Symbol,"name" => $Name);
-        if (!is_null($HT)) {
+        if (!is_null($TaxExcl)) {
             $Price["base"]  =    0;
-            $Price["ht"]    =    $HT;
-            $Price["tax"]   =    $HT * ($VAT/100);
-            $Price["ttc"]   =    $HT * (1 + $VAT/100);
+            $Price["ht"]    =    $TaxExcl;
+            $Price["tax"]   =    $TaxExcl * ($VAT/100);
+            $Price["ttc"]   =    $TaxExcl * (1 + $VAT/100);
         } else {
             $Price["base"]  =    1;
-            $Price["ht"]    =    $TTC / (1 + $VAT/100);
-            $Price["tax"]   =    $TTC - $Price["ht"];
-            $Price["ttc"]   =    $TTC;
+            $Price["ht"]    =    $TaxIncl / (1 + $VAT/100);
+            $Price["tax"]   =    $TaxIncl - $Price["ht"];
+            $Price["ttc"]   =    $TaxIncl;
         }
         return $Price;
     }
@@ -102,6 +102,13 @@ class PricesHelper
         }
         //====================================================================//
         // Compare Price
+        return self::compareAmounts($Price1, $Price2);
+    }
+    
+    public static function compareAmounts($Price1, $Price2)
+    {
+        //====================================================================//
+        // Compare Price
         if ($Price1["base"]) {
             if (abs($Price1["ttc"] - $Price2["ttc"]) > 1E-6) {
                 return false;
@@ -118,10 +125,7 @@ class PricesHelper
         }
         //====================================================================//
         // Compare Currency If Set on Both Sides
-        if (empty($Price1["code"])) {
-            return true;
-        }
-        if (empty($Price2["code"])) {
+        if (empty($Price1["code"]) || empty($Price2["code"])) {
             return true;
         }
         if ($Price1["code"] !== $Price2["code"]) {
@@ -149,29 +153,21 @@ class PricesHelper
         if (!array_key_exists("base", $Price)) {
             return false;
         }
-        if (!array_key_exists("ht", $Price)) {
+        if (!isset($Price["ht"]) || !isset($Price["ttc"]) || !isset($Price["vat"])) {
             return false;
         }
-        if (!array_key_exists("ttc", $Price)) {
+        if (!self::isValidAmount($Price)) {
             return false;
         }
-        if (!array_key_exists("vat", $Price)) {
-            return false;
-        }
-        if (!array_key_exists("tax", $Price)) {
-            return false;
-        }
-        if (!array_key_exists("symbol", $Price)) {
-            return false;
-        }
-        if (!array_key_exists("code", $Price)) {
-            return false;
-        }
-        if (!array_key_exists("name", $Price)) {
+        if (!self::isValidCurrency($Price)) {
             return false;
         }
         
-        
+        return true;
+    }
+    
+    private static function isValidAmount($Price)
+    {
         //====================================================================//
         // Check Contents Type
         if (!empty($Price["ht"]) && !is_numeric($Price["ht"])) {
@@ -184,6 +180,25 @@ class PricesHelper
             return false;
         }
 
+        return true;
+    }
+    
+    private static function isValidCurrency($Price)
+    {
+        //====================================================================//
+        // Check Contents Available
+        if (!array_key_exists("tax", $Price)) {
+            return false;
+        }
+        if (!array_key_exists("symbol", $Price)) {
+            return false;
+        }
+        if (!array_key_exists("code", $Price)) {
+            return false;
+        }
+        if (!array_key_exists("name", $Price)) {
+            return false;
+        }
         return true;
     }
     

@@ -71,11 +71,10 @@ class ObjectsHelper
     }
     
     /**
-     *      @abstract   Retrieve Identifier from an Object Identifier String
-     *
-     *      @param      string      $ObjectId           Object Identifier String.
-     *
-     *      @return     string
+     * @abstract   Retrieve Identifier from an Object Identifier String
+     * @param      string      $ObjectId           Object Identifier String.
+     * @return     string
+     * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function id($ObjectId)
     {

@@ -56,8 +56,8 @@ class Webservice
     public $url;
     //====================================================================//
     // Webservice buffers
-    private $In;                   // Input Buffer
-    private $Out;                  // Output Buffer
+    private $Inputs;                   // Input Buffer
+    private $Outputs;                  // Output Buffer
     
     /**
      *      @abstract     Initialise Class with empty webservice parameters
@@ -69,8 +69,8 @@ class Webservice
         $this->tasks        = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Initialize I/O Data Buffers
-        $this->In          = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $this->Out         = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $this->Inputs          = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $this->Outputs         = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
     }
 
     //====================================================================//
@@ -110,7 +110,7 @@ class Webservice
      *
      *     @return      bool
      */
-    public function verify()
+    private function verify()
     {
         
         //====================================================================//
@@ -139,29 +139,29 @@ class Webservice
     //====================================================================//
 
     /**
-     *      @abstract    Encrypt/Decrypt Serialized Data Object
-     *      @param       string      $act    Action to perform on Data (encrypt/decrypt)
-     *      @param       mixed       $In     Input Data
-     *      @param       string      $key    Encoding Shared Key
-     *      @param       string      $iv      Encoding Shared IV (Initialisation Vector)
-     *      @return      string      $Out    Output Encrypted Data (Or 0 if fail)
+     *  @abstract   Encrypt/Decrypt Serialized Data Object
+     *  @param      string      $Action     Action to perform on Data (encrypt/decrypt)
+     *  @param      mixed       $In         Input Data
+     *  @param      string      $Key        Encoding Shared Key
+     *  @param      string      $Vector     Encoding Shared IV (Initialisation Vector)
+     *  @return     string      $Out        Output Encrypted Data (Or 0 if fail)
      */
-    public function crypt($act, $In, $key, $iv)
+    private function crypt($Action, $In, $Key, $Vector)
     {
         //====================================================================//
         // Safety Check
         //====================================================================//
         // Verify Crypt Direction
-        if ($act == "encrypt") {
+        if ($Action == "encrypt") {
             Splash::log()->deb("MsgWsEnCrypt");
-        } elseif ($act == "decrypt") {
+        } elseif ($Action == "decrypt") {
             Splash::log()->deb("MsgWsDeCrypt");
         } else {
             return $this->Err("ErrWsCryptAction");
         }
         //====================================================================//
         // Verify All Parameters are given
-        if (empty($In) || empty($key) || empty($iv)) {
+        if (empty($In) || empty($Key) || empty($Vector)) {
             return Splash::log()->err("ErrParamMissing", __FUNCTION__);
         }
         //====================================================================//
@@ -169,18 +169,18 @@ class Webservice
         $Out = false;
         //====================================================================//
         // hash of secret key
-        $CryptKey = hash('sha256', $key);
+        $CryptKey = hash('sha256', $Key);
         //====================================================================//
         // hash of initialisation vector
         // Note : encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $CryptIv = substr(hash('sha256', $iv), 0, 16);
+        $CryptIv = substr(hash('sha256', $Vector), 0, 16);
         //====================================================================//
         // Open SSL Encryption
-        if ($act == 'encrypt') {
+        if ($Action == 'encrypt') {
             $Out = base64_encode(openssl_encrypt($In, Splash::configuration()->WsCrypt, $CryptKey, 0, $CryptIv));
         } //====================================================================//
         // Open SSL Decryption
-        elseif ($act == 'decrypt') {
+        elseif ($Action == 'decrypt') {
             $Out = openssl_decrypt(base64_decode($In), Splash::configuration()->WsCrypt, $CryptKey, 0, $CryptIv);
         }
         //====================================================================//
@@ -267,7 +267,7 @@ class Webservice
             if (strpos($Decode, '<SPLASH>') !== false) {
                 $Out = Splash::xml()->XmlToArrayObject($Decode);
             }
-            //====================================================================//
+        //====================================================================//
         // Unserialize Data buffer
         } else {
             if (!empty($Decode)) {
@@ -284,30 +284,31 @@ class Webservice
         //====================================================================//
         //  Messages Debug Informations
         //====================================================================//
-        //  Data Decoded (PHP Serialized Objects or XML)
-        if ((!SPLASH_SERVER_MODE) && (Splash::configuration()->TraceIn)) {
-            Splash::log()->war("Splash unPack - Data Decode : " . print_r($Decode, true));
-        }
-        //  Final Decoded Data (ArrayObject Structure)
-        //  Splash::log()->Deb("OsWs unPack - Data unSerialized : " . print_r($Out,true) );
+//        //  Data Decoded (PHP Serialized Objects or XML)
+//        if ((!SPLASH_SERVER_MODE) && (Splash::configuration()->TraceIn)) {
+//            Splash::log()->war("Splash unPack - Data Decode : " . print_r($Decode, true));
+//        }
+//        //====================================================================//
+//        //  Final Decoded Data (ArrayObject Structure)
+//        Splash::log()->Deb("Splash unPack - Data unSerialized : " . print_r($Out,true) );
   
         //====================================================================//
         // Return Result or False
         return empty($Out)?false:$Out;
     }
-
+    
     /**
      *      @abstract   Clean Ws Input Buffer before Call Request
      *      @return     int     $result     0 if KO, 1 if OK
      */
-    public function cleanIn()
+    private function cleanIn()
     {
         //====================================================================//
         //  Free current output buffer
-        unset($this->In);
+        unset($this->Inputs);
         //====================================================================//
         //  Initiate a new input buffer
-        $this->In = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $this->Inputs = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         return true;
     }
 
@@ -315,7 +316,7 @@ class Webservice
      *      @abstract   Clean parameters of Ws Call Request
      *      @return     int     $result     0 if KO, 1 if OK
      */
-    public function cleanOut()
+    private function cleanOut()
     {
         //====================================================================//
         //  Free current tasks list
@@ -326,10 +327,10 @@ class Webservice
         
         //====================================================================//
         //  Free current output buffer
-        unset($this->Out);
+        unset($this->Outputs);
         //====================================================================//
         //  Initiate a new output buffer
-        $this->Out     = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $this->Outputs     = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         return true;
     }
     
@@ -363,7 +364,7 @@ class Webservice
         //====================================================================//
         $this->RawOut = array(
             'id' => $this->id ,
-            'data' => $this->pack($this->Out, $Uncrypted));
+            'data' => $this->pack($this->Outputs, $Uncrypted));
         //====================================================================//
         // Prepare Webservice Client
         //====================================================================//
@@ -372,7 +373,7 @@ class Webservice
         }
         //====================================================================//
         // Call Execution
-        $this->RawIn = Splash::com()->call($this->Out->service, $this->RawOut);
+        $this->RawIn = Splash::com()->call($this->Outputs->service, $this->RawOut);
         //====================================================================//
         // Analyze & Decode Response
         //====================================================================//
@@ -384,7 +385,7 @@ class Webservice
         if ($Clean) {
             $this->cleanOut();
         }
-        return $this->In;
+        return $this->Inputs;
     }
 
     /**
@@ -412,7 +413,7 @@ class Webservice
         //   Execute Action From Splash Server to Module
         $Response   =   SplashServer::$Service(
             Splash::configuration()->WsIdentifier,
-            $this->pack($this->Out, $Uncrypted)
+            $this->pack($this->Outputs, $Uncrypted)
         );
         //====================================================================//
         // If required, lean _Out buffer parameters before exit
@@ -450,11 +451,11 @@ class Webservice
         // Prepare Data Output Buffer
         //====================================================================//
         // Fill buffer with Server Core infos
-        $this->Out->server     = $this->getServerInfos();
+        $this->Outputs->server     = $this->getServerInfos();
         // Remote Service to call
-        $this->Out->service    = $service;
+        $this->Outputs->service    = $service;
         // Share Debug Flag with Server
-        $this->Out->debug      = (int) SPLASH_DEBUG;
+        $this->Outputs->debug      = (int) SPLASH_DEBUG;
         
         return true;
     }
@@ -483,18 +484,18 @@ class Webservice
         //====================================================================//
         // Add Internal Tasks to buffer
         if (!empty($this->tasks)) {
-            $this->Out->tasks      = $this->tasks;
-            $this->Out->taskscount = count($this->Out->tasks);
-            Splash::log()->deb("[NuSOAP] Call Loaded " . $this->Out->tasks->count() . " Internal tasks");
+            $this->Outputs->tasks      = $this->tasks;
+            $this->Outputs->taskscount = count($this->Outputs->tasks);
+            Splash::log()->deb("[NuSOAP] Call Loaded " . $this->Outputs->tasks->count() . " Internal tasks");
         } else {
-            $this->Out->tasks  =   new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+            $this->Outputs->tasks  =   new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         }
         
         //====================================================================//
         // Add External Tasks to the request
         if (!empty($tasks)) {
-            $this->Out->tasks->append($tasks);
-            $this->Out->taskscount = count($tasks);
+            $this->Outputs->tasks->append($tasks);
+            $this->Outputs->taskscount = count($tasks);
             Splash::log()->deb("[NuSOAP] Call Loaded " . count($tasks) . " External tasks");
         }
         
@@ -548,11 +549,11 @@ class Webservice
         if (!empty($this->RawIn)) {
             //====================================================================//
             // Unpack Data from Raw packet
-            $this->In = $this->unPack($this->RawIn, $Uncrypted);
+            $this->Inputs = $this->unPack($this->RawIn, $Uncrypted);
             //====================================================================//
             // Merge Logging Messages from remote with current class messages
-            if (isset($this->In->log)) {
-                Splash::log()->merge($this->In->log);
+            if (isset($this->Inputs->log)) {
+                Splash::log()->merge($this->Inputs->log);
             }
         } else {
             //====================================================================//
@@ -560,7 +561,7 @@ class Webservice
             Splash::log()->deb("[NuSOAP] Id='"          . print_r($this->id, true) . "'");
             //====================================================================//
             //  Error Message
-            return Splash::log()->err("ErrWsNoResponse", $this->Out->service, $this->url);
+            return Splash::log()->err("ErrWsNoResponse", $this->Outputs->service, $this->url);
         }
         
         return true;
@@ -607,58 +608,64 @@ class Webservice
 
     /**
      * @abstract     Return Server Informations
-     * @return       array   $result
+     * @return       array   $Response
      */
     public function getServerInfos()
     {
         //====================================================================//
         // Init Result Array
-        $r = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $Response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        
         //====================================================================//
         // Server Infos
-        $r->ServerType      = "PHP";                            // INFO - Server Language Type
-        $r->ServerVersion   = phpversion();                     // INFO - Server Language Version
-        $r->ProtocolVersion = SPL_PROTOCOL;                     // INFO - Server Protocal Version
+        $Response->ServerType       = "PHP";                            // INFO - Server Language Type
+        $Response->ServerVersion    = phpversion();                     // INFO - Server Language Version
+        $Response->ProtocolVersion  = SPL_PROTOCOL;                     // INFO - Server Protocal Version
         //====================================================================//
         // Server Infos
-        $r->Self            = Splash::input("PHP_SELF");           // INFO - Current Url
-        $r->ServerAddress   = Splash::input("SERVER_ADDR");        // INFO - Server IP Address
+        $Response->Self             = Splash::input("PHP_SELF");           // INFO - Current Url
+        $Response->ServerAddress    = Splash::input("SERVER_ADDR");        // INFO - Server IP Address
         // Read System Folder without symlinks
-        $r->ServerRoot      = realpath(Splash::input("DOCUMENT_ROOT"));
-        $r->UserAgent       = Splash::input("HTTP_USER_AGENT");    // INFO - Browser User Agent
-        $r->WsMethod        = Splash::configuration()->WsMethod;    // Current Splash WebService Component
+        $Response->ServerRoot       = realpath(Splash::input("DOCUMENT_ROOT"));
+        $Response->UserAgent        = Splash::input("HTTP_USER_AGENT");    // INFO - Browser User Agent
+        $Response->WsMethod         = Splash::configuration()->WsMethod;    // Current Splash WebService Component
+
         //====================================================================//
         // Server Urls
         //====================================================================//
         // CRITICAL - Server Host Name
         // Check if Overiden by Application Module
         if (isset(Splash::configuration()->ServerHost)) {
-            $r->ServerHost      =   Splash::configuration()->ServerHost;
+            $Response->ServerHost   =   Splash::configuration()->ServerHost;
         // Check if Available with Secured Reading
         } elseif (!empty(Splash::input("SERVER_NAME"))) {
-            $r->ServerHost      = Splash::input("SERVER_NAME");
+            $Response->ServerHost   = Splash::input("SERVER_NAME");
         // Fallback to Unsecured Mode (Required for Phpunit)
         } else {
-            $r->ServerHost      = $_SERVER["SERVER_NAME"];
+            $Response->ServerHost   = $_SERVER["SERVER_NAME"];
         }
+        
         //====================================================================//
         // Server IPv4 Address
-        $r->ServerIP        = Splash::input("SERVER_ADDR");
+        $Response->ServerIP        = Splash::input("SERVER_ADDR");
+        
         //====================================================================//
         // Server WebService Path
         if (isset(Splash::configuration()->ServerPath)) {
-            $r->ServerPath      =   Splash::configuration()->ServerPath;
+            $Response->ServerPath      =   Splash::configuration()->ServerPath;
         } else {
             $FullPath           =   dirname(__DIR__);
-            $RelativePath       =   explode($r->ServerRoot, $FullPath);
+            $RelativePath       =   explode($Response->ServerRoot, $FullPath);
             if (isset($RelativePath[1])) {
-                $r->ServerPath  =   $RelativePath[1] . "/soap.php";
+                $Response->ServerPath  =   $RelativePath[1] . "/soap.php";
             } else {
-                $r->ServerPath  =   null;
+                $Response->ServerPath  =   null;
             }
         }
-        $r->setFlags(ArrayObject::STD_PROP_LIST);
-        return $r;
+        
+        $Response->setFlags(ArrayObject::STD_PROP_LIST);
+        
+        return $Response;
     }
 
     /**
@@ -667,7 +674,7 @@ class Webservice
      */
     public function getOutputBuffer()
     {
-        return $this->Out;
+        return $this->Outputs;
     }
     
     /**
@@ -715,10 +722,9 @@ class Webservice
     
     /**
      *      @abstract   Check Reverse Connexion with THIS Client
-     *      @param      bool    $Silent     No message display if non errors
      *      @return     int             0 if KO, 1 if OK
      */
-    public function selfTest($Silent = true)
+    public function selfTest()
     {
         //====================================================================//
         // Stack Trace
@@ -729,6 +735,7 @@ class Webservice
         //====================================================================//
         // Setup Webservice Class
         $TestsClient->host  = $this->getClientUrl();
+        
         //====================================================================//
         // Run NuSOAP Call - Reverse Ping
         $Ping = $TestsClient->call(SPL_S_PING, null, 1);
@@ -736,6 +743,7 @@ class Webservice
             Splash::log()->err(Splash::trans("ErrReversePing", $TestsClient->host));
             return Splash::log()->err(Splash::trans("ErrReverseDebug", $this->getClientDebugLink()));
         }
+        
         //====================================================================//
         // Run NuSOAP Call - Reverse Ping
         $Connect = $TestsClient->call(SPL_S_CONNECT, array());

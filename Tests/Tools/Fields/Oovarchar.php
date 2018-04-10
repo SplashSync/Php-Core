@@ -29,7 +29,7 @@ class Oovarchar
     public static function validate($Data)
     {
         if (!empty($Data) && !is_string($Data)) {
-            return "Field  Data is not a String.";
+            return "Field Data is not a String.";
         }
         return true;
     }
@@ -53,19 +53,43 @@ class Oovarchar
         $Data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
         
         //==============================================================================
+        //      Apply Constraints
+        self::applyLengthConstrains($Settings, $Data);
+        self::applyCaseConstrains($Settings, $Data);
+       
+        return $Data;
+    }
+    
+    /**
+     * @abstract    Apply Case Constrains
+     * @param   array       $Settings   User Defined Faker Settings
+     * @param   string      $Data
+     * @return  void
+     */
+    private static function applyLengthConstrains($Settings, &$Data)
+    {
+        //==============================================================================
         //      Apply Min Length Constraint
         if (isset($Settings["minLength"]) && is_numeric($Settings["minLength"])) {
             while (strlen($Data) < $Settings["minLength"]) {
                 $Data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
             }
         }
-        
         //==============================================================================
         //      Apply Max Length Constraint
         if (isset($Settings["maxLength"]) && is_numeric($Settings["maxLength"])) {
             $Data   =   substr($Data, 0, $Settings["maxLength"]);
         }
+    }
 
+    /**
+     * @abstract    Apply Case Constrains
+     * @param   array       $Settings   User Defined Faker Settings
+     * @param   string      $Data
+     * @return  void
+     */
+    private static function applyCaseConstrains($Settings, &$Data)
+    {
         //==============================================================================
         //      Apply Case Constraint
         if (isset($Settings["isLowerCase"]) && !empty($Settings["isLowerCase"])) {
@@ -74,8 +98,6 @@ class Oovarchar
         if (isset($Settings["isUpperCase"]) && !empty($Settings["isUpperCase"])) {
             $Data   = strtoupper($Data);
         }
-        
-        return $Data;
     }
     
     //==============================================================================

@@ -77,6 +77,22 @@ class Ooobjectid
         }
         //====================================================================//
         // Filter Objects List to Remove Current Tested
+        self::filterObjectList($ObjectsList, $ObjectType, $Settings);
+        //====================================================================//
+        // Select an Object in Given List
+        $Item           = $ObjectsList[array_rand($ObjectsList, 1)];
+        if (isset($Item["id"]) && !empty($Item["id"])) {
+            //====================================================================//
+            // Generate Object Id String
+            return self::encodeIdField($Item["id"], $ObjectType);
+        }
+        return null;
+    }
+    
+    private static function filterObjectList(&$ObjectsList, $ObjectType, $Settings)
+    {
+        //====================================================================//
+        // Filter Objects List to Remove Current Tested
         $FilterObjectId   = null;
         if (isset($Settings["CurrentType"]) && ($ObjectType == $Settings["CurrentType"])) {
             $FilterObjectId   = $Settings["CurrentId"];
@@ -88,15 +104,6 @@ class Ooobjectid
                 }
             }
         }
-        //====================================================================//
-        // Select an Object in Given List
-        $Item           = $ObjectsList[array_rand($ObjectsList, 1)];
-        if (isset($Item["id"]) && !empty($Item["id"])) {
-            //====================================================================//
-            // Generate Object Id String
-            return self::encodeIdField($Item["id"], $ObjectType);
-        }
-        return null;
     }
     
     //==============================================================================

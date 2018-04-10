@@ -70,7 +70,7 @@ class Splash extends SplashCore
         
         //====================================================================//
         // Run NuSOAP Call
-        $r = self::ws()->call(SPL_S_PING, null, 1);
+        $Result = self::ws()->call(SPL_S_PING, null, 1);
         
         //====================================================================//
         //  Messages Debug Informations
@@ -83,12 +83,12 @@ class Splash extends SplashCore
         
         //====================================================================//
         // Analyze NuSOAP results
-        if (isset($r->result) && ($r->result ==  true) && ($silent)) {
+        if (isset($Result->result) && ($Result->result ==  true) && ($silent)) {
             self::log()->cleanLog();
             return true;
         } //====================================================================//
         // If Not Silent, Display result
-        elseif (isset($r->result) && ($r->result == true)) {
+        elseif (isset($Result->result) && ($Result->result == true)) {
             return self::log()->msg("Remote Client Ping Passed (" . self::ws()->url . ")");
         } else {
             return self::log()->err("Remote Client Ping Failed (" . self::ws()->url . ")");
@@ -118,7 +118,7 @@ class Splash extends SplashCore
         }
         //====================================================================//
         // Run NuSOAP Call
-        $r = self::ws()->call(SPL_S_CONNECT);
+        $Result = self::ws()->call(SPL_S_CONNECT);
         //====================================================================//
         //  Messages Debug Informations
         //====================================================================//
@@ -129,7 +129,7 @@ class Splash extends SplashCore
         }
         //====================================================================//
         // Analyze NuSOAP results
-        if (!isset($r->result) || ($r->result != true)) {
+        if (!isset($Result->result) || ($Result->result != true)) {
             return self::log()->err("Remote Client Connection Failed (" . self::ws()->url . ")");
         }
         //====================================================================//
@@ -169,12 +169,7 @@ class Splash extends SplashCore
         
         //====================================================================//
         // Initiate Tasks parameters array
-        $params                 = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $params->type           = $ObjectType;                              // Type of the Object
-        $params->id             = $local;                                   // Id of Modified object
-        $params->action         = $action;                                  // Action Type On this Object
-        $params->user           = $user;                                    // Operation User Name for Historics
-        $params->comment        = $comment;                                 // Operation Comment for Historics
+        $params                 = self::getCommitParameters($ObjectType, $local, $action, $user, $comment);
 
         //====================================================================//
         // Add This Commit to Session Logs
@@ -182,24 +177,10 @@ class Splash extends SplashCore
         
         //====================================================================//
         // Verify this Object is Locked ==> No Action on this Node
-        //====================================================================//
-        if (is_array($local) || is_a($local, "ArrayObject")) {
-            foreach ($local as $value) {
-                if (Splash::object($ObjectType)->isLocked($value)) {
-                    return true;
-                }
-            }
-        } else {
-            if (Splash::object($ObjectType)->isLocked($local)) {
-                return true;
-            }
-        }
-        
-        //====================================================================//
-        // Verify Create Object is Locked ==> No Action on this Node
-        if (($action === SPL_A_CREATE) && Splash::object($ObjectType)->isLocked()) {
+        if (!self::isCommitAllowed($ObjectType, $local, $action)) {
             return true;
         }
+        
         //====================================================================//
         // Add Task to Ws Task List
         Splash::ws()->addTask(
@@ -214,10 +195,74 @@ class Splash extends SplashCore
         
         //====================================================================//
         // Analyze NuSOAP results
-        if (!isset($Response->result) || ($Response->result != true)) {
+        return self::isCommitSuccess($Response);
+    }
+    
+    /**
+     *   @abstract     Build Call Parameters Array
+     *   @param        array        $ObjectType        Object Type Name.
+     *   @param        int/array    $local             Object Local Id or Array of Local Id.
+     *   @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     *   @param        string       $user              User Name
+     *   @param        string       $comment           Operation Comment for Historics
+     *   @return       array
+     */
+    private static function getCommitParameters($ObjectType, $local = null, $action = null, $user = "", $comment = "")
+    {
+        $params                 = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $params->type           = $ObjectType;                              // Type of the Object
+        $params->id             = $local;                                   // Id of Modified object
+        $params->action         = $action;                                  // Action Type On this Object
+        $params->user           = $user;                                    // Operation User Name for Historics
+        $params->comment        = $comment;                                 // Operation Comment for Historics
+        return $params;
+    }
+    
+
+    /**
+     *   @abstract     Check if Commity is Allowed Local Object
+     *   @param        array        $ObjectType        Object Type Name.
+     *   @param        int/array    $local             Object Local Id or Array of Local Id.
+     *   @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     *   @return       bool
+     */
+    private static function isCommitAllowed($ObjectType, $local = null, $action = null)
+    {
+        //====================================================================//
+        // Verify this Object is Locked ==> No Action on this Node
+        //====================================================================//
+        if (is_array($local) || is_a($local, "ArrayObject")) {
+            foreach ($local as $value) {
+                if (Splash::object($ObjectType)->isLocked($value)) {
+                    return false;
+                }
+            }
+        } else {
+            if (Splash::object($ObjectType)->isLocked($local)) {
+                return false;
+            }
+        }
+        //====================================================================//
+        // Verify Create Object is Locked ==> No Action on this Node
+        if (($action === SPL_A_CREATE) && Splash::object($ObjectType)->isLocked()) {
             return false;
         }
         
+        return true;
+    }
+    
+    /**
+     *   @abstract     Check if Commit Call was Successful
+     *   @param        ArrayObject      $Response       Splash Server Response
+     *   @return       bool
+     */
+    public static function isCommitSuccess($Response)
+    {
+        //====================================================================//
+        // Analyze NuSOAP results
+        if (!isset($Response->result) || ($Response->result != true)) {
+            return false;
+        }
         return true;
     }
 }

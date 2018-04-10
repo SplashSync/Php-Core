@@ -41,6 +41,10 @@ use Splash\Local\Local;
 //********************************************************************//
 //====================================================================//
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class SplashCore
 {
     /**
@@ -219,9 +223,10 @@ class SplashCore
     }
     
     /**
-     *      @abstract   Get a singleton WebService Class
-     *                  Acces to NuSOAP WebService Communication Functions
-     *      @return     \Splash\Components\Webservice
+     * @abstract   Get a singleton WebService Class
+     *             Acces to NuSOAP WebService Communication Functions
+     * @return     Webservice
+     * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function ws()
     {
@@ -600,7 +605,6 @@ class SplashCore
      *      @param  string  $param2     chaine de param2
      *      @param  string  $param3     chaine de param3
      *      @param  string  $param4     chaine de param4
-     *      @param  string  $param5     chaine de param5
      *      @param  int     $maxsize    Max length of text
      *      @return string              Translated string (encoded into HTML entities and UTF8)
      */
@@ -610,10 +614,9 @@ class SplashCore
         $param2 = '',
         $param3 = '',
         $param4 = '',
-        $param5 = '',
         $maxsize = 0
     ) {
-        return self::translator()->translate($key, $param1, $param2, $param3, $param4, $param5, $maxsize);
+        return self::translator()->translate($key, $param1, $param2, $param3, $param4, $maxsize);
     }
 
     //--------------------------------------------------------------------//

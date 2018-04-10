@@ -22,6 +22,11 @@ namespace   Splash\Components;
 
 use Splash\Core\SplashCore      as Splash;
 
+use Splash\Router\Admin;
+use Splash\Router\Objects;
+use Splash\Router\Widgets;
+use Splash\Router\Files;
+
 use ArrayObject;
 
 //====================================================================//
@@ -38,15 +43,15 @@ class Router
     
     //====================================================================//
     // Tasks Counters
-    private $Count  =   0;                  // Input Task Counter
-    private $Ok     =   0;                  // Succeeded Task Counter
+    private $Count      =   0;              // Input Task Counter
+    private $Success    =   0;              // Succeeded Task Counter
 
     //====================================================================//
     // Tasks Statistics
     private $BatchTimer;                    // Task Batch Execution Start Timestamp
     private $TaskTimer;                     // Current Task Execution Start Timestamp
     
-//====================================================================//
+    //====================================================================//
     //  SERVER TASKING MANAGER
     //====================================================================//
 
@@ -113,7 +118,7 @@ class Router
         //====================================================================//
         // Tasks Counters Initialisation
         $this->Count  =   0;                  // Input Task Counter
-        $this->Ok     =   0;                  // Succeeded Task Counter
+        $this->Success=   0;                  // Succeeded Task Counter
         //====================================================================//
         // Task Batch Initialisation
         $this->BatchTimer = microtime(true);     // Initiate Performance Timer
@@ -137,7 +142,7 @@ class Router
         $Output->tasksinfos              = $this->getBatchInfos();
         //====================================================================//
         // Return Global Batch Result
-        return ($this->Count == $this->Ok)?true:false;
+        return ($this->Count == $this->Success)?true:false;
     }
 
     /**
@@ -186,7 +191,7 @@ class Router
             //====================================================================//
             // Increment Success Tasks Counter
             if ($Result->result) {
-                $this->Ok++;
+                $this->Success++;
             }
             
             return $Result;
@@ -205,7 +210,7 @@ class Router
             "DelayMs"       =>  $this->getDelayStarted(),
             "DelayStr"      =>  sprintf("%.2f %s", $this->getDelayStarted(), " ms"),
             "Performed"     =>  $this->Count,
-            "Ok"            =>  $this->Ok
+            "Ok"            =>  $this->Success
         );
     }
     

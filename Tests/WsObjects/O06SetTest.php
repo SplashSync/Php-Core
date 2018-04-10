@@ -130,15 +130,12 @@ class O06SetTest extends ObjectsCase
             __METHOD__,
             [ "id" => $ForceObjectId, "type" => $ObjectType, "fields" => $NewData]
         );
-
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($ObjectType, $ObjectId, ($ForceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $NewData);
-        
         //====================================================================//
         // UnLock New Objects To Avoid Action Commit
         Splash::object($ObjectType)->unLock();
-
         //====================================================================//
         // Lock This Object To Avoid Being Selected for Linking
         $this->setCurrentObject($ObjectType, $ObjectId);

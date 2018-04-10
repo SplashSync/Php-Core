@@ -283,17 +283,9 @@ class FileManager
     {
         //====================================================================//
         // Safety Checks
-        if (empty($dir)) {
-            return Splash::log()->err("ErrFileDirMissing", __FUNCTION__);
-        }
-        if (empty($file)) {
-            return Splash::log()->err("ErrFileFileMissing", __FUNCTION__);
-        }
-        if (empty($md5)) {
-            return Splash::log()->err("ErrFileMd5Missing", __FUNCTION__);
-        }
-        if (empty($raw)) {
-            return Splash::log()->err("ErrFileRawMissing", __FUNCTION__);
+        if (!$this->isWriteValidInputs($dir, $file, $md5, $raw)) {
+            return false;
+            ;
         }
         //====================================================================//
         // Assemble full Filename
@@ -343,6 +335,25 @@ class FileManager
         return true;
     }
 
+    private function isWriteValidInputs($dir = null, $file = null, $md5 = null, $raw = null)
+    {
+        //====================================================================//
+        // Safety Checks
+        if (empty($dir)) {
+            return Splash::log()->err("ErrFileDirMissing", __FUNCTION__);
+        }
+        if (empty($file)) {
+            return Splash::log()->err("ErrFileFileMissing", __FUNCTION__);
+        }
+        if (empty($md5)) {
+            return Splash::log()->err("ErrFileMd5Missing", __FUNCTION__);
+        }
+        if (empty($raw)) {
+            return Splash::log()->err("ErrFileRawMissing", __FUNCTION__);
+        }
+        return true;
+    }
+    
     /**
      *  @abstract   Delete a file exists or not
      *

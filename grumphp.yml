@@ -34,6 +34,8 @@ parameters:
 #        phpmd: ~ 
         phpmd:
             ruleset:        ["./Build/phpmd.xml"]
+            exclude:        
+                - nusoap.php
 #        securitychecker: ~
 #        phpcpd: ~
 #        phpcpd:

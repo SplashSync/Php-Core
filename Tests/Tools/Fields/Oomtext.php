@@ -1,9 +1,8 @@
 <?php
-
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Multilangual Text Field : Multilangual Short Text Array
+ * @abstract    Multilangual Text Field : Multilangual Long Text Array
  *
 //====================================================================//
 // Sample :
@@ -12,13 +11,13 @@ namespace Splash\Tests\Tools\Fields;
 //====================================================================//
  *
  */
-class Oomvarchar
+class Oomtext
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT        =   'MVarchar';
+    protected $FORMAT        =   'MText';
     
     //==============================================================================
     //      DATA VALIDATION
@@ -38,6 +37,7 @@ class Oomvarchar
         if (is_null($Data) || $Data === "") {
             return true;
         }
+        
         //==============================================================================
         //      Verify Data is an Array
         if (!is_array($Data) && !is_a($Data, "ArrayObject")) {
@@ -46,16 +46,23 @@ class Oomvarchar
 
         //==============================================================================
         //      Verify each Ligne is a String
-        foreach ($Data as $key => $value) {
-            if (empty($key) || !is_string($key)) {
-                return "Multi-Language Key must be a non empty String.";
-            }
-            
-            if (!empty($value) && !is_string($value) && !is_numeric($value)) {
-                return "Multi-Language Data is not a String.";
+        foreach ($Data as $Key => $Value) {
+            if (!self::validateIsMultilangData($Key, $Value)) {
+                return self::validateIsMultilangData($Key, $Value);
             }
         }
         
+        return true;
+    }
+    
+    private static function validateIsMultilangData($Key, $Value)
+    {
+        if (empty($Key) || !is_string($Key)) {
+            return "Multi-Language Key must be a non empty String.";
+        }
+        if (!empty($Value) && !is_string($Value) && !is_numeric($Value)) {
+            return "Multi-Language Data is not a String.";
+        }
         return true;
     }
     
@@ -66,7 +73,7 @@ class Oomvarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     *  @param      array   $Settings   User Defined Faker Settings
      *
      * @return mixed
      */
@@ -74,7 +81,7 @@ class Oomvarchar
     {
         $fake = array();
         foreach ($Settings["Langs"] as $lang) {
-            $fake[$lang] = Oovarchar::fake($Settings);
+            $fake[$lang] = Ootext::fake($Settings);
         }
         return $fake;
     }

@@ -2,7 +2,7 @@
 
 namespace Splash\Tests\WsAdmin;
 
-use Splash\Tests\Tools\BaseCase;
+use Splash\Tests\Tools\AbstractBaseCase;
 
 use Splash\Client\Splash;
 
@@ -11,7 +11,7 @@ use Splash\Client\Splash;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A03ObjectsTest extends BaseCase
+class A03ObjectsTest extends AbstractBaseCase
 {
     public function testObjectsFromClass()
     {

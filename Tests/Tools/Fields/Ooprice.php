@@ -50,6 +50,29 @@ class Ooprice
 
         //====================================================================//
         // Check Contents Available
+        if (!self::validateContentsAvailablility($Price)) {
+            return self::validateContentsAvailablility($Price);
+        }
+        
+        //====================================================================//
+        // Check Contents Type
+        if (!self::validateCurrency($Price)) {
+            return self::validateCurrency($Price);
+        }
+        
+        //====================================================================//
+        // Check Contents Type
+        if (!self::validateContentsTypes($Price)) {
+            return self::validateContentsTypes($Price);
+        }
+
+        return true;
+    }
+    
+    private static function validateContentsAvailablility($Price)
+    {
+        //====================================================================//
+        // Check Contents Available
         if (!is_array($Price) && !is_a($Price, "ArrayObject")) {
             return "Price Field Data is not an Array.";
         }
@@ -68,6 +91,14 @@ class Ooprice
         if (!array_key_exists("tax", $Price)) {
             return "Price Field => 'tax' total is missing.";
         }
+        
+        return true;
+    }
+    
+    private static function validateCurrency($Price)
+    {
+        //====================================================================//
+        // Check Contents Available
         if (!array_key_exists("symbol", $Price)) {
             return "Price Field => Currency 'symbol' is missing.";
         }
@@ -78,6 +109,11 @@ class Ooprice
             return "Price Field => Currency 'name' is missing.";
         }
         
+        return true;
+    }
+    
+    private static function validateContentsTypes($Price)
+    {
         //====================================================================//
         // Check Contents Type
         if (!empty($Price["ht"]) && !is_numeric($Price["ht"])) {
@@ -144,6 +180,23 @@ class Ooprice
             return ($Source === $Target)?true:false;
         }
         //====================================================================//
+        // Compare Amounts
+        if (!self::compareAmounts($Source, $Target, $Settings)) {
+            return false;
+        }
+        //====================================================================//
+        // Compare Currency If Set on Both Sides
+        if (!self::compareCurrency($Source, $Target)) {
+            return false;
+        }
+        //====================================================================//
+        // Prices Are Identical
+        return true;
+    }
+    
+    private static function compareAmounts($Source, $Target, $Settings)
+    {
+        //====================================================================//
         // Compare Price
         if ($Source["base"]) {
             if (!self::isEqualFloat($Source["ttc"], $Target["ttc"], $Settings)) {
@@ -160,6 +213,12 @@ class Ooprice
                 (!self::isEqualFloat($Source["vat"], $Target["vat"], $Settings))) {
             return false;
         }
+
+        return true;
+    }
+    
+    private static function compareCurrency($Source, $Target)
+    {
         //====================================================================//
         // Compare Currency If Set on Both Sides
         if (!empty($Source["code"])) {
@@ -171,8 +230,7 @@ class Ooprice
         if ($Source["code"] !== $Target["code"]) {
             return false;
         }
-        //====================================================================//
-        // Prices Are Identical
+
         return true;
     }
     
@@ -192,22 +250,22 @@ class Ooprice
     
     /**
     *   @abstract   Build a new price field array
-    *   @param      double      $HT             Price Without VAT
+    *   @param      double      $TaxExcl             Price Without VAT
     *   @param      double      $VAT            VAT percentile
-    *   @param      double      $TTC            Price With VAT
+    *   @param      double      $TaxIncl            Price With VAT
     *   @param      string      $Code           Price Currency Code
     *   @param      string      $Symbol         Price Currency Symbol
     *   @param      string      $Name           Price Currency Name
     *   @return     array                      Contact Firstname, Lastname & Compagny Name
     */
-    public static function encodePrice($HT, $VAT, $TTC = null, $Code = "", $Symbol = "", $Name = "")
+    public static function encodePrice($TaxExcl, $VAT, $TaxIncl = null, $Code = "", $Symbol = "", $Name = "")
     {
         //====================================================================//
         // Safety Checks
-        if (!is_double($HT) && !is_double($TTC)) {
+        if (!is_double($TaxExcl) && !is_double($TaxIncl)) {
             return __FUNCTION__ . "Price Value is Invalid";
         }
-        if (is_double($HT) && is_double($TTC)) {
+        if (is_double($TaxExcl) && is_double($TaxIncl)) {
             return __FUNCTION__ . "Price Value is Invalid";
         }
         if (!is_double($VAT)) {
@@ -217,16 +275,16 @@ class Ooprice
         //====================================================================//
         // Build Price Array
         $Price = array("vat" => $VAT, "code" => $Code,"symbol" => $Symbol,"name" => $Name);
-        if (is_double($HT)) {
+        if (is_double($TaxExcl)) {
             $Price["base"]  =    0;
-            $Price["ht"]    =    $HT;
-            $Price["tax"]   =    $HT * ($VAT/100);
-            $Price["ttc"]   =    $HT * (1 + $VAT/100);
+            $Price["ht"]    =    $TaxExcl;
+            $Price["tax"]   =    $TaxExcl * ($VAT/100);
+            $Price["ttc"]   =    $TaxExcl * (1 + $VAT/100);
         } else {
             $Price["base"]  =    1;
-            $Price["ht"]    =    $TTC / (1 + $VAT/100);
-            $Price["tax"]   =    $TTC - $Price["ht"];
-            $Price["ttc"]   =    $TTC;
+            $Price["ht"]    =    $TaxIncl / (1 + $VAT/100);
+            $Price["tax"]   =    $TaxIncl - $Price["ht"];
+            $Price["ttc"]   =    $TaxIncl;
         }
         return $Price;
     }

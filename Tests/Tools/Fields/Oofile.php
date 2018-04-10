@@ -1,35 +1,30 @@
 <?php
-
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Image Field : Define acces to an Image File
+ * @abstract    File Field : Define Access to a File
  *
  * @example
  *
 //====================================================================//
-// Image Structure
+// File Structure
 // Sample :
-// $data["image"]["name"]           =>      Image Name
-// $data["image"]["file"]           =>      Image Identifier to Require File from Server
-// $data["image"]["filename"]       =>      Image Filename with Extension
-// $data["image"]["path"]           =>      Image Full path on local system
-// $data["image"]["url"]            =>      Complete Public Url, Used to display image
-// $data["image"]["t_url"]          =>      Complete Thumb Public Url, Used to display image
-// $data["image"]["width"]          =>      Image Width In Px
-// $data["image"]["height"]         =>      Image Height In Px
-// $data["image"]["md5"]            =>      Image File Md5 Checksum
-// $data["image"]["size"]           =>      Image File Size
+// $data["file"]["name"]           =>      File Name
+// $data["file"]["file"]           =>      File Identifier to Require File from Server
+// $data["file"]["filename"]       =>      File Filename with Extension
+// $data["file"]["path"]           =>      File Full path on local system
+// $data["file"]["md5"]            =>      File Md5 Checksum
+// $data["file"]["size"]           =>      File Size
 //====================================================================//
  *
  */
-class Ooimage
+class Oofile
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    const FORMAT        =   'Image';
+    const FORMAT        =   'File';
     
     //==============================================================================
     //      DATA VALIDATION
@@ -38,44 +33,46 @@ class Ooimage
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   array   $Image      Splash Image definition Array
+     * @param   array   $File      Splash Image definition Array
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Image)
+    public static function validate($File)
     {
         //====================================================================//
         //      Verify Data is NOT Empty
-        if (empty($Image)) {
+        if (empty($File)) {
             return true;
         }
-        //====================================================================//
+        //==============================================================================
         //      Verify Data is an Array
-        if (!is_array($Image) && !is_a($Image, "ArrayObject")) {
+        if (!is_array($File) && !is_a($File, "ArrayObject")) {
             return "Field Data is not an Array.";
         }
         //====================================================================//
-        // Check Contents Available
-        if (!array_key_exists("name", $Image)) {
-            return "Image Field => 'name' is missing.";
+        //      Check Contents
+        if (!self::validateContents($File)) {
+            return self::validateContents($File);
         }
-        if (!array_key_exists("filename", $Image)) {
-            return "Image Field => 'filename' is missing.";
+        return true;
+    }
+    
+    private static function validateContents($File)
+    {
+        if (!array_key_exists("name", $File)) {
+            return "File Field => 'name' is missing.";
         }
-        if (!array_key_exists("path", $Image) && !array_key_exists("file", $Image)) {
-            return "Image Field => 'path' is missing.";
+        if (!array_key_exists("filename", $File)) {
+            return "File Field => 'filename' is missing.";
         }
-        if (!array_key_exists("width", $Image)) {
-            return "Image Field => 'width' is missing.";
+        if (!array_key_exists("path", $File) && !array_key_exists("file", $File)) {
+            return "File Field => 'path' is missing.";
         }
-        if (!array_key_exists("height", $Image)) {
-            return "Image Field => 'height' is missing.";
+        if (!array_key_exists("md5", $File)) {
+            return "File Field => 'md5' is missing.";
         }
-        if (!array_key_exists("md5", $Image)) {
-            return "Image Field => 'md5' is missing.";
-        }
-        if (!array_key_exists("size", $Image)) {
-            return "Image Field => 'size' is missing.";
+        if (!array_key_exists("size", $File)) {
+            return "File Field => 'size' is missing.";
         }
         
         return true;
@@ -96,45 +93,35 @@ class Ooimage
     {
         //====================================================================//
         // Image Faker Parameters
-        $i          = (int) mt_rand(0, count($Settings["Images"]) - 1);
-        $Dir        = dirname(dirname(dirname(__DIR__))) . "/Resources/img/";
-        $File       = $Settings["Images"][$i];
+        $Index          = (int) mt_rand(0, count($Settings["Files"]) - 1);
+        $Dir        = dirname(dirname(__DIR__)) . "/Resources/files/";
+        $File       = $Settings["Files"][$Index];
         $FullPath   = $Dir . $File;
-//        $Name       = "Fake Image " . substr(preg_replace('/[^A-Za-z0-9\-]/', '', utf8_encode(mt_rand())), 0, 3);
-        $Name       = "Fake Image " . $i;
+        $Name       = "Fake File " . $Index;
         
         //====================================================================//
         // Build Image Array
-        $Image = array();
+        $FakeFile = array();
         //====================================================================//
         // ADD MAIN INFOS
         //====================================================================//
         // Image Name
-        $Image["name"]          = $Name;
+        $FakeFile["name"]          = $Name;
         //====================================================================//
         // Image Filename
-        $Image["filename"]      = $File;
-        $Image["file"]          = $File;
+        $FakeFile["filename"]      = $File;
+        $FakeFile["file"]          = $File;
         //====================================================================//
         // Image File Identifier (Full Path Here)
-        $Image["path"]          = $Dir . $File;
-        //====================================================================//
-        // Image Publics Url
-        $Image["url"]           = filter_input(INPUT_SERVER, "HTTP_HOST") . $File;
+        $FakeFile["path"]          = $FullPath;
         
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
-        // Images Informations
-        if (file_exists($FullPath)) {
-            $ImageDims  = getimagesize($FullPath);
-            $Image["width"]         = $ImageDims[0];
-            $Image["height"]        = $ImageDims[1];
-        }
-        $Image["md5"]           = md5_file($FullPath);
-        $Image["size"]          = filesize($FullPath);
+        $FakeFile["md5"]           = md5_file($FullPath);
+        $FakeFile["size"]          = filesize($FullPath);
         
-        return $Image;
+        return $FakeFile;
     }
     
     //==============================================================================
@@ -161,21 +148,29 @@ class Ooimage
         if (!is_array($Target) && !is_a($Target, "ArrayObject")) {
             return false;
         }
-        
+        //====================================================================//
+        // Compare File CheckSum
+        if (!self::compareMd5($Source, $Target)) {
+            return self::compareMd5($Source, $Target);
+        }
+        //====================================================================//
+        // Compare File Size
+        if ($Source["size"] != $Target["size"]) {
+            return false;
+        }
+        return true;
+    }
+
+    private static function compareMd5($Source, $Target)
+    {
+        //====================================================================//
+        // Compare File CheckSum
         if (!array_key_exists("md5", $Source) || !array_key_exists("md5", $Target)
             || !array_key_exists("size", $Source) || !array_key_exists("size", $Target)
             ) {
             return false;
         }
-        
-        //====================================================================//
-        // Compare File CheckSum
         if ($Source["md5"] != $Target["md5"]) {
-            return false;
-        }
-        //====================================================================//
-        // Compare File Size
-        if ($Source["size"] != $Target["size"]) {
             return false;
         }
         return true;

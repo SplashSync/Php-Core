@@ -22,6 +22,10 @@ namespace Splash\Tests\Tools;
 
 use PHPUnit\Framework\TestCase      as BaseTestCase;
 
+if (!defined("SPLASH_SERVER_MODE")) {
+    define("SPLASH_SERVER_MODE", true);
+}
+
 /**
  * @abstract    Base PhpUnit Test Class for Splash Modules Tests
  *              May be overriden for Using Splash Core Test in Specific Environements

@@ -95,7 +95,7 @@ class SelfTestTemplate extends WidgetBase
         //====================================================================//
         // Build Intro Text Block
         //====================================================================//
-        $this->buildIntroBlock();
+        $this->buildIntroBlock($params);
         
         //====================================================================//
         // Build Inputs Block

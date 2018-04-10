@@ -20,8 +20,8 @@ use ArrayObject;
 /**
  * @abstract    This Class is a Generator for Objects Fields Definition
  * @author      B. Paquier <contact@splashsync.com>
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
-
 class FieldsFactory
 {
     /**
@@ -559,28 +559,32 @@ class FieldsFactory
         if (!isset($this->new) || empty($this->new)) {
             return false;
         }
-
+        return $this->validate($this->new);
+    }
+    
+    private function validate($Field)
+    {
         //====================================================================//
         // Verify - Field Type is Not Empty
-        if (empty($this->new->type) || !is_string($this->new->type)) {
+        if (empty($Field->type) || !is_string($Field->type)) {
             return Splash::log()->err("ErrFieldsNoType");
         }
 
         //====================================================================//
         // Verify - Field Id is Not Empty
-        if (empty($this->new->id) || !is_string($this->new->id)) {
+        if (empty($Field->id) || !is_string($Field->id)) {
             return Splash::log()->err("ErrFieldsNoId");
         }
         
         //====================================================================//
         // Verify - Field Name is Not Empty
-        if (empty($this->new->name) || !is_string($this->new->name)) {
+        if (empty($Field->name) || !is_string($Field->name)) {
             return Splash::log()->err("ErrFieldsNoName");
         }
         
         //====================================================================//
         // Verify - Field Desc is Not Empty
-        if (empty($this->new->desc) || !is_string($this->new->desc)) {
+        if (empty($Field->desc) || !is_string($Field->desc)) {
             return Splash::log()->err("ErrFieldsNoDesc");
         }
 

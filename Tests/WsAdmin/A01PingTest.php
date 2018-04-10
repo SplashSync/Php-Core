@@ -2,7 +2,7 @@
 
 namespace Splash\Tests\WsAdmin;
 
-use Splash\Tests\Tools\BaseCase;
+use Splash\Tests\Tools\AbstractBaseCase;
 
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
@@ -12,7 +12,7 @@ use Splash\Server\SplashServer;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A01PingTest extends BaseCase
+class A01PingTest extends AbstractBaseCase
 {
     public function testDummy()
     {

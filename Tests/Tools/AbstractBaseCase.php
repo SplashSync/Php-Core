@@ -115,7 +115,7 @@ abstract class AbstractBaseCase extends TestCase
      * @param string    $Type
      * @param string    $Comment
      */
-    public function assertIsValidSplashFieldData($Data, $Type, $Comment)
+    public function assertIsValidSplashFieldData($Data, $Type)
     {
         //====================================================================//
         // Verify Type is Valid
@@ -198,8 +198,11 @@ abstract class AbstractBaseCase extends TestCase
         
         //====================================================================//
         // UNEXPECTED SERVER LOG ITEMS
-        foreach ($Log as $Key => $Lines) {
-            $this->assertTrue(in_array($Key, array("err", "msg", "war", "deb")), "Received Unexpected Log Messages. ( Data->log->" . $Key . ")");
+        foreach (array_keys($Log) as $Key) {
+            $this->assertTrue(
+                    in_array($Key, array("err", "msg", "war", "deb")), 
+                    "Received Unexpected Log Messages. ( Data->log->" . $Key . ")"
+                    );
         }
         
         //====================================================================//

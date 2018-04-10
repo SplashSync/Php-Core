@@ -19,6 +19,8 @@ class O00ObjectBaseTest extends ObjectsCase
      */
     public function testLockFeature($Sequence, $ObjectType)
     {
+        $this->loadLocalTestSequence($Sequence);
+        
         //====================================================================//
         //   FOR NEW OBJECTS
         //====================================================================//

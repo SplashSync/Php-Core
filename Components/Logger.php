@@ -12,23 +12,16 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @abstract    Requests Log & Debug  Management Class
- * @author      B. Paquier <contact@splashsync.com>
- */
 
 namespace   Splash\Components;
 
 use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
 
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
-
 /**
- *  \class      SplashLog
- *  \brief      Simple Logging Functions for OsWs Classes
+ * @abstract    Requests Log & Debug Management Class
+ * @author      SplashSync <contact@splashsync.com>
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Logger
 {
@@ -527,12 +520,12 @@ class Logger
         // Var Dump reading
         ob_start();                     // Turn on output buffering
         var_dump($var);                 // Dumps information about a variable
-        $r = ob_get_contents();         // Read the contents of the output buffer
+        $Html = ob_get_contents();         // Read the contents of the output buffer
         ob_end_clean();                 // Clean (erase) the output buffer and turn off output buffering
 
         //====================================================================//
         // Return Contents
-        return "<PRE>" . $r . "</PRE>";
+        return "<PRE>" . $Html . "</PRE>";
     }
 
     /**

@@ -324,7 +324,7 @@ class SplashServer
             echo $ex->getMessage();
             $Html  .=   Splash::log()->getHtmlLogList(true);
             echo $Html;
-            exit;
+            return null;
         }
 
         $Html  .=   Splash::log()->getHtmlLogList(true);

@@ -135,62 +135,76 @@ class Translator
      *      @param  string  $param2     chaine de param2
      *      @param  string  $param3     chaine de param3
      *      @param  string  $param4     chaine de param4
-     *      @param  string  $param5     chaine de param5
      *      @param  int     $maxsize    Max length of text
      *      @return string              Translated string (encoded into HTML entities and UTF8)
      */
-    public function translate($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '', $maxsize = 0)
+    public function translate($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $maxsize = 0)
     {
         //====================================================================//
-        // Translation is available
-        if (! empty($this->trans[$key])) {
-            $str = $this->trans[$key];
-            //====================================================================//
-            // Replace arrays by counts strings.
-            if (is_array($param1) || is_a($param1, "ArrayObject")) {
-                $param1 = "x " . count($param1);
-            }
-            if (is_array($param2) || is_a($param2, "ArrayObject")) {
-                $param2 = "x " . count($param2);
-            }
-            if (is_array($param3) || is_a($param3, "ArrayObject")) {
-                $param3 = "x " . count($param3);
-            }
-            if (is_array($param4) || is_a($param4, "ArrayObject")) {
-                $param4 = "x " . count($param4);
-            }
-            if (is_array($param5) || is_a($param5, "ArrayObject")) {
-                $param5 = "x " . count($param5);
-            }
-                
-            //====================================================================//
-            // Replace %s and %d except for FormatXXX strings.
-            if (!preg_match('/^Format/', $key)) {
-                $str = sprintf($str, $param1, $param2, $param3, $param4, $param5);
-            }
-            //====================================================================//
-            // Truncate string if too long.
-            if ($maxsize) {
-                $str = substr($str, 0, $maxsize);
-            }
-            //====================================================================//
-            // We replace some HTML tags by __xx__ to avoid having them encoded by htmlentities
-            $str = str_replace(array('<','>','"',), array('__lt__','__gt__','__quot__'), $str);
-            //====================================================================//
-            // Crypt string into HTML
-            $str = htmlentities($str, ENT_QUOTES);
-            //====================================================================//
-            // Restore HTML tags
-            $str = str_replace(array('__lt__','__gt__','__quot__'), array('<','>','"',), $str);
-
-            return $str;
-        //====================================================================//
         // Translation is not available
-        } else {
+        if (empty($this->trans[$key])) {
             return $key;
         }
+        
+        //====================================================================//
+        // Translation is available
+        $str = $this->trans[$key];
+        
+        //====================================================================//
+        // Replace arrays by counts strings.
+        $this->normalizeParameters($param1, $param2, $param3, $param4);
+
+        //====================================================================//
+        // Replace %s and %d except for FormatXXX strings.
+        if (!preg_match('/^Format/', $key)) {
+            $str = sprintf($str, $param1, $param2, $param3, $param4);
+        }
+        //====================================================================//
+        // Truncate string if too long.
+        if ($maxsize) {
+            $str = substr($str, 0, $maxsize);
+        }
+        //====================================================================//
+        // We replace some HTML tags by __xx__ to avoid having them encoded by htmlentities
+        $str = str_replace(array('<','>','"',), array('__lt__','__gt__','__quot__'), $str);
+        //====================================================================//
+        // Crypt string into HTML
+        $str = htmlentities($str, ENT_QUOTES);
+        //====================================================================//
+        // Restore HTML tags
+        $str = str_replace(array('__lt__','__gt__','__quot__'), array('<','>','"',), $str);
+
+        return $str;
     }
 
+    /**
+     *  @abstract   Convert Array Parameters to String
+     *
+     * @param  string  $key        Key to translate
+     * @param  string  $param1     chaine de param1
+     * @param  string  $param2     chaine de param2
+     * @param  string  $param3     chaine de param3
+     * @param  string  $param4     chaine de param4
+     *
+     * @return void
+     */
+    public function normalizeParameters(&$param1, &$param2, &$param3, &$param4)
+    {
+        //====================================================================//
+        // Replace arrays by counts strings.
+        if (is_array($param1) || is_a($param1, "ArrayObject")) {
+            $param1 = "x " . count($param1);
+        }
+        if (is_array($param2) || is_a($param2, "ArrayObject")) {
+            $param2 = "x " . count($param2);
+        }
+        if (is_array($param3) || is_a($param3, "ArrayObject")) {
+            $param3 = "x " . count($param3);
+        }
+        if (is_array($param4) || is_a($param4, "ArrayObject")) {
+            $param4 = "x " . count($param4);
+        }
+    }
     
     /**
      * @abstract    Build Translation filename based on specified $file and ISO Language Code.
@@ -202,7 +216,7 @@ class Translator
      *
      * @param  string  $Language   ISO Language Code (Example en_US or fr_FR or es_ES)
      *
-     * @return bool
+     * @return string
      */
     private function getLangFileName($FileName, $Language)
     {
@@ -246,39 +260,44 @@ class Translator
 
         //====================================================================//
         // Open File
-        $fp = @fopen($FullPath, "rt");
-        if (!$fp) {
+        $file = @fopen($FullPath, "rt");
+        if (!$file) {
             return false;
         }
 
         //====================================================================//
         // Import All New Translation Keys
         // Ex: Need 225ms for all fgets on all lang file for Third party page. Same speed than file_get_contents
-        while ($line = fgets($fp, 4096)) {
-            //====================================================================//
-            // Filter empty lines
-            if (($line[0] == "\n") || ($line[0] == " ") || ($line[0] == "#") || ($line[0] == ";")) {
-                continue;
-            }
-            //====================================================================//
-            // Explode Lines
-            $tab=explode('=', $line, 2);
-            $key=trim($tab[0]);
-            //====================================================================//
-            // Debug Line
-            //print "Domain=$file, found a string for $tab[0] with value $tab[1]<br>";
-            //====================================================================//
-            // If translation was already found, we must not continue
-            if (empty($this->trans[$key]) && isset($tab[1])) {
-                //====================================================================//
-                // Store Line Translation Key
-                $value=trim(preg_replace('/\\n/', "\n", $tab[1]));
-                $this->trans[$key]=$value;
-            }
+        while ($line = fgets($file, 4096)) {
+            $this->loadLangLine($line);
         }
         
         //====================================================================//
         // Close File
-        fclose($fp);
+        fclose($file);
+    }
+    
+    private function loadLangLine($line)
+    {
+        //====================================================================//
+        // Filter empty lines
+        if (($line[0] == "\n") || ($line[0] == " ") || ($line[0] == "#") || ($line[0] == ";")) {
+            return;
+        }
+        //====================================================================//
+        // Explode Lines
+        $tab=explode('=', $line, 2);
+        $key=trim($tab[0]);
+        //====================================================================//
+        // Debug Line
+        //print "Domain=$file, found a string for $tab[0] with value $tab[1]<br>";
+        //====================================================================//
+        // If translation was already found, we must not continue
+        if (empty($this->trans[$key]) && isset($tab[1])) {
+            //====================================================================//
+            // Store Line Translation Key
+            $value=trim(preg_replace('/\\n/', "\n", $tab[1]));
+            $this->trans[$key]=$value;
+        }
     }
 }

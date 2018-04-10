@@ -12,19 +12,16 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @abstract    Tooling Class for Validation of Splash Php Module Contents
- * @author      B. Paquier <contact@splashsync.com>
- */
 
 namespace   Splash\Components;
 
 use Splash\Core\SplashCore      as Splash;
 
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
-
+/**
+ * @abstract    Tooling Class for Validation of Splash Php Module Contents
+ * @author      B. Paquier <contact@splashsync.com>
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class Validator
 {
 
@@ -128,28 +125,28 @@ class Validator
     */
     public function isValidServerInfos()
     {
-        $In     = Splash::ws()->getServerInfos();
+        $Infos     = Splash::ws()->getServerInfos();
         
         //====================================================================//
         // Verify Array Given
-        if (!is_a($In, "ArrayObject")) {
-            return Splash::log()->err(Splash::trans("ErrInfosNotArrayObject", get_class($In)));
+        if (!is_a($Infos, "ArrayObject")) {
+            return Splash::log()->err(Splash::trans("ErrInfosNotArrayObject", get_class($Infos)));
         }
         
         if (defined('SPLASH_DEBUG') && SPLASH_DEBUG) {
-            Splash::log()->war("Host : " .  $In['ServerHost']);
-            Splash::log()->war("Path : " .  $In['ServerPath']);
+            Splash::log()->war("Host : " .  $Infos['ServerHost']);
+            Splash::log()->war("Path : " .  $Infos['ServerPath']);
         }
         
         //====================================================================//
         // Required Parameters are Available
         //====================================================================//
-        if (!isset($In['ServerHost']) || empty($In['ServerHost'])) {
+        if (!isset($Infos['ServerHost']) || empty($Infos['ServerHost'])) {
             Splash::log()->err(Splash::trans("ErrEmptyServerHost"));
             return Splash::log()->err(Splash::trans("ErrEmptyServerHostDesc"));
         }
 
-        if (!isset($In['ServerPath']) || empty($In['ServerPath'])) {
+        if (!isset($Infos['ServerPath']) || empty($Infos['ServerPath'])) {
             Splash::log()->err(Splash::trans("ErrEmptyServerPath"));
             return Splash::log()->err(Splash::trans("ErrEmptyServerPathDesc"));
         }
@@ -157,20 +154,25 @@ class Validator
         //====================================================================//
         // Detect Local Installations
         //====================================================================//
+        $this->isLocalInstallation($Infos);
         
-        if (strpos($In['ServerHost'], "localhost") !== false) {
+        return true;
+    }
+    
+    /**
+     * @abstract   Verify Webserver is a LocalHost
+     */
+    public function isLocalInstallation($Infos)
+    {
+        if (strpos($Infos['ServerHost'], "localhost") !== false) {
             Splash::log()->war(Splash::trans("WarIsLocalhostServer"));
-        } elseif (strpos($In['ServerIP'], "127.0.0.1") !== false) {
+        } elseif (strpos($Infos['ServerIP'], "127.0.0.1") !== false) {
             Splash::log()->war(Splash::trans("WarIsLocalhostServer"));
         }
         
         if (Splash::input("REQUEST_SCHEME") === "https") {
             Splash::log()->war(Splash::trans("WarIsHttpsServer"));
         }
-        
-
-        
-        return true;
     }
     
     //====================================================================//
@@ -277,6 +279,13 @@ class Validator
         }
         
         //====================================================================//
+        // Verify Local Object Class Functions & Exist
+        return $this->isValidObjectFunctions($ClassName, $ObjectType);
+    }
+
+    private function isValidObjectFunctions($ClassName, $ObjectType)
+    {
+        //====================================================================//
         // Verify Local Object Class Functions Exists
         //====================================================================//
         
@@ -313,7 +322,7 @@ class Validator
 
         return true;
     }
-        
+    
     /**
      *   @abstract   Verify this Object Type is valid in Local Syetem
      *   @param      string      $ObjectType         Object Type Name String

@@ -1,7 +1,7 @@
 <?php
 namespace Splash\Tests\WsAdmin;
 
-use Splash\Tests\Tools\BaseCase;
+use Splash\Tests\Tools\AbstractBaseCase;
 
 use Splash\Client\Splash;
 
@@ -10,7 +10,7 @@ use Splash\Client\Splash;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A06InfosTest extends BaseCase
+class A06InfosTest extends AbstractBaseCase
 {
     public function testFromClass()
     {

@@ -58,8 +58,6 @@ class O02FieldsTest extends ObjectsCase
     
     public function verifyResponse($Data)
     {
-//        var_dump($Data);
-        
         //====================================================================//
         //   Verify Response
         $this->assertNotEmpty($Data, "Object Fields List is Empty");
@@ -70,6 +68,7 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         foreach ($Data as $Field) {
             $this->verifyFieldRequired($Field);
+            $this->verifyFieldMetaData($Field);
             $this->verifyFieldOptional($Field);
             $this->verifyFieldAssociations($Field, $Data);
         }
@@ -122,19 +121,8 @@ class O02FieldsTest extends ObjectsCase
         $this->assertArraySplashBool($Field, "inlist", "Field In List Flag");
     }
     
-    /**
-     * @abstract    Verify Optional Field Informations are in right format
-     *
-     * @param array $Field
-     */
-    public function verifyFieldOptional($Field)
+    public function verifyFieldMetaData($Field)
     {
-        //====================================================================//
-        // Field Description
-        if (array_key_exists("desc", $Field)) {
-            $this->assertArrayInternalType($Field, "desc", "string", "Field Description");
-        }
-            
         //====================================================================//
         // Field MicroData Infos
         if (array_key_exists("itemtype", $Field) && !empty($Field["itemtype"])) {
@@ -155,7 +143,16 @@ class O02FieldsTest extends ObjectsCase
                 "Field Tag do not match with defined MicroData. Expected Format: md5('itemprop'@'itemptype') "
             );
         }
-
+    }
+    
+    public function verifyFieldOptional($Field)
+    {
+        //====================================================================//
+        // Field Description
+        if (array_key_exists("desc", $Field)) {
+            $this->assertArrayInternalType($Field, "desc", "string", "Field Description");
+        }
+            
         //====================================================================//
         // Field Format
         if (array_key_exists("format", $Field)) {

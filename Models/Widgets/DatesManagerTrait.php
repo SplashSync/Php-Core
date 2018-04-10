@@ -53,6 +53,13 @@ trait DatesManagerTrait
 
         //====================================================================//
         //  Generate Dates Formater String
+        $this->importDatesFormat();
+    }
+    
+    private function importDatesFormat()
+    {
+        //====================================================================//
+        //  Generate Dates Formater String
         switch ($this->GroupBy) {
             case "m":
                 $this->LabelFormat  = "Y-m";
