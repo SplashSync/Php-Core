@@ -12,13 +12,13 @@ cache:
     
 script:
     # With PHP 7 => Load Phpstan   
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then composer require phpstan/phpstan-shim --no-update; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then composer require phpstan/phpstan-shim --no-update; fi
     
     - composer update --no-suggest
     - php ./vendor/bin/grumphp run --testsuite=travis
     
     # With PHP 7 => Execute Phpstan 
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then php ./vendor/bin/grumphp run --testsuite=phpstan; fi    
+    - if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then php ./vendor/bin/grumphp run --testsuite=phpstan; fi    
         
 notifications:
   email:         
