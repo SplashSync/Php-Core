@@ -12,15 +12,12 @@ parameters:
             triggered_by:   ['php']
         phpcs:
             standard:       "PSR2"
-#            standard:       "Build/phpcs.xml"
             triggered_by:   [php]
-#            warning_severity: 5  
             ignore_patterns:
                 - nusoap.php
                 - soap.php
                 - BaseCase.php                
                 - TestCase.php
-#        phpcsfixer: ~s        
         git_blacklist:
             keywords:
                 - "var_dump"
@@ -31,16 +28,13 @@ parameters:
             triggered_by: [php, js, twig]
         jsonlint:
             detect_key_conflicts: true
-#        phpmd: ~ 
         phpmd:
             ruleset:        ["./Build/phpmd.xml"]
             exclude:        
                 - "nusoap.php"
                 - "vendor"
-#        securitychecker: ~
+        securitychecker: ~
         phpcpd: 
-#        phpcpd:
-##            directory: 'app/code/local/SplashSync/Splash/src'
             exclude:        
                 - "Components/NuSOAP"
                 - "vendor"               
@@ -50,4 +44,21 @@ parameters:
             ignore_patterns:
                 - NuSOAPInterface.php
                 - nusoap.php
-#            configuration: phpstan.neon
+                - fatal.inc.php
+                - server.inc.php
+
+    testsuites:
+        travis:
+            tasks:
+                - composer
+                - phplint
+                - phpcs 
+                - git_blacklist
+                - jsonlint
+                - phpmd
+                - phpcpd
+                - xmllint
+                - yamllint
+        phpstan:
+            tasks: 
+                - phpstan 

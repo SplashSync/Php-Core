@@ -19,7 +19,7 @@ use Splash\Server\SplashServer;
 //   WebService Available Functions
 //====================================================================//
 
-function Ping($id)
+function Ping()
 {
     return SplashServer::ping();
 }

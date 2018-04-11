@@ -182,7 +182,7 @@ abstract class AbstractBaseCase extends TestCase
         
         //====================================================================//
         // UNEXPECTED SERVER LOG ITEMS
-        foreach (array_keys($Log) as $Key) {
+        foreach (array_keys($Log->getArrayCopy()) as $Key) {
             $this->assertTrue(
                     in_array($Key, array("err", "msg", "war", "deb")), 
                     "Received Unexpected Log Messages. ( Data->log->" . $Key . ")"
@@ -249,7 +249,6 @@ abstract class AbstractBaseCase extends TestCase
         $this->assertNotEmpty($Server["ServerPath"], "Server Info (ServerPath) is Empty");
         $this->assertNotEmpty($Server["ServerType"], "Server Info (ServerType) is Empty");
         $this->assertNotEmpty($Server["ServerVersion"], "Server Info (ServerVersion) is Empty");
-        $this->assertNotEmpty($Server["ServerAddress"], "Server Info (ServerAddress) is Empty");
     }
     
     /**

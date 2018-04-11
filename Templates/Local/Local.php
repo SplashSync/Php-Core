@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright (C) 2011-2014  Bernard Paquier       <bernard.paquier@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -16,28 +16,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
- * 
+ *
  *  \Id 	$Id: osws-local-Main.class.php 136 2014-10-12 22:33:28Z Nanard33 $
  *  \version    $Revision: 136 $
- *  \date       $LastChangedDate: 2014-10-13 00:33:28 +0200 (lun. 13 oct. 2014) $ 
+ *  \date       $LastChangedDate: 2014-10-13 00:33:28 +0200 (lun. 13 oct. 2014) $
  *  \ingroup    Splash - OpenSource Synchronisation Service
  *  \brief      Core Local Server Definition Class
  *  \class      SplashLocal
- *  \remarks	Designed for Splash Module - Dolibar ERP Version  
+ *  \remarks    Designed for Splash Module - Dolibar ERP Version
 */
 
 namespace Splash\Local;
 
+use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
  * @abstract    Local System Core Management Class
  */
-class Local 
+class Local
 {
     
     //====================================================================//
-    // General Class Variables	
+    // General Class Variables
     // Place Here Any SPECIFIC Variable for your Core Module Class
     //====================================================================//
 
@@ -49,13 +50,13 @@ class Local
      *      @abstract       Class Constructor (Used only if localy necessary)
      *      @return         int                     0 if KO, >0 if OK
      */
-    function __construct()
+    public function __construct()
     {
         //====================================================================//
         // Place Here Any SPECIFIC Initialisation Code
         //====================================================================//
         
-        return True;
+        return true;
     }
 
 //====================================================================//
@@ -66,91 +67,88 @@ class Local
     
     /**
      *  @abstract       Return Local Server Parameters as Array
-     *                      
-     *      THIS FUNCTION IS MANDATORY 
-     * 
+     *
+     *      THIS FUNCTION IS MANDATORY
+     *
      *      This function called on each initialization of the module
-     * 
+     *
      *      Result must be an array including mandatory parameters as strings
      *         ["WsIdentifier"]         =>>  Name of Module Default Language
      *         ["WsEncryptionKey"]      =>>  Name of Module Default Language
      *         ["DefaultLanguage"]      =>>  Name of Module Default Language
-     * 
+     *
      * @return  array   $parameters
      */
-    public static function Parameters()
+    public function parameters()
     {
-    }    
+    }
     
     /**
      * @abstract       Include Local Includes Files
-     * 
-     *      Include here any local files required by local functions. 
-     *      This Function is called each time the module is loaded 
-     * 
-     *      There may be differents scenarios depending if module is 
-     *      loaded as a library or as a NuSOAP Server. 
-     * 
+     *
+     *      Include here any local files required by local functions.
+     *      This Function is called each time the module is loaded
+     *
+     *      There may be differents scenarios depending if module is
+     *      loaded as a library or as a NuSOAP Server.
+     *
      *      This is triggered by global constant SPLASH_SERVER_MODE.
-     *      
-     * @return         bool                     
+     *
+     * @return         bool
      */
-    public function Includes()
+    public function includes()
     {
 
         //====================================================================//
         // When Library is called in server mode ONLY
         //====================================================================//
-        if ( SPLASH_SERVER_MODE )
-        {
-            // NOTHING TO DO 
-        }
-        //====================================================================//
+        if (SPLASH_SERVER_MODE) {
+            // NOTHING TO DO
+        } //====================================================================//
         // When Library is called in client mode ONLY
         //====================================================================//
-        else
-        {
-            // NOTHING TO DO 
+        else {
+            // NOTHING TO DO
         }
 
         //====================================================================//
         // When Library is called in both client & server mode
         //====================================================================//
 
-        return True;
-    }      
+        return true;
+    }
            
     /**
      * @abstract       Return Local Server Self Test Result
-     *                      
-     *      THIS FUNCTION IS MANDATORY 
-     * 
+     *
+     *      THIS FUNCTION IS MANDATORY
+     *
      *      This function called during Server Validation Process
-     * 
+     *
      *      We recommand using this function to validate all functions or parameters
      *      that may be required by Objects, Widgets or any other module specific action.
-     * 
+     *
      *      Use Module Logging system & translation tools to return test results Logs
-     * 
+     *
      * @return         bool    global test result
      */
-    public function SelfTest()
+    public function selfTest()
     {
-        return True;
-    }       
+        return true;
+    }
     
     /**
      *  @abstract   Update Server Informations with local Data
-     * 
-     *      THIS FUNCTION IS MANDATORY 
-     * 
+     *
+     *      THIS FUNCTION IS MANDATORY
+     *
      *      This function return Remote Server Informatiosn to display on Server Profile
-     * 
-     *  @param     arrayobject  $Informations   Informations Inputs
-     * 
-     *  @return     arrayobject
+     *
+     *  @param     ArrayObject  $Informations   Informations Inputs
+     *
+     *  @return     ArrayObject
      */
-    public function Informations($Informations)
+    public function informations($Informations)
     {
         //====================================================================//
         // Init Response Object
@@ -169,7 +167,9 @@ class Local
         
         //====================================================================//
         // Server Logo & Images
-        $Response->icoraw           =   Splash::File()->ReadFileContents(dirname(dirname(__DIR__)) . "/img/Splash-ico.png");
+        $Response->icoraw           =   Splash::file()->readFileContents(
+            dirname(dirname(__DIR__)) . "/img/Splash-ico.png"
+        );
         $Response->logourl          =   "https://www.splashsync.com/bundles/theme/img/splash-logo.png";
         
         //====================================================================//
@@ -179,10 +179,10 @@ class Local
         
         //====================================================================//
         // Current Module Version
-        $Response->moduleversion    =   SPL_MOD_VERSION; 
+        $Response->moduleversion    =   SPL_MOD_VERSION;
         
         return $Response;
-    }    
+    }
     
 //====================================================================//
 // *******************************************************************//
@@ -193,22 +193,21 @@ class Local
 
     /**
      * @abstract       Return Local Server Test Sequences as Aarray
-     *                      
+     *
      *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
-     * 
+     *
      *      This function called on each initialization of module's tests sequences.
      *      It's aim is to list different configurations for testing on local system.
-     * 
+     *
      *      If Name = List, Result must be an array including list of Sequences Names.
-     * 
+     *
      *      If Name = ASequenceName, Function will Setup Sequence on Local System.
-     * 
+     *
      * @return         array       $Sequences
-     */    
-    public static function TestSequences($Name = Null)
+     */
+    public static function testSequences($Name = null)
     {
-        switch($Name) {
-            
+        switch ($Name) {
             case "Sequence1":
                 // DO SEQUENCE SETUP
                 return;
@@ -219,7 +218,6 @@ class Local
                 
             case "List":
                 return array("Sequence1", "Sequence2" );
-                
         }
     }
     
@@ -228,7 +226,4 @@ class Local
 // Place Here Any SPECIFIC or COMMON Local Functions
 // *******************************************************************//
 //====================================================================//
-    
 }
-
-?>

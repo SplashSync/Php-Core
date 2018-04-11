@@ -11,10 +11,14 @@ cache:
     - $HOME/.composer/cache
     
 script:
+    # With PHP 7 => Load Phpstan   
     - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then composer require phpstan/phpstan-shim; fi
-
+    
     - composer update --no-suggest
-    - php ./vendor/bin/grumphp run
+    - php ./vendor/bin/grumphp run --testsuite=travis
+    
+    # With PHP 7 => Execute Phpstan   
+#    - php ./vendor/bin/grumphp run --testsuite=phpstan
         
 notifications:
   email:         
