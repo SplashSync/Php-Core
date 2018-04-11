@@ -28,6 +28,8 @@ parameters:
             triggered_by: [php, js, twig]
         jsonlint:
             detect_key_conflicts: true
+        xmllint: ~
+        yamllint: ~
         phpmd:
             ruleset:        ["./Build/phpmd.xml"]
             exclude:        
@@ -38,8 +40,6 @@ parameters:
             exclude:        
                 - "Components/NuSOAP"
                 - "vendor"               
-        xmllint: ~
-        yamllint: ~
         phpstan: 
             ignore_patterns:
                 - NuSOAPInterface.php
@@ -59,6 +59,7 @@ parameters:
                 - phpcpd
                 - xmllint
                 - yamllint
+                
         phpstan:
             tasks: 
                 - phpstan 
