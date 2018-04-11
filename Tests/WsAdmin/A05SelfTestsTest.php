@@ -29,7 +29,7 @@ class A05SelfTestsTest extends AbstractBaseCase
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->GenericAction(SPL_S_ADMIN, SPL_F_GET_SELFTEST, __METHOD__);
+        $Data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_SELFTEST, __METHOD__);
         
         //====================================================================//
         //   Verify Response

@@ -38,10 +38,6 @@ class BlocksFactory
         "AllowHtml"         =>      false
     );
     
-    
-    //====================================================================//
-    // Data Storage
-
     /**
      *      @abstract   New Widget Block Storage
      *      @var        ArrayObject
@@ -63,7 +59,7 @@ class BlocksFactory
         //====================================================================//
         // Initialize Data Storage
         $this->new            = null;
-        $this->fields         = array();
+        $this->blocks         = array();
         
         return true;
     }
@@ -340,7 +336,7 @@ class BlocksFactory
     ) {
         if (!in_array($Type, ["Bar", "Area", "Line"])) {
             $Contents   = array("warning"   => "Wrong Morris Chart Block Type (ie: Bar, Area, Line)");
-            $this->BlocksFactory()->addNotificationsBlock($Contents);
+            $this->addNotificationsBlock($Contents);
         }
         //====================================================================//
         //  Create Block

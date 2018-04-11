@@ -51,7 +51,7 @@ class O04CreateTest extends ObjectsCase
         
         //====================================================================//
         //   Execute Action Directly on Module
-        $ObjectId = $this->GenericAction(
+        $ObjectId = $this->genericAction(
             SPL_S_OBJECTS,
             SPL_F_SET,
             __METHOD__,

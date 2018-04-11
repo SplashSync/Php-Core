@@ -85,7 +85,7 @@ class Logger
 
     /**
       *      @abstract   Clean WebServer Class Logs Messages
-      *      @return     none
+      *      @return     bool
       */
     public function cleanLog()
     {
@@ -500,13 +500,11 @@ class Logger
     //====================================================================//
    
     /**
+     *  @abstract   Read & Returns var_dump() standard php function html result
      *
-     *  @abstract    Read & Returns var_dump() standard php function html result
-     *
-     *  @param      var       $var        Any Object to dump
+     *  @param      mixed       $var        Any Object to dump
      *
      *  @return     string                HTML display string of this object
-     *
      */
     private function getVarDump($var)
     {
@@ -532,7 +530,7 @@ class Logger
      *  @abstract    Read & Returns var_dump() of a variable in a debug message
      *
      *  @param      string    $txt        Any text to display before dump
-     *  @param      var       $var        Any Object to dump
+     *  @param      mixed     $var        Any Object to dump
      *
      *  @return     string                HTML display string of this object
      */
@@ -546,7 +544,8 @@ class Logger
      *  @abstract    Read & Returns var_dump() of a variable in a warning message
      *
      *  @param      string    $txt        Any text to display before dump
-     *  @param      var       $var        Any Object to dump
+     *  @param      mixed     $var        Any Object to dump
+     *
      *  @return     string                HTML display string of this object
      */
     public function www($txt, $var)

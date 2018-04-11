@@ -46,5 +46,8 @@ parameters:
                 - "vendor"               
         xmllint: ~
         yamllint: ~
-#        phpstan:
+        phpstan: 
+            ignore_patterns:
+                - NuSOAPInterface.php
+                - nusoap.php
 #            configuration: phpstan.neon

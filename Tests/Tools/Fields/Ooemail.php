@@ -12,7 +12,6 @@ class Ooemail extends Oovarchar
     //==============================================================================
 
     protected $FORMAT         =   'Email';
-    public static $IS_SCALAR      =   true;
     
     //==============================================================================
     //      DATA VALIDATION

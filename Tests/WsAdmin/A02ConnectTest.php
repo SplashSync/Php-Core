@@ -49,7 +49,7 @@ class A02ConnectTest extends AbstractBaseCase
         //====================================================================//
         //   Execute Connect From Splash Server to Module
         $Response   =   SplashServer::connect(Splash::configuration()->WsIdentifier, $Request);
-        $Data       = $this->CheckResponse($Response);
+        $Data       = $this->checkResponse($Response);
         //====================================================================//
         //   Verify Response
         $this->assertNotEmpty($Data->result, "Connect Result is not True");

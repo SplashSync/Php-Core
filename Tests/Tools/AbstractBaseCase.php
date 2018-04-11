@@ -2,6 +2,8 @@
 
 namespace Splash\Tests\Tools;
 
+use ArrayObject;
+
 use Splash\Tests\Tools\TestCase;
     
 use Splash\Client\Splash;
@@ -26,6 +28,8 @@ abstract class AbstractBaseCase extends TestCase
      * @see             SERVER_NAME parameter that must be defined in PhpUnit Configuration File
      *
      * @return string   Local Server Soap Url
+     * 
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getLocalServerSoapUrl()
     {
@@ -107,26 +111,6 @@ abstract class AbstractBaseCase extends TestCase
         $this->assertArrayHasKey($Key, $Data, $Comment . " => Key '" . $Key . "' not defined");
         $this->assertIsSplashBool($Data[$Key], $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
     }
-
-    /**
-     * @abstract        Verify if Data is a valid Splash Field Data Value
-     *
-     * @param mixed     $Data
-     * @param string    $Type
-     * @param string    $Comment
-     */
-    public function assertIsValidSplashFieldData($Data, $Type)
-    {
-        //====================================================================//
-        // Verify Type is Valid
-        $ClassName = self::isValidType($Type);
-        $this->assertNotEmpty($ClassName, "Field Type '" . $Type . "' is not a Valid Splash Field Type.");
-    
-        //====================================================================//
-        // Verify Data is Valid
-        $this->assertTrue($ClassName::validate($Data), "Data is not a Valid Splash '" . $Type . "'. (" . print_r($Data, true) . ")");
-    }
-
     
     /**
      *      @abstract      Verify Response Is Valid
@@ -135,7 +119,7 @@ abstract class AbstractBaseCase extends TestCase
      *      @param         string   $Cfg      WebService Request Configuration
      *
      */
-    public function CheckResponse($In, $Cfg = null)
+    public function checkResponse($In, $Cfg = null)
     {
         
         //====================================================================//
@@ -153,19 +137,19 @@ abstract class AbstractBaseCase extends TestCase
         //====================================================================//
         // CHECK RESPONSE LOG
         if (array_key_exists("log", $Data)) {
-            $this->CheckResponseLog($Data->log, $Cfg);
+            $this->checkResponseLog($Data->log, $Cfg);
         }
         
         //====================================================================//
         // CHECK RESPONSE SERVER INFOS
         if (array_key_exists("server", $Data)) {
-            $this->CheckResponseServer($Data->server);
+            $this->checkResponseServer($Data->server);
         }
         
         //====================================================================//
         // CHECK RESPONSE TASKS RESULTS
         if (array_key_exists("tasks", $Data)) {
-            $this->CheckResponseTasks($Data->tasks, $Cfg);
+            $this->checkResponseTasks($Data->tasks, $Cfg);
         }
         
         //====================================================================//
@@ -180,10 +164,10 @@ abstract class AbstractBaseCase extends TestCase
     /**
      *      @abstract      Verify Response Log Is Valid
      *
-     *      @param         arrayobject  $Log        WebService Log Array
+     *      @param         ArrayObject  $Log        WebService Log Array
      *      @param         string       $Cfg        WebService Request Configuration
      */
-    public function CheckResponseLog($Log, $Cfg = null)
+    public function checkResponseLog($Log, $Cfg = null)
     {
         //====================================================================//
         // SERVER LOG ARRAY FORMAT
@@ -191,10 +175,10 @@ abstract class AbstractBaseCase extends TestCase
         
         //====================================================================//
         // SERVER LOGS MESSAGES FORMAT
-        $this->CheckResponseLogArray($Log, 'err', "Error");
-        $this->CheckResponseLogArray($Log, 'war', "Warning");
-        $this->CheckResponseLogArray($Log, 'msg', "Message");
-        $this->CheckResponseLogArray($Log, 'deb', "Debug Trace");
+        $this->checkResponseLogArray($Log, 'err', "Error");
+        $this->checkResponseLogArray($Log, 'war', "Warning");
+        $this->checkResponseLogArray($Log, 'msg', "Message");
+        $this->checkResponseLogArray($Log, 'deb', "Debug Trace");
         
         //====================================================================//
         // UNEXPECTED SERVER LOG ITEMS
@@ -224,12 +208,13 @@ abstract class AbstractBaseCase extends TestCase
         Splash::log()->merge($Log);
     }
     /**
-     *      @abstract      Verify Response Log Is Valid
-     *      @param         arrayobject  $Log       WebService Log Array
-     *      @param         string       $Type      Log Key
-     *      @param         string       $Name      Log Type Name
+     * @abstract    Verify Response Log Is Valid
+     * @param       ArrayObject     $Log        WebService Log Array
+     * @param       string          $Type       Log Key
+     * @param       string          $Name       Log Type Name
+     * @return      void
      */
-    public function CheckResponseLogArray($Log, $Type, $Name)
+    public function checkResponseLogArray($Log, $Type, $Name)
     {
         if (!array_key_exists($Type, $Log) || empty($Log->$Type)) {
             return;
@@ -244,13 +229,12 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     *      @abstract      Verify Response Server Infos Are Valid
-     *
-     *      @param         arrayobject  $Server         WebService Server Infos Array
+     * @abstract    Verify Response Server Infos Are Valid
+     * @param       ArrayObject     $Server         WebService Server Infos Array
+     * @return      void
      */
-    public function CheckResponseServer($Server)
+    public function checkResponseServer($Server)
     {
-
         //====================================================================//
         // SERVER Informations  => Available
         $this->assertArrayHasKey("ServerHost", $Server, "Server Info (ServerHost) is Missing");
@@ -261,20 +245,20 @@ abstract class AbstractBaseCase extends TestCase
         
         //====================================================================//
         // SERVER Informations  => Not Empty
-//        $this->assertNotEmpty( $Server["ServerHost"]            , "Server Info (ServerHost) is Empty");
+        $this->assertNotEmpty($Server["ServerHost"], "Server Info (ServerHost) is Empty");
         $this->assertNotEmpty($Server["ServerPath"], "Server Info (ServerPath) is Empty");
         $this->assertNotEmpty($Server["ServerType"], "Server Info (ServerType) is Empty");
         $this->assertNotEmpty($Server["ServerVersion"], "Server Info (ServerVersion) is Empty");
-//        $this->assertNotEmpty( $Server["ServerAddress"]         , "Server Info (ServerAddress) is Empty");
+        $this->assertNotEmpty($Server["ServerAddress"], "Server Info (ServerAddress) is Empty");
     }
     
     /**
      *      @abstract      Verify Response Tasks Results are Valid
      *
-     *      @param         arrayobject  $Tasks          WebService Server Tasks Results Array
+     *      @param         ArrayObject  $Tasks          WebService Server Tasks Results Array
      *      @param         string       $Cfg            WebService Request Configuration
      */
-    public function CheckResponseTasks($Tasks, $Cfg = null)
+    public function checkResponseTasks($Tasks, $Cfg = null)
     {
         //====================================================================//
         // TASKS RESULTS ARRAY FORMAT
@@ -313,7 +297,7 @@ abstract class AbstractBaseCase extends TestCase
      *
      *      @return     mixed
      */
-    protected function GenericAction($Service, $Action, $Description, array $Parameters = array(true))
+    protected function genericAction($Service, $Action, $Description, array $Parameters = array(true))
     {
         //====================================================================//
         //   Prepare Request Data
@@ -323,7 +307,7 @@ abstract class AbstractBaseCase extends TestCase
         $Response   =   Splash::ws()->simulate($Service);
         //====================================================================//
         //   Check Response
-        $Data       =   $this->CheckResponse($Response);
+        $Data       =   $this->checkResponse($Response);
         //====================================================================//
         //   Extract Task Result
         if (is_a($Data->tasks, "ArrayObject")) {
@@ -343,7 +327,7 @@ abstract class AbstractBaseCase extends TestCase
      *
      *      @return     mixed
      */
-    protected function GenericErrorAction($Service, $Action, $Description, array $Parameters = array(true))
+    protected function genericErrorAction($Service, $Action, $Description, array $Parameters = array(true))
     {
         //====================================================================//
         //   Prepare Request Data

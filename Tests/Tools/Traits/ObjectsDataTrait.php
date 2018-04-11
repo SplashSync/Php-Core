@@ -29,7 +29,7 @@ trait ObjectsDataTrait
         
         //====================================================================//
         // Explode List Field Id
-        $List       =   Field::isListField($Filter);
+        $List       =   self::isListField($Filter);
         
         //====================================================================//
         // Simple Single Field
@@ -38,7 +38,7 @@ trait ObjectsDataTrait
                 return $FilteredData[$Filter];
             }
             
-            //====================================================================//
+        //====================================================================//
         // List Field
         } else {
             //====================================================================//
@@ -131,9 +131,6 @@ trait ObjectsDataTrait
             //====================================================================//
             // Search for Field in Item Block
             if (!is_array($ItemBlock) && !is_a($ItemBlock, "ArrayObject")) {
-                dump($ListBlock);
-                dump($ItemBlock);
-                
                 continue;
             }
             

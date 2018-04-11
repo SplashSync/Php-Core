@@ -28,6 +28,7 @@ use Splash\Router\Widgets;
 use Splash\Router\Files;
 
 use ArrayObject;
+use Exception;
 
 //====================================================================//
 //   INCLUDES
@@ -59,8 +60,8 @@ class Router
      *      @abstract     Validate Received Server Request
      *
      *      @param  string          $Router     Name of the router function to use for task execution
-     *      @param  arrayobject     $Input      Poiner to Server Input Buffer
-     *      @param  arrayobject     $Output     Poiner to Server Output Buffer
+     *      @param  ArrayObject     $Input      Poiner to Server Input Buffer
+     *      @param  ArrayObject     $Output     Poiner to Server Output Buffer
      *
      *      @return bool
      */
@@ -105,8 +106,8 @@ class Router
      *      @abstract     Execute Server Requested Tasks
      *
      *      @param  string          $Router     Name of the router function to use for task execution
-     *      @param  arrayobject     $Input      Poiner to Server Input Buffer
-     *      @param  arrayobject     $Output     Poiner to Server Output Buffer
+     *      @param  ArrayObject     $Input      Poiner to Server Input Buffer
+     *      @param  ArrayObject     $Output     Poiner to Server Output Buffer
      *
      *      @return bool            Global tesks Result
      */
@@ -149,9 +150,9 @@ class Router
      *      @abstract     Execute a Single Tasks
      *
      *      @param  string          $Router     Name of the router function to use for task execution
-     *      @param  arrayobject     $Task       Task To Execute
+     *      @param  ArrayObject     $Task       Task To Execute
      *
-     *      @return arrayobject   Task Result ArrayObject
+     *      @return ArrayObject   Task Result ArrayObject
      */
     public function executeTask($Router, $Task)
     {
@@ -197,6 +198,36 @@ class Router
             return $Result;
         }
         return false;
+    }
+    
+    //====================================================================//
+    //  LOW LEVEL FUNCTIONS
+    //====================================================================//
+
+    /**
+     *      @abstract     Build an Empty Task Response
+     *
+     *      @param  ArrayObject     $Task       Task To Execute
+     *
+     *      @return ArrayObject   Task Result ArrayObject
+     */
+    private function getEmptyResponse($Task)
+    {
+        //====================================================================//
+        // Initial Tasks results ArrayObject
+        $Response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        
+        //====================================================================//
+        // Set Default Result to False
+        $Response->result       =   false;
+        $Response->data         =   null;
+        
+        //====================================================================//
+        // Insert Task Description Informations
+        $Response->name         =   $Task->name;
+        $Response->desc         =   $Task->desc;
+
+        return $Response;
     }
     
     /**

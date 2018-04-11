@@ -101,7 +101,7 @@ class O07GetTest extends ObjectsCase
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->GenericAction(
+        $Data = $this->genericAction(
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
@@ -122,10 +122,10 @@ class O07GetTest extends ObjectsCase
         
         //====================================================================//
         //      Request definition without Sending ObjectType
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__);
+        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__);
         //====================================================================//
         //      Request Reading without Sending ObjectID
-        $this->GenericErrorAction(
+        $this->genericErrorAction(
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
@@ -133,13 +133,13 @@ class O07GetTest extends ObjectsCase
         );
         //====================================================================//
         //      Request Reading but Sending NUll ObjectID
-        $this->GenericErrorAction(
+        $this->genericErrorAction(
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
             [ "type" => $ObjectType, "id" => null, "fields" => array()]
         );
-        $this->GenericErrorAction(
+        $this->genericErrorAction(
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,

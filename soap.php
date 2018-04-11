@@ -29,6 +29,7 @@ use Splash\Server\SplashServer;
 //====================================================================//
 // Splash Module & Dependecies Autoloader
 require_once(dirname(dirname(dirname(__FILE__))) . "/autoload.php");
+require_once(dirname(__FILE__) . "/inc/fatal.inc.php");
 
 //====================================================================//
 // Setup Php Specific Settings
@@ -39,77 +40,20 @@ error_reporting(E_ERROR);
 // Notice internal routines we are in server request mode
 define("SPLASH_SERVER_MODE", 1);
     
-/*
- * @abstract   Declare fatal Error Handler => Called in case of Script Exceptions
- */
-function fatal_handler()
-{
-    //====================================================================//
-    // Read Last Error
-    $Error  =   error_get_last();
-    if (!$Error) {
-        return;
-    }
-    //====================================================================//
-    // Fatal Error
-    if ($Error["type"] == E_ERROR) {
-        //====================================================================//
-        // Parse Error in Response.
-        Splash::Com()->Fault($Error);
-        //====================================================================//
-        // Process methods & Return the results.
-        Splash::Com()->Handle();
-    //====================================================================//
-    // Non Fatal Error
-    } else {
-        Splash::Log()->War($Error["message"] . " on File " . $Error["file"] . " Line " . $Error["line"]);
-    }
-}
-
 //====================================================================//
 //  SERVER MODE - Answer NuSOAP Requests
 //====================================================================//
 // Detect NuSOAP requests send by Splash Server
-if (strpos(Splash::Input("HTTP_USER_AGENT"), "SOAP") !== false) {
-    Splash::Log()->Deb("Splash Started In Server Mode");
+if (strpos(Splash::input("HTTP_USER_AGENT"), "SOAP") !== false) {
+    Splash::log()->deb("Splash Started In Server Mode");
             
     //====================================================================//
-    //   WebService Available Functions
-    //====================================================================//
-
-    function Ping($id)
-    {
-        return SplashServer::Ping($id);
-    }
-    function Connect($id, $data)
-    {
-        $server = new SplashServer();
-        return $server->Connect($id, $data);
-    }
-    function Admin($id, $data)
-    {
-        $server = new SplashServer();
-        return $server->Admin($id, $data);
-    }
-    function Objects($id, $data)
-    {
-        $server = new SplashServer();
-        return $server->Objects($id, $data);
-    }
-    function Files($id, $data)
-    {
-        $server = new SplashServer();
-        return $server->Files($id, $data);
-    }
-    function Widgets($id, $data)
-    {
-        $server = new SplashServer();
-        return $server->Widgets($id, $data);
-    }
+    //   Declare WebService Available Functions
+    require_once(dirname(__FILE__) . "/inc/server.inc.php");
 
     //====================================================================//
     // Build SOAP Server & Register a method available for clients
-    Splash::Com()->BuildServer();
+    Splash::com()->BuildServer();
     //====================================================================//
     // Register shuttdown method available for fatal errors reteival
     register_shutdown_function(__NAMESPACE__ . '\fatal_handler');
@@ -118,19 +62,19 @@ if (strpos(Splash::Input("HTTP_USER_AGENT"), "SOAP") !== false) {
     ob_start();
     //====================================================================//
     // Process methods & Return the results.
-    Splash::Com()->Handle();
-} elseif (Splash::Input("node", INPUT_GET) === Splash::Configuration()->WsIdentifier) {
-    Splash::Log()->Deb("Splash Started In System Debug Mode");
+    Splash::com()->Handle();
+} elseif (Splash::input("node", INPUT_GET) === Splash::configuration()->WsIdentifier) {
+    Splash::log()->deb("Splash Started In System Debug Mode");
     //====================================================================//
     // Setup Php Errors Settings
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
     //====================================================================//
     // Output Server Analyze & Debug
-    echo SplashServer::GetStatusInformations();
+    echo SplashServer::getStatusInformations();
     //====================================================================//
     // Output Module Complete Log
-    echo Splash::Log()->GetHtmlLogList();
+    echo Splash::log()->getHtmlLogList();
 } else {
     echo "This WebService Provide no Description";
 }

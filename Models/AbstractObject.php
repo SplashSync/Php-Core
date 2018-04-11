@@ -25,6 +25,7 @@ use Splash\Models\Objects\TranslatorTrait;
 
 /**
  * @abstract    Base Class for class for Splash Objects.
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 abstract class AbstractObject implements ObjectInterface
 {

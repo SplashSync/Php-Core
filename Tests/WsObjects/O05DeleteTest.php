@@ -72,7 +72,7 @@ class O05DeleteTest extends ObjectsCase
         
         //====================================================================//
         //   Execute Action Directly on Module
-        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_DEL, __METHOD__, [ "id" => $ObjectId, "type" => $ObjectType]);
+        $Data = $this->genericAction(SPL_S_OBJECTS, SPL_F_DEL, __METHOD__, [ "id" => $ObjectId, "type" => $ObjectType]);
         
         //====================================================================//
         //   Verify Response
@@ -88,13 +88,13 @@ class O05DeleteTest extends ObjectsCase
         
         //====================================================================//
         //      Request definition without Sending Parameters
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, []);
+        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, []);
         //====================================================================//
         //      Request definition without Sending ObjectType
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "id" => null ]);
+        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "id" => null ]);
         //====================================================================//
         //      Request definition without Sending ObjectId
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $ObjectType]);
+        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $ObjectType]);
     }
 
     

@@ -26,7 +26,11 @@ use ArrayObject;
  */
 trait LockTrait
 {
-
+    /**
+     * @var ArrayObject
+     */
+    private $locks = null;
+    
     /**
      *      @abstract   Set Lock for a specific object
      *
@@ -55,7 +59,7 @@ trait LockTrait
         
         //====================================================================//
         //  Init Lock Structure
-        if (!isset($this->locks)) {
+        if (is_null($this->locks)) {
             $this->locks = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         }
         
@@ -89,7 +93,7 @@ trait LockTrait
         
         //====================================================================//
         //  Verify Lock Structure Exits
-        if (!isset($this->locks)) {
+        if (is_null($this->locks)) {
             return false;
         }
         

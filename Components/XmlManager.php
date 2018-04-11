@@ -19,9 +19,11 @@
 
 namespace   Splash\Components;
 
-use XmlWriter;
+use XMLWriter;
 use stdClass;
 use ArrayObject;
+use SimpleXMLElement;
+use Exception;
 
 //====================================================================//
 //  CLASS DEFINITION
@@ -31,8 +33,8 @@ class XmlManager
 {
 
     /**
-     *      @abstract   XMLWritter Class
-     *      @var        XMLWritter
+     *      @abstract   XMLWriter Class
+     *      @var        XMLWriter
      *      @static
      */
     private static $xml;
@@ -40,7 +42,7 @@ class XmlManager
     /*
      *  Fault String
      */
-    public $fault_str;
+    public $fault;
 
     /**
      *      @abstract      Class Constructor
@@ -86,7 +88,7 @@ class XmlManager
 
     /**
      * @abstract     Method to convert XML string into Array
-     * @param        xml        $Xml
+     * @param        string     $Xml
      * @return       array      $result
      */
     protected function xmlToArray($Xml)
@@ -98,7 +100,7 @@ class XmlManager
     
     /**
      * @abstract     Method to convert XML string into ArrayObject
-     * @param        xml        $Xml
+     * @param        string     $Xml
      * @return       array      $result
      */
     public function xmlToArrayObject($Xml)
@@ -114,7 +116,7 @@ class XmlManager
     
     /**
      * @abstract     Method to convert XML string into SimpleXmlElement Object
-     * @param        xml                    $Xml
+     * @param        string                 $Xml
      * @return       SimpleXMLElement       $result
      */
     private function xmlToElements($Xml)
@@ -124,7 +126,7 @@ class XmlManager
         try {
             $result = simplexml_load_string($Xml, "SimpleXMLElement", LIBXML_NOERROR);
         } catch (Exception $ex) {
-            $this->fault_str = $ex->getMessage();
+            $this->fault = $ex->getMessage();
             return null;
         }
         return $result;
@@ -163,9 +165,8 @@ class XmlManager
                 //====================================================================//
                 // Safety Check
                 if ($xml->startElement($key) != true) {
-                    $this->logger->error(
-                        "Xml Parser - Wrong StartElement Key : " . print_r($key, 1) . " Value : " . print_r($value, 1)
-                    );
+                    $this->fault = "Xml Parser - Wrong StartElement Key "
+                            . ": " . print_r($key, 1) . " Value : " . print_r($value, 1);
                 }
                 //====================================================================//
                 // Recurcive Add Of This Array

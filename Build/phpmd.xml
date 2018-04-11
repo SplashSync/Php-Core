@@ -20,7 +20,10 @@
         Include Controversial rules
         @see https://phpmd.org/rules/controversial.html
      -->
-    <!--<rule ref="rulesets/controversial.xml"/>-->
+    <rule ref="rulesets/controversial.xml">
+        <exclude name="CamelCaseVariableName"/>
+        <exclude name="CamelCaseParameterName"/>
+    </rule>
 
     <!--
         Include Design rules

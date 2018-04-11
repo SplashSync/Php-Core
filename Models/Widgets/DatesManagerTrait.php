@@ -87,8 +87,8 @@ trait DatesManagerTrait
             return $Out;
         }
         
-        $Start      = $Current    = new \Datetime($this->DateStart);
-        $End        = new \Datetime($this->DateEnd);
+        $Start      = $Current    = new \DateTime($this->DateStart);
+        $End        = new \DateTime($this->DateEnd);
         
         while ($Current < $End) {
             $Key = $Current->format($this->GroupBy);

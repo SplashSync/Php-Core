@@ -35,7 +35,7 @@ class A04WidgetsTest extends AbstractBaseCase
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->GenericAction(SPL_S_ADMIN, SPL_F_GET_WIDGETS, __METHOD__);
+        $Data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_WIDGETS, __METHOD__);
         
         //====================================================================//
         //   Verify Response
@@ -47,7 +47,7 @@ class A04WidgetsTest extends AbstractBaseCase
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->GenericAction(SPL_S_WIDGETS, SPL_F_WIDGET_LIST, __METHOD__);
+        $Data = $this->genericAction(SPL_S_WIDGETS, SPL_F_WIDGET_LIST, __METHOD__);
         
         //====================================================================//
         //   Verify Response

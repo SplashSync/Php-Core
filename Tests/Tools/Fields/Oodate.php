@@ -13,8 +13,7 @@ class Oodate extends Oovarchar
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT         =   'Date';
-    public static $IS_SCALAR      =   true;
+    protected $FORMAT           =   'Date';
     
     //==============================================================================
     //      DATA VALIDATION

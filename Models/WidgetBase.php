@@ -19,6 +19,8 @@
 
 namespace   Splash\Models;
 
+use ArrayObject;
+
 use Splash\Core\SplashCore      as Splash;
 
 use Splash\Components\FieldsFactory;
@@ -111,7 +113,7 @@ abstract class WidgetBase
     /**
      *      @abstract   Get a singleton FieldsFactory Class
      *                  Acces to Object Fields Creation Functions
-     *      @return     SplashFieldsFactory
+     *      @return     FieldsFactory
      */
     public static function fieldsFactory()
     {
@@ -135,7 +137,7 @@ abstract class WidgetBase
     /**
      *      @abstract   Get a singleton BlocksFactory Class
      *                  Acces to Widgets Contents Blocks Functions
-     *      @return     SplashBlocksFactory
+     *      @return     BlocksFactory
      */
     public static function blocksFactory()
     {

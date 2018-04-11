@@ -40,7 +40,7 @@ class O01DescriptionTest extends ObjectsCase
         $this->loadLocalTestSequence($Sequence);
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__, [ "id" => null, "type" => $ObjectType]);
+        $Data = $this->genericAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__, [ "id" => null, "type" => $ObjectType]);
         
         //====================================================================//
         //   Verify Response
@@ -51,7 +51,7 @@ class O01DescriptionTest extends ObjectsCase
     {
         //====================================================================//
         //      Request definition without Sending ObjectType
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__);
+        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__);
     }
     
     public function verifyResponse($Data)

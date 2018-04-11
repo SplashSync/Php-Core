@@ -41,7 +41,7 @@ class Translator
      *      @abstract   Loaded Translation Files array
      *      @var        Array
      */
-    private $trans_loaded;
+    private $loadedTranslations;
 
     
     //====================================================================//
@@ -70,7 +70,7 @@ class Translator
         //====================================================================//
         // Check if File is Already in Cache
         //====================================================================//
-        if (! empty($this->trans_loaded[$FileName])) {
+        if (! empty($this->loadedTranslations[$FileName])) {
             return true;
         }
 
@@ -118,7 +118,7 @@ class Translator
 
             //====================================================================//
             // Mark this file as Loaded (1) or Not Found (2)
-            $this->trans_loaded[$FileName] = $Loaded?1:2;
+            $this->loadedTranslations[$FileName] = $Loaded?1:2;
         }
         
         return true;

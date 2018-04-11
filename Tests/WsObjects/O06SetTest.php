@@ -12,6 +12,10 @@ use Splash\Tests\Tools\Fields\Ooobjectid;
  */
 class O06SetTest extends ObjectsCase
 {
+    /**
+     * @var array
+     */
+    private $Fields;
     
     /**
      * @dataProvider objectFieldsProvider
@@ -124,7 +128,7 @@ class O06SetTest extends ObjectsCase
         Splash::$Commited = array();
         //====================================================================//
         //   Create a New Object via Service
-        $ObjectId = $this->GenericAction(
+        $ObjectId = $this->genericAction(
             SPL_S_OBJECTS,
             SPL_F_SET,
             __METHOD__,
@@ -168,7 +172,7 @@ class O06SetTest extends ObjectsCase
         Splash::$Commited = array();
         //====================================================================//
         //   Create a New Object via Service
-        $this->GenericAction(
+        $this->genericAction(
             SPL_S_OBJECTS,
             SPL_F_SET,
             __METHOD__,

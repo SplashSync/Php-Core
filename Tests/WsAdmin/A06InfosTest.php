@@ -1,9 +1,10 @@
 <?php
 namespace Splash\Tests\WsAdmin;
 
-use Splash\Tests\Tools\AbstractBaseCase;
+use ArrayObject;
 
 use Splash\Client\Splash;
+use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
  * @abstract    Admin Test Suite - Server Infos Client Verifications
@@ -34,7 +35,7 @@ class A06InfosTest extends AbstractBaseCase
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->GenericAction(SPL_S_ADMIN, SPL_F_GET_INFOS, __METHOD__);
+        $Data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_INFOS, __METHOD__);
         
         //====================================================================//
         //   Verify Response

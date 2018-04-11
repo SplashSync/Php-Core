@@ -15,7 +15,6 @@ class Oourl extends Oovarchar
     //==============================================================================
 
     protected $FORMAT         =   'Url';
-    public static $IS_SCALAR      =   true;
 
     //==============================================================================
     //      DATA VALIDATION

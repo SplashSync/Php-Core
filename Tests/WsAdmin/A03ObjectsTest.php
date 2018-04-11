@@ -32,7 +32,7 @@ class A03ObjectsTest extends AbstractBaseCase
     {
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->GenericAction(SPL_S_ADMIN, SPL_F_GET_OBJECTS, __METHOD__);
+        $Data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_OBJECTS, __METHOD__);
         
         //====================================================================//
         //   Verify Response
@@ -43,7 +43,7 @@ class A03ObjectsTest extends AbstractBaseCase
     {
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_OBJECTS, __METHOD__);
+        $Data = $this->genericAction(SPL_S_OBJECTS, SPL_F_OBJECTS, __METHOD__);
         
         //====================================================================//
         //   Verify Response

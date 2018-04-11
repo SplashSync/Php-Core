@@ -12,8 +12,6 @@ class Oophone extends Oovarchar
     //==============================================================================
 
     protected $FORMAT         =   'Phone';
-    public static $IS_SCALAR      =   true;
-    
     
     //==============================================================================
     //      DATA VALIDATION

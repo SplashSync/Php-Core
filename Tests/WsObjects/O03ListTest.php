@@ -43,7 +43,7 @@ class O03ListTest extends ObjectsCase
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->GenericAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__, [ "id" => null, "type" => $ObjectType]);
+        $Data = $this->genericAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__, [ "id" => null, "type" => $ObjectType]);
         
         //====================================================================//
         //   Verify Response
@@ -54,7 +54,7 @@ class O03ListTest extends ObjectsCase
     {
         //====================================================================//
         //      Request definition without Sending ObjectType
-        $this->GenericErrorAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__);
+        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__);
     }
     
     public function verifyResponse($Data, $ObjectType)

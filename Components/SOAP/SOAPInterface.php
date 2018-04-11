@@ -23,6 +23,11 @@ use Splash\Models\CommunicationInterface;
  */
 class SOAPInterface implements CommunicationInterface
 {
+    
+    protected $client;
+    protected $server;
+
+    
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
     //====================================================================//
@@ -64,7 +69,7 @@ class SOAPInterface implements CommunicationInterface
     }
         
     //====================================================================//
-    // WEBSERVICE CLIENT SIDE
+    // WEBSERVICE SERVER SIDE
     //====================================================================//
     
     /**

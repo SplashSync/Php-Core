@@ -58,6 +58,8 @@ class Webservice
     // Webservice buffers
     private $Inputs;                   // Input Buffer
     private $Outputs;                  // Output Buffer
+    private $RawIn;                    // Raw Call Input Buffer
+    private $RawOut;                   // Raw Call Output Buffer
     
     /**
      *      @abstract     Initialise Class with empty webservice parameters
@@ -69,8 +71,8 @@ class Webservice
         $this->tasks        = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Initialize I/O Data Buffers
-        $this->Inputs          = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $this->Outputs         = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $this->Inputs       = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $this->Outputs      = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
     }
 
     //====================================================================//
@@ -157,7 +159,7 @@ class Webservice
         } elseif ($Action == "decrypt") {
             Splash::log()->deb("MsgWsDeCrypt");
         } else {
-            return $this->Err("ErrWsCryptAction");
+            return Splash::log()->err("ErrWsCryptAction");
         }
         //====================================================================//
         // Verify All Parameters are given
@@ -185,9 +187,9 @@ class Webservice
         }
         //====================================================================//
         //  Debug Informations
-//        Splash::log()->Deb("OsWs Crypt - Secret Key : " . $secret_key . " ==> " . $key );
-//        Splash::log()->Deb("OsWs Crypt - Secret IV : " . $secret_iv . " ==> " . $iv );
-//        Splash::log()->Deb("OsWs Crypt - Result : " . $Out);
+//        Splash::log()->deb("OsWs Crypt - Secret Key : " . $secret_key . " ==> " . $key );
+//        Splash::log()->deb("OsWs Crypt - Secret IV : " . $secret_iv . " ==> " . $iv );
+//        Splash::log()->deb("OsWs Crypt - Result : " . $Out);
         return $Out;
     }
 
@@ -290,7 +292,7 @@ class Webservice
 //        }
 //        //====================================================================//
 //        //  Final Decoded Data (ArrayObject Structure)
-//        Splash::log()->Deb("Splash unPack - Data unSerialized : " . print_r($Out,true) );
+//        Splash::log()->deb("Splash unPack - Data unSerialized : " . print_r($Out,true) );
   
         //====================================================================//
         // Return Result or False
@@ -503,9 +505,7 @@ class Webservice
     }
     
     /**
-     *      @abstract   Create & Setup WebService Client
-     *
-     *      @return     NuSOAP_Client
+     * @abstract   Create & Setup WebService Client
      */
     private function buildClient()
     {
@@ -609,6 +609,7 @@ class Webservice
     /**
      * @abstract     Return Server Informations
      * @return       array   $Response
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getServerInfos()
     {

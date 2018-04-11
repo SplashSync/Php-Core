@@ -24,8 +24,18 @@ use Splash\Core\SplashCore      as Splash;
  */
 class Validator
 {
-
-//====================================================================//
+    /** @var array */
+    private $ValidLocalClass;
+    /** @var array */
+    private $ValidLocalObject;
+    /** @var array */
+    private $ValidLocalWidget;
+    /** @var array */
+    private $ValidLocalPath;
+    /** @var array */
+    private $ValidLocalFunctions;
+    
+    //====================================================================//
     // *******************************************************************//
     //  VALIDATE LOCAL CORE CLASS & FUNCTIONS
     // *******************************************************************//

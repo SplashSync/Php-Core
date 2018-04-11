@@ -37,9 +37,9 @@ class Objects
     /**
      *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
      *
-     *      @param      arrayobject     $Task       Full Task Request Array
+     *      @param      ArrayObject     $Task       Full Task Request Array
      *
-     *      @return     arrayobject                 Task results, or False if KO
+     *      @return     ArrayObject                 Task results, or False if KO
      */
     public static function action($Task)
     {
@@ -52,7 +52,7 @@ class Objects
         //  READING OF SERVER OBJECT LIST
         //====================================================================//
         if ($Task->name === SPL_F_OBJECTS) {
-            return $this->doObjects($Task);
+            return self::doObjects($Task);
         }
         
         //====================================================================//
@@ -85,9 +85,9 @@ class Objects
     /**
      *      @abstract     Build an Empty Task Response
      *
-     *      @param  arrayobject     $Task       Task To Execute
+     *      @param  ArrayObject     $Task       Task To Execute
      *
-     *      @return arrayobject   Task Result ArrayObject
+     *      @return ArrayObject   Task Result ArrayObject
      */
     private static function getEmptyResponse($Task)
     {
@@ -119,7 +119,7 @@ class Objects
     /**
      * @abstract   Verify Received Task
      *
-     * @param      arrayobject     $Task       Full Task Request Array
+     * @param      ArrayObject     $Task       Full Task Request Array
      *
      * @return     bool
      */
@@ -147,7 +147,7 @@ class Objects
         return true;
     }
     
-    private function doAdminActions($Task)
+    private static function doAdminActions($Task)
     {
         //====================================================================//
         // Initial Response
@@ -187,7 +187,7 @@ class Objects
         return self::checkResponse($Response);
     }
             
-    private function doSyncActions($Task)
+    private static function doSyncActions($Task)
     {
         //====================================================================//
         // Initial Response
@@ -233,7 +233,7 @@ class Objects
         return self::checkResponse($Response);
     }
     
-    private function doObjects($Task)
+    private static function doObjects($Task)
     {
         //====================================================================//
         // Initial Response
@@ -248,7 +248,7 @@ class Objects
         return self::checkResponse($Response);
     }
     
-    private function doGet(&$ObjectClass, $ObjectId, $Fields)
+    private static function doGet(&$ObjectClass, $ObjectId, $Fields)
     {
         //====================================================================//
         // Verify Object Field List
@@ -261,7 +261,7 @@ class Objects
         return  $ObjectClass->get($ObjectId, $Fields);
     }
     
-    private function doSet(&$ObjectClass, $ObjectId, $Fields)
+    private static function doSet(&$ObjectClass, $ObjectId, $Fields)
     {
         //====================================================================//
         // Take Lock for this object => No Commit Allowed for this Object
@@ -280,7 +280,7 @@ class Objects
         return $Data;
     }
     
-    private function doDelete(&$ObjectClass, $ObjectId)
+    private static function doDelete(&$ObjectClass, $ObjectId)
     {
         //====================================================================//
         // Take Lock for this object => No Commit Allowed for this Object

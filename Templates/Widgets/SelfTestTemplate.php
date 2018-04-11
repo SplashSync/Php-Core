@@ -78,6 +78,7 @@ class SelfTestTemplate extends WidgetBase
      * @param       array   $params               Widget Inputs Parameters
      *
      * @return      array
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function get($params = null)
     {
@@ -95,7 +96,7 @@ class SelfTestTemplate extends WidgetBase
         //====================================================================//
         // Build Intro Text Block
         //====================================================================//
-        $this->buildIntroBlock($params);
+        $this->buildIntroBlock();
         
         //====================================================================//
         // Build Inputs Block

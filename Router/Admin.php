@@ -38,9 +38,9 @@ class Admin
     /**
      *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
      *
-     *      @param      arrayobject     $Task       Full Task Request Array
+     *      @param      ArrayObject     $Task       Full Task Request Array
      *
-     *      @return     arrayobject                 Task results, or False if KO
+     *      @return     ArrayObject                 Task results, or False if KO
      */
     public static function action($Task)
     {
@@ -104,9 +104,9 @@ class Admin
     /**
      *      @abstract     Build an Empty Task Response
      *
-     *      @param  arrayobject     $Task       Task To Execute
+     *      @param  ArrayObject     $Task       Task To Execute
      *
-     *      @return arrayobject   Task Result ArrayObject
+     *      @return ArrayObject   Task Result ArrayObject
      */
     private static function getEmptyResponse($Task)
     {

@@ -29,7 +29,7 @@ class FieldsFactory
      *
      * @var array
      */
-    private static $FIELDS_DEFAULTS = array(
+    private static $defaultFields = array(
         //==============================================================================
         //      GENERAL FIELD PROPS
         "required"  =>  false,                  //  Field is Required to Create a New Object (Bool)
@@ -97,7 +97,7 @@ class FieldsFactory
         
         //====================================================================//
         // Initialize Template Field
-        $this->empty          = self::$FIELDS_DEFAULTS;
+        $this->empty          = self::$defaultFields;
         
         return true;
     }
@@ -518,7 +518,7 @@ class FieldsFactory
     public function addOptions($Options)
     {
         foreach ($Options as $Type => $Value) {
-            $this->AddConstrain($Type, $Value);
+            $this->addOption($Type, $Value);
         }
         return $this;
     }

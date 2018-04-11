@@ -293,7 +293,7 @@ class SplashServer
     /**
      *      @abstract      Analyze & Debug Server Status
      *
-     *      @return        html
+     *      @return        string
      */
     public static function getStatusInformations()
     {

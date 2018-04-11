@@ -12,11 +12,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @abstract    Simple & Core Functions for Splash & Slaves Classes
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace   Splash\Core;
 
 use ArrayObject;
@@ -42,6 +37,8 @@ use Splash\Local\Local;
 //====================================================================//
 
 /**
+ * @abstract    Simple & Core Functions for Splash & Slaves Classes
+ * @author      B. Paquier <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -98,7 +95,7 @@ class SplashCore
     /**
      *      @abstract   Get a singleton Core Class
      *                  Acces to all most commons Module Functions
-     *      @return     Splash
+     *      @return     self
      */
     public static function core()
     {
@@ -346,9 +343,9 @@ class SplashCore
     }
     
     /**
-     *      @abstract   Acces Server Local Class
+     * @abstract   Acces Server Local Class
      *
-     *      @return     \Splash\Local
+     * @return     Local
      */
     public static function local()
     {
@@ -573,6 +570,7 @@ class SplashCore
      * @param   string      $Type
      *
      * @return string
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public static function input($Name, $Type = INPUT_SERVER)
     {
