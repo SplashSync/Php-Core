@@ -30,8 +30,8 @@ interface ObjectInterface
      *
      * @return      array   $data       List of all available fields
      *                                  All data must match with Splash Data Types
-     *                                  Use $this->FieldsFactory()->Create() to create all fields instances
-     *                                  Use $this->FieldsFactory()->Publish() to generate resulting array
+     *                                  Use $this->fieldsFactory()->Create() to create all fields instances
+     *                                  Use $this->fieldsFactory()->Publish() to generate resulting array
      */
     public function fields();
     
