@@ -275,7 +275,7 @@ class Logger
      *      @abstract    Return WebServer Log Item in Html Checklist format
      *      @return      string      Log message in an human readable Html format
      */
-    private function getHtmlListItem($Message, $Type = null)
+    public function getHtmlListItem($Message, $Type = null)
     {
         switch ($Type) {
             case "Error":
