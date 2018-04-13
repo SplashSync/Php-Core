@@ -41,6 +41,8 @@ parameters:
                 - "Components/NuSOAP"
                 - "vendor"               
         phpstan: 
+            level:  0
+            configuration:  "Build/phpstan.neon"              
             ignore_patterns:
                 - NuSOAPInterface.php
                 - nusoap.php

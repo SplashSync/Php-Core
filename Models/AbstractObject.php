@@ -110,7 +110,7 @@ abstract class AbstractObject implements ObjectInterface
     }
     
     /**
-     *      @abstract   Return Object Status
+     * {@inheritdoc}
      */
     public static function getIsDisabled()
     {
@@ -126,9 +126,7 @@ abstract class AbstractObject implements ObjectInterface
     }
     
     /**
-     *  @abstract   Get Description Array for requested Object Type
-     *
-     *  @return     array
+     * {@inheritdoc}
      */
     public function description()
     {

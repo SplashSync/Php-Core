@@ -22,7 +22,7 @@ class C11LocalCoreClassTest extends TestCase
         //   VERIFY LOCAL PARAMETERS READING
         //====================================================================//
 
-        $Parameters = Splash::local()->Parameters();
+        $Parameters = Splash::local()->parameters();
         
         //====================================================================//
         //   Verify Parameters
@@ -47,7 +47,7 @@ class C11LocalCoreClassTest extends TestCase
         //   VERIFY LOCAL INCLUDES PASS & REPEATABLE
         //====================================================================//
         for ($i=0; $i<5; $i++) {
-            $this->assertTrue(Splash::local()->Includes(), "Local Include Must Return True & be repeatable.");
+            $this->assertTrue(Splash::local()->includes(), "Local Include Must Return True & be repeatable.");
         }
     }
     

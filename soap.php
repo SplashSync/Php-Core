@@ -53,7 +53,7 @@ if (strpos(Splash::input("HTTP_USER_AGENT"), "SOAP") !== false) {
 
     //====================================================================//
     // Build SOAP Server & Register a method available for clients
-    Splash::com()->BuildServer();
+    Splash::com()->buildServer();
     //====================================================================//
     // Register shuttdown method available for fatal errors reteival
     register_shutdown_function(__NAMESPACE__ . '\fatal_handler');
@@ -62,7 +62,7 @@ if (strpos(Splash::input("HTTP_USER_AGENT"), "SOAP") !== false) {
     ob_start();
     //====================================================================//
     // Process methods & Return the results.
-    Splash::com()->Handle();
+    Splash::com()->handle();
 } elseif (Splash::input("node", INPUT_GET) === Splash::configuration()->WsIdentifier) {
     Splash::log()->deb("Splash Started In System Debug Mode");
     //====================================================================//

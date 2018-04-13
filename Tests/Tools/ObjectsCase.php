@@ -116,7 +116,7 @@ class ObjectsCase extends AbstractBaseCase
         }
         //====================================================================//
         // Read Local Parameters
-        $LocalTestSettings  =   Splash::local()->TestParameters();
+        $LocalTestSettings  =   Splash::local()->testParameters();
         
         //====================================================================//
         // Validate Local Parameters
@@ -139,7 +139,7 @@ class ObjectsCase extends AbstractBaseCase
         }
         //====================================================================//
         // Setup Test Sequence
-        Splash::local()->TestSequences($Sequence);
+        Splash::local()->testSequences($Sequence);
     }
     
     protected function setUp()
@@ -189,7 +189,6 @@ class ObjectsCase extends AbstractBaseCase
      *
      * @param mixed     $Data
      * @param string    $Type
-     * @param string    $Comment
      */
     public function assertIsValidSplashFieldData($Data, $Type)
     {
@@ -318,7 +317,7 @@ class ObjectsCase extends AbstractBaseCase
         //====================================================================//
         // Check if Local Tests Sequences are defined
         if (!is_null(Splash::local()) && method_exists(Splash::local(), "TestSequences")) {
-            $Sequences  =   Splash::local()->TestSequences("List");
+            $Sequences  =   Splash::local()->testSequences("List");
         } else {
             $Sequences  =   array( 1 => "None");
         }
@@ -356,7 +355,7 @@ class ObjectsCase extends AbstractBaseCase
         //====================================================================//
         // Check if Local Tests Sequences are defined
         if (!is_null(Splash::local()) && method_exists(Splash::local(), "TestSequences")) {
-            $Sequences  =   Splash::local()->TestSequences("List");
+            $Sequences  =   Splash::local()->testSequences("List");
         } else {
             $Sequences  =   array( 1 => "None");
         }

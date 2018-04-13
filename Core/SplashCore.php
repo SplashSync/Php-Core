@@ -109,7 +109,7 @@ class SplashCore
     
     /**
      *      @abstract   Get Configuration Array
-     *      @return     Array
+     *      @return     ArrayObject
      */
     public static function configuration()
     {

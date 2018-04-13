@@ -24,7 +24,13 @@ interface ObjectInterface
 {
 
 
-    
+    /**
+     *  @abstract   Get Description Array for requested Object Type
+     *
+     *  @return     array
+     */
+    public function description();
+            
     /**
      * @abstract    Return List Of Available Fields for Splash Object
      *
@@ -61,7 +67,6 @@ interface ObjectInterface
     */
     public function get($id = null, $list = 0);
 
-        
     /**
      * @abstract     Update or Create requested Object Data
      *
@@ -80,4 +85,41 @@ interface ObjectInterface
      * @return     int                         0 if KO, >0 if OK
      */
     public function delete($id = null);
+    
+    /**
+     * @abstract   Set Lock for a specific object
+     *
+     *                  This function is used to prevent further actions
+     *                  on currently edited objects. Node name & Type are
+     *                  single, but Ids have to be stored as list
+     *
+     * @param      int      $Identifier     Local Object Identifier or Empty if New Object
+     *
+     * @return     bool
+     */
+    public function lock($Identifier = "new");
+
+    /**
+     * @abstract   Get Lock Status for a specific object
+     *
+     * @param      int      $Identifier     Local Object Identifier or Empty if New Object
+     *
+     * @return     bool
+     */
+    public function isLocked($Identifier = "new");
+    
+    /**
+     * @abstract   Delete Current active Lock
+     *
+     * @param      int      $Identifier     Local Object Identifier or Empty if New Object
+     *
+     * @return     bool
+     */
+    public function unLock($Identifier = "new");
+    
+    /**
+     * @abstract   Return Object Status
+     */
+    public static function getIsDisabled();
+    
 }

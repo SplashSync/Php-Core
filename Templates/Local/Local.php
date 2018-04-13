@@ -179,7 +179,7 @@ class Local
         
         //====================================================================//
         // Current Module Version
-        $Response->moduleversion    =   SPL_MOD_VERSION;
+        $Response->moduleversion    =   SPLASH_VERSION;
         
         return $Response;
     }
@@ -190,7 +190,6 @@ class Local
 // *******************************************************************//
 //====================================================================//
     
-
     /**
      * @abstract       Return Local Server Test Sequences as Aarray
      *
@@ -220,6 +219,31 @@ class Local
                 return array("Sequence1", "Sequence2" );
         }
     }
+    
+    /**
+     *  @abstract       Return Local Server Test Parameters as Array
+     *                      
+     *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
+     * 
+     *      This function called on each initialisation of module's tests sequences.
+     *      It's aim is to overide general Tests settings to be adjusted to local system.
+     * 
+     *      Result must be an array including parameters as strings or array.
+     * 
+     *  @see Splash\Tests\Tools\ObjectsCase::settings for objects tests settings
+     * 
+     *  @return         array       $parameters
+     */
+    public static function testParameters()
+    {
+        //====================================================================//
+        // Init Parameters Array
+        $Parameters       =     array();
+
+        // CHANGE SOMETHING
+        
+        return $Parameters;
+    }      
     
 //====================================================================//
 // *******************************************************************//

@@ -32,15 +32,7 @@ trait LockTrait
     private $locks = null;
     
     /**
-     *      @abstract   Set Lock for a specific object
-     *
-     *                  This function is used to prevent further actions
-     *                  on currently edited objects. Node name & Type are
-     *                  single, but Ids have to be stored as list
-     *
-     *      @param      int         $Identifier     Local Object Identifier or Empty if New Object
-     *
-     *      @return     bool
+     * {@inheritdoc}
      */
     public function lock($Identifier = "new")
     {
@@ -75,11 +67,7 @@ trait LockTrait
     }
 
     /**
-     *      @abstract   Get Lock Status for a specific object
-     *
-     *      @param      int         $Identifier     Local Object Identifier or Empty if New Object
-     *
-     *      @return     bool
+     * {@inheritdoc}
      */
     public function isLocked($Identifier = "new")
     {
@@ -110,11 +98,7 @@ trait LockTrait
     }
     
     /**
-     *      @abstract   Delete Current active Lock
-     *
-     *      @param      int         $Identifier     Local Object Identifier or Empty if New Object
-     *
-     *      @return     bool
+     * {@inheritdoc}
      */
     public function unLock($Identifier = "new")
     {

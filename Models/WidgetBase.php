@@ -245,7 +245,6 @@ abstract class WidgetBase
      *      @param  string  $param2     chaine de param2
      *      @param  string  $param3     chaine de param3
      *      @param  string  $param4     chaine de param4
-     *      @param  string  $param5     chaine de param5
      *      @param  int     $maxsize    Max length of text
      *      @return string              Translated string (encoded into HTML entities and UTF8)
      */
@@ -255,11 +254,10 @@ abstract class WidgetBase
         $param2 = '',
         $param3 = '',
         $param4 = '',
-        $param5 = '',
         $maxsize = 0
     ) {
         return Splash::translator()
-                ->translate($key, $param1, $param2, $param3, $param4, $param5, $maxsize);
+                ->translate($key, $param1, $param2, $param3, $param4, $maxsize);
     }
 
     //====================================================================//
