@@ -121,5 +121,4 @@ interface ObjectInterface
      * @abstract   Return Object Status
      */
     public static function getIsDisabled();
-    
 }

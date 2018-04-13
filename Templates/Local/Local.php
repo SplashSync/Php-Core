@@ -222,16 +222,16 @@ class Local
     
     /**
      *  @abstract       Return Local Server Test Parameters as Array
-     *                      
+     *
      *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
-     * 
+     *
      *      This function called on each initialisation of module's tests sequences.
      *      It's aim is to overide general Tests settings to be adjusted to local system.
-     * 
+     *
      *      Result must be an array including parameters as strings or array.
-     * 
+     *
      *  @see Splash\Tests\Tools\ObjectsCase::settings for objects tests settings
-     * 
+     *
      *  @return         array       $parameters
      */
     public static function testParameters()
@@ -243,7 +243,7 @@ class Local
         // CHANGE SOMETHING
         
         return $Parameters;
-    }      
+    }
     
 //====================================================================//
 // *******************************************************************//

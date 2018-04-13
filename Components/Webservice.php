@@ -240,10 +240,10 @@ class Webservice
 
     /**
      *      @abstract   Unpack received Data Packets.
-     * 
+     *
      *      @param      string      $In         Input Data
      *      @param      bool        $Uncrypted  Force no encrypt on message.
-     * 
+     *
      *      @return     ArrayObject $Out        Output Packet Data
      */
     public function unPack($In, $Uncrypted = false)
@@ -610,9 +610,9 @@ class Webservice
 
     /**
      * @abstract     Return Server Informations
-     * 
+     *
      * @return       ArrayObject   $Response
-     * 
+     *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getServerInfos()
