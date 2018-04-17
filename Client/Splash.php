@@ -53,9 +53,9 @@ class Splash extends SplashCore
     //--------------------------------------------------------------------//
    
     /**
-     *      @abstract      Check Connexion with NuSOAP Client
-     *      @param      bool    $silent     No message display if non errors
-     *      @return     int             0 if KO, 1 if OK
+     * @abstract      Check Connexion with NuSOAP Client
+     * @param       bool    $silent     No message display if non errors
+     * @return      bool
      */
     public static function ping($silent = false)
     {
@@ -102,9 +102,9 @@ class Splash extends SplashCore
     //--------------------------------------------------------------------//
        
     /**
-     *      @abstract      Check Connexion with NuSOAP Client
-     *      @param      int     $silent     No message display if non errors
-     *      @return     int                 0 if KO, 1 if OK
+     * @abstract    Check Connexion with NuSOAP Client
+     * @param       bool    $silent     No message display if non errors
+     * @return      bool
      */
     public static function connect($silent = false)
     {
@@ -153,7 +153,7 @@ class Splash extends SplashCore
      *   @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      *   @param        string       $user              User Name
      *   @param        string       $comment           Operation Comment for Historics
-     *   @return       int                          0 if KO, 1 if OK, 2 if object Exist and Force == 0
+     *   @return       bool
      */
     public static function commit($ObjectType, $local = null, $action = null, $user = "", $comment = "")
     {

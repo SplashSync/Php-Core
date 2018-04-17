@@ -410,7 +410,7 @@ trait ObjectsDataTrait
         $this->assertEquals(
             count($List1),
             count($List2),
-            "Source and Target List Data have diffrent number of Items"
+            "Source and Target List Data have different number of Items"
         );
 
         //====================================================================//

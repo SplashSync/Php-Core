@@ -60,7 +60,7 @@ interface ObjectInterface
     /**
      * @abstract    Return requested Object Data
      *
-     * @param       array   $id             Object Id.
+     * @param       string  $id             Object Id.
      * @param       array   $list           List of requested fields
      *
      * @return      array                   Object Data
@@ -70,7 +70,7 @@ interface ObjectInterface
     /**
      * @abstract     Update or Create requested Object Data
      *
-     * @param        array  $id             Object Id.  If NULL, Object needs to be created.
+     * @param        string $id             Object Id.  If NULL, Object needs to be created.
      * @param        array  $list           List of requested fields
      *
      * @return       string $id             Object Id.  If NULL or False, Object wasn't created.

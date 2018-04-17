@@ -209,11 +209,11 @@ class Local
         switch ($Name) {
             case "Sequence1":
                 // DO SEQUENCE SETUP
-                return;
+                return array();
                 
             case "Sequence2":
                 // DO SEQUENCE SETUP
-                return;
+                return array();
                 
             case "List":
                 return array("Sequence1", "Sequence2" );
