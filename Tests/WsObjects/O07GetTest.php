@@ -202,6 +202,13 @@ class O07GetTest extends ObjectsCase
         //====================================================================//
         //  Verify Field Data
         foreach ($Fields as $Field) {
+            //==============================================================================
+            //      Filter Non-Readable Fields
+            if (!$Field->read) {
+                continue;
+            }
+            //==============================================================================
+            //      Validate Field Data
             $this->isValidFieldData($Data, $Field->id, $Field->type);
         }
     }
