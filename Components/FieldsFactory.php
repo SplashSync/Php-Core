@@ -562,6 +562,13 @@ class FieldsFactory
         return $this->validate($this->new);
     }
     
+    /**
+     * @abstract    Validate Field Definition
+     * @param   ArrayObject    $Field
+     * @return  boolean
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     private function validate($Field)
     {
         //====================================================================//
@@ -574,6 +581,13 @@ class FieldsFactory
         // Verify - Field Id is Not Empty
         if (empty($Field->id) || !is_string($Field->id)) {
             return Splash::log()->err("ErrFieldsNoId");
+        }
+        
+        //====================================================================//
+        // Verify - Field Id No Spacial Chars
+        if ($Field->id !== preg_replace('/[^a-zA-Z0-9-_@]/u', '', (string) $Field->id)) {
+            Splash::log()->war("ErrFieldsInvalidId", $Field->id);
+            return false;
         }
         
         //====================================================================//
@@ -590,7 +604,7 @@ class FieldsFactory
 
         return true;
     }
-
+    
     /**
      *  @abstract   Save Current New Field in list & Clean current new field
      *
