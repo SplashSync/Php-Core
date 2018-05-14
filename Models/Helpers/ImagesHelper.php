@@ -91,4 +91,60 @@ class ImagesHelper
         
         return $Image;
     }
+    
+    /**
+     *  @abstract   Build a new image field array
+     *
+     *  @param      string      $Name           Image Name
+     *  @param      string      $Url            Image Absolute Url
+     *  @param      string      $PublicUrl      Complete Public Url of this image if available
+     *
+     *  @return     array                       Splash Image Array or False
+     */
+    public static function encodeFromUrl($Name, $Url, $PublicUrl = null)
+    {
+        //====================================================================//
+        // Safety Checks - Validate Inputs
+        if (!is_string($Name) || empty($Name)) {
+            return Splash::log()->err("ErrImgNoName", __FUNCTION__);
+        }
+        if (!is_string($Url) || empty($Url)) {
+            return Splash::log()->err("ErrImgNoPath", __FUNCTION__);
+        }
+
+        //====================================================================//
+        // Safety Checks - Validate Image
+        $ImageDims  = getimagesize($Url);
+        if (empty($ImageDims)) {
+            return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $Url);
+        }
+        
+        //====================================================================//
+        // Build Image Array
+        $Image = array();
+        //====================================================================//
+        // ADD MAIN INFOS
+        //====================================================================//
+        // Image Name
+        $Image["name"]          = $Name;
+        //====================================================================//
+        // Image Filename
+        $Image["filename"]      = basename(parse_url($Url, PHP_URL_PATH ));
+        //====================================================================//
+        // Image Full Path
+        $Image["path"]          = $Url;
+        //====================================================================//
+        // Image Publics Url
+        $Image["url"]           = $PublicUrl;
+        //====================================================================//
+        // ADD COMPUTED INFOS
+        //====================================================================//
+        // Images Informations
+        $Image["width"]         = $ImageDims[0];
+        $Image["height"]        = $ImageDims[1];
+        $Image["md5"]           = md5_file($Url);
+        $Image["size"]          = 0;
+        
+        return $Image;
+    }    
 }
