@@ -81,7 +81,7 @@ trait ObjectsFakerTrait
     }
     
     /**
-     *   @abstract   Check if Field Need to e in List
+     *   @abstract   Check if Field Need to be in List
      *
      *   @param      ArrayObject    $Field          Field Definition
      *   @param      array          $FieldsList     Object Field Ids List
@@ -121,10 +121,11 @@ trait ObjectsFakerTrait
      *   @abstract   Create Fake/Dummy Object Data
      *
      *   @param      array   $FieldsList     Object Field List
+     *   @param      array   $OriginData     Original Object Data
      *
      *   @return     int     $result     0 if KO, 1 if OK
      */
-    public function fakeObjectData($FieldsList)
+    public function fakeObjectData($FieldsList, $OriginData = null)
     {
         //====================================================================//
         // Create Dummy Data Array
@@ -139,7 +140,10 @@ trait ObjectsFakerTrait
             //====================================================================//
             // Generate Single Fields Dummy Data (is Not a List Field)
             if (!self::isListField($Field->id)) {
-                $Out[$Field->id] = self::fakeFieldData($Field->type, $Field->choices, $Field->options);
+                $Out[$Field->id] = (self::isFieldToPreserve($Field, $OriginData) ?
+                        $OriginData[$Field->id] :
+                        self::fakeFieldData($Field->type, $Field->choices, $Field->options)
+                    );
                 continue;
             }
             
@@ -164,6 +168,29 @@ trait ObjectsFakerTrait
             }
         }
         return $Out;
+    }
+
+    /**
+     *   @abstract   Check if Field Need to e in List
+     *
+     *   @param      ArrayObject    $Field          Field Definition
+     *   @param      array          $OriginData     Original Object Data
+     *
+     *   @return     bool
+     */
+    private static function isFieldToPreserve($Field, $OriginData)
+    {
+        //====================================================================//
+        // Check if Origin Data Exists
+        if (empty($OriginData) || !isset($OriginData[$Field->id]) || empty($OriginData[$Field->id])) {
+            return false;
+        }
+        //====================================================================//
+        // Check if Fields Should be Tested or Not
+        if (!$Field->notest) {
+            return false;
+        }
+        return true;
     }
     
     /**
