@@ -13,6 +13,9 @@ use Splash\Client\Splash;
  */
 abstract class AbstractBaseCase extends TestCase
 {
+    use \Splash\Tests\Tools\Traits\ObjectsValidatorTrait;
+    use \Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
+        
     protected function setUp()
     {
         parent::setUp();
@@ -54,62 +57,6 @@ abstract class AbstractBaseCase extends TestCase
         $SoapUrl    =    $_SERVER['SERVER_NAME'] . $Infos["ServerPath"];
         
         return  $SoapUrl;
-    }
-    
-    /**
-     * @abstract        Verify if Data is present in Array and in right Internal Format
-     *
-     * @param mixed     $Data           Tested Array
-     * @param mixed     $Key            Tested Array Key
-     * @param mixed     $Type           Expected Data Type
-     * @param string    $Comment
-     */
-    public function assertArrayInternalType($Data, $Key, $Type, $Comment)
-    {
-        $this->assertArrayHasKey($Key, $Data, $Comment . " => Key '" . $Key . "' not defined");
-        $this->assertNotEmpty($Data[$Key], $Comment . " => Key '" . $Key . "' is Empty");
-        $this->assertInternalType($Type, $Data[$Key], $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
-    }
-    
-    /**
-     * @abstract        Verify if Data is present in Array and in right Internal Format
-     *
-     * @param mixed     $Data           Tested Array
-     * @param mixed     $Key            Tested Array Key
-     * @param mixed     $Type           Expected Data Type
-     * @param string    $Comment
-     */
-    public function assertArrayInstanceOf($Data, $Key, $Type, $Comment)
-    {
-        $this->assertArrayHasKey($Key, $Data, $Comment . " => Key '" . $Key . "' not defined");
-        $this->assertNotEmpty($Data[$Key], $Comment . " => Key '" . $Key . "' is Empty");
-        $this->assertInstanceOf($Type, $Data[$Key], $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
-    }
-    
-
-    /**
-     * @abstract        Verify if Data is a valid Splash Data Block Bool Value
-     *
-     * @param mixed     $Data
-     * @param string    $Comment
-     */
-    public function assertIsSplashBool($Data, $Comment)
-    {
-        $Test = is_bool($Data) || ($Data === "0") || ($Data === "1");
-        $this->assertTrue($Test, $Comment);
-    }
-    
-    /**
-     * @abstract        Verify if Data is present in Array and is Splash Bool
-     *
-     * @param mixed     $Data           Tested Array
-     * @param mixed     $Key            Tested Array Key
-     * @param string    $Comment
-     */
-    public function assertArraySplashBool($Data, $Key, $Comment)
-    {
-        $this->assertArrayHasKey($Key, $Data, $Comment . " => Key '" . $Key . "' not defined");
-        $this->assertIsSplashBool($Data[$Key], $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
     }
     
     /**

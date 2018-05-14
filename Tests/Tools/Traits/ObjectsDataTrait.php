@@ -287,8 +287,6 @@ trait ObjectsDataTrait
             $Data1        =  $this->filterData($Block1, array($Field->id));
             $Data2        =  $this->filterData($Block2, array($Field->id));
 
-            //dump($Data1);
-            //dump($Data2);
             //====================================================================//
             // Compare List Data
             $FieldType      =  self::isListField($Field->type);
@@ -300,9 +298,10 @@ trait ObjectsDataTrait
                     $Data2,
                     $Comment . "->" . $Field->id
                 );
-            } //====================================================================//
+                
+            //====================================================================//
             // Compare Single Fields
-            else {
+            } else {
                 $Result = $this->compareField(
                     $Field->type,
                     $Data1[$Field->id],
@@ -333,8 +332,6 @@ trait ObjectsDataTrait
      */
     private function compareField($FieldType, $Block1, $Block2, $Comment = null)
     {
-        //dump($FieldType);
-        //dump($Block1);
         
         //====================================================================//
         // Build Full ClassName

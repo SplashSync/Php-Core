@@ -3,7 +3,6 @@
 namespace Splash\Tests\Tools;
 
 use Splash\Client\Splash;
-use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
 
 /**
  * @abstract    Splash Test Tools - Objects Test Case Base Class
@@ -22,12 +21,6 @@ class ObjectsCase extends AbstractBaseCase
      * @abstract    List of Created & Tested Object used to delete if test failled.
      */
     private $CreatedObjects  =   array();
-    
-    /**
-     * Fields Classes Name Prefix
-     * @var string
-     */
-    const       CLASS_PREFIX        =   'Splash\Tests\Tools\Fields\Oo';
     
     /**
      * Formater Fake Field Generator Options
@@ -183,28 +176,7 @@ class ObjectsCase extends AbstractBaseCase
     {
         $this->assertIsCommited($Action, $ObjectType, $ObjectId, true);
     }
-    
-    /**
-     * @abstract        Verify if Data is a valid Splash Field Data Value
-     *
-     * @param mixed     $Data
-     * @param string    $Type
-     */
-    public function assertIsValidSplashFieldData($Data, $Type)
-    {
-        //====================================================================//
-        // Verify Type is Valid
-        $ClassName = self::isValidType($Type);
-        $this->assertNotEmpty($ClassName, "Field Type '" . $Type . "' is not a Valid Splash Field Type.");
-    
-        //====================================================================//
-        // Verify Data is Valid
-        $this->assertTrue(
-            $ClassName::validate($Data),
-            "Data is not a Valid Splash '" . $Type . "'. (" . print_r($Data, true) . ")"
-        );
-    }
-    
+      
     /**
      * @abstract        Verify First Commit is Valid and Conform to Expected
      *

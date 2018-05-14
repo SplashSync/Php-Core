@@ -9,6 +9,13 @@ namespace Splash\Tests\Tools\Traits;
  */
 trait ObjectsValidatorTrait
 {
+    
+    /**
+     * Fields Classes Name Prefix
+     * @var string
+     */
+    protected static $CLASS_PREFIX        =   'Splash\Tests\Tools\Fields\Oo';
+    
     //==============================================================================
     //      VALIDATION FUNCTIONS
     //==============================================================================
@@ -46,7 +53,7 @@ trait ObjectsValidatorTrait
 
         //====================================================================//
         // Build Class Full Name
-        $ClassName = self::CLASS_PREFIX .  $In;
+        $ClassName = self::$CLASS_PREFIX .  $In;
         
         //====================================================================//
         // Build New Entity

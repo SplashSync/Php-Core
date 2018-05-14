@@ -2,9 +2,6 @@
 
 namespace Splash\Tests\Tools\Traits;
 
-use Splash\Client\Splash;
-use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
-
 /**
  * @abstract    Splash Test Tools - Objects Fields Management
  *
