@@ -129,7 +129,7 @@ class ImagesHelper
         $Image["name"]          = $Name;
         //====================================================================//
         // Image Filename
-        $Image["filename"]      = basename(parse_url($Url, PHP_URL_PATH ));
+        $Image["filename"]      = basename(parse_url($Url, PHP_URL_PATH));
         //====================================================================//
         // Image Full Path
         $Image["path"]          = $Url;
@@ -146,5 +146,5 @@ class ImagesHelper
         $Image["size"]          = 0;
         
         return $Image;
-    }    
+    }
 }
