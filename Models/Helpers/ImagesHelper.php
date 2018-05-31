@@ -152,9 +152,9 @@ class ImagesHelper
     {
         $ch = curl_init($Url);
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, TRUE);
-        curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
 
         curl_exec($ch);
         $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
