@@ -143,8 +143,23 @@ class ImagesHelper
         $Image["width"]         = $ImageDims[0];
         $Image["height"]        = $ImageDims[1];
         $Image["md5"]           = md5_file($Url);
-        $Image["size"]          = 0;
-        
+        $Image["size"]          = self::getRemoteFileSize($Url);
+
         return $Image;
+    }
+    
+    private static function getRemoteFileSize($Url)
+    {
+        $ch = curl_init($Url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, TRUE);
+        curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+
+        curl_exec($ch);
+        $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+        curl_close($ch);
+        
+        return (int) $size;
     }
 }
