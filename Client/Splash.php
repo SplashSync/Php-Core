@@ -148,7 +148,7 @@ class Splash extends SplashCore
 
     /**
      *   @abstract     Submit an Update for a Local Object
-     *   @param        array        $ObjectType        Object Type Name.
+     *   @param        string       $ObjectType        Object Type Name.
      *   @param        int/array    $local             Object Local Id or Array of Local Id.
      *   @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      *   @param        string       $user              User Name
