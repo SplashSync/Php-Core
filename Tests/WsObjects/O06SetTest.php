@@ -15,7 +15,7 @@ class O06SetTest extends ObjectsCase
     /**
      * @var array
      */
-    private $Fields;
+    protected $Fields;
     
     /**
      * @dataProvider objectFieldsProvider

@@ -32,6 +32,14 @@ trait UpdateFlagTrait
      */
     private $Update         = false;
     
+    /**
+     * Set Custom Updated Flag
+     *
+     * @abstract This flag is set when an update is done during Set Operation.
+     *           Using this flag is useful to reduce exchanges with databases
+     * @var bool
+     */
+    private $Custom         = array();
     
     //====================================================================//
     //  Update Flag Management
@@ -39,33 +47,61 @@ trait UpdateFlagTrait
 
     /**
      * @abstract    Flag Object For Database Update
-     *
+     * @param       string  $Custom     Custom Falg Name
      * @return      self
      */
-    protected function needUpdate()
+    protected function needUpdate($Custom = "Object")
     {
-        $this->Update   =   true;
+        if (self::isCustom($Custom)) {
+            $this->Custom[$Custom]   =   true;
+        } else {
+            $this->Update   =   true;
+        }
         return $this;
     }
 
     /**
      * @abstract    Clear Update Flag
-     *
+     * @param       string  $Custom     Custom Falg Name
      * @return      self
      */
-    protected function isUpdated()
+    protected function isUpdated($Custom = "Object")
     {
-        $this->Update   =   true;
+        if (self::isCustom($Custom)) {
+            $this->Custom[$Custom]   =   false;
+        } else {
+            $this->Update   =   false;
+        }
         return $this;
     }
     
     /**
      * @abstract    is Database Update Needed
-     *
+     * @param       string  $Custom     Custom Falg Name
      * @return      bool
      */
-    protected function isToUpdate()
+    protected function isToUpdate($Custom = "Object")
     {
-        return $this->Update;
+        if (self::isCustom($Custom)) {
+            return isset($this->Custom[$Custom]) ? $this->Custom[$Custom] : false;
+        } else {
+            return $this->Update;
+        }
+    }
+    
+    /**
+     * @abstract    is Custom Flag Request
+     * @param       string  $Custom     Custom Falg Name
+     * @return      bool
+     */
+    private function isCustom($Custom)
+    {
+        if ($Custom == "Object") {
+            return false;
+        }
+        if (is_null($Custom) || !is_scalar($Custom) || empty($Custom)) {
+            return false;
+        }
+        return true;
     }
 }

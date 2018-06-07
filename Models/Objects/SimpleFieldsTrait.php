@@ -118,7 +118,7 @@ trait SimpleFieldsTrait
             //====================================================================//
             //  Update Field Data
             $this->{$Object}->$FieldName = $Data;
-            $this->needUpdate();
+            $this->needUpdate($Object);
         }
         return $this;
     }
@@ -140,7 +140,7 @@ trait SimpleFieldsTrait
             //====================================================================//
             //  Update Field Data
             $this->{$Object}->$FieldName = $Data;
-            $this->needUpdate();
+            $this->needUpdate($Object);
         }
         return $this;
     }
@@ -168,7 +168,7 @@ trait SimpleFieldsTrait
             } else {
                 $this->{$Object}->$FieldName =  $this->{$Object}->$FieldName & ~ (1 << $Position);
             }
-            $this->needUpdate();
+            $this->needUpdate($Object);
         }
         
         return $this;
@@ -208,7 +208,7 @@ trait SimpleFieldsTrait
         //====================================================================//
         //  Update Field Data
         $this->{$Object}->{ "set" . $FieldName}($Data);
-        $this->needUpdate();
+        $this->needUpdate($Object);
         return $this;
     }
 }
