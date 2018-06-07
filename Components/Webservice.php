@@ -180,9 +180,9 @@ class Webservice
         // Open SSL Encryption
         if ($Action == 'encrypt') {
             $Out = base64_encode(openssl_encrypt($In, Splash::configuration()->WsCrypt, $CryptKey, 0, $CryptIv));
-        } //====================================================================//
+        //====================================================================//
         // Open SSL Decryption
-        elseif ($Action == 'decrypt') {
+        } elseif ($Action == 'decrypt') {
             $Out = openssl_decrypt(base64_decode($In), Splash::configuration()->WsCrypt, $CryptKey, 0, $CryptIv);
         }
         //====================================================================//
@@ -223,9 +223,9 @@ class Webservice
         //====================================================================//
         if (!$Uncrypted) {
             $Out = $this->crypt("encrypt", $Serial, $this->key, $this->id);
-        } //====================================================================//
+        //====================================================================//
         // Else, switch to base64
-        else {
+        } else {
             $Out = base64_encode($Serial);
         }
         
@@ -257,9 +257,9 @@ class Webservice
         //====================================================================//
         if (!empty($In) && !$Uncrypted) {
             $Decode = $this->crypt("decrypt", $In, $this->key, $this->id);
-        } //====================================================================//
+        //====================================================================//
         // Else, switch from base64
-        else {
+        } else {
             $Decode = base64_decode($In, true);
         }
         

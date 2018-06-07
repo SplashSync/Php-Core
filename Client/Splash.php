@@ -86,9 +86,10 @@ class Splash extends SplashCore
         if (isset($Result->result) && ($Result->result ==  true) && ($silent)) {
             self::log()->cleanLog();
             return true;
-        } //====================================================================//
+        
+        //====================================================================//
         // If Not Silent, Display result
-        elseif (isset($Result->result) && ($Result->result == true)) {
+        } elseif (isset($Result->result) && ($Result->result == true)) {
             return self::log()->msg("Remote Client Ping Passed (" . self::ws()->url . ")");
         } else {
             return self::log()->err("Remote Client Ping Failed (" . self::ws()->url . ")");

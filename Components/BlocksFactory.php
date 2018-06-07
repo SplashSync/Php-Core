@@ -194,9 +194,10 @@ class BlocksFactory
         // Safety Checks
         if (empty($this->blocks)) {
             return Splash::log()->err("ErrBlocksNoList");
-        } //====================================================================//
+        
+        //====================================================================//
         // Return fields List
-        else {
+        } else {
             $buffer = $this->blocks;
             unset($this->blocks);
             return $buffer;

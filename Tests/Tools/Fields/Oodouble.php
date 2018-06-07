@@ -30,9 +30,9 @@ class Oodouble
         //      Verify Data is a Double or Zero
         if (is_double($Data) || ($Data == 0)) {
             return true;
-        } //==============================================================================
+        //==============================================================================
         //      Verify Data is a Double as String
-        elseif (is_string($Data) && (is_double(floatval($Data)))) {
+        } elseif (is_string($Data) && (is_double(floatval($Data)))) {
             return true;
         }
         return "Field Data is not Double or Float Value.";

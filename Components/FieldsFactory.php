@@ -656,9 +656,9 @@ class FieldsFactory
         // Safety Checks
         if (empty($this->fields)) {
             return Splash::log()->err("ErrFieldsNoList");
-        } //====================================================================//
+        //====================================================================//
         // Return fields List
-        else {
+        } else {
             $buffer = $this->fields;
             unset($this->fields);
             return $buffer;
