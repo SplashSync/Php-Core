@@ -221,9 +221,9 @@ class Splash extends SplashCore
     
 
     /**
-     *   @abstract     Check if Commity is Allowed Local Object
+     *   @abstract     Check if Commit is Allowed Local Object
      *   @param        array        $ObjectType        Object Type Name.
-     *   @param        int/array    $local             Object Local Id or Array of Local Id.
+     *   @param        int|array    $local             Object Local Id or Array of Local Id.
      *   @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      *   @return       bool
      */
@@ -248,8 +248,26 @@ class Splash extends SplashCore
         if (($action === SPL_A_CREATE) && Splash::object($ObjectType)->isLocked()) {
             return false;
         }
-        
-        return true;
+        //====================================================================//
+        // Verify if Travis Mode (PhpUnit) ==> No Commit Allowed
+        return !self::isTravisMode($ObjectType, $local, $action);
+    }
+    
+    /**
+     *   @abstract     Check if Commit we Are in Travis Mode
+     *   @param        array        $ObjectType        Object Type Name.
+     *   @param        int|array    $local             Object Local Id or Array of Local Id.
+     *   @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     *   @return       bool
+     */
+    private static function isTravisMode($ObjectType, $local, $action)
+    {
+        if (!empty(Splash::input("SPLASH_TRAVIS"))) {
+            $Ids   =   (is_array($local) || is_a($local, "ArrayObject")) ? implode("|", $local) : $local;
+            self::log()->war("Module Commit Skipped (" . $ObjectType . ", " . $action . ", " . $Ids . ")");
+            return true;
+        }
+        return false;
     }
     
     /**
