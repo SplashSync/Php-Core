@@ -109,7 +109,7 @@ class ChecksumHelper
         ksort($Input);
         //====================================================================//
         // Serialize Array & Encode Checksum
-        return md5(serialize($Input));
+        return md5(strtolower(serialize($Input)));
     }
     
     /**
@@ -126,8 +126,8 @@ class ChecksumHelper
         // Build CheckSum Debug Array
         $DebugArray =   array();
         foreach ($Input as $Key => $Value) {
-            $DebugArray[]   =   $Key;
-            $DebugArray[]   =   $Value;
+            $DebugArray[]   =   strtolower($Key);
+            $DebugArray[]   =   strtolower($Value);
         }
         
         //====================================================================//
