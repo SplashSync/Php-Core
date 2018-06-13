@@ -93,7 +93,7 @@ interface ObjectInterface
      *                  on currently edited objects. Node name & Type are
      *                  single, but Ids have to be stored as list
      *
-     * @param      int      $Identifier     Local Object Identifier or Empty if New Object
+     * @param      int|string   $Identifier     Local Object Identifier or Empty if New Object
      *
      * @return     bool
      */
@@ -102,7 +102,7 @@ interface ObjectInterface
     /**
      * @abstract   Get Lock Status for a specific object
      *
-     * @param      int      $Identifier     Local Object Identifier or Empty if New Object
+     * @param      int|string   $Identifier     Local Object Identifier or Empty if New Object
      *
      * @return     bool
      */
@@ -111,7 +111,7 @@ interface ObjectInterface
     /**
      * @abstract   Delete Current active Lock
      *
-     * @param      int      $Identifier     Local Object Identifier or Empty if New Object
+     * @param      int|string   $Identifier     Local Object Identifier or Empty if New Object
      *
      * @return     bool
      */
