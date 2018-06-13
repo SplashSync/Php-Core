@@ -408,11 +408,9 @@ class Logger
     }
    
     /**
-     *      @abstract    Merge All Log messages from a second class with current class
-     *
-     *      @param       logs                 a second logging class structure.
-     *
-     *      @return      True
+     * @abstract    Merge All Messages from a second class with current class
+     * @param       array|ArrayObject   $logs       Second logging array
+     * @return      bool
      */
     public function merge($logs)
     {
@@ -439,26 +437,34 @@ class Logger
     }
    
     /**
-     *      @abstract    Merge Messages from a second class with current class
-     *
-     *      @param       logs                 a second logging class structure.
-     *
-     *      @return      True
+     * @abstract    Merge Messages from a second class with current class
+     * @param       string              $what                 Type of Logs to Merge
+     * @param       array|ArrayObject   $In                   Second logging array
+     * @return      void
      */
     private function mergeCore($what, $In)
     {
-        if (!empty($In)) {
-            if (is_a($In, "ArrayObject")) {
-                $In = $In->getArrayCopy();
-            }
-            
-            if (!isset($this->$what)) {
-                $this->$what = $In;
-            } else {
-                $this->$what = array_merge($this->$what, $In);
+        //====================================================================//
+        // Fast Line
+        if (empty($In)) {
+            return;
+        }
+        //====================================================================//
+        // Detect ArrayObjects
+        if (is_a($In, "ArrayObject")) {
+            $In = $In->getArrayCopy();
+        }
+        //====================================================================//
+        // If Current Log is Empty
+        if (!isset($this->$what)) {
+            $this->$what = $In;
+        //====================================================================//
+        // Really merge Logs
+        } else {
+            foreach ($In as $Value) {
+                array_push($this->$what, $Value);
             }
         }
-        return true;
     }
 
     /**
