@@ -25,6 +25,12 @@ use ArrayObject;
  */
 class Logger
 {
+    const CMD_COLOR_ERR     =   31;
+    const CMD_COLOR_MSG     =   32;
+    const CMD_COLOR_WAR     =   33;
+    const CMD_COLOR_DEB     =   97;
+    const CMD_COLOR_NONE    =   0;
+    
     /**
      *      @abstract   Store Show Debug Messages
      *      @var        Bool
@@ -337,10 +343,22 @@ class Logger
     }
    
     /**
+     * @abstract    Return Text in Console Colored format
+     * @param       string $text    Raw Console Text
+     * @param       string $title   Displayed Title
+     * @param       int $color   Display Color has INT
+     * @return      string
+     */
+    public static function getConsoleLine($text, $title = "", $color = 0)
+    {
+        return PHP_EOL . "\e[". $color ."m" . $title . html_entity_decode($text) . "\e[0m";
+    }
+
+    /**
      *      @abstract    Return All WebServer current Log WebServer Console Colored format
      *      @return      string      All existing log messages in an human readable Html format
      */
-    private function getConsole($msgarray, $title = "", $Color = "")
+    private function getConsole($msgarray, $title = "", $color = "")
     {
         $Out  = "";
         
@@ -348,7 +366,7 @@ class Logger
             //====================================================================//
             // Add Messages
             foreach ($msgarray as $txt) {
-                $Out .= PHP_EOL . $Color . $title . html_entity_decode($txt);
+                $Out .= self::getConsoleLine($txt, $title, $color);
             }
         }
         
@@ -365,10 +383,10 @@ class Logger
         $Out  = null;
         //====================================================================//
         // Read All Messages as Html
-        $Out .= $this->getConsole($this->err, " - Error    => ", "\e[31m");
-        $Out .= $this->getConsole($this->war, " - Warning  => ", "\e[33m");
-        $Out .= $this->getConsole($this->msg, " - Messages => ", "\e[32m");
-        $Out .= $this->getConsole($this->deb, " - Debug    => ", "\e[97m");
+        $Out .= $this->getConsole($this->err, " - Error    => ", self::CMD_COLOR_ERR);
+        $Out .= $this->getConsole($this->war, " - Warning  => ", self::CMD_COLOR_WAR);
+        $Out .= $this->getConsole($this->msg, " - Messages => ", self::CMD_COLOR_MSG);
+        $Out .= $this->getConsole($this->deb, " - Debug    => ", self::CMD_COLOR_DEB);
         $Out .= "\e[0m";
         
         //====================================================================//
