@@ -407,7 +407,9 @@ trait ObjectsDataTrait
         $this->assertEquals(
             count($List1),
             count($List2),
-            "Source and Target List Data have different number of Items"
+            "Source and Target List Data have different number of Items "
+                . PHP_EOL . " Source " . print_r($List1, true)
+                . PHP_EOL . " Target " . print_r($List2, true)
         );
 
         //====================================================================//

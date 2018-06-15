@@ -303,8 +303,8 @@ class ObjectsCase extends AbstractBaseCase
             //   For Each Object Type
             foreach (Splash::objects() as $ObjectType) {
                 //====================================================================//
-                //   If Object Type Is Disabled Type  =>> Skip
-                if (Splash::object($ObjectType)->getIsDisabled()) {
+                //   Filter Tested Object Types  =>> Skip
+                if (!self::isAllowedObjectType($ObjectType)) {
                     continue;
                 }
                 //====================================================================//
@@ -340,13 +340,18 @@ class ObjectsCase extends AbstractBaseCase
             //   For Each Object Type
             foreach (Splash::objects() as $ObjectType) {
                 //====================================================================//
-                //   If Object Type Is Disabled Type  =>> Skip
-                if (Splash::object($ObjectType)->getIsDisabled()) {
+                //   Filter Tested Object Types  =>> Skip
+                if (!self::isAllowedObjectType($ObjectType)) {
                     continue;
                 }
                 //====================================================================//
                 //   For Each Field Type
                 foreach (Splash::object($ObjectType)->fields() as $Field) {
+                    //====================================================================//
+                    //   Filter Tested Object Fields  =>> Skip
+                    if (!self::isAllowedObjectField($Field->id)) {
+                        continue;
+                    }
                     $Result[] = array($Sequence, $ObjectType, $Field);
                 }
             }

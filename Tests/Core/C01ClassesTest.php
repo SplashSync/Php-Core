@@ -12,22 +12,6 @@ use Splash\Core\SplashCore     as Splash;
  */
 class C01ClassesTest extends TestCase
 {
-    
-    /**
-     * @abstract    Display of Splash Logo
-     */
-    public function testDisplayLogo()
-    {
-        echo PHP_EOL;
-        echo " ______     ______   __         ______     ______     __  __    " . PHP_EOL;
-        echo "/\  ___\   /\  == \ /\ \       /\  __ \   /\  ___\   /\ \_\ \   " . PHP_EOL;
-        echo "\ \___  \  \ \  _-/ \ \ \____  \ \  __ \  \ \___  \  \ \  __ \  " . PHP_EOL;
-        echo " \/\_____\  \ \_\    \ \_____\  \ \_\ \_\  \/\_____\  \ \_\ \_\ " . PHP_EOL;
-        echo "  \/_____/   \/_/     \/_____/   \/_/\/_/   \/_____/   \/_/\/_/ " . PHP_EOL;
-        echo "                                                                " . PHP_EOL;
-        echo ".";
-        $this->assertTrue(true);
-    }
 
     public function testSplashCoreClass()
     {

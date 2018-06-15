@@ -26,6 +26,47 @@ abstract class AbstractBaseCase extends TestCase
     }
 
     /**
+     * @abstract    Check if Object Type Is to be tested or Not
+     * @param       string  $ObjectType         Object Type Name
+     * @return      bool
+     */
+    public static function isAllowedObjectType($ObjectType)
+    {
+        //====================================================================//
+        //   Filter Tested Object Types  =>> Skip
+        if ( defined("SPLASH_TYPES") && is_scalar(SPLASH_TYPES) && !empty(explode(",", SPLASH_TYPES))) {
+            if ( !in_array($ObjectType, explode(",", SPLASH_TYPES))) {
+                return false;
+            }
+        }
+        //====================================================================//
+        //   If Object Type Is Disabled Type  =>> Skip
+        if (Splash::object($ObjectType)->getIsDisabled()) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * @abstract    Check if Object Field ID Is to be tested or Not
+     * @param       string  $Identifier         Object Field Identifier
+     * @return      bool
+     */
+    public static function isAllowedObjectField($Identifier)
+    {
+        //====================================================================//
+        //   Filter Tested Object Fields  =>> Skip
+        if ( defined("SPLASH_FIELDS") && is_scalar(SPLASH_FIELDS) && !empty(explode(",", SPLASH_FIELDS))) {
+            if ( !in_array($Identifier, explode(",", SPLASH_FIELDS))) {
+                return false;
+            }
+        }
+        return true;
+    }    
+    
+
+            
+    /**
      * @abstract        GENERATE FAKE SPLASH SERVER HOST URL
      *
      * @see             SERVER_NAME parameter that must be defined in PhpUnit Configuration File
