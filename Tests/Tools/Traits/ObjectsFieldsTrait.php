@@ -35,6 +35,33 @@ trait ObjectsFieldsTrait
     }
     
     /**
+     *  @abstract   Filter a Fields List to keap only given Fields Tags
+     *
+     *  @param      array       $FieldsList     Object Field List
+     *  @param      string      $ItemType       Field Microdata Type Url
+     *  @param      string      $ItemProp       Field Microdata Property Name
+     *
+     *  @return     array
+     */
+    public static function filterFieldListByTag($FieldsList, $ItemType, $ItemProp)
+    {
+        $Result     =   array();
+        $FilterTag  =   md5($ItemProp . IDSPLIT . $ItemType);
+        
+        foreach ($FieldsList as $Field) {
+            if ($Field->tag !== $FilterTag) {
+                continue;
+            }
+            if (($Field->itemtype !== $ItemType) || ($Field->itemprop !== $ItemProp)) {
+                continue;
+            }
+            $Result[] = $Field;
+        }
+        
+        return $Result;
+    }
+    
+    /**
      *   @abstract   Find a Field Definition in List by Id
      *
      *   @param      array      $FieldsList     Object Field List
@@ -53,6 +80,26 @@ trait ObjectsFieldsTrait
         return array_shift($Fields);
     }
 
+    /**
+     *  @abstract   Find a Field Definition in List by Id
+     *
+     *  @param      array      $FieldsList     Object Field List
+     *  @param      string     $ItemType       Field Microdata Type Url
+     *  @param      string     $ItemProp       Field Microdata Property Name
+     *
+     *  @return     array
+     */
+    public static function findFieldByTag($FieldsList, $ItemType, $ItemProp)
+    {
+        $Fields = self::filterFieldListByTag($FieldsList, $ItemType, $ItemProp);
+        
+        if (count($Fields) != 1) {
+            return null;
+        }
+                
+        return array_shift($Fields);
+    }
+    
     /**
      *   @abstract   Redure a Fields List to an Array of Field Ids
      *

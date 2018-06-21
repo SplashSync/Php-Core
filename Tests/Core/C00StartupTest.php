@@ -95,6 +95,9 @@ class C00StartupTest extends TestCase
             echo Logger::getConsoleLine("!!Invalid Tests Sequence List!!", " - Tested Objects ", Logger::CMD_COLOR_DEB);
             return;
         }
+        if ($Sequences === "None") {
+            return;
+        }
         echo Logger::getConsoleLine(implode(" | ", $Sequences), "- Test Sequences: ", Logger::CMD_COLOR_DEB);
     }
 

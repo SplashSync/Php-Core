@@ -133,6 +133,10 @@ class ObjectsCase extends AbstractBaseCase
         //====================================================================//
         // Setup Test Sequence
         Splash::local()->testSequences($Sequence);
+        
+        //====================================================================//
+        // Reload Local Tests Parameters
+        $this->loadLocalTestParameters();
     }
     
     protected function setUp()
