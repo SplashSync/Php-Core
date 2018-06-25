@@ -2,6 +2,8 @@
 
 namespace Splash\Tests\Tools\Traits;
 
+use ArrayObject;
+
 use Splash\Client\Splash;
 
 /**

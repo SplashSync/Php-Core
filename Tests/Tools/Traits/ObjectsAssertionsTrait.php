@@ -122,7 +122,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $ItemProp           Field Microdata Property Name
      * @param       string      $TestComment
      * @param       string      $Comment
-     * @return void
+     * @return      string
      */
     private static function buildResult($ItemType, $ItemProp, $TestComment, $Comment = null)
     {

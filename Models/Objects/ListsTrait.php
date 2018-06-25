@@ -32,7 +32,7 @@ trait ListsTrait
     /**
      *      @abstract   Get a singleton List Helper Class
      *
-     *      @return     ListHelper
+     *      @return     ListsHelper
      */
     public static function lists()
     {

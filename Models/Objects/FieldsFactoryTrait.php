@@ -34,7 +34,7 @@ trait FieldsFactoryTrait
      *      @abstract   Get a singleton FieldsFactory Class
      *                  Access to Object Fields Creation Functions
      *
-     *      @return     Splash\Components\FieldsFactory
+     *      @return     FieldsFactory
      */
     public static function fieldsFactory()
     {
