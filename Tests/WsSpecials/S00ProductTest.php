@@ -1,6 +1,8 @@
 <?php
 namespace Splash\Tests\WsSpecials;
 
+use ArrayObject;
+
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
@@ -22,7 +24,12 @@ class S00ProductTest extends ObjectsCase
      * @var array
      */
     protected $Fields   = array();
-
+    
+    /**
+     * @var array
+     */
+    protected $CurrentVariation;
+    
     /**
      * @dataProvider objectTypesProvider
      */
