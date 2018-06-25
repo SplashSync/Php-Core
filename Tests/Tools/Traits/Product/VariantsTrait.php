@@ -118,34 +118,4 @@ trait VariantsTrait
         }
         return $Fields;
     }
-
-    /**
-     * @abstract    Override Parent Function to Add Variants Attributes
-     */
-    public function prepareForTesting($ObjectType, $Field)
-    {
-        //====================================================================//
-        //   Verify Test is Required
-        if (!$this->verifyTestIsAllowed($ObjectType, $Field)) {
-            return false;
-        }
-
-        //====================================================================//
-        // Prepare Fake Object Data
-        //====================================================================//
-
-        $this->Fields   =   $this->fakeFieldsList($ObjectType, [$Field->id], true);
-        $FakeData       =   $this->fakeObjectData($this->Fields);
-
-        //====================================================================//
-        //   Add Attributes Fields To Fields List for Verifications
-        $Fields   =   Splash::object($ObjectType)->fields();
-        $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeCode");
-        $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeName");
-        $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeValue");
-        
-//var_dump($this->CurrentVariation);
-
-        return array_merge($FakeData, $this->CurrentVariation);
-    }
 }
