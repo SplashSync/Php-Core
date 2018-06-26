@@ -33,7 +33,7 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      */
-    public function __testFieldsDefinition($Sequence, $ObjectType)
+    public function testFieldsDefinition($Sequence, $ObjectType)
     {
         //====================================================================//
         //   TEST INIT
@@ -66,7 +66,7 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      */
-    public function __testVariantsFromModule($Sequence, $ObjectType, $Field, $ForceObjectId = null)
+    public function testVariantsFromModule($Sequence, $ObjectType, $Field, $ForceObjectId = null)
     {
         //====================================================================//
         //   TEST INIT
@@ -101,7 +101,7 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      */
-    public function __testVariantsFieldFromService($Sequence, $ObjectType, $Field, $ForceObjectId = null)
+    public function testVariantsFieldFromService($Sequence, $ObjectType, $Field, $ForceObjectId = null)
     {
         //====================================================================//
         //   TEST INIT
@@ -209,7 +209,7 @@ class S00ProductTest extends ObjectsCase
             $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeCode");
             $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeName");
             $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeValue");
-        } 
+        }
 
         
 //var_dump($Field->id);
