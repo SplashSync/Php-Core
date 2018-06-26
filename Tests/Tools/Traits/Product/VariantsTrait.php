@@ -24,7 +24,7 @@ trait VariantsTrait
         $Result = array();
 
         $Name2   =  $this->getVariantName();
-        for ($i=0; $i<3; $i++) {
+        for ($i=0; $i<2; $i++) {
             $Result[]   =   array_merge($Name2, $this->getVariantAttributes(['VariantA','VariantB']));
         }
 

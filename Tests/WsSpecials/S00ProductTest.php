@@ -18,22 +18,22 @@ class S00ProductTest extends ObjectsCase
     
     use \Splash\Tests\Tools\Traits\Product\AssertionsTrait;
     use \Splash\Tests\Tools\Traits\Product\VariantsTrait;
+    use \Splash\Tests\Tools\Traits\Product\ImagesTrait;
     use \Splash\Models\Objects\ListsTrait;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $Fields   = array();
     
-    /**
-     * @var array
-     */
-    protected $CurrentVariation;
+    /** @var array */
+    protected $CurrentVariation  = array();
+
+    /** @var array */
+    protected $CurrentImages  = array();
     
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFieldsDefinition($Sequence, $ObjectType)
+    public function __testFieldsDefinition($Sequence, $ObjectType)
     {
         //====================================================================//
         //   TEST INIT
@@ -66,7 +66,7 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      */
-    public function testVariantsFromModule($Sequence, $ObjectType, $Field, $ForceObjectId = null)
+    public function __testVariantsFromModule($Sequence, $ObjectType, $Field, $ForceObjectId = null)
     {
         //====================================================================//
         //   TEST INIT
@@ -101,7 +101,7 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      */
-    public function testVariantsFieldFromService($Sequence, $ObjectType, $Field, $ForceObjectId = null)
+    public function __testVariantsFieldFromService($Sequence, $ObjectType, $Field, $ForceObjectId = null)
     {
         //====================================================================//
         //   TEST INIT
@@ -134,6 +134,49 @@ class S00ProductTest extends ObjectsCase
     }
     
     /**
+     * @dataProvider productImagesProvider
+     */
+    public function testImagesFromModule($Sequence, $ObjectType, $Images)
+    {
+        $this->coreTestImagesFromModule($Sequence, $ObjectType, $Images);
+    }
+        
+    /**
+     * @dataProvider productImagesProvider
+     */
+    public function testVariantImagesFromModule($Sequence, $ObjectType, $Images)
+    {
+        //====================================================================//
+        //   TEST INIT
+        //====================================================================//
+        if (!$this->assertIsProductType($ObjectType)) {
+            return;
+        }
+        $this->loadLocalTestSequence($Sequence);
+        
+        //====================================================================//
+        //   Load Fields
+        $this->Fields   =   Splash::object($ObjectType)->fields();
+        $this->assertNotEmpty($this->Fields, "Product Fields List is Empty!");
+
+        //====================================================================//
+        //   Verify Product Variants Are Defined
+        $VariantCode    =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "VariantAttributeCode");
+        if (!$VariantCode) {
+            return;
+        }
+
+        foreach ($this->objectVariantsProvider() as $VariationData) {
+            //====================================================================//
+            //   Store Current Tested Variant
+            $this->CurrentVariation =   $VariationData;
+            //====================================================================//
+            //   Execute Set Test
+            $this->coreTestImagesFromModule($Sequence, $ObjectType, $Images);
+        }
+    }
+    
+    /**
      * @abstract    Override Parent Function to Add Variants Attributes
      * @abstract    Ensure Set/Write Test is Possible & Generate Fake Object Data
      *              -> This Function uses Preloaded Fields
@@ -145,7 +188,7 @@ class S00ProductTest extends ObjectsCase
      *
      * @return      array|bool      Generated Data Block or False if not Allowed
      */
-    public function prepareForTesting($ObjectType, $Field, $Unik = false)
+    public function prepareForTesting($ObjectType, $Field = null, $Unik = true)
     {
         //====================================================================//
         //   Verify Test is Required
@@ -156,19 +199,24 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         // Generated Object Data
         $FakeData = $this->generateObjectData($ObjectType, $Field, $Unik);
+        //====================================================================//
+        //   Load Fields
+        $Fields   =   Splash::object($ObjectType)->fields();
 
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications
-        $Fields   =   Splash::object($ObjectType)->fields();
-        $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeCode");
-        $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeName");
-        $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeValue");
-      
+        if (!empty($this->CurrentVariation)) {
+            $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeCode");
+            $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeName");
+            $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeValue");
+        } 
+
+        
 //var_dump($Field->id);
 //var_dump(array_merge($FakeData, $this->CurrentVariation));
 
         //====================================================================//
         // Return Generated Object Data
-        return array_merge($FakeData, $this->CurrentVariation);
+        return array_merge($FakeData, $this->CurrentVariation, $this->CurrentImages);
     }
 }

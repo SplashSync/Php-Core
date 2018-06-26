@@ -265,7 +265,7 @@ trait ObjectsSetTestsTrait
      *
      * @return      array|bool      Generated Data Block or False if not Allowed
      */
-    protected function generateObjectData($ObjectType, $Field, $Unik = false)
+    protected function generateObjectData($ObjectType, $Field, $Unik = true)
     {
         //====================================================================//
         // Generate Required Fields List
