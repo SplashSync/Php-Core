@@ -25,7 +25,7 @@ trait ImagesTrait
     //==============================================================================
 
     /**
-     * @abstract    Base Test for Products Images Writing 
+     * @abstract    Base Test for Products Images Writing
      */
     protected function coreTestImagesFromModule($Sequence, $ObjectType, $Images)
     {
@@ -55,7 +55,7 @@ trait ImagesTrait
         
         //====================================================================//
         //   Execute Create Test
-        $ObjectId = $this->setObjectFromModule($ObjectType, $NewData);     
+        $ObjectId = $this->setObjectFromModule($ObjectType, $NewData);
 
         //====================================================================//
         //   VERIFY IMAGES OBJECT DATA
@@ -88,16 +88,17 @@ trait ImagesTrait
         
         //====================================================================//
         //   Generate Random Attributes Set
+        $SpashImage =   Image::fake(["Images" => [ "fake-image" . $ImageIndex . ".jpg"]]);
         $Item   =   array(
-            self::lists()->fieldName($Image->id)    =>      Image::fake(["Images" => [ "fake-image" . $ImageIndex . ".jpg"]]),
+            self::lists()->fieldName($Image->id)    =>      $SpashImage,
             self::lists()->fieldName($isCover->id)  =>      $setCover,
         );
         if ($isVisible->write) {
             $Item[self::lists()->fieldName($isVisible->id)]   =   $setVisible;
-        } 
+        }
         if ($Position->write) {
             $Item[self::lists()->fieldName($Position->id)]  =   $setPosition;
-        } 
+        }
         return $Item;
     }
 
@@ -111,30 +112,29 @@ trait ImagesTrait
         $Image      =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "image");
         //====================================================================//
         //   Check Required Fields
-        $this->assertNotEmpty($Image);        
+        $this->assertNotEmpty($Image);
         //====================================================================//
         //   Build Images List
         $Images = array();
-        foreach ($Combination as $Item) 
-        {
+        foreach ($Combination as $Item) {
             $Images[]   =   $this->getFakeImageItem($Item[0], $Item[1], $Item[2], $Item[3]);
         }
         
         return array(self::lists()->listName($Image->id) => $Images);
-    }   
+    }
 
     /**
      * @abstract    Verify Images are Correctly Stored
      * @param   string      $ObjectType
      * @param   string      $ObjectId
-     * @param   array       $Source 
+     * @param   array       $Source
      */
     private function verifyImages($ObjectType, $ObjectId, $Source)
     {
         //====================================================================//
         //   Load Fields
         $this->Fields   =   Splash::object($ObjectType)->fields();
-        $this->assertNotEmpty($this->Fields, "Product Fields List is Empty!");        
+        $this->assertNotEmpty($this->Fields, "Product Fields List is Empty!");
         //====================================================================//
         //   Load Required Fields
         $Image      =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "image");
@@ -146,7 +146,7 @@ trait ImagesTrait
         $this->assertNotEmpty($Image);
         $this->assertNotEmpty($isCover);
         $this->assertNotEmpty($isVisible);
-        $this->assertNotEmpty($Position);        
+        $this->assertNotEmpty($Position);
         //====================================================================//
         //   Extract Fields Ids
         $ListId         = self::lists()->listName($Image->id);
@@ -161,8 +161,8 @@ trait ImagesTrait
         //====================================================================//
         //   Build List of Fields to Read
         $toRead =   array_merge(
-                $this->reduceFieldList($this->Fields),
-                [$Image->id, $isCover->id, $isVisible->id, $Position->id]
+            $this->reduceFieldList($this->Fields),
+            [$Image->id, $isCover->id, $isVisible->id, $Position->id]
         );
         
         //====================================================================//
@@ -171,10 +171,10 @@ trait ImagesTrait
         
         //====================================================================//
         //   Verify Images Are Here
-        $this->assertNotEmpty($Source[$ListId], "Source Product Images List is Empty"); 
-        $this->assertNotEmpty($Target[$ListId], "Target Product Images List is Empty");             
-        $this->SourceImages = $Source[$ListId];  
-        $this->TargetImages = $Target[$ListId];  
+        $this->assertNotEmpty($Source[$ListId], "Source Product Images List is Empty");
+        $this->assertNotEmpty($Target[$ListId], "Target Product Images List is Empty");
+        $this->SourceImages = $Source[$ListId];
+        $this->TargetImages = $Target[$ListId];
         //====================================================================//
         //   Walk on Source Images List
         foreach ($this->SourceImages as $SrcImage) {
@@ -183,7 +183,7 @@ trait ImagesTrait
             $TagetImage =   $this->findImageItembyMd5($ImageId, $SrcImage[$ImageId]["md5"]);
             //====================================================================//
             //   Verify Visible Flag
-            $this->verifyVisibleImages($SrcImage, $TagetImage,  $isVisibleId);
+            $this->verifyVisibleImages($SrcImage, $TagetImage, $isVisibleId);
             //====================================================================//
             //   Verify Cover Flag
             $this->verifyCoverImages($SrcImage, $TagetImage, $isCoverId);
@@ -194,23 +194,23 @@ trait ImagesTrait
      * @abstract    Identify Image in List by Md5
      * @param   string  $ImageId
      * @param   string  $Md5
-     * @return  array|null 
+     * @return  array|null
      */
     protected function findImageItembyMd5($ImageId, $Md5)
-    {     
+    {
         foreach ($this->TargetImages as $Image) {
-            if ( $Image[$ImageId]["md5"] == $Md5)  {
+            if ($Image[$ImageId]["md5"] == $Md5) {
                 return $Image;
             }
         }
         //====================================================================//
         //   Verify Image was Found
         $this->assertNotNull(
-            null, 
+            null,
             "Source Image " . $Md5 . " was not found in Target List" . PHP_EOL
                 . "Source : " . print_r($this->SourceImages, true)
                 . "Target : " . print_r($this->TargetImages, true)
-        );         
+        );
         return null;
     }
     
@@ -224,13 +224,13 @@ trait ImagesTrait
     {
         //====================================================================//
         //   Check if Image Visible Flag is Set
-        if ( !isset($Source[$isVisibleId]) || !$Source[$isVisibleId] )  {
+        if (!isset($Source[$isVisibleId]) || !$Source[$isVisibleId]) {
             return;
-        }          
+        }
         //====================================================================//
         //   Verify Image is Flagged as Visible
         $this->assertNotEmpty(
-            $Target[$isVisibleId], 
+            $Target[$isVisibleId],
             "Source Image is NOT flagged as Visible in Target List" . PHP_EOL
                 . "Source : " . print_r($this->SourceImages, true)
                 . "Target : " . print_r($this->TargetImages, true)
@@ -242,18 +242,18 @@ trait ImagesTrait
      * @param   array       $Source         Source Image
      * @param   array       $Target         Target Image
      * @param   string      $isCoverId      is Cover Flag Field Id
-     */  
+     */
     private function verifyCoverImages($Source, $Target, $isCoverId)
     {
         //====================================================================//
         //   Check if Image Cover Flag is Set
-        if ( !isset($Source[$isCoverId]) || !$Source[$isCoverId] )  {
+        if (!isset($Source[$isCoverId]) || !$Source[$isCoverId]) {
             return;
         }
         //====================================================================//
         //   Verify Image is Flagged as Cover
         $this->assertNotEmpty(
-            $Target[$isCoverId], 
+            $Target[$isCoverId],
             "Source Image is NOT flagged as Cover in Target List" . PHP_EOL
                 . "Source : " . print_r($this->SourceImages, true)
                 . "Target : " . print_r($this->TargetImages, true)
@@ -279,7 +279,7 @@ trait ImagesTrait
         $ImageList    =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "image");
         if (!$ImageList || !$ImageList->write) {
             return false;
-        }    
+        }
         return true;
     }
     
@@ -305,9 +305,9 @@ trait ImagesTrait
             foreach ($this->getProductImagesSequences() as $ImagesSequence) {
                 $DataSet    = $TestCase;
                 $DataSet[3] = $this->getFakeImages($ImagesSequence);
-            }            
+            }
             $Result[]   =   $DataSet;
-        } 
+        }
         if (empty($Result)) {
             return [null, null, null, null];
         }
@@ -355,9 +355,8 @@ trait ImagesTrait
 //            array(1,false,true,0),
 //            array(2,true,true,1),
 //            array(3,false,true,2),
-//        );        
+//        );
         
         return new ArrayObject($Combinations, ArrayObject::ARRAY_AS_PROPS);
     }
-
 }
