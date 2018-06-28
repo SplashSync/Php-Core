@@ -152,7 +152,7 @@ class ListsHelper
      *      @param      array       $Buffer             Object Data Buffer
      *      @param      string      $ListName           List Identifier String
      *      @param      string      $FieldName          List Field Identifier String
-     *      @param      string      $Key                List Item Index Key
+     *      @param      string|int  $Key                List Item Index Key
      *      @param      mixed       $Data               Item Data
      *
      *      @return     string
