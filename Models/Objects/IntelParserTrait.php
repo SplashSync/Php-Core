@@ -17,6 +17,7 @@
 
 namespace   Splash\Models\Objects;
 
+use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**

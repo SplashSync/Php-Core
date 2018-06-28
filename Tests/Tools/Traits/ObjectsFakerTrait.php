@@ -125,7 +125,7 @@ trait ObjectsFakerTrait
      *   @param      array   $FieldsList     Object Field List
      *   @param      array   $OriginData     Original Object Data
      *
-     *   @return     int     $result     0 if KO, 1 if OK
+     *   @return     array
      */
     public function fakeObjectData($FieldsList, $OriginData = null)
     {
@@ -200,7 +200,7 @@ trait ObjectsFakerTrait
      *
      *   @param      array   $Field          Object Field Definition
      *
-     *   @return     int     $result     0 if KO, 1 if OK
+     *   @return     array
      */
     public function fakeListData($Field)
     {
@@ -241,7 +241,7 @@ trait ObjectsFakerTrait
      *   @param      array   $Choices    Object Field Possible Values
      *   @param      array   $Options     Object Field Values Options
      *
-     *   @return     int     $result     0 if KO, 1 if OK
+     *   @return     string|array
      */
     public function fakeFieldData($Type, $Choices = null, $Options = array())
     {
