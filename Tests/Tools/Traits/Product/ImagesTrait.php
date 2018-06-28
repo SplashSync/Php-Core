@@ -17,7 +17,20 @@ trait ImagesTrait
     /** @var array */
     private $SourceImages;
     /** @var array */
+    private $TargetFields;
+    /** @var array */
     private $TargetImages;
+    
+    /** @var string */
+    private $ListId;
+    /** @var string */
+    private $ImageId;
+    /** @var string */
+    private $IsCoverId;
+    /** @var string */
+    private $IsVisibleId;
+    /** @var string */
+    private $PositionId;
 
 
     //==============================================================================
@@ -132,6 +145,82 @@ trait ImagesTrait
     private function verifyImages($ObjectType, $ObjectId, $Source)
     {
         //====================================================================//
+        //   Verify Images Fields are Valid
+        $this->verifyImagesFields($ObjectType);
+        
+        //====================================================================//
+        //   READ OBJECT DATA
+        //====================================================================//
+
+        //====================================================================//
+        //   Build List of Fields to Read
+        $toRead =   array_merge($this->reduceFieldList($this->Fields), $this->TargetFields);
+        
+        //====================================================================//
+        //   Read Object Data
+        $Target    =   Splash::object($ObjectType)->get($ObjectId, $toRead);
+        
+        //====================================================================//
+        //   Verify Images Are Here
+        $this->assertNotEmpty($Source[$this->ListId], "Source Product Images List is Empty");
+        $this->assertNotEmpty($Target[$this->ListId], "Target Product Images List is Empty");
+        $this->SourceImages = $Source[$this->ListId];
+        $this->TargetImages = $Target[$this->ListId];
+
+        //====================================================================//
+        //   VERIFY TARGET IMAGES
+        //====================================================================//
+        
+        //====================================================================//
+        //   Walk on Target Images List
+        $Position = -1;
+        foreach ($this->TargetImages as $TargetImage) {
+            //====================================================================//
+            //   Check if Image Data is Set
+            $this->assertArrayHasKey($this->ImageId, $TargetImage);
+            //====================================================================//
+            //   Check if Image Data is Valid
+            $Validate = Image::validate($TargetImage[$this->ImageId]);
+            $this->assertTrue($Validate, "Target Image définition Array is Invalid " . $Validate);
+            //====================================================================//
+            //   Check if Image Flags are Set
+            $this->assertArrayHasKey($this->IsVisibleId, $TargetImage);
+            $this->assertArrayHasKey($this->IsCoverId, $TargetImage);
+            $this->assertArrayHasKey($this->PositionId, $TargetImage);
+            //====================================================================//
+            //   Check if Images Position are Following
+            $this->assertGreaterThan(
+                $Position,
+                $TargetImage[$this->PositionId],
+                "Product Images Positions are not Correctly Numbered"
+            );
+            $Position = $TargetImage[$this->PositionId];
+        }
+        
+        //====================================================================//
+        //   SOURCE VS TARGET IMAGES
+        //====================================================================//
+        
+        //====================================================================//
+        //   Walk on Source Images List
+        foreach ($this->SourceImages as $SrcImage) {
+            //====================================================================//
+            //   Verify Visible Flag
+            $this->verifyVisibleImages($SrcImage, $this->ImageId, $this->IsVisibleId);
+            //====================================================================//
+            //   Verify Cover Flag
+            $this->verifyCoverImages($SrcImage, $this->ImageId, $this->IsCoverId);
+        }
+    }
+
+    /**
+     * @abstract    Verify Images are Correctly Stored
+     * @param       string      $ObjectType
+     * @return      void
+     */
+    private function verifyImagesFields($ObjectType)
+    {
+        //====================================================================//
         //   Load Fields
         $this->Fields   =   Splash::object($ObjectType)->fields();
         $this->assertNotEmpty($this->Fields, "Product Fields List is Empty!");
@@ -143,96 +232,85 @@ trait ImagesTrait
         $Position   =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "positionImage");
         //====================================================================//
         //   Check Required Fields
-        $this->assertNotEmpty($Image);
-        $this->assertNotEmpty($isCover);
-        $this->assertNotEmpty($isVisible);
-        $this->assertNotEmpty($Position);
+        $this->assertNotEmpty($Image, "Product Images List Field not Found");
+        $this->assertNotEmpty($isCover, "Product Images is Cover Field not Found");
+        $this->assertNotEmpty($isVisible, "Product Images is Visible Field not Found");
+        $this->assertNotEmpty($Position, "Product Images Position Field not Found");
         //====================================================================//
         //   Extract Fields Ids
-        $ListId         = self::lists()->listName($Image->id);
-        $ImageId        = self::lists()->fieldName($Image->id);
-        $isCoverId      = self::lists()->fieldName($isCover->id);
-        $isVisibleId    = self::lists()->fieldName($isVisible->id);
-        
+        $this->ListId         = self::lists()->listName($Image->id);
+        $this->ImageId        = self::lists()->fieldName($Image->id);
+        $this->IsCoverId      = self::lists()->fieldName($isCover->id);
+        $this->IsVisibleId    = self::lists()->fieldName($isVisible->id);
+        $this->PositionId     = self::lists()->fieldName($Position->id);
         //====================================================================//
-        //   READ OBJECT DATA
+        //   Build To Read Fields Ids
+        $this->TargetFields =   [$Image->id, $isCover->id, $isVisible->id, $Position->id];
         //====================================================================//
-
-        //====================================================================//
-        //   Build List of Fields to Read
-        $toRead =   array_merge(
-            $this->reduceFieldList($this->Fields),
-            [$Image->id, $isCover->id, $isVisible->id, $Position->id]
-        );
-        
-        //====================================================================//
-        //   Read Object Data
-        $Target    =   Splash::object($ObjectType)->get($ObjectId, $toRead);
-        
-        //====================================================================//
-        //   Verify Images Are Here
-        $this->assertNotEmpty($Source[$ListId], "Source Product Images List is Empty");
-        $this->assertNotEmpty($Target[$ListId], "Target Product Images List is Empty");
-        $this->SourceImages = $Source[$ListId];
-        $this->TargetImages = $Target[$ListId];
-        //====================================================================//
-        //   Walk on Source Images List
-        foreach ($this->SourceImages as $SrcImage) {
-            //====================================================================//
-            //   Find Image in List
-            $TagetImage =   $this->findImageItembyMd5($ImageId, $SrcImage[$ImageId]["md5"]);
-            //====================================================================//
-            //   Verify Visible Flag
-            $this->verifyVisibleImages($SrcImage, $TagetImage, $isVisibleId);
-            //====================================================================//
-            //   Verify Cover Flag
-            $this->verifyCoverImages($SrcImage, $TagetImage, $isCoverId);
-        }
+        //   Check Required Fields
+        $this->assertNotEmpty($this->ImageId);
+        $this->assertNotEmpty($this->IsCoverId);
+        $this->assertNotEmpty($this->IsVisibleId);
+        $this->assertNotEmpty($this->PositionId);
     }
     
     /**
-     * @abstract    Identify Image in List by Md5
-     * @param   string  $ImageId
-     * @param   string  $Md5
+     * @abstract    Identify Image in List by Md5 and Active Flag
+     * @param   array       $Source         Source Image
+     * @param   string      $ImageId        Image Field Id
+     * @param   string      $FlagId         Flag Field Id
      * @return  array|null
      */
-    protected function findImageItembyMd5($ImageId, $Md5)
+    protected function findImageByMd5AndFlag($Source, $ImageId, $FlagId)
     {
+        //====================================================================//
+        //   Check if Image Md5 is Set
+        $this->assertNotEmpty(
+            $Source[$ImageId]["md5"],
+            "Source Image has no Md5... Check input Combinations!"
+        );
+
+        //====================================================================//
+        //   Walk on Target Images
         foreach ($this->TargetImages as $Image) {
-            if ($Image[$ImageId]["md5"] == $Md5) {
-                return $Image;
+            //====================================================================//
+            //   Compare Images Md5
+            if ($Image[$ImageId]["md5"] != $Source[$ImageId]["md5"]) {
+                continue;
             }
+            //====================================================================//
+            //   Compare Images Flags
+            if (!isset($Image[$FlagId]) || empty($Image[$FlagId])) {
+                continue;
+            }
+            return $Image;
         }
         //====================================================================//
-        //   Verify Image was Found
-        $this->assertNotNull(
-            null,
-            "Source Image " . $Md5 . " was not found in Target List" . PHP_EOL
-                . "Source : " . print_r($this->SourceImages, true)
-                . "Target : " . print_r($this->TargetImages, true)
-        );
+        //   Images not Found
         return null;
     }
     
     /**
      * @abstract    Verify Visible Image Flag
      * @param   array       $Source         Source Image
-     * @param   array       $Target         Target Image
+     * @param   string      $ImageId        Image Field Id
      * @param   string      $isVisibleId    is Visible Flag Field Id
+     * @return  void
      */
-    private function verifyVisibleImages($Source, $Target, $isVisibleId)
+    private function verifyVisibleImages($Source, $ImageId, $isVisibleId)
     {
         //====================================================================//
         //   Check if Image Visible Flag is Set
-        if (!isset($Source[$isVisibleId]) || !$Source[$isVisibleId]) {
+        $this->assertArrayHasKey($isVisibleId, $Source);
+        if (!$Source[$isVisibleId]) {
             return;
         }
         //====================================================================//
         //   Verify Image is Flagged as Visible
         $this->assertNotEmpty(
-            $Target[$isVisibleId],
+            $this->findImageByMd5AndFlag($Source, $ImageId, $isVisibleId),
             "Source Image is NOT flagged as Visible in Target List" . PHP_EOL
-                . "Source : " . print_r($this->SourceImages, true)
+                . "Source : " . print_r($Source, true)
                 . "Target : " . print_r($this->TargetImages, true)
         );
     }
@@ -240,22 +318,23 @@ trait ImagesTrait
     /**
      * @abstract    Verify Cover Image Flag
      * @param   array       $Source         Source Image
-     * @param   array       $Target         Target Image
+     * @param   string      $ImageId        Image Field Id
      * @param   string      $isCoverId      is Cover Flag Field Id
      */
-    private function verifyCoverImages($Source, $Target, $isCoverId)
+    private function verifyCoverImages($Source, $ImageId, $isCoverId)
     {
         //====================================================================//
         //   Check if Image Cover Flag is Set
-        if (!isset($Source[$isCoverId]) || !$Source[$isCoverId]) {
+        $this->assertArrayHasKey($isCoverId, $Source);
+        if (!$Source[$isCoverId]) {
             return;
         }
         //====================================================================//
         //   Verify Image is Flagged as Cover
         $this->assertNotEmpty(
-            $Target[$isCoverId],
+            $this->findImageByMd5AndFlag($Source, $ImageId, $isCoverId),
             "Source Image is NOT flagged as Cover in Target List" . PHP_EOL
-                . "Source : " . print_r($this->SourceImages, true)
+                . "Source : " . print_r($Source, true)
                 . "Target : " . print_r($this->TargetImages, true)
         );
     }
@@ -349,13 +428,22 @@ trait ImagesTrait
             array(3,false,true,2),
         );
         
-//        //====================================================================//
-//        //   Advanced Set with Cover not in First Position
-//        $Combinations[] =   array(
-//            array(1,false,true,0),
-//            array(2,true,true,1),
-//            array(3,false,true,2),
-//        );
+        //====================================================================//
+        //   Advanced Set with Cover not in First Position
+        $Combinations[] =   array(
+            array(1,false,true,0),
+            array(2,true,true,1),
+            array(3,false,true,2),
+        );
+        
+        //====================================================================//
+        //   Advanced Set with Cover not in First Position & Not Visible
+        $Combinations[] =   array(
+            array(1,false,true,0),
+            array(3,false,true,1),
+            array(2,false,true,2),
+            array(4,true,false,3),
+        );
         
         return new ArrayObject($Combinations, ArrayObject::ARRAY_AS_PROPS);
     }
