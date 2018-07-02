@@ -196,12 +196,20 @@ class S00ProductTest extends ObjectsCase
             return false;
         }
         
-        //====================================================================//
-        // Generated Object Data
-        $FakeData = $this->generateObjectData($ObjectType, $Field, $Unik);
+        
         //====================================================================//
         //   Load Fields
         $Fields   =   Splash::object($ObjectType)->fields();
+
+        //====================================================================//
+        //   Ensure a Field is Requested
+        if (is_null($Field)) {
+            $Field   =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "alternateName");
+        } 
+
+        //====================================================================//
+        // Generated Object Data
+        $FakeData = $this->generateObjectData($ObjectType, $Field, $Unik);
 
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications
@@ -210,10 +218,6 @@ class S00ProductTest extends ObjectsCase
             $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeName");
             $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeValue");
         }
-
-        
-//var_dump($Field->id);
-//var_dump(array_merge($FakeData, $this->CurrentVariation));
 
         //====================================================================//
         // Return Generated Object Data
