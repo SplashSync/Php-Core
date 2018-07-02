@@ -205,7 +205,7 @@ class S00ProductTest extends ObjectsCase
         //   Ensure a Field is Requested
         if (is_null($Field)) {
             $Field   =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "alternateName");
-        } 
+        }
 
         //====================================================================//
         // Generated Object Data
