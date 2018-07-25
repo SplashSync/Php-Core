@@ -375,6 +375,17 @@ class SplashCore
 
         return null;
     }
+    
+    /**
+     * @abstract   Force Server Local Class
+     * @return     void
+     */
+    public static function setLocalClass($LocalClass)
+    {
+        //====================================================================//
+        // Force Local Core Management Class
+        self::core()->localcore = $LocalClass;
+    }    
         
     /**
      *      @abstract   Get Specific Object Class
