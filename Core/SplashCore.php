@@ -385,7 +385,7 @@ class SplashCore
         //====================================================================//
         // Force Local Core Management Class
         self::core()->localcore = $LocalClass;
-    }    
+    }
         
     /**
      *      @abstract   Get Specific Object Class
