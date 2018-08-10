@@ -285,10 +285,13 @@ trait ObjectsSetTestsTrait
             //====================================================================//
             // Check if Compare is Required
             if (($Unik == false) || (empty($this->FieldMd5))) {
+                //====================================================================//
+                // Store MD5 of New Generated Field Data
+                $this->FieldMd5 = $this->getFakeDataMd5($FakeData, $Field);
                 return $FakeData;
             }
             
-            $FakeDataMd5 = md5(serialize($this->filterData($FakeData, [$Field->id])));
+            $FakeDataMd5 = $this->getFakeDataMd5($FakeData, $Field);
 
             //====================================================================//
             //   Ensure Field Data was modified
@@ -297,13 +300,34 @@ trait ObjectsSetTestsTrait
         
         //====================================================================//
         // Store MD5 of New Generated Field Data
-        $this->FieldMd5 = md5(serialize($this->filterData($FakeData, [$Field->id])));
+        $this->FieldMd5 = $this->getFakeDataMd5($FakeData, $Field);
 
         //====================================================================//
         // Return Generated Object Data
         return $FakeData;
     }
     
+    /**
+     * @abstract    Generate Object Data Md5 Checksum to Ensure Data are different
+     *
+     * @param       array       $FakeData       Faker Object Data Set
+     * @param       ArrayObject $Field          Current Tested Field (ArrayObject)
+     *
+     * @return      string                      Md5 CheckSum
+     */
+    protected function getFakeDataMd5($FakeData, $Field)
+    {
+        //====================================================================//
+        // Filter data to focus on Tested Field
+        $filteredData   =   $this->filterData($FakeData, [$Field->id]);
+        //====================================================================//
+        // Data Block is Empty(i.e: ReadOnly Field)
+        if (empty($filteredData)) {
+            return md5(serialize($FakeData));
+        }
+        return md5(serialize($filteredData));
+    }
+        
     /**
      * @abstract    Ensure Set/Write Test is Possible & Generate Fake Object Data
      *              -> This Function uses Preloaded Fields
@@ -315,7 +339,7 @@ trait ObjectsSetTestsTrait
      *
      * @return      array|bool      Generated Data Block or False if not Allowed
      */
-    public function prepareForTesting($ObjectType, $Field, $Unik = false)
+    public function prepareForTesting($ObjectType, $Field, $Unik = true)
     {
         //====================================================================//
         //   Verify Test is Required
