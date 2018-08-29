@@ -169,7 +169,7 @@ trait ObjectsAssertionsTrait
         //   Verify this Field
         $this->assertTrue(
             in_array($Field->type, $Formats),
-            self::buildResult($ItemType, $ItemProp, " must a " . implode("|", $Formats), $Comment)
+            self::buildResult($ItemType, $ItemProp, " must be a " . implode("|", $Formats), $Comment)
         );
         $this->assertTrue(
             $Field->read,
