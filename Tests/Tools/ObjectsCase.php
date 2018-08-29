@@ -15,7 +15,6 @@ class ObjectsCase extends AbstractBaseCase
     use \Splash\Tests\Tools\Traits\ObjectsFieldsTrait;
     use \Splash\Tests\Tools\Traits\ObjectsDataTrait;
     use \Splash\Tests\Tools\Traits\ObjectsFakerTrait;
-    use \Splash\Tests\Tools\Traits\ObjectsValidatorTrait;
     
     /*
      * @abstract    List of Created & Tested Object used to delete if test failled.
