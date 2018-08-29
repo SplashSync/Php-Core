@@ -13,10 +13,8 @@ use Splash\Tests\Tools\Traits\ObjectsFieldsTrait;
  */
 trait ObjectsAssertionsTrait
 {
-    /**
-     * @var array
-     */
-    protected $Fields;
+    /** @var array */
+    protected $Fields           = array();
     
     //==============================================================================
     //      SPLASH ASSERTIONS FUNCTIONS
