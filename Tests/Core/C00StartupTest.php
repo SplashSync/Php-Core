@@ -23,7 +23,7 @@ class C00StartupTest extends TestCase
     const   SPLASH3 =   "\ \___  \  \ \  _-/ \ \ \____  \ \  __ \  \ \___  \  \ \  __ \  " . PHP_EOL;
     const   SPLASH4 =   " \/\_____\  \ \_\    \ \_____\  \ \_\ \_\  \/\_____\  \ \_\ \_\ " . PHP_EOL;
     const   SPLASH5 =   "  \/_____/   \/_/     \/_____/   \/_/\/_/   \/_____/   \/_/\/_/ " . PHP_EOL;
-    const   SPLASH6 =   "                                                                ";            
+    const   SPLASH6 =   "                                                                ";
             
     /**
      * @abstract    Display of Tested Sequences | Objects | Fields
