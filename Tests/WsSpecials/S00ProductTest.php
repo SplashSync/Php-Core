@@ -20,15 +20,12 @@ class S00ProductTest extends ObjectsCase
     use \Splash\Tests\Tools\Traits\Product\VariantsTrait;
     use \Splash\Tests\Tools\Traits\Product\ImagesTrait;
     use \Splash\Models\Objects\ListsTrait;
-
-    /** @var array */
-    protected $Fields   = array();
     
     /** @var array */
-    protected $CurrentVariation  = array();
+    protected $CurrentVariation = array();
 
     /** @var array */
-    protected $CurrentImages  = array();
+    protected $CurrentImages    = array();
     
     /**
      * @dataProvider objectTypesProvider
