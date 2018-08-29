@@ -15,39 +15,45 @@ use Splash\Tests\Tools\AbstractBaseCase;
  */
 class C00StartupTest extends TestCase
 {
+    
+    const   SPLIT   =   "----------------------------------------------------------------";
+      
+    const   SPLASH1 =   " ______     ______   __         ______     ______     __  __    " . PHP_EOL;
+    const   SPLASH2 =   "/\  ___\   /\  == \ /\ \       /\  __ \   /\  ___\   /\ \_\ \   " . PHP_EOL;
+    const   SPLASH3 =   "\ \___  \  \ \  _-/ \ \ \____  \ \  __ \  \ \___  \  \ \  __ \  " . PHP_EOL;
+    const   SPLASH4 =   " \/\_____\  \ \_\    \ \_____\  \ \_\ \_\  \/\_____\  \ \_\ \_\ " . PHP_EOL;
+    const   SPLASH5 =   "  \/_____/   \/_/     \/_____/   \/_/\/_/   \/_____/   \/_/\/_/ " . PHP_EOL;
+    const   SPLASH6 =   "                                                                ";            
+            
     /**
      * @abstract    Display of Tested Sequences | Objects | Fields
      */
     public function testDisplayTestContext()
     {
-
-                
         //====================================================================//
         //   SPLASH SCREEN
         //====================================================================//
 
-        $Split  = "----------------------------------------------------------------";
-        
-        $Splash = " ______     ______   __         ______     ______     __  __    " . PHP_EOL;
-        $Splash.= "/\  ___\   /\  == \ /\ \       /\  __ \   /\  ___\   /\ \_\ \   " . PHP_EOL;
-        $Splash.= "\ \___  \  \ \  _-/ \ \ \____  \ \  __ \  \ \___  \  \ \  __ \  " . PHP_EOL;
-        $Splash.= " \/\_____\  \ \_\    \ \_____\  \ \_\ \_\  \/\_____\  \ \_\ \_\ " . PHP_EOL;
-        $Splash.= "  \/_____/   \/_/     \/_____/   \/_/\/_/   \/_____/   \/_/\/_/ " . PHP_EOL;
-        $Splash.= "                                                                ";
-        
         echo PHP_EOL;
         
-        echo Logger::getConsoleLine(null, $Split, Logger::CMD_COLOR_MSG);
+        echo Logger::getConsoleLine(null, self::SPLIT, Logger::CMD_COLOR_MSG);
+        echo Logger::getConsoleLine(null, self::SPLASH1, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine(null, self::SPLASH2, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine(null, self::SPLASH3, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine(null, self::SPLASH4, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine(null, self::SPLASH5, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine(null, self::SPLASH6, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine(null, self::SPLIT, Logger::CMD_COLOR_MSG);
         
-        echo Logger::getConsoleLine(null, $Splash, Logger::CMD_COLOR_WAR);
-        
-        echo Logger::getConsoleLine(null, $Split, Logger::CMD_COLOR_MSG);
-        
+        //====================================================================//
+        //   TEST MAIN INFORMATIONS
+        //====================================================================//
+
         $this->displayTestedObjects();
         $this->displayTestedSequences();
         $this->displayFilteredFields();
         
-        echo Logger::getConsoleLine(null, $Split, Logger::CMD_COLOR_MSG);
+        echo Logger::getConsoleLine(null, self::SPLIT, Logger::CMD_COLOR_MSG);
         echo PHP_EOL . ".";
         
         $this->assertTrue(true);

@@ -388,7 +388,7 @@ trait ImagesTrait
             $Result[]   =   $DataSet;
         }
         if (empty($Result)) {
-            return [null, null, null, null];
+            $this->markTestSkipped('No Product Images Combination Found.');
         }
         return $Result;
     }
