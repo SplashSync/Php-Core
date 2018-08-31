@@ -80,7 +80,7 @@ class FileManager
 
         //====================================================================//
         // Get Next Task Result
-        if (count($Response->tasks)) {
+        if (Splash::count($Response->tasks)) {
             //====================================================================//
             // Shift Task Array
             if (is_a($Response->tasks, "ArrayObject")) {

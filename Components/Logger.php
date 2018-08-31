@@ -17,6 +17,7 @@ namespace   Splash\Components;
 
 use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
+use Countable;
 
 /**
  * @abstract    Requests Log & Debug Management Class
@@ -232,14 +233,17 @@ class Logger
    
 
     /**
-     *      @abstract    Return All WebServer current Log WebServer in Html format
-     *      @return      string      All existing log messages in an human readable Html format
+     * @abstract    Return All WebServer current Log WebServer in Html format
+     * @param   array|null  $msgArray
+     * @param   string      $title
+     * @param   string      $color
+     * @return  string
      */
-    public function getHtml($msgarray, $title = "", $Color = "#000000")
+    public function getHtml($msgArray, $title = "", $color = "#000000")
     {
-        $html  = '<font color="' . $Color . '">';
+        $html  = '<font color="' . $color . '">';
         
-        if (count($msgarray) > 0) {
+        if ($msgArray instanceof Countable && count($msgArray)) {
             //====================================================================//
             // Prepare Title as Bold
             if ($title) {
@@ -247,7 +251,7 @@ class Logger
             }
             //====================================================================//
             // Add Messages
-            foreach ($msgarray as $txt) {
+            foreach ($msgArray as $txt) {
                 $html .= $txt . "</br>";
             }
         }
@@ -302,18 +306,19 @@ class Logger
     }
     
     /**
-     *      @abstract    Return All WebServer current Log WebServer in Html Checklist format
-     *      @return      string      All existing log messages in an human readable Html format
+     * @abstract    Return All WebServer current Log WebServer in Html Checklist format
+     * @param   array|null  $msgArray
+     * @param   string      $type
+     * @return  string|null
      */
-    private function getHtmlList($Msgarray, $Type)
+    private function getHtmlList($msgArray, $type)
     {
-        $html  = null;
-        
-        if (count($Msgarray) > 0) {
+        $html  = null;        
+        if ( $msgArray instanceof Countable && count($msgArray)) {
             //====================================================================//
             // Add Messages
-            foreach ($Msgarray as $Message) {
-                $html .= $this->getHtmlListItem($Message, $Type);
+            foreach ($msgArray as $Message) {
+                $html .= $this->getHtmlListItem($Message, $type);
             }
         }
         
@@ -355,21 +360,22 @@ class Logger
     }
 
     /**
-     *      @abstract    Return All WebServer current Log WebServer Console Colored format
-     *      @return      string      All existing log messages in an human readable Html format
+     * @abstract    Return All WebServer current Log WebServer Console Colored format
+     * @param   array|null  $msgArray
+     * @param   string      $title
+     * @param   string      $color
+     * @return  string
      */
-    private function getConsole($msgarray, $title = "", $color = "")
+    private function getConsole($msgArray, $title = "", $color = "")
     {
         $Out  = "";
-        
-        if (count($msgarray) > 0) {
+        if ( $msgArray instanceof Countable && count($msgArray)) {
             //====================================================================//
             // Add Messages
-            foreach ($msgarray as $txt) {
+            foreach ($msgArray as $txt) {
                 $Out .= self::getConsoleLine($txt, $title, $color);
             }
         }
-        
         return $Out;
     }
    
@@ -652,24 +658,22 @@ class Logger
     }
     
     /**
-     *  @abstract    Add a message to Log File
-     *
-     *  @param      array     $array      Array of Message text to log
-     *  @param      string    $type       Message Type
-     *  @return     True
+     * @abstract    Add a message to Log File
+     * @param   array|null  $msgArray       Array of Message text to log
+     * @param   string      $type           Message Type
+     * @return  true
      */
-    private static function addLogBlockToFile($array, $type = "Unknown")
+    private static function addLogBlockToFile($msgArray, $type = "Unknown")
     {
         //====================================================================//
         // Safety Check
         if (Splash::configuration()->Logging == false) {
             return true;
-        }
-        
+        }        
         //====================================================================//
         // Run a Messages List
-        if ((count($array) > 0) && (!empty($array))) {
-            foreach ($array as $message) {
+        if ( $msgArray instanceof Countable && count($msgArray)) {
+            foreach ($msgArray as $message) {
                 //====================================================================//
                 // Add Message To Log File
                 self::addLogToFile(utf8_decode(html_entity_decode($message)), $type);

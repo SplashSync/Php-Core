@@ -187,7 +187,7 @@ class Splash extends SplashCore
         Splash::ws()->addTask(
             SPL_F_COMMIT,
             $params,
-            Splash::trans("MsgSchRemoteCommit", $action, $ObjectType, count($local))
+            Splash::trans("MsgSchRemoteCommit", $action, $ObjectType, Splash::count($local))
         );
         
         //====================================================================//
