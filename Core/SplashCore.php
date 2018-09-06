@@ -613,10 +613,10 @@ class SplashCore
     {
         if (is_null($Value)) {
             return 0;
-        }  
+        }
         if (is_scalar($Value)) {
             return 1;
-        }  
+        }
         return count($Value);
     }
             
