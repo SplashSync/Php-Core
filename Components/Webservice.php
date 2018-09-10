@@ -689,7 +689,12 @@ class Webservice
      */
     public function getServerScheme()
     {
-        return empty(Splash::input("REQUEST_SCHEME")) ? "http" : Splash::input("REQUEST_SCHEME");
+        if ((! empty(Splash::input('REQUEST_SCHEME')) && (Splash::input('REQUEST_SCHEME') == 'https')) ||
+             (! empty(Splash::input('HTTPS')) && (Splash::input('HTTPS') == 'on')) ||
+             (! empty(Splash::input('SERVER_PORT')) && (Splash::input('SERVER_PORT') == '443'))) {
+            return 'https';
+        }
+        return "http";
     }
     
     /**
