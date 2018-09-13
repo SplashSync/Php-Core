@@ -243,7 +243,7 @@ class Logger
     {
         $html  = '<font color="' . $color . '">';
         
-        if ($msgArray instanceof Countable && count($msgArray)) {
+        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
             //====================================================================//
             // Prepare Title as Bold
             if ($title) {
@@ -314,7 +314,7 @@ class Logger
     private function getHtmlList($msgArray, $type)
     {
         $html  = null;
-        if ($msgArray instanceof Countable && count($msgArray)) {
+        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
             //====================================================================//
             // Add Messages
             foreach ($msgArray as $Message) {
@@ -369,7 +369,7 @@ class Logger
     private function getConsole($msgArray, $title = "", $color = "")
     {
         $Out  = "";
-        if ($msgArray instanceof Countable && count($msgArray)) {
+        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
             //====================================================================//
             // Add Messages
             foreach ($msgArray as $txt) {
@@ -672,7 +672,7 @@ class Logger
         }
         //====================================================================//
         // Run a Messages List
-        if ($msgArray instanceof Countable && count($msgArray)) {
+        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
             foreach ($msgArray as $message) {
                 //====================================================================//
                 // Add Message To Log File
