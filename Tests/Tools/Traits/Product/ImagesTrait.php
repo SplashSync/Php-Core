@@ -304,7 +304,7 @@ trait ImagesTrait
         //====================================================================//
         //   Check if Image Visible Flag is Set
         $this->assertArrayHasKey($isVisibleId, $Source);
-        if ($Source[$isVisibleId]) {
+        if (!$Source[$isVisibleId]) {
             return;
         }
         //====================================================================//
