@@ -209,7 +209,9 @@ trait ImagesTrait
             $this->verifyVisibleImages($SrcImage, $this->ImageId, $this->IsVisibleId);
             //====================================================================//
             //   Verify Cover Flag
-            $this->verifyCoverImages($SrcImage, $this->ImageId, $this->IsCoverId);
+            if (!empty($Source[$this->IsVisibleId])) {
+                $this->verifyCoverImages($SrcImage, $this->ImageId, $this->IsCoverId);
+            }
         }
     }
 
@@ -302,7 +304,7 @@ trait ImagesTrait
         //====================================================================//
         //   Check if Image Visible Flag is Set
         $this->assertArrayHasKey($isVisibleId, $Source);
-        if (!$Source[$isVisibleId]) {
+        if ($Source[$isVisibleId]) {
             return;
         }
         //====================================================================//
