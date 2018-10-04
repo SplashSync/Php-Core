@@ -24,6 +24,15 @@ use ArrayObject;
  */
 class FieldsFactory
 {
+    //==============================================================================
+    //      Meta Data Access MicroDatas 
+    //==============================================================================
+    
+    const META_URL              = "http://splashync.com/schemas";       // Splash Specific Schemas Url.
+    const META_OBJECTID         = "ObjectId";                           // Splash Object Id.
+    const META_DATECREATED      = "DateCreated";                        // Splash Object Create Date.
+    const META_ORIGIN_NODE_ID   = "SourceNodeId";                       // Object Source Server Identifier
+    
     /**
      * Default Field Definition Resolver Array
      *
