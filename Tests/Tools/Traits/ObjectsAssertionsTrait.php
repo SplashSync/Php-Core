@@ -4,7 +4,7 @@ namespace Splash\Tests\Tools\Traits;
 
 use ArrayObject;
 
-use Splash\Tests\Tools\Traits\ObjectsFieldsTrait;
+use Splash\Components\FieldsManager;
  
 /**
  * @abstract    Splash Test Tools - Objects PhpUnit Specific Assertions
@@ -110,7 +110,7 @@ trait ObjectsAssertionsTrait
         $this->assertNotEmpty($this->Fields, "Objects Fields List is Empty! Did you load it?");
         //====================================================================//
         //   Touch this Field
-        $Field       =   ObjectsFieldsTrait::findFieldByTag($this->Fields, $ItemType, $ItemProp);
+        $Field       =   FieldsManager::findFieldByTag($this->Fields, $ItemType, $ItemProp);
         return $Field;
     }
     

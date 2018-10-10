@@ -25,7 +25,7 @@ use ArrayObject;
 class FieldsFactory
 {
     //==============================================================================
-    //      Meta Data Access MicroDatas 
+    //      Meta Data Access MicroDatas
     //==============================================================================
     
     const META_URL              = "http://splashync.com/schemas";       // Splash Specific Schemas Url.

@@ -2,6 +2,8 @@
 
 namespace Splash\Tests\Tools\Traits;
 
+use Splash\Models\Fields\FieldsManagerTrait;
+
 /**
  * @abstract    Splash Test Tools - Objects Data Validation
  *
@@ -9,6 +11,7 @@ namespace Splash\Tests\Tools\Traits;
  */
 trait ObjectsValidatorTrait
 {
+    use FieldsManagerTrait;
     
     /**
      * Fields Classes Name Prefix
@@ -64,57 +67,6 @@ trait ObjectsValidatorTrait
         return false;
     }
 
-    /**
-     *   @abstract   Check if this id is a list identifier & return decoded array if ok
-     *   @param      string  $In         Data Type Name String
-     *   @return     int     $result     0 if KO, 1 if OK
-     */
-    public static function isListField($In)
-    {
-        //====================================================================//
-        // Safety Check
-        if (empty($In)) {
-            return false;
-        }
-        //====================================================================//
-        // Detects Lists
-        $list = explode(LISTSPLIT, $In);
-        if (is_array($list) && (count($list)==2)) {
-            //====================================================================//
-            // If List Detected, Prepare Field List Information Array
-            return array("fieldname" => $list[0],"listname" => $list[1]);
-        }
-        return false;
-    }
-
-    /**
-     *      @abstract   Identify if field is Object Identifier Data & Decode Field
-     *
-     *      @param      string       $In             Id Field String
-     *
-     *      @return     array       $result         0 if KO or Exploded Field Array
-     */
-    public static function isIdField($In)
-    {
-        //====================================================================//
-        // Safety Check
-        if (empty($In)) {
-            return false;
-        }
-        
-        //====================================================================//
-        // Detects ObjectId
-        $list = explode(IDSPLIT, $In);
-        if (is_array($list) && (count($list)==2)) {
-            //====================================================================//
-            // If List Detected, Prepare Field List Information Array
-            $Out["ObjectId"]        = $list[0];
-            $Out["ObjectType"]      = $list[1];
-            return $Out;
-        }
-        return false;
-    }
-    
     /**
      *   @abstract   Verify Data a valid Raw field data
      *   @param      mixed   $Data       Object Field Data

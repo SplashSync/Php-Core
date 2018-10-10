@@ -12,7 +12,7 @@ use Splash\Client\Splash;
 class ObjectsCase extends AbstractBaseCase
 {
 
-    use \Splash\Tests\Tools\Traits\ObjectsFieldsTrait;
+    use \Splash\Models\Fields\FieldsManagerTrait;
     use \Splash\Tests\Tools\Traits\ObjectsDataTrait;
     use \Splash\Tests\Tools\Traits\ObjectsFakerTrait;
     
