@@ -18,7 +18,8 @@ namespace Splash\Models\Fields;
  * @abstract    Fields Definition & Data Manager
  *              Collection of Basic STATIC Functions to Manage Splash Fields
  */
-trait FieldsManagerTrait {
+trait FieldsManagerTrait
+{
     
     //==============================================================================
     //      FIELDS LIST FUNCTIONS
@@ -142,14 +143,14 @@ trait FieldsManagerTrait {
     }
     
     //==============================================================================
-    //      LISTS FIELDS MANAGEMENT 
+    //      LISTS FIELDS MANAGEMENT
     //==============================================================================
 
     /**
      *   @abstract   Check if this id is a list identifier
-     * 
+     *
      *   @param      string  $In        Data Type Name String
-     * 
+     *
      *   @return     array|false        Exploded List field Array or False
      */
     public static function isListField($In)
@@ -211,7 +212,7 @@ trait FieldsManagerTrait {
     }
     
     //==============================================================================
-    //      OBJECT ID FIELDS MANAGEMENT 
+    //      OBJECT ID FIELDS MANAGEMENT
     //==============================================================================
     
     /**
@@ -440,6 +441,4 @@ trait FieldsManagerTrait {
         }
         return ksort($In);
     }
-    
-    
 }
