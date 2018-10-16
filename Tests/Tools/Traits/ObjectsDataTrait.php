@@ -4,8 +4,6 @@ namespace Splash\Tests\Tools\Traits;
 
 use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
 
-use Splash\Models\Fields\FieldsManagerTrait;
-
 /**
  * @abstract    Splash Test Tools - Objects Data Management
  *
@@ -13,7 +11,6 @@ use Splash\Models\Fields\FieldsManagerTrait;
  */
 trait ObjectsDataTrait
 {
-    use FieldsManagerTrait;
         
     /**
      * @abstract    Check Two Data Blocks Have Similar Data
