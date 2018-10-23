@@ -29,12 +29,13 @@
 namespace Splash\Local;
 
 use ArrayObject;
+use Splash\Models\LocalClassInterface;
 use Splash\Core\SplashCore      as Splash;
 
 /**
  * @abstract    Local System Core Management Class
  */
-class Local
+class Local implements LocalClassInterface
 {
     
     //====================================================================//

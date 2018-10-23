@@ -1,6 +1,8 @@
 <?php
 namespace Splash\Tests\Core;
 
+use Splash\Models\LocalClassInterface;
+
 use Splash\Tests\Tools\TestCase;
 
 use Splash\Core\SplashCore     as Splash;
@@ -149,10 +151,11 @@ class C01ClassesTest extends TestCase
         //
         //====================================================================//
         //   Verify Local Class Exists & Correctly Mapped
-        $this->assertTrue(
-            class_exists(SPLASH_CLASS_PREFIX. "\Local"),
+        $this->assertNotEmpty(
+            Splash::local(),
             "Splash Local Class Not found. Check you local class"
                 . " is defined and autoloaded from Namespace Splash\Local\Local."
+                . " Or loaded on System init by Splash::setLocalClass function."
         );
         
         //====================================================================//
@@ -163,7 +166,7 @@ class C01ClassesTest extends TestCase
         );
         $this->assertTrue(
             Splash::validate()->isValidLocalFunction("Includes"),
-            "Splash Local Class MUST define this function to include Loacl System dependencies."
+            "Splash Local Class MUST define this function to include Local System dependencies."
         );
         $this->assertTrue(
             Splash::validate()->isValidLocalFunction("Informations"),
@@ -178,9 +181,9 @@ class C01ClassesTest extends TestCase
         //====================================================================//
         //   Load Local Splash Module
         $this->assertInstanceOf(
-            "Splash\Local\Local",
+            LocalClassInterface::class,
             Splash::local(),
-            "Splash Local Class loading failled. Check it's properly defined."
+            "Splash Local Class loading failed. Check it's properly defined."
         );
     }
 
