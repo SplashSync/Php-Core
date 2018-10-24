@@ -177,7 +177,8 @@ class Router
             $Result = $Router::Action($Task);
         } catch (Exception $exc) {
             $Result  = $this->getEmptyResponse($Task);
-            Splash::log()->err($exc->getMessage());
+            Splash::log()->err($exc->getMessage() . " on File " . $exc->getFile() . " Line " . $exc->getLine() );
+            Splash::log()->err($exc->getTraceAsString());
         }
         //====================================================================//
         // Store Task Results

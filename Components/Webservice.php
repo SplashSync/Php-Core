@@ -709,6 +709,9 @@ class Webservice
         $ServerInfos    = $this->getServerInfos();
         //====================================================================//
         // Build Server Url
+        if ((strpos($this->host, "http://") !== false) || (strpos($this->host, "https://") !== false)) {
+            return $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
+        }    
         return $this->getServerScheme() . "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
     }
     
@@ -747,7 +750,7 @@ class Webservice
         $TestsClient->host  = $this->getClientUrl();
         
         //====================================================================//
-        // Run NuSOAP Call - Reverse Ping
+        // Run SOAP Call - Reverse Ping
         $Ping = $TestsClient->call(SPL_S_PING, null, 1);
         if (empty($Ping) || !isset($Ping->result) || !$Ping->result) {
             Splash::log()->err(Splash::trans("ErrReversePing", $TestsClient->host));
@@ -755,7 +758,7 @@ class Webservice
         }
         
         //====================================================================//
-        // Run NuSOAP Call - Reverse Ping
+        // Run SOAP Call - Reverse Connect
         $Connect = $TestsClient->call(SPL_S_CONNECT, array());
         if (empty($Connect) || !isset($Connect->result) || !$Connect->result) {
             Splash::log()->err(Splash::trans("ErrReverseConnect", $TestsClient->host));
