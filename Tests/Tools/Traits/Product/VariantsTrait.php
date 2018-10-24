@@ -116,6 +116,9 @@ trait VariantsTrait
 //            }
             $Fields[] = $Field;
         }
+        if (empty($Fields)) {
+            $this->markTestSkipped('This Server has no Product Object Type.');
+        }
         return $Fields;
     }
 }
