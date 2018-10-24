@@ -9,7 +9,7 @@ namespace Splash\Tests\Tools\Fields;
  *
  * @see         ISO 639-1 : http://www.iso.org/iso/language_codes
  */
-class Oolang
+class Oolang extends Oovarchar
 {
     //==============================================================================
     //      Structural Data
