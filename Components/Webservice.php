@@ -711,7 +711,7 @@ class Webservice
         // Build Server Url
         if ((strpos($this->host, "http://") !== false) || (strpos($this->host, "https://") !== false)) {
             return $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
-        }    
+        }
         return $this->getServerScheme() . "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
     }
     
