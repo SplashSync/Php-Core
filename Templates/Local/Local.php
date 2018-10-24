@@ -205,7 +205,7 @@ class Local implements LocalClassInterface
      *
      * @return         array       $Sequences
      */
-    public static function testSequences($Name = null)
+    public function testSequences($Name = null)
     {
         switch ($Name) {
             case "Sequence1":
@@ -235,7 +235,7 @@ class Local implements LocalClassInterface
      *
      *  @return         array       $parameters
      */
-    public static function testParameters()
+    public function testParameters()
     {
         //====================================================================//
         // Init Parameters Array
