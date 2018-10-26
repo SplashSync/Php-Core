@@ -41,8 +41,6 @@ class A01PingTest extends AbstractBaseCase
             //   Skip Test without Warnings
             $this->assertTrue(true);
             return;
-//            //   Skip Test with Warnings
-//            $this->markTestSkipped('No HTTP Calls in Client Mode');
         }
 
         //====================================================================//

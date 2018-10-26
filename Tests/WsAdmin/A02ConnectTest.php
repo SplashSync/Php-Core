@@ -32,8 +32,6 @@ class A02ConnectTest extends AbstractBaseCase
             //   Skip Test without Warnings
             $this->assertTrue(true);
             return;
-//            //   Skip Test with Warnings
-//            $this->markTestSkipped('No HTTP Calls in Client Mode');
         }
         //====================================================================//
         //   Execute Connect From Module to Splash Server
