@@ -39,5 +39,4 @@ interface WidgetInterface
      * @return      array                   Widget Data
     */
     public function get($WidgetId = null, $Parameters = array());
-
 }
