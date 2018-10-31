@@ -15,7 +15,7 @@
  *
  **/
 
-namespace   Splash\Models\Widget;
+namespace   Splash\Models\Widgets;
 
 /**
  * @abstract    Splash Widget Interface
