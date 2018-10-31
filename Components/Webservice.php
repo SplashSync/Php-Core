@@ -709,10 +709,11 @@ class Webservice
         $ServerInfos    = $this->getServerInfos();
         //====================================================================//
         // Build Server Url
-        if ((strpos($ServerInfos["ServerHost"], "http://") !== false) || (strpos($ServerInfos["ServerHost"], "https://") !== false)) {
-            return $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
+        $Host   =   $ServerInfos["ServerHost"];
+        if ((strpos($Host, "http://") !== false) || (strpos($Host, "https://") !== false)) {
+            return $Host . $ServerInfos["ServerPath"];
         }
-        return $this->getServerScheme() . "://" . $ServerInfos["ServerHost"] . $ServerInfos["ServerPath"];
+        return $this->getServerScheme() . "://" . $Host . $ServerInfos["ServerPath"];
     }
     
     /**
