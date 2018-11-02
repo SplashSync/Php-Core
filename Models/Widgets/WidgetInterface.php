@@ -33,10 +33,9 @@ interface WidgetInterface
     /**
      * @abstract    Return requested Widget Data
      *
-     * @param       string  $WidgetId             Widget Id.
      * @param       array   $Parameters           List of Parameters
      *
      * @return      array                   Widget Data
     */
-    public function get($WidgetId = null, $Parameters = array());
+    public function get($Parameters = array());
 }
