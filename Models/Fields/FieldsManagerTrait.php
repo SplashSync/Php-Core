@@ -181,14 +181,14 @@ trait FieldsManagerTrait
     public static function fieldName($ListFieldName)
     {
         //====================================================================//
-        // decode
+        // Decode
         $Result     = self::isListField($ListFieldName);
         if (empty($Result)) {
             return false;
         }
         //====================================================================//
         // Return Field Identifier
-        return   $Result[0];
+        return   $Result["fieldname"];
     }
 
     /**
@@ -201,14 +201,34 @@ trait FieldsManagerTrait
     public static function listName($ListFieldName)
     {
         //====================================================================//
-        // decode
-        $Result     = ($ListFieldName);
+        // Decode
+        $Result     = self::isListField($ListFieldName);
         if (empty($Result)) {
             return false;
         }
         //====================================================================//
         // Return List Name
-        return   $Result[1];
+        return   $Result["listname"];
+    }
+    
+    /**
+     * @abstract   Retrieve Base Field Type from Field Type|Id String
+     * @param      string       $Type               List Field Identifier String
+     * @return     string|false
+     */
+    public static function baseType($Type)
+    {
+        //====================================================================//
+        // Detect List Id Fields
+        if (self::isListField($Type)) {
+            $Type = self::fieldName($Type);
+        }
+        //====================================================================//
+        // Detect Objects Id Fields
+        if (self::isIdField($Type)) {
+            $Type = self::objectId($Type);
+        }
+        return $Type;
     }
     
     //==============================================================================
@@ -216,11 +236,9 @@ trait FieldsManagerTrait
     //==============================================================================
     
     /**
-     *      @abstract   Identify if field is Object Identifier Data & Decode Field
-     *
-     *      @param      string       $In        ObjectId Field String
-     *
-     *      @return     array|false             Exploded Object ID Field Array or False
+     * @abstract   Identify if field is Object Identifier Data & Decode Field
+     * @param   string      $In     ObjectId Field String
+     * @return  array|false         Exploded Object ID Field Array or False
      */
     public static function isIdField($In)
     {
@@ -229,7 +247,6 @@ trait FieldsManagerTrait
         if (empty($In)) {
             return false;
         }
-        
         //====================================================================//
         // Detects ObjectId
         $list = explode(IDSPLIT, $In);
@@ -241,6 +258,42 @@ trait FieldsManagerTrait
             return $Out;
         }
         return false;
+    }
+    
+    /**
+     * @abstract   Retrieve Object Id Name from an Object Identifier String
+     * @param      string      $In      Object Identifier String
+     * @return     string|false
+     */
+    public static function objectId($In)
+    {
+        //====================================================================//
+        // decode
+        $Result     = self::isIdField($In);
+        if (empty($Result)) {
+            return false;
+        }
+        //====================================================================//
+        // Return List Name
+        return   $Result["ObjectId"];
+    }
+
+    /**
+     * @abstract   Retrieve Object Type Name from an Object Identifier String
+     * @param      string      $In      Object Identifier String
+     * @return     string|false
+     */
+    public static function objectType($In)
+    {
+        //====================================================================//
+        // decode
+        $Result     = self::isIdField($In);
+        if (empty($Result)) {
+            return false;
+        }
+        //====================================================================//
+        // Return Field Identifier
+        return   $Result["ObjectType"];
     }
     
     //==============================================================================
