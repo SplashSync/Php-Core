@@ -38,28 +38,28 @@ class Webservice
     // WebService Parameters
     //====================================================================//
  
-    const SPLASHHOST    =   "www.splashsync.com/ws/soap";
+    const       SPLASHHOST      =   "www.splashsync.com/ws/soap";
     //====================================================================//
     // Remote Server Address
-    private $host       =   self::SPLASHHOST;
+    protected $host           =   self::SPLASHHOST;
     //====================================================================//
     // Unik Client Identifier ( 1 to 8 Char)
-    private $id         =   "";
+    protected $id             =   "";
     //====================================================================//
     // Unik Key for encrypt data transmission with this Server
-    private $key        =   "";
+    protected $key            =   "";
     //====================================================================//
-    // Webservice tasks
+    // Webservice Tasks Buffer
     private $tasks;
     //====================================================================//
     // Webservice Call Url
     public $url;
     //====================================================================//
     // Webservice buffers
-    private $Inputs;                   // Input Buffer
-    private $Outputs;                  // Output Buffer
-    private $RawIn;                    // Raw Call Input Buffer
-    private $RawOut;                   // Raw Call Output Buffer
+    private $Inputs;        // Input Buffer
+    private $Outputs;       // Output Buffer
+    private $RawIn;         // Raw Call Input Buffer
+    private $RawOut;        // Raw Call Output Buffer
     
     /**
      *      @abstract     Initialise Class with empty webservice parameters
@@ -543,6 +543,17 @@ class Webservice
             //====================================================================//
             //  Errro Message
             return Splash::log()->err("ErrWsNuSOAPFault", $this->client->faultcode, $this->client->faultstring);
+        }
+        
+        //====================================================================//
+        // Decode & Store Generic SOAP Errors if present
+        if ($this->RawIn instanceof \SoapFault) {
+            //====================================================================//
+            //  Debug Informations
+            Splash::log()->deb("[SOAP] Fault Details= "   . $this->RawIn->getTraceAsString());
+            //====================================================================//
+            //  Errro Message
+            return Splash::log()->err("ErrWsNuSOAPFault", $this->RawIn->getCode(), $this->RawIn->getMessage());
         }
         
         //====================================================================//

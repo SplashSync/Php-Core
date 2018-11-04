@@ -84,9 +84,10 @@ class FileManager
             //====================================================================//
             // Shift Task Array
             if (is_a($Response->tasks, "ArrayObject")) {
-                $Task = array_shift($Response->tasks->getArrayCopy());
+                $Tasks  = $Response->tasks->getArrayCopy();
+                $Task   = array_shift($Tasks);
             } else {
-                $Task = array_shift($Response->tasks);
+                $Task   = array_shift($Response->tasks);
             }
             //====================================================================//
             // Return Task Data
