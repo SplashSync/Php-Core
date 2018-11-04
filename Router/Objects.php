@@ -72,6 +72,10 @@ class Objects
         if (in_array($Task->name, [ SPL_F_GET , SPL_F_SET , SPL_F_DEL ])) {
             return self::doSyncActions($Task);
         }
+        if (in_array($Task->name, [ SPL_F_COMMIT ])) {
+            Splash::log()->war("Objects - Requested task not found => " . $Task->name);
+            return self::getEmptyResponse($Task);
+        }
         //====================================================================//
         // Task Not Found
         Splash::log()->err("Objects - Requested task not found => " . $Task->name);

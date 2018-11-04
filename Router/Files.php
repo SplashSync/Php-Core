@@ -61,7 +61,7 @@ class Files
             return $Response;
         //====================================================================//
         // Verify Requested File Path is Available
-        } elseif (empty($Task->params->path)) {
+        } elseif (empty($Task->params->path) && empty($Task->params->file)) {
             Splash::log()->err("File Router - Missing File Path... ");
             return $Response;
         //====================================================================//
@@ -73,29 +73,23 @@ class Files
         
         //====================================================================//
         // Load Parameters
-        $File           = $Task->params;
+        $Path   = empty($Task->params->path) ? $Task->params->file : $Task->params->path;
+        $Md5    = $Task->params->md5;
         
+        //====================================================================//
+        // Execute Action
         switch ($Task->name) {
             //====================================================================//
             //  READING A FILE INFORMATIONS
             case SPL_F_ISFILE:
-                $Response->data = Splash::file()->isFile($File->path, $File->md5);
+                $Response->data = Splash::file()->isFile($Path, $Md5);
                 break;
             //====================================================================//
             //  READING A FILE CONTENTS
             case SPL_F_GETFILE:
-                $Response->data = Splash::file()->readFile($File->path, $File->md5);
+                $Response->data = Splash::file()->readFile($Path, $Md5);
+//Splash::log()->www("File", $Response->data);
                 break;
-//            //====================================================================//
-//            //  WRITE A FILE CONTENTS
-//            case SPL_F_SETFILE:
-//                $Response->data   = Splash::File()->WriteFile($File->path,$File->filename,$File->md5,$File->raw);
-//                break;
-//            //====================================================================//
-//            //  DELETE A FILE
-//            case SPl_F_DELFILE:
-//                $Response->data   = Splash::File()->DeleteFile($File->path,$File->filename);
-//                break;
             default:
                 Splash::log()->err("File - Requested task not found => " . $Task->name);
                 break;
