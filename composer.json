@@ -1,8 +1,19 @@
 {
     "name": "splash/phpcore",
-    "description": "Splash Core Module for Php Applications",
-
+    "description": "Splash Fundation Module for All Php Applications",
+    
     "license": "MIT",
+
+    "authors": [
+        {
+            "name":"Splash Sync",
+            "email":"contact@splashsync.com"
+        },
+        {
+            "name": "Bernard Paquier",
+            "email": "eshop.bpaquier@gmail.com"
+        }
+    ],
 
     "autoload": {
         "psr-4": { 
