@@ -22,6 +22,10 @@ script:
 
     # Execute Core Tests   
     - phpunit
+
+    # Show Outdated Packages   
+    - composer outdated
+
         
 notifications:
   email:         
