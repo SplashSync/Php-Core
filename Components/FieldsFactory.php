@@ -649,7 +649,7 @@ class FieldsFactory
     /**
      * @abstract   Save Current New Field in list & Clean current new field
      *
-     * @return     ArrayObject[]|fields
+     * @return     ArrayObject[]|false
      */
     public function publish()
     {
