@@ -64,9 +64,7 @@ class Splash extends SplashCore
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Initiate Performance Timer
-        if (self::configuration()->TraceTasks) {
-            $timer_init = microtime(true);
-        }
+        $timer_init = microtime(true);
         
         //====================================================================//
         // Run NuSOAP Call
@@ -78,7 +76,7 @@ class Splash extends SplashCore
         if (self::configuration()->TraceTasks) {
             $total = sprintf("%.2f %s", 1000 * (microtime(true) - $timer_init), " ms");
             self::log()->war("===============================================");
-            self::log()->war("OsWs - Ping : " . $total);
+            self::log()->war("Splash - Ping : " . $total);
         }
         
         //====================================================================//
@@ -114,9 +112,7 @@ class Splash extends SplashCore
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Initiate Performance Timer
-        if (self::configuration()->TraceTasks) {
-            $timer_init = microtime(true);
-        }
+        $timer_init = microtime(true);
         //====================================================================//
         // Run NuSOAP Call
         $Result = self::ws()->call(SPL_S_CONNECT);
@@ -126,7 +122,7 @@ class Splash extends SplashCore
         if (self::configuration()->TraceTasks) {
             $total = sprintf("%.2f %s", 1000 * (microtime(true) - $timer_init), " ms");
             self::log()->war("===============================================");
-            self::log()->war("OsWs - Connect : " . $total);
+            self::log()->war("Splash - Connect : " . $total);
         }
         //====================================================================//
         // Analyze NuSOAP results
@@ -148,13 +144,13 @@ class Splash extends SplashCore
     //--------------------------------------------------------------------//
 
     /**
-     *   @abstract     Submit an Update for a Local Object
-     *   @param        string       $ObjectType        Object Type Name.
-     *   @param        int/array    $local             Object Local Id or Array of Local Id.
-     *   @param        string       $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     *   @param        string       $user              User Name
-     *   @param        string       $comment           Operation Comment for Historics
-     *   @return       bool
+     * @abstract     Submit an Update for a Local Object
+     * @param        string       $ObjectType        Object Type Name.
+     * @param        int|array    $local             Object Local Id or Array of Local Id.
+     * @param        string       $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param        string       $user              User Name
+     * @param        string       $comment           Operation Comment for Historics
+     * @return       bool
      */
     public static function commit($ObjectType, $local = null, $action = null, $user = "", $comment = "")
     {
@@ -200,13 +196,13 @@ class Splash extends SplashCore
     }
     
     /**
-     *   @abstract     Build Call Parameters Array
-     *   @param        array        $ObjectType        Object Type Name.
-     *   @param        int/array    $local             Object Local Id or Array of Local Id.
-     *   @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     *   @param        string       $user              User Name
-     *   @param        string       $comment           Operation Comment for Historics
-     *   @return       array
+     * @abstract     Build Call Parameters Array
+     * @param        array        $ObjectType        Object Type Name.
+     * @param        int|array    $local             Object Local Id or Array of Local Id.
+     * @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param        string       $user              User Name
+     * @param        string       $comment           Operation Comment for Historics
+     * @return       array
      */
     private static function getCommitParameters($ObjectType, $local = null, $action = null, $user = "", $comment = "")
     {
@@ -221,11 +217,11 @@ class Splash extends SplashCore
     
 
     /**
-     *   @abstract     Check if Commit is Allowed Local Object
-     *   @param        array        $ObjectType        Object Type Name.
-     *   @param        int|array    $local             Object Local Id or Array of Local Id.
-     *   @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     *   @return       bool
+     * @abstract     Check if Commit is Allowed Local Object
+     * @param        array        $ObjectType        Object Type Name.
+     * @param        int|array    $local             Object Local Id or Array of Local Id.
+     * @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @return       bool
      */
     private static function isCommitAllowed($ObjectType, $local = null, $action = null)
     {
@@ -254,26 +250,28 @@ class Splash extends SplashCore
     }
     
     /**
-     *   @abstract     Check if Commit we Are in Travis Mode
-     *   @param        array        $ObjectType        Object Type Name.
-     *   @param        int|array    $local             Object Local Id or Array of Local Id.
-     *   @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     *   @return       bool
+     * @abstract     Check if Commit we Are in Travis Mode
+     * @param        string       $ObjectType        Object Type Name.
+     * @param        int|array    $local             Object Local Id or Array of Local Id.
+     * @param        int          $action            Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @return       bool
      */
     private static function isTravisMode($ObjectType, $local, $action)
     {
-        if (!empty(Splash::input("SPLASH_TRAVIS"))) {
-            $Ids   =   (is_array($local) || is_a($local, "ArrayObject")) ? implode("|", $local) : $local;
-            self::log()->war("Module Commit Skipped (" . $ObjectType . ", " . $action . ", " . $Ids . ")");
-            return true;
+        //====================================================================//
+        // Detect Travis from SERVER CONSTANTS        
+        if (empty(Splash::input("SPLASH_TRAVIS"))) {
+            return false;
         }
-        return false;
+        $Ids   =   (is_array($local) || is_a($local, "ArrayObject")) ? implode("|", $local) : $local;
+        self::log()->war("Module Commit Skipped (" . $ObjectType . ", " . $action . ", " . $Ids . ")");        
+        return true;
     }
     
     /**
-     *   @abstract     Check if Commit Call was Successful
-     *   @param        ArrayObject      $Response       Splash Server Response
-     *   @return       bool
+     * @abstract     Check if Commit Call was Successful
+     * @param        ArrayObject      $Response       Splash Server Response
+     * @return       bool
      */
     public static function isCommitSuccess($Response)
     {

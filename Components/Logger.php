@@ -33,47 +33,47 @@ class Logger
     const CMD_COLOR_NONE    =   0;
     
     /**
-     *      @abstract   Store Show Debug Messages
-     *      @var        Bool
+     * @abstract   Store Show Debug Messages
+     * @var        Bool
      */
     private $debug;
     
     /**
-     *      @abstract   Store Show Debug Messages
-     *      @var        String
+     * @abstract   Store Show Debug Messages
+     * @var        String
      */
     private $prefix;
     
     /**
-     *      @abstract   Success Messages
-     *      @var        Array
+     * @abstract   Success Messages
+     * @var        Array
      */
     public $msg = array();
     
     /**
-     *      @abstract   Warning Messages
-     *      @var        Array
+     * @abstract   Warning Messages
+     * @var        Array
      */
     public $war = array();
     
     /**
-     *      @abstract   Error Messages
-     *      @var        Array
+     * @abstract   Error Messages
+     * @var        Array
      */
     public $err = array();
     
     /**
-     *      @abstract   Debug Messages
-     *      @var        Array
+     * @abstract   Debug Messages
+     * @var        Array
      */
     public $deb = array();
     
     /**
-     *      @abstract      Class Constructor
+     * @abstract      Class Constructor
      *
-     *      @param          bool     $debug      Allow Debug
+     * @param          bool     $debug      Allow Debug
      *
-     *      @return         boot
+     * @return         booL
      */
     public function __construct($debug = SPLASH_DEBUG)
     {
@@ -91,8 +91,8 @@ class Logger
     //====================================================================//
 
     /**
-      *      @abstract   Clean WebServer Class Logs Messages
-      *      @return     bool
+      * @abstract   Clean WebServer Class Logs Messages
+      * @return     bool
       */
     public function cleanLog()
     {
@@ -113,16 +113,16 @@ class Logger
     }
 
     /**
-      *      @abstract      Log WebServer Error Messages
+      * @abstract      Log WebServer Error Messages
       *
-      *      @param      string      $text       Input String / Key to translate
-      *      @param      string      $param1     chaine de param1
-      *      @param      string      $param2     chaine de param2
-      *      @param      string      $param3     chaine de param3
-      *      @param      string      $param4     chaine de param4
-      *      @param      string      $param5     chaine de param5
+      * @param      string      $text       Input String / Key to translate
+      * @param      string      $param1     chaine de param1
+      * @param      string      $param2     chaine de param2
+      * @param      string      $param3     chaine de param3
+      * @param      string      $param4     chaine de param4
+      * @param      string      $param5     chaine de param5
       *
-      *      @return     False
+      * @return     False
       */
     public function err($text, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '')
     {
@@ -142,16 +142,16 @@ class Logger
     }
    
     /**
-      *      @abstract      Log WebServer Warning Messages
+      * @abstract      Log WebServer Warning Messages
       *
-      *      @param      string      $text       Input String / Key to translate
-      *      @param      string      $param1     chaine de param1
-      *      @param      string      $param2     chaine de param2
-      *      @param      string      $param3     chaine de param3
-      *      @param      string      $param4     chaine de param4
-      *      @param      string      $param5     chaine de param5
+      * @param      string      $text       Input String / Key to translate
+      * @param      string      $param1     chaine de param1
+      * @param      string      $param2     chaine de param2
+      * @param      string      $param3     chaine de param3
+      * @param      string      $param4     chaine de param4
+      * @param      string      $param5     chaine de param5
       *
-      *      @return     True
+      * @return     True
      */
     public function war($text, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '')
     {
@@ -171,16 +171,16 @@ class Logger
     }
 
     /**
-      *      @abstract      Log WebServer Commons Messages
+      * @abstract      Log WebServer Commons Messages
       *
-      *      @param      string      $text       Input String / Key to translate
-      *      @param      string      $param1     chaine de param1
-      *      @param      string      $param2     chaine de param2
-      *      @param      string      $param3     chaine de param3
-      *      @param      string      $param4     chaine de param4
-      *      @param      string      $param5     chaine de param5
+      * @param      string      $text       Input String / Key to translate
+      * @param      string      $param1     chaine de param1
+      * @param      string      $param2     chaine de param2
+      * @param      string      $param3     chaine de param3
+      * @param      string      $param4     chaine de param4
+      * @param      string      $param5     chaine de param5
       *
-      *      @return     True
+      * @return     True
       */
     public function msg($text, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '')
     {
@@ -200,16 +200,16 @@ class Logger
     }
 
     /**
-      *      @abstract      Log WebServer Debug Messages
+      * @abstract      Log WebServer Debug Messages
       *
-      *      @param      string      $text       Input String / Key to translate
-      *      @param      string      $param1     chaine de param1
-      *      @param      string      $param2     chaine de param2
-      *      @param      string      $param3     chaine de param3
-      *      @param      string      $param4     chaine de param4
-      *      @param      string      $param5     chaine de param5
+      * @param      string      $text       Input String / Key to translate
+      * @param      string      $param1     chaine de param1
+      * @param      string      $param2     chaine de param2
+      * @param      string      $param3     chaine de param3
+      * @param      string      $param4     chaine de param4
+      * @param      string      $param5     chaine de param5
       *
-      *      @return     True
+      * @return     True
       */
     public function deb($text, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '')
     {
@@ -260,9 +260,9 @@ class Logger
     }
    
     /**
-     *      @abstract    Return All WebServer current Log WebServer in Html format
-     *      @param       bool            True if messages needs to be cleaned after reading.
-     *      @return      string      All existing log messages in an human readable Html format
+     * @abstract    Return All WebServer current Log WebServer in Html format
+     * @param   bool    $clean          True if messages needs to be cleaned after reading.
+     * @return  string      
      */
     public function getHtmlLog($clean = false)
     {
@@ -282,8 +282,10 @@ class Logger
     }
    
     /**
-     *      @abstract    Return WebServer Log Item in Html Checklist format
-     *      @return      string      Log message in an human readable Html format
+     * @abstract    Return WebServer Log Item in Html Checklist format
+     * @param   string  $Message    Log message
+     * @param   string  $Type       Message Type 
+     * @return  string      
      */
     public function getHtmlListItem($Message, $Type = null)
     {
@@ -307,8 +309,8 @@ class Logger
     
     /**
      * @abstract    Return All WebServer current Log WebServer in Html Checklist format
-     * @param   array|null  $msgArray
-     * @param   string      $type
+     * @param   array|null      $msgArray
+     * @param   string          $type
      * @return  string|null
      */
     private function getHtmlList($msgArray, $type)
@@ -326,9 +328,9 @@ class Logger
     }
    
     /**
-     *      @abstract    Return All WebServer current Log WebServer in Html Checklist format
-     *      @param       bool            True if messages needs to be cleaned after reading.
-     *      @return      string      All existing log messages in an human readable Html format
+     * @abstract    Return All WebServer current Log WebServer in Html Checklist format
+     * @param   bool    $clean          True if messages needs to be cleaned after reading.
+     * @return  string
      */
     public function getHtmlLogList($clean = false)
     {
@@ -349,10 +351,10 @@ class Logger
    
     /**
      * @abstract    Return Text in Console Colored format
-     * @param       string $text    Raw Console Text
-     * @param       string $title   Displayed Title
-     * @param       int $color   Display Color has INT
-     * @return      string
+     * @param   string  $text       Raw Console Text
+     * @param   string  $title      Displayed Title
+     * @param   int     $color      Display Color has INT
+     * @return  string
      */
     public static function getConsoleLine($text, $title = "", $color = 0)
     {
@@ -380,9 +382,9 @@ class Logger
     }
    
     /**
-     *      @abstract    Return All WebServer current Log WebServer in Console Colored format
-     *      @param       bool            True if messages needs to be cleaned after reading.
-     *      @return      string      All existing log messages in an human readable Html format
+     * @abstract    Return All WebServer current Log WebServer in Console Colored format
+     * @param   bool    $clean          True if messages needs to be cleaned after reading.
+     * @return  string
      */
     public function getConsoleLog($clean = false)
     {
@@ -404,11 +406,11 @@ class Logger
     }
    
     /**
-     *      @abstract    Return All WebServer current Log WebServer in an arrayobject variable
-     *
-     *      @param       bool                True if messages needs to be cleaned after reading.
-     *
-     *      @return      ArrayObject         All existing log messages in an arrayobject structure
+     * @abstract    Return All WebServer current Log WebServer in an arrayobject variable
+     * 
+     * @param   bool    $clean          True if messages needs to be cleaned after reading
+     * 
+     * @return  ArrayObject
      */
     public function getRawLog($clean = false)
     {
@@ -492,11 +494,11 @@ class Logger
     }
 
     /**
-     *      @abstract    Set Debug Flag & Clean buffers if needed
+     * @abstract    Set Debug Flag & Clean buffers if needed
      *
-     *      @param       bool    $debug       Use debug??
+     * @param       bool    $debug       Use debug??
      *
-     *      @return      True
+     * @return      True
      */
     public function setDebug($debug)
     {
@@ -512,11 +514,11 @@ class Logger
     }
    
     /**
-     *      @abstract    Set Prefix String
+     * @abstract    Set Prefix String
      *
-     *      @param       string      $prefix     Prefix for all Splash Messages
+     * @param       string      $prefix     Prefix for all Splash Messages
      *
-     *      @return      True
+     * @return      True
      */
     public function setPrefix($prefix)
     {
@@ -639,12 +641,14 @@ class Logger
         if (Splash::configuration()->Logging == 0) {
             return true;
         }
-        if (strlen(SPLASH_DIR) == 0) {
-            return true;
+        //====================================================================//
+        // Detect Log File Directory
+        $logfile = dirname(__DIR__) . "/splash.log";
+        if (defined("SPLASH_DIR") && realpath(SPLASH_DIR)) {
+            $logfile = realpath(SPLASH_DIR) . "/splash.log";
         }
         //====================================================================//
         // Open Log File
-        $logfile = SPLASH_DIR . "/splash.log";
         $filefd = @fopen($logfile, 'a+');
         //====================================================================//
         // Write Log File

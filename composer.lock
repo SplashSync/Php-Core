@@ -4,8 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ec11d17d85c3667bab26df9497a7ea7",
-    "packages": [],
+    "content-hash": "3679256a9c3c5567bc8decc8e9b0ed98",
+    "packages": [
+        {
+            "name": "phpstan/phpstan-shim",
+            "version": "0.10.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-shim.git",
+                "reference": "a274185548d140a7f48cc1eed5b94f3a9068c674"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-shim/zipball/a274185548d140a7f48cc1eed5b94f3a9068c674",
+                "reference": "a274185548d140a7f48cc1eed5b94f3a9068c674",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.1"
+            },
+            "replace": {
+                "nikic/php-parser": "^4.0.2",
+                "phpstan/phpdoc-parser": "^0.3",
+                "phpstan/phpstan": "self.version"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.10-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan Phar distribution",
+            "time": "2018-10-20T17:45:03+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "composer/ca-bundle",

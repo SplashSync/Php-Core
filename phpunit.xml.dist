@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+    backupGlobals               = "false"
+    backupStaticAttributes      = "false"
+    colors                      = "true"
+    convertErrorsToExceptions   = "true"
+    convertWarningsToExceptions = "true"
+    convertNoticesToExceptions  = "false"
+    processIsolation            = "false"
+    stopOnFailure               = "true"
+    bootstrap                   = "vendor/autoload.php" 
+    verbose                     = "false"
+    timeoutForLargeTests        = "120"  
+>
+
+    <testsuites>
+        <testsuite name="Componants">
+            <directory>Tests/Componants</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <env    name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+    </php>
+    
+</phpunit>

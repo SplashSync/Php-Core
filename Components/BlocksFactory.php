@@ -39,20 +39,20 @@ class BlocksFactory
     );
     
     /**
-     *      @abstract   New Widget Block Storage
-     *      @var        ArrayObject
+     * @abstract   New Widget Block Storage
+     * @var        ArrayObject
      */
     private $new;
     
     /**
-     *      @abstract   Widget Block List Storage
-     *      @var        Array
+     * @abstract   Widget Block List Storage
+     * @var        Array
      */
     private $blocks;
     
     /**
-     *      @abstract     Initialise Class
-     *      @return         int           <0 if KO, >0 if OK
+     * @abstract    Initialise Class
+     * @return  true
      */
     public function __construct()
     {
@@ -179,9 +179,8 @@ class BlocksFactory
     }
     
     /**
-     *  @abstract   Save Current New Block in list & Clean
-     *
-     *  @return     int                     <0 if KO, >0 if OK
+     * @abstract   Save Current New Block, Return List & Clean
+     * @return     array|false
      */
     public function render()
     {
@@ -194,7 +193,6 @@ class BlocksFactory
         // Safety Checks
         if (empty($this->blocks)) {
             return Splash::log()->err("ErrBlocksNoList");
-        
         //====================================================================//
         // Return fields List
         } else {
@@ -202,7 +200,6 @@ class BlocksFactory
             unset($this->blocks);
             return $buffer;
         }
-        
         return false;
     }
     
@@ -321,13 +318,14 @@ class BlocksFactory
     //====================================================================//
     
     /**
-     *  @abstract   Create a new Morris Bar Graph Block
-     *
-     *  @param      array   $Contents           Array of Rows Contents (Text or Html)
-     *
-     *  @param      array   $Options            Block Options
-     *
-     *  @return     $this
+     * @abstract   Create a new Morris Bar Graph Block
+     * 
+     * @param   array   $DataSet        Morris DataSet Array
+     * @param   string  $Type           Rendering Mode
+     * @param   array   $ChartOptions   Rendering passed Options   
+     * @param   array   $Options        Block Options
+     * 
+     * @return  $this
      */
     public function addMorrisGraphBlock(
         $DataSet,
@@ -357,14 +355,14 @@ class BlocksFactory
     }
 
     /**
-     *  @abstract   Create a new Morris Donut Graph Block
-     *
-     *  @param      array   $Contents           Array of Rows Contents (Text or Html)
-     *
-     *  @param      array   $Options            Block Options
-     *
-     *  @return     $this
-     */
+     * @abstract   Create a new Morris Donut Graph Block
+     * 
+     * @param   array   $DataSet        Morris DataSet Array
+     * @param   array   $ChartOptions   Rendering passed Options   
+     * @param   array   $Options        Block Options
+     * 
+     * @return  $this
+     */    
     public function addMorrisDonutBlock($DataSet, $ChartOptions = array(), $Options = self::COMMONS_OPTIONS)
     {
         //====================================================================//

@@ -507,11 +507,6 @@ class SplashCore
             unset(self::core()->ws);
         }
         //====================================================================//
-        // Clear Module Local Core Class
-//        if (isset(self::Core()->localcore)) {
-//            unset(self::Core()->localcore);
-//        }
-        //====================================================================//
         // Clear Module Local Objects Classes
         if (isset(self::core()->objects)) {
             unset(self::core()->objects);
@@ -527,8 +522,8 @@ class SplashCore
     //====================================================================//
     
     /**
-     *      @abstract   Return name of this library
-     *      @return  string    Name of logger
+     * @abstract    Return Name of this library
+     * @return  string
      */
     public static function getName()
     {
@@ -536,8 +531,8 @@ class SplashCore
     }
 
     /**
-     *      @abstract   Return Description of this library
-     *      @return  string    Name of logger
+     * @abstract    Return Description of this library
+     * @return  string
      */
     public static function getDesc()
     {
@@ -545,8 +540,8 @@ class SplashCore
     }
     
     /**
-     *      @abstract   Version of the module ('x.y.z' or 'dolibarr' or 'experimental' or 'development')
-     *      @return string
+     * @abstract    Version of the module ('x.y.z')
+     * @return  string
      */
     public static function getVersion()
     {
@@ -554,8 +549,8 @@ class SplashCore
     }
   
     /**
-     *      @abstract   Version of the module ('x.y.z' or 'dolibarr' or 'experimental' or 'development')
-     *      @return string
+     * @abstract    Detect Real Path of Current Module Local Class
+     * @return  string
      */
     public static function getLocalPath()
     {
@@ -564,11 +559,9 @@ class SplashCore
         if (self::local() == null) {
             return null;
         }
-        
         //====================================================================//
         // Create A Reflection Class of Local Class
         $reflector = new \ReflectionClass(get_class(self::local()));
-        
         //====================================================================//
         // Return Class Local Path
         return dirname($reflector->getFileName());

@@ -384,10 +384,11 @@ trait ImagesTrait
             //====================================================================//
             //   For Each Object Types
             foreach ($this->getProductImagesSequences() as $ImagesSequence) {
-                $DataSet    = $TestCase;
-                $DataSet[3] = $this->getFakeImages($ImagesSequence);
+                $DataSet    =   $TestCase;
+                $DataSet[3] =   $this->getFakeImages($ImagesSequence);
+                $Result[]   =   $DataSet;
             }
-            $Result[]   =   $DataSet;
+//            $Result[]   =   $DataSet;
         }
         if (empty($Result)) {
             $this->markTestSkipped('No Product Images Combination Found.');

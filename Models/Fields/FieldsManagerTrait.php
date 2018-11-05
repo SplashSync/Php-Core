@@ -226,7 +226,7 @@ trait FieldsManagerTrait
         //====================================================================//
         // Detect Objects Id Fields
         if (self::isIdField($Type)) {
-            $Type = self::objectId($Type);
+            $Type = self::objectType($Type);
         }
         return $Type;
     }

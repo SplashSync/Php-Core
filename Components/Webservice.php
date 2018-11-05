@@ -302,8 +302,8 @@ class Webservice
     }
     
     /**
-     *      @abstract   Clean Ws Input Buffer before Call Request
-     *      @return     int     $result     0 if KO, 1 if OK
+     * @abstract    Clean Ws Input Buffer before Call Request
+     * @return     true
      */
     private function cleanIn()
     {
@@ -317,8 +317,8 @@ class Webservice
     }
 
     /**
-     *      @abstract   Clean parameters of Ws Call Request
-     *      @return     int     $result     0 if KO, 1 if OK
+     * @abstract   Clean parameters of Ws Call Request
+     * @return     true
      */
     private function cleanOut()
     {
@@ -343,13 +343,15 @@ class Webservice
     //====================================================================//
 
     /**
-     *      @abstract   Perform operation with WebService Client
-     *      @param      string      $Service        server method to use
-     *      @param      array       $Tasks          List of task to perform inside this request.
-     *                                              If NULL, internal task list is used.
-     *      @param      bool        $Uncrypted      force message not to be crypted (Used for Ping Only)
-     *      @param      bool        $Clean          Clean task buffer at the end of this function
-     *      @return     int         $result         0 if KO, 1 if OK
+     * @abstract   Perform operation with WebService Client
+     * 
+     * @param   string      $Service        server method to use
+     * @param   array       $Tasks          List of task to perform inside this request.
+     *                                      If NULL, internal task list is used.
+     * @param   bool        $Uncrypted      force message not to be crypted (Used for Ping Only)
+     * @param   bool        $Clean          Clean task buffer at the end of this function
+     *  
+     * @return  ArrayObject|false
      */
     public function call($Service, $Tasks = null, $Uncrypted = false, $Clean = true)
     {
@@ -393,13 +395,15 @@ class Webservice
     }
 
     /**
-     *      @abstract   Simulate operation on Local WebService Client
-     *      @param      string      $Service        server method to use
-     *      @param      array       $Tasks          List of task to perform inside this request.
+     * @abstract   Simulate operation on Local WebService Client
+     * 
+     * @param   string      $Service        server method to use
+     * @param   array       $Tasks          List of task to perform inside this request.
      *                                              If NULL, internal task list is used.
-     *      @param      bool        $Uncrypted      force message not to be crypted (Used for Ping Only)
-     *      @param      bool        $Clean          Clean task buffer at the end of this function
-     *      @return     int         $result         0 if KO, 1 if OK
+     * @param   bool        $Uncrypted      force message not to be crypted (Used for Ping Only)
+     * @param   bool        $Clean          Clean task buffer at the end of this function
+     * 
+     * @return  ArrayObject|false
      */
     public function simulate($Service, $Tasks = null, $Uncrypted = false, $Clean = true)
     {
@@ -428,11 +432,11 @@ class Webservice
     }
     
     /**
-     *      @abstract   Init WebService Call
+     * @abstract    Init WebService Call
      *
-     *      @param      string      $service        server method to use
+     * @param   string      $service        server method to use
      *
-     *      @return     bool
+     * @return  bool
      */
     private function init($service)
     {
@@ -474,13 +478,12 @@ class Webservice
      */
     private function addTasks($tasks = null)
     {
-        
         //====================================================================//
         // No tasks to Add
         if (is_null($tasks) && empty($this->tasks)) {
             return true;
         }
-
+        
         //====================================================================//
         // Prepare Tasks To Perform
         //====================================================================//
@@ -508,6 +511,7 @@ class Webservice
     
     /**
      * @abstract   Create & Setup WebService Client
+     * @return     true
      */
     private function buildClient()
     {
@@ -585,11 +589,13 @@ class Webservice
     //====================================================================//
    
     /**
-     *      \brief      Add a new task for NuSOAP Call Request
-     *      \param      string      $name       Task Identifier Name (Listed in OsWs.inc.php)
-     *      \param      array       $params     Task Parameters
-     *      \param      string      $desc       Task Name/Description
-     *      \return     SplashWs
+     * @abstract    Add a new task for NuSOAP Call Request
+     * 
+     * @param   string      $name       Task Identifier Name (Listed in OsWs.inc.php)
+     * @param   array       $params     Task Parameters
+     * @param   string      $desc       Task Name/Description
+     * 
+     * @return  $this
      */
     public function addTask($name, $params, $desc = "No Description")
     {
@@ -694,9 +700,8 @@ class Webservice
     }
     
     /**
-     *      @abstract   Get Client Server Schema (http or https)
-     *
-     *      @return     string
+     * @abstract   Get Client Server Schema (http or https)
+     * @return  string
      */
     public function getServerScheme()
     {
@@ -709,9 +714,8 @@ class Webservice
     }
     
     /**
-     *      @abstract   Build WebService Client Url
-     *
-     *      @return     string
+     * @abstract   Build WebService Client Url
+     * @return  string
      */
     private function getClientUrl()
     {
@@ -728,9 +732,8 @@ class Webservice
     }
     
     /**
-     *      @abstract   Build WebService Client Debug Html Link
-     *
-     *      @return     string
+     * @abstract   Build WebService Client Debug Html Link
+     * @return  string
      */
     private function getClientDebugLink()
     {
@@ -746,8 +749,8 @@ class Webservice
     //====================================================================//
     
     /**
-     *      @abstract   Check Reverse Connexion with THIS Client
-     *      @return     int             0 if KO, 1 if OK
+     * @abstract   Check Reverse Connexion with THIS Client
+     * @return  bool
      */
     public function selfTest()
     {

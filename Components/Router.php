@@ -22,18 +22,13 @@ namespace   Splash\Components;
 
 use Splash\Core\SplashCore      as Splash;
 
+use ArrayObject;
+use Exception;
+
 use Splash\Router\Admin;
 use Splash\Router\Objects;
 use Splash\Router\Widgets;
 use Splash\Router\Files;
-
-use ArrayObject;
-use Exception;
-
-//====================================================================//
-//   INCLUDES
-//====================================================================//
-
 
 //====================================================================//
 //  CLASS DEFINITION
@@ -41,7 +36,7 @@ use Exception;
  
 class Router
 {
-    
+
     //====================================================================//
     // Tasks Counters
     private $Count      =   0;              // Input Task Counter
@@ -57,13 +52,13 @@ class Router
     //====================================================================//
 
     /**
-     *      @abstract     Validate Received Server Request
+     * @abstract     Validate Received Server Request
      *
-     *      @param  string          $Router     Name of the router function to use for task execution
-     *      @param  ArrayObject     $Input      Poiner to Server Input Buffer
-     *      @param  ArrayObject     $Output     Poiner to Server Output Buffer
+     * @param   string          $Router     Name of the router function to use for task execution
+     * @param   ArrayObject     $Input      Poiner to Server Input Buffer
+     * @param   ArrayObject     $Output     Poiner to Server Output Buffer
      *
-     *      @return bool
+     * @return  bool
      */
     private function validate($Router, $Input, $Output)
     {
@@ -72,14 +67,12 @@ class Router
         if (!is_a($Input, "ArrayObject") || !is_a($Output, "ArrayObject")) {
             return Splash::log()->err("Unable to perform requested action. I/O Buffer not ArrayObject Type.");
         }
-        
         //====================================================================//
         // Safety Checks - Verify tasks array exists
         if (!isset($Input->tasks) || !count($Input->tasks)) {
             return Splash::log()->war("Unable to perform requested action, task list is empty.");
         }
         Splash::log()->deb("Found " . count($Input->tasks) . " tasks in request.");
-        
         //====================================================================//
         // Safety Checks - Verify Each Tasks is an ArrayObject
         foreach ($Input->tasks as $Id => $Task) {
@@ -89,7 +82,6 @@ class Router
                 );
             }
         }
-        
         //====================================================================//
         // Safety Check - Verify Router Exists
         if (!class_exists("\Splash\Router\\" . ucwords($Router))) {
@@ -98,18 +90,17 @@ class Router
                 . "Check your server configuration & methods"
             );
         }
-        
         return true;
     }
     
     /**
-     *      @abstract     Execute Server Requested Tasks
+     * @abstract     Execute Server Requested Tasks
      *
-     *      @param  string          $Router     Name of the router function to use for task execution
-     *      @param  ArrayObject     $Input      Poiner to Server Input Buffer
-     *      @param  ArrayObject     $Output     Poiner to Server Output Buffer
+     * @param   string          $Router     Name of the router function to use for task execution
+     * @param   ArrayObject     $Input      Poiner to Server Input Buffer
+     * @param   ArrayObject     $Output     Poiner to Server Output Buffer
      *
-     *      @return bool            Global tesks Result
+     * @return  bool                        Global tesks Result
      */
     public function execute($Router, $Input, $Output)
     {
@@ -147,12 +138,12 @@ class Router
     }
 
     /**
-     *      @abstract     Execute a Single Tasks
+     * @abstract     Execute a Single Tasks
      *
-     *      @param  string          $Router     Name of the router function to use for task execution
-     *      @param  ArrayObject     $Task       Task To Execute
+     * @param   string          $Router     Name of the router function to use for task execution
+     * @param   ArrayObject     $Task       Task To Execute
      *
-     *      @return ArrayObject   Task Result ArrayObject
+     * @return  ArrayObject                 Task Result ArrayObject
      */
     public function executeTask($Router, $Task)
     {
@@ -206,11 +197,9 @@ class Router
     //====================================================================//
 
     /**
-     *      @abstract     Build an Empty Task Response
-     *
-     *      @param  ArrayObject     $Task       Task To Execute
-     *
-     *      @return ArrayObject   Task Result ArrayObject
+     * @abstract    Build an Empty Task Response
+     * @param   ArrayObject     $Task   Task To Execute
+     * @return  ArrayObject             Task Result ArrayObject
      */
     private function getEmptyResponse($Task)
     {
@@ -232,9 +221,8 @@ class Router
     }
     
     /**
-     *      @abstract     Build Complete Task Batch Information Array
-     *
-     *      @return       array
+     * @abstract    Build Complete Task Batch Information Array
+     * @return  array
      */
     private function getBatchInfos()
     {
@@ -247,9 +235,8 @@ class Router
     }
     
     /**
-     *      @abstract     Delay in MilliSecond Since Router Started
-     *
-     *      @return       float
+     * @abstract    Delay in MilliSecond Since Router Started
+     * @return  float
      */
     private function getDelayStarted()
     {
@@ -257,9 +244,8 @@ class Router
     }
     
     /**
-     *      @abstract     Delay in MilliSecond Since Task Started
-     *
-     *      @return       float
+     * @abstract    Delay in MilliSecond Since Task Started
+     * @return  float
      */
     private function getDelayTaskStarted()
     {

@@ -32,14 +32,14 @@ use Splash\Core\SplashCore      as Splash;
 class Translator
 {
     /**
-     *      @abstract   Translations Storage Array
-     *      @var        Array
+     * @abstract   Translations Storage Array
+     * @var        Array
      */
     private $trans;
     
     /**
-     *      @abstract   Loaded Translation Files array
-     *      @var        Array
+     * @abstract   Loaded Translation Files array
+     * @var        Array
      */
     private $loadedTranslations;
 
@@ -125,18 +125,18 @@ class Translator
     }
 
     /**
-     *      @abstract   Return text translated of text received as parameter (and encode it into HTML)
+     * @abstract   Return text translated of text received as parameter (and encode it into HTML)
      *                  Si il n'y a pas de correspondance pour ce texte, on cherche dans fichier alternatif
      *                  et si toujours pas trouve, il est retourne tel quel
      *                  Les parametres de cette methode peuvent contenir de balises HTML.
      *
-     *      @param  string  $key        Key to translate
-     *      @param  string  $param1     chaine de param1
-     *      @param  string  $param2     chaine de param2
-     *      @param  string  $param3     chaine de param3
-     *      @param  string  $param4     chaine de param4
-     *      @param  int     $maxsize    Max length of text
-     *      @return string              Translated string (encoded into HTML entities and UTF8)
+     * @param  string  $key        Key to translate
+     * @param  string  $param1     chaine de param1
+     * @param  string  $param2     chaine de param2
+     * @param  string  $param3     chaine de param3
+     * @param  string  $param4     chaine de param4
+     * @param  int     $maxsize    Max length of text
+     * @return string              Translated string (encoded into HTML entities and UTF8)
      */
     public function translate($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $maxsize = 0)
     {
@@ -178,9 +178,8 @@ class Translator
     }
 
     /**
-     *  @abstract   Convert Array Parameters to String
+     * @abstract   Convert Array Parameters to String
      *
-     * @param  string  $key        Key to translate
      * @param  string  $param1     chaine de param1
      * @param  string  $param2     chaine de param2
      * @param  string  $param3     chaine de param3
@@ -243,11 +242,11 @@ class Translator
     }
     
     /**
-     *      @abstract   Load Speficied file onto static language collection
+     * @abstract   Load Speficied file onto static language collection
      *
-     *      @param  string  $FullPath   Full path to language file to load (.ini file).
+     * @param  string  $FullPath   Full path to language file to load (.ini file).
      *
-     *      @return bool
+     * @return bool
      *
      */
     private function loadLangFile($FullPath)

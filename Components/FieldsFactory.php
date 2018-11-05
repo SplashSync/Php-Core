@@ -74,27 +74,27 @@ class FieldsFactory
     // Data Storage
 
     /**
-     *      @abstract   Empty Template Object Field Storage
-     *      @var        Array
+     * @abstract   Empty Template Object Field Storage
+     * @var        Array
      */
     private $empty;
 
     
     /**
-     *      @abstract   New Object Field Storage
-     *      @var        ArrayObject
+     * @abstract   New Object Field Storage
+     * @var        ArrayObject
      */
     private $new;
     
     /**
-     *      @abstract   Object Fields List Storage
-     *      @var        Array
+     * @abstract   Object Fields List Storage
+     * @var        Array
      */
     private $fields;
     
     /**
-     *      @abstract     Initialise Class
-     *      @return         int           <0 if KO, >0 if OK
+     * @abstract     Initialise Class
+     * @return  true
      */
     public function __construct()
     {
@@ -116,12 +116,12 @@ class FieldsFactory
     //====================================================================//
 
     /**
-     *  @abstract   Create a new Field Definition with default parameters
+     * @abstract   Create a new Field Definition with default parameters
      *
-     *  @param      string      $type       Standard Data Type (Refer osws.inc.php)
-     *  @param      string      $id         Local Data Identifier (Shall be unik on local machine)
-     *  @param      string      $name       Data Name (Will Be Translated by OsWs if Possible)
-     *  @return     int                     <0 if KO, >0 if OK
+     * @param      string      $type       Standard Data Type (Refer osws.inc.php)
+     * @param      string      $id         Local Data Identifier (Shall be unik on local machine)
+     * @param      string      $name       Data Name (Will Be Translated by OsWs if Possible)
+     * @return     $this
      */
     public function create($type, $id = null, $name = null)
     {
@@ -156,11 +156,11 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Set Current New Field Identifier
+     * @abstract   Set Current New Field Identifier
      *
-     *  @param      string      $id         Local Data Identifier (Shall be unik on local machine)
+     * @param      string      $id         Local Data Identifier (Shall be unik on local machine)
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function identifier($id)
     {
@@ -178,11 +178,11 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field set as it inside a list
+     * @abstract   Update Current New Field set as it inside a list
      *
-     *  @param      string      $ListName         Name of List
+     * @param      string      $ListName         Name of List
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function inList($ListName)
     {
@@ -209,11 +209,11 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Set Current New Field Name (Translated)
+     * @abstract   Set Current New Field Name (Translated)
      *
-     *  @param      string      $name       Data Name (Will Be Translated if Possible)
+     * @param      string      $name       Data Name (Will Be Translated if Possible)
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function name($name)
     {
@@ -234,11 +234,11 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field with descriptions (Translated)
+     * @abstract   Update Current New Field with descriptions (Translated)
      *
-     *  @param      string      $desc       Data Description (Will Be Translated if Possible)
+     * @param      string      $desc       Data Description (Will Be Translated if Possible)
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function description($desc)
     {
@@ -256,11 +256,11 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field with Field Group Name (Translated)
+     * @abstract   Update Current New Field with Field Group Name (Translated)
      *
-     *  @param      string      $group       Data Group (Will Be Translated if Possible)
+     * @param      string      $group       Data Group (Will Be Translated if Possible)
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function group($group)
     {
@@ -278,9 +278,9 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field set as Read Only Field
+     * @bstract   Update Current New Field set as Read Only Field
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function isReadOnly()
     {
@@ -299,9 +299,9 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field set as Write Only Field
+     * @abstract   Update Current New Field set as Write Only Field
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function isWriteOnly()
     {
@@ -320,9 +320,9 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field set as required for creation
+     * @abstract   Update Current New Field set as required for creation
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function isRequired()
     {
@@ -340,11 +340,9 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field set list of associated fields
+     * @abstract   Update Current New Field set list of associated fields
      *
-     *  @param      string                  Objects Fields Identifiers
-     *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function association()
     {
@@ -370,9 +368,9 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field set as available in objects list
+     * @abstract   Update Current New Field set as available in objects list
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function isListed()
     {
@@ -390,9 +388,9 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field set as recommended for logging
+     * @abstract   Update Current New Field set as recommended for logging
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function isLogged()
     {
@@ -410,12 +408,12 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field set its meta informations for autolinking
+     * @abstract   Update Current New Field set its meta informations for autolinking
      *
-     *  @param      string      $ItemType   Field Microdata Type Url
-     *  @param      string      $ItemProp   Field Microdata Property Name
+     * @param      string      $ItemType   Field Microdata Type Url
+     * @param      string      $ItemProp   Field Microdata Property Name
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function microData($ItemType, $ItemProp)
     {
@@ -435,11 +433,11 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Update Current New Field set its unik tag for autolinking
+     * @abstract   Update Current New Field set its unik tag for autolinking
      *
-     *  @param      string      $Tag       Field Unik Tag
+     * @param      string      $Tag       Field Unik Tag
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     protected function setTag($Tag)
     {
@@ -457,9 +455,9 @@ class FieldsFactory
     }
         
     /**
-     *  @abstract   Update Current New Field set as not possible to test
+     * @abstract   Update Current New Field set as not possible to test
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function isNotTested()
     {
@@ -477,11 +475,11 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Add Possible Choice to Current New Field Name (Translated)
+     * @abstract   Add Possible Choice to Current New Field Name (Translated)
      *
-     *  @param      array      $Choices      Possible Choice Array (Value => Decsription)
+     * @param      array      $Choices      Possible Choice Array (Value => Decsription)
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function addChoices($Choices)
     {
@@ -492,12 +490,12 @@ class FieldsFactory
     }
 
     /**
-     *  @abstract   Add Possible Choice to Current New Field Name (Translated)
+     * @abstract   Add Possible Choice to Current New Field Name (Translated)
      *
-     *  @param      string      $Value          Possible Choice Value
-     *  @param      string      $Description    Choice Description for Display (Will Be Translated if Possible)
+     * @param      string      $Value          Possible Choice Value
+     * @param      string      $Description    Choice Description for Display (Will Be Translated if Possible)
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function addChoice($Value, $Description)
     {
@@ -518,11 +516,11 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Add New Options Array for Current Field
+     * @abstract   Add New Options Array for Current Field
      *
-     *  @param      array      $Options     Array of Options (Type => Value)
+     * @param      array      $Options     Array of Options (Type => Value)
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function addOptions($Options)
     {
@@ -533,12 +531,12 @@ class FieldsFactory
     }
 
     /**
-     *  @abstract   Add New Option for Current Field
+     * @abstract   Add New Option for Current Field
      *
-     *  @param      string      $Type           Constrain Type
-     *  @param      string      $Value          Constrain Value
+     * @param      string      $Type           Constrain Type
+     * @param      string      $Value          Constrain Value
      *
-     *  @return     FieldsFactory
+     * @return     $this
      */
     public function addOption($Type, $Value = true)
     {
@@ -557,9 +555,9 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Verify Current New Field data
+     * @abstract   Verify Current New Field data
      *
-     *  @return     bool
+     * @return     bool
      */
     private function verify()
     {
@@ -615,9 +613,9 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Save Current New Field in list & Clean current new field
+     * @abstract   Save Current New Field in list & Clean current new field
      *
-     *  @return     bool
+     * @return     bool
      */
     private function commit()
     {
@@ -649,9 +647,9 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Save Current New Field in list & Clean current new field
+     * @abstract   Save Current New Field in list & Clean current new field
      *
-     *  @return     int                     <0 if KO, >0 if OK
+     * @return     ArrayObject[]|fields
      */
     public function publish()
     {
@@ -677,11 +675,11 @@ class FieldsFactory
     }
     
     /**
-     *  @abstract   Seach for a Field by unik tag
+     * @abstract   Seach for a Field by unik tag
      *
-     *  @param      array       $List      Array Of Field definition
-     *  @param      string      $Tag       Field Unik Tag
-     *  @return     mixed                  FALSE if KO, Field Definition array if OK
+     * @param      array       $List      Array Of Field definition
+     * @param      string      $Tag       Field Unik Tag
+     * @return     ArrayObject|false
      */
     public function seachtByTag($List, $Tag)
     {
@@ -703,11 +701,11 @@ class FieldsFactory
         return false;
     }
     /**
-     *  @abstract   Seach for a Field by id
+     * @abstract   Seach for a Field by id
      *
-     *  @param      array       $List      Array Of Field definition
-     *  @param      string      $Id        Field Identifier
-     *  @return     mixed                  FALSE if KO, Field Definition array if OK
+     * @param      array       $List      Array Of Field definition
+     * @param      string      $Id        Field Identifier
+     * @return     ArrayObject|false
      */
     public function seachtById($List, $Id)
     {
