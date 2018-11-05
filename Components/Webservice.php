@@ -344,13 +344,13 @@ class Webservice
 
     /**
      * @abstract   Perform operation with WebService Client
-     * 
+     *
      * @param   string      $Service        server method to use
      * @param   array       $Tasks          List of task to perform inside this request.
      *                                      If NULL, internal task list is used.
      * @param   bool        $Uncrypted      force message not to be crypted (Used for Ping Only)
      * @param   bool        $Clean          Clean task buffer at the end of this function
-     *  
+     *
      * @return  ArrayObject|false
      */
     public function call($Service, $Tasks = null, $Uncrypted = false, $Clean = true)
@@ -396,13 +396,13 @@ class Webservice
 
     /**
      * @abstract   Simulate operation on Local WebService Client
-     * 
+     *
      * @param   string      $Service        server method to use
      * @param   array       $Tasks          List of task to perform inside this request.
      *                                              If NULL, internal task list is used.
      * @param   bool        $Uncrypted      force message not to be crypted (Used for Ping Only)
      * @param   bool        $Clean          Clean task buffer at the end of this function
-     * 
+     *
      * @return  ArrayObject|false
      */
     public function simulate($Service, $Tasks = null, $Uncrypted = false, $Clean = true)
@@ -590,11 +590,11 @@ class Webservice
    
     /**
      * @abstract    Add a new task for NuSOAP Call Request
-     * 
+     *
      * @param   string      $name       Task Identifier Name (Listed in OsWs.inc.php)
      * @param   array       $params     Task Parameters
      * @param   string      $desc       Task Name/Description
-     * 
+     *
      * @return  $this
      */
     public function addTask($name, $params, $desc = "No Description")

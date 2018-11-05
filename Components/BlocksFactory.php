@@ -319,12 +319,12 @@ class BlocksFactory
     
     /**
      * @abstract   Create a new Morris Bar Graph Block
-     * 
+     *
      * @param   array   $DataSet        Morris DataSet Array
      * @param   string  $Type           Rendering Mode
-     * @param   array   $ChartOptions   Rendering passed Options   
+     * @param   array   $ChartOptions   Rendering passed Options
      * @param   array   $Options        Block Options
-     * 
+     *
      * @return  $this
      */
     public function addMorrisGraphBlock(
@@ -356,13 +356,13 @@ class BlocksFactory
 
     /**
      * @abstract   Create a new Morris Donut Graph Block
-     * 
+     *
      * @param   array   $DataSet        Morris DataSet Array
-     * @param   array   $ChartOptions   Rendering passed Options   
+     * @param   array   $ChartOptions   Rendering passed Options
      * @param   array   $Options        Block Options
-     * 
+     *
      * @return  $this
-     */    
+     */
     public function addMorrisDonutBlock($DataSet, $ChartOptions = array(), $Options = self::COMMONS_OPTIONS)
     {
         //====================================================================//

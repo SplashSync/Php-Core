@@ -262,7 +262,7 @@ class Logger
     /**
      * @abstract    Return All WebServer current Log WebServer in Html format
      * @param   bool    $clean          True if messages needs to be cleaned after reading.
-     * @return  string      
+     * @return  string
      */
     public function getHtmlLog($clean = false)
     {
@@ -284,8 +284,8 @@ class Logger
     /**
      * @abstract    Return WebServer Log Item in Html Checklist format
      * @param   string  $Message    Log message
-     * @param   string  $Type       Message Type 
-     * @return  string      
+     * @param   string  $Type       Message Type
+     * @return  string
      */
     public function getHtmlListItem($Message, $Type = null)
     {
@@ -407,9 +407,9 @@ class Logger
    
     /**
      * @abstract    Return All WebServer current Log WebServer in an arrayobject variable
-     * 
+     *
      * @param   bool    $clean          True if messages needs to be cleaned after reading
-     * 
+     *
      * @return  ArrayObject
      */
     public function getRawLog($clean = false)

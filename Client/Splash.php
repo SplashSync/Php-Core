@@ -259,12 +259,12 @@ class Splash extends SplashCore
     private static function isTravisMode($ObjectType, $local, $action)
     {
         //====================================================================//
-        // Detect Travis from SERVER CONSTANTS        
+        // Detect Travis from SERVER CONSTANTS
         if (empty(Splash::input("SPLASH_TRAVIS"))) {
             return false;
         }
         $Ids   =   (is_array($local) || is_a($local, "ArrayObject")) ? implode("|", $local) : $local;
-        self::log()->war("Module Commit Skipped (" . $ObjectType . ", " . $action . ", " . $Ids . ")");        
+        self::log()->war("Module Commit Skipped (" . $ObjectType . ", " . $action . ", " . $Ids . ")");
         return true;
     }
     
