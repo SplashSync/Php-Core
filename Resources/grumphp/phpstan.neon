@@ -1,0 +1,4 @@
+parameters:
+    bootstrap: "./Resources/grumphp/phpstan.php"
+    universalObjectCratesClasses:
+            - ArrayObject
