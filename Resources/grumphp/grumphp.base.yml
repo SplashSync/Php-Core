@@ -108,13 +108,15 @@ parameters:
             tasks:
                 - composer
                 - phplint
-                - phpcs 
-                - git_blacklist
                 - jsonlint
-                - phpmd
-                - phpcpd
                 - xmllint
                 - yamllint
+                - git_blacklist
+                - phpcs 
+                - phpmd
+                - phpcpd
+#                - phpcsfixer
+#                - phpcsfixer2
                 
         phpstan:
             tasks: 
