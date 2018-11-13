@@ -12,10 +12,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @abstract    This Class Manage Low Level NUSOAP WebService Requests
- * @author      B. Paquier <contact@splashsync.com>
- */
 
 namespace   Splash\Components;
 
@@ -24,14 +20,10 @@ use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 use Splash\Server\SplashServer;
 
-//====================================================================//
-//   INCLUDES
-//====================================================================//
-
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
-
+/**
+ * @abstract    This Class Manage Low Level NUSOAP WebService Requests
+ * @author      B. Paquier <contact@splashsync.com>
+ */
 class Webservice
 {
     //====================================================================//
@@ -398,7 +390,7 @@ class Webservice
      *
      * @param   string      $service        server method to use
      * @param   array       $tasks          List of task to perform inside this request.
-     *                                              If NULL, internal task list is used.
+     *                                      If NULL, internal task list is used.
      * @param   bool        $isUncrypted    Force message not to be crypted (Used for Ping Only)
      * @param   bool        $clean          Clean task buffer at the end of this function
      *

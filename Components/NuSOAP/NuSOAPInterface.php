@@ -23,7 +23,6 @@ use Splash\Models\CommunicationInterface;
  */
 class NuSOAPInterface implements CommunicationInterface
 {
-    
     protected $client;
     protected $server;
 
