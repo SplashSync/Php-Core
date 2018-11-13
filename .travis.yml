@@ -13,7 +13,7 @@ cache:
     
 script:
     # With PHP 7 => Load Phpstan   
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} < "7.1" ]]; then composer remove phpstan/phpstan-shim --no-update; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} < "7.1" ]]; then composer remove phpstan/phpstan-shim --no-update --dev; fi
     
     - composer update --no-suggest
     - php ./vendor/bin/grumphp run --testsuite=travis
