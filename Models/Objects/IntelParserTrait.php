@@ -72,8 +72,8 @@ trait IntelParserTrait
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         
-        foreach ($this->identifyFunctions("build") as $Method) {
-            $this->{$Method}();
+        foreach ($this->identifyFunctions("build") as $method) {
+            $this->{$method}();
         }
         
         //====================================================================//
@@ -104,19 +104,19 @@ trait IntelParserTrait
         //====================================================================//
         // Run Through All Requested Fields
         //====================================================================//
-        $Fields = is_a($this->in, "ArrayObject") ? $this->in->getArrayCopy() : $this->in;
-        foreach ($Fields as $Key => $FieldName) {
+        $fields = is_a($this->in, "ArrayObject") ? $this->in->getArrayCopy() : $this->in;
+        foreach ($fields as $key => $fieldName) {
             //====================================================================//
             // Read Requested Fields
-            foreach ($this->identifyFunctions("get") as $Method) {
-                $this->{$Method}($Key, $FieldName);
+            foreach ($this->identifyFunctions("get") as $method) {
+                $this->{$method}($key, $fieldName);
             }
         }
         //====================================================================//
         // Verify Requested Fields List is now Empty => All Fields Read Successfully
         if (count($this->in)) {
-            foreach ($this->in as $FieldName) {
-                Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldName);
+            foreach ($this->in as $fieldName) {
+                Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $fieldName);
             }
             return false;
         }
@@ -128,20 +128,20 @@ trait IntelParserTrait
     
     /**
      * {@inheritdoc}
-    */
-    public function set($Id = null, $List = null)
+     */
+    public function set($objectId = null, $list = null)
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Init Reading
-        $this->in           =   $List;
+        $this->in           =   $list;
         $this->isUpdated();
         //====================================================================//
         // Init Object
-        if ($Id) {
-            $this->object   =   $this->load($Id);
+        if ($objectId) {
+            $this->object   =   $this->load($objectId);
         } else {
             $this->object   =   $this->create();
         }
@@ -151,19 +151,19 @@ trait IntelParserTrait
         //====================================================================//
         // Run Throw All Requested Fields
         //====================================================================//
-        $Fields = is_a($this->in, "ArrayObject") ? $this->in->getArrayCopy() : $this->in;
-        foreach ($Fields as $FieldName => $Data) {
+        $fields = is_a($this->in, "ArrayObject") ? $this->in->getArrayCopy() : $this->in;
+        foreach ($fields as $fieldName => $fieldData) {
             //====================================================================//
             // Write Requested Fields
-            foreach ($this->identifyFunctions("set") as $Method) {
-                $this->{$Method}($FieldName, $Data);
+            foreach ($this->identifyFunctions("set") as $method) {
+                $this->{$method}($fieldName, $fieldData);
             }
         }
         //====================================================================//
         // Verify Requested Fields List is now Empty => All Fields Writen Successfully
         if (count($this->in)) {
-            foreach ($this->in as $FieldName => $Data) {
-                Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldName);
+            foreach ($this->in as $fieldName => $fieldData) {
+                Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $fieldName);
             }
             return false;
         }
@@ -180,19 +180,19 @@ trait IntelParserTrait
      *
      * @return      self
      */
-    public function identifyFunctions($Prefix)
+    public function identifyFunctions($prefix)
     {
-        $Result = array();
-        foreach (get_class_methods(__CLASS__) as $MethodName) {
-            if (strpos($MethodName, $Prefix) !== 0) {
+        $result = array();
+        foreach (get_class_methods(__CLASS__) as $method) {
+            if (strpos($method, $prefix) !== 0) {
                 continue;
             }
-            if (strpos($MethodName, "Fields") === false) {
+            if (strpos($method, "Fields") === false) {
                 continue;
             }
-            $Result[]   =   $MethodName;
+            $result[]   =   $method;
         }
-        return $Result;
+        return $result;
     }
     
     /**
@@ -202,20 +202,20 @@ trait IntelParserTrait
      */
     public function verifyRequiredFields()
     {
-        foreach ($this->Fields() as $Field) {
+        foreach ($this->Fields() as $field) {
             //====================================================================//
             // Field is NOT required
-            if (!$Field["required"]) {
+            if (!$field["required"]) {
                 continue;
             }
             //====================================================================//
             // Field is Required but not available
-            if (!$this->verifyRequiredFieldIsAvailable($Field["id"])) {
+            if (!$this->verifyRequiredFieldIsAvailable($field["id"])) {
                 return Splash::log()->err(
                     "ErrLocalFieldMissing",
                     __CLASS__,
                     __FUNCTION__,
-                    $Field["name"] . "(" . $Field["id"] . ")"
+                    $field["name"] . "(" . $field["id"] . ")"
                 );
             }
         }
@@ -224,39 +224,40 @@ trait IntelParserTrait
 
     /**
      * @abstract    Check Required Fields
+     * @param   string  $fieldId    Object Field Identifier
      *
-     * @return      bool
+     * @return  bool
      */
-    private function verifyRequiredFieldIsAvailable($FieldId)
+    private function verifyRequiredFieldIsAvailable($fieldId)
     {
         //====================================================================//
         // Detect List Field Names
-        if (!method_exists($this, "Lists") || !self::lists()->listName($FieldId)) {
+        if (!method_exists($this, "Lists") || !self::lists()->listName($fieldId)) {
             //====================================================================//
             // Simple Field is Required but not available
-            if (empty($this->in[$FieldId])) {
+            if (empty($this->in[$fieldId])) {
                 return false;
             }
             return true;
         }
         //====================================================================//
         // List Field is required
-        $ListName   = self::lists()->ListName($FieldId);
-        $FieldName  = self::lists()->FieldName($FieldId);
+        $listName   = self::lists()->ListName($fieldId);
+        $fieldName  = self::lists()->FieldName($fieldId);
         //====================================================================//
         // Check List is available
-        if (empty($this->in[$ListName])) {
+        if (empty($this->in[$listName])) {
             return false;
         }
         //====================================================================//
         // list is a List...
-        if (!is_array($this->in[$ListName]) && !is_a($this->in[$ListName], "ArrayObject")) {
+        if (!is_array($this->in[$listName]) && !is_a($this->in[$listName], "ArrayObject")) {
             return false;
         }
         //====================================================================//
         // Check Field is Available
-        foreach ($this->in[$ListName] as $Item) {
-            if (empty($Item[$FieldName])) {
+        foreach ($this->in[$listName] as $item) {
+            if (empty($item[$fieldName])) {
                 return false;
             }
         }

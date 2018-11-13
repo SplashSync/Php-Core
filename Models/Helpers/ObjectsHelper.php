@@ -24,88 +24,88 @@ class ObjectsHelper
 {
    
     /**
-     *      @abstract   Create an Object Identifier String
+     * @abstract   Create an Object Identifier String
      *
-     *      @param      string      $ObjectType     Object Type Name.
-     *      @param      string      $Identifier     Object Identifier
+     * @param   string      $objectType     Object Type Name.
+     * @param   string      $objectId       Object Identifier
      *
-     *      @return     string
+     * @return  string
      */
-    public static function encode($ObjectType, $Identifier)
+    public static function encode($objectType, $objectId)
     {
         //====================================================================//
         // Safety Checks
-        if (empty($ObjectType)) {
+        if (empty($objectType)) {
             return false;
         }
-        if (empty($Identifier)) {
+        if (empty($objectId)) {
             return false;
         }
         
         //====================================================================//
         // Create & Return Field Id Data String
-        return   $Identifier . IDSPLIT . $ObjectType;
+        return   $objectId . IDSPLIT . $objectType;
     }
     
     /**
      *      @abstract   Decode an Object Identifier String
      *
-     *      @param      string      $ObjectId           Object Identifier String.
+     *      @param      string      $objectId           Object Identifier String.
      *
      *      @return     string
      */
-    private static function decode($ObjectId)
+    private static function decode($objectId)
     {
         // Safety Checks
-        if (empty($ObjectId)) {
+        if (empty($objectId)) {
             return false;
         }
         // Explode Object String
-        $Result = explode(IDSPLIT, $ObjectId);
+        $result = explode(IDSPLIT, $objectId);
         // Check result is Valid
-        if (count($Result) != 2) {
+        if (count($result) != 2) {
             return false;
         }
         // Return Object Array
-        return   $Result;
+        return   $result;
     }
     
     /**
      * @abstract   Retrieve Identifier from an Object Identifier String
-     * @param      string      $ObjectId           Object Identifier String.
+     * @param      string      $objectId           Object Identifier String.
      * @return     string
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
-    public static function id($ObjectId)
+    public static function id($objectId)
     {
         //====================================================================//
         // Decode
-        $Result     = self::decode($ObjectId);
-        if (empty($Result)) {
+        $result     = self::decode($objectId);
+        if (empty($result)) {
             return false;
         }
         //====================================================================//
         // Return Object Identifier
-        return   $Result[0];
+        return   $result[0];
     }
 
     /**
      *      @abstract   Retrieve Object Type Name from an Object Identifier String
      *
-     *      @param      string      $ObjectId           Object Identifier String.
+     *      @param      string      $objectId           Object Identifier String.
      *
      *      @return     string
      */
-    public static function type($ObjectId)
+    public static function type($objectId)
     {
         //====================================================================//
         // Decode
-        $Result     = self::decode($ObjectId);
-        if (empty($Result)) {
+        $result     = self::decode($objectId);
+        if (empty($result)) {
             return false;
         }
         //====================================================================//
         // Return Object Type Name
-        return   $Result[1];
+        return   $result[1];
     }
 }

@@ -195,13 +195,13 @@ class ObjectsCase extends AbstractBaseCase
         //====================================================================//
         //   Verify Object Change Was Commited
         $this->assertNotEmpty(
-            Splash::$Commited,
+            Splash::$commited,
             "No Object Change Commited by your Module. Please check your triggers."
         );
         
         //====================================================================//
         //   Get First / Last Commited
-        $commited = $first ? array_shift(Splash::$Commited) : array_pop(Splash::$Commited);
+        $commited = $first ? array_shift(Splash::$commited) : array_pop(Splash::$commited);
         
         //====================================================================//
         //   Check Object Type is OK

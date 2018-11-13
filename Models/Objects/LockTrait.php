@@ -34,7 +34,7 @@ trait LockTrait
     /**
      * {@inheritdoc}
      */
-    public function lock($Identifier = "new")
+    public function lock($objectId = "new")
     {
         //====================================================================//
         // Search for Forced Commit Flag in Configuration
@@ -45,8 +45,8 @@ trait LockTrait
         
         //====================================================================//
         // Verify Object Identifier is not Empty
-        if (!$Identifier) {
-            $Identifier = "new";
+        if (!$objectId) {
+            $objectId = "new";
         }
         
         //====================================================================//
@@ -57,11 +57,11 @@ trait LockTrait
         
         //====================================================================//
         //  Insert Object to Structure
-        $this->locks->offsetSet($Identifier, true);
+        $this->locks->offsetSet($objectId, true);
         
         //====================================================================//
         //  Log
-        Splash::log()->deb("MsgLockObject", static::$NAME, $Identifier);
+        Splash::log()->deb("MsgLockObject", static::$NAME, $objectId);
         
         return true;
     }
@@ -69,14 +69,14 @@ trait LockTrait
     /**
      * {@inheritdoc}
      */
-    public function isLocked($Identifier = "new")
+    public function isLocked($objectId = "new")
     {
-        Splash::log()->deb("MsgisLockedStart", static::$NAME, $Identifier);
+        Splash::log()->deb("MsgisLockedStart", static::$NAME, $objectId);
         
         //====================================================================//
         // Verify Object Identifier is not Empty
-        if (!$Identifier) {
-            $Identifier = "new";
+        if (!$objectId) {
+            $objectId = "new";
         }
         
         //====================================================================//
@@ -87,41 +87,37 @@ trait LockTrait
         
         //====================================================================//
         //  Verify Object Exits
-        if (!$this->locks->offsetExists($Identifier)) {
+        if (!$this->locks->offsetExists($objectId)) {
             return false;
         }
         
         //====================================================================//
         //  Log
-        Splash::log()->deb("MsgisLocked", static::$NAME, $Identifier);
+        Splash::log()->deb("MsgisLocked", static::$NAME, $objectId);
         return true;
     }
     
     /**
      * {@inheritdoc}
      */
-    public function unLock($Identifier = "new")
+    public function unLock($objectId = "new")
     {
         //====================================================================//
         // Verify Object Identifier is not Empty
-        if (!$Identifier) {
-            $Identifier = "new";
+        if (!$objectId) {
+            $objectId = "new";
         }
-        
         //====================================================================//
         //  Verify Object Already Locked
-        if (!$this->isLocked($Identifier)) {
+        if (!$this->isLocked($objectId)) {
             return true;
         }
-        
         //====================================================================//
         //  Remove Object Lock
-        $this->locks->offsetUnset($Identifier);
-        
+        $this->locks->offsetUnset($objectId);
         //====================================================================//
         //  Log
-        Splash::log()->deb("MsgUnlockSuccess", static::$NAME, $Identifier);
-        
+        Splash::log()->deb("MsgUnlockSuccess", static::$NAME, $objectId);
         return true;
     }
 }

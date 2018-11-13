@@ -29,91 +29,91 @@ class ListsHelper
     /**
      *      @abstract   Create a List Field Identifier String
      *
-     *      @param      string      $ListName       Field List Name.
-     *      @param      string      $Identifier     Field Identifier
+     *      @param      string      $listName       Field List Name.
+     *      @param      string      $fieldName     Field Identifier
      *
      *      @return     string
      */
-    public function encode($ListName, $Identifier)
+    public function encode($listName, $fieldName)
     {
         //====================================================================//
         // Safety Checks
-        if (empty($ListName)) {
+        if (empty($listName)) {
             return false;
         }
-        if (empty($Identifier)) {
+        if (empty($fieldName)) {
             return false;
         }
         //====================================================================//
         // Create & Return List Field Id Data String
-        return   $Identifier . LISTSPLIT . $ListName;
+        return   $fieldName . LISTSPLIT . $listName;
     }
     
     /**
      *      @abstract   decode List Field String
      *
-     *      @param      string      $ListFieldName      List Field Identifier String
+     *      @param      string      $listFieldName      List Field Identifier String
      *
      *      @return     string
      */
-    private function decode($ListFieldName)
+    private function decode($listFieldName)
     {
         //====================================================================//
         // Safety Checks
-        if (empty($ListFieldName)) {
+        if (empty($listFieldName)) {
             return false;
         }
         //====================================================================//
         // Explode Object String
-        $Tmp = explode(LISTSPLIT, $ListFieldName);
+        $result = explode(LISTSPLIT, $listFieldName);
         //====================================================================//
         // Check result is Valid
-        if (count($Tmp) != 2) {
+        if (count($result) != 2) {
             return false;
         }
         //====================================================================//
         // Return Object Array
-        return   $Tmp;
+        return   $result;
     }
     
     /**
      *      @abstract   Retrieve Field Identifier from an List Field String
      *
-     *      @param      string      $ListFieldName      List Field Identifier String
+     *      @param      string      $listFieldName      List Field Identifier String
      *
      *      @return     string
      */
-    public function fieldName($ListFieldName)
+    public function fieldName($listFieldName)
     {
         //====================================================================//
         // decode
-        $Result     = $this->decode($ListFieldName);
-        if (empty($Result)) {
+        $result     = $this->decode($listFieldName);
+        if (empty($result)) {
             return false;
         }
         //====================================================================//
         // Return Field Identifier
-        return   $Result[0];
+        return   $result[0];
     }
 
     /**
      *      @abstract   Retrieve List Name from an List Field String
      *
-     *      @param      string      $ListFieldName      List Field Identifier String
+     *      @param      string      $listFieldName      List Field Identifier String
      *
      *      @return     string
      */
-    public function listName($ListFieldName)
+    public function listName($listFieldName)
     {
         //====================================================================//
         // decode
-        $Result     = $this->decode($ListFieldName);
-        if (empty($Result)) {
+        $result     = $this->decode($listFieldName);
+        if (empty($result)) {
             return false;
         }
         //====================================================================//
         // Return List Name
-        return   $Result[1];
+        return   $result[1];
     }
     
     //====================================================================//
@@ -123,55 +123,55 @@ class ListsHelper
     /**
      *      @abstract   Validate & Init List before Adding Data
      *
-     *      @param      array       $Buffer             Object Data Buffer
-     *      @param      string      $ListName           List Identifier String
-     *      @param      string      $FieldName          List Field Identifier String
+     *      @param      array       $buffer             Object Data Buffer
+     *      @param      string      $listName           List Identifier String
+     *      @param      string      $fieldName          List Field Identifier String
      *
      *      @return     string
      */
-    public function initOutput(&$Buffer, $ListName, $FieldName)
+    public function initOutput(&$buffer, $listName, $fieldName)
     {
         //====================================================================//
         // Check List Name
-        if ($this->listName($FieldName) !== $ListName) {
+        if ($this->listName($fieldName) !== $listName) {
             return false;
         }
         //====================================================================//
         // Create List Array If Needed
-        if (!array_key_exists($ListName, $Buffer)) {
-            $Buffer[$ListName] = array();
+        if (!array_key_exists($listName, $buffer)) {
+            $buffer[$listName] = array();
         }
         //====================================================================//
         // decode Field Name
-        return $this->fieldName($FieldName);
+        return $this->fieldName($fieldName);
     }
 
     /**
      *      @abstract   Add Item Data in Given  Output List
      *
-     *      @param      array       $Buffer             Object Data Buffer
-     *      @param      string      $ListName           List Identifier String
-     *      @param      string      $FieldName          List Field Identifier String
-     *      @param      string|int  $Key                List Item Index Key
-     *      @param      mixed       $Data               Item Data
+     *      @param      array       $buffer             Object Data Buffer
+     *      @param      string      $listName           List Identifier String
+     *      @param      string      $fieldName          List Field Identifier String
+     *      @param      string|int  $key                List Item Index Key
+     *      @param      mixed       $itemData           Item Data
      *
-     *      @return     string
+     *      @return     void
      */
-    public function insert(&$Buffer, $ListName, $FieldName, $Key, $Data)
+    public function insert(&$buffer, $listName, $fieldName, $key, $itemData)
     {
         //====================================================================//
         // Create List Array If Needed
-        if (!array_key_exists($ListName, $Buffer)) {
-            $Buffer[$ListName] = array();
+        if (!array_key_exists($listName, $buffer)) {
+            $buffer[$listName] = array();
         }
         //====================================================================//
         // Create Line Array If Needed
-        if (!array_key_exists($Key, $Buffer[$ListName])) {
-            $Buffer[$ListName][$Key] = array();
+        if (!array_key_exists($key, $buffer[$listName])) {
+            $buffer[$listName][$key] = array();
         }
         //====================================================================//
         // Store Data in Array
-        $FieldIndex = explode("@", $FieldName);
-        $Buffer[$ListName][$Key][$FieldIndex[0]] = $Data;
+        $fieldIndex = explode("@", $fieldName);
+        $buffer[$listName][$key][$fieldIndex[0]] = $itemData;
     }
 }

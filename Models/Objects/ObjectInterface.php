@@ -44,8 +44,8 @@ interface ObjectInterface
     /**
      * @abstract    Return List Of Objects with required filters
      *
-     * @param       array   $Filter                 Filters for Object List.
-     * @param       array   $Params                 Search parameters for result List.
+     * @param       array   $filter                 Filters for Object List.
+     * @param       array   $params                 Search parameters for result List.
      *                      $params["max"]              Maximum Number of results
      *                      $params["offset"]           List Start Offset
      *                      $params["sortfield"]        Field name for sort list (Available fields listed below)
@@ -55,36 +55,36 @@ interface ObjectInterface
      *                       $data["meta"]["total"]     Total Number of results
      *                       $data["meta"]["current"]   Total Number of results
      */
-    public function objectsList($Filter = null, $Params = null);
+    public function objectsList($filter = null, $params = null);
     
     /**
      * @abstract    Return requested Object Data
      *
-     * @param   string  $ObjectId           Object Id.
-     * @param   array   $Fields             List of requested fields
+     * @param   string  $objectId           Object Id.
+     * @param   array   $fields             List of requested fields
      *
      * @return  array                       Object Data
     */
-    public function get($ObjectId = null, $Fields = 0);
+    public function get($objectId = null, $fields = 0);
 
     /**
      * @abstract     Update or Create requested Object Data
      *
-     * @param   string  $ObjectId           Object Id.  If NULL, Object needs to be created.
-     * @param   array   $Data               List of requested fields
+     * @param   string  $objectId           Object Id.  If NULL, Object needs to be created.
+     * @param   array   $objectData         List of requested fields
      *
      * @return  string                      Object Id.  If NULL or False, Object wasn't created.
      */
-    public function set($ObjectId = null, $Data = null);
+    public function set($objectId = null, $objectData = null);
 
     /**
      * @abstract   Delete requested Object
      *
-     * @param      string   $ObjectId       Object Id
+     * @param      string   $objectId       Object Id
      *
      * @return     string|false
      */
-    public function delete($ObjectId = null);
+    public function delete($objectId = null);
     
     /**
      * @abstract   Set Lock for a specific object
@@ -93,29 +93,29 @@ interface ObjectInterface
      *                  on currently edited objects. Node name & Type are
      *                  single, but Ids have to be stored as list
      *
-     * @param      int|string   $Identifier     Local Object Identifier or Empty if New Object
+     * @param      int|string   $objectId     Local Object Identifier or Empty if New Object
      *
      * @return     bool
      */
-    public function lock($Identifier = "new");
+    public function lock($objectId = "new");
 
     /**
      * @abstract   Get Lock Status for a specific object
      *
-     * @param      int|string   $Identifier     Local Object Identifier or Empty if New Object
+     * @param      int|string   $objectId     Local Object Identifier or Empty if New Object
      *
      * @return     bool
      */
-    public function isLocked($Identifier = "new");
+    public function isLocked($objectId = "new");
     
     /**
      * @abstract   Delete Current active Lock
      *
-     * @param      int|string   $Identifier     Local Object Identifier or Empty if New Object
+     * @param      int|string   $objectId     Local Object Identifier or Empty if New Object
      *
      * @return     bool
      */
-    public function unLock($Identifier = "new");
+    public function unLock($objectId = "new");
     
     /**
      * @abstract   Return Object Status

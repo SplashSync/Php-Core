@@ -114,7 +114,7 @@ class O04CreateTest extends ObjectsCase
         
         //====================================================================//
         // Clean Objects Commited Array
-        Splash::$Commited = array();
+        Splash::$commited = array();
         
         return $this->fakeObjectData($fields);
     }

@@ -31,135 +31,140 @@ class ImagesHelper
     /**
      *  @abstract   Build a new image field array
      *
-     *  @param      string      $Name           Image Name
-     *  @param      string      $FileName       Image Filename with Extension
-     *  @param      string      $Path           Image Full path on local system
-     *  @param      string      $PublicUrl      Complete Public Url of this image if available
+     *  @param      string      $name           Image Name
+     *  @param      string      $fileName       Image Filename with Extension
+     *  @param      string      $filePath       Image Full path on local system
+     *  @param      string      $publicUrl      Complete Public Url of this image if available
      *
      *  @return     array                       Splash Image Array or False
      */
-    public static function encode($Name, $FileName, $Path, $PublicUrl = null)
+    public static function encode($name, $fileName, $filePath, $publicUrl = null)
     {
         //====================================================================//
         // Safety Checks - Validate Inputs
-        if (!is_string($Name) || empty($Name)) {
+        if (!is_string($name) || empty($name)) {
             return Splash::log()->err("ErrImgNoName", __FUNCTION__);
         }
-        if (!is_string($FileName) || empty($FileName)) {
+        if (!is_string($fileName) || empty($fileName)) {
             return Splash::log()->err("ErrImgNoFileName", __FUNCTION__);
         }
-        if (!is_string($Path) || empty($Path)) {
+        if (!is_string($filePath) || empty($filePath)) {
             return Splash::log()->err("ErrImgNoPath", __FUNCTION__);
         }
 
-        $FullPath = $Path . $FileName;
+        $fullPath   =   $filePath . $fileName;
         //====================================================================//
         // Safety Checks - Validate Image
-        if (!file_exists($FullPath)) {
-            return Splash::log()->err("ErrImgNoPath", __FUNCTION__, $FullPath);
+        if (!file_exists($fullPath)) {
+            return Splash::log()->err("ErrImgNoPath", __FUNCTION__, $fullPath);
         }
-        $ImageDims  = getimagesize($FullPath);
-        if (empty($ImageDims)) {
-            return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $FullPath);
+        $dimensions =   getimagesize($fullPath);
+        if (empty($dimensions)) {
+            return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $fullPath);
         }
         
         //====================================================================//
         // Build Image Array
-        $Image = array();
+        $image = array();
         //====================================================================//
         // ADD MAIN INFOS
         //====================================================================//
         // Image Name
-        $Image["name"]          = $Name;
+        $image["name"]          = $name;
         //====================================================================//
         // Image Filename
-        $Image["filename"]      = $FileName;
+        $image["filename"]      = $fileName;
         //====================================================================//
         // Image Full Path
-        $Image["path"]          = $FullPath;
+        $image["path"]          = $fullPath;
         //====================================================================//
         // Image Publics Url
-        $Image["url"]           = $PublicUrl;
+        $image["url"]           = $publicUrl;
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
         // Images Informations
-        $Image["width"]         = $ImageDims[0];
-        $Image["height"]        = $ImageDims[1];
-        $Image["md5"]           = md5_file($FullPath);
-        $Image["size"]          = filesize($FullPath);
+        $image["width"]         = $dimensions[0];
+        $image["height"]        = $dimensions[1];
+        $image["md5"]           = md5_file($fullPath);
+        $image["size"]          = filesize($fullPath);
         
-        return $Image;
+        return $image;
     }
     
     /**
      *  @abstract   Build a new image field array
      *
-     *  @param      string      $Name           Image Name
-     *  @param      string      $Url            Image Absolute Url
-     *  @param      string      $PublicUrl      Complete Public Url of this image if available
+     *  @param      string      $name           Image Name
+     *  @param      string      $absoluteUrl    Image Absolute Url
+     *  @param      string      $publicUrl      Complete Public Url of this image if available
      *
      *  @return     array                       Splash Image Array or False
      */
-    public static function encodeFromUrl($Name, $Url, $PublicUrl = null)
+    public static function encodeFromUrl($name, $absoluteUrl, $publicUrl = null)
     {
         //====================================================================//
         // Safety Checks - Validate Inputs
-        if (!is_string($Name) || empty($Name)) {
+        if (!is_string($name) || empty($name)) {
             return Splash::log()->err("ErrImgNoName", __FUNCTION__);
         }
-        if (!is_string($Url) || empty($Url)) {
+        if (!is_string($absoluteUrl) || empty($absoluteUrl)) {
             return Splash::log()->err("ErrImgNoPath", __FUNCTION__);
         }
-
         //====================================================================//
         // Safety Checks - Validate Image
-        $ImageDims  = getimagesize($Url);
-        if (empty($ImageDims)) {
-            return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $Url);
+        $dimensions =   getimagesize($absoluteUrl);
+        if (empty($dimensions)) {
+            return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $absoluteUrl);
         }
-        
         //====================================================================//
         // Build Image Array
-        $Image = array();
+        $image = array();
         //====================================================================//
         // ADD MAIN INFOS
         //====================================================================//
         // Image Name
-        $Image["name"]          = $Name;
+        $image["name"]          = $name;
         //====================================================================//
         // Image Filename
-        $Image["filename"]      = basename(parse_url($Url, PHP_URL_PATH));
+        $image["filename"]      = basename(parse_url($absoluteUrl, PHP_URL_PATH));
         //====================================================================//
         // Image Full Path
-        $Image["path"]          = $Url;
+        $image["path"]          = $absoluteUrl;
         //====================================================================//
         // Image Publics Url
-        $Image["url"]           = $PublicUrl;
+        $image["url"]           = $publicUrl;
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
         // Images Informations
-        $Image["width"]         = $ImageDims[0];
-        $Image["height"]        = $ImageDims[1];
-        $Image["md5"]           = md5_file($Url);
-        $Image["size"]          = self::getRemoteFileSize($Url);
+        $image["width"]         = $dimensions[0];
+        $image["height"]        = $dimensions[1];
+        $image["md5"]           = md5_file($absoluteUrl);
+        $image["size"]          = self::getRemoteFileSize($absoluteUrl);
 
-        return $Image;
+        return $image;
     }
     
-    private static function getRemoteFileSize($Url)
+    /**
+     * @abstract    Ues CURL to detect Remote Image Size
+     *
+     * @param   string  $imageUrl
+     *
+     * @return  int
+     */
+    private static function getRemoteFileSize($imageUrl)
     {
-        $Result = curl_init($Url);
+        $result = curl_init($imageUrl);
 
-        curl_setopt($Result, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($Result, CURLOPT_HEADER, true);
-        curl_setopt($Result, CURLOPT_NOBODY, true);
+        curl_setopt($result, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($result, CURLOPT_HEADER, true);
+        curl_setopt($result, CURLOPT_NOBODY, true);
 
-        curl_exec($Result);
-        $Size = curl_getinfo($Result, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-        curl_close($Result);
+        curl_exec($result);
+        $imageSize = curl_getinfo($result, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+        curl_close($result);
         
-        return (int) $Size;
+        return (int) $imageSize;
     }
 }

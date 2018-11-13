@@ -35,14 +35,14 @@ class SOAPInterface implements CommunicationInterface
     /**
      * @abstract   Create & Setup WebService Client
      *
-     * @param   string  $Url    Target Url
+     * @param   string  $targetUrl    Target Url
      *
      * @return self
      */
-    public function buildClient($Url)
+    public function buildClient($targetUrl)
     {
         $this->client = new \SoapClient(null, array(
-            'location'              =>  $Url,
+            'location'              =>  $targetUrl,
             'uri'                   =>  Splash::input("SERVER_NAME"),
             'connection_timeout'    =>  Splash::configuration()->WsTimout,
             'exceptions'            =>  false,
@@ -52,20 +52,20 @@ class SOAPInterface implements CommunicationInterface
     /**
      * @abstract   Execute WebService Client Request
      *
-     * @param string    $Service   Target Service
-     * @param string    $Data      Request Raw Data
+     * @param string    $service   Target Service
+     * @param string    $data      Request Raw Data
      *
      * @return     mixed    Raw Response
      */
-    public function call($Service, $Data)
+    public function call($service, $data)
     {
         //====================================================================//
         // Log Call Informations in debug buffer
-        Splash::log()->deb("[SOAP] Call Url= '" . $this->client->location . "' Service='" . $Service . "'");
+        Splash::log()->deb("[SOAP] Call Url= '" . $this->client->location . "' Service='" . $service . "'");
         //====================================================================//
         // Execute Php SOAP Call
-        $Response = $this->client->__soapCall($Service, $Data);
-        return $Response;
+        $response = $this->client->__soapCall($service, $data);
+        return $response;
     }
         
     //====================================================================//
@@ -105,14 +105,14 @@ class SOAPInterface implements CommunicationInterface
     /**
      * @abstract   Log Errors if Server fail during a request
      */
-    public function fault($Error)
+    public function fault($error)
     {
         //====================================================================//
         // Prepare Fault Message.
         $content  = "SOAP call: service died unexpectedly!! ";
-        $content .= $Error["message"] . " on File " . $Error["file"] . " Line " . $Error["line"];
+        $content .= $error["message"] . " on File " . $error["file"] . " Line " . $error["line"];
         //====================================================================//
         // Log Fault Details In SOAP Structure.
-        $this->server->fault($Error["type"], $content);
+        $this->server->fault($error["type"], $content);
     }
 }

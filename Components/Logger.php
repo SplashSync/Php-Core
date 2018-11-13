@@ -133,11 +133,11 @@ class Logger
         }
         //====================================================================//
         // Add text message to buffer
-        $Text = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
-        $this->err[] = $Text;
+        $message = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
+        $this->err[] = $message;
         //====================================================================//
         // Add Message To Log File
-        self::addLogToFile($Text, "ERROR");
+        self::addLogToFile($message, "ERROR");
         return   false;
     }
    
@@ -162,11 +162,11 @@ class Logger
         }
         //====================================================================//
         // Add text message to buffer
-        $Text = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
-        $this->war[] = $Text;
+        $messsage = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
+        $this->war[] = $messsage;
         //====================================================================//
         // Add Message To Log File
-        self::addLogToFile($Text, "WARNING");
+        self::addLogToFile($messsage, "WARNING");
         return   true;
     }
 
@@ -191,11 +191,11 @@ class Logger
         }
         //====================================================================//
         // Add text message to buffer
-        $Text = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
-        $this->msg[] = $Text;
+        $message = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
+        $this->msg[] = $message;
         //====================================================================//
         // Add Message To Log File
-        self::addLogToFile($Text, "MESSAGE");
+        self::addLogToFile($message, "MESSAGE");
         return   true;
     }
 
@@ -223,11 +223,11 @@ class Logger
         }
         //====================================================================//
         // Add text message to buffer
-        $Text = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
-        $this->deb[] = $Text;
+        $message = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
+        $this->deb[] = $message;
         //====================================================================//
         // Add Message To Log File
-        self::addLogToFile($Text, "DEBUG");
+        self::addLogToFile($message, "DEBUG");
         return   true;
     }
    
@@ -283,28 +283,28 @@ class Logger
    
     /**
      * @abstract    Return WebServer Log Item in Html Checklist format
-     * @param   string  $Message    Log message
-     * @param   string  $Type       Message Type
+     * @param   string  $message    Log message
+     * @param   string  $type       Message Type
      * @return  string
      */
-    public function getHtmlListItem($Message, $Type = null)
+    public function getHtmlListItem($message, $type = null)
     {
-        switch ($Type) {
+        switch ($type) {
             case "Error":
-                $Color = "#FF3300";
-                $Text  = "&nbsp;KO&nbsp;";
+                $color = "#FF3300";
+                $text  = "&nbsp;KO&nbsp;";
                 break;
             case "Warning":
-                $Color = "#FF9933";
-                $Text  = "&nbsp;WAR&nbsp;";
+                $color = "#FF9933";
+                $text  = "&nbsp;WAR&nbsp;";
                 break;
             default:
-                $Color = "#006600";
-                $Text  = "&nbsp;OK&nbsp;";
+                $color = "#006600";
+                $text  = "&nbsp;OK&nbsp;";
                 break;
         }
         
-        return '[<font color="' . $Color . '">' . $Text . '</font>]&nbsp;&nbsp;&nbsp;' . $Message . PHP_EOL . "</br>";
+        return '[<font color="' . $color . '">' . $text . '</font>]&nbsp;&nbsp;&nbsp;' . $message . PHP_EOL . "</br>";
     }
     
     /**
@@ -319,8 +319,8 @@ class Logger
         if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
             //====================================================================//
             // Add Messages
-            foreach ($msgArray as $Message) {
-                $html .= $this->getHtmlListItem($Message, $type);
+            foreach ($msgArray as $message) {
+                $html .= $this->getHtmlListItem($message, $type);
             }
         }
         
@@ -370,15 +370,15 @@ class Logger
      */
     private function getConsole($msgArray, $title = "", $color = "")
     {
-        $Out  = "";
+        $result  = "";
         if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
             //====================================================================//
             // Add Messages
             foreach ($msgArray as $txt) {
-                $Out .= self::getConsoleLine($txt, $title, $color);
+                $result .= self::getConsoleLine($txt, $title, $color);
             }
         }
-        return $Out;
+        return $result;
     }
    
     /**
@@ -388,21 +388,20 @@ class Logger
      */
     public function getConsoleLog($clean = false)
     {
-        $Out  = null;
+        $result  = null;
         //====================================================================//
         // Read All Messages as Html
-        $Out .= $this->getConsole($this->err, " - Error    => ", self::CMD_COLOR_ERR);
-        $Out .= $this->getConsole($this->war, " - Warning  => ", self::CMD_COLOR_WAR);
-        $Out .= $this->getConsole($this->msg, " - Messages => ", self::CMD_COLOR_MSG);
-        $Out .= $this->getConsole($this->deb, " - Debug    => ", self::CMD_COLOR_DEB);
-        $Out .= "\e[0m";
-        
+        $result .= $this->getConsole($this->err, " - Error    => ", self::CMD_COLOR_ERR);
+        $result .= $this->getConsole($this->war, " - Warning  => ", self::CMD_COLOR_WAR);
+        $result .= $this->getConsole($this->msg, " - Messages => ", self::CMD_COLOR_MSG);
+        $result .= $this->getConsole($this->deb, " - Debug    => ", self::CMD_COLOR_DEB);
+        $result .= "\e[0m";
         //====================================================================//
         // Clear Log Buffer If Requiered
         if ($clean) {
             $this->cleanLog();
         }
-        return $Out;
+        return $result;
     }
    
     /**
@@ -464,31 +463,31 @@ class Logger
    
     /**
      * @abstract    Merge Messages from a second class with current class
-     * @param       string              $what                 Type of Logs to Merge
-     * @param       array|ArrayObject   $In                   Second logging array
+     * @param       string              $logType        Type of Logs to Merge
+     * @param       array|ArrayObject   $logArray       Second logging array
      * @return      void
      */
-    private function mergeCore($what, $In)
+    private function mergeCore($logType, $logArray)
     {
         //====================================================================//
         // Fast Line
-        if (empty($In)) {
+        if (empty($logArray)) {
             return;
         }
         //====================================================================//
         // Detect ArrayObjects
-        if (is_a($In, "ArrayObject")) {
-            $In = $In->getArrayCopy();
+        if (is_a($logArray, "ArrayObject")) {
+            $logArray = $logArray->getArrayCopy();
         }
         //====================================================================//
         // If Current Log is Empty
-        if (!isset($this->$what)) {
-            $this->$what = $In;
+        if (!isset($this->$logType)) {
+            $this->$logType = $logArray;
         //====================================================================//
         // Really merge Logs
         } else {
-            foreach ($In as $Value) {
-                array_push($this->$what, $Value);
+            foreach ($logArray as $message) {
+                array_push($this->$logType, $message);
             }
         }
     }
@@ -550,12 +549,12 @@ class Logger
         // Var Dump reading
         ob_start();                     // Turn on output buffering
         var_dump($var);                 // Dumps information about a variable
-        $Html = ob_get_contents();         // Read the contents of the output buffer
+        $html = ob_get_contents();         // Read the contents of the output buffer
         ob_end_clean();                 // Clean (erase) the output buffer and turn off output buffering
 
         //====================================================================//
         // Return Contents
-        return "<PRE>" . $Html . "</PRE>";
+        return "<PRE>" . $html . "</PRE>";
     }
 
     /**
@@ -587,54 +586,52 @@ class Logger
     }
     
     /**
-     *  @abstract    Log a debug message trace stack
+     * @abstract    Log a debug message trace stack
      *
-     *  @param      string    $Class      shall be __CLASS__
-     *  @param      string    $Fucntion   shall be __FUNCTION__
+     * @param   string  $class          shall be __CLASS__
+     * @param   string  $function       shall be __FUNCTION__
+     *
+     * @return  void
      */
-    public function trace($Class, $Fucntion)
+    public function trace($class, $function)
     {
         //====================================================================//
         //  Load Translation File
         Splash::translator()->load("main");
-
-        
-        $this->deb("DebTraceMsg", $Class, $Fucntion);
+        $this->deb("DebTraceMsg", $class, $function);
     }
 
     /**
-     *  @abstract    Read & Store Outputs Buffer Contents in a warning message
+     * @abstract    Read & Store Outputs Buffer Contents in a warning message
+     * @return  void
      */
     public function flushOuputBuffer()
     {
-        
         //====================================================================//
         // Read the contents of the output buffer
-        $Contents = ob_get_contents();
-        
+        $contents = ob_get_contents();
         //====================================================================//
         // Clean (erase) the output buffer and turn off output buffering
         ob_end_clean();
-
-        if ($Contents) {
-            $this->war("UnexOutputs", $Contents);
+        if ($contents) {
+            $this->war("UnexOutputs", $contents);
             $this->war("UnexOutputsMsg");
         }
     }
-
     
     //====================================================================//
     //  LOG FILE MANAGEMENT
     //====================================================================//
    
     /**
-     *  @abstract    Add a message to Log File
+     * @abstract    Add a message to Log File
      *
-     *  @param      string    $txt        Message text to log
-     *  @param      string    $type       Message Type
-     *  @return     True
+     * @param   string      $message        Message text to log
+     * @param   string      $logType        Message Type
+     *
+     * @return  true
      */
-    private static function addLogToFile($txt, $type = "Unknown")
+    private static function addLogToFile($message, $logType = "Unknown")
     {
         //====================================================================//
         // Safety Check
@@ -653,7 +650,7 @@ class Logger
         //====================================================================//
         // Write Log File
         if ($filefd) {
-            $message = date("Y-m-d H:i:s")." ".sprintf("%-15s", $type) . $txt;
+            $message = date("Y-m-d H:i:s")." ".sprintf("%-15s", $logType) . $message;
             fwrite($filefd, $message."\n");
             fclose($filefd);
             @chmod($logfile, 0604);
@@ -663,11 +660,11 @@ class Logger
     
     /**
      * @abstract    Add a message to Log File
-     * @param   array|null  $msgArray       Array of Message text to log
-     * @param   string      $type           Message Type
+     * @param   array|null      $msgArray   Array of Message text to log
+     * @param   string          $logType    Message Type
      * @return  true
      */
-    private static function addLogBlockToFile($msgArray, $type = "Unknown")
+    private static function addLogBlockToFile($msgArray, $logType = "Unknown")
     {
         //====================================================================//
         // Safety Check
@@ -680,7 +677,7 @@ class Logger
             foreach ($msgArray as $message) {
                 //====================================================================//
                 // Add Message To Log File
-                self::addLogToFile(utf8_decode(html_entity_decode($message)), $type);
+                self::addLogToFile(utf8_decode(html_entity_decode($message)), $logType);
             }
         }
         return true;

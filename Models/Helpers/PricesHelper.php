@@ -27,108 +27,108 @@ class PricesHelper
     /**
      * @abstract   Build a new price field array
      *
-     * @param      double      $TaxExcl        Price Without VAT (Or Null if Price Send with VAT)
-     * @param      double      $VAT            VAT percentile
-     * @param      double      $TaxIncl        Price With VAT
-     * @param      string      $Code           Price Currency Code
-     * @param      string      $Symbol         Price Currency Symbol
-     * @param      string      $Name           Price Currency Name
+     * @param      double      $taxExcl        Price Without VAT (Or Null if Price Send with VAT)
+     * @param      double      $vat            VAT percentile
+     * @param      double      $taxIncl        Price With VAT
+     * @param      string      $code           Price Currency Code
+     * @param      string      $symbol         Price Currency Symbol
+     * @param      string      $name           Price Currency Name
      *
      * @return     array
      */
-    public static function encode($TaxExcl, $VAT, $TaxIncl = null, $Code = "", $Symbol = "", $Name = "")
+    public static function encode($taxExcl, $vat, $taxIncl = null, $code = "", $symbol = "", $name = "")
     {
         //====================================================================//
         // Safety Checks
-        if (!is_double($TaxExcl) && !is_double($TaxIncl)) {
+        if (!is_double($taxExcl) && !is_double($taxIncl)) {
             Splash::log()->err("ErrPriceInvalid", __FUNCTION__);
             return "Error Invalid Price";
         }
-        if (is_double($TaxExcl) && is_double($TaxIncl)) {
+        if (is_double($taxExcl) && is_double($taxIncl)) {
             Splash::log()->err("ErrPriceBothValues", __FUNCTION__);
             return "Error Too Much Input Values";
         }
-        if (!is_double($VAT)) {
+        if (!is_double($vat)) {
             Splash::log()->err("ErrPriceNoVATValue", __FUNCTION__);
             return "Error Invalid VAT";
         }
-        if (empty($Code)) {
+        if (empty($code)) {
             Splash::log()->err("ErrPriceNoCurrCode", __FUNCTION__);
             return "Error no Currency Code";
         }
         //====================================================================//
         // Build Price Array
-        $Price = array("vat" => $VAT, "code" => $Code,"symbol" => $Symbol,"name" => $Name);
-        if (!is_null($TaxExcl)) {
-            $Price["base"]  =    0;
-            $Price["ht"]    =    $TaxExcl;
-            $Price["tax"]   =    $TaxExcl * ($VAT/100);
-            $Price["ttc"]   =    $TaxExcl * (1 + $VAT/100);
+        $price = array("vat" => $vat, "code" => $code,"symbol" => $symbol,"name" => $name);
+        if (!is_null($taxExcl)) {
+            $price["base"]  =    0;
+            $price["ht"]    =    $taxExcl;
+            $price["tax"]   =    $taxExcl * ($vat/100);
+            $price["ttc"]   =    $taxExcl * (1 + $vat/100);
         } else {
-            $Price["base"]  =    1;
-            $Price["ht"]    =    $TaxIncl / (1 + $VAT/100);
-            $Price["tax"]   =    $TaxIncl - $Price["ht"];
-            $Price["ttc"]   =    $TaxIncl;
+            $price["base"]  =    1;
+            $price["ht"]    =    $taxIncl / (1 + $vat/100);
+            $price["tax"]   =    $taxIncl - $price["ht"];
+            $price["ttc"]   =    $taxIncl;
         }
-        return $Price;
+        return $price;
     }
     
     /**
      * @abstract   Read price without Vat
      *
-     * @param      array       $Price1          Price field Array
-     * @param      array       $Price2          Price field Array
+     * @param      array       $price1          Price field Array
+     * @param      array       $price2          Price field Array
      *
      * @return     boolean                      return true if Price are identical
      */
-    public static function compare($Price1, $Price2)
+    public static function compare($price1, $price2)
     {
         //====================================================================//
         // Check Both Prices are valid
-        if (!self::isValid($Price1) || !self::isValid($Price2)) {
+        if (!self::isValid($price1) || !self::isValid($price2)) {
             Splash::log()->war(__FUNCTION__ . " : Given Prices are invalid");
-            if (!self::isValid($Price1)) {
-                Splash::log()->www(__FUNCTION__ . " Price 1", $Price1);
+            if (!self::isValid($price1)) {
+                Splash::log()->www(__FUNCTION__ . " Price 1", $price1);
             }
-            if (!self::isValid($Price2)) {
-                Splash::log()->www(__FUNCTION__ . " Price 2", $Price2);
+            if (!self::isValid($price2)) {
+                Splash::log()->www(__FUNCTION__ . " Price 2", $price2);
             }
             return false;
         }
         //====================================================================//
         // Compare Base Price
-        if (((bool) $Price1["base"]) != ((bool) $Price2["base"])) {
+        if (((bool) $price1["base"]) != ((bool) $price2["base"])) {
             return false;
         }
         //====================================================================//
         // Compare Price
-        return self::compareAmounts($Price1, $Price2);
+        return self::compareAmounts($price1, $price2);
     }
     
-    public static function compareAmounts($Price1, $Price2)
+    public static function compareAmounts($price1, $price2)
     {
         //====================================================================//
         // Compare Price
-        if ($Price1["base"]) {
-            if (abs($Price1["ttc"] - $Price2["ttc"]) > 1E-6) {
+        if ($price1["base"]) {
+            if (abs($price1["ttc"] - $price2["ttc"]) > 1E-6) {
                 return false;
             }
         } else {
-            if (abs($Price1["ht"] - $Price2["ht"]) > 1E-6) {
+            if (abs($price1["ht"] - $price2["ht"]) > 1E-6) {
                 return false;
             }
         }
         //====================================================================//
         // Compare VAT
-        if (abs($Price1["vat"] - $Price2["vat"]) > 1E-6) {
+        if (abs($price1["vat"] - $price2["vat"]) > 1E-6) {
             return false;
         }
         //====================================================================//
         // Compare Currency If Set on Both Sides
-        if (empty($Price1["code"]) || empty($Price2["code"])) {
+        if (empty($price1["code"]) || empty($price2["code"])) {
             return true;
         }
-        if ($Price1["code"] !== $Price2["code"]) {
+        if ($price1["code"] !== $price2["code"]) {
             return false;
         }
         //====================================================================//
@@ -139,64 +139,64 @@ class PricesHelper
     /**
      *  @abstract   Verify price field array
      *
-     *  @param      array       $Price          Price field definition Array
+     *  @param      array       $price          Price field definition Array
      *
      *  @return     bool
      */
-    public static function isValid($Price)
+    public static function isValid($price)
     {
         //====================================================================//
         // Check Contents Available
-        if (!is_array($Price) && !is_a($Price, "ArrayObject")) {
+        if (!is_array($price) && !is_a($price, "ArrayObject")) {
             return false;
         }
-        if (!array_key_exists("base", $Price)) {
+        if (!array_key_exists("base", $price)) {
             return false;
         }
-        if (!isset($Price["ht"]) || !isset($Price["ttc"]) || !isset($Price["vat"])) {
+        if (!isset($price["ht"]) || !isset($price["ttc"]) || !isset($price["vat"])) {
             return false;
         }
-        if (!self::isValidAmount($Price)) {
+        if (!self::isValidAmount($price)) {
             return false;
         }
-        if (!self::isValidCurrency($Price)) {
+        if (!self::isValidCurrency($price)) {
             return false;
         }
         
         return true;
     }
     
-    private static function isValidAmount($Price)
+    private static function isValidAmount($price)
     {
         //====================================================================//
         // Check Contents Type
-        if (!empty($Price["ht"]) && !is_numeric($Price["ht"])) {
+        if (!empty($price["ht"]) && !is_numeric($price["ht"])) {
             return false;
         }
-        if (!empty($Price["ttc"]) && !is_numeric($Price["ttc"])) {
+        if (!empty($price["ttc"]) && !is_numeric($price["ttc"])) {
             return false;
         }
-        if (!empty($Price["vat"]) && !is_numeric($Price["vat"])) {
+        if (!empty($price["vat"]) && !is_numeric($price["vat"])) {
             return false;
         }
 
         return true;
     }
     
-    private static function isValidCurrency($Price)
+    private static function isValidCurrency($price)
     {
         //====================================================================//
         // Check Contents Available
-        if (!array_key_exists("tax", $Price)) {
+        if (!array_key_exists("tax", $price)) {
             return false;
         }
-        if (!array_key_exists("symbol", $Price)) {
+        if (!array_key_exists("symbol", $price)) {
             return false;
         }
-        if (!array_key_exists("code", $Price)) {
+        if (!array_key_exists("code", $price)) {
             return false;
         }
-        if (!array_key_exists("name", $Price)) {
+        if (!array_key_exists("name", $price)) {
             return false;
         }
         return true;
@@ -205,82 +205,82 @@ class PricesHelper
     /**
      *  @abstract   Extract Data from Price Array
      *
-     *  @param      array       $Price          Price field definition Array
-     *  @param      string      $Key            Data Key
+     *  @param      array       $price          Price field definition Array
+     *  @param      string      $key            Data Key
      *
      *  @return     double
      */
-    public static function extract($Price, $Key = "ht")
+    public static function extract($price, $key = "ht")
     {
         // Check Contents
-        if (!isset($Price[$Key])) {
+        if (!isset($price[$key])) {
             return false;
         }
-        if (!empty($Price[$Key]) && !is_numeric($Price[$Key])) {
+        if (!empty($price[$key]) && !is_numeric($price[$key])) {
             return false;
         }
         // Return Result
-        return (double) $Price[$Key];
+        return (double) $price[$key];
     }
     
     /**
      *  @abstract   Extract Price without VAT from Price Array
      *
-     *  @param      array       $Price          Price field definition Array
+     *  @param      array       $price          Price field definition Array
      *
      *  @return     double
      */
-    public static function taxExcluded($Price)
+    public static function taxExcluded($price)
     {
-        return self::extract($Price, 'ht');
+        return self::extract($price, 'ht');
     }
 
     /**
      *  @abstract   Extract Price with VAT from Price Array
      *
-     *  @param      array       $Price          Price field definition Array
+     *  @param      array       $price          Price field definition Array
      *
      *  @return     double
      */
-    public static function taxIncluded($Price)
+    public static function taxIncluded($price)
     {
-        return self::extract($Price, 'ttc');
+        return self::extract($price, 'ttc');
     }
         
     /**
      *  @abstract   Extract Price with VAT from Price Array
      *
-     *  @param      array       $Price          Price field definition Array
+     *  @param      array       $price          Price field definition Array
      *
      *  @return     double
      */
-    public static function taxPercent($Price)
+    public static function taxPercent($price)
     {
-        return self::extract($Price, 'vat');
+        return self::extract($price, 'vat');
     }
     
     /**
      *  @abstract   Extract Price VAT Ratio from Price Array
      *
-     *  @param      array       $Price          Price field definition Array
+     *  @param      array       $price          Price field definition Array
      *
      *  @return     double
      */
-    public static function taxRatio($Price)
+    public static function taxRatio($price)
     {
-        return (double) self::extract($Price, 'vat') / 100;
+        return (double) self::extract($price, 'vat') / 100;
     }
     
     
     /**
      *  @abstract   Extract Price Tax Amount from Price Array
      *
-     *  @param      array       $Price          Price field definition Array
+     *  @param      array       $price          Price field definition Array
      *
      *  @return     double
      */
-    public static function taxAmount($Price)
+    public static function taxAmount($price)
     {
-        return self::extract($Price, 'tax');
+        return self::extract($price, 'tax');
     }
 }

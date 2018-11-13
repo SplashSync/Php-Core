@@ -80,27 +80,27 @@ trait DatesManagerTrait
         }
     }
     
-    protected function parseDatedData($In)
+    protected function parseDatedData($inputs)
     {
-        $Out       = array();
+        $outputs       = array();
         if (!isset($this->DateStart) || !isset($this->DateEnd)) {
-            return $Out;
+            return $outputs;
         }
         
-        $Start      = $Current    = new \DateTime($this->DateStart);
-        $End        = new \DateTime($this->DateEnd);
+        $start      = $current    = new \DateTime($this->DateStart);
+        $end        = new \DateTime($this->DateEnd);
         
-        while ($Current < $End) {
-            $Key = $Current->format($this->GroupBy);
+        while ($current < $end) {
+            $key = $current->format($this->GroupBy);
 
-            $Out[] = array(
-                "label" =>  $Current->format($this->LabelFormat),
-                "value" =>  (isset($In[$Key]) ? $In[$Key] : 0),
+            $outputs[] = array(
+                "label" =>  $current->format($this->LabelFormat),
+                "value" =>  (isset($inputs[$key]) ? $inputs[$key] : 0),
             );
                     
-            $Current    = $Start->add($this->DateInterval);
+            $current    = $start->add($this->DateInterval);
         }
 
-        return $Out;
+        return $outputs;
     }
 }

@@ -37,49 +37,49 @@ class Objects
     /**
      *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
      *
-     *      @param      ArrayObject     $Task       Full Task Request Array
+     *      @param      ArrayObject     $task       Full Task Request Array
      *
      *      @return     ArrayObject                 Task results, or False if KO
      */
-    public static function action($Task)
+    public static function action($task)
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        Splash::log()->deb("Object => " . $Task->name . " (" . $Task->desc . ")");
+        Splash::log()->deb("Object => " . $task->name . " (" . $task->desc . ")");
         
         //====================================================================//
         //  READING OF SERVER OBJECT LIST
         //====================================================================//
-        if ($Task->name === SPL_F_OBJECTS) {
-            return self::doObjects($Task);
+        if ($task->name === SPL_F_OBJECTS) {
+            return self::doObjects($task);
         }
         
         //====================================================================//
         // Safety Check - Minimal Parameters
         //====================================================================//
         // Verify Requested Object Type is Available
-        if (!self::isValidTask($Task)) {
-            return self::getEmptyResponse($Task);
+        if (!self::isValidTask($task)) {
+            return self::getEmptyResponse($task);
         }
         
         //====================================================================//
         // Execute Admin Actions
         //====================================================================//
-        if (in_array($Task->name, [ SPL_F_DESC , SPL_F_FIELDS , SPL_F_LIST ])) {
-            return self::doAdminActions($Task);
+        if (in_array($task->name, [ SPL_F_DESC , SPL_F_FIELDS , SPL_F_LIST ])) {
+            return self::doAdminActions($task);
         }
-        if (in_array($Task->name, [ SPL_F_GET , SPL_F_SET , SPL_F_DEL ])) {
-            return self::doSyncActions($Task);
+        if (in_array($task->name, [ SPL_F_GET , SPL_F_SET , SPL_F_DEL ])) {
+            return self::doSyncActions($task);
         }
-        if (in_array($Task->name, [ SPL_F_COMMIT ])) {
-            Splash::log()->war("Objects - Requested task not found => " . $Task->name);
-            return self::getEmptyResponse($Task);
+        if (in_array($task->name, [ SPL_F_COMMIT ])) {
+            Splash::log()->war("Objects - Requested task not found => " . $task->name);
+            return self::getEmptyResponse($task);
         }
         //====================================================================//
         // Task Not Found
-        Splash::log()->err("Objects - Requested task not found => " . $Task->name);
-        return self::checkResponse(self::getEmptyResponse($Task));
+        Splash::log()->err("Objects - Requested task not found => " . $task->name);
+        return self::checkResponse(self::getEmptyResponse($task));
     }
      
     //====================================================================//
@@ -89,61 +89,61 @@ class Objects
     /**
      *      @abstract     Build an Empty Task Response
      *
-     *      @param  ArrayObject     $Task       Task To Execute
+     *      @param  ArrayObject     $task       Task To Execute
      *
      *      @return ArrayObject   Task Result ArrayObject
      */
-    private static function getEmptyResponse($Task)
+    private static function getEmptyResponse($task)
     {
         //====================================================================//
         // Initial Tasks results ArrayObject
-        $Response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         
         //====================================================================//
         // Set Default Result to False
-        $Response->result       =   false;
-        $Response->data         =   null;
+        $response->result       =   false;
+        $response->data         =   null;
         
         //====================================================================//
         // Insert Task Description Informations
-        $Response->name         =   $Task->name;
-        $Response->desc         =   $Task->desc;
+        $response->name         =   $task->name;
+        $response->desc         =   $task->desc;
 
-        return $Response;
+        return $response;
     }
     
-    private static function checkResponse(&$Response)
+    private static function checkResponse(&$response)
     {
-        if ($Response->data != false) {
-            $Response->result   = true;
+        if ($response->data != false) {
+            $response->result   = true;
         }
-        return $Response;
+        return $response;
     }
     
     /**
      * @abstract   Verify Received Task
      *
-     * @param      ArrayObject     $Task       Full Task Request Array
+     * @param      ArrayObject     $task       Full Task Request Array
      *
      * @return     bool
      */
-    private static function isValidTask($Task)
+    private static function isValidTask($task)
     {
         //====================================================================//
         // Verify Requested Object Type is Available
-        if (empty($Task->params)) {
+        if (empty($task->params)) {
             Splash::log()->err("Object Router - Missing Task Parameters... ");
             return false;
         
         //====================================================================//
         // Verify Requested Object Type is Available
-        } elseif (empty($Task->params->type)) {
+        } elseif (empty($task->params->type)) {
             Splash::log()->err("Object Router - Missing Object Type... ");
             return false;
             
         //====================================================================//
         // Verify Requested Object Type is Valid
-        } elseif (Splash::validate()->isValidObject($Task->params->type) != true) {
+        } elseif (Splash::validate()->isValidObject($task->params->type) != true) {
             Splash::log()->err("Object Router - Object Type is Invalid... ");
             return false;
         }
@@ -151,147 +151,147 @@ class Objects
         return true;
     }
     
-    private static function doAdminActions($Task)
+    private static function doAdminActions($task)
     {
         //====================================================================//
         // Initial Response
-        $Response  = self::getEmptyResponse($Task);
+        $response  = self::getEmptyResponse($task);
         
         //====================================================================//
         // Load Parameters
-        $ObjectClass    = Splash::object($Task->params->type);
+        $objectClass    = Splash::object($task->params->type);
                                     
         //====================================================================//
         // Execute Requested Task
         //====================================================================//
-        switch ($Task->name) {
+        switch ($task->name) {
             //====================================================================//
             //  READING OF Object Description
             //====================================================================//
             case SPL_F_DESC:
-                $Response->data     =   $ObjectClass->description();
+                $response->data     =   $objectClass->description();
                 break;
 
             //====================================================================//
             //  READING OF Available Fields
             //====================================================================//
             case SPL_F_FIELDS:
-                $Response->data     =   $ObjectClass->fields();
+                $response->data     =   $objectClass->fields();
                 break;
             
             //====================================================================//
             //  READING OF OBJECT LIST
             //====================================================================//
             case SPL_F_LIST:
-                $Filters            = isset($Task->params->filters) ?   $Task->params->filters  : null;
-                $Params             = isset($Task->params->params)  ?   $Task->params->params   : null;
-                $Response->data     = $ObjectClass->objectsList($Filters, $Params);
+                $filters            = isset($task->params->filters) ?   $task->params->filters  : null;
+                $params             = isset($task->params->params)  ?   $task->params->params   : null;
+                $response->data     = $objectClass->objectsList($filters, $params);
                 break;
         }
-        return self::checkResponse($Response);
+        return self::checkResponse($response);
     }
             
-    private static function doSyncActions($Task)
+    private static function doSyncActions($task)
     {
         //====================================================================//
         // Initial Response
-        $Response  = self::getEmptyResponse($Task);
+        $response  = self::getEmptyResponse($task);
         
         //====================================================================//
         // Load Parameters
-        $ObjectClass    = Splash::object($Task->params->type);
-        $ObjectId       = isset($Task->params->id)      ?   $Task->params->id       : null;
-        $Fields         = isset($Task->params->fields)  ?   $Task->params->fields   : null;
+        $objectClass    = Splash::object($task->params->type);
+        $objectId       = isset($task->params->id)      ?   $task->params->id       : null;
+        $fields         = isset($task->params->fields)  ?   $task->params->fields   : null;
 
         //====================================================================//
         // Verify Object Id
-        if (!Splash::validate()->isValidObjectId($ObjectId)) {
-            return $Response;
+        if (!Splash::validate()->isValidObjectId($objectId)) {
+            return $response;
         }
         
         //====================================================================//
         // Execute Requested Task
         //====================================================================//
-        switch ($Task->name) {
+        switch ($task->name) {
             //====================================================================//
             //  READING OF OBJECT DATA
             //====================================================================//
             case SPL_F_GET:
-                $Response->data     =   self::doGet($ObjectClass, $ObjectId, $Fields);
+                $response->data     =   self::doGet($objectClass, $objectId, $fields);
                 break;
             
             //====================================================================//
             //  WRITTING OF OBJECT DATA
             //====================================================================//
             case SPL_F_SET:
-                $Response->data     =   self::doSet($ObjectClass, $ObjectId, $Fields);
+                $response->data     =   self::doSet($objectClass, $objectId, $fields);
                 break;
                 
             //====================================================================//
             //  DELETE OF AN OBJECT
             //====================================================================//
             case SPL_F_DEL:
-                $Response->data     =   self::doDelete($ObjectClass, $ObjectId);
+                $response->data     =   self::doDelete($objectClass, $objectId);
                 break;
         }
-        return self::checkResponse($Response);
+        return self::checkResponse($response);
     }
     
-    private static function doObjects($Task)
+    private static function doObjects($task)
     {
         //====================================================================//
         // Initial Response
-        $Response  = self::getEmptyResponse($Task);
+        $response  = self::getEmptyResponse($task);
         
         //====================================================================//
         // Read Objects Types List from Local System
-        $Response->data = Splash::objects();
+        $response->data = Splash::objects();
         
         //====================================================================//
         // Return Response
-        return self::checkResponse($Response);
+        return self::checkResponse($response);
     }
     
-    private static function doGet(&$ObjectClass, $ObjectId, $Fields)
+    private static function doGet(&$objectClass, $objectId, $fields)
     {
         //====================================================================//
         // Verify Object Field List
-        if (!Splash::validate()->isValidObjectFieldsList($Fields)) {
+        if (!Splash::validate()->isValidObjectFieldsList($fields)) {
             return false;
         }
         
         //====================================================================//
         // Read Data fron local system
-        return  $ObjectClass->get($ObjectId, $Fields);
+        return  $objectClass->get($objectId, $fields);
     }
     
-    private static function doSet(&$ObjectClass, $ObjectId, $Fields)
+    private static function doSet(&$objectClass, $objectId, $fields)
     {
         //====================================================================//
         // Take Lock for this object => No Commit Allowed for this Object
-        $ObjectClass->lock($ObjectId);
+        $objectClass->lock($objectId);
         
         //====================================================================//
         // Write Data on local system
-        $Data     =   $ObjectClass->set($ObjectId, $Fields);
+        $objectData     =   $objectClass->set($objectId, $fields);
         
         //====================================================================//
         // Release Lock for this object
-        $ObjectClass->unLock($ObjectId);
+        $objectClass->unLock($objectId);
         
         //====================================================================//
         // Return Response
-        return $Data;
+        return $objectData;
     }
     
-    private static function doDelete(&$ObjectClass, $ObjectId)
+    private static function doDelete(&$objectClass, $objectId)
     {
         //====================================================================//
         // Take Lock for this object => No Commit Allowed for this Object
-        $ObjectClass->lock($ObjectId);
+        $objectClass->lock($objectId);
         
         //====================================================================//
         // Delete Data on local system
-        return $ObjectClass->delete($ObjectId);
+        return $objectClass->delete($objectId);
     }
 }

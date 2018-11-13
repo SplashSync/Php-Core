@@ -10,7 +10,8 @@ use Splash\Client\Splash;
  * @author SplashSync <contact@splashsync.com>
  */
 class O05DeleteTest extends ObjectsCase
-{    
+{
+
    
     /**
      * @dataProvider objectTypesProvider
@@ -154,7 +155,7 @@ class O05DeleteTest extends ObjectsCase
         
         //====================================================================//
         // Clean Objects Commited Array
-        Splash::$Commited = array();
+        Splash::$commited = array();
         
         return $this->fakeObjectData($fields);
     }

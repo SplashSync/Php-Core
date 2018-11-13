@@ -12,89 +12,79 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @abstract    Server Request Routiung Class, Execute/Route actions on Admin Service Requests.
- *              This file is included only in case on NuSOAP call to slave server.
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace   Splash\Router;
 
 use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
 
-//====================================================================//
-//   INCLUDES
-//====================================================================//
-
-
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
- 
+/**
+ * @abstract    Server Request Routiung Class, Execute/Route actions on Admin Service Requests.
+ *              This file is included only in case on NuSOAP call to slave server.
+ * @author      B. Paquier <contact@splashsync.com>
+ */
 class Admin
 {
             
     /**
      *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
      *
-     *      @param      ArrayObject     $Task       Full Task Request Array
+     *      @param      ArrayObject     $task       Full Task Request Array
      *
      *      @return     ArrayObject                 Task results, or False if KO
      */
-    public static function action($Task)
+    public static function action($task)
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        Splash::log()->deb("Admin => " . $Task->name . " (" . $Task->desc . ")");
+        Splash::log()->deb("Admin => " . $task->name . " (" . $task->desc . ")");
         
         //====================================================================//
         // Initial Response
-        $Response  = self::getEmptyResponse($Task);
+        $response  = self::getEmptyResponse($task);
         
-        switch ($Task->name) {
+        switch ($task->name) {
             //====================================================================//
             //  READING OF SERVER OBJECT LIST
             case SPL_F_GET_OBJECTS:
-                $Response->data = Splash::objects();
-                if ($Response->data != false) {
-                    $Response->result   = true;
+                $response->data = Splash::objects();
+                if ($response->data != false) {
+                    $response->result   = true;
                 }
                 break;
                 
             //====================================================================//
             //  READING OF SERVER WIDGETS LIST
             case SPL_F_GET_WIDGETS:
-                $Response->data = Splash::widgets();
-                if ($Response->data != false) {
-                    $Response->result   = true;
+                $response->data = Splash::widgets();
+                if ($response->data != false) {
+                    $response->result   = true;
                 }
                 break;
             
             //====================================================================//
             //  READING OF SERVER SELFTEST RESULTS
             case SPL_F_GET_SELFTEST:
-                $Response->result  =   Splash::selfTest();
-                $Response->data    =   $Response->result;
+                $response->result  =   Splash::selfTest();
+                $response->data    =   $response->result;
                 break;
             
             //====================================================================//
             //  READING OF SERVER INFORMATIONS
             case SPL_F_GET_INFOS:
-                $Response->data = Splash::informations();
-                if ($Response->data != false) {
-                    $Response->result   = true;
+                $response->data = Splash::informations();
+                if ($response->data != false) {
+                    $response->result   = true;
                 }
 
                 break;
                 
             default:
-                Splash::log()->err("Admin - Requested task not found => " . $Task->name);
+                Splash::log()->err("Admin - Requested task not found => " . $task->name);
                 break;
         }
         
-        return $Response;
+        return $response;
     }
     
     //====================================================================//
@@ -104,26 +94,26 @@ class Admin
     /**
      *      @abstract     Build an Empty Task Response
      *
-     *      @param  ArrayObject     $Task       Task To Execute
+     *      @param  ArrayObject     $task       Task To Execute
      *
      *      @return ArrayObject   Task Result ArrayObject
      */
-    private static function getEmptyResponse($Task)
+    private static function getEmptyResponse($task)
     {
         //====================================================================//
         // Initial Tasks results ArrayObject
-        $Response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         
         //====================================================================//
         // Set Default Result to False
-        $Response->result       =   false;
-        $Response->data         =   null;
+        $response->result       =   false;
+        $response->data         =   null;
         
         //====================================================================//
         // Insert Task Description Informations
-        $Response->name         =   $Task->name;
-        $Response->desc         =   $Task->desc;
+        $response->name         =   $task->name;
+        $response->desc         =   $task->desc;
 
-        return $Response;
+        return $response;
     }
 }

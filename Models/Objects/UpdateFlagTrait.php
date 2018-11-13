@@ -30,7 +30,7 @@ trait UpdateFlagTrait
      *           Using this flag is useful to reduce exchanges with databases
      * @var bool
      */
-    private $Update         = false;
+    private $update         = false;
     
     /**
      * Set Custom Updated Flag
@@ -39,7 +39,7 @@ trait UpdateFlagTrait
      *           Using this flag is useful to reduce exchanges with databases
      * @var bool
      */
-    private $Custom         = array();
+    private $custom         = array();
     
     //====================================================================//
     //  Update Flag Management
@@ -47,59 +47,59 @@ trait UpdateFlagTrait
 
     /**
      * @abstract    Flag Object For Database Update
-     * @param       string  $Custom     Custom Falg Name
+     * @param       string  $custom     Custom Falg Name
      * @return      self
      */
-    protected function needUpdate($Custom = "Object")
+    protected function needUpdate($custom = "Object")
     {
-        if (self::isCustom($Custom)) {
-            $this->Custom[$Custom]   =   true;
+        if (self::isCustom($custom)) {
+            $this->custom[$custom]   =   true;
         } else {
-            $this->Update   =   true;
+            $this->update   =   true;
         }
         return $this;
     }
 
     /**
      * @abstract    Clear Update Flag
-     * @param       string  $Custom     Custom Falg Name
+     * @param       string  $custom     Custom Falg Name
      * @return      self
      */
-    protected function isUpdated($Custom = "Object")
+    protected function isUpdated($custom = "Object")
     {
-        if (self::isCustom($Custom)) {
-            $this->Custom[$Custom]   =   false;
+        if (self::isCustom($custom)) {
+            $this->custom[$custom]   =   false;
         } else {
-            $this->Update   =   false;
+            $this->update   =   false;
         }
         return $this;
     }
     
     /**
      * @abstract    is Database Update Needed
-     * @param       string  $Custom     Custom Falg Name
+     * @param       string  $custom     Custom Falg Name
      * @return      bool
      */
-    protected function isToUpdate($Custom = "Object")
+    protected function isToUpdate($custom = "Object")
     {
-        if (self::isCustom($Custom)) {
-            return isset($this->Custom[$Custom]) ? $this->Custom[$Custom] : false;
+        if (self::isCustom($custom)) {
+            return isset($this->custom[$custom]) ? $this->custom[$custom] : false;
         } else {
-            return $this->Update;
+            return $this->update;
         }
     }
     
     /**
      * @abstract    is Custom Flag Request
-     * @param       string  $Custom     Custom Falg Name
+     * @param       string  $custom     Custom Falg Name
      * @return      bool
      */
-    private function isCustom($Custom)
+    private function isCustom($custom)
     {
-        if ($Custom == "Object") {
+        if ($custom == "Object") {
             return false;
         }
-        if (is_null($Custom) || !is_scalar($Custom) || empty($Custom)) {
+        if (is_null($custom) || !is_scalar($custom) || empty($custom)) {
             return false;
         }
         return true;

@@ -12,87 +12,77 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @abstract    Server Request Routiung Class, Execute/Route actions on Widgets Service Requests.
- *              This file is included only in case on NuSOAP call to slave server.
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace   Splash\Router;
 
 use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
 
-//====================================================================//
-//   INCLUDES
-//====================================================================//
-
-
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
- 
+/**
+ * @abstract    Server Request Routiung Class, Execute/Route actions on Widgets Service Requests.
+ *              This file is included only in case on NuSOAP call to slave server.
+ * @author      B. Paquier <contact@splashsync.com>
+ */
 class Widgets
 {
     /**
      *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
      *
-     *      @param      ArrayObject     $Task       Full Task Request Array
+     *      @param      ArrayObject     $task       Full Task Request Array
      *
      *      @return     ArrayObject                 Task results, or False if KO
      */
-    public static function action($Task)
+    public static function action($task)
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        Splash::log()->deb("Widgets => " . $Task->name);
+        Splash::log()->deb("Widgets => " . $task->name);
         //====================================================================//
         // Initial Response
-        $Response  = self::getEmptyResponse($Task);
+        $response  = self::getEmptyResponse($task);
         
         //====================================================================//
         // Execute Requested Task
         //====================================================================//
-        switch ($Task->name) {
+        switch ($task->name) {
             //====================================================================//
             //  READING OF SERVER WIDGETS LIST
             case SPL_F_WIDGET_LIST:
-                $Response->data = Splash::widgets();
+                $response->data = Splash::widgets();
                 break;
             
             //====================================================================//
             //  READING A WIDGET DEFINITION
             case SPL_F_WIDGET_DEFINITION:
-                $WidgetClass    = Splash::widget($Task->params->type);
-                if ($WidgetClass) {
-                    $Response->data = $WidgetClass->description();
+                $widgetClass    = Splash::widget($task->params->type);
+                if ($widgetClass) {
+                    $response->data = $widgetClass->description();
                 }
                 break;
                 
             //====================================================================//
             //  READING A WIDGET CONTENTS
             case SPL_F_WIDGET_GET:
-                $WidgetClass    = Splash::widget($Task->params->type);
-                if ($WidgetClass) {
-                    $Response->data = $WidgetClass->Get($Task->params->params);
+                $widgetClass    = Splash::widget($task->params->type);
+                if ($widgetClass) {
+                    $response->data = $widgetClass->Get($task->params->params);
                 }
                 break;
 
                 
             default:
                 Splash::log()->err(
-                    "Info Router - Requested task was not found => " . $Task->name . " (" . $Task->desc . ")"
+                    "Info Router - Requested task was not found => " . $task->name . " (" . $task->desc . ")"
                 );
                 break;
         }
         
         //====================================================================//
         // Task results post treatment
-        if ($Response->data != false) {
-            $Response->result = true;
+        if ($response->data != false) {
+            $response->result = true;
         }
-        return $Response;
+        return $response;
     }
 
     //====================================================================//
@@ -102,26 +92,26 @@ class Widgets
     /**
      *      @abstract     Build an Empty Task Response
      *
-     *      @param  ArrayObject     $Task       Task To Execute
+     *      @param  ArrayObject     $task       Task To Execute
      *
      *      @return ArrayObject   Task Result ArrayObject
      */
-    private static function getEmptyResponse($Task)
+    private static function getEmptyResponse($task)
     {
         //====================================================================//
         // Initial Tasks results ArrayObject
-        $Response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         
         //====================================================================//
         // Set Default Result to False
-        $Response->result       =   false;
-        $Response->data         =   null;
+        $response->result       =   false;
+        $response->data         =   null;
         
         //====================================================================//
         // Insert Task Description Informations
-        $Response->name         =   $Task->name;
-        $Response->desc         =   $Task->desc;
+        $response->name         =   $task->name;
+        $response->desc         =   $task->desc;
 
-        return $Response;
+        return $response;
     }
 }

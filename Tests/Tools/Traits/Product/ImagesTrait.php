@@ -263,7 +263,7 @@ trait ImagesTrait
      * @param   string      $flagId         Flag Field Id
      * @return  array|null
      */
-    protected function findImageByMd5AndFlag($source ,$imageId, $flagId)
+    protected function findImageByMd5AndFlag($source, $imageId, $flagId)
     {
         //====================================================================//
         //   Check if Image Md5 is Set

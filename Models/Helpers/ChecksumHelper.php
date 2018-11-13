@@ -25,19 +25,19 @@ class ChecksumHelper
     
     /**
      * @abstract    Compute Md5 CheckSum from Object Attributes
-     * @param       array       $Input      Array of Object Data ($Code => $Value)
+     * @param       array       $input      Array of Object Data ($Code => $Value)
      * @return      string                  Unik Md5 Checksum
      */
-    public static function fromArray($Input = null)
+    public static function fromArray($input = null)
     {
         //====================================================================//
         // Safety Check
-        if (!self::isValid($Input)) {
+        if (!self::isValid($input)) {
             return null;
         }
         //====================================================================//
         // return Encoded CheckSum
-        return self::getEncoded($Input);
+        return self::getEncoded($input);
     }
     
     /**
@@ -53,19 +53,19 @@ class ChecksumHelper
     
     /**
      * @abstract    Compute Debug CheckSum String from Object Attributes
-     * @param       array       $Input      Array of Object Data ($Code => $Value)
+     * @param       array       $input      Array of Object Data ($Code => $Value)
      * @return      string                  Unik String Checksum
      */
-    public static function debugFromArray($Input = null)
+    public static function debugFromArray($input = null)
     {
         //====================================================================//
         // Safety Check
-        if (!self::isValid($Input)) {
+        if (!self::isValid($input)) {
             return null;
         }
         //====================================================================//
         // return Encoded CheckSum
-        return self::getDebug($Input);
+        return self::getDebug($input);
     }
 
     /**
@@ -81,16 +81,16 @@ class ChecksumHelper
     
     /**
      * @abstract    Verify inputs
-     * @param       array       $Input      Array of Object Data ($Code => $Value)
+     * @param       array       $input      Array of Object Data ($Code => $Value)
      * @return      bool
      */
-    private static function isValid($Input)
+    private static function isValid($input)
     {
-        if (!is_array($Input) && !is_a($Input, "ArrayObject")) {
+        if (!is_array($input) && !is_a($input, "ArrayObject")) {
             return false;
         }
-        foreach ($Input as $Value) {
-            if (!is_scalar($Value)) {
+        foreach ($input as $value) {
+            if (!is_scalar($value)) {
                 return false;
             }
         }
@@ -99,39 +99,39 @@ class ChecksumHelper
     
     /**
      * @abstract    Encode CheckSum from Array
-     * @param       array       $Input      Array of Object Data ($Code => $Value)
+     * @param       array       $input      Array of Object Data ($Code => $Value)
      * @return      string                  Unik Md5 Checksum
      */
-    private static function getEncoded($Input)
+    private static function getEncoded($input)
     {
         //====================================================================//
         // Sort this Array by Keys
-        ksort($Input);
+        ksort($input);
         //====================================================================//
         // Serialize Array & Encode Checksum
-        return md5(strtolower(serialize($Input)));
+        return md5(strtolower(serialize($input)));
     }
     
     /**
      * @abstract    Encode CheckSum from Array
-     * @param       array       $Input      Array of Object Data ($Code => $Value)
+     * @param       array       $input      Array of Object Data ($Code => $Value)
      * @return      string                  Unik String Checksum
      */
-    private static function getDebug($Input)
+    private static function getDebug($input)
     {
         //====================================================================//
         // Sort this Array by Keys
-        ksort($Input);
+        ksort($input);
         //====================================================================//
         // Build CheckSum Debug Array
-        $DebugArray =   array();
-        foreach ($Input as $Key => $Value) {
-            $DebugArray[]   =   strtolower($Key);
-            $DebugArray[]   =   strtolower($Value);
+        $debugArray =   array();
+        foreach ($input as $key => $value) {
+            $debugArray[]   =   strtolower($key);
+            $debugArray[]   =   strtolower($value);
         }
         
         //====================================================================//
         // Implode Debug Array
-        return implode("|", $DebugArray);
+        return implode("|", $debugArray);
     }
 }

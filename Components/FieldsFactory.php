@@ -118,51 +118,49 @@ class FieldsFactory
     /**
      * @abstract   Create a new Field Definition with default parameters
      *
-     * @param      string      $type       Standard Data Type (Refer osws.inc.php)
-     * @param      string      $id         Local Data Identifier (Shall be unik on local machine)
-     * @param      string      $name       Data Name (Will Be Translated by OsWs if Possible)
+     * @param      string      $fieldType       Standard Data Type (Refer Splash.Inc.php)
+     * @param      string      $fieldId         Local Data Identifier (Shall be unik on local machine)
+     * @param      string      $fieldName       Data Name (Will Be Translated by Splash if Possible)
+     *
      * @return     $this
      */
-    public function create($type, $id = null, $name = null)
+    public function create($fieldType, $fieldId = null, $fieldName = null)
     {
         //====================================================================//
         // Commit Last Created if not already done
         if (!empty($this->new)) {
             $this->commit();
         }
-        
         //====================================================================//
         // Unset Current
         unset($this->new);
-        
         //====================================================================//
         // Create new empty field
         $this->new          =   new ArrayObject($this->empty, ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Set Field Type
-        $this->new->type    =   $type;
+        $this->new->type    =   $fieldType;
         //====================================================================//
         // Set Field Identifier
-        if (!is_null($id)) {
-            $this->identifier($id);
+        if (!is_null($fieldId)) {
+            $this->identifier($fieldId);
         }
         //====================================================================//
         // Set Field Name
-        if (!is_null($name)) {
-            $this->name($name);
+        if (!is_null($fieldName)) {
+            $this->name($fieldName);
         }
-        
         return $this;
     }
     
     /**
      * @abstract   Set Current New Field Identifier
      *
-     * @param      string      $id         Local Data Identifier (Shall be unik on local machine)
+     * @param      string      $fieldId         Local Data Identifier (Shall be unik on local machine)
      *
      * @return     $this
      */
-    public function identifier($id)
+    public function identifier($fieldId)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -171,7 +169,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->id    = $id;
+            $this->new->id    = $fieldId;
         }
         
         return $this;
@@ -180,15 +178,15 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set as it inside a list
      *
-     * @param      string      $ListName         Name of List
+     * @param      string      $listName         Name of List
      *
      * @return     $this
      */
-    public function inList($ListName)
+    public function inList($listName)
     {
         //====================================================================//
         // Safety Checks ==> Verify List Name Not Empty
-        if (empty($ListName)) {
+        if (empty($listName)) {
             return $this;
         }
         
@@ -199,7 +197,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field Identifier
-            $this->new->id      =   $this->new->id . LISTSPLIT . $ListName;
+            $this->new->id      =   $this->new->id . LISTSPLIT . $listName;
             //====================================================================//
             // Update New Field Type
             $this->new->type    =   $this->new->type . LISTSPLIT . SPL_T_LIST;
@@ -211,11 +209,11 @@ class FieldsFactory
     /**
      * @abstract   Set Current New Field Name (Translated)
      *
-     * @param      string      $name       Data Name (Will Be Translated if Possible)
+     * @param      string      $fieldName       Data Name (Will Be Translated if Possible)
      *
      * @return     $this
      */
-    public function name($name)
+    public function name($fieldName)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -224,9 +222,9 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->name    = $name;
+            $this->new->name    = $fieldName;
             if (empty($this->new->desc)) {
-                $this->description($name);
+                $this->description($fieldName);
             }
         }
         
@@ -236,11 +234,11 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field with descriptions (Translated)
      *
-     * @param      string      $desc       Data Description (Will Be Translated if Possible)
+     * @param      string      $fieldDesc       Data Description (Will Be Translated if Possible)
      *
      * @return     $this
      */
-    public function description($desc)
+    public function description($fieldDesc)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -249,7 +247,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->desc    = Splash::trans(trim($desc));
+            $this->new->desc    = Splash::trans(trim($fieldDesc));
         }
         
         return $this;
@@ -258,11 +256,11 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field with Field Group Name (Translated)
      *
-     * @param      string      $group       Data Group (Will Be Translated if Possible)
+     * @param      string      $fieldGroup       Data Group (Will Be Translated if Possible)
      *
      * @return     $this
      */
-    public function group($group)
+    public function group($fieldGroup)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -271,7 +269,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->group    = Splash::trans(trim($group));
+            $this->new->group    = Splash::trans(trim($fieldGroup));
         }
         
         return $this;
@@ -410,12 +408,12 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set its meta informations for autolinking
      *
-     * @param      string      $ItemType   Field Microdata Type Url
-     * @param      string      $ItemProp   Field Microdata Property Name
+     * @param      string      $itemType   Field Microdata Type Url
+     * @param      string      $itemProp   Field Microdata Property Name
      *
      * @return     $this
      */
-    public function microData($ItemType, $ItemProp)
+    public function microData($itemType, $itemProp)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -424,9 +422,9 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->itemtype            = $ItemType;
-            $this->new->itemprop            = $ItemProp;
-            $this->setTag($ItemProp . IDSPLIT . $ItemType);
+            $this->new->itemtype            = $itemType;
+            $this->new->itemprop            = $itemProp;
+            $this->setTag($itemProp . IDSPLIT . $itemType);
         }
         
         return $this;
@@ -435,11 +433,11 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set its unik tag for autolinking
      *
-     * @param      string      $Tag       Field Unik Tag
+     * @param      string      $fieldTag       Field Unik Tag
      *
      * @return     $this
      */
-    protected function setTag($Tag)
+    protected function setTag($fieldTag)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -448,7 +446,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->tag     = md5($Tag);
+            $this->new->tag     = md5($fieldTag);
         }
         
         return $this;
@@ -477,14 +475,14 @@ class FieldsFactory
     /**
      * @abstract   Add Possible Choice to Current New Field Name (Translated)
      *
-     * @param      array      $Choices      Possible Choice Array (Value => Decsription)
+     * @param      array      $fieldChoices      Possible Choice Array (Value => Decsription)
      *
      * @return     $this
      */
-    public function addChoices($Choices)
+    public function addChoices($fieldChoices)
     {
-        foreach ($Choices as $Value => $Description) {
-            $this->addChoice($Value, $Description);
+        foreach ($fieldChoices as $value => $description) {
+            $this->addChoice($value, $description);
         }
         return $this;
     }
@@ -492,12 +490,12 @@ class FieldsFactory
     /**
      * @abstract   Add Possible Choice to Current New Field Name (Translated)
      *
-     * @param      string      $Value          Possible Choice Value
-     * @param      string      $Description    Choice Description for Display (Will Be Translated if Possible)
+     * @param      string      $value          Possible Choice Value
+     * @param      string      $description    Choice Description for Display (Will Be Translated if Possible)
      *
      * @return     $this
      */
-    public function addChoice($Value, $Description)
+    public function addChoice($value, $description)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -507,9 +505,9 @@ class FieldsFactory
             //====================================================================//
             // Update New Field structure
             $this->new->choices[]   = array(
-            "key"   =>  $Value,
-            "value" =>  Splash::trans(trim($Description))
-                );
+                "key"   =>  $value,
+                "value" =>  Splash::trans(trim($description))
+            );
         }
         
         return $this;
@@ -518,14 +516,14 @@ class FieldsFactory
     /**
      * @abstract   Add New Options Array for Current Field
      *
-     * @param      array      $Options     Array of Options (Type => Value)
+     * @param      array      $fieldOptions     Array of Options (Type => Value)
      *
      * @return     $this
      */
-    public function addOptions($Options)
+    public function addOptions($fieldOptions)
     {
-        foreach ($Options as $Type => $Value) {
-            $this->addOption($Type, $Value);
+        foreach ($fieldOptions as $type => $value) {
+            $this->addOption($type, $value);
         }
         return $this;
     }
@@ -533,23 +531,23 @@ class FieldsFactory
     /**
      * @abstract   Add New Option for Current Field
      *
-     * @param      string      $Type           Constrain Type
-     * @param      string      $Value          Constrain Value
+     * @param      string      $type           Constrain Type
+     * @param      string      $value          Constrain Value
      *
      * @return     $this
      */
-    public function addOption($Type, $Value = true)
+    public function addOption($type, $value = true)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
         if (empty($this->new)) {
             Splash::log()->err("ErrFieldsNoNew");
-        } elseif (empty($Type)) {
+        } elseif (empty($type)) {
             Splash::log()->err("Field Option Type Cannot be Empty");
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->options[$Type]   = $Value;
+            $this->new->options[$type]   = $value;
         }
         return $this;
     }
@@ -571,41 +569,37 @@ class FieldsFactory
     
     /**
      * @abstract    Validate Field Definition
-     * @param   ArrayObject    $Field
+     * @param   ArrayObject    $field
      * @return  boolean
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    private function validate($Field)
+    private function validate($field)
     {
         //====================================================================//
         // Verify - Field Type is Not Empty
-        if (empty($Field->type) || !is_string($Field->type)) {
+        if (empty($field->type) || !is_string($field->type)) {
             return Splash::log()->err("ErrFieldsNoType");
         }
-
         //====================================================================//
         // Verify - Field Id is Not Empty
-        if (empty($Field->id) || !is_string($Field->id)) {
+        if (empty($field->id) || !is_string($field->id)) {
             return Splash::log()->err("ErrFieldsNoId");
         }
-        
         //====================================================================//
         // Verify - Field Id No Spacial Chars
-        if ($Field->id !== preg_replace('/[^a-zA-Z0-9-_@]/u', '', (string) $Field->id)) {
-            Splash::log()->war("ErrFieldsInvalidId", $Field->id);
+        if ($field->id !== preg_replace('/[^a-zA-Z0-9-_@]/u', '', (string) $field->id)) {
+            Splash::log()->war("ErrFieldsInvalidId", $field->id);
             return false;
         }
-        
         //====================================================================//
         // Verify - Field Name is Not Empty
-        if (empty($Field->name) || !is_string($Field->name)) {
+        if (empty($field->name) || !is_string($field->name)) {
             return Splash::log()->err("ErrFieldsNoName");
         }
-        
         //====================================================================//
         // Verify - Field Desc is Not Empty
-        if (empty($Field->desc) || !is_string($Field->desc)) {
+        if (empty($field->desc) || !is_string($field->desc)) {
             return Splash::log()->err("ErrFieldsNoDesc");
         }
 
@@ -624,20 +618,17 @@ class FieldsFactory
         if (empty($this->new)) {
             return true;
         }
-            
         //====================================================================//
         // Create Field List
         if (empty($this->fields)) {
             $this->fields   = array();
         }
-
         //====================================================================//
         // Validate New Field
         if (!$this->verify()) {
             unset($this->new);
             return false;
         }
-        
         //====================================================================//
         // Insert Field List
         $this->fields[] = $this->new;
@@ -658,7 +649,6 @@ class FieldsFactory
         if (!empty($this->new)) {
             $this->commit();
         }
-        
         //====================================================================//
         // Safety Checks
         if (empty($this->fields)) {
@@ -677,24 +667,25 @@ class FieldsFactory
     /**
      * @abstract   Seach for a Field by unik tag
      *
-     * @param      array       $List      Array Of Field definition
-     * @param      string      $Tag       Field Unik Tag
-     * @return     ArrayObject|false
+     * @param   array       $fieldList      Array Of Field definition
+     * @param   string      $fieldTag       Field Unik Tag
+     *
+     * @return  ArrayObject|false
      */
-    public function seachtByTag($List, $Tag)
+    public function seachtByTag($fieldList, $fieldTag)
     {
         //====================================================================//
         // Safety Checks
-        if (!count($List)) {
+        if (!count($fieldList)) {
             return false;
         }
-        if (empty($Tag)) {
+        if (empty($fieldTag)) {
             return false;
         }
         //====================================================================//
         // Walk Through List and select by Tag
-        foreach ($List as $field) {
-            if ($field["tag"] == $Tag) {
+        foreach ($fieldList as $field) {
+            if ($field["tag"] == $fieldTag) {
                 return $field;
             }
         }
@@ -703,24 +694,25 @@ class FieldsFactory
     /**
      * @abstract   Seach for a Field by id
      *
-     * @param      array       $List      Array Of Field definition
-     * @param      string      $Id        Field Identifier
-     * @return     ArrayObject|false
+     * @param   array       $fieldList      Array Of Field definition
+     * @param   string      $fieldId        Field Identifier
+     *
+     * @return  ArrayObject|false
      */
-    public function seachtById($List, $Id)
+    public function seachtById($fieldList, $fieldId)
     {
         //====================================================================//
         // Safety Checks
-        if (!count($List)) {
+        if (!count($fieldList)) {
             return false;
         }
-        if (empty($Id)) {
+        if (empty($fieldId)) {
             return false;
         }
         //====================================================================//
         // Walk Through List and select by Tag
-        foreach ($List as $field) {
-            if ($field["id"] == $Id) {
+        foreach ($fieldList as $field) {
+            if ($field["id"] == $fieldId) {
                 return $field;
             }
         }

@@ -34,18 +34,18 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * @abstract   Create & Setup WebService Client
      *
-     * @param   string  $Url    Target Url
+     * @param   string  $targetUrl    Target Url
      *
      * @return self
      */
-    public function buildClient($Url)
+    public function buildClient($targetUrl)
     {
         //====================================================================//
         // Include NuSOAP Classes
         require_once(dirname(__FILE__) . "/nusoap.php");
         //====================================================================//
         // Initiate new NuSoap Client
-        $this->client = new \nusoap_client($Url);
+        $this->client = new \nusoap_client($targetUrl);
         //====================================================================//
         // Setup NuSOAP Debug Level
         if (SPLASH_DEBUG) {
@@ -67,19 +67,19 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * @abstract   Execute WebService Client Request
      *
-     * @param string    $Service   Target Service
-     * @param string    $Data      Request Raw Data
+     * @param string    $service   Target Service
+     * @param string    $data      Request Raw Data
      *
      * @return     mixed    Raw Response
      */
-    public function call($Service, $Data)
+    public function call($service, $data)
     {
         //====================================================================//
         // Log Call Informations in debug buffer
-        Splash::log()->deb("[NuSOAP] Call Url= '" . $this->client->endpoint . "' Service='" . $Service . "'");
+        Splash::log()->deb("[NuSOAP] Call Url= '" . $this->client->endpoint . "' Service='" . $service . "'");
         //====================================================================//
         // Execute NuSOAP Call
-        $Response = $this->client->call($Service, $Data);
+        $response = $this->client->call($service, $data);
         //====================================================================//
         // Decode & Store NuSOAP Errors if present
         if (isset($this->client->fault) && !empty($this->client->fault)) {
@@ -91,7 +91,7 @@ class NuSOAPInterface implements CommunicationInterface
             Splash::log()->err("ErrWsNuSOAPFault", $this->client->faultcode, $this->client->faultstring);
         }
 
-        return $Response;
+        return $response;
     }
         
     //====================================================================//
@@ -132,7 +132,7 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * @abstract   Log Errors if Server fail during a request
      */
-    public function fault($Error)
+    public function fault($error)
     {
         //====================================================================//
         // Detect If Any Response Message Exists.
@@ -142,9 +142,9 @@ class NuSOAPInterface implements CommunicationInterface
         //====================================================================//
         // Prepare Fault Message.
         $content  = "NuSOAP call: service died unexpectedly!! ";
-        $content .= $Error["message"] . " on File " . $Error["file"] . " Line " . $Error["line"];
+        $content .= $error["message"] . " on File " . $error["file"] . " Line " . $error["line"];
         //====================================================================//
         // Log Fault Details In SOAP Structure.
-        $this->server->fault($Error["type"], $content);
+        $this->server->fault($error["type"], $content);
     }
 }

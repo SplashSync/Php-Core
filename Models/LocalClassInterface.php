@@ -77,17 +77,17 @@ interface LocalClassInterface
     public function selfTest();
     
     /**
-     *  @abstract   Update Server Informations with local Data
+     * @abstract    Update Server Informations with local Data
      *
      *      THIS FUNCTION IS MANDATORY
      *
      *      This function return Remote Server Informatiosn to display on Server Profile
      *
-     *  @param      ArrayObject     $Informations       Informations Inputs
+     * @param   ArrayObject     $informations       Informations Inputs
      *
-     *  @return     ArrayObject
+     * @return  ArrayObject
      */
-    public function informations($Informations);
+    public function informations($informations);
     
 //====================================================================//
 // *******************************************************************//
@@ -109,7 +109,7 @@ interface LocalClassInterface
      *
      * @return         array       $Sequences
      */
-    public function testSequences($Name = null);
+    public function testSequences($name = null);
     
     /**
      *  @abstract       Return Local Server Test Parameters as Array

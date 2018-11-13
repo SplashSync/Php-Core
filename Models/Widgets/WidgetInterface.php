@@ -33,9 +33,9 @@ interface WidgetInterface
     /**
      * @abstract    Return requested Widget Data
      *
-     * @param       array   $Parameters           List of Parameters
+     * @param       array   $parameters           List of Parameters
      *
      * @return      array                   Widget Data
     */
-    public function get($Parameters = array());
+    public function get($parameters = array());
 }

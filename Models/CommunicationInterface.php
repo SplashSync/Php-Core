@@ -30,21 +30,21 @@ interface CommunicationInterface
     /**
      * @abstract   Create & Setup WebService Client
      *
-     * @param   string  $Url    Target Url
+     * @param   string  $tagretUrl    Target Url
      *
      * @return self
      */
-    public function buildClient($Url);
+    public function buildClient($tagretUrl);
         
     /**
      * @abstract   Execute WebService Client Request
      *
-     * @param string    $Service   Target Service
-     * @param string    $Data      Request Raw Data
+     * @param string    $service   Target Service
+     * @param string    $data      Request Raw Data
      *
      * @return     mixed    Raw Response
      */
-    public function call($Service, $Data);
+    public function call($service, $data);
         
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
@@ -63,5 +63,5 @@ interface CommunicationInterface
     /**
      * @abstract   Log Errors if Server fail during a request
      */
-    public function fault($Error);
+    public function fault($error);
 }

@@ -55,70 +55,70 @@ class Translator
      *              All data in translation array are stored in UTF-8 format.
      *              trans_loaded is completed with $file key.
      *
-     * @param  string  $FileName    File name to load (.ini file).
+     * @param  string  $fileName    File name to load (.ini file).
      *                              Must be "file" or "file@local" for local language files:
      *                              If $FileName is "file@local" instead of "file" then we look for local lang file
      *                              in localpath/langs/code_CODE/file.lang
      *
-     * @param  string  $Language    Force Loading of a specific ISO Language Code (Example en_US or fr_FR or es_ES)
+     * @param  string  $language    Force Loading of a specific ISO Language Code (Example en_US or fr_FR or es_ES)
      *
      * @return bool
      *
      */
-    public function load($FileName, $Language = null)
+    public function load($fileName, $language = null)
     {
         //====================================================================//
         // Check if File is Already in Cache
         //====================================================================//
-        if (! empty($this->loadedTranslations[$FileName])) {
+        if (! empty($this->loadedTranslations[$fileName])) {
             return true;
         }
 
         //====================================================================//
         // Check parameters
-        if (empty($FileName)) {
+        if (empty($fileName)) {
             return Splash::log()->err("ErrLangFileEmpty");
         }
         
         //====================================================================//
         // Select Language to Load
-        if ($Language == null) {
+        if ($language == null) {
             //====================================================================//
             // Load Default Language from Local System
             if (empty(Splash::configuration()->DefaultLanguage)) {
                 return Splash::log()->err(get_class($this)."::Load Translations Error No Default Lang Defined");
             }
-            $Language = Splash::configuration()->DefaultLanguage;
-            $IsForced = false;
+            $language = Splash::configuration()->DefaultLanguage;
+            $isForced = false;
         } else {
-            $IsForced = true;
+            $isForced = true;
         }
         //====================================================================//
         // Log Action
         Splash::log()->deb(
-            get_class($this)."::Load Translations from " . $FileName . " with Language " . $Language . "."
+            get_class($this)."::Load Translations from " . $fileName . " with Language " . $language . "."
         );
 
         //====================================================================//
         // Build Language File Path
-        $FullPath = $this->getLangFileName($FileName, $Language);
+        $fullPath = $this->getLangFileName($fileName, $language);
         
         //====================================================================//
         // Load Language File Translations
-        $Loaded = $this->loadLangFile($FullPath);
+        $loaded = $this->loadLangFile($fullPath);
         
         //====================================================================//
         // If Default Language Used
-        if ($IsForced == null) {
+        if ($isForced == null) {
             //====================================================================//
             // Load English Language Fallback Translations
-            if ($Language != SPLASH_DF_LANG) {
-                $this->load($FileName, SPLASH_DF_LANG);
+            if ($language != SPLASH_DF_LANG) {
+                $this->load($fileName, SPLASH_DF_LANG);
             }
 
             //====================================================================//
             // Mark this file as Loaded (1) or Not Found (2)
-            $this->loadedTranslations[$FileName] = $Loaded?1:2;
+            $this->loadedTranslations[$fileName] = $loaded?1:2;
         }
         
         return true;
@@ -208,58 +208,58 @@ class Translator
     /**
      * @abstract    Build Translation filename based on specified $file and ISO Language Code.
      *
-     * @param  string  $FileName    File name to load (.ini file).
+     * @param  string  $fileName    File name to load (.ini file).
      *                              Must be "file" or "file@local" for local language files:
      *                              If $FileName is "file@local" instead of "file" then we look for local lang file
      *                              in localpath/langs/code_CODE/file.lang
      *
-     * @param  string  $Language   ISO Language Code (Example en_US or fr_FR or es_ES)
+     * @param  string  $language   ISO Language Code (Example en_US or fr_FR or es_ES)
      *
      * @return string
      */
-    private function getLangFileName($FileName, $Language)
+    private function getLangFileName($fileName, $language)
     {
         
         //====================================================================//
         // Search for Local Redirection
         //====================================================================//
-        $IsLocal    =   '';
+        $isLocal    =   '';
         $regs       =   null;
         //====================================================================//
         // Search if a local directory is required into lang file name
-        if (preg_match('/^([^@]+)@([^@]+)$/i', $FileName, $regs)) {
-            $FileName = $regs[1];
-            $IsLocal = $regs[2];
+        if (preg_match('/^([^@]+)@([^@]+)$/i', $fileName, $regs)) {
+            $fileName = $regs[1];
+            $isLocal = $regs[2];
         }
 
         //====================================================================//
         // Directory of translation files
-        if (!empty($IsLocal)) {
-            return Splash::getLocalPath()."/Translations/".$Language."/".$FileName.".ini";
+        if (!empty($isLocal)) {
+            return Splash::getLocalPath()."/Translations/".$language."/".$fileName.".ini";
         }
         
-        return dirname(dirname(__FILE__)) . "/langs/" . $Language . "/" . $FileName . ".ini";
+        return dirname(dirname(__FILE__)) . "/langs/" . $language . "/" . $fileName . ".ini";
     }
     
     /**
      * @abstract   Load Speficied file onto static language collection
      *
-     * @param  string  $FullPath   Full path to language file to load (.ini file).
+     * @param  string  $fullPath   Full path to language file to load (.ini file).
      *
      * @return bool
      *
      */
-    private function loadLangFile($FullPath)
+    private function loadLangFile($fullPath)
     {
         //====================================================================//
         // Check if File Exists
-        if (!is_file($FullPath)) {
+        if (!is_file($fullPath)) {
             return false;
         }
 
         //====================================================================//
         // Open File
-        $file = @fopen($FullPath, "rt");
+        $file = @fopen($fullPath, "rt");
         if (!$file) {
             return false;
         }

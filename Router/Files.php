@@ -12,37 +12,28 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @abstract    Server Request Routiung Class, Execute/Route actions on Objects Service Requests.
- *              This file is included only in case on NuSOAP call to slave server.
- * @author      B. Paquier <contact@splashsync.com>
- */
 
 namespace   Splash\Router;
 
 use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
 
-//====================================================================//
-//   INCLUDES
-//====================================================================//
-
-
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
- 
+/**
+ * @abstract    Server Request Routiung Class, Execute/Route actions on Objects Service Requests.
+ *              This file is included only in case on NuSOAP call to slave server.
+ * @author      B. Paquier <contact@splashsync.com>
+ */
 class Files
 {
     
     /**
      *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
      *
-     *      @param      ArrayObject     $Task       Full Task Request Array
+     *      @param      ArrayObject     $task       Full Task Request Array
      *
      *      @return     ArrayObject                 Task results, or False if KO
      */
-    public static function action($Task)
+    public static function action($task)
     {
         //====================================================================//
         // Stack Trace
@@ -50,57 +41,56 @@ class Files
         
         //====================================================================//
         // Initial Response
-        $Response  = self::getEmptyResponse($Task);
+        $response  = self::getEmptyResponse($task);
         
         //====================================================================//
         // Safety Check - Minimal Parameters
         //====================================================================//
         // Verify Requested Object Type is Available
-        if (empty($Task->params)) {
+        if (empty($task->params)) {
             Splash::log()->err("File Router - Missing Task Parameters... ");
-            return $Response;
+            return $response;
         //====================================================================//
         // Verify Requested File Path is Available
-        } elseif (empty($Task->params->path) && empty($Task->params->file)) {
+        } elseif (empty($task->params->path) && empty($task->params->file)) {
             Splash::log()->err("File Router - Missing File Path... ");
-            return $Response;
+            return $response;
         //====================================================================//
         // Verify Requested Object Type is Valid
         } elseif (Splash::validate()->isValidLocalClass() != true) {
             Splash::log()->err("File Router - Local Core Class is Invalid... ");
-            return $Response;
+            return $response;
         }
         
         //====================================================================//
         // Load Parameters
-        $Path   = empty($Task->params->path) ? $Task->params->file : $Task->params->path;
-        $Md5    = $Task->params->md5;
+        $path   = empty($task->params->path) ? $task->params->file : $task->params->path;
+        $md5    = $task->params->md5;
         
         //====================================================================//
         // Execute Action
-        switch ($Task->name) {
+        switch ($task->name) {
             //====================================================================//
             //  READING A FILE INFORMATIONS
             case SPL_F_ISFILE:
-                $Response->data = Splash::file()->isFile($Path, $Md5);
+                $response->data = Splash::file()->isFile($path, $md5);
                 break;
             //====================================================================//
             //  READING A FILE CONTENTS
             case SPL_F_GETFILE:
-                $Response->data = Splash::file()->readFile($Path, $Md5);
-//Splash::log()->www("File", $Response->data);
+                $response->data = Splash::file()->readFile($path, $md5);
                 break;
             default:
-                Splash::log()->err("File - Requested task not found => " . $Task->name);
+                Splash::log()->err("File - Requested task not found => " . $task->name);
                 break;
         }
         
         //====================================================================//
         // Task results prot treatment
-        if ($Response->data != false) {
-            $Response->result = true;
+        if ($response->data != false) {
+            $response->result = true;
         }
-        return $Response;
+        return $response;
     }
  
 
@@ -111,26 +101,26 @@ class Files
     /**
      *      @abstract     Build an Empty Task Response
      *
-     *      @param  ArrayObject     $Task       Task To Execute
+     *      @param  ArrayObject     $task       Task To Execute
      *
      *      @return ArrayObject   Task Result ArrayObject
      */
-    private static function getEmptyResponse($Task)
+    private static function getEmptyResponse($task)
     {
         //====================================================================//
         // Initial Tasks results ArrayObject
-        $Response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         
         //====================================================================//
         // Set Default Result to False
-        $Response->result       =   false;
-        $Response->data         =   null;
+        $response->result       =   false;
+        $response->data         =   null;
         
         //====================================================================//
         // Insert Task Description Informations
-        $Response->name         =   $Task->name;
-        $Response->desc         =   $Task->desc;
+        $response->name         =   $task->name;
+        $response->desc         =   $task->desc;
 
-        return $Response;
+        return $response;
     }
 }

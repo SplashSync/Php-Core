@@ -39,13 +39,13 @@ class Router
 
     //====================================================================//
     // Tasks Counters
-    private $Count      =   0;              // Input Task Counter
-    private $Success    =   0;              // Succeeded Task Counter
+    private $count      =   0;              // Input Task Counter
+    private $success    =   0;              // Succeeded Task Counter
 
     //====================================================================//
     // Tasks Statistics
-    private $BatchTimer;                    // Task Batch Execution Start Timestamp
-    private $TaskTimer;                     // Current Task Execution Start Timestamp
+    private $batchTimer;                    // Task Batch Execution Start Timestamp
+    private $taskTimer;                     // Current Task Execution Start Timestamp
     
     //====================================================================//
     //  SERVER TASKING MANAGER
@@ -54,39 +54,39 @@ class Router
     /**
      * @abstract     Validate Received Server Request
      *
-     * @param   string          $Router     Name of the router function to use for task execution
-     * @param   ArrayObject     $Input      Poiner to Server Input Buffer
-     * @param   ArrayObject     $Output     Poiner to Server Output Buffer
+     * @param   string          $router     Name of the router function to use for task execution
+     * @param   ArrayObject     $input      Poiner to Server Input Buffer
+     * @param   ArrayObject     $output     Poiner to Server Output Buffer
      *
      * @return  bool
      */
-    private function validate($Router, $Input, $Output)
+    private function validate($router, $input, $output)
     {
         //====================================================================//
         // Safety Checks - Verify Inputs & Outputs are Valid
-        if (!is_a($Input, "ArrayObject") || !is_a($Output, "ArrayObject")) {
+        if (!is_a($input, "ArrayObject") || !is_a($output, "ArrayObject")) {
             return Splash::log()->err("Unable to perform requested action. I/O Buffer not ArrayObject Type.");
         }
         //====================================================================//
         // Safety Checks - Verify tasks array exists
-        if (!isset($Input->tasks) || !count($Input->tasks)) {
+        if (!isset($input->tasks) || !count($input->tasks)) {
             return Splash::log()->war("Unable to perform requested action, task list is empty.");
         }
-        Splash::log()->deb("Found " . count($Input->tasks) . " tasks in request.");
+        Splash::log()->deb("Found " . count($input->tasks) . " tasks in request.");
         //====================================================================//
         // Safety Checks - Verify Each Tasks is an ArrayObject
-        foreach ($Input->tasks as $Id => $Task) {
-            if (!is_a($Task, "ArrayObject")) {
+        foreach ($input->tasks as $index => $task) {
+            if (!is_a($task, "ArrayObject")) {
                 return Splash::log()->err(
-                    "Unable to perform requested action. Task " . $Id . " is not ArrayObject Type."
+                    "Unable to perform requested action. Task " . $index . " is not ArrayObject Type."
                 );
             }
         }
         //====================================================================//
         // Safety Check - Verify Router Exists
-        if (!class_exists("\Splash\Router\\" . ucwords($Router))) {
+        if (!class_exists("\Splash\Router\\" . ucwords($router))) {
             return Splash::log()->err(
-                "Unable to perform requested tasks, given router doesn't exist(" . ucwords($Router) . "). "
+                "Unable to perform requested tasks, given router doesn't exist(" . ucwords($router) . "). "
                 . "Check your server configuration & methods"
             );
         }
@@ -96,98 +96,94 @@ class Router
     /**
      * @abstract     Execute Server Requested Tasks
      *
-     * @param   string          $Router     Name of the router function to use for task execution
-     * @param   ArrayObject     $Input      Poiner to Server Input Buffer
-     * @param   ArrayObject     $Output     Poiner to Server Output Buffer
+     * @param   string          $router     Name of the router function to use for task execution
+     * @param   ArrayObject     $input      Poiner to Server Input Buffer
+     * @param   ArrayObject     $output     Poiner to Server Output Buffer
      *
      * @return  bool                        Global tesks Result
      */
-    public function execute($Router, $Input, $Output)
+    public function execute($router, $input, $output)
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Tasks Counters Initialisation
-        $this->Count  =   0;                  // Input Task Counter
-        $this->Success=   0;                  // Succeeded Task Counter
+        $this->count  =   0;                  // Input Task Counter
+        $this->success=   0;                  // Succeeded Task Counter
         //====================================================================//
         // Task Batch Initialisation
-        $this->BatchTimer = microtime(true);     // Initiate Performance Timer
+        $this->batchTimer = microtime(true);     // Initiate Performance Timer
         //====================================================================//
         // Safety Checks - Validate Request
-        if (!$this->validate($Router, $Input, $Output)) {
+        if (!$this->validate($router, $input, $output)) {
             return false;
         }
         //====================================================================//
         // Init output task results
-        $Output->tasks = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $output->tasks = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Step by Step Execute Tasks
-        foreach ($Input->tasks as $Id => $Task) {
+        foreach ($input->tasks as $index => $task) {
             //====================================================================//
             // Tasks Execution
-            $Output->tasks[$Id]    =   $this->executeTask("\Splash\Router\\" . $Router, $Task);
+            $output->tasks[$index]    =   $this->executeTask("\Splash\Router\\" . $router, $task);
         }
         //====================================================================//
         // Build Complete Task Batch Information Array
-        $Output->tasksinfos              = $this->getBatchInfos();
+        $output->tasksinfos              = $this->getBatchInfos();
         //====================================================================//
         // Return Global Batch Result
-        return ($this->Count == $this->Success)?true:false;
+        return ($this->count == $this->success)?true:false;
     }
 
     /**
      * @abstract     Execute a Single Tasks
      *
-     * @param   string          $Router     Name of the router function to use for task execution
-     * @param   ArrayObject     $Task       Task To Execute
+     * @param   string          $router     Name of the router function to use for task execution
+     * @param   ArrayObject     $task       Task To Execute
      *
      * @return  ArrayObject                 Task Result ArrayObject
      */
-    public function executeTask($Router, $Task)
+    public function executeTask($router, $task)
     {
-        
         //====================================================================//
         // Safety Check
-        if (empty($Task)) {
+        if (empty($task)) {
             return false;
         }
-        
         //====================================================================//
         // Init Tasks Timer
-        $this->TaskTimer = microtime(true);
-
+        $this->taskTimer = microtime(true);
         //====================================================================//
         // Increment Tried Tasks Counter
-        $this->Count++;
-            
+        $this->count++;
         //====================================================================//
         // Tasks Execution
         try {
-            $Result = $Router::Action($Task);
+            $result = $router::Action($task);
         } catch (Exception $exc) {
-            $Result  = $this->getEmptyResponse($Task);
+            $result  = $this->getEmptyResponse($task);
             Splash::log()->err($exc->getMessage() . " on File " . $exc->getFile() . " Line " . $exc->getLine());
             Splash::log()->err($exc->getTraceAsString());
         }
         //====================================================================//
         // Store Task Results
-        if (is_a($Result, "ArrayObject")) {
+        if (is_a($result, "ArrayObject")) {
             //====================================================================//
             // Insert Task Main Informations
-            $Result->id            = $Task["id"];
+            $result->id            = $task["id"];
             //====================================================================//
             // Insert Task Performance Informations
-            $Result->delayms       = $this->getDelayTaskStarted();
-            $Result->delaystr      = sprintf("%.2f %s", $this->getDelayTaskStarted(), " ms");
+            $result->delayms       = $this->getDelayTaskStarted();
+            $result->delaystr      = sprintf("%.2f %s", $this->getDelayTaskStarted(), " ms");
             //====================================================================//
             // Increment Success Tasks Counter
-            if ($Result->result) {
-                $this->Success++;
+            if ($result->result) {
+                $this->success++;
             }
             
-            return $Result;
+            return $result;
         }
         return false;
     }
@@ -198,26 +194,24 @@ class Router
 
     /**
      * @abstract    Build an Empty Task Response
-     * @param   ArrayObject     $Task   Task To Execute
+     * @param   ArrayObject     $task   Task To Execute
      * @return  ArrayObject             Task Result ArrayObject
      */
-    private function getEmptyResponse($Task)
+    private function getEmptyResponse($task)
     {
         //====================================================================//
         // Initial Tasks results ArrayObject
-        $Response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        
+        $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Set Default Result to False
-        $Response->result       =   false;
-        $Response->data         =   null;
-        
+        $response->result       =   false;
+        $response->data         =   null;
         //====================================================================//
         // Insert Task Description Informations
-        $Response->name         =   $Task->name;
-        $Response->desc         =   $Task->desc;
+        $response->name         =   $task->name;
+        $response->desc         =   $task->desc;
 
-        return $Response;
+        return $response;
     }
     
     /**
@@ -229,8 +223,8 @@ class Router
         return array(
             "DelayMs"       =>  $this->getDelayStarted(),
             "DelayStr"      =>  sprintf("%.2f %s", $this->getDelayStarted(), " ms"),
-            "Performed"     =>  $this->Count,
-            "Ok"            =>  $this->Success
+            "Performed"     =>  $this->count,
+            "Ok"            =>  $this->success
         );
     }
     
@@ -240,7 +234,7 @@ class Router
      */
     private function getDelayStarted()
     {
-        return 1000 * (microtime(true) - $this->BatchTimer);
+        return 1000 * (microtime(true) - $this->batchTimer);
     }
     
     /**
@@ -249,6 +243,6 @@ class Router
      */
     private function getDelayTaskStarted()
     {
-        return 1000 * (microtime(true) - $this->TaskTimer);
+        return 1000 * (microtime(true) - $this->taskTimer);
     }
 }
