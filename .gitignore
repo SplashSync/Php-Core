@@ -19,3 +19,4 @@
 /dispatch.php
 .directory
 save-commands.json
+/.php_cs.cache
