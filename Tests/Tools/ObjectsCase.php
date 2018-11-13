@@ -16,10 +16,11 @@ class ObjectsCase extends AbstractBaseCase
     use \Splash\Tests\Tools\Traits\ObjectsDataTrait;
     use \Splash\Tests\Tools\Traits\ObjectsFakerTrait;
     
-    /*
+    /**
      * @abstract    List of Created & Tested Object used to delete if test failled.
+     * @var     array
      */
-    private $CreatedObjects  =   array();
+    private $createdObjects  =   array();
     
     /**
      * Formater Fake Field Generator Options
@@ -108,21 +109,21 @@ class ObjectsCase extends AbstractBaseCase
         }
         //====================================================================//
         // Read Local Parameters
-        $LocalTestSettings  =   Splash::local()->testParameters();
+        $localTestSettings  =   Splash::local()->testParameters();
         
         //====================================================================//
         // Validate Local Parameters
-        if (!Splash::validate()->isValidLocalTestParameterArray($LocalTestSettings)) {
+        if (!Splash::validate()->isValidLocalTestParameterArray($localTestSettings)) {
             return;
         }
         //====================================================================//
         // Import Local Parameters
-        foreach ($LocalTestSettings as $key => $value) {
+        foreach ($localTestSettings as $key => $value) {
             $this->settings[$key]   =   $value;
         }
     }
     
-    protected function loadLocalTestSequence($Sequence)
+    protected function loadLocalTestSequence($testSequence)
     {
         //====================================================================//
         // Check if Local Tests Sequences are defined
@@ -131,7 +132,7 @@ class ObjectsCase extends AbstractBaseCase
         }
         //====================================================================//
         // Setup Test Sequence
-        Splash::local()->testSequences($Sequence);
+        Splash::local()->testSequences($testSequence);
         
         //====================================================================//
         // Reload Local Tests Parameters
@@ -159,37 +160,37 @@ class ObjectsCase extends AbstractBaseCase
     /**
      * @abstract        Verify Last Commit is Valid and Conform to Expected
      *
-     * @param string    $Action         Expected Action
-     * @param string    $ObjectType     Expected Object Type
-     * @param string    $ObjectId       Expected Object Id
+     * @param string    $action         Expected Action
+     * @param string    $objectType     Expected Object Type
+     * @param string    $objectId       Expected Object Id
      */
-    public function assertIsLastCommited($Action, $ObjectType, $ObjectId)
+    public function assertIsLastCommited($action, $objectType, $objectId)
     {
-        $this->assertIsCommited($Action, $ObjectType, $ObjectId, false);
+        $this->assertIsCommited($action, $objectType, $objectId, false);
     }
 
     /**
      * @abstract        Verify First Commit is Valid and Conform to Expected
      *
-     * @param string    $Action         Expected Action
-     * @param string    $ObjectType     Expected Object Type
-     * @param string    $ObjectId       Expected Object Id
+     * @param string    $action         Expected Action
+     * @param string    $objectType     Expected Object Type
+     * @param string    $objectId       Expected Object Id
      */
-    public function assertIsFirstCommited($Action, $ObjectType, $ObjectId)
+    public function assertIsFirstCommited($action, $objectType, $objectId)
     {
-        $this->assertIsCommited($Action, $ObjectType, $ObjectId, true);
+        $this->assertIsCommited($action, $objectType, $objectId, true);
     }
       
     /**
      * @abstract        Verify First Commit is Valid and Conform to Expected
      *
-     * @param string    $Action         Expected Action
-     * @param string    $ObjectType     Expected Object Type
-     * @param string    $ObjectId       Expected Object Id
-     * @param bool      $First          Check First or Last Commited
+     * @param string    $action         Expected Action
+     * @param string    $objectType     Expected Object Type
+     * @param string    $objectId       Expected Object Id
+     * @param bool      $first          Check First or Last Commited
      *
      */
-    private function assertIsCommited($Action, $ObjectType, $ObjectId, $First = true)
+    private function assertIsCommited($action, $objectType, $objectId, $first = true)
     {
         //====================================================================//
         //   Verify Object Change Was Commited
@@ -200,83 +201,83 @@ class ObjectsCase extends AbstractBaseCase
         
         //====================================================================//
         //   Get First / Last Commited
-        $Commited = $First ? array_shift(Splash::$Commited) : array_pop(Splash::$Commited);
+        $commited = $first ? array_shift(Splash::$Commited) : array_pop(Splash::$Commited);
         
         //====================================================================//
         //   Check Object Type is OK
         $this->assertEquals(
-            $Commited->type,
-            $ObjectType,
+            $commited->type,
+            $objectType,
             "Change Commit => Object Type is wrong. "
-                . "(Expected " . $ObjectType . " / Given " . $Commited->type
+                . "(Expected " . $objectType . " / Given " . $commited->type
         );
         
         //====================================================================//
         //   Check Object Action is OK
         $this->assertEquals(
-            $Commited->action,
-            $Action,
-            "Change Commit => Change Type is wrong. (Expected " . $Action . " / Given " . $Commited->action
+            $commited->action,
+            $action,
+            "Change Commit => Change Type is wrong. (Expected " . $action . " / Given " . $commited->action
         );
         
         //====================================================================//
         //   Check Object Id value Format
         $this->assertTrue(
-            is_scalar($Commited->id) || is_array($Commited->id) || is_a($Commited->id, "ArrayObject"),
+            is_scalar($commited->id) || is_array($commited->id) || is_a($commited->id, "ArrayObject"),
             "Change Commit => Object Id Value is in wrong Format. "
                 . "(Expected String or Array of Strings. / Given "
-                . print_r($Commited->id, true)
+                . print_r($commited->id, true)
         );
         
         //====================================================================//
         //   If Commited an Array of Ids
-        if (is_array($Commited->id) || is_a($Commited->id, "ArrayObject")) {
+        if (is_array($commited->id) || is_a($commited->id, "ArrayObject")) {
             //====================================================================//
             //   Check each Object Ids
-            foreach ($Commited->id as $Id) {
+            foreach ($commited->id as $objectId) {
                 $this->assertTrue(
-                    is_scalar($Id),
+                    is_scalar($objectId),
                     "Change Commit => Object Id Array Value is in wrong Format. "
                         . "(Expected String or Integer. / Given "
-                        . print_r($Id, true)
+                        . print_r($objectId, true)
                 );
             }
             //====================================================================//
             //   Extract First Object Id
-            $FirstId = array_shift($Commited->id);
+            $firstId = array_shift($commited->id);
             //====================================================================//
             //   Verify First Object Id is OK
             $this->assertEquals(
-                $FirstId,
-                $ObjectId,
-                "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $FirstId
+                $firstId,
+                $objectId,
+                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $firstId
             );
         } else {
             //====================================================================//
             //   Check Object Id is OK
             $this->assertEquals(
-                $Commited->id,
-                $ObjectId,
-                "Change Commit => Object Id is wrong. (Expected " . $ObjectId . " / Given " . $Commited->id
+                $commited->id,
+                $objectId,
+                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $commited->id
             );
         }
         
         //====================================================================//
         //   Check Infos are Not Empty
-        $this->assertNotEmpty($Commited->user, "Change Commit => User Name is Empty");
-        $this->assertNotEmpty($Commited->comment, "Change Commit => Action Comment is Empty");
+        $this->assertNotEmpty($commited->user, "Change Commit => User Name is Empty");
+        $this->assertNotEmpty($commited->comment, "Change Commit => Action Comment is Empty");
     }
     
     /**
      * @abstract        Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation
      *
-     * @param string    $ObjectType     Expected Object Type
-     * @param string    $ObjectId       Expected Object Id
+     * @param string    $objectType     Expected Object Type
+     * @param string    $objectId       Expected Object Id
      */
-    protected function setCurrentObject($ObjectType, $ObjectId)
+    protected function setCurrentObject($objectType, $objectId)
     {
-        $this->settings["CurrentType"]  =   $ObjectType;
-        $this->settings["CurrentId"]    =   $ObjectId;
+        $this->settings["CurrentType"]  =   $objectType;
+        $this->settings["CurrentId"]    =   $objectId;
     }
     
     //====================================================================//
@@ -285,111 +286,111 @@ class ObjectsCase extends AbstractBaseCase
     
     public function objectTypesProvider()
     {
-        $Result = array();
+        $result = array();
         
         self::setUp();
 
         //====================================================================//
         // Check if Local Tests Sequences are defined
         if (!is_null(Splash::local()) && method_exists(Splash::local(), "TestSequences")) {
-            $Sequences  =   Splash::local()->testSequences("List");
+            $testSequences  =   Splash::local()->testSequences("List");
         } else {
-            $Sequences  =   array( 1 => "None");
+            $testSequences  =   array( 1 => "None");
         }
         
         //====================================================================//
         //   For Each Test Sequence
-        foreach ($Sequences as $Sequence) {
-            $this->loadLocalTestSequence($Sequence);
+        foreach ($testSequences as $testSequence) {
+            $this->loadLocalTestSequence($testSequence);
             
             //====================================================================//
             //   For Each Object Type
-            foreach (Splash::objects() as $ObjectType) {
+            foreach (Splash::objects() as $objectType) {
                 //====================================================================//
                 //   Filter Tested Object Types  =>> Skip
-                if (!self::isAllowedObjectType($ObjectType)) {
+                if (!self::isAllowedObjectType($objectType)) {
                     continue;
                 }
                 //====================================================================//
                 //   Add Object Type to List
-                $Result[] = array($Sequence, $ObjectType);
+                $result[] = array($testSequence, $objectType);
             }
         }
         
         self::tearDown();
         
-        return $Result;
+        return $result;
     }
 
     public function objectFieldsProvider()
     {
-        $Result = array();
+        $result = array();
         
         self::setUp();
         
         //====================================================================//
         // Check if Local Tests Sequences are defined
         if (!is_null(Splash::local()) && method_exists(Splash::local(), "TestSequences")) {
-            $Sequences  =   Splash::local()->testSequences("List");
+            $testSequences  =   Splash::local()->testSequences("List");
         } else {
-            $Sequences  =   array( 1 => "None");
+            $testSequences  =   array( 1 => "None");
         }
         
         //====================================================================//
         //   For Each Test Sequence
-        foreach ($Sequences as $Sequence) {
-            $this->loadLocalTestSequence($Sequence);
+        foreach ($testSequences as $testSequence) {
+            $this->loadLocalTestSequence($testSequence);
             //====================================================================//
             //   For Each Object Type
-            foreach (Splash::objects() as $ObjectType) {
+            foreach (Splash::objects() as $objectType) {
                 //====================================================================//
                 //   Filter Tested Object Types  =>> Skip
-                if (!self::isAllowedObjectType($ObjectType)) {
+                if (!self::isAllowedObjectType($objectType)) {
                     continue;
                 }
                 //====================================================================//
                 //   For Each Field Type
-                foreach (Splash::object($ObjectType)->fields() as $Field) {
+                foreach (Splash::object($objectType)->fields() as $field) {
                     //====================================================================//
                     //   Filter Tested Object Fields  =>> Skip
-                    if (!self::isAllowedObjectField($Field->id)) {
+                    if (!self::isAllowedObjectField($field->id)) {
                         continue;
                     }
-                    $Result[] = array($Sequence, $ObjectType, $Field);
+                    $result[] = array($testSequence, $objectType, $field);
                 }
             }
         }
         
         self::tearDown();
         
-        return $Result;
+        return $result;
     }
     
     //==============================================================================
     //      OBJECTS DELETE AT THE END OF TESTS
     //==============================================================================
     
-    protected function addTestedObject($ObjectType, $ObjectId = null)
+    protected function addTestedObject($objectType, $objectId = null)
     {
-        $this->CreatedObjects[] =   array(
-            "ObjectType"    =>  $ObjectType,
-            "ObjectId"      =>  $ObjectId,
+        $this->createdObjects[] =   array(
+            "ObjectType"    =>  $objectType,
+            "ObjectId"      =>  $objectId,
         );
     }
     
     protected function cleanTestedObjects()
     {
-        foreach ($this->CreatedObjects as $Object) {
-            if (empty($Object["ObjectId"])) {
+        foreach ($this->createdObjects as $object) {
+            if (empty($object["ObjectId"])) {
                 continue;
             }
             //====================================================================//
             //   Verify Delete is Allowed
-            $Definition = Splash::object($Object["ObjectType"])->description();
-            if ($Definition["allow_push_deleted"]) {
+            $definition = Splash::object($object["ObjectType"])->description();
+            if ($definition["allow_push_deleted"]) {
                 continue;
             }
-            Splash::object($Object["ObjectType"])->delete($Object["ObjectId"]);
+            Splash::object($object["ObjectType"])->delete($object["ObjectId"]);
         }
     }
 }

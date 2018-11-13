@@ -38,51 +38,51 @@ class Ooimage
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   array   $Image      Splash Image definition Array
+     * @param   array   $data      Splash Image definition Array
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Image)
+    public static function validate($data)
     {
         //====================================================================//
         //      Verify Data is NOT Empty
-        if (empty($Image)) {
+        if (empty($data)) {
             return true;
         }
         //====================================================================//
         //      Verify Data is an Array
-        if (!is_array($Image) && !is_a($Image, "ArrayObject")) {
+        if (!is_array($data) && !is_a($data, "ArrayObject")) {
             return "Field Data is not an Array.";
         }
         //====================================================================//
         //      Check Contents
-        if (!self::validateContents($Image)) {
-            return self::validateContents($Image);
+        if (!self::validateContents($data)) {
+            return self::validateContents($data);
         }
         return true;
     }
     
-    private static function validateContents($Image)
+    private static function validateContents($image)
     {
-        if (!array_key_exists("name", $Image)) {
+        if (!array_key_exists("name", $image)) {
             return "Image Field => 'name' is missing.";
         }
-        if (!array_key_exists("filename", $Image)) {
+        if (!array_key_exists("filename", $image)) {
             return "Image Field => 'filename' is missing.";
         }
-        if (!array_key_exists("path", $Image) && !array_key_exists("file", $Image)) {
+        if (!array_key_exists("path", $image) && !array_key_exists("file", $image)) {
             return "Image Field => 'path' is missing.";
         }
-        if (!array_key_exists("width", $Image)) {
+        if (!array_key_exists("width", $image)) {
             return "Image Field => 'width' is missing.";
         }
-        if (!array_key_exists("height", $Image)) {
+        if (!array_key_exists("height", $image)) {
             return "Image Field => 'height' is missing.";
         }
-        if (!array_key_exists("md5", $Image)) {
+        if (!array_key_exists("md5", $image)) {
             return "Image Field => 'md5' is missing.";
         }
-        if (!array_key_exists("size", $Image)) {
+        if (!array_key_exists("size", $image)) {
             return "Image Field => 'size' is missing.";
         }
         
@@ -96,53 +96,53 @@ class Ooimage
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return mixed
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
         //====================================================================//
         // Image Faker Parameters
-        $Index          = (int) mt_rand(0, count($Settings["Images"]) - 1);
-        $Dir        = dirname(dirname(dirname(__DIR__))) . "/Resources/img/";
-        $File       = $Settings["Images"][$Index];
-        $FullPath   = $Dir . $File;
+        $index          = (int) mt_rand(0, count($settings["Images"]) - 1);
+        $dir        = dirname(dirname(dirname(__DIR__))) . "/Resources/img/";
+        $file       = $settings["Images"][$index];
+        $fullPath   = $dir . $file;
 //        $Name       = "Fake Image " . substr(preg_replace('/[^A-Za-z0-9\-]/', '', utf8_encode(mt_rand())), 0, 3);
-        $Name       = "Fake Image " . $Index;
+        $name       = "Fake Image " . $index;
         
         //====================================================================//
         // Build Image Array
-        $Image = array();
+        $image = array();
         //====================================================================//
         // ADD MAIN INFOS
         //====================================================================//
         // Image Name
-        $Image["name"]          = $Name;
+        $image["name"]          = $name;
         //====================================================================//
         // Image Filename
-        $Image["filename"]      = $File;
-        $Image["file"]          = $File;
+        $image["filename"]      = $file;
+        $image["file"]          = $file;
         //====================================================================//
         // Image File Identifier (Full Path Here)
-        $Image["path"]          = $Dir . $File;
+        $image["path"]          = $dir . $file;
         //====================================================================//
         // Image Publics Url
-        $Image["url"]           = filter_input(INPUT_SERVER, "HTTP_HOST") . $File;
+        $image["url"]           = filter_input(INPUT_SERVER, "HTTP_HOST") . $file;
         
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
         // Images Informations
-        if (file_exists($FullPath)) {
-            $ImageDims  = getimagesize($FullPath);
-            $Image["width"]         = $ImageDims[0];
-            $Image["height"]        = $ImageDims[1];
+        if (file_exists($fullPath)) {
+            $imgDims  = getimagesize($fullPath);
+            $image["width"]         = $imgDims[0];
+            $image["height"]        = $imgDims[1];
         }
-        $Image["md5"]           = md5_file($FullPath);
-        $Image["size"]          = filesize($FullPath);
+        $image["md5"]           = md5_file($fullPath);
+        $image["size"]          = filesize($fullPath);
         
-        return $Image;
+        return $image;
     }
     
     //==============================================================================
@@ -154,13 +154,13 @@ class Ooimage
      *
      * !important : Target Data is always validated before compare
      *
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
+     * @param   mixed   $source     Original Data Block
+     * @param   mixed   $target     New Data Block
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source, $Target)
+    public static function compare($source, $target)
     {
-        return Oofile::compare($Source, $Target);
+        return Oofile::compare($source, $target);
     }
 }

@@ -33,45 +33,45 @@ class Oofile
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   array   $File      Splash Image definition Array
+     * @param   array   $data      Splash Image definition Array
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($File)
+    public static function validate($data)
     {
         //====================================================================//
         //      Verify Data is NOT Empty
-        if (empty($File)) {
+        if (empty($data)) {
             return true;
         }
         //==============================================================================
         //      Verify Data is an Array
-        if (!is_array($File) && !is_a($File, "ArrayObject")) {
+        if (!is_array($data) && !is_a($data, "ArrayObject")) {
             return "Field Data is not an Array.";
         }
         //====================================================================//
         //      Check Contents
-        if (!self::validateContents($File)) {
-            return self::validateContents($File);
+        if (!self::validateContents($data)) {
+            return self::validateContents($data);
         }
         return true;
     }
     
-    private static function validateContents($File)
+    private static function validateContents($file)
     {
-        if (!array_key_exists("name", $File)) {
+        if (!array_key_exists("name", $file)) {
             return "File Field => 'name' is missing.";
         }
-        if (!array_key_exists("filename", $File)) {
+        if (!array_key_exists("filename", $file)) {
             return "File Field => 'filename' is missing.";
         }
-        if (!array_key_exists("path", $File) && !array_key_exists("file", $File)) {
+        if (!array_key_exists("path", $file) && !array_key_exists("file", $file)) {
             return "File Field => 'path' is missing.";
         }
-        if (!array_key_exists("md5", $File)) {
+        if (!array_key_exists("md5", $file)) {
             return "File Field => 'md5' is missing.";
         }
-        if (!array_key_exists("size", $File)) {
+        if (!array_key_exists("size", $file)) {
             return "File Field => 'size' is missing.";
         }
         
@@ -85,43 +85,43 @@ class Oofile
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return mixed
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
         //====================================================================//
         // Image Faker Parameters
-        $Index          = (int) mt_rand(0, count($Settings["Files"]) - 1);
-        $Dir        = dirname(dirname(__DIR__)) . "/Resources/files/";
-        $File       = $Settings["Files"][$Index];
-        $FullPath   = $Dir . $File;
-        $Name       = "Fake File " . $Index;
+        $index          = (int) mt_rand(0, count($settings["Files"]) - 1);
+        $dir        = dirname(dirname(__DIR__)) . "/Resources/files/";
+        $file       = $settings["Files"][$index];
+        $fullPath   = $dir . $file;
+        $name       = "Fake File " . $index;
         
         //====================================================================//
         // Build Image Array
-        $FakeFile = array();
+        $fakeFile = array();
         //====================================================================//
         // ADD MAIN INFOS
         //====================================================================//
         // Image Name
-        $FakeFile["name"]          = $Name;
+        $fakeFile["name"]          = $name;
         //====================================================================//
         // Image Filename
-        $FakeFile["filename"]      = $File;
-        $FakeFile["file"]          = $File;
+        $fakeFile["filename"]      = $file;
+        $fakeFile["file"]          = $file;
         //====================================================================//
         // Image File Identifier (Full Path Here)
-        $FakeFile["path"]          = $FullPath;
+        $fakeFile["path"]          = $fullPath;
         
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
-        $FakeFile["md5"]           = md5_file($FullPath);
-        $FakeFile["size"]          = filesize($FullPath);
+        $fakeFile["md5"]           = md5_file($fullPath);
+        $fakeFile["size"]          = filesize($fullPath);
         
-        return $FakeFile;
+        return $fakeFile;
     }
     
     //==============================================================================
@@ -133,44 +133,44 @@ class Oofile
      *
      * !important : Target Data is always validated before compare
      *
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
+     * @param   mixed   $source     Original Data Block
+     * @param   mixed   $target     New Data Block
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source, $Target)
+    public static function compare($source, $target)
     {
         //====================================================================//
         // Smart Validate Arrays
-        if (!is_array($Source) && !is_a($Source, "ArrayObject")) {
+        if (!is_array($source) && !is_a($source, "ArrayObject")) {
             return false;
         }
-        if (!is_array($Target) && !is_a($Target, "ArrayObject")) {
+        if (!is_array($target) && !is_a($target, "ArrayObject")) {
             return false;
         }
         //====================================================================//
         // Compare File CheckSum
-        if (!self::compareMd5($Source, $Target)) {
-            return self::compareMd5($Source, $Target);
+        if (!self::compareMd5($source, $target)) {
+            return self::compareMd5($source, $target);
         }
         //====================================================================//
         // Compare File Size
-        if ($Source["size"] != $Target["size"]) {
+        if ($source["size"] != $target["size"]) {
             return false;
         }
         return true;
     }
 
-    private static function compareMd5($Source, $Target)
+    private static function compareMd5($source, $target)
     {
         //====================================================================//
         // Compare File CheckSum
-        if (!array_key_exists("md5", $Source) || !array_key_exists("md5", $Target)
-            || !array_key_exists("size", $Source) || !array_key_exists("size", $Target)
+        if (!array_key_exists("md5", $source) || !array_key_exists("md5", $target)
+            || !array_key_exists("size", $source) || !array_key_exists("size", $target)
             ) {
             return false;
         }
-        if ($Source["md5"] != $Target["md5"]) {
+        if ($source["md5"] != $target["md5"]) {
             return false;
         }
         return true;

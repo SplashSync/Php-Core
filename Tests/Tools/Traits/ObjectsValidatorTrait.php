@@ -25,29 +25,29 @@ trait ObjectsValidatorTrait
 
     /**
      *   @abstract   Verify this parameter is a valid sync data type
-     *   @param      string      $In         Data Type Name String
-     *   @return     int         $result     0 if KO, Field Full Class Name if OK
+     *   @param      string      $fieldType     Data Type Name String
+     *   @return     string|bool
      */
-    public static function isValidType($In)
+    public static function isValidType($fieldType)
     {
         //====================================================================//
         // Safety Check
-        if (empty($In)) {
+        if (empty($fieldType)) {
             return false;
         }
         //====================================================================//
         // Detects Lists Fields
         //====================================================================//
-        $list = self::isListField($In);
+        $list = self::isListField($fieldType);
         if ($list != false) {
-            $In = $list["fieldname"];
+            $fieldType = $list["fieldname"];
         }
         //====================================================================//
         // Detects Id Fields
         //====================================================================//
-        $id = self::isIdField($In);
+        $id = self::isIdField($fieldType);
         if ($id != false) {
-            $In = "objectid";
+            $fieldType = "objectid";
         }
         
         //====================================================================//
@@ -56,12 +56,12 @@ trait ObjectsValidatorTrait
 
         //====================================================================//
         // Build Class Full Name
-        $ClassName = self::$CLASS_PREFIX .  $In;
+        $className = self::$CLASS_PREFIX .  $fieldType;
         
         //====================================================================//
         // Build New Entity
-        if (class_exists($ClassName)) {
-            return  $ClassName;
+        if (class_exists($className)) {
+            return  $className;
         }
 
         return false;
@@ -69,128 +69,128 @@ trait ObjectsValidatorTrait
 
     /**
      *   @abstract   Verify Data a valid Raw field data
-     *   @param      mixed   $Data       Object Field Data
-     *   @param      string  $Type       Object Field Type
+     *   @param      mixed   $data       Object Field Data
+     *   @param      string  $fieldType       Object Field Type
      *   @return     int     $result     0 if KO, 1 if OK
      */
-    public static function isValidData($Data, $Type)
+    public static function isValidData($data, $fieldType)
     {
         //====================================================================//
         // Verify Field Type is Valid
-        $ClassName = self::isValidType($Type);
-        if ($ClassName == false) {
+        $className = self::isValidType($fieldType);
+        if ($className == false) {
             return false;
         }
         
         //====================================================================//
         // Verify Single Field Data Type is not Null
-        if (is_null($Data)) {
+        if (is_null($data)) {
             return true;
         }
 
         //====================================================================//
         // Verify Single Field Data Type is Valid
-        return $ClassName::validate($Data);
+        return $className::validate($data);
     }
     
     /**
      *   @abstract   Verify Data a valid field data
-     *   @param      mixed   $Data       Object Field Data
-     *   @param      string  $Id         Object Field Identifier
-     *   @param      string  $Type       Object Field Type
+     *   @param      mixed   $data       Object Field Data
+     *   @param      string  $fieldId         Object Field Identifier
+     *   @param      string  $fieldType       Object Field Type
      *   @return     int     $result     0 if KO, 1 if OK
      */
-    public function isValidFieldData($Data, $Id, $Type)
+    public function isValidFieldData($data, $fieldId, $fieldType)
     {
         //====================================================================//
         // Safety Check
-        $this->assertNotEmpty($Data, "Field Data Block is Empty");
-        $this->assertNotEmpty($Id, "Field Id is Empty");
-        $this->assertNotEmpty($Type, "Field Type Name is Empty");
+        $this->assertNotEmpty($data, "Field Data Block is Empty");
+        $this->assertNotEmpty($fieldId, "Field Id is Empty");
+        $this->assertNotEmpty($fieldType, "Field Type Name is Empty");
         
         //====================================================================//
         // Detects Lists Fields
-        $List       = self::isListField($Id);
-        if ($List) {
+        $isList       = self::isListField($fieldId);
+        if ($isList) {
             //====================================================================//
             // Verify List Field Data
-            return $this->isValidListFieldData($Data, $Id, $Type);
+            return $this->isValidListFieldData($data, $fieldId, $fieldType);
         }
         
         //====================================================================//
         // Verify Field is in Data Response
-        $this->assertArrayHasKey($Id, $Data, "Field '" . $Id . "' is not defined in returned Data Block.");
+        $this->assertArrayHasKey($fieldId, $data, "Field '" . $fieldId . "' is not defined in returned Data Block.");
         
         //====================================================================//
         // Verify Single Field Data Type is not Null
-        if (is_null($Data[$Id])) {
+        if (is_null($data[$fieldId])) {
             return;
         }
         
         //====================================================================//
         // Verify Raw Field Data
         $this->assertTrue(
-            self::isValidData($Data[$Id], $Type),
-            $Id . " => Field Raw Data is not a valid " . $Type .  ". (" . print_r($Data[$Id], true) . ")"
+            self::isValidData($data[$fieldId], $fieldType),
+            $fieldId . " => Field Raw Data is not a valid " . $fieldType .  ". (" . print_r($data[$fieldId], true) . ")"
         );
     }
         
     /**
     *   @abstract   Verify Data a valid list field data
-    *   @param      mixed   $Data       Object Field Data
-    *   @param      string  $Id         Object Field Identifier
-    *   @param      string  $Type       Object Field Type
+    *   @param      mixed   $data       Object Field Data
+    *   @param      string  $fieldId         Object Field Identifier
+    *   @param      string  $fieldType       Object Field Type
     *   @return     int     $result     0 if KO, 1 if OK
     */
-    public function isValidListFieldData($Data, $Id, $Type)
+    public function isValidListFieldData($data, $fieldId, $fieldType)
     {
-        $ListId     = self::isListField($Id);
-        $ListType   = self::isListField($Type);
-        if (!$ListId) {
+        $listId     = self::isListField($fieldId);
+        $listType   = self::isListField($fieldType);
+        if (!$listId) {
             return false;
         }
         
         //====================================================================//
         // Verify List is in Data Response
         $this->assertArrayHasKey(
-            $ListId["listname"],
-            $Data,
-            "List '" . $ListId["listname"] . "' is not defined in returned Data Block."
+            $listId["listname"],
+            $data,
+            "List '" . $listId["listname"] . "' is not defined in returned Data Block."
         );
         
         //====================================================================//
         // Verify Field Type is List Type Identifier
         $this->assertEquals(
-            $ListType["listname"],
+            $listType["listname"],
             SPL_T_LIST,
-            "List Field Type Must match Format 'type'@list. (Given " . print_r($Type, true) . ")"
+            "List Field Type Must match Format 'type'@list. (Given " . print_r($fieldType, true) . ")"
         );
         
         //====================================================================//
         // Verify Field Type is Valid Splahs Field type
         $this->assertNotEmpty(
-            self::isValidType($ListType["fieldname"]),
-            "List Field Type is not a valid Splash Field Type. (Given " . print_r($ListType["fieldname"], true) . ")"
+            self::isValidType($listType["fieldname"]),
+            "List Field Type is not a valid Splash Field Type. (Given " . print_r($listType["fieldname"], true) . ")"
         );
         
-        $ListData = $Data[$ListId["listname"]];
+        $listData = $data[$listId["listname"]];
         //====================================================================//
         // Verify if Field Data is Null
-        if (empty($ListData)) {
+        if (empty($listData)) {
             return true;
         }
         
         //====================================================================//
         // Verify if Field Data is an Array
         $this->assertTrue(
-            is_array($ListData) || is_a($ListData, "ArrayObject"),
-            "List Field '" . $ListId["listname"] . "' is not of Array Type. (Given " . print_r($ListData, true). ")"
+            is_array($listData) || is_a($listData, "ArrayObject"),
+            "List Field '" . $listId["listname"] . "' is not of Array Type. (Given " . print_r($listData, true). ")"
         );
         
         //====================================================================//
         // Verify all List Data Are Valid
-        foreach ($ListData as $Value) {
-            $this->isValidFieldData($Value, $ListId["fieldname"], $Type);
+        foreach ($listData as $listValue) {
+            $this->isValidFieldData($listValue, $listId["fieldname"], $fieldType);
         }
         return true;
     }

@@ -16,12 +16,12 @@ trait AssertionsTrait
     
     /**
      * @abstract        Verify Object Type is Product
-     * @param string    $ObjectType         Tested Object Type Name
+     * @param string    $objectType         Tested Object Type Name
      * @return bool
      */
-    public function assertIsProductType($ObjectType)
+    public function assertIsProductType($objectType)
     {
-        if ($ObjectType != "Product") {
+        if ($objectType != "Product") {
             $this->assertTrue(true);
             return false;
         }
@@ -36,35 +36,35 @@ trait AssertionsTrait
     {
         //====================================================================//
         //   Verify this Field
-        $Comment    =   "Product Name with Options";
-        $this->assertFieldIsDefined("http://schema.org/Product", "name", $Comment);
-        $this->assertFieldIsRead("http://schema.org/Product", "name", $Comment);
-        $this->assertFieldHasFormat("http://schema.org/Product", "name", [SPL_T_VARCHAR, SPL_T_MVARCHAR], $Comment);
+        $comment    =   "Product Name with Options";
+        $this->assertFieldIsDefined("http://schema.org/Product", "name", $comment);
+        $this->assertFieldIsRead("http://schema.org/Product", "name", $comment);
+        $this->assertFieldHasFormat("http://schema.org/Product", "name", [SPL_T_VARCHAR, SPL_T_MVARCHAR], $comment);
         
         //====================================================================//
         //   Verify Product Base Name
-        $BaseName   =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "alternateName");
-        if ($BaseName) {
-            $BaseComment    =   "Product Name without Options";
+        $baseName   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "alternateName");
+        if ($baseName) {
+            $baseComment    =   "Product Name without Options";
             $this->assertFieldIsRead(
                 "http://schema.org/Product",
                 "alternateName",
-                $BaseComment
+                $baseComment
             );
             $this->assertFieldIsWrite(
                 "http://schema.org/Product",
                 "alternateName",
-                $BaseComment
+                $baseComment
             );
             $this->assertFieldHasFormat(
                 "http://schema.org/Product",
                 "alternateName",
                 [SPL_T_VARCHAR, SPL_T_MVARCHAR],
-                $BaseComment
+                $baseComment
             );
             
-            $Comment    =   "When Product Name without Options is provided, Product Name";
-            $this->assertFieldNotWrite("http://schema.org/Product", "name", $Comment);
+            $comment    =   "When Product Name without Options is provided, Product Name";
+            $this->assertFieldNotWrite("http://schema.org/Product", "name", $comment);
         }
     }
     
@@ -74,22 +74,22 @@ trait AssertionsTrait
      */
     public function assertValidShortDescription()
     {
-        $Comment    =   "Product Short Description";
+        $comment    =   "Product Short Description";
         $this->assertFieldIsDefined(
             "http://schema.org/Product",
             "description",
-            $Comment
+            $comment
         );
         $this->assertFieldHasFormat(
             "http://schema.org/Product",
             "description",
             [SPL_T_VARCHAR, SPL_T_MVARCHAR],
-            $Comment
+            $comment
         );
         $this->assertFieldIsRead(
             "http://schema.org/Product",
             "description",
-            $Comment
+            $comment
         );
     }
 
@@ -99,12 +99,12 @@ trait AssertionsTrait
      */
     public function assertValidLongDescription()
     {
-        $Comment    =   "Product Long Description";
+        $comment    =   "Product Long Description";
         $this->assertFieldHasFormat(
             "http://schema.org/Product",
             "articleBody",
             [SPL_T_TEXT, SPL_T_MTEXT],
-            $Comment
+            $comment
         );
     }
 
@@ -114,27 +114,27 @@ trait AssertionsTrait
      */
     public function assertValidProductFlags()
     {
-        $ItemProp   =  "http://schema.org/Product";
-        $Formats    =   [SPL_T_BOOL];
+        $itemProp   =  "http://schema.org/Product";
+        $formats    =   [SPL_T_BOOL];
         
         //====================================================================//
         //   Enabled Flag
-        $this->assertFieldHasFormat($ItemProp, "active", $Formats, "Product Enabled Flag");
-        $this->assertFieldIsRead($ItemProp, "offered", "Product Offered Flag");
+        $this->assertFieldHasFormat($itemProp, "active", $formats, "Product Enabled Flag");
+        $this->assertFieldIsRead($itemProp, "offered", "Product Offered Flag");
         
         //====================================================================//
         //   Offered Flag
-        $this->assertFieldIsDefined($ItemProp, "offered", "Product Offered Flag");
-        $this->assertFieldHasFormat($ItemProp, "offered", $Formats, "Product Offered Flag");
-        $this->assertFieldIsRead($ItemProp, "offered", "Product Offered Flag");
-        $this->assertFieldIsWrite($ItemProp, "offered", "Product Offered Flag");
-        $this->assertFieldNotRequired($ItemProp, "offered", "Product Offered Flag");
+        $this->assertFieldIsDefined($itemProp, "offered", "Product Offered Flag");
+        $this->assertFieldHasFormat($itemProp, "offered", $formats, "Product Offered Flag");
+        $this->assertFieldIsRead($itemProp, "offered", "Product Offered Flag");
+        $this->assertFieldIsWrite($itemProp, "offered", "Product Offered Flag");
+        $this->assertFieldNotRequired($itemProp, "offered", "Product Offered Flag");
 
         //====================================================================//
         //   Buy Flag
-        $this->assertFieldHasFormat($ItemProp, "ordered", $Formats, "Product Buy Flag");
-        $this->assertFieldIsRead($ItemProp, "ordered", "Product Buy Flag");
-        $this->assertFieldNotRequired($ItemProp, "ordered", "Product Buy Flag");
+        $this->assertFieldHasFormat($itemProp, "ordered", $formats, "Product Buy Flag");
+        $this->assertFieldIsRead($itemProp, "ordered", "Product Buy Flag");
+        $this->assertFieldNotRequired($itemProp, "ordered", "Product Buy Flag");
     }
     
     /**
@@ -143,20 +143,20 @@ trait AssertionsTrait
      */
     public function assertValidProductPrices()
     {
-        $ItemProp   =  "http://schema.org/Product";
-        $Formats    =   [SPL_T_PRICE];
+        $itemProp   =  "http://schema.org/Product";
+        $formats    =   [SPL_T_PRICE];
         
         //====================================================================//
         //   Main Customer Price
-        $this->assertFieldHasFormat($ItemProp, "price", $Formats, "Product Customer Price");
-        $this->assertFieldIsRead($ItemProp, "price", "Product Customer Price");
-        $this->assertFieldNotRequired($ItemProp, "price", "Product Customer Price");
+        $this->assertFieldHasFormat($itemProp, "price", $formats, "Product Customer Price");
+        $this->assertFieldIsRead($itemProp, "price", "Product Customer Price");
+        $this->assertFieldNotRequired($itemProp, "price", "Product Customer Price");
 
         //====================================================================//
         //   Wholesale Price
-        $this->assertFieldHasFormat($ItemProp, "wholesalePrice", $Formats, "Product Wholesale Price");
-        $this->assertFieldIsRead($ItemProp, "wholesalePrice", "Product Wholesale Price");
-        $this->assertFieldNotRequired($ItemProp, "wholesalePrice", "Product Wholesale Price");
+        $this->assertFieldHasFormat($itemProp, "wholesalePrice", $formats, "Product Wholesale Price");
+        $this->assertFieldIsRead($itemProp, "wholesalePrice", "Product Wholesale Price");
+        $this->assertFieldNotRequired($itemProp, "wholesalePrice", "Product Wholesale Price");
     }
     
     /**
@@ -165,16 +165,16 @@ trait AssertionsTrait
      */
     public function assertValidProductShipping()
     {
-        $ItemProp   =  "http://schema.org/Product";
-        $Formats    =   [SPL_T_DOUBLE];
+        $itemProp   =  "http://schema.org/Product";
+        $formats    =   [SPL_T_DOUBLE];
         
         //====================================================================//
         //   Verify All Dimensions Fields
-        $Fields     =  ["width", "depth", "height", "surface", "volume", "weight"];
-        foreach ($Fields as $Field) {
-            $this->assertFieldHasFormat($ItemProp, $Field, $Formats, "Product " . ucwords($Field));
-            $this->assertFieldIsRead($ItemProp, $Field, "Product " . ucwords($Field));
-            $this->assertFieldNotRequired($ItemProp, $Field, "Product " . ucwords($Field));
+        $fields     =  ["width", "depth", "height", "surface", "volume", "weight"];
+        foreach ($fields as $field) {
+            $this->assertFieldHasFormat($itemProp, $field, $formats, "Product " . ucwords($field));
+            $this->assertFieldIsRead($itemProp, $field, "Product " . ucwords($field));
+            $this->assertFieldNotRequired($itemProp, $field, "Product " . ucwords($field));
         }
     }
     
@@ -184,47 +184,47 @@ trait AssertionsTrait
      */
     public function assertValidProductImages()
     {
-        $ItemProp   =  "http://schema.org/Product";
+        $itemProp   =  "http://schema.org/Product";
         //====================================================================//
         //   Verify Product Images Defined
-        $Image   =   self::findFieldByTag($this->Fields, $ItemProp, "image");
-        if (!$Image) {
+        $image   =   self::findFieldByTag($this->fields, $itemProp, "image");
+        if (!$image) {
             return;
         }
         //====================================================================//
         //   Verify Image Field
-        $Comment    =   "Product Images List";
-        $this->assertFieldIsDefined($ItemProp, "image", $Comment);
-        $this->assertFieldIsRead($ItemProp, "image", $Comment);
-        $this->assertFieldHasFormat($ItemProp, "image", [SPL_T_IMG . "@" . SPL_T_LIST], $Comment);
+        $comment    =   "Product Images List";
+        $this->assertFieldIsDefined($itemProp, "image", $comment);
+        $this->assertFieldIsRead($itemProp, "image", $comment);
+        $this->assertFieldHasFormat($itemProp, "image", [SPL_T_IMG . "@" . SPL_T_LIST], $comment);
         
         //====================================================================//
         //   Verify Cover Flag
-        $CoverComment   =   "Product Image is Cover Flag";
-        $this->assertFieldIsDefined($ItemProp, "isCover", $CoverComment);
-        $this->assertFieldIsRead($ItemProp, "isCover", $CoverComment);
-        $this->assertFieldHasFormat($ItemProp, "isCover", [SPL_T_BOOL . "@" . SPL_T_LIST], $CoverComment);
+        $coverComment   =   "Product Image is Cover Flag";
+        $this->assertFieldIsDefined($itemProp, "isCover", $coverComment);
+        $this->assertFieldIsRead($itemProp, "isCover", $coverComment);
+        $this->assertFieldHasFormat($itemProp, "isCover", [SPL_T_BOOL . "@" . SPL_T_LIST], $coverComment);
         
         //====================================================================//
         //   Verify Visible Flag
-        $EnComment      =   "Product Image is Visible Flag";
-        $this->assertFieldIsDefined($ItemProp, "isVisibleImage", $EnComment);
-        $this->assertFieldIsRead($ItemProp, "isVisibleImage", $EnComment);
-        $this->assertFieldHasFormat($ItemProp, "isVisibleImage", [SPL_T_BOOL . "@" . SPL_T_LIST], $EnComment);
+        $enComment      =   "Product Image is Visible Flag";
+        $this->assertFieldIsDefined($itemProp, "isVisibleImage", $enComment);
+        $this->assertFieldIsRead($itemProp, "isVisibleImage", $enComment);
+        $this->assertFieldHasFormat($itemProp, "isVisibleImage", [SPL_T_BOOL . "@" . SPL_T_LIST], $enComment);
         
         //====================================================================//
         //   Verify Image Position
-        $PosComment     =   "Product Image Position";
-        $this->assertFieldIsDefined($ItemProp, "positionImage", $PosComment);
-        $this->assertFieldIsRead($ItemProp, "positionImage", $PosComment);
-        $this->assertFieldHasFormat($ItemProp, "positionImage", [SPL_T_INT . "@" . SPL_T_LIST], $PosComment);
+        $posComment     =   "Product Image Position";
+        $this->assertFieldIsDefined($itemProp, "positionImage", $posComment);
+        $this->assertFieldIsRead($itemProp, "positionImage", $posComment);
+        $this->assertFieldHasFormat($itemProp, "positionImage", [SPL_T_INT . "@" . SPL_T_LIST], $posComment);
         
         //====================================================================//
         //   Write Verifications
-        if ($Image->write) {
-            $this->assertFieldIsWrite($ItemProp, "image", $Comment);
-            $this->assertFieldIsWrite($ItemProp, "isCover", $CoverComment);
-            $this->assertFieldIsWrite($ItemProp, "isVisibleImage", $EnComment);
+        if ($image->write) {
+            $this->assertFieldIsWrite($itemProp, "image", $comment);
+            $this->assertFieldIsWrite($itemProp, "isCover", $coverComment);
+            $this->assertFieldIsWrite($itemProp, "isVisibleImage", $enComment);
         }
     }
 
@@ -234,14 +234,14 @@ trait AssertionsTrait
      */
     public function assertValidProductVariants()
     {
-        $ItemProp   =  "http://schema.org/Product";
+        $itemProp   =  "http://schema.org/Product";
         //====================================================================//
         //   Verify Product Variants Are Defined
-        $VariantCode    =   self::findFieldByTag($this->Fields, $ItemProp, "VariantAttributeCode");
-        if (!$VariantCode) {
+        $variantCode    =   self::findFieldByTag($this->fields, $itemProp, "VariantAttributeCode");
+        if (!$variantCode) {
             return;
         }
-        $Formats    =   [
+        $formats    =   [
             SPL_T_VARCHAR . "@" . SPL_T_LIST,
             SPL_T_MVARCHAR . "@" . SPL_T_LIST
         ];
@@ -249,7 +249,7 @@ trait AssertionsTrait
         //====================================================================//
         //   Verify Attributes Code is Not Multilang
         $this->assertFieldHasFormat(
-            $ItemProp,
+            $itemProp,
             "VariantAttributeCode",
             [SPL_T_VARCHAR . "@" . SPL_T_LIST],
             "Product Variant Attribute Code"
@@ -257,22 +257,22 @@ trait AssertionsTrait
         
         //====================================================================//
         //   Verify Attributes Fields
-        $Fields     =  [
+        $fields     =  [
             "VariantAttributeCode"  => "Variant Attribute Code",
             "VariantAttributeName"  => "Variant Attribute Name",
             "VariantAttributeValue" => "Variant Attribute Value",
             ];
-        foreach ($Fields as $Id => $Name) {
+        foreach ($fields as $fieldId => $fieldName) {
             //====================================================================//
             //   Common Read Verifications
-            $this->assertFieldIsDefined($ItemProp, $Id, "Product " . $Name);
-            $this->assertFieldHasFormat($ItemProp, $Id, $Formats, "Product " . $Name);
-            $this->assertFieldIsRead($ItemProp, $Id, "Product " . $Name);
-            $this->assertFieldNotRequired($ItemProp, $Id, "Product " . $Name);
+            $this->assertFieldIsDefined($itemProp, $fieldId, "Product " . $fieldName);
+            $this->assertFieldHasFormat($itemProp, $fieldId, $formats, "Product " . $fieldName);
+            $this->assertFieldIsRead($itemProp, $fieldId, "Product " . $fieldName);
+            $this->assertFieldNotRequired($itemProp, $fieldId, "Product " . $fieldName);
             //====================================================================//
             //   Write Verifications
-            if ($VariantCode->write) {
-                $this->assertFieldIsWrite($ItemProp, $Id, "Product " . $Name);
+            if ($variantCode->write) {
+                $this->assertFieldIsWrite($itemProp, $fieldId, "Product " . $fieldName);
             }
         }
     }

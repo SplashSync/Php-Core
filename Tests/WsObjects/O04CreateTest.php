@@ -15,129 +15,129 @@ class O04CreateTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromModule($Sequence, $ObjectType)
+    public function testFromModule($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
-        $DummyData = $this->prepareForTesting($ObjectType);
-        if ($DummyData == false) {
+        $dummyData = $this->prepareForTesting($objectType);
+        if ($dummyData == false) {
             return true;
         }
         
         //====================================================================//
         //   Execute Action Directly on Module
-        $ObjectId = Splash::object($ObjectType)->set(null, $DummyData);
+        $objectId = Splash::object($objectType)->set(null, $dummyData);
         
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($ObjectType, $ObjectId);
+        $this->verifyResponse($objectType, $objectId);
     }
 
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromService($Sequence, $ObjectType)
+    public function testFromService($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
-        $DummyData = $this->prepareForTesting($ObjectType);
-        if ($DummyData == false) {
+        $dummyData = $this->prepareForTesting($objectType);
+        if ($dummyData == false) {
             return true;
         }
         
         //====================================================================//
         //   Execute Action Directly on Module
-        $ObjectId = $this->genericAction(
+        $objectId = $this->genericAction(
             SPL_S_OBJECTS,
             SPL_F_SET,
             __METHOD__,
-            [ "id" => null, "type" => $ObjectType, "fields" => $DummyData]
+            [ "id" => null, "type" => $objectType, "fields" => $dummyData]
         );
         
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($ObjectType, $ObjectId);
+        $this->verifyResponse($objectType, $objectId);
     }
     
-    public function verifyTestIsAllowed($ObjectType)
+    public function verifyTestIsAllowed($objectType)
     {
-        $Definition = Splash::object($ObjectType)->description();
+        $definition = Splash::object($objectType)->description();
         
         //====================================================================//
         //   Verify Create is Allowed
-        if ($Definition["allow_push_created"]) {
+        if ($definition["allow_push_created"]) {
             return true;
         }
         $this->assertTrue(true, "Object Creation not Allowed, Test Skipped.");
         return false;
     }
 
-    public function prepareForTesting($ObjectType)
+    public function prepareForTesting($objectType)
     {
         //====================================================================//
         //   Verify Test is Required
-        if (!$this->verifyTestIsAllowed($ObjectType)) {
+        if (!$this->verifyTestIsAllowed($objectType)) {
             return false;
         }
         
         //====================================================================//
         // Read Required Fields & Prepare Dummy Data
         //====================================================================//
-        $Write          = false;
-        $Fields         = Splash::object($ObjectType)->fields();
-        foreach ($Fields as $Key => $Field) {
+        $write          = false;
+        $fields         = Splash::object($objectType)->fields();
+        foreach ($fields as $key => $field) {
             //====================================================================//
             // Skip Non Required Fields
-            if (!$Field->required) {
-                unset($Fields[$Key]);
+            if (!$field->required) {
+                unset($fields[$key]);
             }
             //====================================================================//
             // Check if Write Fields
-            if ($Field->write) {
-                $Write = true;
+            if ($field->write) {
+                $write = true;
             }
         }
         
         //====================================================================//
         // If No Writable Fields
-        if (!$Write) {
+        if (!$write) {
             return false;
         }
         
         //====================================================================//
         // Lock New Objects To Avoid Action Commit
-        Splash::object($ObjectType)->lock();
+        Splash::object($objectType)->lock();
         
         //====================================================================//
         // Clean Objects Commited Array
         Splash::$Commited = array();
         
-        return $this->fakeObjectData($Fields);
+        return $this->fakeObjectData($fields);
     }
     
-    public function verifyResponse($ObjectType, $ObjectId)
+    public function verifyResponse($objectType, $objectId)
     {
         //====================================================================//
         //   Verify Object Id Is Not Empty
-        $this->assertNotEmpty($ObjectId, "Returned New Object Id is Empty");
+        $this->assertNotEmpty($objectId, "Returned New Object Id is Empty");
 
         //====================================================================//
         //   Add Object Id to Created List
-        $this->addTestedObject($ObjectType, $ObjectId);
+        $this->addTestedObject($objectType, $objectId);
     
         //====================================================================//
         //   Verify Object Id Is in Right Format
         $this->assertTrue(
-            is_integer($ObjectId) || is_string($ObjectId),
+            is_integer($objectId) || is_string($objectId),
             "New Object Id is not an Integer or a Strings"
         );
         
         //====================================================================//
         //   Verify Object Change Was Commited
-        $this->assertIsLastCommited(SPL_A_CREATE, $ObjectType, $ObjectId);
+        $this->assertIsLastCommited(SPL_A_CREATE, $objectType, $objectId);
     }
 }

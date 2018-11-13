@@ -23,21 +23,21 @@ class Oourl extends Oovarchar
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
         //==============================================================================
         //      Verify Data is not Empty
-        if (empty($Data)) {
+        if (empty($data)) {
             return true;
         }
 
         //==============================================================================
         //      Verify Data is a String
-        if (!empty($Data) && !is_string($Data)) {
+        if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
 
@@ -57,16 +57,16 @@ class Oourl extends Oovarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return string
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
-        $Domain =   preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode(mt_rand(100, 1000))));
-        $Prefix =   !empty($Settings["Url_Prefix"]) ? $Settings["Url_Prefix"] : null;
-        $Sufix  =   !empty($Settings["Url_Sufix"])   ? $Settings["Url_Sufix"] : ".splashsync.com";
+        $domain =   preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode(mt_rand(100, 1000))));
+        $prefix =   !empty($settings["Url_Prefix"]) ? $settings["Url_Prefix"] : null;
+        $sufix  =   !empty($settings["Url_Sufix"])   ? $settings["Url_Sufix"] : ".splashsync.com";
         
-        return $Prefix . $Domain . $Sufix;
+        return $prefix . $domain . $sufix;
     }
 }

@@ -16,37 +16,33 @@ class A05SelfTestsTest extends AbstractBaseCase
     {
         //====================================================================//
         //   Execute Action From Module
-        $Data = Splash::local()->selfTest();
-        
+        $data = Splash::local()->selfTest();
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
 
     
     public function testFromAdmin()
     {
-        
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_SELFTEST, __METHOD__);
-        
+        $data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_SELFTEST, __METHOD__);
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
     
-    public function verifyResponse($Data)
+    public function verifyResponse($data)
     {
         //====================================================================//
         //   Render Logs if Fails*
-        if (!$Data) {
+        if (!$data) {
             fwrite(STDOUT, Splash::log()->getConsoleLog());
         }
-        
         //====================================================================//
         //   Verify Response
-        $this->assertIsSplashBool($Data, "SelfTest");
-        $this->assertNotEmpty($Data, "SelfTest not Passed!! Check logs to see why!");
+        $this->assertIsSplashBool($data, "SelfTest");
+        $this->assertNotEmpty($data, "SelfTest not Passed!! Check logs to see why!");
     }
 }

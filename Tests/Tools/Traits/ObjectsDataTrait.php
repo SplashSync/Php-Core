@@ -15,41 +15,41 @@ trait ObjectsDataTrait
     /**
      * @abstract    Check Two Data Blocks Have Similar Data
      *
-     * @param   array   $Block1             Raw Data to Compare
-     * @param   array   $Block2             Raw Data to Compare
-     * @param   object  $TestController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
-     * @param   string  $Comment            Comment on this Test
+     * @param   array   $block1             Raw Data to Compare
+     * @param   array   $block2             Raw Data to Compare
+     * @param   object  $testController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
+     * @param   string  $comment            Comment on this Test
      *
      * @return bool
      */
-    public function compareRawData($Block1, $Block2, $TestController = null, $Comment = null)
+    public function compareRawData($block1, $block2, $testController = null, $comment = null)
     {
         //====================================================================//
         // Filter ArrayObjects
-        if (is_a($Block1, "ArrayObject")) {
-            $Block1 = $Block1->getArrayCopy();
+        if (is_a($block1, "ArrayObject")) {
+            $block1 = $block1->getArrayCopy();
         }
-        if (is_a($Block2, "ArrayObject")) {
-            $Block2 = $Block2->getArrayCopy();
+        if (is_a($block2, "ArrayObject")) {
+            $block2 = $block2->getArrayCopy();
         }
         
         //====================================================================//
         // Remove Id Data if Present on Block
-        if (is_array($Block1)) {
-            unset($Block1['id']);
+        if (is_array($block1)) {
+            unset($block1['id']);
         }
-        if (is_array($Block2)) {
-            unset($Block2['id']);
+        if (is_array($block2)) {
+            unset($block2['id']);
         }
         
         //====================================================================//
         // Normalize Data Blocks
-        $this->normalize($Block1);
-        $this->normalize($Block2);
+        $this->normalize($block1);
+        $this->normalize($block2);
         //====================================================================//
         // If Test Controller Given
-        if ($TestController) {
-            $TestController->assertEquals($Block1, $Block2, $Comment);
+        if ($testController) {
+            $testController->assertEquals($block1, $block2, $comment);
             return true;
         }
             
@@ -59,63 +59,63 @@ trait ObjectsDataTrait
         
         //====================================================================//
         // Sort Data Blocks
-        $this->sort($Block1);
-        $this->sort($Block2);
+        $this->sort($block1);
+        $this->sort($block2);
 
-        $Serialized1 = serialize($Block1);
-        $Serialized2 = serialize($Block2);
+        $serialized1 = serialize($block1);
+        $serialized2 = serialize($block2);
         
-        return ($Serialized1 === $Serialized2);
+        return ($serialized1 === $serialized2);
     }
     
     /**
      * @abstract    Check Two Object Data Blocks using Field's Compare functions
      *
-     * @param   array   $Fields             Array of OpenObject Fields Definitions
-     * @param   array   $Block1             Raw Data to Compare
-     * @param   array   $Block2             Raw Data to Compare
-     * @param   string  $Comment            Comment on this Test
+     * @param   array   $fields             Array of OpenObject Fields Definitions
+     * @param   array   $block1             Raw Data to Compare
+     * @param   array   $block2             Raw Data to Compare
+     * @param   string  $comment            Comment on this Test
      *
      * @return bool
      */
-    public function compareDataBlocks($Fields, $Block1, $Block2, $Comment = null)
+    public function compareDataBlocks($fields, $block1, $block2, $comment = null)
     {
 
         //====================================================================//
         // For Each Object Fields
-        foreach ($Fields as $Field) {
+        foreach ($fields as $field) {
             //====================================================================//
             // Extract Field Data
-            $Data1        =  $this->filterData($Block1, array($Field->id));
-            $Data2        =  $this->filterData($Block2, array($Field->id));
+            $data1        =  $this->filterData($block1, array($field->id));
+            $data2        =  $this->filterData($block2, array($field->id));
 
             //====================================================================//
             // Compare List Data
-            $FieldType      =  self::isListField($Field->type);
-            if ($FieldType) {
-                $Result = $this->compareListField(
-                    $FieldType["fieldname"],
-                    $Field->id,
-                    $Data1,
-                    $Data2,
-                    $Comment . "->" . $Field->id
+            $fieldType      =  self::isListField($field->type);
+            if ($fieldType) {
+                $result = $this->compareListField(
+                    $fieldType["fieldname"],
+                    $field->id,
+                    $data1,
+                    $data2,
+                    $comment . "->" . $field->id
                 );
                 
             //====================================================================//
             // Compare Single Fields
             } else {
-                $Result = $this->compareField(
-                    $Field->type,
-                    $Data1[$Field->id],
-                    $Data2[$Field->id],
-                    $Comment . "->" . $Field->id
+                $result = $this->compareField(
+                    $field->type,
+                    $data1[$field->id],
+                    $data2[$field->id],
+                    $comment . "->" . $field->id
                 );
             }
                 
             //====================================================================//
             // If Compare Failled => Return Fail Code
-            if ($Result !== true) {
-                return $Result;
+            if ($result !== true) {
+                return $result;
             }
         }
         
@@ -125,55 +125,55 @@ trait ObjectsDataTrait
     /**
      * @abstract    Check Two Object Data Blocks using Field's Compare functions
      *
-     * @param   string  $FieldType          Field Type Name
-     * @param   array   $Block1             Raw Data to Compare
-     * @param   array   $Block2             Raw Data to Compare
-     * @param   string  $Comment            Comment on this Test
+     * @param   string  $fieldType          Field Type Name
+     * @param   array   $block1             Raw Data to Compare
+     * @param   array   $block2             Raw Data to Compare
+     * @param   string  $comment            Comment on this Test
      *
      * @return string   error / success translator string for debugger
      */
-    private function compareField($FieldType, $Block1, $Block2, $Comment = null)
+    private function compareField($fieldType, $block1, $block2, $comment = null)
     {
         
         //====================================================================//
         // Build Full ClassName
-        if (ObjectId::decodeIdField($FieldType)) {
-            $ClassName      = self::isValidType("objectid");
+        if (ObjectId::decodeIdField($fieldType)) {
+            $className      = self::isValidType("objectid");
         } else {
-            $ClassName      = self::isValidType($FieldType);
+            $className      = self::isValidType($fieldType);
         }
         
         //====================================================================//
         // Verify Class has its own Validate & Compare Function*
         $this->assertTrue(
-            method_exists($ClassName, "validate"),
-            "Field of type " . $FieldType . " has no Validate Function."
+            method_exists($className, "validate"),
+            "Field of type " . $fieldType . " has no Validate Function."
         );
         $this->assertTrue(
-            method_exists($ClassName, "compare"),
-            "Field of type " . $FieldType . " has no Compare Function."
+            method_exists($className, "compare"),
+            "Field of type " . $fieldType . " has no Compare Function."
         );
         
         //====================================================================//
         // Validate Data Using Field Type Validator
         $this->assertTrue(
-            $ClassName::validate($Block1),
-            $Comment . " Source Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block1, 1) . ")"
+            $className::validate($block1),
+            $comment . " Source Data is not a valid " . $fieldType . " Field Data Block (" . print_r($block1, 1) . ")"
         );
         $this->assertTrue(
-            $ClassName::validate($Block2),
-            $Comment . " Target Data is not a valid " . $FieldType . " Field Data Block (" . print_r($Block2, 1) . ")"
+            $className::validate($block2),
+            $comment . " Target Data is not a valid " . $fieldType . " Field Data Block (" . print_r($block2, 1) . ")"
         );
             
         //====================================================================//
         // Compare Data Using Field Type Comparator
-        if (!$ClassName::compare($Block1, $Block2, $this->settings)) {
-            echo PHP_EOL . "Source :" . print_r($Block1, true);
-            echo PHP_EOL . "Target :" . print_r($Block2, true);
+        if (!$className::compare($block1, $block2, $this->settings)) {
+            echo PHP_EOL . "Source :" . print_r($block1, true);
+            echo PHP_EOL . "Target :" . print_r($block2, true);
         }
         $this->assertTrue(
-            $ClassName::compare($Block1, $Block2, $this->settings),
-            $Comment . " Source and Target Data are not similar " . $FieldType . " Field Data Block"
+            $className::compare($block1, $block2, $this->settings),
+            $comment . " Source and Target Data are not similar " . $fieldType . " Field Data Block"
         );
 
         return true;
@@ -182,66 +182,66 @@ trait ObjectsDataTrait
     /**
      * @abstract    Check Two List Data Blocks using Field's Compare functions
      *
-     * @param   string  $FieldType          Field Type Name
-     * @param   string  $FieldId            Field Identifier
-     * @param   array   $Block1             Raw Data to Compare
-     * @param   array   $Block2             Raw Data to Compare
-     * @param   string  $Comment            Comment on this Test
+     * @param   string  $fieldType          Field Type Name
+     * @param   string  $fieldId            Field Identifier
+     * @param   array   $block1             Raw Data to Compare
+     * @param   array   $block2             Raw Data to Compare
+     * @param   string  $comment            Comment on this Test
      *
      * @return string   error / success translator string for debugger
      */
-    private function compareListField($FieldType, $FieldId, $Block1, $Block2, $Comment = null)
+    private function compareListField($fieldType, $fieldId, $block1, $block2, $comment = null)
     {
         //====================================================================//
         // Explode List Field Id
-        $FieldIdArray      =  self::isListField($FieldId);
-        $this->assertNotEmpty($FieldIdArray);
-        $FieldName  = $FieldIdArray["fieldname"];
-        $ListName   = $FieldIdArray["listname"];
+        $fieldIdArray   =   self::isListField($fieldId);
+        $this->assertNotEmpty($fieldIdArray);
+        $fieldName      =   $fieldIdArray["fieldname"];
+        $listName       =   $fieldIdArray["listname"];
 
         //====================================================================//
         // Extract List Data
-        $List1 = $Block1[$ListName];
-        $List2 = $Block2[$ListName];
+        $list1 = $block1[$listName];
+        $list2 = $block2[$listName];
         
         //====================================================================//
         // Verify Data Count is similar
         $this->assertEquals(
-            count($List1),
-            count($List2),
+            count($list1),
+            count($list2),
             "Source and Target List Data have different number of Items "
-                . PHP_EOL . " Source " . print_r($List1, true)
-                . PHP_EOL . " Target " . print_r($List2, true)
+                . PHP_EOL . " Source " . print_r($list1, true)
+                . PHP_EOL . " Target " . print_r($list2, true)
         );
 
         //====================================================================//
         // Normalize Data Blocks
-        $this->normalize($List1);
-        $this->normalize($List2);
-        while (!empty($List1)) {
+        $this->normalize($list1);
+        $this->normalize($list2);
+        while (!empty($list1)) {
             //====================================================================//
             // Extract Next Item
-            $Item1  =   array_shift($List1);
-            $Item2  =   array_shift($List2);
+            $item1  =   array_shift($list1);
+            $item2  =   array_shift($list2);
 
             //====================================================================//
             // Verify List field is Available
             $this->assertArrayHasKey(
-                $FieldName,
-                $Item1,
-                "Field " . $FieldType . " not found in Source List Data "
+                $fieldName,
+                $item1,
+                "Field " . $fieldType . " not found in Source List Data "
             );
             $this->assertArrayHasKey(
-                $FieldName,
-                $Item2,
-                "Field " . $FieldType . " not found in Target List Data "
+                $fieldName,
+                $item2,
+                "Field " . $fieldType . " not found in Target List Data "
             );
             
             //====================================================================//
             // Compare Items
-            $Result = $this->compareField($FieldType, $Item1[$FieldName], $Item2[$FieldName], $Comment);
-            if ($Result !== true) {
-                return $Result;
+            $result = $this->compareField($fieldType, $item1[$fieldName], $item2[$fieldName], $comment);
+            if ($result !== true) {
+                return $result;
             }
         }
         

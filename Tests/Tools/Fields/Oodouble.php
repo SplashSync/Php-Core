@@ -20,19 +20,19 @@ class Oodouble
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
         //==============================================================================
         //      Verify Data is a Double or Zero
-        if (is_double($Data) || ($Data == 0)) {
+        if (is_double($data) || ($data == 0)) {
             return true;
         //==============================================================================
         //      Verify Data is a Double as String
-        } elseif (is_string($Data) && (is_double(floatval($Data)))) {
+        } elseif (is_string($data) && (is_double(floatval($data)))) {
             return true;
         }
         return "Field Data is not Double or Float Value.";
@@ -61,17 +61,17 @@ class Oodouble
      *
      * !important : Target Data is always validated before compare
      *
-     * @param       mixed   $Source     Original Data Block
-     * @param       mixed   $Target     New Data Block
-     * @param       array   $Settings   User Defined Faker Settings
+     * @param       mixed   $source     Original Data Block
+     * @param       mixed   $target     New Data Block
+     * @param       array   $settings   User Defined Faker Settings
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source, $Target, $Settings)
+    public static function compare($source, $target, $settings)
     {
         //====================================================================//
         // Compare Float Values
-        if (abs(round($Source, $Settings["DoublesPrecision"]) - round($Target, $Settings["DoublesPrecision"])) > 1E-6) {
+        if (abs(round($source, $settings["DoublesPrecision"]) - round($target, $settings["DoublesPrecision"])) > 1E-6) {
             return false;
         }
         return true;

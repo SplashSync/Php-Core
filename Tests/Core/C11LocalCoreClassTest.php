@@ -22,21 +22,21 @@ class C11LocalCoreClassTest extends TestCase
         //   VERIFY LOCAL PARAMETERS READING
         //====================================================================//
 
-        $Parameters = Splash::local()->parameters();
+        $parameters = Splash::local()->parameters();
         
         //====================================================================//
         //   Verify Parameters
-        $this->assertInternalType("array", $Parameters, "Returned Local Parameters are Not inside an Array");
-        $this->assertNotEmpty($Parameters, "Returned Empty Parameters");
-        $this->assertArrayHasKey("WsIdentifier", $Parameters, "Local Parameter is Missing");
-        $this->assertArrayHasKey("WsEncryptionKey", $Parameters, "Local Parameter is Missing");
-        $this->assertNotEmpty($Parameters["WsIdentifier"], "Local Parameter is Empty");
-        $this->assertNotEmpty($Parameters["WsEncryptionKey"], "Local Parameter is Empty");
+        $this->assertInternalType("array", $parameters, "Returned Local Parameters are Not inside an Array");
+        $this->assertNotEmpty($parameters, "Returned Empty Parameters");
+        $this->assertArrayHasKey("WsIdentifier", $parameters, "Local Parameter is Missing");
+        $this->assertArrayHasKey("WsEncryptionKey", $parameters, "Local Parameter is Missing");
+        $this->assertNotEmpty($parameters["WsIdentifier"], "Local Parameter is Empty");
+        $this->assertNotEmpty($parameters["WsEncryptionKey"], "Local Parameter is Empty");
         
         //====================================================================//
         //   Verify Module Parsing
         $this->assertTrue(
-            Splash::validate()->isValidLocalParameterArray($Parameters),
+            Splash::validate()->isValidLocalParameterArray($parameters),
             "Local Parameter Module's Verifictaion failled."
         );
     }
@@ -72,26 +72,26 @@ class C11LocalCoreClassTest extends TestCase
         
         //====================================================================//
         // Init Response Object
-        $In = new ArrayObject(array("Dummy" => true), ArrayObject::ARRAY_AS_PROPS);
+        $input  = new ArrayObject(array("Dummy" => true), ArrayObject::ARRAY_AS_PROPS);
         
         //====================================================================//
         // Fetch Informations
-        $Out = Splash::local()->informations($In);
+        $output = Splash::local()->informations($input);
         
         //====================================================================//
         //   Verify Informations
-        $this->assertInstanceOf("ArrayObject", $Out, "Returned Local Informations are Not inside an ArrayObject");
-        $this->assertArrayHasKey("company", $Out, "Local Informations is Missing");
-        $this->assertArrayHasKey("address", $Out, "Local Informations is Missing");
-        $this->assertArrayHasKey("zip", $Out, "Local Informations is Missing");
-        $this->assertArrayHasKey("town", $Out, "Local Informations is Missing");
-        $this->assertArrayHasKey("www", $Out, "Local Informations is Missing");
-        $this->assertArrayHasKey("email", $Out, "Local Informations is Missing");
-        $this->assertArrayHasKey("phone", $Out, "Local Informations is Missing");
+        $this->assertInstanceOf("ArrayObject", $output, "Returned Local Informations are Not inside an ArrayObject");
+        $this->assertArrayHasKey("company", $output, "Local Informations is Missing");
+        $this->assertArrayHasKey("address", $output, "Local Informations is Missing");
+        $this->assertArrayHasKey("zip", $output, "Local Informations is Missing");
+        $this->assertArrayHasKey("town", $output, "Local Informations is Missing");
+        $this->assertArrayHasKey("www", $output, "Local Informations is Missing");
+        $this->assertArrayHasKey("email", $output, "Local Informations is Missing");
+        $this->assertArrayHasKey("phone", $output, "Local Informations is Missing");
         
         //====================================================================//
         //   Verify Module Informations are Still Present
-        $this->assertArrayHasKey("Dummy", $Out, "Splash Original Informations are Missing");
+        $this->assertArrayHasKey("Dummy", $output, "Splash Original Informations are Missing");
         
         //====================================================================//
         //   Verify Module Parsing

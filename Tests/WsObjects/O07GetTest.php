@@ -12,113 +12,112 @@ use ArrayObject;
  */
 class O07GetTest extends ObjectsCase
 {
-    
 
     /**
      * @var array
      */
-    private $ObjectList     = array();
+    private $objectList     = array();
 
     /**
      * @var array
      */
-    private $ObjectCount    = array();
+    private $objectCount    = array();
 
     /**
      * @dataProvider objectFieldsProvider
      */
-    public function testGetSingleFieldFromModule($Sequence, $ObjectType, $Field)
+    public function testGetSingleFieldFromModule($testSequence, $objectType, $field)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Get next Available Object ID from Module
-        $ObjectId = $this->getNextObjectId($ObjectType);
+        $objectId = $this->getNextObjectId($objectType);
 
         //====================================================================//
         //   Get Readable Object Fields List
-        $Fields = $this->reduceFieldList(Splash::object($ObjectType)->fields(), true, false);
+        $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
         
         //====================================================================//
         //   Execute Action Directly on Module
-        $Data = Splash::object($ObjectType)->get($ObjectId, $Fields);
+        $data = Splash::object($objectType)->get($objectId, $fields);
         
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);
+        if (is_array($data)) {
+            $data   =   new ArrayObject($data);
         }
         
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data, array($Field), $ObjectId);
+        $this->verifyResponse($data, array($field), $objectId);
     }
     
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testGetAllFieldsFromModule($Sequence, $ObjectType)
+    public function testGetAllFieldsFromModule($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Get next Available Object ID from Module
-        $ObjectId = $this->getNextObjectId($ObjectType);
+        $objectId = $this->getNextObjectId($objectType);
         
         //====================================================================//
         //   Get Readable Object Fields List
-        $Fields = $this->reduceFieldList(Splash::object($ObjectType)->fields(), true, false);
+        $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
         
         //====================================================================//
         //   Execute Action Directly on Module
-        $Data = Splash::object($ObjectType)->get($ObjectId, $Fields);
+        $data = Splash::object($objectType)->get($objectId, $fields);
         
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);
+        if (is_array($data)) {
+            $data   =   new ArrayObject($data);
         }
         
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data, Splash::object($ObjectType)->fields(), $ObjectId);
+        $this->verifyResponse($data, Splash::object($objectType)->fields(), $objectId);
     }
     
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromObjectsService($Sequence, $ObjectType)
+    public function testFromObjectsService($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Get next Available Object ID from Module
-        $ObjectId = $this->getNextObjectId($ObjectType);
+        $objectId = $this->getNextObjectId($objectType);
         
         //====================================================================//
         //   Get Readable Object Fields List
-        $Fields = $this->reduceFieldList(Splash::object($ObjectType)->fields(), true, false);
+        $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->genericAction(
+        $data = $this->genericAction(
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
-            [ "type" => $ObjectType, "id" => $ObjectId, "fields" => $Fields]
+            [ "type" => $objectType, "id" => $objectId, "fields" => $fields]
         );
         
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data, Splash::object($ObjectType)->fields(), $ObjectId);
+        $this->verifyResponse($data, Splash::object($objectType)->fields(), $objectId);
     }
 
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromObjectsServiceErrors($Sequence, $ObjectType)
+    public function testFromObjectsServiceErrors($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //      Request definition without Sending ObjectType
@@ -129,7 +128,7 @@ class O07GetTest extends ObjectsCase
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
-            [ "type" => $ObjectType, "fields" => array()]
+            [ "type" => $objectType, "fields" => array()]
         );
         //====================================================================//
         //      Request Reading but Sending NUll ObjectID
@@ -137,79 +136,79 @@ class O07GetTest extends ObjectsCase
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
-            [ "type" => $ObjectType, "id" => null, "fields" => array()]
+            [ "type" => $objectType, "id" => null, "fields" => array()]
         );
         $this->genericErrorAction(
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
-            [ "type" => $ObjectType, "id" => 0, "fields" => array()]
+            [ "type" => $objectType, "id" => 0, "fields" => array()]
         );
     }
 
-    public function getNextObjectId($ObjectType)
+    public function getNextObjectId($objectType)
     {
         //====================================================================//
         //   If Object List Not Loaded
-        if (!isset($this->ObjectList[$ObjectType])) {
+        if (!isset($this->objectList[$objectType])) {
             //====================================================================//
             //   Get Object List from Module
-            $List = Splash::object($ObjectType)->objectsList();
+            $list = Splash::object($objectType)->objectsList();
 
             //====================================================================//
             //   Get Object Count
-            $this->ObjectCount[$ObjectType] = $List["meta"]["current"];
+            $this->objectCount[$objectType] = $list["meta"]["current"];
             
             //====================================================================//
             //   Remove Meta Datats form Objects List
-            unset($List["meta"]);
+            unset($list["meta"]);
             
             //====================================================================//
             //   Convert ArrayObjects
-            if (is_a($List, "ArrayObject")) {
-                $this->ObjectList[$ObjectType] = $List->getArrayCopy();
+            if (is_a($list, "ArrayObject")) {
+                $this->objectList[$objectType] = $list->getArrayCopy();
             } else {
-                $this->ObjectList[$ObjectType] = $List;
+                $this->objectList[$objectType] = $list;
             }
         }
         
         //====================================================================//
         //   Verify Objects List is Not Empty
-        if ($this->ObjectCount[$ObjectType] <= 0) {
+        if ($this->objectCount[$objectType] <= 0) {
             $this->markTestSkipped('No Objects in Database.');
             return false;
         }
         
         //====================================================================//
         //   Return First Object of List
-        $NextObject = array_shift($this->ObjectList[$ObjectType]);
-        return $NextObject["id"];
+        $nextObject = array_shift($this->objectList[$objectType]);
+        return $nextObject["id"];
     }
     
     
-    public function verifyResponse($Data, $Fields, $ObjectId)
+    public function verifyResponse($data, $fields, $objectId)
     {
         //====================================================================//
         //   Verify Response Block
-        $this->assertNotEmpty($Data, "Data Block is Empty");
-        $this->assertInstanceOf("ArrayObject", $Data, "Data Block is Not an ArrayObject");
+        $this->assertNotEmpty($data, "Data Block is Empty");
+        $this->assertInstanceOf("ArrayObject", $data, "Data Block is Not an ArrayObject");
 
         //====================================================================//
         //   Verify Object Id is Present
-        $this->assertArrayHasKey("id", $Data, "Object Identifier ['id'] is not defined in returned Data Block.");
-        $this->assertEquals($Data["id"], $ObjectId, "Object Identifier ['id'] is different in returned Data Block.");
+        $this->assertArrayHasKey("id", $data, "Object Identifier ['id'] is not defined in returned Data Block.");
+        $this->assertEquals($data["id"], $objectId, "Object Identifier ['id'] is different in returned Data Block.");
         
         //====================================================================//
         //  Verify Field Data
-        foreach ($Fields as $Field) {
+        foreach ($fields as $field) {
             //==============================================================================
             //      Filter Non-Readable Fields
-            if (!$Field->read) {
+            if (!$field->read) {
                 continue;
             }
             //==============================================================================
             //      Validate Field Data
-            $this->isValidFieldData($Data, $Field->id, $Field->type);
+            $this->isValidFieldData($data, $field->id, $field->type);
         }
     }
 }

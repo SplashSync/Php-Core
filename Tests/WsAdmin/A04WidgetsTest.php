@@ -18,58 +18,52 @@ class A04WidgetsTest extends AbstractBaseCase
     {
         //====================================================================//
         //   Execute Action From Module
-        $Data = Splash::widgets();
+        $data = Splash::widgets();
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);
+        if (is_array($data)) {
+            $data   =   new ArrayObject($data);
         }
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
 
     
     public function testWidgetsActionFromAdmin()
     {
-        
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_WIDGETS, __METHOD__);
-        
+        $data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_WIDGETS, __METHOD__);
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
     
     public function testWidgetsActionFromWidgets()
     {
-        
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->genericAction(SPL_S_WIDGETS, SPL_F_WIDGET_LIST, __METHOD__);
-        
+        $data = $this->genericAction(SPL_S_WIDGETS, SPL_F_WIDGET_LIST, __METHOD__);
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
     
-    public function verifyResponse($Data)
+    public function verifyResponse($data)
     {
-        
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty($Data, "Widgets List is Empty");
-        $this->assertInstanceOf("ArrayObject", $Data, "Widgets List is Not an ArrayObject");
-        
+        $this->assertNotEmpty($data, "Widgets List is Empty");
+        $this->assertInstanceOf("ArrayObject", $data, "Widgets List is Not an ArrayObject");
         //====================================================================//
         // CHECK ITEMS
-        foreach ($Data as $WidgetType) {
-            $this->assertNotEmpty($WidgetType, "Widgets Type is Empty");
+        foreach ($data as $widgetType) {
+            $this->assertNotEmpty($widgetType, "Widgets Type is Empty");
             $this->assertInternalType(
                 "string",
-                $WidgetType,
-                "Widgets Type is Not an String. (Given" . print_r($WidgetType, true) . ")"
+                $widgetType,
+                "Widgets Type is Not an String. (Given" . print_r($widgetType, true) . ")"
             );
         }
     }

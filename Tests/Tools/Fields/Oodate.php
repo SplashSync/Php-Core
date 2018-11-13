@@ -22,21 +22,21 @@ class Oodate extends Oovarchar
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
         //==============================================================================
         //      Verify Data is not Empty
-        if (empty($Data)) {
+        if (empty($data)) {
             return true;
         }
 
         //==============================================================================
         //      Verify Data is a DateTime Type
-        if (\DateTime::createFromFormat(SPL_T_DATECAST, $Data) !== false) {
+        if (\DateTime::createFromFormat(SPL_T_DATECAST, $data) !== false) {
             return true;
         }
 
@@ -50,11 +50,11 @@ class Oodate extends Oovarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return string
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
         //==============================================================================
         //      Generate a random DateTime

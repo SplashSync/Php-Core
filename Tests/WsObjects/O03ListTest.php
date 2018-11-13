@@ -17,37 +17,37 @@ class O03ListTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromModule($Sequence, $ObjectType)
+    public function testFromModule($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Execute Action Directly on Module
-        $Data = Splash::object($ObjectType)->objectsList();
+        $data = Splash::object($objectType)->objectsList();
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);
+        if (is_array($data)) {
+            $data   =   new ArrayObject($data);
         }
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data, $ObjectType);
+        $this->verifyResponse($data, $objectType);
     }
     
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromObjectsService($Sequence, $ObjectType)
+    public function testFromObjectsService($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->genericAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__, [ "id" => null, "type" => $ObjectType]);
+        $data = $this->genericAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__, [ "id" => null, "type" => $objectType]);
         
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data, $ObjectType);
+        $this->verifyResponse($data, $objectType);
     }
 
     public function testFromObjectsServiceErrors()
@@ -57,61 +57,57 @@ class O03ListTest extends ObjectsCase
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__);
     }
     
-    public function verifyResponse($Data, $ObjectType)
+    public function verifyResponse($data, $objectType)
     {
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty($Data, "Objects List is Empty");
-        $this->assertInstanceOf("ArrayObject", $Data, "Objects List is Not an ArrayObject");
+        $this->assertNotEmpty($data, "Objects List is Empty");
+        $this->assertInstanceOf("ArrayObject", $data, "Objects List is Not an ArrayObject");
         
-        $this->verifyMetaInformations($Data, $ObjectType);
-        $this->verifyAvailableFields($Data, $ObjectType);
+        $this->verifyMetaInformations($data, $objectType);
+        $this->verifyAvailableFields($data, $objectType);
     }
     
 
-    public function verifyAvailableFields($Data, $ObjectType)
+    public function verifyAvailableFields($data, $objectType)
     {
         //====================================================================//
         // Verify Fields are Available
-        $Fields = Splash::object($ObjectType)->fields();
-        if (is_null($Fields)) {
+        $fields = Splash::object($objectType)->fields();
+        if (is_null($fields)) {
             return false;
         }
 
-//        //====================================================================//
-//        // Verify List Datas
-//        $Object = reset($Data);
-        
         //====================================================================//
         // Verify List Data Items
-        foreach ($Data as $Item) {
+        foreach ($data as $item) {
             //====================================================================//
             // Verify Object Id field is available
             $this->assertArrayHasKey(
                 "id",
-                $Item,
-                $ObjectType . " List => Object Identifier (id) is not defined in List."
+                $item,
+                $objectType . " List => Object Identifier (id) is not defined in List."
             );
             $this->assertInternalType(
                 "scalar",
-                $Item["id"],
-                $ObjectType . " List => Object Identifier (id) is not String convertible."
+                $item["id"],
+                $objectType . " List => Object Identifier (id) is not String convertible."
             );
 
              
             //====================================================================//
             // Verify all "inlist" fields are available
-            foreach ($Fields as $Field) {
-                if (isset($Field['inlist']) && !empty($Field['inlist'])) {
+            foreach ($fields as $field) {
+                if (isset($field['inlist']) && !empty($field['inlist'])) {
                     $this->assertArrayHasKey(
-                        $Field["id"],
-                        $Item,
-                        $ObjectType . " List => Field (" . $Field["name"]. ") is marked as 'inlist' but not found."
+                        $field["id"],
+                        $item,
+                        $objectType . " List => Field (" . $field["name"]. ") is marked as 'inlist' but not found."
                     );
                     $this->assertInternalType(
                         "scalar",
-                        $Item["id"],
-                        $ObjectType . " List => Field (" . $Field["name"]. ") is not String convertible."
+                        $item["id"],
+                        $objectType . " List => Field (" . $field["name"]. ") is not String convertible."
                     );
                 }
             }
@@ -120,39 +116,39 @@ class O03ListTest extends ObjectsCase
         return true;
     }
 
-    public function verifyMetaInformations($Data, $ObjectType)
+    public function verifyMetaInformations($data, $objectType)
     {
         //====================================================================//
         // Verify List Meta Are Available
-        $this->assertArrayHasKey("meta", $Data, $ObjectType . " List => Meta Informations are not defined");
-        $Meta   =   $Data["meta"];
-        $this->assertArrayHasKey("current", $Meta, $ObjectType . " List => Meta current value not defined");
-        $this->assertArrayHasKey("total", $Meta, $ObjectType . " List => Meta total value are not defined");
+        $this->assertArrayHasKey("meta", $data, $objectType . " List => Meta Informations are not defined");
+        $meta   =   $data["meta"];
+        $this->assertArrayHasKey("current", $meta, $objectType . " List => Meta current value not defined");
+        $this->assertArrayHasKey("total", $meta, $objectType . " List => Meta total value are not defined");
         
-        if (!empty($Meta["current"]) && !empty($Meta["total"])) {
+        if (!empty($meta["current"]) && !empty($meta["total"])) {
             //====================================================================//
             // Verify List Meta Format
             $this->assertArrayInternalType(
-                $Meta,
+                $meta,
                 "current",
                 "numeric",
-                $ObjectType . " List => Current Object Count not an Integer"
+                $objectType . " List => Current Object Count not an Integer"
             );
             $this->assertArrayInternalType(
-                $Meta,
+                $meta,
                 "total",
                 "numeric",
-                $ObjectType . " List => Total Object Count not an Integer"
+                $objectType . " List => Total Object Count not an Integer"
             );
         }
         
         //====================================================================//
         // Verify List Meta Informations
-        unset($Data["meta"]);
+        unset($data["meta"]);
         $this->assertEquals(
-            $Meta["current"],
-            count($Data),
-            $ObjectType . " List => Current Object Count is different from Given Meta['current'] count."
+            $meta["current"],
+            count($data),
+            $objectType . " List => Current Object Count is different from Given Meta['current'] count."
         );
     }
 }

@@ -21,27 +21,27 @@ class Oobool
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
         //==============================================================================
         //      Verify Data is not Empty
-        if (empty($Data)) {
+        if (empty($data)) {
             return true;
         }
 
         //==============================================================================
         //      Verify Data is a Bool Type
-        if (is_bool($Data)) {
+        if (is_bool($data)) {
             return true;
         }
 
         //==============================================================================
         //      Verify Data is an Int as Bool
-        if (($Data === 0) || ($Data === 1) || ($Data === "0")|| ($Data === "1")) {
+        if (($data === 0) || ($data === 1) || ($data === "0")|| ($data === "1")) {
             return true;
         }
         
@@ -67,15 +67,15 @@ class Oobool
      *
      * !important : Target Data is always validated before compare
      *
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
+     * @param   mixed   $source     Original Data Block
+     * @param   mixed   $target     New Data Block
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source, $Target)
+    public static function compare($source, $target)
     {
         //====================================================================//
         //  Raw text Compare
-        return ($Source == $Target)?true:false;
+        return ($source == $target)?true:false;
     }
 }

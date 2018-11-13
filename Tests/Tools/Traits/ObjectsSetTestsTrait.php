@@ -14,12 +14,12 @@ use Splash\Client\Splash;
 trait ObjectsSetTestsTrait
 {
     /** @var array */
-    protected $Fields           = array();
+    protected $fields           = array();
 
     /**
      * @var string      Md5 CheckSum of Current Field Data Block
      */
-    protected $FieldMd5 = null;
+    protected $fieldMd5 = null;
     
     //==============================================================================
     //      COMPLETE TESTS EXECUTION FUNCTIONS
@@ -27,12 +27,12 @@ trait ObjectsSetTestsTrait
     
     /**
      * @abstract    Execute Single Field Test From Module
-     * @param       string      $ObjectType         Splash Object Type Name
-     * @param       ArrayObject $Field          Current Tested Field (ArrayObject)
-     * @param       string      $ForceObjectId      Object Id (Update) or Null (Create)
+     * @param       string      $objectType         Splash Object Type Name
+     * @param       ArrayObject $field              Current Tested Field (ArrayObject)
+     * @param       string      $forceObjectId      Object Id (Update) or Null (Create)
      * @return      bool
      */
-    protected function coreTestSetSingleFieldFromModule($ObjectType, $Field, $ForceObjectId = null)
+    protected function coreTestSetSingleFieldFromModule($objectType, $field, $forceObjectId = null)
     {
         //====================================================================//
         //   OBJECT CREATE TEST
@@ -40,14 +40,14 @@ trait ObjectsSetTestsTrait
         
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
-        $NewData = $this->prepareForTesting($ObjectType, $Field);
-        if ($NewData == false) {
+        $newData = $this->prepareForTesting($objectType, $field);
+        if ($newData == false) {
             return true;
         }
         
         //====================================================================//
         //   Execute Create Test
-        $ObjectId = $this->setObjectFromModule($ObjectType, $NewData, $ForceObjectId);
+        $objectId = $this->setObjectFromModule($objectType, $newData, $forceObjectId);
                 
         //====================================================================//
         //   OBJECT UPDATE TEST
@@ -55,12 +55,12 @@ trait ObjectsSetTestsTrait
         
         //====================================================================//
         //   Update Data Focused Field Data
-        $UpdateData = $this->prepareForTesting($ObjectType, $Field);
-        $this->assertNotEmpty($UpdateData);
+        $updateData = $this->prepareForTesting($objectType, $field);
+        $this->assertNotEmpty($updateData);
 
         //====================================================================//
         //   Execute Update Test
-        $this->setObjectFromModule($ObjectType, $UpdateData, $ObjectId);
+        $this->setObjectFromModule($objectType, $updateData, $objectId);
         
         //====================================================================//
         //   OBJECT DELETE
@@ -68,23 +68,23 @@ trait ObjectsSetTestsTrait
         
         //====================================================================//
         // If Test was Forced on a Specific Object (Local Sequences)
-        if (!is_null($ForceObjectId)) {
+        if (!is_null($forceObjectId)) {
             return;
         }
         
         //====================================================================//
         //   Delete Object From Module
-        $this->deleteObjectFromModule($ObjectType, $ObjectId);
+        $this->deleteObjectFromModule($objectType, $objectId);
     }
     
     /**
      * @abstract    Execute Single Field Test From Service
-     * @param       string      $ObjectType         Splash Object Type Name
-     * @param       ArrayObject $Field          Current Tested Field (ArrayObject)
-     * @param       string      $ForceObjectId      Object Id (Update) or Null (Create)
+     * @param       string      $objectType         Splash Object Type Name
+     * @param       ArrayObject $field              Current Tested Field (ArrayObject)
+     * @param       string      $forceObjectId      Object Id (Update) or Null (Create)
      * @return      bool
      */
-    public function coreTestSetSingleFieldFromService($ObjectType, $Field, $ForceObjectId = null)
+    public function coreTestSetSingleFieldFromService($objectType, $field, $forceObjectId = null)
     {
         //====================================================================//
         //   OBJECT CREATE TEST
@@ -92,14 +92,14 @@ trait ObjectsSetTestsTrait
         
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
-        $NewData = $this->prepareForTesting($ObjectType, $Field);
-        if ($NewData == false) {
+        $newData = $this->prepareForTesting($objectType, $field);
+        if ($newData == false) {
             return true;
         }
         
         //====================================================================//
         //   Execute Create Test
-        $ObjectId = $this->setObjectFromService($ObjectType, $NewData, $ForceObjectId);
+        $objectId = $this->setObjectFromService($objectType, $newData, $forceObjectId);
         
         //====================================================================//
         // BOOT or REBOOT MODULE
@@ -111,12 +111,12 @@ trait ObjectsSetTestsTrait
         
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
-        $UpdateData = $this->prepareForTesting($ObjectType, $Field);
-        $this->assertNotEmpty($UpdateData);
+        $updateData = $this->prepareForTesting($objectType, $field);
+        $this->assertNotEmpty($updateData);
         
         //====================================================================//
         //   Execute Update Test
-        $this->setObjectFromService($ObjectType, $UpdateData, $ObjectId);
+        $this->setObjectFromService($objectType, $updateData, $objectId);
         
         //====================================================================//
         //   OBJECT DELETE
@@ -124,13 +124,13 @@ trait ObjectsSetTestsTrait
         
         //====================================================================//
         // If Test was Forced on a Specific Object (Local Sequences)
-        if (!is_null($ForceObjectId)) {
+        if (!is_null($forceObjectId)) {
             return;
         }
         
         //====================================================================//
         //   Delete Object From Module
-        $this->deleteObjectFromModule($ObjectType, $ObjectId);
+        $this->deleteObjectFromModule($objectType, $objectId);
     }
     
     //==============================================================================
@@ -139,113 +139,113 @@ trait ObjectsSetTestsTrait
     
     /**
      * @abstract    Execute Object Create or Update Test with Given Data (From Module)
-     * @param       string      $ObjectType         Splash Object Type Name
-     * @param       array       $ObjectData         Splash Data Block
-     * @param       string      $ForceObjectId      Object Id (Update) or Null (Create)
+     * @param       string      $objectType         Splash Object Type Name
+     * @param       array       $objectData         Splash Data Block
+     * @param       string      $forceObjectId      Object Id (Update) or Null (Create)
      */
-    protected function setObjectFromModule($ObjectType, $ObjectData, $ForceObjectId = null)
+    protected function setObjectFromModule($objectType, $objectData, $forceObjectId = null)
     {
         //====================================================================//
         // Lock New Objects To Avoid Action Commit
-        Splash::object($ObjectType)->lock($ForceObjectId);
+        Splash::object($objectType)->lock($forceObjectId);
         //====================================================================//
         // Clean Objects Commited Array
         Splash::$Commited = array();
         //====================================================================//
         //   Update Object on Module
-        $ObjectId = Splash::object($ObjectType)->set($ForceObjectId, $ObjectData);
+        $objectId = Splash::object($objectType)->set($forceObjectId, $objectData);
         //====================================================================//
         //   Verify Response
-        $this->verifySetResponse($ObjectType, $ObjectId, ($ForceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $ObjectData);
+        $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $objectData);
         //====================================================================//
         // UnLock New Objects To Avoid Action Commit
-        Splash::object($ObjectType)->unLock();
+        Splash::object($objectType)->unLock();
         //====================================================================//
         // Lock This Object To Avoid Being Selected for Linking
-        $this->setCurrentObject($ObjectType, $ObjectId);
+        $this->setCurrentObject($objectType, $objectId);
         //====================================================================//
         // Retun Object Id
-        return $ObjectId;
+        return $objectId;
     }
     
     /**
      * @abstract    Execute Object Create or Update Test with Given Data (From Service)
-     * @param       string      $ObjectType         Splash Object Type Name
-     * @param       array       $ObjectData         Splash Data Block
-     * @param       string      $ForceObjectId      Object Id (Update) or Null (Create)
+     * @param       string      $objectType         Splash Object Type Name
+     * @param       array       $objectData         Splash Data Block
+     * @param       string      $forceObjectId      Object Id (Update) or Null (Create)
      */
-    protected function setObjectFromService($ObjectType, $ObjectData, $ForceObjectId = null)
+    protected function setObjectFromService($objectType, $objectData, $forceObjectId = null)
     {
         //====================================================================//
         // Clean Objects Commited Array
         Splash::$Commited = array();
         //====================================================================//
         //   Create a New Object via Service
-        $ObjectId = $this->genericAction(
+        $objectId = $this->genericAction(
             SPL_S_OBJECTS,
             SPL_F_SET,
             __METHOD__,
-            [ "id" => $ForceObjectId, "type" => $ObjectType, "fields" => $ObjectData]
+            [ "id" => $forceObjectId, "type" => $objectType, "fields" => $objectData]
         );
         //====================================================================//
         //   Verify Response
-        $this->verifySetResponse($ObjectType, $ObjectId, ($ForceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $ObjectData);
+        $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $objectData);
         //====================================================================//
         // UnLock New Objects To Avoid Action Commit
-        Splash::object($ObjectType)->unLock();
+        Splash::object($objectType)->unLock();
         //====================================================================//
         // Lock This Object To Avoid Being Selected for Linking
-        $this->setCurrentObject($ObjectType, $ObjectId);
+        $this->setCurrentObject($objectType, $objectId);
         //====================================================================//
         // Retun Object Id
-        return $ObjectId;
+        return $objectId;
     }
     
     /**
      * @abstract    Execute Object Delete Test (From Module)
-     * @param       string      $ObjectType         Splash Object Type Name
-     * @param       string      $ObjectId           Object Id
+     * @param       string      $objectType         Splash Object Type Name
+     * @param       string      $objectId           Object Id
      */
-    protected function deleteObjectFromModule($ObjectType, $ObjectId)
+    protected function deleteObjectFromModule($objectType, $objectId)
     {
         //====================================================================//
         // Lock New Objects To Avoid Action Commit
-        Splash::object($ObjectType)->lock($ObjectId);
+        Splash::object($objectType)->lock($objectId);
         //====================================================================//
         //   Delete Object on Module
-        $Data = Splash::object($ObjectType)->delete($ObjectId);
+        $data = Splash::object($objectType)->delete($objectId);
         //====================================================================//
         //   Verify Response
-        $this->verifyDeleteResponse($ObjectType, $ObjectId, $Data);
+        $this->verifyDeleteResponse($objectType, $objectId, $data);
     }
     
     //==============================================================================
     //      TESTS PREPARATION FUNCTIONS
     //==============================================================================
 
-    protected function verifyTestIsAllowed($ObjectType, $Field = null)
+    protected function verifyTestIsAllowed($objectType, $field = null)
     {
-        $Definition = Splash::object($ObjectType)->description();
+        $definition = Splash::object($objectType)->description();
 
-        $this->assertNotEmpty($Definition);
+        $this->assertNotEmpty($definition);
         //====================================================================//
         //   Verify Create is Allowed
-        if (!$Definition["allow_push_created"]) {
+        if (!$definition["allow_push_created"]) {
             return false;
         }
         //====================================================================//
         //   Verify Update is Allowed
-        if (!$Definition["allow_push_updated"]) {
+        if (!$definition["allow_push_updated"]) {
             return false;
         }
         //====================================================================//
         //   Verify Delete is Allowed
-        if (!$Definition["allow_push_deleted"]) {
+        if (!$definition["allow_push_deleted"]) {
             return false;
         }
         //====================================================================//
         //   Verify Field is To Be Tested
-        if (!is_null($Field) && $Field->notest) {
+        if (!is_null($field) && $field->notest) {
             return false;
         }
         
@@ -257,71 +257,71 @@ trait ObjectsSetTestsTrait
      *              -> This Function uses Preloaded Fields
      *              -> If Md5 provided, check Current Field was Modified
      *
-     * @param       string      $ObjectType     Current Object Type
-     * @param       ArrayObject $Field          Current Tested Field (ArrayObject)
-     * @param       bool        $Unik           Ask for Unik Field Data
+     * @param       string      $objectType     Current Object Type
+     * @param       ArrayObject $field          Current Tested Field (ArrayObject)
+     * @param       bool        $unik           Ask for Unik Field Data
      *
      * @return      array|bool      Generated Data Block or False if not Allowed
      */
-    protected function generateObjectData($ObjectType, $Field, $Unik = true)
+    protected function generateObjectData($objectType, $field, $unik = true)
     {
         //====================================================================//
         // Generate Required Fields List
-        $this->Fields   =   $this->fakeFieldsList($ObjectType, [$Field->id], true);
+        $this->fields   =   $this->fakeFieldsList($objectType, [$field->id], true);
         
         //====================================================================//
         // Prepare Fake Object Data
         //====================================================================//
-        $Try = 0;
+        $try = 0;
         do {
             //====================================================================//
             // Generate Object Data
-            $FakeData       =   $this->fakeObjectData($this->Fields);
-            if ($FakeData == false) {
+            $fakeData       =   $this->fakeObjectData($this->fields);
+            if ($fakeData == false) {
                 return false;
             }
             //====================================================================//
             // Check if Compare is Required
-            if (($Unik == false) || (empty($this->FieldMd5))) {
+            if (($unik == false) || (empty($this->fieldMd5))) {
                 //====================================================================//
                 // Store MD5 of New Generated Field Data
-                $this->FieldMd5 = $this->getFakeDataMd5($FakeData, $Field);
-                return $FakeData;
+                $this->fieldMd5 = $this->getFakeDataMd5($fakeData, $field);
+                return $fakeData;
             }
             
-            $FakeDataMd5 = $this->getFakeDataMd5($FakeData, $Field);
+            $fakeDataMd5 = $this->getFakeDataMd5($fakeData, $field);
 
             //====================================================================//
             //   Ensure Field Data was modified
-            $Try++;
-        } while (($this->FieldMd5 === $FakeDataMd5) && ($Try < 5));
+            $try++;
+        } while (($this->fieldMd5 === $fakeDataMd5) && ($try < 5));
         
         //====================================================================//
         // Store MD5 of New Generated Field Data
-        $this->FieldMd5 = $this->getFakeDataMd5($FakeData, $Field);
+        $this->fieldMd5 = $this->getFakeDataMd5($fakeData, $field);
 
         //====================================================================//
         // Return Generated Object Data
-        return $FakeData;
+        return $fakeData;
     }
     
     /**
      * @abstract    Generate Object Data Md5 Checksum to Ensure Data are different
      *
-     * @param       array       $FakeData       Faker Object Data Set
-     * @param       ArrayObject $Field          Current Tested Field (ArrayObject)
+     * @param       array       $fakeData       Faker Object Data Set
+     * @param       ArrayObject $field          Current Tested Field (ArrayObject)
      *
      * @return      string                      Md5 CheckSum
      */
-    protected function getFakeDataMd5($FakeData, $Field)
+    protected function getFakeDataMd5($fakeData, $field)
     {
         //====================================================================//
         // Filter data to focus on Tested Field
-        $filteredData   =   $this->filterData($FakeData, [$Field->id]);
+        $filteredData   =   $this->filterData($fakeData, [$field->id]);
         //====================================================================//
         // Data Block is Empty(i.e: ReadOnly Field)
         if (empty($filteredData)) {
-            return md5(serialize($FakeData));
+            return md5(serialize($fakeData));
         }
         return md5(serialize($filteredData));
     }
@@ -331,84 +331,81 @@ trait ObjectsSetTestsTrait
      *              -> This Function uses Preloaded Fields
      *              -> If Md5 provided, check Current Field was Modified
      *
-     * @param       string      $ObjectType     Current Object Type
-     * @param       ArrayObject $Field          Current Tested Field (ArrayObject)
-     * @param       bool        $Unik           Ask for Unik Field Data
+     * @param       string      $objectType     Current Object Type
+     * @param       ArrayObject $field          Current Tested Field (ArrayObject)
+     * @param       bool        $unik           Ask for Unik Field Data
      *
      * @return      array|bool      Generated Data Block or False if not Allowed
      */
-    public function prepareForTesting($ObjectType, $Field, $Unik = true)
+    public function prepareForTesting($objectType, $field, $unik = true)
     {
         //====================================================================//
         //   Verify Test is Required
-        if (!$this->verifyTestIsAllowed($ObjectType, $Field)) {
+        if (!$this->verifyTestIsAllowed($objectType, $field)) {
             return false;
         }
-        
         //====================================================================//
         // Return Generated Object Data
-        return $this->generateObjectData($ObjectType, $Field, $Unik);
+        return $this->generateObjectData($objectType, $field, $unik);
     }
-    
-    
     
     //==============================================================================
     //      DATA VERIFICATION FUNCTIONS
     //==============================================================================
     
-    public function verifySetResponse($ObjectType, $ObjectId, $Action, $ExpectedData)
+    public function verifySetResponse($objectType, $objectId, $action, $expectedData)
     {
         //====================================================================//
         //   Verify Object Id Is Not Empty
-        $this->assertNotEmpty($ObjectId, "Returned New Object Id is Empty");
+        $this->assertNotEmpty($objectId, "Returned New Object Id is Empty");
 
         //====================================================================//
         //   Add Object Id to Created List
-        $this->addTestedObject($ObjectType, $ObjectId);
+        $this->addTestedObject($objectType, $objectId);
         
         //====================================================================//
         //   Verify Object Id Is in Right Format
         $this->assertTrue(
-            is_integer($ObjectId) || is_string($ObjectId),
+            is_integer($objectId) || is_string($objectId),
             "New Object Id is not an Integer or a Strings"
         );
         
         //====================================================================//
         //   Verify Object Change Was Commited
-        $this->assertIsFirstCommited($Action, $ObjectType, $ObjectId);
+        $this->assertIsFirstCommited($action, $objectType, $objectId);
         
         //====================================================================//
         //   Read Object Data
-        $CurrentData    =   Splash::object($ObjectType)
-                ->get($ObjectId, $this->reduceFieldList($this->Fields));
+        $currentData    =   Splash::object($objectType)
+                ->get($objectId, $this->reduceFieldList($this->fields));
         //====================================================================//
         //   Verify Object Data are Ok
-        $this->compareDataBlocks($this->Fields, $ExpectedData, $CurrentData, $ObjectType);
+        $this->compareDataBlocks($this->fields, $expectedData, $currentData, $objectType);
     }
     
-    public function verifyDeleteResponse($ObjectType, $ObjectId, $Data)
+    public function verifyDeleteResponse($objectType, $objectId, $data)
     {
         //====================================================================//
         //   Verify Response
-        $this->assertIsSplashBool($Data, "Object Delete Response Must be a Bool");
-        $this->assertNotEmpty($Data, "Object Delete Response is Not True");
+        $this->assertIsSplashBool($data, "Object Delete Response Must be a Bool");
+        $this->assertNotEmpty($data, "Object Delete Response is Not True");
         
         //====================================================================//
         // Lock New Objects To Avoid Action Commit
-        Splash::object($ObjectType)->lock($ObjectId);
+        Splash::object($objectType)->lock($objectId);
         
         //====================================================================//
         //   Verify Repeating Delete as Same Result
-        $RepeatedResponse    =   Splash::object($ObjectType)->delete($ObjectId);
+        $repeatedResponse    =   Splash::object($objectType)->delete($objectId);
         $this->assertTrue(
-            $RepeatedResponse,
+            $repeatedResponse,
             "Object Repeated Delete, Must return True even if Object Already Deleted."
         );
         
         //====================================================================//
         //   Verify Object not Present anymore
-        $Fields = $this->reduceFieldList(Splash::object($ObjectType)->fields(), true, false);
-        $GetResponse    =   Splash::object($ObjectType)->get($ObjectId, $Fields);
-        $this->assertFalse($GetResponse, "Object Not Delete, I can still read it!!");
+        $fields         =   $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
+        $getResponse    =   Splash::object($objectType)->get($objectId, $fields);
+        $this->assertFalse($getResponse, "Object Not Delete, I can still read it!!");
     }
 }

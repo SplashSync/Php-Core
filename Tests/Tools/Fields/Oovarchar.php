@@ -21,13 +21,13 @@ class Oovarchar
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
-        if (!empty($Data) && !is_string($Data)) {
+        if (!empty($data) && !is_string($data)) {
             return "Field Data is not a String.";
         }
         return true;
@@ -40,62 +40,62 @@ class Oovarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return string
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
         //==============================================================================
         //      generate Random String
-        $Data   =   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
-        $Data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
+        $data   =   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
+        $data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
         
         //==============================================================================
         //      Apply Constraints
-        self::applyLengthConstrains($Settings, $Data);
-        self::applyCaseConstrains($Settings, $Data);
+        self::applyLengthConstrains($settings, $data);
+        self::applyCaseConstrains($settings, $data);
        
-        return $Data;
+        return $data;
     }
     
     /**
      * @abstract    Apply Case Constrains
-     * @param   array       $Settings   User Defined Faker Settings
-     * @param   string      $Data
+     * @param   array       $settings   User Defined Faker Settings
+     * @param   string      $data
      * @return  void
      */
-    private static function applyLengthConstrains($Settings, &$Data)
+    private static function applyLengthConstrains($settings, &$data)
     {
         //==============================================================================
         //      Apply Min Length Constraint
-        if (isset($Settings["minLength"]) && is_numeric($Settings["minLength"])) {
-            while (strlen($Data) < $Settings["minLength"]) {
-                $Data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
+        if (isset($settings["minLength"]) && is_numeric($settings["minLength"])) {
+            while (strlen($data) < $settings["minLength"]) {
+                $data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
             }
         }
         //==============================================================================
         //      Apply Max Length Constraint
-        if (isset($Settings["maxLength"]) && is_numeric($Settings["maxLength"])) {
-            $Data   =   substr($Data, 0, $Settings["maxLength"]);
+        if (isset($settings["maxLength"]) && is_numeric($settings["maxLength"])) {
+            $data   =   substr($data, 0, $settings["maxLength"]);
         }
     }
 
     /**
      * @abstract    Apply Case Constrains
-     * @param   array       $Settings   User Defined Faker Settings
-     * @param   string      $Data
+     * @param   array       $settings   User Defined Faker Settings
+     * @param   string      $data
      * @return  void
      */
-    private static function applyCaseConstrains($Settings, &$Data)
+    private static function applyCaseConstrains($settings, &$data)
     {
         //==============================================================================
         //      Apply Case Constraint
-        if (isset($Settings["isLowerCase"]) && !empty($Settings["isLowerCase"])) {
-            $Data   = strtolower($Data);
+        if (isset($settings["isLowerCase"]) && !empty($settings["isLowerCase"])) {
+            $data   = strtolower($data);
         }
-        if (isset($Settings["isUpperCase"]) && !empty($Settings["isUpperCase"])) {
-            $Data   = strtoupper($Data);
+        if (isset($settings["isUpperCase"]) && !empty($settings["isUpperCase"])) {
+            $data   = strtoupper($data);
         }
     }
     
@@ -108,20 +108,20 @@ class Oovarchar
      *
      * !important : Target Data is always validated before compare
      *
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
+     * @param   mixed   $source     Original Data Block
+     * @param   mixed   $target     New Data Block
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source, $Target)
+    public static function compare($source, $target)
     {
         //====================================================================//
         //  Both Texts Are Empty
-        if (empty($Source) && empty($Target)) {
+        if (empty($source) && empty($target)) {
             return true;
         }
         //====================================================================//
         //  Raw text Compare
-        return ($Source === $Target)?true:false;
+        return ($source === $target)?true:false;
     }
 }

@@ -16,37 +16,37 @@ class O02FieldsTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromModule($Sequence, $ObjectType)
+    public function testFromModule($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Execute Action Directly on Module
-        $Data = Splash::object($ObjectType)->fields();
+        $data = Splash::object($objectType)->fields();
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);
+        if (is_array($data)) {
+            $data   =   new ArrayObject($data);
         }
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
     
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromObjectsService($Sequence, $ObjectType)
+    public function testFromObjectsService($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->genericAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__, [ "id" => null, "type" => $ObjectType]);
+        $data = $this->genericAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__, [ "id" => null, "type" => $objectType]);
         
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
 
     public function testFromObjectsServiceErrors()
@@ -56,21 +56,21 @@ class O02FieldsTest extends ObjectsCase
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__);
     }
     
-    public function verifyResponse($Data)
+    public function verifyResponse($data)
     {
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty($Data, "Object Fields List is Empty");
-        $this->assertInstanceOf("ArrayObject", $Data, "Object Fields List is Not an ArrayObject");
+        $this->assertNotEmpty($data, "Object Fields List is Empty");
+        $this->assertInstanceOf("ArrayObject", $data, "Object Fields List is Not an ArrayObject");
         
         //====================================================================//
         // All Fields Definitions are is right format
         //====================================================================//
-        foreach ($Data as $Field) {
-            $this->verifyFieldRequired($Field);
-            $this->verifyFieldMetaData($Field);
-            $this->verifyFieldOptional($Field);
-            $this->verifyFieldAssociations($Field, $Data);
+        foreach ($data as $fieldData) {
+            $this->verifyFieldRequired($fieldData);
+            $this->verifyFieldMetaData($fieldData);
+            $this->verifyFieldOptional($fieldData);
+            $this->verifyFieldAssociations($fieldData, $data);
         }
     }
     
@@ -78,115 +78,115 @@ class O02FieldsTest extends ObjectsCase
     /**
      * @abstract    Verify Main Field Informations are in right format
      *
-     * @param array $Field
+     * @param array $field
      */
-    public function verifyFieldRequired($Field)
+    public function verifyFieldRequired($field)
     {
         //====================================================================//
         // Verify Field Type Name Exists
-        $this->assertArrayInternalType($Field, "type", "string", "Field Type");
+        $this->assertArrayInternalType($field, "type", "string", "Field Type");
         $this->assertNotEmpty(
-            self::isValidType($Field["type"]),
-            "Field Type '" . $Field["type"] . "' is not a Valid Splash Field Type."
+            self::isValidType($field["type"]),
+            "Field Type '" . $field["type"] . "' is not a Valid Splash Field Type."
         );
         
         //====================================================================//
         // Remove List Name if List Fields Type
-        if (self::isListField($Field["type"])) {
-            $FieldListType  = self::isListField($Field["type"]);
-            $FieldType      = $FieldListType["fieldname"];
+        if (self::isListField($field["type"])) {
+            $fieldListType  = self::isListField($field["type"]);
+            $fieldType      = $fieldListType["fieldname"];
         } else {
-            $FieldType      = $Field["type"];
+            $fieldType      = $field["type"];
         }
                 
         //====================================================================//
         // If Field is Id Field => Verify The given Object Type Exists
-        if (self::isValidType($FieldType) && self::isIdField($FieldType)) {
-            $ObjectID   =   self::isIdField($FieldType);
+        if (self::isValidType($fieldType) && self::isIdField($fieldType)) {
+            $objectId   =   self::isIdField($fieldType);
             
             $this->assertTrue(
-                in_array($ObjectID["ObjectType"], Splash::objects()),
-                "Object ID Field of Type '" . $ObjectID["ObjectType"] . "' is not a Valid. "
+                in_array($objectId["ObjectType"], Splash::objects()),
+                "Object ID Field of Type '" . $objectId["ObjectType"] . "' is not a Valid. "
                     . "This Object Type was not found."
             );
         }
         
         //====================================================================//
         // All Required Informations are Available and is right format
-        $this->assertArrayInternalType($Field, "id", "string", "Field Identifier");
-        $this->assertArrayInternalType($Field, "name", "string", "Field Name");
-        $this->assertArraySplashBool($Field, "required", "Field Required Flag");
-        $this->assertArraySplashBool($Field, "write", "Field Write Flag");
-        $this->assertArraySplashBool($Field, "read", "Field Read Flag");
-        $this->assertArraySplashBool($Field, "inlist", "Field In List Flag");
+        $this->assertArrayInternalType($field, "id", "string", "Field Identifier");
+        $this->assertArrayInternalType($field, "name", "string", "Field Name");
+        $this->assertArraySplashBool($field, "required", "Field Required Flag");
+        $this->assertArraySplashBool($field, "write", "Field Write Flag");
+        $this->assertArraySplashBool($field, "read", "Field Read Flag");
+        $this->assertArraySplashBool($field, "inlist", "Field In List Flag");
     }
     
-    public function verifyFieldMetaData($Field)
+    public function verifyFieldMetaData($field)
     {
         //====================================================================//
         // Field MicroData Infos
-        if (array_key_exists("itemtype", $Field) && !empty($Field["itemtype"])) {
-            $this->assertArrayInternalType($Field, "itemtype", "string", "Field MicroData URL");
-            $this->assertArrayInternalType($Field, "itemprop", "string", "Field MicroData Property");
+        if (array_key_exists("itemtype", $field) && !empty($field["itemtype"])) {
+            $this->assertArrayInternalType($field, "itemtype", "string", "Field MicroData URL");
+            $this->assertArrayInternalType($field, "itemprop", "string", "Field MicroData Property");
 //                $this->isExtUrl         ($Field["itemtype"], "itemtype");
         }
         
         //====================================================================//
         // Field Tag
-        if (array_key_exists("tag", $Field) && !empty($Field["tag"])) {
-            $this->assertArrayInternalType($Field, "tag", "string", "Field Linking Tag");
+        if (array_key_exists("tag", $field) && !empty($field["tag"])) {
+            $this->assertArrayInternalType($field, "tag", "string", "Field Linking Tag");
         }
-        if (array_key_exists("tag", $Field) && array_key_exists("itemtype", $Field) && !empty($Field["itemtype"])) {
+        if (array_key_exists("tag", $field) && array_key_exists("itemtype", $field) && !empty($field["itemtype"])) {
             $this->assertEquals(
-                $Field["tag"],
-                md5($Field["itemprop"] . IDSPLIT . $Field["itemtype"]),
+                $field["tag"],
+                md5($field["itemprop"] . IDSPLIT . $field["itemtype"]),
                 "Field Tag do not match with defined MicroData. Expected Format: md5('itemprop'@'itemptype') "
             );
         }
     }
     
-    public function verifyFieldOptional($Field)
+    public function verifyFieldOptional($field)
     {
         //====================================================================//
         // Field Description
-        if (array_key_exists("desc", $Field)) {
-            $this->assertArrayInternalType($Field, "desc", "string", "Field Description");
+        if (array_key_exists("desc", $field)) {
+            $this->assertArrayInternalType($field, "desc", "string", "Field Description");
         }
             
         //====================================================================//
         // Field Format
-        if (array_key_exists("format", $Field)) {
-            $this->assertArrayInternalType($Field, "format", "string", "Field Format Description");
+        if (array_key_exists("format", $field)) {
+            $this->assertArrayInternalType($field, "format", "string", "Field Format Description");
         }
         
         //====================================================================//
         // Field No Test Flag
-        if (array_key_exists("notest", $Field)) {
-            $this->assertArraySplashBool($Field, "notest", "Field NoTest Flag");
+        if (array_key_exists("notest", $field)) {
+            $this->assertArraySplashBool($field, "notest", "Field NoTest Flag");
         }
     }
     
-    public function verifyFieldAssociations($Field, $Fields)
+    public function verifyFieldAssociations($field, $fields)
     {
-        if (!array_key_exists("asso", $Field) || empty($Field["asso"])) {
+        if (!array_key_exists("asso", $field) || empty($field["asso"])) {
             return;
         }
         //====================================================================//
         // Field Associated Fields List
-        foreach ($Field["asso"] as $FieldType) {
+        foreach ($field["asso"] as $fieldType) {
             //====================================================================//
             // Check FieldType Name
-            $this->assertInternalType("string", $FieldType, "Associated FieldType must be String Format");
+            $this->assertInternalType("string", $fieldType, "Associated FieldType must be String Format");
 
             //====================================================================//
             // Check FieldType Exists
-            $AssoField = null;
-            foreach ($Fields as $Item) {
-                if ($Item["id"] === $FieldType) {
-                    $AssoField = $Item;
+            $assoField = null;
+            foreach ($fields as $item) {
+                if ($item["id"] === $fieldType) {
+                    $assoField = $item;
                 }
             }
-            $this->assertNotEmpty($AssoField, "Associated Field " . $FieldType . " isn't an existing Field Id String.");
+            $this->assertNotEmpty($assoField, "Associated Field " . $fieldType . " isn't an existing Field Id String.");
         }
     }
 }

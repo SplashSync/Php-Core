@@ -20,81 +20,81 @@ trait ObjectsFakerTrait
     /**
      *   @abstract   Generate Fake Object Fields List
      *
-     *   @param      string     $ObjectType     Object Type Name
-     *   @param      array      $FieldsList     Object Field Ids List
-     *   @param      bool       $Associate      Include Associated Fields
+     *   @param      string     $objectType     Object Type Name
+     *   @param      array      $fieldsList     Object Field Ids List
+     *   @param      bool       $associate      Include Associated Fields
      *
      *   @return     array      $Out            Array of Fields
      */
-    public function fakeFieldsList($ObjectType, $FieldsList = false, $Associate = false)
+    public function fakeFieldsList($objectType, $fieldsList = false, $associate = false)
     {
         //====================================================================//
         // Safety Check => $ObjectType is a valid
-        $this->assertTrue(in_array($ObjectType, Splash::objects()), "Invalid Object Type Name. (" . $ObjectType . ")");
+        $this->assertTrue(in_array($objectType, Splash::objects()), "Invalid Object Type Name. (" . $objectType . ")");
 
         //====================================================================//
         // Create Empty Object Data Array
-        $Out    = array();
+        $outputs    = array();
         
         //====================================================================//
         // Load Object Fields Definition
-        $Fields = Splash::object($ObjectType)->fields();
-        if (empty($Fields)) {
-            return $Out;
+        $fields = Splash::object($objectType)->fields();
+        if (empty($fields)) {
+            return $outputs;
         }
         
         //====================================================================//
         // Generate Fields Data
-        foreach ($Fields as $Field) {
+        foreach ($fields as $field) {
             //====================================================================//
             // Check if Fields is Needed
-            if (!$this->isFieldNeeded($Field, $FieldsList)) {
+            if (!$this->isFieldNeeded($field, $fieldsList)) {
                 continue;
             }
             //====================================================================//
             // Add Fields to List
-            $Out[$Field->id] = $Field;
+            $outputs[$field->id] = $field;
         }
         
         //====================================================================//
         // No Associated Fields
-        if (!$Associate) {
-            return $Out;
+        if (!$associate) {
+            return $outputs;
         }
         
         //====================================================================//
         // Add Associated Fields to List
-        foreach ($Out as $OutField) {
+        foreach ($outputs as $outField) {
             //====================================================================//
             // No Associated Field
-            if (empty($OutField->asso)) {
+            if (empty($outField->asso)) {
                 continue;
             }
             //====================================================================//
             // For Associated Fields
-            foreach ($Fields as $Field) {
-                if (in_array($Field->id, $OutField->asso)) {
-                    $Out[$Field->id] = $Field;
+            foreach ($fields as $field) {
+                if (in_array($field->id, $outField->asso)) {
+                    $outputs[$field->id] = $field;
                 }
             }
         }
         
-        return $Out;
+        return $outputs;
     }
     
     /**
      *   @abstract   Check if Field Need to be in List
      *
-     *   @param      ArrayObject    $Field          Field Definition
-     *   @param      array          $FieldsList     Object Field Ids List
+     *   @param      ArrayObject    $field          Field Definition
+     *   @param      array          $fieldsList     Object Field Ids List
      *
      *   @return     bool
      */
-    private function isFieldNeeded($Field, $FieldsList = false)
+    private function isFieldNeeded($field, $fieldsList = false)
     {
         //====================================================================//
         // Check if Fields is Writable
-        if (!$Field->write) {
+        if (!$field->write) {
             return false;
         }
         //====================================================================//
@@ -103,17 +103,17 @@ trait ObjectsFakerTrait
 
         //====================================================================//
         // Required Field
-        if ($Field->required) {
+        if ($field->required) {
             return true;
         }
         //====================================================================//
         // If NO Fields List is Given => Select All Write Fields
-        if (($FieldsList == false) || !is_array($FieldsList)) {
+        if (($fieldsList == false) || !is_array($fieldsList)) {
             return true;
         }
         //====================================================================//
         // Field is in Requested List
-        if (!in_array($Field->id, $FieldsList)) {
+        if (!in_array($field->id, $fieldsList)) {
             return false;
         }
         return true;
@@ -122,74 +122,74 @@ trait ObjectsFakerTrait
     /**
      *   @abstract   Create Fake/Dummy Object Data
      *
-     *   @param      array   $FieldsList     Object Field List
-     *   @param      array   $OriginData     Original Object Data
+     *   @param      array   $fieldsList     Object Field List
+     *   @param      array   $originData     Original Object Data
      *
      *   @return     array
      */
-    public function fakeObjectData($FieldsList, $OriginData = null)
+    public function fakeObjectData($fieldsList, $originData = null)
     {
         //====================================================================//
         // Create Dummy Data Array
-        $Out = array();
-        if (empty($FieldsList)) {
-            return $Out;
+        $outputs = array();
+        if (empty($fieldsList)) {
+            return $outputs;
         }
         
         //====================================================================//
         // Create Dummy Fields Data
-        foreach ($FieldsList as $Field) {
+        foreach ($fieldsList as $field) {
             //====================================================================//
             // Generate Single Fields Dummy Data (is Not a List Field)
-            if (!self::isListField($Field->id)) {
-                $Out[$Field->id] = (self::isFieldToPreserve($Field, $OriginData) ?
-                        $OriginData[$Field->id] :
-                        self::fakeFieldData($Field->type, $Field->choices, $Field->options)
+            if (!self::isListField($field->id)) {
+                $outputs[$field->id] = (self::isFieldToPreserve($field, $originData) ?
+                        $originData[$field->id] :
+                        self::fakeFieldData($field->type, $field->choices, $field->options)
                     );
                 continue;
             }
             
             //====================================================================//
             // Generate Dummy List  Data
-            $List       =   self::isListField($Field->id);
-            $ListName   =   $List["listname"];
-            $FieldName  =   $List["fieldname"];
-            $ListData   =   self::fakeListData($Field);
+            $list       =   self::isListField($field->id);
+            $listName   =   $list["listname"];
+            $fieldName  =   $list["fieldname"];
+            $listData   =   self::fakeListData($field);
             //====================================================================//
             // Create List
-            if (!array_key_exists($ListName, $Out)) {
-                $Out[$ListName] = array();
+            if (!array_key_exists($listName, $outputs)) {
+                $outputs[$listName] = array();
             }
             //====================================================================//
             // Parse Data in List
-            foreach ($ListData as $Key => $Data) {
-                if (!array_key_exists($Key, $Out[$ListName])) {
-                    $Out[$ListName][$Key] = array();
+            foreach ($listData as $key => $data) {
+                if (!array_key_exists($key, $outputs[$listName])) {
+                    $outputs[$listName][$key] = array();
                 }
-                $Out[$ListName][$Key][$FieldName] = $Data[$FieldName];
+                $outputs[$listName][$key][$fieldName] = $data[$fieldName];
             }
         }
-        return $Out;
+        return $outputs;
     }
 
     /**
      *   @abstract   Check if Field Need to e in List
      *
-     *   @param      ArrayObject    $Field          Field Definition
-     *   @param      array          $OriginData     Original Object Data
+     *   @param      ArrayObject    $field          Field Definition
+     *   @param      array          $originData     Original Object Data
      *
      *   @return     bool
      */
-    private static function isFieldToPreserve($Field, $OriginData)
+    private static function isFieldToPreserve($field, $originData)
     {
         //====================================================================//
         // Check if Origin Data Exists
-        if (empty($OriginData) || !isset($OriginData[$Field->id]) || empty($OriginData[$Field->id])) {
+        if (empty($originData) || !isset($originData[$field->id]) || empty($originData[$field->id])) {
             return false;
         }
         //====================================================================//
         // Check if Fields Should be Tested or Not
-        if (!$Field->notest) {
+        if (!$field->notest) {
             return false;
         }
         return true;
@@ -198,83 +198,83 @@ trait ObjectsFakerTrait
     /**
      *   @abstract   Create Fake/Dummy Object List Data
      *
-     *   @param      array   $Field          Object Field Definition
+     *   @param      array   $field          Object Field Definition
      *
      *   @return     array
      */
-    public function fakeListData($Field)
+    public function fakeListData($field)
     {
         //====================================================================//
         // Read Number of Items to Put in Lists
-        $NbItems =  $this->settings["ListItems"]?$this->settings["ListItems"]:2;
+        $nbItems =  $this->settings["ListItems"]?$this->settings["ListItems"]:2;
         //====================================================================//
         // Parse List Identifiers
-        $List   =   self::isListField($Field->id);
-        $Type   =   self::isListField($Field->type);
+        $list   =   self::isListField($field->id);
+        $type   =   self::isListField($field->type);
         
         //====================================================================//
         // Generate Unik Dummy Fields Data
-        $ListData = array();
-        while (count($ListData) < $NbItems) {
-            $Data           =   self::fakeFieldData($Type["fieldname"], $Field->choices, $Field->options);
-            $Md5            =   md5(serialize($Data));
-            $ListData[$Md5] =   $Data;
+        $listData = array();
+        while (count($listData) < $nbItems) {
+            $data           =   self::fakeFieldData($type["fieldname"], $field->choices, $field->options);
+            $md5            =   md5(serialize($data));
+            $listData[$md5] =   $data;
         }
 
         //====================================================================//
         // Create Dummy List Data
-        $Out = array();
+        $outputs = array();
         
         //====================================================================//
         // Create Dummy Fields Data
-        for ($i = 0; $i < $NbItems; $i++) {
-            $Out[][$List["fieldname"]] = array_shift($ListData);
+        for ($i = 0; $i < $nbItems; $i++) {
+            $outputs[][$list["fieldname"]] = array_shift($listData);
         }
         
-        return $Out;
+        return $outputs;
     }
     
     /**
      *   @abstract   Create Fake Field data
      *
-     *   @param      string  $Type       Object Field Type
-     *   @param      array   $Choices    Object Field Possible Values
-     *   @param      array   $Options     Object Field Values Options
+     *   @param      string  $type       Object Field Type
+     *   @param      array   $choices    Object Field Possible Values
+     *   @param      array   $options     Object Field Values Options
      *
      *   @return     string|array
      */
-    public function fakeFieldData($Type, $Choices = null, $Options = array())
+    public function fakeFieldData($type, $choices = null, $options = array())
     {
         //====================================================================//
         // Safety Check
-        if (empty($Type)) {
+        if (empty($type)) {
             return false;
         }
         //====================================================================//
         // Verify Field Type is Valid
-        $ClassName = self::isValidType($Type);
-        if ($ClassName == false) {
+        $className = self::isValidType($type);
+        if ($className == false) {
             return false;
         }
         //====================================================================//
         // Detects Id Fields    => Cannot Generate Fake for Id Fields Here...
-        if (($id = self::isIdField($Type))) {
-            return $ClassName::fake($id["ObjectType"], array_merge_recursive($this->settings, $Options));
+        if (($id = self::isIdField($type))) {
+            return $className::fake($id["ObjectType"], array_merge_recursive($this->settings, $options));
         }
         
         //====================================================================//
         // Take Values From Given Choices
-        if (!empty($Choices)) {
-            $Index = mt_rand(0, count($Choices) - 1);
-            if (isset($Choices[$Index]["key"]) && ($Type == SPL_T_VARCHAR)) {
-                return (string) $Choices[$Index]["key"];
-            } elseif (isset($Choices[$Index]["key"])) {
-                return $Choices[$Index]["key"];
+        if (!empty($choices)) {
+            $index = mt_rand(0, count($choices) - 1);
+            if (isset($choices[$index]["key"]) && ($type == SPL_T_VARCHAR)) {
+                return (string) $choices[$index]["key"];
+            } elseif (isset($choices[$index]["key"])) {
+                return $choices[$index]["key"];
             }
         }
         
         //====================================================================//
         // Generate Single Field Data Type is Valid
-        return $ClassName::fake(array_merge_recursive($this->settings, $Options));
+        return $className::fake(array_merge_recursive($this->settings, $options));
     }
 }

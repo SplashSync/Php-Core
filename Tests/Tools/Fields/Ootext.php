@@ -21,13 +21,13 @@ class Ootext
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
-        if (!empty($Data) && !is_string($Data)) {
+        if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
         
@@ -41,13 +41,13 @@ class Ootext
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return mixed
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
-        return Oovarchar::fake($Settings);
+        return Oovarchar::fake($settings);
     }
     
     //==============================================================================
@@ -59,20 +59,20 @@ class Ootext
      *
      * !important : Target Data is always validated before compare
      *
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
+     * @param   mixed   $source     Original Data Block
+     * @param   mixed   $target     New Data Block
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source, $Target)
+    public static function compare($source, $target)
     {
         //====================================================================//
         //  Both Texts Are Empty
-        if (empty($Source) && empty($Target)) {
+        if (empty($source) && empty($target)) {
             return true;
         }
         //====================================================================//
         //  Raw text Compare
-        return ($Source === $Target)?true:false;
+        return ($source === $target)?true:false;
     }
 }

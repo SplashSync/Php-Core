@@ -39,9 +39,9 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerIsListFieldFunction
      */
-    public function testIsListFieldFunction($Input, $Result)
+    public function testIsListFieldFunction($input, $result)
     {
-        $this->assertEquals($Result, FieldsManager::isListField($Input));
+        $this->assertEquals($result, FieldsManager::isListField($input));
     }
 
     public function providerIsListFieldFunction()
@@ -61,9 +61,9 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerFieldNameFunction
      */
-    public function testFieldNameFunction($Input, $Result)
+    public function testFieldNameFunction($input, $result)
     {
-        $this->assertEquals($Result, FieldsManager::fieldName($Input));
+        $this->assertEquals($result, FieldsManager::fieldName($input));
     }
 
     public function providerFieldNameFunction()
@@ -84,9 +84,9 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerListNameFunction
      */
-    public function testListNameFunction($Input, $Result)
+    public function testListNameFunction($input, $result)
     {
-        $this->assertEquals($Result, FieldsManager::listName($Input));
+        $this->assertEquals($result, FieldsManager::listName($input));
     }
 
     public function providerListNameFunction()
@@ -107,9 +107,9 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerBaseTypeFunction
      */
-    public function testBaseTypeFunction($Input, $Result)
+    public function testBaseTypeFunction($input, $result)
     {
-        $this->assertEquals($Result, FieldsManager::baseType($Input));
+        $this->assertEquals($result, FieldsManager::baseType($input));
     }
 
     public function providerBaseTypeFunction()
@@ -167,9 +167,9 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerIsIdFieldFunction
      */
-    public function testIsIdFieldFunction($Input, $Result)
+    public function testIsIdFieldFunction($input, $result)
     {
-        $this->assertEquals($Result, FieldsManager::isIdField($Input));
+        $this->assertEquals($result, FieldsManager::isIdField($input));
     }
 
     public function providerIsIdFieldFunction()
@@ -188,9 +188,9 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerObjectIdFunction
      */
-    public function testObjectIdFunction($Input, $Result)
+    public function testObjectIdFunction($input, $result)
     {
-        $this->assertEquals($Result, FieldsManager::objectId($Input));
+        $this->assertEquals($result, FieldsManager::objectId($input));
     }
 
     public function providerObjectIdFunction()
@@ -211,9 +211,9 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerObjectTypeFunction
      */
-    public function testObjectTypeFunction($Input, $Result)
+    public function testObjectTypeFunction($input, $result)
     {
-        $this->assertEquals($Result, FieldsManager::objectType($Input));
+        $this->assertEquals($result, FieldsManager::objectType($input));
     }
 
     public function providerObjectTypeFunction()

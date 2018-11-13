@@ -22,27 +22,27 @@ class Ooobjectid
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
         //==============================================================================
         //      Verify Data is Not Empty
-        if (is_null($Data) || empty($Data) || ($Data === "0")) {
+        if (is_null($data) || empty($data) || ($data === "0")) {
             return true;
         }
         
         //==============================================================================
         //      Verify Data is a string
-        if (!empty($Data) && !is_string($Data)) {
+        if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
         
         //==============================================================================
         //      Verify Data is an Id Field
-        $list = explode(IDSPLIT, $Data);
+        $list = explode(IDSPLIT, $data);
         if (is_array($list) && (count($list)==2)) {
             return true;
         }
@@ -57,50 +57,50 @@ class Ooobjectid
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      string  $ObjectType      Pointed Object Type Name
-     * @param      array   $Settings        User Defined Faker Settings
+     * @param      string  $objectType      Pointed Object Type Name
+     * @param      array   $settings        User Defined Faker Settings
      *
      * @return mixed
      */
-    public static function fake($ObjectType, $Settings)
+    public static function fake($objectType, $settings)
     {
         //====================================================================//
         // Get Object List
-        $ObjectsList    =   Splash::object($ObjectType)->objectsList();
+        $objectsList    =   Splash::object($objectType)->objectsList();
         //====================================================================//
         // Unset MetaData from Objects List
-        if (isset($ObjectsList["meta"])) {
-            unset($ObjectsList["meta"]);
+        if (isset($objectsList["meta"])) {
+            unset($objectsList["meta"]);
         }
-        if (empty($ObjectsList)) {
+        if (empty($objectsList)) {
             return null;
         }
         //====================================================================//
         // Filter Objects List to Remove Current Tested
-        self::filterObjectList($ObjectsList, $ObjectType, $Settings);
+        self::filterObjectList($objectsList, $objectType, $settings);
         //====================================================================//
         // Select an Object in Given List
-        $Item           = $ObjectsList[array_rand($ObjectsList, 1)];
-        if (isset($Item["id"]) && !empty($Item["id"])) {
+        $item           = $objectsList[array_rand($objectsList, 1)];
+        if (isset($item["id"]) && !empty($item["id"])) {
             //====================================================================//
             // Generate Object Id String
-            return self::encodeIdField($Item["id"], $ObjectType);
+            return self::encodeIdField($item["id"], $objectType);
         }
         return null;
     }
     
-    private static function filterObjectList(&$ObjectsList, $ObjectType, $Settings)
+    private static function filterObjectList(&$objectsList, $objectType, $settings)
     {
         //====================================================================//
         // Filter Objects List to Remove Current Tested
-        $FilterObjectId   = null;
-        if (isset($Settings["CurrentType"]) && ($ObjectType == $Settings["CurrentType"])) {
-            $FilterObjectId   = $Settings["CurrentId"];
+        $filterObjectId   = null;
+        if (isset($settings["CurrentType"]) && ($objectType == $settings["CurrentType"])) {
+            $filterObjectId   = $settings["CurrentId"];
         }
-        if (!empty($FilterObjectId)) {
-            foreach ($ObjectsList as $Index => $Item) {
-                if ($Item["id"] == $FilterObjectId) {
-                    unset($ObjectsList[$Index]);
+        if (!empty($filterObjectId)) {
+            foreach ($objectsList as $index => $item) {
+                if ($item["id"] == $filterObjectId) {
+                    unset($objectsList[$index]);
                 }
             }
         }
@@ -115,23 +115,23 @@ class Ooobjectid
      *
      * !important : Target Data is always validated before compare
      *
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
+     * @param   mixed   $source     Original Data Block
+     * @param   mixed   $target     New Data Block
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source, $Target)
+    public static function compare($source, $target)
     {
         //dump($Source);
         //dump($Target);
         //====================================================================//
         // Both Objects Ids Are Empty
-        if (empty($Source) && empty($Target)) {
+        if (empty($source) && empty($target)) {
             return true;
         }
         //====================================================================//
         // Both Objects Ids Are Similar
-        if ($Source ==  $Target) {
+        if ($source ==  $target) {
             return true;
         }
         return false;
@@ -144,42 +144,42 @@ class Ooobjectid
     /**
      *      @abstract   Encode an Object Identifier Field
      *
-     *      @param      string       $ObjectId             Object Id
-     *      @param      string       $ObjectType           Object Type Name
+     *      @param      string       $objectId             Object Id
+     *      @param      string       $objectType           Object Type Name
      *
      *      @return     string
      */
-    public static function encodeIdField($ObjectId, $ObjectType)
+    public static function encodeIdField($objectId, $objectType)
     {
         //====================================================================//
         // Safety Checks
-        if (empty($ObjectType)) {
+        if (empty($objectType)) {
             return null;
         }
-        if (empty($ObjectId)) {
+        if (empty($objectId)) {
             return null;
         }
         
         //====================================================================//
         // Create & Return Field Id Data String
-        return $ObjectId  . IDSPLIT . $ObjectType;
+        return $objectId  . IDSPLIT . $objectType;
     }
     
     /**
      *      @abstract   Retrieve Id form an Object Identifier Data
-     *      @param      string      $ObjectId       OsWs Object Identifier.
+     *      @param      string      $objectId       OsWs Object Identifier.
      *      @return     int         $Id             0 if KO or Object Identifier
      */
-    public static function decodeIdField($ObjectId)
+    public static function decodeIdField($objectId)
     {
         //====================================================================//
         // Checks if Given String is an Object Id String
-        $Array = self::isIdField($ObjectId);
+        $array = self::isIdField($objectId);
         
         //====================================================================//
         // Return Object Id
-        if ($Array != false) {
-            return $Array["ObjectId"];
+        if ($array != false) {
+            return $array["ObjectId"];
         }
         
         return   false;
@@ -188,27 +188,27 @@ class Ooobjectid
     /**
      *      @abstract   Identify if field is Object Identifier Data & Decode Field
      *
-     *      @param      string       $In             Id Field String
+     *      @param      string       $fieldId             Id Field String
      *
      *      @return     array       $result         0 if KO or Exploded Field Array
      */
-    public static function isIdField($In)
+    public static function isIdField($fieldId)
     {
         //====================================================================//
         // Safety Check
-        if (empty($In)) {
+        if (empty($fieldId)) {
             return false;
         }
         
         //====================================================================//
         // Detects ObjectId
-        $list = explode(IDSPLIT, $In);
+        $list = explode(IDSPLIT, $fieldId);
         if (is_array($list) && (count($list)==2)) {
             //====================================================================//
             // If List Detected, Prepare Field List Information Array
-            $Out["ObjectId"]        = $list[0];
-            $Out["ObjectType"]      = $list[1];
-            return $Out;
+            $output["ObjectId"]        = $list[0];
+            $output["ObjectType"]      = $list[1];
+            return $output;
         }
         return false;
     }

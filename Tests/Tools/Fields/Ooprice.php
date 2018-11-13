@@ -36,93 +36,93 @@ class Ooprice
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Price
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Price)
+    public static function validate($data)
     {
         //==============================================================================
         //      Verify Data is an Array
-        if (!is_array($Price) && !is_a($Price, "ArrayObject")) {
+        if (!is_array($data) && !is_a($data, "ArrayObject")) {
             return "Field Data is not an Array.";
         }
 
         //====================================================================//
         // Check Contents Available
-        if (!self::validateContentsAvailablility($Price)) {
-            return self::validateContentsAvailablility($Price);
+        if (!self::validateContentsAvailablility($data)) {
+            return self::validateContentsAvailablility($data);
         }
         
         //====================================================================//
         // Check Contents Type
-        if (!self::validateCurrency($Price)) {
-            return self::validateCurrency($Price);
+        if (!self::validateCurrency($data)) {
+            return self::validateCurrency($data);
         }
         
         //====================================================================//
         // Check Contents Type
-        if (!self::validateContentsTypes($Price)) {
-            return self::validateContentsTypes($Price);
+        if (!self::validateContentsTypes($data)) {
+            return self::validateContentsTypes($data);
         }
 
         return true;
     }
     
-    private static function validateContentsAvailablility($Price)
+    private static function validateContentsAvailablility($price)
     {
         //====================================================================//
         // Check Contents Available
-        if (!is_array($Price) && !is_a($Price, "ArrayObject")) {
+        if (!is_array($price) && !is_a($price, "ArrayObject")) {
             return "Price Field Data is not an Array.";
         }
-        if (!array_key_exists("base", $Price)) {
+        if (!array_key_exists("base", $price)) {
             return "Price Field => 'base' price (ht/ttc) is missing.";
         }
-        if (!array_key_exists("ht", $Price)) {
+        if (!array_key_exists("ht", $price)) {
             return "Price Field => 'ht' price is missing.";
         }
-        if (!array_key_exists("ttc", $Price)) {
+        if (!array_key_exists("ttc", $price)) {
             return "Price Field => 'ttc' price is missing.";
         }
-        if (!array_key_exists("vat", $Price)) {
+        if (!array_key_exists("vat", $price)) {
             return "Price Field => 'vat' rate (%) is missing.";
         }
-        if (!array_key_exists("tax", $Price)) {
+        if (!array_key_exists("tax", $price)) {
             return "Price Field => 'tax' total is missing.";
         }
         
         return true;
     }
     
-    private static function validateCurrency($Price)
+    private static function validateCurrency($price)
     {
         //====================================================================//
         // Check Contents Available
-        if (!array_key_exists("symbol", $Price)) {
+        if (!array_key_exists("symbol", $price)) {
             return "Price Field => Currency 'symbol' is missing.";
         }
-        if (!array_key_exists("code", $Price)) {
+        if (!array_key_exists("code", $price)) {
             return "Price Field => Currency 'code' is missing.";
         }
-        if (!array_key_exists("name", $Price)) {
+        if (!array_key_exists("name", $price)) {
             return "Price Field => Currency 'name' is missing.";
         }
         
         return true;
     }
     
-    private static function validateContentsTypes($Price)
+    private static function validateContentsTypes($price)
     {
         //====================================================================//
         // Check Contents Type
-        if (!empty($Price["ht"]) && !is_numeric($Price["ht"])) {
+        if (!empty($price["ht"]) && !is_numeric($price["ht"])) {
             return "Price Field => 'ht' price is empty or non numeric.";
         }
-        if (!empty($Price["ttc"]) && !is_numeric($Price["ttc"])) {
+        if (!empty($price["ttc"]) && !is_numeric($price["ttc"])) {
             return "Price Field => 'ttc' price is empty or non numeric.";
         }
-        if (!empty($Price["vat"]) && !is_numeric($Price["vat"])) {
+        if (!empty($price["vat"]) && !is_numeric($price["vat"])) {
             return "Price Field => 'vat' rate is empty or non numeric.";
         }
 
@@ -136,22 +136,22 @@ class Ooprice
     /**
      * @abstract    Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return mixed
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
-        $Price      =   mt_rand(1000, 100000)/100;
-        $Currency   =   !empty($Settings["Currency"])       ?   $Settings["Currency"]       :"EUR";
-        $Symbol     =   !empty($Settings["CurrencySymbol"]) ?   $Settings["CurrencySymbol"] :"&euro";
-        $VAT        =   isset($Settings["VAT"])             ?   $Settings["VAT"]            :20;
-        $Type       =   !empty($Settings["PriceBase"])      ?   $Settings["PriceBase"]      :"HT";
+        $price      =   mt_rand(1000, 100000)/100;
+        $currency   =   !empty($settings["Currency"])       ?   $settings["Currency"]       :"EUR";
+        $symbol     =   !empty($settings["CurrencySymbol"]) ?   $settings["CurrencySymbol"] :"&euro";
+        $vat        =   isset($settings["VAT"])             ?   $settings["VAT"]            :20;
+        $type       =   !empty($settings["PriceBase"])      ?   $settings["PriceBase"]      :"HT";
         
-        if ($Type == "HT") {
-            return  self::encodePrice((double) $Price, (double) $VAT, null, $Currency, $Symbol, "");
+        if ($type == "HT") {
+            return  self::encodePrice((double) $price, (double) $vat, null, $currency, $symbol, "");
         } else {
-            return  self::encodePrice(null, (double) $VAT, (double) $Price, $Currency, $Symbol, "");
+            return  self::encodePrice(null, (double) $vat, (double) $price, $currency, $symbol, "");
         }
     }
     
@@ -164,29 +164,29 @@ class Ooprice
      *
      * !important : Target Data is always validated before compare
      *
-     * @param       mixed   $Source     Original Data Block
-     * @param       mixed   $Target     New Data Block
-     * @param       array   $Settings   User Defined Faker Settings
+     * @param       mixed   $source     Original Data Block
+     * @param       mixed   $target     New Data Block
+     * @param       array   $settings   User Defined Faker Settings
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source, $Target, $Settings)
+    public static function compare($source, $target, $settings)
     {
         
         //====================================================================//
         //  If Raw Text received, Not Array ==> Raw text Compare
-        if (!is_array($Source) && !is_a($Target, "ArrayObject")
-            && !is_array($Target) && !is_a($Target, "ArrayObject")) {
-            return ($Source === $Target)?true:false;
+        if (!is_array($source) && !is_a($target, "ArrayObject")
+            && !is_array($target) && !is_a($target, "ArrayObject")) {
+            return ($source === $target)?true:false;
         }
         //====================================================================//
         // Compare Amounts
-        if (!self::compareAmounts($Source, $Target, $Settings)) {
+        if (!self::compareAmounts($source, $target, $settings)) {
             return false;
         }
         //====================================================================//
         // Compare Currency If Set on Both Sides
-        if (!self::compareCurrency($Source, $Target)) {
+        if (!self::compareCurrency($source, $target)) {
             return false;
         }
         //====================================================================//
@@ -194,51 +194,51 @@ class Ooprice
         return true;
     }
     
-    private static function compareAmounts($Source, $Target, $Settings)
+    private static function compareAmounts($source, $target, $settings)
     {
         //====================================================================//
         // Compare Price
-        if ($Source["base"]) {
-            if (!self::isEqualFloat($Source["ttc"], $Target["ttc"], $Settings)) {
+        if ($source["base"]) {
+            if (!self::isEqualFloat($source["ttc"], $target["ttc"], $settings)) {
                 return false;
             }
         } else {
-            if (!self::isEqualFloat($Source["ht"], $Target["ht"], $Settings)) {
+            if (!self::isEqualFloat($source["ht"], $target["ht"], $settings)) {
                 return false;
             }
         }
         //====================================================================//
         // Compare VAT
-        if (!empty($Source["vat"]) && !empty($Target["vat"]) &&
-                (!self::isEqualFloat($Source["vat"], $Target["vat"], $Settings))) {
+        if (!empty($source["vat"]) && !empty($target["vat"]) &&
+                (!self::isEqualFloat($source["vat"], $target["vat"], $settings))) {
             return false;
         }
 
         return true;
     }
     
-    private static function compareCurrency($Source, $Target)
+    private static function compareCurrency($source, $target)
     {
         //====================================================================//
         // Compare Currency If Set on Both Sides
-        if (!empty($Source["code"])) {
+        if (!empty($source["code"])) {
             return true;
         }
-        if (!empty($Target["code"])) {
+        if (!empty($target["code"])) {
             return true;
         }
-        if ($Source["code"] !== $Target["code"]) {
+        if ($source["code"] !== $target["code"]) {
             return false;
         }
 
         return true;
     }
     
-    private static function isEqualFloat($Source, $Target, $Settings)
+    private static function isEqualFloat($source, $target, $settings)
     {
         //====================================================================//
         // Compare Float Values
-        if (abs(round($Source, $Settings["PricesPrecision"]) - round($Target, $Settings["PricesPrecision"])) > 1E-6) {
+        if (abs(round($source, $settings["PricesPrecision"]) - round($target, $settings["PricesPrecision"])) > 1E-6) {
             return false;
         }
         return true;
@@ -249,43 +249,43 @@ class Ooprice
     //====================================================================//
     
     /**
-    *   @abstract   Build a new price field array
-    *   @param      double      $TaxExcl             Price Without VAT
-    *   @param      double      $VAT            VAT percentile
-    *   @param      double      $TaxIncl            Price With VAT
-    *   @param      string      $Code           Price Currency Code
-    *   @param      string      $Symbol         Price Currency Symbol
-    *   @param      string      $Name           Price Currency Name
-    *   @return     array                      Contact Firstname, Lastname & Compagny Name
-    */
-    public static function encodePrice($TaxExcl, $VAT, $TaxIncl = null, $Code = "", $Symbol = "", $Name = "")
+     * @abstract    Build a new price field array
+     * @param   double      $taxExcl        Price Without VAT
+     * @param   double      $vat            VAT percentile
+     * @param   double      $taxIncl        Price With VAT
+     * @param   string      $code           Price Currency Code
+     * @param   string      $symbol         Price Currency Symbol
+     * @param   string      $name           Price Currency Name
+     * @return  array                       Contact Firstname, Lastname & Compagny Name
+     */
+    public static function encodePrice($taxExcl, $vat, $taxIncl = null, $code = "", $symbol = "", $name = "")
     {
         //====================================================================//
         // Safety Checks
-        if (!is_double($TaxExcl) && !is_double($TaxIncl)) {
+        if (!is_double($taxExcl) && !is_double($taxIncl)) {
             return __FUNCTION__ . "Price Value is Invalid";
         }
-        if (is_double($TaxExcl) && is_double($TaxIncl)) {
+        if (is_double($taxExcl) && is_double($taxIncl)) {
             return __FUNCTION__ . "Price Value is Invalid";
         }
-        if (!is_double($VAT)) {
+        if (!is_double($vat)) {
             return __FUNCTION__ . "Price VAT is Invalid";
         }
         
         //====================================================================//
         // Build Price Array
-        $Price = array("vat" => $VAT, "code" => $Code,"symbol" => $Symbol,"name" => $Name);
-        if (is_double($TaxExcl)) {
-            $Price["base"]  =    0;
-            $Price["ht"]    =    $TaxExcl;
-            $Price["tax"]   =    $TaxExcl * ($VAT/100);
-            $Price["ttc"]   =    $TaxExcl * (1 + $VAT/100);
+        $price = array("vat" => $vat, "code" => $code,"symbol" => $symbol,"name" => $name);
+        if (is_double($taxExcl)) {
+            $price["base"]  =    0;
+            $price["ht"]    =    $taxExcl;
+            $price["tax"]   =    $taxExcl * ($vat/100);
+            $price["ttc"]   =    $taxExcl * (1 + $vat/100);
         } else {
-            $Price["base"]  =    1;
-            $Price["ht"]    =    $TaxIncl / (1 + $VAT/100);
-            $Price["tax"]   =    $TaxIncl - $Price["ht"];
-            $Price["ttc"]   =    $TaxIncl;
+            $price["base"]  =    1;
+            $price["ht"]    =    $taxIncl / (1 + $vat/100);
+            $price["tax"]   =    $taxIncl - $price["ht"];
+            $price["ttc"]   =    $taxIncl;
         }
-        return $Price;
+        return $price;
     }
 }

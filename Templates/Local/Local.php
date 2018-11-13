@@ -145,44 +145,44 @@ class Local implements LocalClassInterface
      *
      *      This function return Remote Server Informatiosn to display on Server Profile
      *
-     *  @param     ArrayObject  $Informations   Informations Inputs
+     *  @param     ArrayObject  $informations   Informations Inputs
      *
      *  @return     ArrayObject
      */
-    public function informations($Informations)
+    public function informations($informations)
     {
         //====================================================================//
         // Init Response Object
-        $Response = $Informations;
+        $response = $informations;
 
         //====================================================================//
         // Company Informations
-        $Response->company          =   "...";
-        $Response->address          =   "...";
-        $Response->zip              =   "...";
-        $Response->town             =   "...";
-        $Response->country          =   "...";
-        $Response->www              =   "...";
-        $Response->email            =   "...";
-        $Response->phone            =   "...";
+        $response->company          =   "...";
+        $response->address          =   "...";
+        $response->zip              =   "...";
+        $response->town             =   "...";
+        $response->country          =   "...";
+        $response->www              =   "...";
+        $response->email            =   "...";
+        $response->phone            =   "...";
         
         //====================================================================//
         // Server Logo & Images
-        $Response->icoraw           =   Splash::file()->readFileContents(
+        $response->icoraw           =   Splash::file()->readFileContents(
             dirname(dirname(__DIR__)) . "/img/Splash-ico.png"
         );
-        $Response->logourl          =   "https://www.splashsync.com/bundles/theme/img/splash-logo.png";
+        $response->logourl          =   "https://www.splashsync.com/bundles/theme/img/splash-logo.png";
         
         //====================================================================//
         // Server Informations
-        $Response->servertype       =   "Splash Php Core";
-        $Response->serverurl        =   "https://www.splashsync.com";
+        $response->servertype       =   "Splash Php Core";
+        $response->serverurl        =   "https://www.splashsync.com";
         
         //====================================================================//
         // Current Module Version
-        $Response->moduleversion    =   SPLASH_VERSION;
+        $response->moduleversion    =   SPLASH_VERSION;
         
-        return $Response;
+        return $response;
     }
     
 //====================================================================//
@@ -205,9 +205,9 @@ class Local implements LocalClassInterface
      *
      * @return         array       $Sequences
      */
-    public function testSequences($Name = null)
+    public function testSequences($name = null)
     {
-        switch ($Name) {
+        switch ($name) {
             case "Sequence1":
                 // DO SEQUENCE SETUP
                 return array();
@@ -239,11 +239,11 @@ class Local implements LocalClassInterface
     {
         //====================================================================//
         // Init Parameters Array
-        $Parameters       =     array();
+        $parameters       =     array();
 
         // CHANGE SOMETHING
         
-        return $Parameters;
+        return $parameters;
     }
     
 //====================================================================//

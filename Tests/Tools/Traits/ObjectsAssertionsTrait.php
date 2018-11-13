@@ -14,7 +14,7 @@ use Splash\Components\FieldsManager;
 trait ObjectsAssertionsTrait
 {
     /** @var array */
-    protected $Fields           = array();
+    protected $fields           = array();
     
     //==============================================================================
     //      SPLASH ASSERTIONS FUNCTIONS
@@ -23,293 +23,293 @@ trait ObjectsAssertionsTrait
     /**
      * @abstract        Verify if Data is present in Array and in right Internal Format
      *
-     * @param mixed     $Data           Tested Array
-     * @param mixed     $Key            Tested Array Key
-     * @param mixed     $Type           Expected Data Type
-     * @param string    $Comment
+     * @param mixed     $data           Tested Array
+     * @param mixed     $key            Tested Array Key
+     * @param mixed     $type           Expected Data Type
+     * @param string    $comment
      */
-    public function assertArrayInternalType($Data, $Key, $Type, $Comment)
+    public function assertArrayInternalType($data, $key, $type, $comment)
     {
-        $this->assertArrayHasKey($Key, $Data, $Comment . " => Key '" . $Key . "' not defined");
-        $this->assertNotEmpty($Data[$Key], $Comment . " => Key '" . $Key . "' is Empty");
-        $this->assertInternalType($Type, $Data[$Key], $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
+        $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
+        $this->assertNotEmpty($data[$key], $comment . " => Key '" . $key . "' is Empty");
+        $this->assertInternalType($type, $data[$key], $comment . " => Key '" . $key . "' is of Expected Internal Type");
     }
     
     /**
      * @abstract        Verify if Data is present in Array and in right Internal Format
      *
-     * @param mixed     $Data           Tested Array
-     * @param mixed     $Key            Tested Array Key
-     * @param mixed     $Type           Expected Data Type
-     * @param string    $Comment
+     * @param mixed     $data           Tested Array
+     * @param mixed     $key            Tested Array Key
+     * @param mixed     $type           Expected Data Type
+     * @param string    $comment
      */
-    public function assertArrayInstanceOf($Data, $Key, $Type, $Comment)
+    public function assertArrayInstanceOf($data, $key, $type, $comment)
     {
-        $this->assertArrayHasKey($Key, $Data, $Comment . " => Key '" . $Key . "' not defined");
-        $this->assertNotEmpty($Data[$Key], $Comment . " => Key '" . $Key . "' is Empty");
-        $this->assertInstanceOf($Type, $Data[$Key], $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
+        $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
+        $this->assertNotEmpty($data[$key], $comment . " => Key '" . $key . "' is Empty");
+        $this->assertInstanceOf($type, $data[$key], $comment . " => Key '" . $key . "' is of Expected Internal Type");
     }
     
     /**
      * @abstract        Verify if Data is a valid Splash Data Block Bool Value
      *
-     * @param mixed     $Data
-     * @param string    $Comment
+     * @param mixed     $data
+     * @param string    $comment
      */
-    public function assertIsSplashBool($Data, $Comment)
+    public function assertIsSplashBool($data, $comment)
     {
-        $Test = is_bool($Data) || ($Data === "0") || ($Data === "1");
-        $this->assertTrue($Test, $Comment);
+        $test = is_bool($data) || ($data === "0") || ($data === "1");
+        $this->assertTrue($test, $comment);
     }
     
     /**
      * @abstract        Verify if Data is present in Array and is Splash Bool
      *
-     * @param mixed     $Data           Tested Array
-     * @param mixed     $Key            Tested Array Key
-     * @param string    $Comment
+     * @param mixed     $data           Tested Array
+     * @param mixed     $key            Tested Array Key
+     * @param string    $comment
      */
-    public function assertArraySplashBool($Data, $Key, $Comment)
+    public function assertArraySplashBool($data, $key, $comment)
     {
-        $this->assertArrayHasKey($Key, $Data, $Comment . " => Key '" . $Key . "' not defined");
-        $this->assertIsSplashBool($Data[$Key], $Comment . " => Key '" . $Key . "' is of Expected Internal Type");
+        $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
+        $this->assertIsSplashBool($data[$key], $comment . " => Key '" . $key . "' is of Expected Internal Type");
     }
 
     /**
      * @abstract        Verify if Data is a valid Splash Field Data Value
      *
-     * @param mixed     $Data
-     * @param string    $Type
-     * @param string    $Comment
+     * @param mixed     $data
+     * @param string    $type
+     * @param string    $comment
      */
-    public function assertIsValidSplashFieldData($Data, $Type, $Comment)
+    public function assertIsValidSplashFieldData($data, $type, $comment)
     {
         //====================================================================//
         // Verify Type is Valid
-        $ClassName = self::isValidType($Type);
-        $this->assertNotEmpty($ClassName, "Field Type '" . $Type . "' is not a Valid Splash Field Type." . $Comment);
+        $className = self::isValidType($type);
+        $this->assertNotEmpty($className, "Field Type '" . $type . "' is not a Valid Splash Field Type." . $comment);
     
         //====================================================================//
         // Verify Data is Valid
         $this->assertTrue(
-            $ClassName::validate($Data),
-            "Data is not a Valid Splash '" . $Type . "'. (" . print_r($Data, true) . ")" . $Comment
+            $className::validate($data),
+            "Data is not a Valid Splash '" . $type . "'. (" . print_r($data, true) . ")" . $comment
         );
     }
     
     /**
      * @abstract    Load Object Field from List
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
      * @return      ArrayObject
      */
-    private function loadObjectFieldByTag($ItemType, $ItemProp)
+    private function loadObjectFieldByTag($itemType, $itemProp)
     {
         //====================================================================//
         //   Ensure Fields List is Loaded
-        $this->assertNotEmpty($this->Fields, "Objects Fields List is Empty! Did you load it?");
+        $this->assertNotEmpty($this->fields, "Objects Fields List is Empty! Did you load it?");
         //====================================================================//
         //   Touch this Field
-        $Field       =   FieldsManager::findFieldByTag($this->Fields, $ItemType, $ItemProp);
-        return $Field;
+        $field       =   FieldsManager::findFieldByTag($this->fields, $itemType, $itemProp);
+        return $field;
     }
     
     /**
      * @abstract    Build Test Result Comment
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
-     * @param       string      $TestComment
-     * @param       string      $Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       string      $testComment
+     * @param       string      $comment
      * @return      string
      */
-    private static function buildResult($ItemType, $ItemProp, $TestComment, $Comment = null)
+    private static function buildResult($itemType, $itemProp, $testComment, $comment = null)
     {
-        return $Comment . " (" . $ItemType . ":" . $ItemProp . ") " . $TestComment;
+        return $comment . " (" . $itemType . ":" . $itemProp . ") " . $testComment;
     }
     
     /**
      * @abstract    Verify Object Field is Defined
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
-     * @param       string      $Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsDefined($ItemType, $ItemProp, $Comment = null)
+    public function assertFieldIsDefined($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $Field       =   $this->loadObjectFieldByTag($ItemType, $ItemProp);
+        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
         //====================================================================//
         //   Verify this Field
         $this->assertNotEmpty(
-            $Field,
-            self::buildResult($ItemType, $ItemProp, " must be defined", $Comment)
+            $field,
+            self::buildResult($itemType, $itemProp, " must be defined", $comment)
         );
     }
     
     /**
      * @abstract    Verify Object Field is in Allowed Formats
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
-     * @param       array       $Formats            Array of Allowed Splash Field Formats
-     * @param       string      $Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       array       $formats            Array of Allowed Splash Field Formats
+     * @param       string      $comment
      * @return void
      */
-    public function assertFieldHasFormat($ItemType, $ItemProp, $Formats, $Comment = null)
+    public function assertFieldHasFormat($itemType, $itemProp, $formats, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $Field       =   $this->loadObjectFieldByTag($ItemType, $ItemProp);
-        if (!$Field) {
+        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        if (!$field) {
             return;
         }
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            in_array($Field->type, $Formats),
-            self::buildResult($ItemType, $ItemProp, " must be a " . implode("|", $Formats), $Comment)
+            in_array($field->type, $formats),
+            self::buildResult($itemType, $itemProp, " must be a " . implode("|", $formats), $comment)
         );
         $this->assertTrue(
-            $Field->read,
+            $field->read,
             "Product Short Description must be readable"
         );
     }
     
     /**
      * @abstract    Verify Object Field is Readable
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
-     * @param       string      $Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsRead($ItemType, $ItemProp, $Comment = null)
+    public function assertFieldIsRead($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $Field       =   $this->loadObjectFieldByTag($ItemType, $ItemProp);
-        if (!$Field) {
+        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        if (!$field) {
             return;
         }
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            $Field->read,
-            self::buildResult($ItemType, $ItemProp, " must be readable.", $Comment)
+            $field->read,
+            self::buildResult($itemType, $itemProp, " must be readable.", $comment)
         );
     }
 
     /**
      * @abstract    Verify Object Field is Writeable
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
-     * @param       string      $Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsWrite($ItemType, $ItemProp, $Comment = null)
+    public function assertFieldIsWrite($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $Field       =   $this->loadObjectFieldByTag($ItemType, $ItemProp);
-        if (!$Field) {
+        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        if (!$field) {
             return;
         }
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            $Field->write,
-            self::buildResult($ItemType, $ItemProp, " must be writeable.", $Comment)
+            $field->write,
+            self::buildResult($itemType, $itemProp, " must be writeable.", $comment)
         );
     }
     
     /**
      * @abstract    Verify Object Field is NOT Writeable
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
-     * @param       string      $Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       string      $comment
      * @return void
      */
-    public function assertFieldNotWrite($ItemType, $ItemProp, $Comment = null)
+    public function assertFieldNotWrite($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $Field       =   $this->loadObjectFieldByTag($ItemType, $ItemProp);
-        if (!$Field) {
+        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        if (!$field) {
             return;
         }
         //====================================================================//
         //   Verify this Field
         $this->assertFalse(
-            $Field->write,
-            self::buildResult($ItemType, $ItemProp, " must be read-only.", $Comment)
+            $field->write,
+            self::buildResult($itemType, $itemProp, " must be read-only.", $comment)
         );
     }
     
     /**
      * @abstract    Verify Object Field is Required
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
-     * @param       string      $Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsRequired($ItemType, $ItemProp, $Comment = null)
+    public function assertFieldIsRequired($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $Field       =   $this->loadObjectFieldByTag($ItemType, $ItemProp);
-        if (!$Field) {
+        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        if (!$field) {
             return;
         }
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            $Field->required,
-            self::buildResult($ItemType, $ItemProp, " must be required.", $Comment)
+            $field->required,
+            self::buildResult($itemType, $itemProp, " must be required.", $comment)
         );
     }
     
     /**
      * @abstract    Verify Object Field is NOT Required
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
-     * @param       string      $Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       string      $comment
      * @return void
      */
-    public function assertFieldNotRequired($ItemType, $ItemProp, $Comment = null)
+    public function assertFieldNotRequired($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $Field       =   $this->loadObjectFieldByTag($ItemType, $ItemProp);
-        if (!$Field) {
+        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        if (!$field) {
             return;
         }
         //====================================================================//
         //   Verify this Field
         $this->assertFalse(
-            $Field->required,
-            self::buildResult($ItemType, $ItemProp, " must not be Required.", $Comment)
+            $field->required,
+            self::buildResult($itemType, $itemProp, " must not be Required.", $comment)
         );
     }
 
     /**
      * @abstract    Verify Object Field is In List
-     * @param       string      $ItemType           Field Microdata Type Url
-     * @param       string      $ItemProp           Field Microdata Property Name
-     * @param       string      $Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsInList($ItemType, $ItemProp, $Comment = null)
+    public function assertFieldIsInList($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $Field       =   $this->loadObjectFieldByTag($ItemType, $ItemProp);
-        if (!$Field) {
+        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        if (!$field) {
             return;
         }
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            $Field->inlist,
-            $Comment . " " . $ItemType . ":" . $ItemProp . " must be readable."
+            $field->inlist,
+            $comment . " " . $itemType . ":" . $itemProp . " must be readable."
         );
     }
 }

@@ -20,27 +20,27 @@ class Oophone extends Oovarchar
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
         //==============================================================================
         //      Verify Data is not Empty
-        if (empty($Data)) {
+        if (empty($data)) {
             return true;
         }
 
         //==============================================================================
         //      Verify Data is a String
-        if (!is_string($Data)) {
+        if (!is_string($data)) {
             return "Phone Number Field Data is not a String.";
         }
         
         //==============================================================================
         //      Verify Data is a Phone Number
-        if (preg_match('/^[+0-9. ()-]*$/', $Data)) {
+        if (preg_match('/^[+0-9. ()-]*$/', $data)) {
             return true;
         }
 
@@ -54,11 +54,11 @@ class Oophone extends Oovarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return string
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
         return preg_replace('/^[+0-9. ()-]*$/', '', mt_rand(12345678, 123456789));
     }

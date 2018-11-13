@@ -17,54 +17,51 @@ class A03ObjectsTest extends AbstractBaseCase
     {
         //====================================================================//
         //   Execute Action From Module
-        $Data = Splash::objects();
+        $data = Splash::objects();
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($Data)) {
-            $Data   =   new \ArrayObject($Data);
+        if (is_array($data)) {
+            $data   =   new \ArrayObject($data);
         }
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
 
     public function testObjectsFromAdminService()
     {
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_OBJECTS, __METHOD__);
-        
+        $data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_OBJECTS, __METHOD__);
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
     
     public function testObjectsFromObjectsService()
     {
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->genericAction(SPL_S_OBJECTS, SPL_F_OBJECTS, __METHOD__);
-        
+        $data = $this->genericAction(SPL_S_OBJECTS, SPL_F_OBJECTS, __METHOD__);
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
     
-    public function verifyResponse($Data)
+    public function verifyResponse($data)
     {
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty($Data, "Objects List is Empty");
-        $this->assertInstanceOf("ArrayObject", $Data, "Objects List is Not an ArrayObject");
-        
+        $this->assertNotEmpty($data, "Objects List is Empty");
+        $this->assertInstanceOf("ArrayObject", $data, "Objects List is Not an ArrayObject");
         //====================================================================//
         // CHECK ITEMS
-        foreach ($Data as $ObjectType) {
-            $this->assertNotEmpty($ObjectType, "Objects Type is Empty");
+        foreach ($data as $objectType) {
+            $this->assertNotEmpty($objectType, "Objects Type is Empty");
             $this->assertInternalType(
                 "string",
-                $ObjectType,
-                "Objects Type is Not an String. (Given" . print_r($ObjectType, true) . ")"
+                $objectType,
+                "Objects Type is Not an String. (Given" . print_r($objectType, true) . ")"
             );
         }
     }

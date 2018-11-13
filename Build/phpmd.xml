@@ -20,10 +20,7 @@
         Include Controversial rules
         @see https://phpmd.org/rules/controversial.html
      -->
-    <rule ref="rulesets/controversial.xml">
-        <exclude name="CamelCaseVariableName"/>
-        <exclude name="CamelCaseParameterName"/>
-    </rule>
+    <rule ref="rulesets/controversial.xml" />
 
     <!--
         Include Design rules
@@ -48,7 +45,7 @@
     <rule ref="rulesets/naming.xml/ShortVariable">
         <properties>
             <property name="minimum" value="3"/>
-            <property name="exceptions" value="id,Id,In,Out"/>
+            <property name="exceptions" value="id, in, out"/>
         </properties>
     </rule>
     <rule ref="rulesets/naming.xml/LongVariable">

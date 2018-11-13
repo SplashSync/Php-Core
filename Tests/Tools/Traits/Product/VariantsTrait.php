@@ -21,14 +21,14 @@ trait VariantsTrait
      */
     public function objectVariantsProvider()
     {
-        $Result = array();
-
-        $Name2   =  $this->getVariantName();
+        $result = array();
+        
+        $name   =  $this->getVariantName();
         for ($i=0; $i<2; $i++) {
-            $Result[]   =   array_merge($Name2, $this->getVariantAttributes(['VariantA','VariantB']));
+            $result[]   =   array_merge($name, $this->getVariantAttributes(['VariantA','VariantB']));
         }
 
-        return $Result;
+        return $result;
     }
 
     /**
@@ -39,60 +39,60 @@ trait VariantsTrait
     {
         //====================================================================//
         //   Verify Product Base Name
-        $Field   =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "alternateName");
-        $this->assertNotEmpty($Field);
+        $field   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "alternateName");
+        $this->assertNotEmpty($field);
         //====================================================================//
         //   Generate Random Value
         return array(
-            $Field->id  =>  self::fakeFieldData($Field->type),
+            $field->id  =>  self::fakeFieldData($field->type),
         );
     }
 
     /**
      * @abstract    Generate Variations Attributes
      */
-    public function getVariantAttributes($AttributesCodes)
+    public function getVariantAttributes($attributesCodes)
     {
         //====================================================================//
         //   Load Required Fields
-        $Code   =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "VariantAttributeCode");
-        $this->assertNotEmpty($Code);
+        $code   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeCode");
+        $this->assertNotEmpty($code);
 
-        $Result = array();
-        foreach ($AttributesCodes as $AttributesCode) {
-            $Result[] = $this->getVariantCustomAttribute($AttributesCode);
+        $result = array();
+        foreach ($attributesCodes as $attributesCode) {
+            $result[] = $this->getVariantCustomAttribute($attributesCode);
         }
         return array(
-            self::lists()->listName($Code->id) => $Result
+            self::lists()->listName($code->id) => $result
         );
     }
 
     /**
      * @abstract    Generate Variations CustomAttribute
      */
-    public function getVariantCustomAttribute($AttributesCode)
+    public function getVariantCustomAttribute($attributesCode)
     {
         //====================================================================//
         //   Load Required Fields
-        $Code   =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "VariantAttributeCode");
-        $this->assertNotEmpty($Code);
-        $Name   =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "VariantAttributeName");
-        $this->assertNotEmpty($Name);
-        $Value  =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "VariantAttributeValue");
-        $this->assertNotEmpty($Value);
+        $code   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeCode");
+        $this->assertNotEmpty($code);
+        $name   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeName");
+        $this->assertNotEmpty($name);
+        $value  =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeValue");
+        $this->assertNotEmpty($value);
         //====================================================================//
         //   Generate Random Attributes Set
         return array(
-            self::lists()->fieldName($Code->id)     =>      strtolower($AttributesCode),
-            self::lists()->fieldName($Name->id)     =>      self::fakeFieldData(
-                $Name->type,
+            self::lists()->fieldName($code->id)     =>      strtolower($attributesCode),
+            self::lists()->fieldName($name->id)     =>      self::fakeFieldData(
+                $name->type,
                 null,
-                array_merge_recursive($Name->options, ["minLength" =>   3, "maxLength" =>   5])
+                array_merge_recursive($name->options, ["minLength" =>   3, "maxLength" =>   5])
             ),
-            self::lists()->fieldName($Value->id)     =>      self::fakeFieldData(
-                $Value->type,
+            self::lists()->fieldName($value->id)     =>      self::fakeFieldData(
+                $value->type,
                 null,
-                array_merge_recursive($Value->options, ["minLength" =>   5, "maxLength" =>   10])
+                array_merge_recursive($value->options, ["minLength" =>   5, "maxLength" =>   10])
             ),
         );
     }
@@ -102,11 +102,11 @@ trait VariantsTrait
      */
     public function objectFieldsProvider()
     {
-        $Fields = array();
-        foreach (parent::objectFieldsProvider() as $Field) {
+        $fields = array();
+        foreach (parent::objectFieldsProvider() as $field) {
             //====================================================================//
             // Filter Non Product Fields
-            if ($Field[1] != "Product") {
+            if ($field[1] != "Product") {
                 continue;
             }
 //            //====================================================================//
@@ -114,11 +114,11 @@ trait VariantsTrait
 //            if ($Field[2]->id == "image@images") {
 //                continue;
 //            }
-            $Fields[] = $Field;
+            $fields[] = $field;
         }
-        if (empty($Fields)) {
+        if (empty($fields)) {
             $this->markTestSkipped('This Server has no Product Object Type.');
         }
-        return $Fields;
+        return $fields;
     }
 }

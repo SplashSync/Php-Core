@@ -26,13 +26,13 @@ class Oomtext
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
-        return Oomvarchar::validate($Data);
+        return Oomvarchar::validate($data);
     }
     
     //==============================================================================
@@ -42,15 +42,15 @@ class Oomtext
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     *  @param      array   $Settings   User Defined Faker Settings
+     *  @param      array   $settings   User Defined Faker Settings
      *
      * @return mixed
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
         $fake = array();
-        foreach ($Settings["Langs"] as $lang) {
-            $fake[$lang] = Ootext::fake($Settings);
+        foreach ($settings["Langs"] as $lang) {
+            $fake[$lang] = Ootext::fake($settings);
         }
         return $fake;
     }
@@ -64,28 +64,28 @@ class Oomtext
      *
      * !important : Target Data is always validated before compare
      *
-     * @param   mixed   $Source     Original Data Block
-     * @param   mixed   $Target     New Data Block
+     * @param   mixed   $source     Original Data Block
+     * @param   mixed   $target     New Data Block
      *
      * @return  bool                TRUE if both Data Block Are Similar
      */
-    public static function compare($Source, $Target)
+    public static function compare($source, $target)
     {
         //====================================================================//
         //  If Raw Text received, Not Array ==> Raw text Compare
-        if (!is_array($Source) && !is_a($Target, "ArrayObject")
-                && !is_array($Target) && !is_a($Target, "ArrayObject")) {
-            return ($Source === $Target)?true:false;
+        if (!is_array($source) && !is_a($target, "ArrayObject")
+                && !is_array($target) && !is_a($target, "ArrayObject")) {
+            return ($source === $target)?true:false;
         }
         //====================================================================//
         //  Verify Available Languages Count
-        if (count($Source) !== count($Target)) {
+        if (count($source) !== count($target)) {
             return false;
         }
         //====================================================================//
         //  Verify Each Languages Are Similar Strings
-        foreach ($Source as $key => $value) {
-            if ($Target[$key] !== $value) {
+        foreach ($source as $key => $value) {
+            if ($target[$key] !== $value) {
                 return false;
             }
         }

@@ -40,7 +40,7 @@ trait IntelParserTrait
      *              to control all fields were imported at the end of Set Operation
      * @var ArrayObject
      */
-    protected $In            = null;
+    protected $in            = null;
     
     /**
      * Get Operations Output Buffer
@@ -48,7 +48,7 @@ trait IntelParserTrait
      * @abstract This variable is used to store Object Array during Get Operations
      * @var ArrayObject
      */
-    protected $Out            = null;
+    protected $out            = null;
     
     /**
      * Work Object Class
@@ -56,7 +56,7 @@ trait IntelParserTrait
      * @abstract This variable is used to store current working Object during Set & Get Operations
      * @var mixed
      */
-    protected $Object         = null;
+    protected $object         = null;
     
       
     //====================================================================//
@@ -84,27 +84,27 @@ trait IntelParserTrait
     /**
      * {@inheritdoc}
     */
-    public function get($Id = null, $List = null)
+    public function get($objectId = null, $fieldsList = null)
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Init Reading
-        $this->In = $List;
+        $this->in = $fieldsList;
         //====================================================================//
         // Load Object
-        $this->Object   =   $this->load($Id);
-        if (!is_object($this->Object)) {
+        $this->object   =   $this->load($objectId);
+        if (!is_object($this->object)) {
             return false;
         }
         //====================================================================//
         // Init Response Array
-        $this->Out  =   array( "id" => $Id );
+        $this->out  =   array( "id" => $objectId );
         //====================================================================//
         // Run Through All Requested Fields
         //====================================================================//
-        $Fields = is_a($this->In, "ArrayObject") ? $this->In->getArrayCopy() : $this->In;
+        $Fields = is_a($this->in, "ArrayObject") ? $this->in->getArrayCopy() : $this->in;
         foreach ($Fields as $Key => $FieldName) {
             //====================================================================//
             // Read Requested Fields
@@ -114,8 +114,8 @@ trait IntelParserTrait
         }
         //====================================================================//
         // Verify Requested Fields List is now Empty => All Fields Read Successfully
-        if (count($this->In)) {
-            foreach ($this->In as $FieldName) {
+        if (count($this->in)) {
+            foreach ($this->in as $FieldName) {
                 Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldName);
             }
             return false;
@@ -123,7 +123,7 @@ trait IntelParserTrait
         //====================================================================//
         // Return Data
         //====================================================================//
-        return $this->Out;
+        return $this->out;
     }
     
     /**
@@ -136,22 +136,22 @@ trait IntelParserTrait
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Init Reading
-        $this->In           =   $List;
+        $this->in           =   $List;
         $this->isUpdated();
         //====================================================================//
         // Init Object
         if ($Id) {
-            $this->Object   =   $this->load($Id);
+            $this->object   =   $this->load($Id);
         } else {
-            $this->Object   =   $this->create();
+            $this->object   =   $this->create();
         }
-        if (!is_object($this->Object)) {
+        if (!is_object($this->object)) {
             return false;
         }
         //====================================================================//
         // Run Throw All Requested Fields
         //====================================================================//
-        $Fields = is_a($this->In, "ArrayObject") ? $this->In->getArrayCopy() : $this->In;
+        $Fields = is_a($this->in, "ArrayObject") ? $this->in->getArrayCopy() : $this->in;
         foreach ($Fields as $FieldName => $Data) {
             //====================================================================//
             // Write Requested Fields
@@ -161,8 +161,8 @@ trait IntelParserTrait
         }
         //====================================================================//
         // Verify Requested Fields List is now Empty => All Fields Writen Successfully
-        if (count($this->In)) {
-            foreach ($this->In as $FieldName => $Data) {
+        if (count($this->in)) {
+            foreach ($this->in as $FieldName => $Data) {
                 Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldName);
             }
             return false;
@@ -234,7 +234,7 @@ trait IntelParserTrait
         if (!method_exists($this, "Lists") || !self::lists()->listName($FieldId)) {
             //====================================================================//
             // Simple Field is Required but not available
-            if (empty($this->In[$FieldId])) {
+            if (empty($this->in[$FieldId])) {
                 return false;
             }
             return true;
@@ -245,17 +245,17 @@ trait IntelParserTrait
         $FieldName  = self::lists()->FieldName($FieldId);
         //====================================================================//
         // Check List is available
-        if (empty($this->In[$ListName])) {
+        if (empty($this->in[$ListName])) {
             return false;
         }
         //====================================================================//
         // list is a List...
-        if (!is_array($this->In[$ListName]) && !is_a($this->In[$ListName], "ArrayObject")) {
+        if (!is_array($this->in[$ListName]) && !is_a($this->in[$ListName], "ArrayObject")) {
             return false;
         }
         //====================================================================//
         // Check Field is Available
-        foreach ($this->In[$ListName] as $Item) {
+        foreach ($this->in[$ListName] as $Item) {
             if (empty($Item[$FieldName])) {
                 return false;
             }

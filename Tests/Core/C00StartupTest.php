@@ -67,19 +67,19 @@ class C00StartupTest extends TestCase
         //====================================================================//
         //   TESTED OBJECTS
         //====================================================================//
-        $Objects    =   Splash::objects();
-        if (!is_array($Objects)) {
+        $objectTypes    =   Splash::objects();
+        if (!is_array($objectTypes)) {
             echo Logger::getConsoleLine(" !! Invalid Objects List !! ", " - Tested Objects ", Logger::CMD_COLOR_DEB);
             return;
         }
-        foreach ($Objects as $Key => $ObjectType) {
+        foreach ($objectTypes as $key => $objectType) {
             //====================================================================//
             //   Filter Tested Object Types  =>> Skip
-            if (!AbstractBaseCase::isAllowedObjectType($ObjectType)) {
-                unset($Objects[$Key]);
+            if (!AbstractBaseCase::isAllowedObjectType($objectType)) {
+                unset($objectTypes[$key]);
             }
         }
-        echo Logger::getConsoleLine(implode(" | ", $Objects), "- Tested Objects: ", Logger::CMD_COLOR_DEB);
+        echo Logger::getConsoleLine(implode(" | ", $objectTypes), "- Tested Objects: ", Logger::CMD_COLOR_DEB);
     }
     
     /**
@@ -93,18 +93,18 @@ class C00StartupTest extends TestCase
         
         //====================================================================//
         // Check if Local Tests Sequences are defined
-        $Sequences  =   "None";
+        $testSequences  =   "None";
         if (!is_null(Splash::local()) && method_exists(Splash::local(), "TestSequences")) {
-            $Sequences  =   Splash::local()->testSequences("List");
+            $testSequences  =   Splash::local()->testSequences("List");
         }
-        if (!is_array($Sequences) && ($Sequences !== "None")) {
+        if (!is_array($testSequences) && ($testSequences !== "None")) {
             echo Logger::getConsoleLine("!!Invalid Tests Sequence List!!", " - Tested Objects ", Logger::CMD_COLOR_DEB);
             return;
         }
-        if ($Sequences === "None") {
+        if ($testSequences === "None") {
             return;
         }
-        echo Logger::getConsoleLine(implode(" | ", $Sequences), "- Test Sequences: ", Logger::CMD_COLOR_DEB);
+        echo Logger::getConsoleLine(implode(" | ", $testSequences), "- Test Sequences: ", Logger::CMD_COLOR_DEB);
     }
 
     /**

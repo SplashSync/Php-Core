@@ -24,13 +24,13 @@ class Oostate extends Oovarchar
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
-        if (!empty($Data) && !is_string($Data)) {
+        if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
         
@@ -44,11 +44,11 @@ class Oostate extends Oovarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return string
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
         return (mt_rand()%2)?"CA":"FL";
     }

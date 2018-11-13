@@ -24,13 +24,13 @@ class Oolang extends Oovarchar
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
-        if (!empty($Data) && !is_string($Data)) {
+        if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
         
@@ -46,17 +46,17 @@ class Oolang extends Oovarchar
      *
      * @return mixed
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
         //==============================================================================
         //      Use Formater Settings
-        if (!empty($Settings["Langs"])) {
+        if (!empty($settings["Langs"])) {
             //==============================================================================
             //      Select Random Language
-            $index = rand(0, count($Settings["Langs"]) -1);
+            $index = rand(0, count($settings["Langs"]) -1);
             //==============================================================================
             //      Return Language Code
-            return $Settings["Langs"][$index];
+            return $settings["Langs"][$index];
         }
         
         //==============================================================================

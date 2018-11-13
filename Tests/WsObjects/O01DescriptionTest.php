@@ -16,35 +16,34 @@ class O01DescriptionTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromModule($Sequence, $ObjectType)
+    public function testFromModule($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         //====================================================================//
         //   Execute Action Directly on Module
-        $Data = Splash::object($ObjectType)->description();
+        $data = Splash::object($objectType)->description();
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($Data)) {
-            $Data   =   new ArrayObject($Data);
+        if (is_array($data)) {
+            $data   =   new ArrayObject($data);
         }
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
     
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFromObjectsService($Sequence, $ObjectType)
+    public function testFromObjectsService($testSequence, $objectType)
     {
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $Data = $this->genericAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__, [ "id" => null, "type" => $ObjectType]);
-        
+        $data = $this->genericAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__, [ "id" => null, "type" => $objectType]);        
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($Data);
+        $this->verifyResponse($data);
     }
 
     public function testFromObjectsServiceErrors()
@@ -54,12 +53,12 @@ class O01DescriptionTest extends ObjectsCase
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__);
     }
     
-    public function verifyResponse($Data)
+    public function verifyResponse($data)
     {
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty($Data, "Object Description is Empty");
-        $this->assertInstanceOf("ArrayObject", $Data, "Object Description is Not an ArrayObject");
+        $this->assertNotEmpty($data, "Object Description is Empty");
+        $this->assertInstanceOf("ArrayObject", $data, "Object Description is Not an ArrayObject");
         
         //====================================================================//
         // All Informations are Available and is right format
@@ -67,27 +66,27 @@ class O01DescriptionTest extends ObjectsCase
         
         //====================================================================//
         // General Object definition
-        $this->assertNotEmpty($Data["type"], "Object Type is Empty");
-        $this->assertInternalType("string", $Data["type"], "Object Type is Not a String.");
-        $this->assertNotEmpty($Data["name"], "Object Name is Empty");
-        $this->assertInternalType("string", $Data["name"], "Object Name is Not a String.");
-        $this->assertNotEmpty($Data["description"], "Object Description is Empty");
-        $this->assertInternalType("string", $Data["description"], "Object Description is Not a String.");
-        $this->assertIsSplashBool($Data["disabled"], "Object Disabled Flag is Not a Bool.");
+        $this->assertNotEmpty($data["type"], "Object Type is Empty");
+        $this->assertInternalType("string", $data["type"], "Object Type is Not a String.");
+        $this->assertNotEmpty($data["name"], "Object Name is Empty");
+        $this->assertInternalType("string", $data["name"], "Object Name is Not a String.");
+        $this->assertNotEmpty($data["description"], "Object Description is Empty");
+        $this->assertInternalType("string", $data["description"], "Object Description is Not a String.");
+        $this->assertIsSplashBool($data["disabled"], "Object Disabled Flag is Not a Bool.");
 
         //====================================================================//
         // Object Limitations
-        $this->assertIsSplashBool($Data["allow_push_created"], "Allow Push Created Flag is Not a Bool.");
-        $this->assertIsSplashBool($Data["allow_push_updated"], "Allow Push Updated Flag is Not a Bool.");
-        $this->assertIsSplashBool($Data["allow_push_deleted"], "Allow Push Deleted Flag is Not a Bool.");
+        $this->assertIsSplashBool($data["allow_push_created"], "Allow Push Created Flag is Not a Bool.");
+        $this->assertIsSplashBool($data["allow_push_updated"], "Allow Push Updated Flag is Not a Bool.");
+        $this->assertIsSplashBool($data["allow_push_deleted"], "Allow Push Deleted Flag is Not a Bool.");
         
         //====================================================================//
         // Object Default Configuration
-        $this->assertIsSplashBool($Data["enable_push_created"], "Enable Push Created Flag is Not a Bool.");
-        $this->assertIsSplashBool($Data["enable_push_updated"], "Enable Push Updated Flag is Not a Bool.");
-        $this->assertIsSplashBool($Data["enable_push_deleted"], "Enable Push Deleted Flag is Not a Bool.");
-        $this->assertIsSplashBool($Data["enable_pull_created"], "Enable Pull Created Flag is Not a Bool.");
-        $this->assertIsSplashBool($Data["enable_pull_updated"], "Enable Pull Updated Flag is Not a Bool.");
-        $this->assertIsSplashBool($Data["enable_pull_deleted"], "Enable Pull Deleted Flag is Not a Bool.");
+        $this->assertIsSplashBool($data["enable_push_created"], "Enable Push Created Flag is Not a Bool.");
+        $this->assertIsSplashBool($data["enable_push_updated"], "Enable Push Updated Flag is Not a Bool.");
+        $this->assertIsSplashBool($data["enable_push_deleted"], "Enable Push Deleted Flag is Not a Bool.");
+        $this->assertIsSplashBool($data["enable_pull_created"], "Enable Pull Created Flag is Not a Bool.");
+        $this->assertIsSplashBool($data["enable_pull_updated"], "Enable Pull Updated Flag is Not a Bool.");
+        $this->assertIsSplashBool($data["enable_pull_deleted"], "Enable Pull Deleted Flag is Not a Bool.");
     }
 }

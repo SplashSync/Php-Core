@@ -59,15 +59,15 @@ class A01PingTest extends AbstractBaseCase
         
         //====================================================================//
         //   Execute Ping From Splash Server to Module
-        $Response   =   SplashServer::ping();
-        $Data       =   Splash::ws()->unPack($Response, 1);
+        $response   =   SplashServer::ping();
+        $data       =   Splash::ws()->unPack($response, 1);
 
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty($Response, "Ping Response Block is Empty");
-        $this->assertNotEmpty($Data, "Ping Response Data is Empty");
-        $this->assertInstanceOf("ArrayObject", $Data, "Ping Response Data is Not an ArrayObject");
-        $this->assertArrayHasKey("result", $Data, "Ping Result is Missing");
-        $this->assertNotEmpty($Data->result, "Ping Result is not True");
+        $this->assertNotEmpty($response, "Ping Response Block is Empty");
+        $this->assertNotEmpty($data, "Ping Response Data is Empty");
+        $this->assertInstanceOf("ArrayObject", $data, "Ping Response Data is Not an ArrayObject");
+        $this->assertArrayHasKey("result", $data, "Ping Result is Missing");
+        $this->assertNotEmpty($data->result, "Ping Result is not True");
     }
 }

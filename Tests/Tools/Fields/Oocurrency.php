@@ -17,7 +17,7 @@ class Oocurrency extends Oovarchar
 
     const FORMAT        =   'Currency';
     
-    public static $FakeData   =   array("EUR", "USD", "INR");
+    public static $fakeData   =   array("EUR", "USD", "INR");
     
     //==============================================================================
     //      DATA VALIDATION
@@ -26,13 +26,13 @@ class Oocurrency extends Oovarchar
     /**
      * Verify given Raw Data is Valid
      *
-     * @param   string $Data
+     * @param   string $data
      *
      * @return bool     True if OK, Error String if KO
      */
-    public static function validate($Data)
+    public static function validate($data)
     {
-        if (!empty($Data) && !is_string($Data)) {
+        if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
         return true;
@@ -45,12 +45,12 @@ class Oocurrency extends Oovarchar
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param      array   $Settings   User Defined Faker Settings
+     * @param      array   $settings   User Defined Faker Settings
      *
      * @return string
      */
-    public static function fake($Settings)
+    public static function fake($settings)
     {
-        return static::$FakeData[ (mt_rand(0, count(static::$FakeData) - 1)) ];
+        return static::$fakeData[ (mt_rand(0, count(static::$fakeData) - 1)) ];
     }
 }

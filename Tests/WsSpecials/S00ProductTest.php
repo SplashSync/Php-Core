@@ -22,29 +22,29 @@ class S00ProductTest extends ObjectsCase
     use \Splash\Models\Objects\ListsTrait;
     
     /** @var array */
-    protected $CurrentVariation = array();
+    protected $currentVariation = array();
 
     /** @var array */
-    protected $CurrentImages    = array();
+    protected $currentImages    = array();
     
     /**
      * @dataProvider objectTypesProvider
      */
-    public function testFieldsDefinition($Sequence, $ObjectType)
+    public function testFieldsDefinition($testSequence, $objectType)
     {
         //====================================================================//
         //   TEST INIT
         //====================================================================//
-        if (!$this->assertIsProductType($ObjectType)) {
+        if (!$this->assertIsProductType($objectType)) {
             return;
         }
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
 
         //====================================================================//
         //   Load Fields
-        $this->Fields   =   Splash::object($ObjectType)->fields();
-        $this->assertNotEmpty($this->Fields, "Product Fields List is Empty!");
-        $this->assertInternalType("array", $this->Fields, "Product Fields List is not an Array!");
+        $this->fields   =   Splash::object($objectType)->fields();
+        $this->assertNotEmpty($this->fields, "Product Fields List is Empty!");
+        $this->assertInternalType("array", $this->fields, "Product Fields List is not an Array!");
 
         //====================================================================//
         //   VALIDATE PRODUCTS FIELDS DEFINITIONS
@@ -63,113 +63,113 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      */
-    public function testVariantsFromModule($Sequence, $ObjectType, $Field, $ForceObjectId = null)
+    public function testVariantsFromModule($testSequence, $objectType, $field, $forceObjectId = null)
     {
         //====================================================================//
         //   TEST INIT
         //====================================================================//
-        if (!$this->assertIsProductType($ObjectType)) {
+        if (!$this->assertIsProductType($objectType)) {
             return;
         }
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
 
         //====================================================================//
         //   Load Fields
-        $this->Fields   =   Splash::object($ObjectType)->fields();
-        $this->assertNotEmpty($this->Fields, "Product Fields List is Empty!");
+        $this->fields   =   Splash::object($objectType)->fields();
+        $this->assertNotEmpty($this->fields, "Product Fields List is Empty!");
 
         //====================================================================//
         //   Verify Product Variants Are Defined
-        $VariantCode    =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "VariantAttributeCode");
-        if (!$VariantCode) {
+        $variantCode    =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeCode");
+        if (!$variantCode) {
             return;
         }
 
-        foreach ($this->objectVariantsProvider() as $VariationData) {
+        foreach ($this->objectVariantsProvider() as $variationData) {
             //====================================================================//
             //   Store Current Tested Variant
-            $this->CurrentVariation =   $VariationData;
+            $this->currentVariation =   $variationData;
             //====================================================================//
             //   Execute Set Test
-            $this->coreTestSetSingleFieldFromModule($ObjectType, $Field, $ForceObjectId);
+            $this->coreTestSetSingleFieldFromModule($objectType, $field, $forceObjectId);
         }
     }
 
     /**
      * @dataProvider objectFieldsProvider
      */
-    public function testVariantsFieldFromService($Sequence, $ObjectType, $Field, $ForceObjectId = null)
+    public function testVariantsFieldFromService($testSequence, $objectType, $field, $forceObjectId = null)
     {
         //====================================================================//
         //   TEST INIT
         //====================================================================//
-        if (!$this->assertIsProductType($ObjectType)) {
+        if (!$this->assertIsProductType($objectType)) {
             return;
         }
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
 
         //====================================================================//
         //   Load Fields
-        $this->Fields   =   Splash::object($ObjectType)->fields();
-        $this->assertNotEmpty($this->Fields, "Product Fields List is Empty!");
+        $this->fields   =   Splash::object($objectType)->fields();
+        $this->assertNotEmpty($this->fields, "Product Fields List is Empty!");
 
         //====================================================================//
         //   Verify Product Variants Are Defined
-        $VariantCode    =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "VariantAttributeCode");
-        if (!$VariantCode) {
+        $variantCode    =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeCode");
+        if (!$variantCode) {
             return;
         }
 
-        foreach ($this->objectVariantsProvider() as $VariationData) {
+        foreach ($this->objectVariantsProvider() as $variationData) {
             //====================================================================//
             //   Store Current Tested Variant
-            $this->CurrentVariation =   $VariationData;
+            $this->currentVariation =   $variationData;
             //====================================================================//
             //   Execute Set Test
-            $this->coreTestSetSingleFieldFromService($ObjectType, $Field, $ForceObjectId);
+            $this->coreTestSetSingleFieldFromService($objectType, $field, $forceObjectId);
         }
     }
     
     /**
      * @dataProvider productImagesProvider
      */
-    public function testImagesFromModule($Sequence, $ObjectType, $Images)
+    public function testImagesFromModule($testSequence, $objectType, $images)
     {
-        $this->coreTestImagesFromModule($Sequence, $ObjectType, $Images);
+        $this->coreTestImagesFromModule($testSequence, $objectType, $images);
     }
         
     /**
      * @dataProvider productImagesProvider
      */
-    public function testVariantImagesFromModule($Sequence, $ObjectType, $Images)
+    public function testVariantImagesFromModule($testSequence, $objectType, $images)
     {
         //====================================================================//
         //   TEST INIT
         //====================================================================//
-        if (!$this->assertIsProductType($ObjectType)) {
+        if (!$this->assertIsProductType($objectType)) {
             return;
         }
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Load Fields
-        $this->Fields   =   Splash::object($ObjectType)->fields();
-        $this->assertNotEmpty($this->Fields, "Product Fields List is Empty!");
+        $this->fields   =   Splash::object($objectType)->fields();
+        $this->assertNotEmpty($this->fields, "Product Fields List is Empty!");
 
         //====================================================================//
         //   Verify Product Variants Are Defined
-        $VariantCode    =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "VariantAttributeCode");
-        if (!$VariantCode) {
+        $variantCode    =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeCode");
+        if (!$variantCode) {
             return;
         }
 
-        foreach ($this->objectVariantsProvider() as $VariationData) {
+        foreach ($this->objectVariantsProvider() as $variationData) {
             //====================================================================//
             //   Store Current Tested Variant
-            $this->CurrentVariation =   $VariationData;
+            $this->currentVariation =   $variationData;
             //====================================================================//
             //   Execute Set Test
-            $this->coreTestImagesFromModule($Sequence, $ObjectType, $Images);
+            $this->coreTestImagesFromModule($testSequence, $objectType, $images);
         }
     }
     
@@ -179,45 +179,45 @@ class S00ProductTest extends ObjectsCase
      *              -> This Function uses Preloaded Fields
      *              -> If Md5 provided, check Current Field was Modified
      *
-     * @param       string      $ObjectType     Current Object Type
-     * @param       ArrayObject $Field          Current Tested Field (ArrayObject)
-     * @param       bool        $Unik           Ask for Unik Field Data
+     * @param       string      $objectType     Current Object Type
+     * @param       ArrayObject $field          Current Tested Field (ArrayObject)
+     * @param       bool        $unik           Ask for Unik Field Data
      *
      * @return      array|bool      Generated Data Block or False if not Allowed
      */
-    public function prepareForTesting($ObjectType, $Field = null, $Unik = true)
+    public function prepareForTesting($objectType, $field = null, $unik = true)
     {
         //====================================================================//
         //   Verify Test is Required
-        if (!$this->verifyTestIsAllowed($ObjectType, $Field)) {
+        if (!$this->verifyTestIsAllowed($objectType, $field)) {
             return false;
         }
         
         
         //====================================================================//
         //   Load Fields
-        $Fields   =   Splash::object($ObjectType)->fields();
+        $fields   =   Splash::object($objectType)->fields();
 
         //====================================================================//
         //   Ensure a Field is Requested
-        if (is_null($Field)) {
-            $Field   =   self::findFieldByTag($this->Fields, "http://schema.org/Product", "alternateName");
+        if (is_null($field)) {
+            $field   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "alternateName");
         }
 
         //====================================================================//
         // Generated Object Data
-        $FakeData = $this->generateObjectData($ObjectType, $Field, $Unik);
+        $fakeData = $this->generateObjectData($objectType, $field, $unik);
 
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications
-        if (!empty($this->CurrentVariation)) {
-            $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeCode");
-            $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeName");
-            $this->Fields[]   =   self::findFieldByTag($Fields, "http://schema.org/Product", "VariantAttributeValue");
+        if (!empty($this->currentVariation)) {
+            $this->fields[]   =   self::findFieldByTag($fields, "http://schema.org/Product", "VariantAttributeCode");
+            $this->fields[]   =   self::findFieldByTag($fields, "http://schema.org/Product", "VariantAttributeName");
+            $this->fields[]   =   self::findFieldByTag($fields, "http://schema.org/Product", "VariantAttributeValue");
         }
 
         //====================================================================//
         // Return Generated Object Data
-        return array_merge($FakeData, $this->CurrentVariation, $this->CurrentImages);
+        return array_merge($fakeData, $this->currentVariation, $this->currentImages);
     }
 }

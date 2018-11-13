@@ -1,15 +1,70 @@
+
+################################################################################
+#
+# * This file is part of SplashSync Project.
+# *
+# * Copyright (C) Splash Sync <www.splashsync.com>
+# *
+# * This program is distributed in the hope that it will be useful,
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# *
+# * For the full copyright and license information, please view the LICENSE
+# * file that was distributed with this source code.
+# *
+# * @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
 parameters:
+    
+    #############################################        
+    #   Base Configs    
     git_dir: .
     bin_dir:        vendor/bin
     ascii:
         failed:     "./Resources/ascii/grumphp-grumpy.txt"
         succeeded:  "./Resources/ascii/grumphp-happy.txt"
+        
+    #############################################        
+    #   Tasks Configs        
     tasks:
+        
+        #############################################        
+        #   Composer Verifs           
         composer:
             file:           "./composer.json"
+            
+        #############################################        
+        #   Syntax Errors Detection             
         phplint:
             exclude:        ['vendor']
             triggered_by:   ['php']
+            
+        jsonlint:
+            detect_key_conflicts: true
+            
+        xmllint: ~
+        
+        yamllint: ~
+            
+        #############################################        
+        #   Blacklist Codes Detection
+        git_blacklist:
+            keywords:
+                - "var_dump"
+                - "dump("
+                - "console.log"
+                - "print_r"
+                - "die("
+            triggered_by: [php, js, twig]
+        
+        #############################################        
+        #   Security Checks 
+        securitychecker: ~
+        
+        #############################################        
+        #   Code Quality        
         phpcs:
             standard:       "PSR2"
             triggered_by:   [php]
@@ -19,24 +74,12 @@ parameters:
                 - soap.php
                 - BaseCase.php                
                 - TestCase.php
-        git_blacklist:
-            keywords:
-                - "var_dump"
-                - "dump("
-                - "console.log"
-                - "print_r"
-                - "die("
-            triggered_by: [php, js, twig]
-        jsonlint:
-            detect_key_conflicts: true
-        xmllint: ~
-        yamllint: ~
         phpmd:
             ruleset:        ["./Build/phpmd.xml"]
             exclude:        
                 - "nusoap.php"
                 - "vendor"
-        securitychecker: ~
+                
         phpcpd: 
             exclude:        
                 - "Components/NuSOAP"
@@ -50,6 +93,10 @@ parameters:
                 - fatal.inc.php
                 - server.inc.php
 
+    #############################################        
+    #   Testsuites Configs
+    #   => Travis   >>  Base Test Suite for All PHP Versions
+    #   => PhpStan  >>  Only for PHP Versions > PHP7.1
     testsuites:
         travis:
             tasks:

@@ -22,22 +22,22 @@ function fatal_handler()
 {
     //====================================================================//
     // Read Last Error
-    $Error  =   error_get_last();
-    if (!$Error) {
+    $error  =   error_get_last();
+    if (!$error) {
         return;
     }
     //====================================================================//
     // Fatal Error
-    if ($Error["type"] == E_ERROR) {
+    if ($error["type"] == E_ERROR) {
         //====================================================================//
         // Parse Error in Response.
-        Splash::com()->fault($Error);
+        Splash::com()->fault($error);
         //====================================================================//
         // Process methods & Return the results.
         Splash::com()->handle();
     //====================================================================//
     // Non Fatal Error
     } else {
-        Splash::log()->war($Error["message"] . " on File " . $Error["file"] . " Line " . $Error["line"]);
+        Splash::log()->war($error["message"] . " on File " . $error["file"] . " Line " . $error["line"]);
     }
 }

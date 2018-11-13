@@ -2,8 +2,6 @@
 namespace Splash\Tests\WsObjects;
 
 use Splash\Tests\Tools\ObjectsCase;
-use Splash\Client\Splash;
-use Splash\Tests\Tools\Fields\Ooobjectid;
 use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
 
 /**
@@ -18,28 +16,28 @@ class O06SetTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      */
-    public function testSetSingleFieldFromModule($Sequence, $ObjectType, $Field, $ForceObjectId = null)
+    public function testSetSingleFieldFromModule($testSequence, $objectType, $field, $forceObjectId = null)
     {
         //====================================================================//
         //   Load Test Sequence
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Execute Set Test
-        $this->coreTestSetSingleFieldFromModule($ObjectType, $Field, $ForceObjectId);
+        $this->coreTestSetSingleFieldFromModule($objectType, $field, $forceObjectId);
     }
     
     /**
      * @dataProvider objectFieldsProvider
      */
-    public function testSetSingleFieldFromService($Sequence, $ObjectType, $Field, $ForceObjectId = null)
+    public function testSetSingleFieldFromService($testSequence, $objectType, $field, $forceObjectId = null)
     {
         //====================================================================//
         //   Load Test Sequence
-        $this->loadLocalTestSequence($Sequence);
+        $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
         //   Execute Set Test
-        $this->coreTestSetSingleFieldFromService($ObjectType, $Field, $ForceObjectId);
+        $this->coreTestSetSingleFieldFromService($objectType, $field, $forceObjectId);
     }
 }

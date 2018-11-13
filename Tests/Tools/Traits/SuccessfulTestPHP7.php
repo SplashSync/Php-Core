@@ -26,12 +26,12 @@ use Splash\Client\Splash;
  */
 trait SuccessfulTestPHP7
 {
-    public function onNotSuccessfulTest(\Throwable $Exception)
+    public function onNotSuccessfulTest(\Throwable $exception)
     {
         //====================================================================//
         // Do not display log on Skipped Tests
-        if (is_a($Exception, "PHPUnit\Framework\SkippedTestError")) {
-            throw $Exception;
+        if (is_a($exception, "PHPUnit\Framework\SkippedTestError")) {
+            throw $exception;
         }
         //====================================================================//
         // Remove Debug From Splash Logs
@@ -41,6 +41,6 @@ trait SuccessfulTestPHP7
         fwrite(STDOUT, Splash::log()->getConsoleLog());
         //====================================================================//
         // OutPut Phpunit Exeption
-        throw $Exception;
+        throw $exception;
     }
 }

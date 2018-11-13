@@ -137,31 +137,31 @@ class SelfTestTemplate extends WidgetBase
         Splash::selfTest();
         //====================================================================//
         // Get Log
-        $Log = Splash::log();
+        $logs = Splash::log();
         //====================================================================//
         // If test was passed
-        if (empty($Log->err)) {
+        if (empty($logs->err)) {
             $this->blocksFactory()->addNotificationsBlock(["success" => "Self-Test Passed!"]);
         }
         //====================================================================//
         // Add Error Notifications
-        foreach ($Log->err as $Text) {
-            $this->blocksFactory()->addNotificationsBlock(["error" => $Text]);
+        foreach ($logs->err as $message) {
+            $this->blocksFactory()->addNotificationsBlock(["error" => $message]);
         }
         //====================================================================//
         // Add Warning Notifications
-        foreach ($Log->war as $Text) {
-            $this->blocksFactory()->addNotificationsBlock(["warning" => $Text]);
+        foreach ($logs->war as $message) {
+            $this->blocksFactory()->addNotificationsBlock(["warning" => $message]);
         }
         //====================================================================//
         // Add Success Notifications
-        foreach ($Log->msg as $Text) {
-            $this->blocksFactory()->addNotificationsBlock(["success" => $Text]);
+        foreach ($logs->msg as $message) {
+            $this->blocksFactory()->addNotificationsBlock(["success" => $message]);
         }
         //====================================================================//
         // Add Debug Notifications
-        foreach ($Log->deb as $Text) {
-            $this->blocksFactory()->addNotificationsBlock(["info" => $Text]);
+        foreach ($logs->deb as $message) {
+            $this->blocksFactory()->addNotificationsBlock(["info" => $message]);
         }
     }
     

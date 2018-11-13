@@ -204,20 +204,20 @@ class C01ClassesTest extends TestCase
         
         //====================================================================//
         //   Verify Local Mandatory Paths Exists
-        $ObjectPath = Splash::getLocalPath() . "/Objects";
+        $objectsPath = Splash::getLocalPath() . "/Objects";
         $this->assertTrue(
-            is_dir($ObjectPath),
-            "Splash Local Objects folder MUST be define in " . $ObjectPath . "."
+            is_dir($objectsPath),
+            "Splash Local Objects folder MUST be define in " . $objectsPath . "."
         );
-        $WidgetPath = Splash::getLocalPath() . "/Widgets";
+        $widgetsPath = Splash::getLocalPath() . "/Widgets";
         $this->assertTrue(
-            is_dir($WidgetPath),
-            "Splash Local Widgets folder MUST be define in " . $WidgetPath . "."
+            is_dir($widgetsPath),
+            "Splash Local Widgets folder MUST be define in " . $widgetsPath . "."
         );
-        $TranslationPath = Splash::getLocalPath() . "/Translations";
+        $translationsPath = Splash::getLocalPath() . "/Translations";
         $this->assertTrue(
-            is_dir($TranslationPath),
-            "Splash Local Translations folder MUST be define in " . $TranslationPath . "."
+            is_dir($translationsPath),
+            "Splash Local Translations folder MUST be define in " . $translationsPath . "."
         );
     }
 }
