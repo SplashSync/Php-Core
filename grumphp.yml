@@ -17,6 +17,13 @@
 ################################################################################
 
 #############################################        
+# Override Config. for Php Core Module
+parameters:
+    core_dir:               "./Resources/grumphp"    
+    mode:                   "core"
+    level:                  2
+            
+#############################################        
 # Import Config. from Php Core Module
 imports:
     - { resource: "./Resources/grumphp/grumphp.base.yml" }
