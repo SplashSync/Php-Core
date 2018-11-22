@@ -3,6 +3,7 @@
 namespace Splash\Tests\Tools\Traits;
 
 use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @abstract    Splash Test Tools - Objects Data Management
@@ -17,7 +18,7 @@ trait ObjectsDataTrait
      *
      * @param   array   $block1             Raw Data to Compare
      * @param   array   $block2             Raw Data to Compare
-     * @param   object  $testController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
+     * @param   TestCase  $testController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
      * @param   string  $comment            Comment on this Test
      *
      * @return bool
@@ -48,7 +49,7 @@ trait ObjectsDataTrait
         $this->normalize($block2);
         //====================================================================//
         // If Test Controller Given
-        if ($testController) {
+        if ($testController && ($testController instanceof TestCase)) {
             $testController->assertEquals($block1, $block2, $comment);
             return true;
         }
@@ -130,7 +131,7 @@ trait ObjectsDataTrait
      * @param   array   $block2             Raw Data to Compare
      * @param   string  $comment            Comment on this Test
      *
-     * @return string   error / success translator string for debugger
+     * @return bool
      */
     private function compareField($fieldType, $block1, $block2, $comment = null)
     {
@@ -188,7 +189,7 @@ trait ObjectsDataTrait
      * @param   array   $block2             Raw Data to Compare
      * @param   string  $comment            Comment on this Test
      *
-     * @return string   error / success translator string for debugger
+     * @return bool
      */
     private function compareListField($fieldType, $fieldId, $block1, $block2, $comment = null)
     {

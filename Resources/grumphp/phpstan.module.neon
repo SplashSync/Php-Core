@@ -1,4 +1,4 @@
 parameters:
-    bootstrap: "./Build/phpstan.php"
+    bootstrap: "./vendor/splash/phpcore/Resources/grumphp/phpstan.php"
     universalObjectCratesClasses:
             - ArrayObject

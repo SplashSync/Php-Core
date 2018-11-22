@@ -26,7 +26,7 @@ trait ObjectsValidatorTrait
     /**
      *   @abstract   Verify this parameter is a valid sync data type
      *   @param      string      $fieldType     Data Type Name String
-     *   @return     string|bool
+     *   @return     string|false
      */
     public static function isValidType($fieldType)
     {
@@ -68,10 +68,10 @@ trait ObjectsValidatorTrait
     }
 
     /**
-     *   @abstract   Verify Data a valid Raw field data
-     *   @param      mixed   $data       Object Field Data
-     *   @param      string  $fieldType       Object Field Type
-     *   @return     int     $result     0 if KO, 1 if OK
+     * @abstract   Verify Data a valid Raw field data
+     * @param      mixed   $data       Object Field Data
+     * @param      string  $fieldType       Object Field Type
+     * @return     bool
      */
     public static function isValidData($data, $fieldType)
     {
@@ -94,11 +94,11 @@ trait ObjectsValidatorTrait
     }
     
     /**
-     *   @abstract   Verify Data a valid field data
-     *   @param      mixed   $data       Object Field Data
-     *   @param      string  $fieldId         Object Field Identifier
-     *   @param      string  $fieldType       Object Field Type
-     *   @return     int     $result     0 if KO, 1 if OK
+     * @abstract   Verify Data a valid field data
+     * @param      mixed   $data       Object Field Data
+     * @param      string  $fieldId         Object Field Identifier
+     * @param      string  $fieldType       Object Field Type
+     * @return     bool
      */
     public function isValidFieldData($data, $fieldId, $fieldType)
     {
@@ -124,7 +124,7 @@ trait ObjectsValidatorTrait
         //====================================================================//
         // Verify Single Field Data Type is not Null
         if (is_null($data[$fieldId])) {
-            return;
+            return false;
         }
         
         //====================================================================//
@@ -133,15 +133,16 @@ trait ObjectsValidatorTrait
             self::isValidData($data[$fieldId], $fieldType),
             $fieldId . " => Field Raw Data is not a valid " . $fieldType .  ". (" . print_r($data[$fieldId], true) . ")"
         );
+        return true;
     }
         
     /**
-    *   @abstract   Verify Data a valid list field data
-    *   @param      mixed   $data       Object Field Data
-    *   @param      string  $fieldId         Object Field Identifier
-    *   @param      string  $fieldType       Object Field Type
-    *   @return     int     $result     0 if KO, 1 if OK
-    */
+     * @abstract   Verify Data a valid list field data
+     * @param      mixed   $data       Object Field Data
+     * @param      string  $fieldId         Object Field Identifier
+     * @param      string  $fieldType       Object Field Type
+     * @return     bool
+     */
     public function isValidListFieldData($data, $fieldId, $fieldType)
     {
         $listId     = self::isListField($fieldId);

@@ -26,7 +26,7 @@ class Oocountry extends Oovarchar
      *
      * @param   string $data
      *
-     * @return bool     True if OK, Error String if KO
+     * @return true|string
      */
     public static function validate($data)
     {

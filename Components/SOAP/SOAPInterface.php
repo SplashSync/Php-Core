@@ -65,6 +65,17 @@ class SOAPInterface implements CommunicationInterface
         //====================================================================//
         // Execute Php SOAP Call
         $response = $this->client->__soapCall($service, $data);
+        //====================================================================//
+        // Decode & Store Generic SOAP Errors if present
+        if ($response instanceof \SoapFault) {
+            //====================================================================//
+            //  Debug Informations
+            Splash::log()->deb("[SOAP] Fault Details= "   . $response->getTraceAsString());
+            //====================================================================//
+            //  Errro Message
+            return Splash::log()->err("ErrWsNuSOAPFault", $response->getCode(), $response->getMessage());
+        }        
+        
         return $response;
     }
         

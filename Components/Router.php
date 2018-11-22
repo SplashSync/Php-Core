@@ -143,7 +143,7 @@ class Router
      * @param   string          $router     Name of the router function to use for task execution
      * @param   ArrayObject     $task       Task To Execute
      *
-     * @return  ArrayObject                 Task Result ArrayObject
+     * @return  false|ArrayObject
      */
     public function executeTask($router, $task)
     {

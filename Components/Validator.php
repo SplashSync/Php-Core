@@ -15,7 +15,14 @@
 
 namespace   Splash\Components;
 
+use Exception;
 use Splash\Core\SplashCore      as Splash;
+
+use Splash\Models\LocalClassInterface;
+use Splash\Models\Objects\ObjectInterface;
+use Splash\Models\Widgets\WidgetInterface;
+use Splash\Models\ObjectsProviderInterface;
+use Splash\Models\WidgetsProviderInterface;
 
 /**
  * @abstract    Tooling Class for Validation of Splash Php Module Contents
@@ -30,7 +37,7 @@ class Validator
     private $ValidLocalObject;
     /** @var array */
     private $ValidLocalWidget;
-    /** @var array */
+    /** @var bool */
     private $ValidLocalPath;
     /** @var array */
     private $ValidLocalFunctions;
@@ -44,7 +51,7 @@ class Validator
     /**
     *   @abstract   Verify Local Core Class Exists & Is Valid
     *
-    *   @return     int         $result     0 if KO, 1 if OK
+     * @return  bool
     */
     public function isValidLocalClass()
     {
@@ -64,21 +71,15 @@ class Validator
         }
         
         //====================================================================//
-        // Verify Splash Local Core Functions Exists
-        if ($this->isValidLocalFunction("Parameters", $className) == false) {
-            return false;
-        }
-
-        if ($this->isValidLocalFunction("Includes", $className) == false) {
-            return false;
-        }
-
-        if ($this->isValidLocalFunction("Informations", $className) == false) {
-            return false;
-        }
-        
-        if ($this->isValidLocalFunction("SelfTest", $className) == false) {
-            return false;
+        // Verify Splash Local Core Extends LocalClassInterface
+        try {
+            $class  =   new $className();
+            if(!($class instanceof LocalClassInterface)) {
+                return Splash::log()->err(Splash::trans("ErrLocalInterface", $className, LocalClassInterface::class));
+            }
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+            return Splash::log()->err($exc->getMessage());
         }
         
         $this->ValidLocalClass[$className] = true;
@@ -89,7 +90,7 @@ class Validator
     /**
     *   @abstract   Verify Local Core Parameters are Valid
     *
-    *   @return     int         $result     0 if KO, 1 if OK
+     * @return  bool
     */
     public function isValidLocalParameterArray($input)
     {
@@ -116,7 +117,7 @@ class Validator
     /**
     *   @abstract   Verify Local Test Parameters are Valid
     *
-    *   @return     int         $result     0 if KO, 1 if OK
+     * @return  bool
     */
     public function isValidLocalTestParameterArray($input)
     {
@@ -131,7 +132,7 @@ class Validator
     /**
     *   @abstract   Verify Webserver Informations are Valid
     *
-    *   @return     int         $result     0 if KO, 1 if OK
+     * @return  bool
     */
     public function isValidServerInfos()
     {
@@ -205,17 +206,21 @@ class Validator
         }
         
         $this->ValidLocalObject[$objectType] = false;
-        
+
+        //====================================================================//
+        // Verify Local Core Class Exist & Is Valid
+        if (!$this->isValidLocalClass()) {
+            return false;
+        }
         //====================================================================//
         // Check if Object Manager is NOT Overriden
-        if (!$this->isValidLocalOverride("Objects")) {
+        if (!(Splash::local() instanceof ObjectsProviderInterface)) {
             //====================================================================//
             // Verify Object File Exist & is Valid
             if (!$this->isValidObjectFile($objectType)) {
                 return false;
             }
         }
-        
         //====================================================================//
         // Verify Object Class Exist & is Valid
         if (!$this->isValidObjectClass($objectType)) {
@@ -229,7 +234,7 @@ class Validator
     /**
      *      @abstract     Verify a Local Object File is Valid.
      *      @param        string    $objectType     Object Type Name
-     *      @return       int                       0 if KO, 1 if OK
+     * @return  bool
      */
     private function isValidObjectFile($objectType)
     {
@@ -254,13 +259,13 @@ class Validator
     /**
      *      @abstract     Verify Availability of a Local Object Class.
      *      @param        string    $objectType     Object Type Name
-     *      @return       int                       0 if KO, 1 if OK
+     *      @return       bool
      */
     private function isValidObjectClass($objectType)
     {
         //====================================================================//
         // Check if Object Manager is Overriden
-        if ($this->isValidLocalOverride("Object")) {
+        if (Splash::local() instanceof ObjectsProviderInterface) {
             //====================================================================//
             // Retrieve Object Manager ClassName
             $className = get_class(Splash::local()->object($objectType));
@@ -280,57 +285,15 @@ class Validator
         //====================================================================//
         // Read Object Disable Flag
         if ($this->isValidLocalFunction("getIsDisabled", $className) == false) {
-            $this->ValidLocalObject[$objectType] = false;
             return false;
         }
         if ($className::getIsDisabled()) {
-            $this->ValidLocalObject[$objectType] = false;
             return false;
         }
         
         //====================================================================//
-        // Verify Local Object Class Functions & Exist
-        return $this->isValidObjectFunctions($className, $objectType);
-    }
-
-    private function isValidObjectFunctions($className, $objectType)
-    {
-        //====================================================================//
-        // Verify Local Object Class Functions Exists
-        //====================================================================//
-        
-        //====================================================================//
-        // Read Object Available Fields List
-        if ($this->isValidLocalFunction(SPL_F_FIELDS, $className) == false) {
-            $this->ValidLocalObject[$objectType] = false;
-            return false;
-        }
-        //====================================================================//
-        // Read Object List
-        if ($this->isValidLocalFunction(SPL_F_LIST, $className) == false) {
-            $this->ValidLocalObject[$objectType] = false;
-            return false;
-        }
-        //====================================================================//
-        // Read Object Data
-        if ($this->isValidLocalFunction(SPL_F_GET, $className) == false) {
-            $this->ValidLocalObject[$objectType] = false;
-            return false;
-        }
-        //====================================================================//
-        // Write Object Data
-        if ($this->isValidLocalFunction(SPL_F_SET, $className) == false) {
-            $this->ValidLocalObject[$objectType] = false;
-            return false;
-        }
-        //====================================================================//
-        // Delete Object Data
-        if ($this->isValidLocalFunction(SPL_F_DEL, $className) == false) {
-            $this->ValidLocalObject[$objectType] = false;
-            return false;
-        }
-
-        return true;
+        // Verify Local Object Class Implements ObjectInterface
+        return is_subclass_of($className, ObjectInterface::class);
     }
     
     /**
@@ -386,7 +349,7 @@ class Validator
      *
      *  @param      array   $fieldsList       Object Field List
      *
-     *  @return     bool
+     * @return  bool
      */
     public function isValidObjectFieldsList($fieldsList)
     {
@@ -426,8 +389,13 @@ class Validator
         $this->ValidLocalWidget[$widgetType] = false;
         
         //====================================================================//
+        // Verify Local Core Class Exist & Is Valid
+        if (!$this->isValidLocalClass()) {
+            return false;
+        }        
+        //====================================================================//
         // Check if Widget Manager is NOT Overriden
-        if (!$this->isValidLocalOverride("Widgets")) {
+        if (!(Splash::local() instanceof WidgetsProviderInterface)) {
             //====================================================================//
             // Verify Widget File Exist & is Valid
             if (!$this->isValidWidgetFile($widgetType)) {
@@ -447,7 +415,7 @@ class Validator
     /**
      *      @abstract     Verify a Local Widget File is Valid.
      *      @param        string    $widgetType     Widget Type Name
-     *      @return       int                       0 if KO, 1 if OK
+     * @return  bool
      */
     private function isValidWidgetFile($widgetType)
     {
@@ -476,7 +444,7 @@ class Validator
     {
         //====================================================================//
         // Check if Widget Manager is Overriden
-        if ($this->isValidLocalOverride("Widget")) {
+        if (Splash::local() instanceof WidgetsProviderInterface) {
             //====================================================================//
             // Retrieve Widget Manager ClassName
             $className = get_class(Splash::local()->widget($widgetType));
@@ -506,23 +474,8 @@ class Validator
         }
         
         //====================================================================//
-        // Verify Local Widget Class Functions Exists
-        //====================================================================//
-        
-        //====================================================================//
-        // Read Object Available Fields List
-        if ($this->isValidLocalFunction(SPL_F_WIDGET_DEFINITION, $className) == false) {
-            $this->ValidLocalWidget[$widgetType] = false;
-            return false;
-        }
-        //====================================================================//
-        // Read Object List
-        if ($this->isValidLocalFunction(SPL_F_WIDGET_GET, $className) == false) {
-            $this->ValidLocalWidget[$widgetType] = false;
-            return false;
-        }
-
-        return true;
+        // Verify Local Object Class Implements WidgetInterface
+        return is_subclass_of($className, WidgetInterface::class);
     }
     
     //====================================================================//
@@ -532,8 +485,8 @@ class Validator
     //====================================================================//
     
     /**
-     *   @abstract   Verify Local Path Exists
-     *   @return     int         $result     0 if KO, 1 if OK
+     * @abstract   Verify Local Path Exists
+     * @return  bool
      */
     public function isValidLocalPath()
     {
@@ -584,26 +537,6 @@ class Validator
         $this->ValidLocalFunctions[$className][$method] = true;
 
         return $this->ValidLocalFunctions[$className][$method];
-    }
-
-    /**
-     * @abstract    Verify Availability of a local method/function prior to local overriding.
-     *
-     * @param   string      $method     Local Function Name
-     *
-     * @return  bool
-     */
-    public function isValidLocalOverride($method)
-    {
-        //====================================================================//
-        // Verify Local Core Class Exist & Is Valid
-        if ($this->isValidLocalClass()) {
-            //====================================================================//
-            // Check if Local Core Class Include Overriding Functions
-            return $this->isValidLocalFunction($method, null, false);
-        }
-        
-        return false;
     }
     
     //====================================================================//

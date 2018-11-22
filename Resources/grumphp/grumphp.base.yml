@@ -19,8 +19,16 @@
 parameters:
     
     #############################################        
+    #   Local Config 
+    #############################################        
+    #   Path to Php Core Module
+    core_dir:       "./vendor/splash/phpcore/Resources/grumphp"     
+    #   Testing Mode (core|module)
+    mode:           "module"
+    level:          4
+    
+    #############################################        
     #   Base Configs 
-    core_dir:       "./Resources/grumphp"
     git_dir:        .
     bin_dir:        "vendor/bin"
     ascii:
@@ -69,7 +77,7 @@ parameters:
         phpcsfixer:     ~ 
         phpcsfixer2:    
             allow_risky:    true
-            config:         "%core_dir%/php_cs.dist"
+            config:         "%core_dir%/php_cs.%mode%.dist"
             
         phpcs:
             standard:       "PSR2"
@@ -91,8 +99,8 @@ parameters:
                 - "Components/NuSOAP"
                 - "vendor"               
         phpstan: 
-            level:  1
-            configuration:  "%core_dir%/phpstan.neon"              
+            level:          "%level%"
+            configuration:  "%core_dir%/phpstan.%mode%.neon"              
             ignore_patterns:
                 - NuSOAPInterface.php
                 - nusoap.php

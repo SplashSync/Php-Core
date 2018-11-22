@@ -26,7 +26,7 @@ class ChecksumHelper
     /**
      * @abstract    Compute Md5 CheckSum from Object Attributes
      * @param       array       $input      Array of Object Data ($Code => $Value)
-     * @return      string                  Unik Md5 Checksum
+     * @return      null|string             Unik Md5 Checksum
      */
     public static function fromArray($input = null)
     {
@@ -54,7 +54,7 @@ class ChecksumHelper
     /**
      * @abstract    Compute Debug CheckSum String from Object Attributes
      * @param       array       $input      Array of Object Data ($Code => $Value)
-     * @return      string                  Unik String Checksum
+     * @return      null|string             Unik String Checksum
      */
     public static function debugFromArray($input = null)
     {

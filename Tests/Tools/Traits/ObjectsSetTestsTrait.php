@@ -69,7 +69,7 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         // If Test was Forced on a Specific Object (Local Sequences)
         if (!is_null($forceObjectId)) {
-            return;
+            return true;
         }
         
         //====================================================================//
@@ -125,7 +125,7 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         // If Test was Forced on a Specific Object (Local Sequences)
         if (!is_null($forceObjectId)) {
-            return;
+            return true;
         }
         
         //====================================================================//

@@ -17,22 +17,26 @@
 
 namespace   Splash\Models\Helpers;
 
+use Splash\Models\Fields\FieldsManagerTrait;
+
 /**
  * @abstract    Helper for List Fields Management
  */
 class ListsHelper
 {
+    use FieldsManagerTrait;
+    
     //====================================================================//
     // FIELDS LIST IDENTIFIERS MANAGEMENT
     //====================================================================//
    
     /**
-     *      @abstract   Create a List Field Identifier String
+     * @abstract   Create a List Field Identifier String
      *
-     *      @param      string      $listName       Field List Name.
-     *      @param      string      $fieldName     Field Identifier
+     * @param      string      $listName       Field List Name.
+     * @param      string      $fieldName     Field Identifier
      *
-     *      @return     string
+     * @return     false|string
      */
     public function encode($listName, $fieldName)
     {
@@ -49,85 +53,18 @@ class ListsHelper
         return   $fieldName . LISTSPLIT . $listName;
     }
     
-    /**
-     *      @abstract   decode List Field String
-     *
-     *      @param      string      $listFieldName      List Field Identifier String
-     *
-     *      @return     string
-     */
-    private function decode($listFieldName)
-    {
-        //====================================================================//
-        // Safety Checks
-        if (empty($listFieldName)) {
-            return false;
-        }
-        //====================================================================//
-        // Explode Object String
-        $result = explode(LISTSPLIT, $listFieldName);
-        //====================================================================//
-        // Check result is Valid
-        if (count($result) != 2) {
-            return false;
-        }
-        //====================================================================//
-        // Return Object Array
-        return   $result;
-    }
-    
-    /**
-     *      @abstract   Retrieve Field Identifier from an List Field String
-     *
-     *      @param      string      $listFieldName      List Field Identifier String
-     *
-     *      @return     string
-     */
-    public function fieldName($listFieldName)
-    {
-        //====================================================================//
-        // decode
-        $result     = $this->decode($listFieldName);
-        if (empty($result)) {
-            return false;
-        }
-        //====================================================================//
-        // Return Field Identifier
-        return   $result[0];
-    }
-
-    /**
-     *      @abstract   Retrieve List Name from an List Field String
-     *
-     *      @param      string      $listFieldName      List Field Identifier String
-     *
-     *      @return     string
-     */
-    public function listName($listFieldName)
-    {
-        //====================================================================//
-        // decode
-        $result     = $this->decode($listFieldName);
-        if (empty($result)) {
-            return false;
-        }
-        //====================================================================//
-        // Return List Name
-        return   $result[1];
-    }
-    
     //====================================================================//
     // FIELDS LIST DATA MANAGEMENT
     //====================================================================//
     
     /**
-     *      @abstract   Validate & Init List before Adding Data
+     * @abstract   Validate & Init List before Adding Data
      *
-     *      @param      array       $buffer             Object Data Buffer
-     *      @param      string      $listName           List Identifier String
-     *      @param      string      $fieldName          List Field Identifier String
+     * @param      array       $buffer             Object Data Buffer
+     * @param      string      $listName           List Identifier String
+     * @param      string      $fieldName          List Field Identifier String
      *
-     *      @return     string
+     * @return     false|string
      */
     public function initOutput(&$buffer, $listName, $fieldName)
     {
@@ -147,15 +84,15 @@ class ListsHelper
     }
 
     /**
-     *      @abstract   Add Item Data in Given  Output List
+     * @abstract   Add Item Data in Given  Output List
      *
-     *      @param      array       $buffer             Object Data Buffer
-     *      @param      string      $listName           List Identifier String
-     *      @param      string      $fieldName          List Field Identifier String
-     *      @param      string|int  $key                List Item Index Key
-     *      @param      mixed       $itemData           Item Data
+     * @param      array       $buffer             Object Data Buffer
+     * @param      string      $listName           List Identifier String
+     * @param      string      $fieldName          List Field Identifier String
+     * @param      string|int  $key                List Item Index Key
+     * @param      mixed       $itemData           Item Data
      *
-     *      @return     void
+     * @return     void
      */
     public function insert(&$buffer, $listName, $fieldName, $key, $itemData)
     {

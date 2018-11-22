@@ -45,8 +45,7 @@ class XmlManager
     public $fault;
 
     /**
-     *      @abstract      Class Constructor
-     *      @return     int             <0 if KO, >0 if OK
+     * @abstract      Class Constructor
      */
     public function __construct()
     {
@@ -56,8 +55,6 @@ class XmlManager
         self::$xml->openMemory();
         self::$xml->startDocument('1.0');
         self::$xml->setIndent(true);
-        
-        return true;
     }
 
     //====================================================================//
@@ -67,7 +64,7 @@ class XmlManager
     /**
     * @abstract     Method to convert Object into XML string
     * @param        array      $obj
-    * @return       array      $result
+    * @return       string
     */
     public function objectToXml($obj)
     {
@@ -101,7 +98,7 @@ class XmlManager
     /**
      * @abstract     Method to convert XML string into ArrayObject
      * @param        string     $xml
-     * @return       array      $result
+     * @return       ArrayObject|string|false
      */
     public function xmlToArrayObject($xml)
     {
@@ -276,7 +273,7 @@ class XmlManager
     /**
      * @abstract    Convert a SimpleXML object to an ArrayObject
      * @param       SimpleXMLElement    $element
-     * @return      array               $array
+     * @return      ArrayObject|string|false
      */
     private static function simpleXmlToArrayObject($element)
     {

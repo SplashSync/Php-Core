@@ -25,7 +25,7 @@ use Splash\Models\Helpers\ListsHelper;
 trait ListsTrait
 {
     /**
-     * @var Static Class Storage
+     * @var ListsHelper
      */
     private static $ListsHelper;
     

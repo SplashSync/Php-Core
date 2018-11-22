@@ -1,0 +1,12 @@
+<?php
+
+
+$finder = PhpCsFixer\Finder::create()
+    ->exclude('tests/Fixtures')
+    ->exclude('vendor')
+    ->in(dirname(dirname(dirname(dirname(__DIR__)))))
+;
+
+include_once "php_cs.rules.php";
+
+return $config;

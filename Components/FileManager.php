@@ -34,12 +34,12 @@ class FileManager
 {
 
     /**
-     *      @abstract   Read a file from Splash Server
+     * @abstract   Read a file from Splash Server
      *
-     *      @param      string      $file       File Identifier (Given by Splash Server)
-     *      @param      string      $md5        Local FileName
+     * @param      string      $file       File Identifier (Given by Splash Server)
+     * @param      string      $md5        Local FileName
      *
-     *      @return     array       $file       False if not found, else file contents array
+     * @return     false|array       $file       False if not found, else file contents array
      */
     public function getFile($file = null, $md5 = null)
     {
@@ -102,7 +102,7 @@ class FileManager
      *  @param      string      $path       Full Path to Local File
      *  @param      string      $md5        Local File Checksum
      *
-     *  @return     array       $infos      0 if not found, else file informations array
+     *  @return     bool|array       $infos      0 if not found, else file informations array
      *
      *              File Information Array Structure
      *              $infos["owner"]     =>  File Owner Name (Human Readable);
@@ -170,7 +170,7 @@ class FileManager
      *  @param      string      $path       Full Path to Local File
      *  @param      string      $md5        Local File Checksum
      *
-     *  @return     array       $file       0 if not found, else file contents array
+     *  @return     bool|array       $file       0 if not found, else file contents array
      *
      *              File Information Array Structure
      *              $infos["filename"]  =>  File Name
@@ -233,12 +233,11 @@ class FileManager
     }
 
     /**
-     *  @abstract   Read a file contents from local filesystem & encode it to base64 format
+     * @abstract   Read a file contents from local filesystem & encode it to base64 format
      *
-     *  @param      string      $fileName       Full path local FileName
+     * @param      string      $fileName       Full path local FileName
      *
-     *  @return     string  Base64 encoded raw file
-     *
+     * @return     false|string  Base64 encoded raw file
      */
     public function readFileContents($fileName = null)
     {
@@ -264,17 +263,17 @@ class FileManager
     }
     
     /**
-     *  @abstract   Write a file on local filesystem
+     * @abstract   Write a file on local filesystem
      *
-     *  @param      string      $dir        Local File Directory
-     *  @param      string      $file       Local FileName
-     *  @param      string      $md5        File MD5 Checksum
-     *  @param      string      $raw        Raw File Contents (base64 Encoded)
-     *  @return     int         $result     0 if OK, 1 if OK
-     *
-     *  @remark     For all function used remotly, all parameters have default predefined values
+     * @remark     For all function used remotly, all parameters have default predefined values
      *              in order to avoid remote execution errors.
-     *
+     * 
+     * @param      string      $dir        Local File Directory
+     * @param      string      $file       Local FileName
+     * @param      string      $md5        File MD5 Checksum
+     * @param      string      $raw        Raw File Contents (base64 Encoded)
+     * 
+     * @return     bool
      */
     public function writeFile($dir = null, $file = null, $md5 = null, $raw = null)
     {

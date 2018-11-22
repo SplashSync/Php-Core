@@ -14,17 +14,18 @@
 
 namespace Splash\Models\Fields;
 
+use ArrayObject;
+
 /**
  * @abstract    Fields Definition & Data Manager
  *              Collection of Basic STATIC Functions to Manage Splash Fields
  */
 trait FieldsManagerTrait
 {
-    
     //==============================================================================
     //      FIELDS LIST FUNCTIONS
     //==============================================================================
-    
+
     /**
      *   @abstract   Filter a Fields List to keap only given Fields Ids
      *
@@ -35,17 +36,17 @@ trait FieldsManagerTrait
      */
     public static function filterFieldList($fieldsList, $filters = array())
     {
-        $result =   array();
-        
+        $result = array();
+
         foreach ($fieldsList as $field) {
-            if (in_array($field->id, $filters)) {
+            if (in_array($field->id, $filters, true)) {
                 $result[] = $field;
             }
         }
-        
+
         return $result;
     }
-    
+
     /**
      *  @abstract   Filter a Fields List to keap only given Fields Tags
      *
@@ -57,9 +58,9 @@ trait FieldsManagerTrait
      */
     public static function filterFieldListByTag($fieldsList, $itemType, $itemProp)
     {
-        $result     =   array();
-        $tag        =   md5($itemProp . IDSPLIT . $itemType);
-        
+        $result = array();
+        $tag = md5($itemProp.IDSPLIT.$itemType);
+
         foreach ($fieldsList as $field) {
             if ($field->tag !== $tag) {
                 continue;
@@ -69,26 +70,26 @@ trait FieldsManagerTrait
             }
             $result[] = $field;
         }
-        
+
         return $result;
     }
-    
+
     /**
      *   @abstract   Find a Field Definition in List by Id
      *
      *   @param      array      $fieldsList     Object Field List
      *   @param      array      $fieldId        Field Id
      *
-     *   @return     array|null
+     *   @return     null|ArrayObject
      */
     public static function findField($fieldsList, $fieldId)
     {
         $fields = self::filterFieldList($fieldsList, $fieldId);
-        
-        if (count($fields) != 1) {
+
+        if (1 != count($fields)) {
             return null;
         }
-                
+
         return array_shift($fields);
     }
 
@@ -99,19 +100,19 @@ trait FieldsManagerTrait
      *  @param      string     $itemType       Field Microdata Type Url
      *  @param      string     $itemProp       Field Microdata Property Name
      *
-     *  @return     array|null
+     *  @return     null|ArrayObject
      */
     public static function findFieldByTag($fieldsList, $itemType, $itemProp)
     {
         $fields = self::filterFieldListByTag($fieldsList, $itemType, $itemProp);
-        
-        if (count($fields) != 1) {
+
+        if (1 != count($fields)) {
             return null;
         }
-                
+
         return array_shift($fields);
     }
-    
+
     /**
      *   @abstract   Redure a Fields List to an Array of Field Ids
      *
@@ -119,12 +120,12 @@ trait FieldsManagerTrait
      *   @param      bool       $isRead         Filter non Readable Fields
      *   @param      bool       $isWrite        Filter non Writable Fields
      *
-     *   @return     array
+     *   @return     string[]
      */
     public static function reduceFieldList($fieldsList, $isRead = false, $isWrite = false)
     {
-        $result =   array();
-       
+        $result = array();
+
         foreach ($fieldsList as $field) {
             //==============================================================================
             //      Filter Non-Readable Fields
@@ -138,10 +139,10 @@ trait FieldsManagerTrait
             }
             $result[] = $field->id;
         }
-            
+
         return $result;
     }
-    
+
     //==============================================================================
     //      LISTS FIELDS MANAGEMENT
     //==============================================================================
@@ -163,58 +164,61 @@ trait FieldsManagerTrait
         //====================================================================//
         // Detects Lists
         $list = explode(LISTSPLIT, $fieldType);
-        if (is_array($list) && (count($list)==2)) {
+        if (is_array($list) && (2 == count($list))) {
             //====================================================================//
             // If List Detected, Prepare Field List Information Array
-            return array("fieldname" => $list[0],"listname" => $list[1]);
+            return array('fieldname' => $list[0], 'listname' => $list[1]);
         }
+
         return false;
     }
 
     /**
      * @abstract   Retrieve Field Identifier from an List Field String
      *
-     * @param      string      $listFieldName      List Field Identifier String
+     * @param string $listFieldName List Field Identifier String
      *
-     * @return     string|false
+     * @return false|string
      */
     public static function fieldName($listFieldName)
     {
         //====================================================================//
         // Decode
-        $result     = self::isListField($listFieldName);
+        $result = self::isListField($listFieldName);
         if (empty($result)) {
             return false;
         }
         //====================================================================//
         // Return Field Identifier
-        return   $result["fieldname"];
+        return   $result['fieldname'];
     }
 
     /**
      * @abstract   Retrieve List Name from an List Field String
      *
-     * @param      string      $listFieldName      List Field Identifier String
+     * @param string $listFieldName List Field Identifier String
      *
-     * @return     string|false
+     * @return false|string
      */
     public static function listName($listFieldName)
     {
         //====================================================================//
         // Decode
-        $result     = self::isListField($listFieldName);
+        $result = self::isListField($listFieldName);
         if (empty($result)) {
             return false;
         }
         //====================================================================//
         // Return List Name
-        return   $result["listname"];
+        return   $result['listname'];
     }
-    
+
     /**
      * @abstract   Retrieve Base Field Type from Field Type|Id String
-     * @param      string       $fieldId          List Field Identifier String
-     * @return     string|false
+     *
+     * @param string $fieldId List Field Identifier String
+     *
+     * @return false|string
      */
     public static function baseType($fieldId)
     {
@@ -228,17 +232,20 @@ trait FieldsManagerTrait
         if (self::isIdField($fieldId)) {
             $fieldId = self::objectType($fieldId);
         }
+
         return $fieldId;
     }
-    
+
     //==============================================================================
     //      OBJECT ID FIELDS MANAGEMENT
     //==============================================================================
-    
+
     /**
      * @abstract   Identify if field is Object Identifier Data & Decode Field
-     * @param       string          $fieldId        ObjectId Field String
-     * @return      array|false
+     *
+     * @param string $fieldId ObjectId Field String
+     *
+     * @return array|false
      */
     public static function isIdField($fieldId)
     {
@@ -250,121 +257,128 @@ trait FieldsManagerTrait
         //====================================================================//
         // Detects ObjectId
         $list = explode(IDSPLIT, $fieldId);
-        if (is_array($list) && (count($list)==2)) {
+        if (is_array($list) && (2 == count($list))) {
             //====================================================================//
             // If List Detected, Prepare Field List Information Array
-            $result["ObjectId"]        = $list[0];
-            $result["ObjectType"]      = $list[1];
+            $result['ObjectId'] = $list[0];
+            $result['ObjectType'] = $list[1];
+
             return $result;
         }
+
         return false;
     }
-    
+
     /**
      * @abstract   Retrieve Object Id Name from an Object Identifier String
-     * @param      string      $fieldId      Object Identifier String
-     * @return     string|false
+     *
+     * @param string $fieldId Object Identifier String
+     *
+     * @return false|string
      */
     public static function objectId($fieldId)
     {
         //====================================================================//
         // decode
-        $result     = self::isIdField($fieldId);
+        $result = self::isIdField($fieldId);
         if (empty($result)) {
             return false;
         }
         //====================================================================//
         // Return List Name
-        return   $result["ObjectId"];
+        return   $result['ObjectId'];
     }
 
     /**
      * @abstract   Retrieve Object Type Name from an Object Identifier String
-     * @param      string      $fieldId      Object Identifier String
-     * @return     string|false
+     *
+     * @param string $fieldId Object Identifier String
+     *
+     * @return false|string
      */
     public static function objectType($fieldId)
     {
         //====================================================================//
         // decode
-        $result     = self::isIdField($fieldId);
+        $result = self::isIdField($fieldId);
         if (empty($result)) {
             return false;
         }
         //====================================================================//
         // Return Field Identifier
-        return   $result["ObjectType"];
+        return   $result['ObjectType'];
     }
-    
+
     //==============================================================================
     //      OBJECTS DATA BLOCKS FUNCTIONS
     //==============================================================================
-        
+
     /**
      *   @abstract   Extract Raw Field Data from an Object Data Block
      *
      *   @param      array      $objectData          Object Data Block
      *   @param      string      $filter            Single Fields Id
      *
-     *   @return     array|null
+     *   @return     null|array
      */
     public static function extractRawData($objectData, $filter)
     {
-        $filteredData   =   self::filterData($objectData, array($filter));
-        
+        $filteredData = self::filterData($objectData, array($filter));
+
         //====================================================================//
         // Explode List Field Id
-        $isList       =   self::isListField($filter);
-        
+        $isList = self::isListField($filter);
+
         //====================================================================//
         // Simple Single Field
         if (!$isList) {
             if (isset($filteredData[$filter])) {
                 return $filteredData[$filter];
             }
-            
-        //====================================================================//
+
+            //====================================================================//
         // List Field
         } else {
             //====================================================================//
             // Check List Exists
-            if (!array_key_exists($isList["listname"], $filteredData)) {
+            if (!array_key_exists($isList['listname'], $filteredData)) {
                 return null;
             }
-            
+
             //====================================================================//
             // Parse Raw List Data
             $result = array();
-            foreach ($filteredData[$isList["listname"]] as $key => $item) {
-                $result[$key]   =   $item[$isList["fieldname"]];
+            foreach ($filteredData[$isList['listname']] as $key => $item) {
+                $result[$key] = $item[$isList['fieldname']];
             }
+
             return $result;
         }
-        
+
         //====================================================================//
         // Field Not Received or is Empty
         return null;
     }
-    
+
     /**
      *   @abstract   Filter a Object Data Block to keap only given Fields
      *
      *   @param      array      $objectData      Object Data Block
      *   @param      array      $filters        Array of Fields Ids
      *
-     *   @return     array|null
+     *   @return     null|array
      */
     public static function filterData($objectData, $filters = array())
     {
-        $result         =   array();
-        $listFilters    =   array();
-        
+        $result = array();
+        $listFilters = array();
+
         //====================================================================//
         // Process All Single Fields Ids & Store Sorted List Fields Ids
         foreach ($filters as $fieldId) {
             //====================================================================//
             // Explode List Field Id
-            $isList     =   self::isListField($fieldId);
+            $isList = self::isListField($fieldId);
             //====================================================================//
             // Single Field Data Type
             if ((!$isList) && (array_key_exists($fieldId, $objectData))) {
@@ -374,8 +388,8 @@ trait FieldsManagerTrait
             }
             //====================================================================//
             // List Field Data Type
-            $listName   =   $isList["listname"];
-            $fieldName  =   $isList["fieldname"];
+            $listName = $isList['listname'];
+            $fieldName = $isList['fieldname'];
             //====================================================================//
             // Check List Data are Present in Block
             if (!array_key_exists($listName, $objectData)) {
@@ -388,32 +402,32 @@ trait FieldsManagerTrait
             }
             $listFilters[$listName][] = $fieldName;
         }
-        
+
         //====================================================================//
         // Process All List Fields Ids Filters
         foreach ($listFilters as $listName => $listFilters) {
             $result[$listName] = self::filterListData($objectData[$listName], $listFilters);
         }
-        
+
         return $result;
     }
-    
+
     /**
      * @abstract   Filter a Object List Data Block to keap only given Fields
      *
-     * @param   array       $objectData     Object Data Block
-     * @param   array       $filters        Array of Fields Ids
+     * @param array $objectData Object Data Block
+     * @param array $filters    Array of Fields Ids
      *
-     * @return  array
+     * @return array
      */
     public static function filterListData($objectData, $filters = array())
     {
-        $result =   array();
+        $result = array();
         foreach ($objectData as $fieldData) {
             $filteredItems = array();
             //====================================================================//
             // Search for Field in Item Block
-            if (!is_array($fieldData) && !is_a($fieldData, "ArrayObject")) {
+            if (!is_array($fieldData) && !is_a($fieldData, 'ArrayObject')) {
                 continue;
             }
             //====================================================================//
@@ -425,54 +439,54 @@ trait FieldsManagerTrait
             }
             $result[] = $filteredItems;
         }
+
         return $result;
     }
-    
+
     /**
      * @abstract   Normalize An Object Data Block (ie: before Compare)
      *
-     * @param   mixed   $inputArray     Input Array
+     * @param mixed $inputArray Input Array
      *
-     * @return  array                   Sorted Array
+     * @return array Sorted Array
      */
     public static function normalize(&$inputArray)
     {
-       
         //==============================================================================
         //      Convert ArrayObjects To Simple Array
-        if (is_a($inputArray, "ArrayObject")) {
+        if (is_a($inputArray, 'ArrayObject')) {
             $inputArray = $inputArray->getArrayCopy();
             //==============================================================================
             // Normalize Contents
             self::normalize($inputArray);
-            
+
         //==============================================================================
         // Normalize Array Contents
         } elseif (is_array($inputArray)) {
             foreach ($inputArray as &$value) {
                 self::normalize($value);
             }
-            
-        //==============================================================================
+
+            //==============================================================================
         // Normalize Bool as Strings
         } elseif (is_bool($inputArray)) {
-            $inputArray = $inputArray?"1":"0";
-            
+            $inputArray = $inputArray ? '1' : '0';
+
         //==============================================================================
         // Normalize Numbers as Strings
         } elseif (is_numeric($inputArray)) {
             $inputArray = strval($inputArray);
         }
-        
+
         return $inputArray;
     }
-    
+
     /**
      * @abstract   kSort of An Object Data Block (ie: before Compare)
      *
-     * @param   array       $inputArray     Input Array
+     * @param array $inputArray Input Array
      *
-     * @return  array                       Sorted Array
+     * @return array Sorted Array
      */
     public static function sort(&$inputArray)
     {
@@ -486,6 +500,11 @@ trait FieldsManagerTrait
                 self::sort($value);
             }
         }
-        return ksort($inputArray);
+        //==============================================================================
+        // Sort Main Contents
+        ksort($inputArray);
+        
+        return $inputArray;
+        
     }
 }

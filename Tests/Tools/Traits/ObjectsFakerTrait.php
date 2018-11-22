@@ -198,7 +198,7 @@ trait ObjectsFakerTrait
     /**
      *   @abstract   Create Fake/Dummy Object List Data
      *
-     *   @param      array   $field          Object Field Definition
+     *   @param      ArrayObject   $field          Object Field Definition
      *
      *   @return     array
      */
@@ -241,7 +241,7 @@ trait ObjectsFakerTrait
      *   @param      array   $choices    Object Field Possible Values
      *   @param      array   $options     Object Field Values Options
      *
-     *   @return     string|array
+     *   @return     bool|string|array
      */
     public function fakeFieldData($type, $choices = null, $options = array())
     {

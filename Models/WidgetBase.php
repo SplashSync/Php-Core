@@ -54,12 +54,12 @@ abstract class WidgetBase
     const SIZE_XL       = "col-sm-12 col-md-12 col-lg-12";
     
     /**
-     * @var Static Class Storage
+     * @var FieldsFactory
      */
     protected static $fields;
     
     /**
-     * @var Static Class Storage
+     * @var BlocksFactory
      */
     protected static $blocks;
     
@@ -100,7 +100,7 @@ abstract class WidgetBase
      *
      * @abstract This variable is used to store Widget Array during Get Operations
      *
-     * @var ArrayObject
+     * @var array
      */
     private $Out            = array();
     

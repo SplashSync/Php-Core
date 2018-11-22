@@ -38,12 +38,11 @@ class SplashServer
     
     
     /**
-     *      @abstract       Class Constructor
-     *      @return         bool
+     * @abstract       Class Constructor
      */
     public function __construct()
     {
-        return self::init();
+        self::init();
     }
     
     //====================================================================//
@@ -219,7 +218,7 @@ class SplashServer
      *
      *      @param      bool        $result     Global Operation Result (0 if KO, 1 if OK)
      *
-     *      @return     string      To Transmit Raw Data or False if KO
+     *      @return     false|string      To Transmit Raw Data or False if KO
      */
     private static function transmit($result)
     {
@@ -293,7 +292,7 @@ class SplashServer
     /**
      *      @abstract      Analyze & Debug Server Status
      *
-     *      @return        string
+     *      @return        null|string
      */
     public static function getStatusInformations()
     {

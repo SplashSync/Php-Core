@@ -82,7 +82,7 @@ class FieldsFactory
     
     /**
      * @abstract   New Object Field Storage
-     * @var        ArrayObject
+     * @var        null|ArrayObject
      */
     private $new;
     
@@ -94,21 +94,16 @@ class FieldsFactory
     
     /**
      * @abstract     Initialise Class
-     * @return  true
      */
     public function __construct()
     {
-        
         //====================================================================//
         // Initialize Data Storage
         $this->new            = null;
         $this->fields         = array();
-        
         //====================================================================//
         // Initialize Template Field
         $this->empty          = self::$defaultFields;
-        
-        return true;
     }
 
     //====================================================================//

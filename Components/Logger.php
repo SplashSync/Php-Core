@@ -72,8 +72,6 @@ class Logger
      * @abstract      Class Constructor
      *
      * @param          bool     $debug      Allow Debug
-     *
-     * @return         booL
      */
     public function __construct($debug = SPLASH_DEBUG)
     {
@@ -83,7 +81,6 @@ class Logger
         //====================================================================//
         //  Define Standard Messages Prefix if Not Overiden
         $this->prefix = "Splash Client";
-        return true;
     }
     
     //====================================================================//
@@ -558,17 +555,16 @@ class Logger
     }
 
     /**
-     *  @abstract    Read & Returns var_dump() of a variable in a debug message
+     * @abstract    Read & Returns var_dump() of a variable in a debug message
      *
-     *  @param      string    $txt        Any text to display before dump
-     *  @param      mixed     $var        Any Object to dump
+     * @param      string    $txt        Any text to display before dump
+     * @param      mixed     $var        Any Object to dump
      *
-     *  @return     string                HTML display string of this object
+     * @return     bool
      */
     public function ddd($txt, $var)
     {
-        $this->deb($txt . $this->getVarDump($var));
-        return true;
+        return $this->deb($txt . $this->getVarDump($var));
     }
 
     /**
@@ -577,12 +573,11 @@ class Logger
      *  @param      string    $txt        Any text to display before dump
      *  @param      mixed     $var        Any Object to dump
      *
-     *  @return     string                HTML display string of this object
+     * @return     bool
      */
     public function www($txt, $var)
     {
-        $this->war($txt . "<PRE>" . print_r($var, 1) . "</PRE>");
-        return true;
+        return $this->war($txt . "<PRE>" . print_r($var, 1) . "</PRE>");
     }
     
     /**

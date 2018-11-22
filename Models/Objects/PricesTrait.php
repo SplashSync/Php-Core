@@ -25,7 +25,7 @@ use Splash\Models\Helpers\PricesHelper;
 trait PricesTrait
 {
     /**
-     * @var Static Class Storage
+     * @var PricesHelper
      */
     private static $PricesHelper;
     

@@ -38,7 +38,7 @@ class Ooprice
      *
      * @param   string $data
      *
-     * @return bool     True if OK, Error String if KO
+     * @return true|string
      */
     public static function validate($data)
     {
@@ -256,7 +256,7 @@ class Ooprice
      * @param   string      $code           Price Currency Code
      * @param   string      $symbol         Price Currency Symbol
      * @param   string      $name           Price Currency Name
-     * @return  array                       Contact Firstname, Lastname & Compagny Name
+     * @return  array|string                      
      */
     public static function encodePrice($taxExcl, $vat, $taxIncl = null, $code = "", $symbol = "", $name = "")
     {

@@ -26,7 +26,7 @@ use Splash\Components\FieldsFactory;
 trait FieldsFactoryTrait
 {
     /**
-     * @var Static Class Storage
+     * @var FieldsFactory
      */
     private static $fields;
     

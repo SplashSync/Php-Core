@@ -40,7 +40,7 @@ class BlocksFactory
     
     /**
      * @abstract   New Widget Block Storage
-     * @var        ArrayObject
+     * @var        null|ArrayObject
      */
     private $new;
     
@@ -52,7 +52,6 @@ class BlocksFactory
     
     /**
      * @abstract    Initialise Class
-     * @return  true
      */
     public function __construct()
     {
@@ -60,8 +59,6 @@ class BlocksFactory
         // Initialize Data Storage
         $this->new            = null;
         $this->blocks         = array();
-        
-        return true;
     }
 
     //====================================================================//

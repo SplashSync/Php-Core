@@ -36,7 +36,7 @@ class ImagesHelper
      *  @param      string      $filePath       Image Full path on local system
      *  @param      string      $publicUrl      Complete Public Url of this image if available
      *
-     *  @return     array                       Splash Image Array or False
+     *  @return     false|array                 Splash Image Array or False
      */
     public static function encode($name, $fileName, $filePath, $publicUrl = null)
     {
@@ -99,7 +99,7 @@ class ImagesHelper
      *  @param      string      $absoluteUrl    Image Absolute Url
      *  @param      string      $publicUrl      Complete Public Url of this image if available
      *
-     *  @return     array                       Splash Image Array or False
+     *  @return     false|array                 Splash Image Array or False
      */
     public static function encodeFromUrl($name, $absoluteUrl, $publicUrl = null)
     {

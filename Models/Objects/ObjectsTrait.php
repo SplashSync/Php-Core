@@ -25,7 +25,7 @@ use Splash\Models\Helpers\ObjectsHelper;
 trait ObjectsTrait
 {
     /**
-     * @var Static Class Storage
+     * @var ObjectsHelper
      */
     private static $ObjectsHelper;
     

@@ -17,11 +17,15 @@
 
 namespace   Splash\Models\Helpers;
 
+use Splash\Models\Fields\FieldsManagerTrait;
+
+   
 /**
  * @abstract    Helper for Objects Fields Management
  */
 class ObjectsHelper
 {
+    use FieldsManagerTrait;
    
     /**
      * @abstract   Create an Object Identifier String
@@ -29,7 +33,7 @@ class ObjectsHelper
      * @param   string      $objectType     Object Type Name.
      * @param   string      $objectId       Object Identifier
      *
-     * @return  string
+     * @return     false|string
      */
     public static function encode($objectType, $objectId)
     {
@@ -48,45 +52,16 @@ class ObjectsHelper
     }
     
     /**
-     *      @abstract   Decode an Object Identifier String
-     *
-     *      @param      string      $objectId           Object Identifier String.
-     *
-     *      @return     string
-     */
-    private static function decode($objectId)
-    {
-        // Safety Checks
-        if (empty($objectId)) {
-            return false;
-        }
-        // Explode Object String
-        $result = explode(IDSPLIT, $objectId);
-        // Check result is Valid
-        if (count($result) != 2) {
-            return false;
-        }
-        // Return Object Array
-        return   $result;
-    }
-    
-    /**
      * @abstract   Retrieve Identifier from an Object Identifier String
      * @param      string      $objectId           Object Identifier String.
-     * @return     string
+     * @return     false|string
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function id($objectId)
     {
         //====================================================================//
-        // Decode
-        $result     = self::decode($objectId);
-        if (empty($result)) {
-            return false;
-        }
-        //====================================================================//
-        // Return Object Identifier
-        return   $result[0];
+        // Forward to Fields Manager
+        return   self::objectId($objectId);
     }
 
     /**
@@ -99,13 +74,7 @@ class ObjectsHelper
     public static function type($objectId)
     {
         //====================================================================//
-        // Decode
-        $result     = self::decode($objectId);
-        if (empty($result)) {
-            return false;
-        }
-        //====================================================================//
-        // Return Object Type Name
-        return   $result[1];
+        // Forward to Fields Manager
+        return   self::objectType($objectId);
     }
 }

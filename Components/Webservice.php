@@ -138,7 +138,7 @@ class Webservice
      *  @param      mixed       $data           Input Data
      *  @param      string      $sharedKey      Encoding Shared Key
      *  @param      string      $sharedVector   Encoding Shared IV (Initialisation Vector)
-     *  @return     string      $Out            Output Encrypted Data (Or 0 if fail)
+     *  @return     false|string
      */
     private function crypt($action, $data, $sharedKey, $sharedVector)
     {
@@ -523,28 +523,6 @@ class Webservice
      */
     private function decodeResponse($isUncrypted)
     {
-        //====================================================================//
-        // Decode & Store NuSOAP Errors if present
-        if (isset($this->client->fault) && !empty($this->client->fault)) {
-            //====================================================================//
-            //  Debug Informations
-            Splash::log()->deb("[NuSOAP] Fault Details='"   . $this->client->faultdetail . "'");
-            //====================================================================//
-            //  Errro Message
-            return Splash::log()->err("ErrWsNuSOAPFault", $this->client->faultcode, $this->client->faultstring);
-        }
-        
-        //====================================================================//
-        // Decode & Store Generic SOAP Errors if present
-        if ($this->rawIn instanceof \SoapFault) {
-            //====================================================================//
-            //  Debug Informations
-            Splash::log()->deb("[SOAP] Fault Details= "   . $this->rawIn->getTraceAsString());
-            //====================================================================//
-            //  Errro Message
-            return Splash::log()->err("ErrWsNuSOAPFault", $this->rawIn->getCode(), $this->rawIn->getMessage());
-        }
-        
         //====================================================================//
         // Unpack NuSOAP Answer
         //====================================================================//

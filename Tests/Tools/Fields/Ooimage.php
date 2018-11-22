@@ -40,7 +40,7 @@ class Ooimage
      *
      * @param   array   $data      Splash Image definition Array
      *
-     * @return bool     True if OK, Error String if KO
+     * @return true|string
      */
     public static function validate($data)
     {

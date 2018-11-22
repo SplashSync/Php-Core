@@ -3,7 +3,7 @@
 $header = <<<'EOF'
  This file is part of SplashSync Project.
 
- Copyright (C) Splash Sync <www.splashsync.com>
+ Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,12 +12,6 @@ $header = <<<'EOF'
  For the full copyright and license information, please view the LICENSE
  file that was distributed with this source code.
 EOF;
-
-$finder = PhpCsFixer\Finder::create()
-    ->exclude('tests/Fixtures')
-    ->in(dirname(dirname(__DIR__)))
-//    ->in(dirname(dirname(dirname(dirname(__DIR__)))) . "/src")
-;
 
 $config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
@@ -74,7 +68,7 @@ $config = PhpCsFixer\Config::create()
         'return_assignment' => true,
         'semicolon_after_instruction' => true,
         'single_line_comment_style' => true,
-        'strict_comparison' => true,
+//        'strict_comparison' => true,
         'strict_param' => true,
         'string_line_ending' => true,
         'yoda_style' => true,
@@ -98,4 +92,4 @@ if (false !== getenv('FABBOT_IO')) {
     }
 }
 
-return $config;
+
