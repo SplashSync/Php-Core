@@ -7,6 +7,6 @@ $finder = PhpCsFixer\Finder::create()
     ->in(dirname(dirname(dirname(dirname(__DIR__)))))
 ;
 
-include_once "php_cs.rules.php";
+include_once "php_cs.rules.dist";
 
 return $config;

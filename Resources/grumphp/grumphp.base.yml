@@ -124,7 +124,7 @@ parameters:
                 - phpmd
                 - phpcpd
                 - phpcsfixer
-#                - phpcsfixer2
+                - phpcsfixer2
                 
         phpstan:
             tasks: 
