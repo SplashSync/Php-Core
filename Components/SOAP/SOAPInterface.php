@@ -65,7 +65,7 @@ class SOAPInterface implements CommunicationInterface
             //====================================================================//
             //  Errro Message
             return Splash::log()->err("ErrWsNuSOAPFault", $response->getCode(), $response->getMessage());
-        }        
+        }
         
         return $response;
     }

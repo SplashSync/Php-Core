@@ -33,7 +33,9 @@ $config = PhpCsFixer\Config::create()
         'explicit_string_variable' => true,
         'final_internal_class' => true,
         'fully_qualified_strict_types' => true,
-        'function_to_constant' => ['functions' => ['get_class', 'get_called_class', 'php_sapi_name', 'phpversion', 'pi']],
+        'function_to_constant' => [
+            'functions' => ['get_class', 'get_called_class', 'php_sapi_name', 'phpversion', 'pi']
+            ],
         'header_comment' => ['header' => $header],
         'heredoc_to_nowdoc' => true,
         'list_syntax' => ['syntax' => 'long'],
@@ -43,7 +45,15 @@ $config = PhpCsFixer\Config::create()
         'multiline_comment_opening_closing' => true,
         'no_alternative_syntax' => true,
         'no_binary_string' => true,
-        'no_extra_blank_lines' => ['tokens' => ['break', 'continue', 'extra', 'return', 'throw', 'use', 'parenthesis_brace_block', 'square_brace_block', 'curly_brace_block']],
+        'no_extra_blank_lines' => [
+            'tokens' => [
+                'break', 'continue', 'extra',
+                'return', 'throw', 'use',
+                'parenthesis_brace_block',
+                'square_brace_block',
+                'curly_brace_block'
+                ]
+            ],
         'no_null_property_initialization' => true,
         'no_short_echo_tag' => true,
         'no_superfluous_elseif' => true,
@@ -93,5 +103,3 @@ if (false !== getenv('FABBOT_IO')) {
         $config->setRules([]);
     }
 }
-
-

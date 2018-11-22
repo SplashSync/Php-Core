@@ -51,81 +51,81 @@ class SplashCore
 {
     /**
      * @abstract    Static Class Storage
-     * @var SplashCore      
+     * @var SplashCore
      */
     protected static $instance;
 
-    /** 
-     * @abstract    Module Configuration 
-     * @var null|ArrayObject    
+    /**
+     * @abstract    Module Configuration
+     * @var null|ArrayObject
      */
     protected $conf;
 
-    /** 
-     * @abstract    Splash Webservice Componant 
-     * @var Logger    
+    /**
+     * @abstract    Splash Webservice Componant
+     * @var Logger
      */
     protected $log;
     
-    /** 
-     * @abstract    Module Communication Componant 
-     * @var CommunicationInterface    
+    /**
+     * @abstract    Module Communication Componant
+     * @var CommunicationInterface
      */
     protected $com;
     
-    /** 
-     * @abstract    Module Webservice Componant 
-     * @var null|Webservice    
+    /**
+     * @abstract    Module Webservice Componant
+     * @var null|Webservice
      */
-    protected $ws;
+    protected $soap;
     
-    /** 
-     * @abstract    Module Tasks Routing Componant 
-     * @var Router    
+    /**
+     * @abstract    Module Tasks Routing Componant
+     * @var Router
      */
     protected $router;
     
-    /** 
-     * @abstract    Module Files Manager Componant 
+    /**
+     * @abstract    Module Files Manager Componant
      * @var FileManager
      */
     protected $file;
     
-    /** 
-     * @abstract    Validation Componant 
+    /**
+     * @abstract    Validation Componant
      * @var Validator
      */
     protected $valid;
 
-    /** 
-     * @abstract    Splash Xml Manager Componant 
+    /**
+     * @abstract    Splash Xml Manager Componant
      * @var XmlManager
      */
-    protected $xml;        
+    protected $xml;
     
-    /** 
-     * @abstract    Splash Text Translator Componant 
+    /**
+     * @abstract    Splash Text Translator Componant
      * @var Translator
      */
-    protected $translator;            
+    protected $translator;
     
-    /** 
-     * @abstract    Splash Local Core Class 
+    /**
+     * @abstract    Splash Local Core Class
      * @var LocalClassInterface
      */
-    protected $localcore; 
+    protected $localcore;
 
-    /** 
-     * @abstract    Splash Objects Class Buffer 
+    /**
+     * @abstract    Splash Objects Class Buffer
      * @var null|array
      */
-    protected $objects; 
+    protected $objects;
 
-    /** 
-     * @abstract    Splash Widgets Class Buffer 
+    /**
+     * @abstract    Splash Widgets Class Buffer
      * @var null|array
      */
-    protected $widgets; 
+    protected $widgets;
     
     /**
      * @abstract   Class Constructor
@@ -302,29 +302,29 @@ class SplashCore
      */
     public static function ws()
     {
-        if (!isset(self::core()->ws)) {
+        if (!isset(self::core()->soap)) {
             //====================================================================//
             // WEBSERVICE INITIALISATION
             //====================================================================//
             // Initialize SOAP WebServices Class
-            self::core()->ws           = new Webservice();
+            self::core()->soap           = new Webservice();
             
             //====================================================================//
             // Initialize WebService Configuration Array
-            self::core()->ws->setup();
+            self::core()->soap->setup();
             
             //====================================================================//
             //  Load Translation File
             self::translator()->load("ws");
         }
 
-        return self::core()->ws;
+        return self::core()->soap;
     }
     
     /**
      * @abstract    Get a singleton Router Class
      *              Acces to Server Tasking Management Functions
-     * 
+     *
      * @return      Router
      */
     public static function router()
@@ -343,7 +343,7 @@ class SplashCore
     /**
      * @abstract   Get a singleton File Class
      *             Acces to File Management Functions
-     * 
+     *
      * @return     FileManager
      */
     public static function file()
@@ -406,7 +406,7 @@ class SplashCore
     /**
      * @abstract    Get a singleton Translator Class
      *              Acces to Translation Functions
-     *      
+     *
      * @return  Translator
      */
     public static function translator()
@@ -453,9 +453,9 @@ class SplashCore
     
     /**
      * @abstract   Force Server Local Class
-     * 
+     *
      * @param   LocalClassInterface  $localClass     Name of New Local Class to Use
-     * 
+     *
      * @return  void
      */
     public static function setLocalClass(LocalClassInterface $localClass)
@@ -581,8 +581,8 @@ class SplashCore
         }
         //====================================================================//
         // Clear Webservice Configuration
-        if (isset(self::core()->ws)) {
-            self::core()->ws = null;
+        if (isset(self::core()->soap)) {
+            self::core()->soap = null;
         }
         //====================================================================//
         // Clear Module Local Objects Classes

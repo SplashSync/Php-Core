@@ -81,7 +81,7 @@ class Ooprice implements FieldInterface
         }
         if ($price instanceof ArrayObject) {
             $price = $price->getArrayCopy();
-        }        
+        }
         if (!array_key_exists("base", $price)) {
             return "Price Field => 'base' price (ht/ttc) is missing.";
         }
@@ -250,7 +250,7 @@ class Ooprice implements FieldInterface
      * @param   string      $code           Price Currency Code
      * @param   string      $symbol         Price Currency Symbol
      * @param   string      $name           Price Currency Name
-     * @return  array|string                      
+     * @return  array|string
      */
     public static function encodePrice($taxExcl = null, $vat = 0, $taxIncl = null, $code = "", $symbol = "", $name = "")
     {

@@ -171,11 +171,19 @@ class Webservice
         //====================================================================//
         // Open SSL Encryption
         if ($action == 'encrypt') {
-            $out = base64_encode((string) openssl_encrypt($data, Splash::configuration()->WsCrypt, $cryptKey, 0, $cryptIv));
+            $out = base64_encode(
+                (string) openssl_encrypt($data, Splash::configuration()->WsCrypt, $cryptKey, 0, $cryptIv)
+            );
         //====================================================================//
         // Open SSL Decryption
         } elseif ($action == 'decrypt') {
-            $out = openssl_decrypt((string) base64_decode($data), Splash::configuration()->WsCrypt, $cryptKey, 0, $cryptIv);
+            $out = openssl_decrypt(
+                (string) base64_decode($data),
+                Splash::configuration()->WsCrypt,
+                $cryptKey,
+                0,
+                $cryptIv
+            );
         }
         //====================================================================//
         //  Debug Informations
@@ -583,6 +591,58 @@ class Webservice
 
         return $this;
     }
+
+    /**
+     * @abstract    Get Next Task Result Available in Response Tasks Buffer
+     *
+     * @param ArrayObject|false $response Webservice Call Response
+     *
+     * @return false|mixed
+     */
+    public static function getNextResult($response)
+    {
+        //====================================================================//
+        // Extract Next Task From Buffer
+        $task   = self::getNextTask($response);
+        //====================================================================//
+        // Analyze SOAP Results
+        if (!$task || !isset($response->data)) {
+            return false;
+        }
+        //====================================================================//
+        // Return Task Data
+        return $task->data;
+    }
+    
+    /**
+     * @abstract    Get Next Task Available in Response Tasks Buffer
+     *
+     * @param ArrayObject|false $response Webservice Call Response
+     *
+     * @return false|mixed
+     */
+    public static function getNextTask(&$response)
+    {
+        //====================================================================//
+        // Analyze SOAP Results
+        if (!$response || !isset($response->result) || ($response->result != true)) {
+            return false;
+        }
+        //====================================================================//
+        // Check if Tasks Buffer is Empty
+        if (!Splash::count($response->tasks)) {
+            return false;
+        }
+        //====================================================================//
+        // Detect ArrayObjects
+        if ($response->tasks instanceof ArrayObject) {
+            $response->tasks    =   $response->tasks->getArrayCopy();
+        }
+        //====================================================================//
+        // Shift Task Array
+        return array_shift($response->tasks);
+    }
+    
     
     //====================================================================//
     //  INFORMATION RETRIEVAL

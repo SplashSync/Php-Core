@@ -233,7 +233,7 @@ class XmlManager
         // Safety Check
         if (false === $element) {
             return false;
-        }        
+        }
         //====================================================================//
         // Init Result
         $result         =   array();
@@ -286,7 +286,7 @@ class XmlManager
         // Safety Check
         if (false === $element) {
             return false;
-        }        
+        }
         //====================================================================//
         // Init Result
         $result             =   new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);

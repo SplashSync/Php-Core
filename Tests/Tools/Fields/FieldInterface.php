@@ -47,5 +47,4 @@ interface FieldInterface
      * @return  bool
      */
     public static function compare($source, $target, $settings);
-    
 }

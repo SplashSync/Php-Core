@@ -35,18 +35,12 @@ class Ooobjectid implements FieldInterface
         }
         //==============================================================================
         //      Verify Data is a string
-        if (!empty($data) && !is_string($data)) {
+        if (!is_string($data)) {
             return 'Field  Data is not a String.';
         }
-        //==============================================================================
-        //      Verify Data is an Array
-        if (is_array($data) || ($data instanceof ArrayObject)) {
-            return 'Field  Data is not a String.';
-        }
-        
         //==============================================================================
         //      Verify Data is an Id Field
-        $list = explode(IDSPLIT, (string) $data);
+        $list = explode(IDSPLIT, $data);
         if (is_array($list) && (2 == count($list))) {
             return true;
         }
@@ -61,7 +55,7 @@ class Ooobjectid implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings, $objectType = null )
+    public static function fake($settings, $objectType = null)
     {
         //====================================================================//
         // Get Object List

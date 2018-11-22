@@ -28,7 +28,7 @@ class Oodouble implements FieldInterface
         //      Verify Data is an Array
         if (is_array($data) || ($data instanceof ArrayObject)) {
             return "Field Data is not Double or Float Value.";
-        }        
+        }
         //==============================================================================
         //      Verify Data is a Double or Zero
         if (is_double($data) || ($data == 0)) {

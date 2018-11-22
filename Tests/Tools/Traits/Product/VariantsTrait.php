@@ -43,7 +43,7 @@ trait VariantsTrait
         $this->assertNotEmpty($field);
         if (is_null($field)) {
             return array();
-        }        
+        }
         //====================================================================//
         //   Generate Random Value
         return array(
@@ -62,7 +62,7 @@ trait VariantsTrait
         $this->assertNotEmpty($code);
         if (is_null($code)) {
             return array();
-        }     
+        }
         $result = array();
         foreach ($attributesCodes as $attributesCode) {
             $result[] = $this->getVariantCustomAttribute($attributesCode);
@@ -87,7 +87,7 @@ trait VariantsTrait
         $this->assertNotEmpty($value);
         if (is_null($code) || is_null($name) || is_null($value)) {
             return array();
-        }     
+        }
         
         //====================================================================//
         //   Generate Random Attributes Set

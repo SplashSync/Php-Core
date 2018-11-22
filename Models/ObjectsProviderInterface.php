@@ -35,9 +35,9 @@ interface ObjectsProviderInterface
      *
      * @params     string   $type       Specify Object Class Name
      *
-     * @param null|mixed $ObjectType
+     * @param null|mixed $objectType
      *
      * @return ObjectInterface
      */
-    public function object($ObjectType = null);
+    public function object($objectType = null);
 }

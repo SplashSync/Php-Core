@@ -52,7 +52,7 @@ trait ObjectsDataTrait
         //====================================================================//
         // If Test Controller Given
         if ($testController && ($testController instanceof TestCase)) {
-            $testController->assertEquals($block1, $block2,(string) $comment);
+            $testController->assertEquals($block1, $block2, (string) $comment);
             return true;
         }
             
@@ -149,7 +149,7 @@ trait ObjectsDataTrait
         }
         if (false === $className) {
             return false;
-        } 
+        }
         
         //====================================================================//
         // Verify Class has its own Validate & Compare Function*
@@ -162,11 +162,11 @@ trait ObjectsDataTrait
         // Validate Data Using Field Type Validator
         $this->assertTrue(
             $className::validate($block1),
-            $comment . " Source Data is not a valid " . $fieldType . " Field Data Block (" . print_r($block1, true) . ")"
+            $comment . " Source Data is invalid " . $fieldType . " Field Data Block (" . print_r($block1, true) . ")"
         );
         $this->assertTrue(
             $className::validate($block2),
-            $comment . " Target Data is not a valid " . $fieldType . " Field Data Block (" . print_r($block2, true) . ")"
+            $comment . " Target Data is invalid " . $fieldType . " Field Data Block (" . print_r($block2, true) . ")"
         );
             
         //====================================================================//

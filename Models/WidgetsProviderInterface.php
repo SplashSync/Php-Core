@@ -37,6 +37,5 @@ interface WidgetsProviderInterface
      *
      * @return     WidgetInterface
      */
-    public function widget(string $WidgetType);
-    
+    public function widget(string $widgetType);
 }

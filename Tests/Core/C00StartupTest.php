@@ -97,10 +97,6 @@ class C00StartupTest extends TestCase
         if (!empty(Splash::local()->testSequences("List"))) {
             $testSequences  =   Splash::local()->testSequences("List");
         }
-//        if (!is_array($testSequences) && ($testSequences !== "None")) {
-//            echo Logger::getConsoleLine("!!Invalid Tests Sequence List!!", " - Tested Objects ", Logger::CMD_COLOR_DEB);
-//            return;
-//        }
         if ($testSequences === "None") {
             return;
         }

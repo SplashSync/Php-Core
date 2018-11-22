@@ -183,7 +183,7 @@ class PricesHelper
      * @param      array|ArrayObject       $price          Price field definition Array
      *
      * @return     bool
-     */    
+     */
     private static function isValidAmount($price)
     {
         //====================================================================//
@@ -207,7 +207,7 @@ class PricesHelper
      * @param      array|ArrayObject       $price          Price field definition Array
      *
      * @return     bool
-     */    
+     */
     private static function isValidCurrency($price)
     {
         //====================================================================//

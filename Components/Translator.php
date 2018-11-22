@@ -296,7 +296,7 @@ class Translator
         if (empty($this->trans[$key]) && isset($tab[1])) {
             //====================================================================//
             // Store Line Translation Key
-            $value=trim( (string) preg_replace('/\\n/', "\n", $tab[1]));
+            $value=trim((string) preg_replace('/\\n/', "\n", $tab[1]));
             $this->trans[$key]=$value;
         }
     }

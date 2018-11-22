@@ -50,7 +50,7 @@ class FileManager
         //====================================================================//
         // PHPUNIT Exception => Look First in Local FileSystem
         //====================================================================//
-        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {  
+        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {
             $filePath   = dirname(__DIR__) . "/Resources/files/"  . $file;
             if (is_file($filePath)) {
                 $file   =  $this->readFile($filePath, $md5);
@@ -71,31 +71,14 @@ class FileManager
         //====================================================================//
         // Add Task to Ws Task List
         Splash::ws()->addTask(SPL_F_GETFILE, $params, Splash::trans("MsgSchRemoteReadFile", (string) $file));
+        
         //====================================================================//
         // Execute Task
         $response   =   Splash::ws()->call(SPL_S_FILE);
+        
         //====================================================================//
-        // Analyze NuSOAP results
-        if (!$response || !isset($response->result) || ($response->result != true)) {
-            return false;
-        }
-
-        //====================================================================//
-        // Get Next Task Result
-        if (Splash::count($response->tasks)) {
-            //====================================================================//
-            // Shift Task Array
-            if (is_a($response->tasks, "ArrayObject")) {
-                $tasks  = $response->tasks->getArrayCopy();
-                $task   = array_shift($tasks);
-            } else {
-                $task   = array_shift($response->tasks);
-            }
-            //====================================================================//
-            // Return Task Data
-            return   isset($task->data)?$task->data:false;
-        }
-        return false;
+        // Return First Task Result
+        return Splash::ws()->getNextResult($response);
     }
     
     /**
@@ -269,12 +252,12 @@ class FileManager
      *
      * @remark     For all function used remotly, all parameters have default predefined values
      *              in order to avoid remote execution errors.
-     * 
+     *
      * @param      string      $dir        Local File Directory
      * @param      string      $file       Local FileName
      * @param      string      $md5        File MD5 Checksum
      * @param      string      $raw        Raw File Contents (base64 Encoded)
-     * 
+     *
      * @return     bool
      */
     public function writeFile($dir = null, $file = null, $md5 = null, $raw = null)
@@ -321,7 +304,7 @@ class FileManager
         
         //====================================================================//
         // Write file
-        fwrite($filehandle,(string)  base64_decode((string) $raw));
+        fwrite($filehandle, (string)  base64_decode((string) $raw));
         fclose($filehandle);
         
         //====================================================================//

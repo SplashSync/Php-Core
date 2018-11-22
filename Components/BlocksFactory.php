@@ -149,7 +149,7 @@ class BlocksFactory
             //====================================================================//
             // Impact Block Data Array
             $this->new->option[$name]   = $value;
-        }        
+        }
         
         return $this;
     }

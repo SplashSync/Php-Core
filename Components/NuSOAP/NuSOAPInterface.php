@@ -53,7 +53,7 @@ class NuSOAPInterface implements CommunicationInterface
         $this->client = new nusoap_client($targetUrl);
         //====================================================================//
         // Setup NuSOAP Debug Level
-        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {            
+        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {
             $this->client->setDebugLevel(2);
         }
         //====================================================================//
@@ -88,7 +88,11 @@ class NuSOAPInterface implements CommunicationInterface
             Splash::log()->deb("[NuSOAP] Fault Details='"   . $this->client->faultdetail . "'");
             //====================================================================//
             //  Log Error Message
-            Splash::log()->err("ErrWsNuSOAPFault", (string) $this->client->faultcode, (string) $this->client->faultstring);
+            Splash::log()->err(
+                "ErrWsNuSOAPFault",
+                (string) $this->client->faultcode,
+                (string) $this->client->faultstring
+            );
         }
 
         return $response;

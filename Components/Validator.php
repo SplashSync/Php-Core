@@ -75,7 +75,7 @@ class Validator
         // Verify Splash Local Core Extends LocalClassInterface
         try {
             $class  =   new $className();
-            if(!($class instanceof LocalClassInterface)) {
+            if (!($class instanceof LocalClassInterface)) {
                 return Splash::log()->err(Splash::trans("ErrLocalInterface", $className, LocalClassInterface::class));
             }
         } catch (Exception $exc) {
@@ -355,12 +355,12 @@ class Validator
         // Checks List Type
         if (!is_array($fieldsList)) {
             return Splash::log()->err("ErrWrongFieldList");
-        }        
+        }
         //====================================================================//
         // Checks List Not Empty
         if (empty($fieldsList)) {
             return Splash::log()->err("ErrEmptyFieldList");
-        }        
+        }
         return Splash::log()->deb("MsgFieldListOk");
     }
     
@@ -388,7 +388,7 @@ class Validator
         // Verify Local Core Class Exist & Is Valid
         if (!$this->isValidLocalClass()) {
             return false;
-        }        
+        }
         //====================================================================//
         // Check if Widget Manager is NOT Overriden
         if (!(Splash::local() instanceof WidgetsProviderInterface)) {

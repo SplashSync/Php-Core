@@ -90,7 +90,7 @@ trait ObjectsAssertionsTrait
         $this->assertNotEmpty($className, "Field Type '" . $type . "' is not a Valid Splash Field Type." . $comment);
         if (false === $className) {
             return false;
-        } 
+        }
     
         //====================================================================//
         // Verify Data is Valid

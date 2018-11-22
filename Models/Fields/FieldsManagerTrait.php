@@ -505,6 +505,5 @@ trait FieldsManagerTrait
         ksort($inputArray);
         
         return $inputArray;
-        
     }
 }

@@ -99,7 +99,7 @@ trait ImagesTrait
         $position   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "positionImage");
         if (is_null($image) || is_null($isCover) || is_null($isVisible) || is_null($position)) {
             return array();
-        }             
+        }
         
         //====================================================================//
         //   Generate Random Attributes Set
@@ -130,7 +130,7 @@ trait ImagesTrait
         $this->assertNotEmpty($image);
         if (is_null($image)) {
             return array();
-        }        
+        }
         //====================================================================//
         //   Build Images List
         $images = array();
@@ -239,7 +239,7 @@ trait ImagesTrait
         $position   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "positionImage");
         if (is_null($image) || is_null($isCover) || is_null($isVisible) || is_null($position)) {
             return;
-        }        
+        }
         //====================================================================//
         //   Check Required Fields
         $this->assertNotEmpty($image, "Product Images List Field not Found");

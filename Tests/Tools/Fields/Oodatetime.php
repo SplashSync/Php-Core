@@ -35,10 +35,10 @@ class Oodatetime extends Oovarchar implements FieldInterface
         //      Verify Data is a Scalar
         if (!is_scalar($data)) {
             return "Field Data is not a DateTime with right Format (" . SPL_T_DATETIMECAST . ").";
-        }    
+        }
         //==============================================================================
         //      Verify Data is a DateTime Type
-        if (\DateTime::createFromFormat(SPL_T_DATETIMECAST,(string) $data) !== false) {
+        if (\DateTime::createFromFormat(SPL_T_DATETIMECAST, (string) $data) !== false) {
             return true;
         }
 

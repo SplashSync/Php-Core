@@ -19,7 +19,6 @@ namespace   Splash\Models\Helpers;
 
 use Splash\Models\Fields\FieldsManagerTrait;
 
-   
 /**
  * @abstract    Helper for Objects Fields Management
  */
