@@ -101,7 +101,7 @@ class Local implements LocalClassInterface
         //====================================================================//
         // When Library is called in server mode ONLY
         //====================================================================//
-        if (SPLASH_SERVER_MODE) {
+        if (defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE)) {
             // NOTHING TO DO
         //====================================================================//
         // When Library is called in client mode ONLY

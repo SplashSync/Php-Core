@@ -5,7 +5,7 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * @abstract    Phone Field : Define a Contact Phone Number
  */
-class Oophone extends Oovarchar
+class Oophone extends Oovarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -18,11 +18,7 @@ class Oophone extends Oovarchar
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -52,14 +48,10 @@ class Oophone extends Oovarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {
-        return preg_replace('/^[+0-9. ()-]*$/', '', mt_rand(12345678, 123456789));
+        return (string) preg_replace('/^[+0-9. ()-]*$/', '', (string) mt_rand(12345678, 123456789));
     }
 }

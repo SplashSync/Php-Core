@@ -37,7 +37,7 @@ class O00ObjectBaseTest extends ObjectsCase
 
         //====================================================================//
         //  Integer IDs
-        $intObjectId = rand(1E3, 1E4);
+        $intObjectId = rand((int) 1E3,(int) 1E4);
         Splash::object($objectType)->unLock($intObjectId);
         $this->assertFalse(Splash::object($objectType)->isLocked($intObjectId));
         Splash::object($objectType)->lock($intObjectId);
@@ -47,7 +47,7 @@ class O00ObjectBaseTest extends ObjectsCase
         
         //====================================================================//
         //  String IDs
-        $strObjectId = base64_encode(rand(1E3, 1E4));
+        $strObjectId = base64_encode((string) rand((int) 1E3,(int) 1E4));
         Splash::object($objectType)->unLock($strObjectId);
         $this->assertFalse(Splash::object($objectType)->isLocked($strObjectId));
         Splash::object($objectType)->lock($strObjectId);

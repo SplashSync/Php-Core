@@ -105,7 +105,10 @@ class SelfTestTemplate extends WidgetBase
 
         //====================================================================//
         // Set Blocks to Widget
-        $this->setBlocks($this->blocksFactory()->render());
+        $blocks = $this->blocksFactory()->render();
+        if ($blocks) {
+            $this->setBlocks($blocks);
+        }
 
         //====================================================================//
         // Publish Widget

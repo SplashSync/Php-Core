@@ -21,17 +21,16 @@ trait ImagesTrait
     /** @var array */
     private $targetImages;
     
-    /** @var string */
+    /** @var string|false */
     private $listId;
-    /** @var string */
+    /** @var string|false */
     private $imageId;
-    /** @var string */
+    /** @var string|false */
     private $isCoverId;
-    /** @var string */
+    /** @var string|false */
     private $isVisibleId;
-    /** @var string */
+    /** @var string|false */
     private $positionId;
-
 
     //==============================================================================
     //      SPLASH PRODUCT IMAGES SPECIFIC FUNCTIONS
@@ -98,6 +97,9 @@ trait ImagesTrait
         $isCover    =   self::findFieldByTag($this->fields, "http://schema.org/Product", "isCover");
         $isVisible  =   self::findFieldByTag($this->fields, "http://schema.org/Product", "isVisibleImage");
         $position   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "positionImage");
+        if (is_null($image) || is_null($isCover) || is_null($isVisible) || is_null($position)) {
+            return array();
+        }             
         
         //====================================================================//
         //   Generate Random Attributes Set
@@ -126,6 +128,9 @@ trait ImagesTrait
         //====================================================================//
         //   Check Required Fields
         $this->assertNotEmpty($image);
+        if (is_null($image)) {
+            return array();
+        }        
         //====================================================================//
         //   Build Images List
         $images = array();
@@ -177,16 +182,16 @@ trait ImagesTrait
         foreach ($this->targetImages as $targetImage) {
             //====================================================================//
             //   Check if Image Data is Set
-            $this->assertArrayHasKey($this->imageId, $targetImage);
+            $this->assertArrayHasKey((string) $this->imageId, $targetImage);
             //====================================================================//
             //   Check if Image Data is Valid
             $validate = Image::validate($targetImage[$this->imageId]);
             $this->assertTrue($validate, "Target Image définition Array is Invalid " . $validate);
             //====================================================================//
             //   Check if Image Flags are Set
-            $this->assertArrayHasKey($this->isVisibleId, $targetImage);
-            $this->assertArrayHasKey($this->isCoverId, $targetImage);
-            $this->assertArrayHasKey($this->positionId, $targetImage);
+            $this->assertArrayHasKey((string) $this->isVisibleId, $targetImage);
+            $this->assertArrayHasKey((string) $this->isCoverId, $targetImage);
+            $this->assertArrayHasKey((string) $this->positionId, $targetImage);
             //====================================================================//
             //   Check if Images Position are Following
             $this->assertGreaterThan(
@@ -206,11 +211,11 @@ trait ImagesTrait
         foreach ($this->sourceImages as $srcImage) {
             //====================================================================//
             //   Verify Visible Flag
-            $this->verifyVisibleImages($srcImage, $this->imageId, $this->isVisibleId);
+            $this->verifyVisibleImages($srcImage, (string) $this->imageId, (string) $this->isVisibleId);
             //====================================================================//
             //   Verify Cover Flag
             if (!empty($source[$this->isVisibleId])) {
-                $this->verifyCoverImages($srcImage, $this->imageId, $this->isCoverId);
+                $this->verifyCoverImages($srcImage, (string) $this->imageId, (string) $this->isCoverId);
             }
         }
     }
@@ -232,6 +237,9 @@ trait ImagesTrait
         $isCover    =   self::findFieldByTag($this->fields, "http://schema.org/Product", "isCover");
         $isVisible  =   self::findFieldByTag($this->fields, "http://schema.org/Product", "isVisibleImage");
         $position   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "positionImage");
+        if (is_null($image) || is_null($isCover) || is_null($isVisible) || is_null($position)) {
+            return;
+        }        
         //====================================================================//
         //   Check Required Fields
         $this->assertNotEmpty($image, "Product Images List Field not Found");

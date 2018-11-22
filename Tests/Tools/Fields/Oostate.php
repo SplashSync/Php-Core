@@ -9,7 +9,7 @@ namespace Splash\Tests\Tools\Fields;
  *
  * @see         ISO 3166 Standard : www.iso.org/iso/country_codes
  */
-class Oostate extends Oovarchar
+class Oostate extends Oovarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -22,11 +22,7 @@ class Oostate extends Oovarchar
     //==============================================================================
     
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -42,11 +38,7 @@ class Oostate extends Oovarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {

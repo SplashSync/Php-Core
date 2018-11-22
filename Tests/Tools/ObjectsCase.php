@@ -3,6 +3,7 @@
 namespace Splash\Tests\Tools;
 
 use Splash\Client\Splash;
+use ArrayObject;
 
 /**
  * @abstract    Splash Test Tools - Objects Test Case Base Class
@@ -104,7 +105,7 @@ class ObjectsCase extends AbstractBaseCase
     {
         //====================================================================//
         // Safety Check
-        if (is_null(Splash::local()) || !method_exists(Splash::local(), "TestParameters")) {
+        if (!method_exists(Splash::local(), "TestParameters")) {
             return;
         }
         //====================================================================//
@@ -116,6 +117,7 @@ class ObjectsCase extends AbstractBaseCase
         if (!Splash::validate()->isValidLocalTestParameterArray($localTestSettings)) {
             return;
         }
+        
         //====================================================================//
         // Import Local Parameters
         foreach ($localTestSettings as $key => $value) {
@@ -127,7 +129,7 @@ class ObjectsCase extends AbstractBaseCase
     {
         //====================================================================//
         // Check if Local Tests Sequences are defined
-        if (is_null(Splash::local()) || !method_exists(Splash::local(), "TestSequences")) {
+        if (!method_exists(Splash::local(), "TestSequences")) {
             return;
         }
         //====================================================================//
@@ -233,6 +235,11 @@ class ObjectsCase extends AbstractBaseCase
         //   If Commited an Array of Ids
         if (is_array($commited->id) || is_a($commited->id, "ArrayObject")) {
             //====================================================================//
+            //   Detect Array Object
+            if ($commited->id instanceof ArrayObject) {
+                $commited->id   =   $commited->id->getArrayCopy();
+            }
+            //====================================================================//
             //   Check each Object Ids
             foreach ($commited->id as $objectId) {
                 $this->assertTrue(
@@ -292,7 +299,7 @@ class ObjectsCase extends AbstractBaseCase
 
         //====================================================================//
         // Check if Local Tests Sequences are defined
-        if (!is_null(Splash::local()) && method_exists(Splash::local(), "TestSequences")) {
+        if (method_exists(Splash::local(), "TestSequences")) {
             $testSequences  =   Splash::local()->testSequences("List");
         } else {
             $testSequences  =   array( 1 => "None");
@@ -330,7 +337,7 @@ class ObjectsCase extends AbstractBaseCase
         
         //====================================================================//
         // Check if Local Tests Sequences are defined
-        if (!is_null(Splash::local()) && method_exists(Splash::local(), "TestSequences")) {
+        if (method_exists(Splash::local(), "TestSequences")) {
             $testSequences  =   Splash::local()->testSequences("List");
         } else {
             $testSequences  =   array( 1 => "None");

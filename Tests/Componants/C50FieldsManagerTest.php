@@ -139,21 +139,21 @@ class C50FieldsManagerTest extends TestCase
             array(
                 self::lists()->Encode(
                     "ListName",
-                    self::objects()->Encode("Object", SPL_T_ID)
+                    (string) self::objects()->Encode("Object", SPL_T_ID)
                 ),
                 "Object"
             ),
             array(
                 self::lists()->Encode(
-                    self::objects()->Encode("Object", SPL_T_ID),
+                    (string) self::objects()->Encode("Object", SPL_T_ID),
                     "FieldName"
                 ),
                 "FieldName"
             ),
             array(
                 self::lists()->Encode(
-                    self::objects()->Encode("Error", SPL_T_ID),
-                    self::objects()->Encode("Object", SPL_T_ID)
+                    (string) self::objects()->Encode("Error", SPL_T_ID),
+                    (string) self::objects()->Encode("Object", SPL_T_ID)
                 ),
                 "Object"
             ),

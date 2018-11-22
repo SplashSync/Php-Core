@@ -2,6 +2,8 @@
 
 namespace Splash\Tests\Tools\Fields;
 
+use ArrayObject;
+
 /**
  * @abstract    Image Field : Define acces to an Image File
  *
@@ -23,7 +25,7 @@ namespace Splash\Tests\Tools\Fields;
 //====================================================================//
  *
  */
-class Ooimage
+class Ooimage implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -36,11 +38,7 @@ class Ooimage
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   array   $data      Splash Image definition Array
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -51,7 +49,7 @@ class Ooimage
         }
         //====================================================================//
         //      Verify Data is an Array
-        if (!is_array($data) && !is_a($data, "ArrayObject")) {
+        if (!is_array($data) && !($data instanceof ArrayObject)) {
             return "Field Data is not an Array.";
         }
         //====================================================================//
@@ -94,17 +92,13 @@ class Ooimage
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {
         //====================================================================//
         // Image Faker Parameters
-        $index          = (int) mt_rand(0, count($settings["Images"]) - 1);
+        $index      = mt_rand(0, count($settings["Images"]) - 1);
         $dir        = dirname(dirname(dirname(__DIR__))) . "/Resources/img/";
         $file       = $settings["Images"][$index];
         $fullPath   = $dir . $file;
@@ -150,17 +144,10 @@ class Ooimage
     //==============================================================================
     
     /**
-     * Compare Two Data Block to See if similar (Update Required)
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param   mixed   $source     Original Data Block
-     * @param   mixed   $target     New Data Block
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
-    public static function compare($source, $target)
+    public static function compare($source, $target, $settings)
     {
-        return Oofile::compare($source, $target);
+        return Oofile::compare($source, $target, $settings);
     }
 }

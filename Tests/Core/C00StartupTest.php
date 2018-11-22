@@ -36,14 +36,14 @@ class C00StartupTest extends TestCase
 
         echo PHP_EOL;
         
-        echo Logger::getConsoleLine(null, self::SPLIT, Logger::CMD_COLOR_MSG);
-        echo Logger::getConsoleLine(null, self::SPLASH1, Logger::CMD_COLOR_WAR);
-        echo Logger::getConsoleLine(null, self::SPLASH2, Logger::CMD_COLOR_WAR);
-        echo Logger::getConsoleLine(null, self::SPLASH3, Logger::CMD_COLOR_WAR);
-        echo Logger::getConsoleLine(null, self::SPLASH4, Logger::CMD_COLOR_WAR);
-        echo Logger::getConsoleLine(null, self::SPLASH5, Logger::CMD_COLOR_WAR);
-        echo Logger::getConsoleLine(null, self::SPLASH6, Logger::CMD_COLOR_WAR);
-        echo Logger::getConsoleLine(null, self::SPLIT, Logger::CMD_COLOR_MSG);
+        echo Logger::getConsoleLine("", self::SPLIT, Logger::CMD_COLOR_MSG);
+        echo Logger::getConsoleLine("", self::SPLASH1, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine("", self::SPLASH2, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine("", self::SPLASH3, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine("", self::SPLASH4, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine("", self::SPLASH5, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine("", self::SPLASH6, Logger::CMD_COLOR_WAR);
+        echo Logger::getConsoleLine("", self::SPLIT, Logger::CMD_COLOR_MSG);
         
         //====================================================================//
         //   TEST MAIN INFORMATIONS
@@ -53,7 +53,7 @@ class C00StartupTest extends TestCase
         $this->displayTestedSequences();
         $this->displayFilteredFields();
         
-        echo Logger::getConsoleLine(null, self::SPLIT, Logger::CMD_COLOR_MSG);
+        echo Logger::getConsoleLine("", self::SPLIT, Logger::CMD_COLOR_MSG);
         echo PHP_EOL . ".";
         
         $this->assertTrue(true);
@@ -94,13 +94,13 @@ class C00StartupTest extends TestCase
         //====================================================================//
         // Check if Local Tests Sequences are defined
         $testSequences  =   "None";
-        if (!is_null(Splash::local()) && method_exists(Splash::local(), "TestSequences")) {
+        if (!empty(Splash::local()->testSequences("List"))) {
             $testSequences  =   Splash::local()->testSequences("List");
         }
-        if (!is_array($testSequences) && ($testSequences !== "None")) {
-            echo Logger::getConsoleLine("!!Invalid Tests Sequence List!!", " - Tested Objects ", Logger::CMD_COLOR_DEB);
-            return;
-        }
+//        if (!is_array($testSequences) && ($testSequences !== "None")) {
+//            echo Logger::getConsoleLine("!!Invalid Tests Sequence List!!", " - Tested Objects ", Logger::CMD_COLOR_DEB);
+//            return;
+//        }
         if ($testSequences === "None") {
             return;
         }
@@ -118,9 +118,9 @@ class C00StartupTest extends TestCase
         
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
-        if (defined("SPLASH_FIELDS") && is_scalar(SPLASH_FIELDS) && !empty(explode(",", SPLASH_FIELDS))) {
-            echo Logger::getConsoleLine(SPLASH_FIELDS, "- Fields Filter: ", Logger::CMD_COLOR_DEB);
-            echo Logger::getConsoleLine("!! TEST WILL FOCUS ON SPECIFIC FIELDS !!", null, Logger::CMD_COLOR_DEB);
+        if (defined("SPLASH_FIELDS") && is_scalar(SPLASH_FIELDS) && !empty(explode(",", (string) SPLASH_FIELDS))) {
+            echo Logger::getConsoleLine((string) SPLASH_FIELDS, "- Fields Filter: ", Logger::CMD_COLOR_DEB);
+            echo Logger::getConsoleLine("!! TEST WILL FOCUS ON SPECIFIC FIELDS !!", "", Logger::CMD_COLOR_DEB);
         }
     }
 }

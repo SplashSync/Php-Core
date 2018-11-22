@@ -7,7 +7,7 @@ namespace Splash\Tests\Tools\Fields;
  *
  * @example     2016-12-25
  */
-class Oodate extends Oovarchar
+class Oodate extends Oovarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -20,11 +20,7 @@ class Oodate extends Oovarchar
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -33,10 +29,14 @@ class Oodate extends Oovarchar
         if (empty($data)) {
             return true;
         }
-
+        //==============================================================================
+        //      Verify Data is a Scalar
+        if (!is_scalar($data)) {
+            return "Field Data is not a Date with right Format (" . SPL_T_DATECAST . ").";
+        }
         //==============================================================================
         //      Verify Data is a DateTime Type
-        if (\DateTime::createFromFormat(SPL_T_DATECAST, $data) !== false) {
+        if (\DateTime::createFromFormat(SPL_T_DATECAST, (string) $data) !== false) {
             return true;
         }
 
@@ -48,11 +48,7 @@ class Oodate extends Oovarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {

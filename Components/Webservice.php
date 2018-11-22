@@ -171,11 +171,11 @@ class Webservice
         //====================================================================//
         // Open SSL Encryption
         if ($action == 'encrypt') {
-            $out = base64_encode(openssl_encrypt($data, Splash::configuration()->WsCrypt, $cryptKey, 0, $cryptIv));
+            $out = base64_encode((string) openssl_encrypt($data, Splash::configuration()->WsCrypt, $cryptKey, 0, $cryptIv));
         //====================================================================//
         // Open SSL Decryption
         } elseif ($action == 'decrypt') {
-            $out = openssl_decrypt(base64_decode($data), Splash::configuration()->WsCrypt, $cryptKey, 0, $cryptIv);
+            $out = openssl_decrypt((string) base64_decode($data), Splash::configuration()->WsCrypt, $cryptKey, 0, $cryptIv);
         }
         //====================================================================//
         //  Debug Informations
@@ -189,7 +189,7 @@ class Webservice
      * @abstract    Prepare Data Packets for transmit.
      * @param   Array   $data           Input Data ArrayObject
      * @param   bool    $isUncrypted    Force no encrypt on message.
-     * @return  string  $Out            Output Packet Data ( Encrypted or not )
+     * @return  string|false  $Out            Output Packet Data ( Encrypted or not )
      */
     public function pack($data, $isUncrypted = false)
     {
@@ -224,7 +224,7 @@ class Webservice
         //====================================================================//
         //  Debug Informations
         //====================================================================//
-        if ((!SPLASH_SERVER_MODE) && (Splash::configuration()->TraceOut)) {
+        if (defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE) && (Splash::configuration()->TraceOut)) {
             Splash::log()->war("MsgWsFinalPack", print_r($serial, true));
         }
         return $out;
@@ -260,7 +260,7 @@ class Webservice
         //====================================================================//
         // Convert Data Buffer To XML
         if (Splash::configuration()->WsEncode == "XML") {
-            if (strpos($decode, '<SPLASH>') !== false) {
+            if ($decode && strpos($decode, '<SPLASH>') !== false) {
                 $out = Splash::xml()->XmlToArrayObject($decode);
             }
         //====================================================================//
@@ -365,7 +365,7 @@ class Webservice
         //====================================================================//
         // Prepare Webservice Client
         //====================================================================//
-        if (!$this->buildClient()) {
+        if (false === $this->buildClient()) {
             return false;
         }
         //====================================================================//
@@ -394,7 +394,7 @@ class Webservice
      * @param   bool        $isUncrypted    Force message not to be crypted (Used for Ping Only)
      * @param   bool        $clean          Clean task buffer at the end of this function
      *
-     * @return  ArrayObject|false
+     * @return  string|false
      */
     public function simulate($service, $tasks = null, $isUncrypted = false, $clean = true)
     {
@@ -458,7 +458,7 @@ class Webservice
     /**
      * @abstract   Add Tasks to WebService Request
      *
-     * @param      array       $tasks      List of task to perform inside this request.
+     * @param      array      $tasks      List of task to perform inside this request.
      *                                          If NULL, internal task list is used.
      * @return     bool
      */
@@ -497,7 +497,7 @@ class Webservice
     
     /**
      * @abstract   Create & Setup WebService Client
-     * @return     true
+     * @return     bool
      */
     private function buildClient()
     {
@@ -555,7 +555,7 @@ class Webservice
      * @abstract    Add a new task for NuSOAP Call Request
      *
      * @param   string      $name       Task Identifier Name (Listed in OsWs.inc.php)
-     * @param   array       $params     Task Parameters
+     * @param   array|ArrayObject        $params     Task Parameters
      * @param   string      $desc       Task Name/Description
      *
      * @return  $this
@@ -611,7 +611,7 @@ class Webservice
         $response->Self             = Splash::input("PHP_SELF");           // INFO - Current Url
         $response->ServerAddress    = Splash::input("SERVER_ADDR");        // INFO - Server IP Address
         // Read System Folder without symlinks
-        $response->ServerRoot       = realpath(Splash::input("DOCUMENT_ROOT"));
+        $response->ServerRoot       = realpath((string) Splash::input("DOCUMENT_ROOT"));
         $response->UserAgent        = Splash::input("HTTP_USER_AGENT");    // INFO - Browser User Agent
         $response->WsMethod         = Splash::configuration()->WsMethod;    // Current Splash WebService Component
 
@@ -640,7 +640,7 @@ class Webservice
             $response->ServerPath      =   Splash::configuration()->ServerPath;
         } else {
             $fullPath   =   dirname(__DIR__);
-            $relPath    =   explode($response->ServerRoot, $fullPath);
+            $relPath    =   explode((string) $response->ServerRoot, $fullPath);
             if (isset($relPath[1])) {
                 $response->ServerPath  =   $relPath[1] . "/soap.php";
             } else {
@@ -729,7 +729,7 @@ class Webservice
         
         //====================================================================//
         // Run SOAP Call - Reverse Ping
-        $ping = $testClient->call(SPL_S_PING, null, 1);
+        $ping = $testClient->call(SPL_S_PING, null, true);
         if (empty($ping) || !isset($ping->result) || !$ping->result) {
             Splash::log()->err(Splash::trans("ErrReversePing", $testClient->host));
             return Splash::log()->err(Splash::trans("ErrReverseDebug", $this->getClientDebugLink()));

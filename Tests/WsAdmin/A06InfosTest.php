@@ -19,11 +19,6 @@ class A06InfosTest extends AbstractBaseCase
         //   Execute Action From Module
         $data = Splash::informations();
         //====================================================================//
-        //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($data)) {
-            $data   =   new ArrayObject($data);
-        }
-        //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
     }

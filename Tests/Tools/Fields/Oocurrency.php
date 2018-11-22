@@ -9,7 +9,7 @@ namespace Splash\Tests\Tools\Fields;
  *
  * @see ISO 4217 : http://www.iso.org/iso/home/standards/currency_codes.htm
  */
-class Oocurrency extends Oovarchar
+class Oocurrency extends Oovarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -24,11 +24,7 @@ class Oocurrency extends Oovarchar
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -43,11 +39,7 @@ class Oocurrency extends Oovarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {

@@ -583,7 +583,7 @@ class FieldsFactory
         }
         //====================================================================//
         // Verify - Field Id No Spacial Chars
-        if ($field->id !== preg_replace('/[^a-zA-Z0-9-_@]/u', '', (string) $field->id)) {
+        if ($field->id !== preg_replace('/[^a-zA-Z0-9-_@]/u', '', $field->id)) {
             Splash::log()->war("ErrFieldsInvalidId", $field->id);
             return false;
         }

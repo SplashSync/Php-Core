@@ -69,7 +69,7 @@ class ObjectsHelper
      *
      *      @param      string      $objectId           Object Identifier String.
      *
-     *      @return     string
+     *      @return     string|false
      */
     public static function type($objectId)
     {

@@ -112,17 +112,21 @@ class Logger
     /**
       * @abstract      Log WebServer Error Messages
       *
-      * @param      string      $text       Input String / Key to translate
-      * @param      string      $param1     chaine de param1
-      * @param      string      $param2     chaine de param2
-      * @param      string      $param3     chaine de param3
-      * @param      string      $param4     chaine de param4
-      * @param      string      $param5     chaine de param5
+      * @param      string|null      $text       Input String / Key to translate
+      * @param      string|null      $param1     Translation Parameter 1
+      * @param      string|null      $param2     Translation Parameter 2
+      * @param      string|null      $param3     Translation Parameter 3
+      * @param      string|null      $param4     Translation Parameter 4
       *
       * @return     False
       */
-    public function err($text, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '')
+    public function err($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
+        //====================================================================//
+        // Safety Check
+        if (is_null($text)) {
+            return false;
+        }
         //====================================================================//
         // Initialise buffer if unset
         if (!isset($this->err)) {
@@ -130,7 +134,7 @@ class Logger
         }
         //====================================================================//
         // Add text message to buffer
-        $message = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
+        $message = Splash::trans($text, (string) $param1, (string) $param2, (string) $param3, (string) $param4);
         $this->err[] = $message;
         //====================================================================//
         // Add Message To Log File
@@ -141,17 +145,21 @@ class Logger
     /**
       * @abstract      Log WebServer Warning Messages
       *
-      * @param      string      $text       Input String / Key to translate
-      * @param      string      $param1     chaine de param1
-      * @param      string      $param2     chaine de param2
-      * @param      string      $param3     chaine de param3
-      * @param      string      $param4     chaine de param4
-      * @param      string      $param5     chaine de param5
+      * @param      string|null      $text       Input String / Key to translate
+      * @param      string|null      $param1     Translation Parameter 1
+      * @param      string|null      $param2     Translation Parameter 2
+      * @param      string|null      $param3     Translation Parameter 3
+      * @param      string|null      $param4     Translation Parameter 4
       *
       * @return     True
      */
-    public function war($text, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '')
+    public function war($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
+        //====================================================================//
+        // Safety Check
+        if (is_null($text)) {
+            return true;
+        }
         //====================================================================//
         // Initialise buffer if unset
         if (!isset($this->war)) {
@@ -159,28 +167,32 @@ class Logger
         }
         //====================================================================//
         // Add text message to buffer
-        $messsage = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
-        $this->war[] = $messsage;
+        $message = Splash::trans($text, (string) $param1, (string) $param2, (string) $param3, (string) $param4);
+        $this->war[] = $message;
         //====================================================================//
         // Add Message To Log File
-        self::addLogToFile($messsage, "WARNING");
+        self::addLogToFile($message, "WARNING");
         return   true;
     }
 
     /**
       * @abstract      Log WebServer Commons Messages
       *
-      * @param      string      $text       Input String / Key to translate
-      * @param      string      $param1     chaine de param1
-      * @param      string      $param2     chaine de param2
-      * @param      string      $param3     chaine de param3
-      * @param      string      $param4     chaine de param4
-      * @param      string      $param5     chaine de param5
+      * @param      string|null      $text       Input String / Key to translate
+      * @param      string|null      $param1     Translation Parameter 1
+      * @param      string|null      $param2     Translation Parameter 2
+      * @param      string|null      $param3     Translation Parameter 3
+      * @param      string|null      $param4     Translation Parameter 4
       *
       * @return     True
       */
-    public function msg($text, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '')
+    public function msg($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
+        //====================================================================//
+        // Safety Check
+        if (is_null($text)) {
+            return true;
+        }
         //====================================================================//
         // Initialise buffer if unset
         if (!isset($this->msg)) {
@@ -188,7 +200,7 @@ class Logger
         }
         //====================================================================//
         // Add text message to buffer
-        $message = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
+        $message = Splash::trans($text, (string) $param1, (string) $param2, (string) $param3, (string) $param4);
         $this->msg[] = $message;
         //====================================================================//
         // Add Message To Log File
@@ -199,18 +211,19 @@ class Logger
     /**
       * @abstract      Log WebServer Debug Messages
       *
-      * @param      string      $text       Input String / Key to translate
-      * @param      string      $param1     chaine de param1
-      * @param      string      $param2     chaine de param2
-      * @param      string      $param3     chaine de param3
-      * @param      string      $param4     chaine de param4
-      * @param      string      $param5     chaine de param5
+      * @param      string|null      $text       Input String / Key to translate
+      * @param      string|null      $param1     Translation Parameter 1
+      * @param      string|null      $param2     Translation Parameter 2
+      * @param      string|null      $param3     Translation Parameter 3
+      * @param      string|null      $param4     Translation Parameter 4
       *
       * @return     True
       */
-    public function deb($text, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '')
+    public function deb($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
-        if (!isset($this->debug) || !$this->debug) {
+        //====================================================================//
+        // Safety Check
+        if (is_null($text) || !isset($this->debug) || !$this->debug) {
             return   true;
         }
         //====================================================================//
@@ -220,7 +233,7 @@ class Logger
         }
         //====================================================================//
         // Add text message to buffer
-        $message = Splash::trans($text, $param1, $param2, $param3, $param4, $param5);
+        $message = Splash::trans($text, (string) $param1, (string) $param2, (string) $param3, (string) $param4);
         $this->deb[] = $message;
         //====================================================================//
         // Add Message To Log File
@@ -231,7 +244,7 @@ class Logger
 
     /**
      * @abstract    Return All WebServer current Log WebServer in Html format
-     * @param   array|null  $msgArray
+     * @param   ArrayObject|array|null  $msgArray
      * @param   string      $title
      * @param   string      $color
      * @return  string
@@ -306,7 +319,7 @@ class Logger
     
     /**
      * @abstract    Return All WebServer current Log WebServer in Html Checklist format
-     * @param   array|null      $msgArray
+     * @param   ArrayObject|array|null      $msgArray
      * @param   string          $type
      * @return  string|null
      */
@@ -360,12 +373,12 @@ class Logger
 
     /**
      * @abstract    Return All WebServer current Log WebServer Console Colored format
-     * @param   array|null  $msgArray
+     * @param   ArrayObject|array|null  $msgArray
      * @param   string      $title
-     * @param   string      $color
+     * @param   int      $color
      * @return  string
      */
-    private function getConsole($msgArray, $title = "", $color = "")
+    private function getConsole($msgArray, $title = "", $color = 0)
     {
         $result  = "";
         if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
@@ -473,7 +486,7 @@ class Logger
         }
         //====================================================================//
         // Detect ArrayObjects
-        if (is_a($logArray, "ArrayObject")) {
+        if ($logArray instanceof ArrayObject) {
             $logArray = $logArray->getArrayCopy();
         }
         //====================================================================//
@@ -577,7 +590,7 @@ class Logger
      */
     public function www($txt, $var)
     {
-        return $this->war($txt . "<PRE>" . print_r($var, 1) . "</PRE>");
+        return $this->war($txt . "<PRE>" . print_r($var, true) . "</PRE>");
     }
     
     /**
@@ -655,7 +668,7 @@ class Logger
     
     /**
      * @abstract    Add a message to Log File
-     * @param   array|null      $msgArray   Array of Message text to log
+     * @param   ArrayObject|array|null      $msgArray   Array of Message text to log
      * @param   string          $logType    Message Type
      * @return  true
      */

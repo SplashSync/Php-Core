@@ -27,7 +27,7 @@ use ArrayObject;
 trait LockTrait
 {
     /**
-     * @var ArrayObject
+     * @var null|ArrayObject
      */
     private $locks = null;
     

@@ -33,11 +33,7 @@ class SOAPInterface implements CommunicationInterface
     //====================================================================//
     
     /**
-     * @abstract   Create & Setup WebService Client
-     *
-     * @param   string  $targetUrl    Target Url
-     *
-     * @return self
+     * {@inheritdoc}
      */
     public function buildClient($targetUrl)
     {
@@ -50,12 +46,7 @@ class SOAPInterface implements CommunicationInterface
     }
         
     /**
-     * @abstract   Execute WebService Client Request
-     *
-     * @param string    $service   Target Service
-     * @param string    $data      Request Raw Data
-     *
-     * @return     mixed    Raw Response
+     * {@inheritdoc}
      */
     public function call($service, $data)
     {
@@ -84,7 +75,7 @@ class SOAPInterface implements CommunicationInterface
     //====================================================================//
     
     /**
-     * @abstract   Create & Setup WebService Server
+     * {@inheritdoc}
      */
     public function buildServer()
     {
@@ -104,7 +95,7 @@ class SOAPInterface implements CommunicationInterface
     }
     
     /**
-     * @abstract   Responds to WebService Requests
+     * {@inheritdoc}
      */
     public function handle()
     {
@@ -114,7 +105,7 @@ class SOAPInterface implements CommunicationInterface
     }
     
     /**
-     * @abstract   Log Errors if Server fail during a request
+     * {@inheritdoc}
      */
     public function fault($error)
     {

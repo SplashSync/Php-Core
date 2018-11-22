@@ -2,12 +2,14 @@
 
 namespace Splash\Tests\Tools\Fields;
 
+use ArrayObject;
+
 /**
  * @abstract    DateTime Field : Date & Time as Text (Format Y-m-d G:i:s)
  *
  * @example     2016-12-25 12:25:30
  */
-class Oodatetime extends Oovarchar
+class Oodatetime extends Oovarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -20,11 +22,7 @@ class Oodatetime extends Oovarchar
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -33,10 +31,14 @@ class Oodatetime extends Oovarchar
         if (empty($data)) {
             return true;
         }
-
+        //==============================================================================
+        //      Verify Data is a Scalar
+        if (!is_scalar($data)) {
+            return "Field Data is not a DateTime with right Format (" . SPL_T_DATETIMECAST . ").";
+        }    
         //==============================================================================
         //      Verify Data is a DateTime Type
-        if (\DateTime::createFromFormat(SPL_T_DATETIMECAST, $data) !== false) {
+        if (\DateTime::createFromFormat(SPL_T_DATETIMECAST,(string) $data) !== false) {
             return true;
         }
 
@@ -48,11 +50,7 @@ class Oodatetime extends Oovarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {

@@ -165,11 +165,7 @@ class O07GetTest extends ObjectsCase
             
             //====================================================================//
             //   Convert ArrayObjects
-            if (is_a($list, "ArrayObject")) {
-                $this->objectList[$objectType] = $list->getArrayCopy();
-            } else {
-                $this->objectList[$objectType] = $list;
-            }
+            $this->objectList[$objectType] = $list;
         }
         
         //====================================================================//

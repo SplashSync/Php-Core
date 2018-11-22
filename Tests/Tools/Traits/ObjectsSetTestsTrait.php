@@ -57,6 +57,9 @@ trait ObjectsSetTestsTrait
         //   Update Data Focused Field Data
         $updateData = $this->prepareForTesting($objectType, $field);
         $this->assertNotEmpty($updateData);
+        if ($updateData == false) {
+            return true;
+        }
 
         //====================================================================//
         //   Execute Update Test
@@ -113,7 +116,10 @@ trait ObjectsSetTestsTrait
         //   Generate Dummy Object Data (Required Fields Only)
         $updateData = $this->prepareForTesting($objectType, $field);
         $this->assertNotEmpty($updateData);
-        
+        if ($updateData == false) {
+            return true;
+        }
+
         //====================================================================//
         //   Execute Update Test
         $this->setObjectFromService($objectType, $updateData, $objectId);
@@ -261,7 +267,7 @@ trait ObjectsSetTestsTrait
      * @param       ArrayObject $field          Current Tested Field (ArrayObject)
      * @param       bool        $unik           Ask for Unik Field Data
      *
-     * @return      array|bool      Generated Data Block or False if not Allowed
+     * @return      false|array      Generated Data Block or False if not Allowed
      */
     protected function generateObjectData($objectType, $field, $unik = true)
     {
@@ -335,7 +341,7 @@ trait ObjectsSetTestsTrait
      * @param       ArrayObject $field          Current Tested Field (ArrayObject)
      * @param       bool        $unik           Ask for Unik Field Data
      *
-     * @return      array|bool      Generated Data Block or False if not Allowed
+     * @return      false|array      Generated Data Block or False if not Allowed
      */
     public function prepareForTesting($objectType, $field, $unik = true)
     {

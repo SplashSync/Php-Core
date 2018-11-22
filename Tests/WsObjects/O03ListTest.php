@@ -74,9 +74,6 @@ class O03ListTest extends ObjectsCase
         //====================================================================//
         // Verify Fields are Available
         $fields = Splash::object($objectType)->fields();
-        if (is_null($fields)) {
-            return false;
-        }
 
         //====================================================================//
         // Verify List Data Items

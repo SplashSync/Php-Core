@@ -5,7 +5,7 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * @abstract    Text Field : Long Text Data Block
  */
-class Ootext
+class Ootext implements FieldInterface
 {
 
     //==============================================================================
@@ -19,11 +19,7 @@ class Ootext
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -39,11 +35,7 @@ class Ootext
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {
@@ -55,16 +47,9 @@ class Ootext
     //==============================================================================
     
     /**
-     * Compare Two Data Block to See if similar (Update Required)
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param   mixed   $source     Original Data Block
-     * @param   mixed   $target     New Data Block
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
-    public static function compare($source, $target)
+    public static function compare($source, $target, $settings)
     {
         //====================================================================//
         //  Both Texts Are Empty

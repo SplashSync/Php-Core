@@ -2,6 +2,8 @@
 
 namespace Splash\Tests\Tools\Fields;
 
+use ArrayObject;
+
 /**
  * @abstract    Price Field : price definition Array
  *
@@ -21,7 +23,7 @@ namespace Splash\Tests\Tools\Fields;
 //====================================================================//
  *
  */
-class Ooprice
+class Ooprice implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -34,17 +36,18 @@ class Ooprice
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
         //==============================================================================
         //      Verify Data is an Array
-        if (!is_array($data) && !is_a($data, "ArrayObject")) {
+        if (is_scalar($data)) {
+            return "Field Data is not an Array.";
+        }
+        //==============================================================================
+        //      Verify Data is an Array
+        if (!is_array($data) && !($data instanceof ArrayObject)) {
             return "Field Data is not an Array.";
         }
 
@@ -76,6 +79,9 @@ class Ooprice
         if (!is_array($price) && !is_a($price, "ArrayObject")) {
             return "Price Field Data is not an Array.";
         }
+        if ($price instanceof ArrayObject) {
+            $price = $price->getArrayCopy();
+        }        
         if (!array_key_exists("base", $price)) {
             return "Price Field => 'base' price (ht/ttc) is missing.";
         }
@@ -134,11 +140,7 @@ class Ooprice
     //==============================================================================
 
     /**
-     * @abstract    Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {
@@ -160,15 +162,7 @@ class Ooprice
     //==============================================================================
     
     /**
-     * Compare Two Data Block to See if similar (Update Required)
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param       mixed   $source     Original Data Block
-     * @param       mixed   $target     New Data Block
-     * @param       array   $settings   User Defined Faker Settings
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
     public static function compare($source, $target, $settings)
     {
@@ -258,7 +252,7 @@ class Ooprice
      * @param   string      $name           Price Currency Name
      * @return  array|string                      
      */
-    public static function encodePrice($taxExcl, $vat, $taxIncl = null, $code = "", $symbol = "", $name = "")
+    public static function encodePrice($taxExcl = null, $vat = 0, $taxIncl = null, $code = "", $symbol = "", $name = "")
     {
         //====================================================================//
         // Safety Checks

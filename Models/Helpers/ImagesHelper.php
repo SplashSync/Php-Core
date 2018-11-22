@@ -156,7 +156,10 @@ class ImagesHelper
     private static function getRemoteFileSize($imageUrl)
     {
         $result = curl_init($imageUrl);
-
+        if (!$result) {
+            return 0;
+        }
+        
         curl_setopt($result, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($result, CURLOPT_HEADER, true);
         curl_setopt($result, CURLOPT_NOBODY, true);

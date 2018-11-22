@@ -40,7 +40,7 @@ interface CommunicationInterface
      * @abstract   Execute WebService Client Request
      *
      * @param string    $service   Target Service
-     * @param string    $data      Request Raw Data
+     * @param array    $data      Request Raw Data
      *
      * @return     mixed    Raw Response
      */

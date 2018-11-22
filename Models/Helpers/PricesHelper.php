@@ -17,6 +17,8 @@
 
 namespace   Splash\Models\Helpers;
 
+use ArrayObject;
+
 use Splash\Core\SplashCore      as Splash;
 
 /**
@@ -27,7 +29,7 @@ class PricesHelper
     /**
      * @abstract   Build a new price field array
      *
-     * @param      double      $taxExcl        Price Without VAT (Or Null if Price Send with VAT)
+     * @param      double|null      $taxExcl        Price Without VAT (Or Null if Price Send with VAT)
      * @param      double      $vat            VAT percentile
      * @param      double      $taxIncl        Price With VAT
      * @param      string      $code           Price Currency Code
@@ -147,7 +149,7 @@ class PricesHelper
     /**
      * @abstract   Verify Price field array
      *
-     * @param      array       $price          Price field definition Array
+     * @param      mixed       $price          Price field definition Array
      *
      * @return     bool
      */
@@ -155,10 +157,11 @@ class PricesHelper
     {
         //====================================================================//
         // Check Contents Available
-        if (!is_array($price) && !is_a($price, "ArrayObject")) {
+        if (!is_array($price) && !($price instanceof ArrayObject)) {
             return false;
         }
-        if (!array_key_exists("base", $price)) {
+        /** @var array|ArrayObject $price */
+        if (!isset($price["base"])) {
             return false;
         }
         if (!isset($price["ht"]) || !isset($price["ttc"]) || !isset($price["vat"])) {
@@ -177,7 +180,7 @@ class PricesHelper
     /**
      * @abstract   Verify Price Array Amount Infos are Available
      *
-     * @param      array       $price          Price field definition Array
+     * @param      array|ArrayObject       $price          Price field definition Array
      *
      * @return     bool
      */    
@@ -201,7 +204,7 @@ class PricesHelper
     /**
      * @abstract   Verify Price Array Currency Infos are Available
      *
-     * @param      array       $price          Price field definition Array
+     * @param      array|ArrayObject       $price          Price field definition Array
      *
      * @return     bool
      */    
@@ -209,16 +212,16 @@ class PricesHelper
     {
         //====================================================================//
         // Check Contents Available
-        if (!array_key_exists("tax", $price)) {
+        if (!isset($price["tax"])) {
             return false;
         }
-        if (!array_key_exists("symbol", $price)) {
+        if (!isset($price["symbol"])) {
             return false;
         }
-        if (!array_key_exists("code", $price)) {
+        if (!isset($price["code"])) {
             return false;
         }
-        if (!array_key_exists("name", $price)) {
+        if (!isset($price["name"])) {
             return false;
         }
         return true;

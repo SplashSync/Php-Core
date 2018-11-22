@@ -4,6 +4,8 @@ namespace Splash\Tests\Tools\Traits;
 
 use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
 use PHPUnit\Framework\TestCase;
+use ArrayObject;
+use Splash\Tests\Tools\Fields\FieldInterface;
 
 /**
  * @abstract    Splash Test Tools - Objects Data Management
@@ -16,8 +18,8 @@ trait ObjectsDataTrait
     /**
      * @abstract    Check Two Data Blocks Have Similar Data
      *
-     * @param   array   $block1             Raw Data to Compare
-     * @param   array   $block2             Raw Data to Compare
+     * @param   ArrayObject|array   $block1             Raw Data to Compare
+     * @param   ArrayObject|array   $block2             Raw Data to Compare
      * @param   TestCase  $testController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
      * @param   string  $comment            Comment on this Test
      *
@@ -27,10 +29,10 @@ trait ObjectsDataTrait
     {
         //====================================================================//
         // Filter ArrayObjects
-        if (is_a($block1, "ArrayObject")) {
+        if ($block1 instanceof ArrayObject) {
             $block1 = $block1->getArrayCopy();
         }
-        if (is_a($block2, "ArrayObject")) {
+        if ($block2 instanceof ArrayObject) {
             $block2 = $block2->getArrayCopy();
         }
         
@@ -50,7 +52,7 @@ trait ObjectsDataTrait
         //====================================================================//
         // If Test Controller Given
         if ($testController && ($testController instanceof TestCase)) {
-            $testController->assertEquals($block1, $block2, $comment);
+            $testController->assertEquals($block1, $block2,(string) $comment);
             return true;
         }
             
@@ -94,11 +96,13 @@ trait ObjectsDataTrait
             // Compare List Data
             $fieldType      =  self::isListField($field->type);
             if ($fieldType) {
+                $this->assertInternalType('array', $data1, $comment . "->" . $field->id);
+                $this->assertInternalType('array', $data2, $comment . "->" . $field->id);
                 $result = $this->compareListField(
                     $fieldType["fieldname"],
                     $field->id,
-                    $data1,
-                    $data2,
+                    is_null($data1) ? array() : $data1,
+                    is_null($data2) ? array() : $data2,
                     $comment . "->" . $field->id
                 );
                 
@@ -143,27 +147,26 @@ trait ObjectsDataTrait
         } else {
             $className      = self::isValidType($fieldType);
         }
+        if (false === $className) {
+            return false;
+        } 
         
         //====================================================================//
         // Verify Class has its own Validate & Compare Function*
         $this->assertTrue(
-            method_exists($className, "validate"),
-            "Field of type " . $fieldType . " has no Validate Function."
-        );
-        $this->assertTrue(
-            method_exists($className, "compare"),
-            "Field of type " . $fieldType . " has no Compare Function."
+            is_subclass_of($className, FieldInterface::class),
+            "Field of type " . $fieldType . " must Implement " . FieldInterface::class
         );
         
         //====================================================================//
         // Validate Data Using Field Type Validator
         $this->assertTrue(
             $className::validate($block1),
-            $comment . " Source Data is not a valid " . $fieldType . " Field Data Block (" . print_r($block1, 1) . ")"
+            $comment . " Source Data is not a valid " . $fieldType . " Field Data Block (" . print_r($block1, true) . ")"
         );
         $this->assertTrue(
             $className::validate($block2),
-            $comment . " Target Data is not a valid " . $fieldType . " Field Data Block (" . print_r($block2, 1) . ")"
+            $comment . " Target Data is not a valid " . $fieldType . " Field Data Block (" . print_r($block2, true) . ")"
         );
             
         //====================================================================//

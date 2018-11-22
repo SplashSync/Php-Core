@@ -2,6 +2,8 @@
 
 namespace Splash\Tests\Tools\Fields;
 
+use ArrayObject;
+
 /**
  * @abstract    Multilangual Text Field : Multilangual Short Text Array
  *
@@ -12,7 +14,7 @@ namespace Splash\Tests\Tools\Fields;
 //====================================================================//
  *
  */
-class Oomvarchar
+class Oomvarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -25,22 +27,18 @@ class Oomvarchar
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
         //==============================================================================
         //      Verify Data is Not Empty
-        if (is_null($data) || $data === "") {
+        if (is_null($data) || (is_scalar($data) && ($data === ""))) {
             return true;
         }
         //==============================================================================
         //      Verify Data is an Array
-        if (!is_array($data) && !is_a($data, "ArrayObject")) {
+        if (!is_array($data) && !($data instanceof ArrayObject)) {
             return "Field Data is not an Array.";
         }
 
@@ -71,11 +69,7 @@ class Oomvarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {
@@ -91,16 +85,9 @@ class Oomvarchar
     //==============================================================================
     
     /**
-     * Compare Two Data Block to See if similar (Update Required)
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param   mixed   $source     Original Data Block
-     * @param   mixed   $target     New Data Block
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
-    public static function compare($source, $target)
+    public static function compare($source, $target, $settings)
     {
         //====================================================================//
         //  If Raw Text received, Not Array ==> Raw text Compare

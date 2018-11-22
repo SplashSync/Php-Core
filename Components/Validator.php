@@ -15,6 +15,7 @@
 
 namespace   Splash\Components;
 
+use ArrayObject;
 use Exception;
 use Splash\Core\SplashCore      as Splash;
 
@@ -144,7 +145,7 @@ class Validator
             return Splash::log()->err(Splash::trans("ErrInfosNotArrayObject", get_class($infos)));
         }
         
-        if (defined('SPLASH_DEBUG') && SPLASH_DEBUG) {
+        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {
             Splash::log()->war("Host : " .  $infos['ServerHost']);
             Splash::log()->war("Path : " .  $infos['ServerPath']);
         }
@@ -317,7 +318,7 @@ class Validator
     /**
      *  @abstract   Verify Object Identifier
      *
-     *  @param      string      $objectId     Object Identifier
+     *  @param      null|string      $objectId     Object Identifier
      *
      *  @return     bool
      */
@@ -328,19 +329,16 @@ class Validator
         if (is_null($objectId)) {
             return Splash::log()->err("ErrEmptyObjectId");
         }
-
         //====================================================================//
         // Checks Id is String or Int
         if (!is_string($objectId) && !is_numeric($objectId)) {
             return Splash::log()->err("ErrWrongObjectId");
         }
-        
         //====================================================================//
         // Checks List Not Empty
         if (is_numeric($objectId) && ($objectId < 0)) {
             return Splash::log()->err("ErrNegObjectId");
         }
-        
         return Splash::log()->deb("MsgObjectIdOk");
     }
     
@@ -355,16 +353,14 @@ class Validator
     {
         //====================================================================//
         // Checks List Type
-        if (!is_array($fieldsList) && !is_a($fieldsList, "ArrayObject")) {
+        if (!is_array($fieldsList)) {
             return Splash::log()->err("ErrWrongFieldList");
-        }
-        
+        }        
         //====================================================================//
         // Checks List Not Empty
         if (empty($fieldsList)) {
             return Splash::log()->err("ErrEmptyFieldList");
-        }
-        
+        }        
         return Splash::log()->deb("MsgFieldListOk");
     }
     
@@ -496,9 +492,9 @@ class Validator
             $path    = Splash::getLocalPath();
             //====================================================================//
             // Verify Local Path Exist
-            if (!is_dir($path)) {
+            if (is_null($path) || !is_dir($path)) {
                 $this->ValidLocalPath = false;
-                return Splash::log()->err(Splash::trans("ErrLocalPath", $path));
+                return Splash::log()->err(Splash::trans("ErrLocalPath", (string) $path));
             }
             
             $this->ValidLocalPath = true;

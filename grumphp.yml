@@ -21,7 +21,7 @@
 parameters:
     core_dir:               "./Resources/grumphp"    
     mode:                   "core"
-    level:                  3
+    level:                  7
             
 #############################################        
 # Import Config. from Php Core Module

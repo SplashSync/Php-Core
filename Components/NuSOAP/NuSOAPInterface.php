@@ -17,13 +17,23 @@ namespace Splash\Components\NuSOAP;
 use Splash\Core\SplashCore      as Splash;
 use Splash\Models\CommunicationInterface;
 
+use nusoap_client;
+use nusoap_server;
+
 /**
  * @abstract    Communication Interface Class for NuSOAP Webservice
  * @author      B. Paquier <contact@splashsync.com>
  */
 class NuSOAPInterface implements CommunicationInterface
 {
+    /**
+     * @var nusoap_client
+     */
     protected $client;
+    
+    /**
+     * @var nusoap_server
+     */
     protected $server;
 
     //====================================================================//
@@ -31,11 +41,7 @@ class NuSOAPInterface implements CommunicationInterface
     //====================================================================//
     
     /**
-     * @abstract   Create & Setup WebService Client
-     *
-     * @param   string  $targetUrl    Target Url
-     *
-     * @return self
+     * {@inheritdoc}
      */
     public function buildClient($targetUrl)
     {
@@ -44,10 +50,10 @@ class NuSOAPInterface implements CommunicationInterface
         require_once(dirname(__FILE__) . "/nusoap.php");
         //====================================================================//
         // Initiate new NuSoap Client
-        $this->client = new \nusoap_client($targetUrl);
+        $this->client = new nusoap_client($targetUrl);
         //====================================================================//
         // Setup NuSOAP Debug Level
-        if (SPLASH_DEBUG) {
+        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {            
             $this->client->setDebugLevel(2);
         }
         //====================================================================//
@@ -64,12 +70,7 @@ class NuSOAPInterface implements CommunicationInterface
     }
         
     /**
-     * @abstract   Execute WebService Client Request
-     *
-     * @param string    $service   Target Service
-     * @param string    $data      Request Raw Data
-     *
-     * @return     mixed    Raw Response
+     * {@inheritdoc}
      */
     public function call($service, $data)
     {
@@ -87,7 +88,7 @@ class NuSOAPInterface implements CommunicationInterface
             Splash::log()->deb("[NuSOAP] Fault Details='"   . $this->client->faultdetail . "'");
             //====================================================================//
             //  Log Error Message
-            Splash::log()->err("ErrWsNuSOAPFault", $this->client->faultcode, $this->client->faultstring);
+            Splash::log()->err("ErrWsNuSOAPFault", (string) $this->client->faultcode, (string) $this->client->faultstring);
         }
 
         return $response;
@@ -98,7 +99,7 @@ class NuSOAPInterface implements CommunicationInterface
     //====================================================================//
     
     /**
-     * @abstract   Create & Setup WebService Server
+     * {@inheritdoc}
      */
     public function buildServer()
     {
@@ -107,7 +108,7 @@ class NuSOAPInterface implements CommunicationInterface
         require_once(dirname(__FILE__) . "/nusoap.php");
         //====================================================================//
         // Initialize NuSOAP Server Class
-        $this->server           = new \soap_server();
+        $this->server           = new nusoap_server();
         //====================================================================//
         // Register a method available for clients
         $this->server->register(SPL_S_PING);           // Check Availability
@@ -119,17 +120,17 @@ class NuSOAPInterface implements CommunicationInterface
     }
     
     /**
-     * @abstract   Responds to WebService Requests
+     * {@inheritdoc}
      */
     public function handle()
     {
         if (isset($this->server)) {
-            $this->server->service(file_get_contents('php://input'));
+            $this->server->service((string) file_get_contents('php://input'));
         }
     }
     
     /**
-     * @abstract   Log Errors if Server fail during a request
+     * {@inheritdoc}
      */
     public function fault($error)
     {

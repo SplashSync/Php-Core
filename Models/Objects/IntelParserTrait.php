@@ -65,7 +65,7 @@ trait IntelParserTrait
     
     /**
      * {@inheritdoc}
-    */
+     */
     public function fields()
     {
         //====================================================================//
@@ -83,7 +83,7 @@ trait IntelParserTrait
     
     /**
      * {@inheritdoc}
-    */
+     */
     public function get($objectId = null, $fieldsList = null)
     {
         //====================================================================//

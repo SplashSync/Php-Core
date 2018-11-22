@@ -20,6 +20,7 @@
 namespace   Splash\Components;
 
 use Splash\Core\SplashCore      as Splash;
+use ArrayObject;
 
 //====================================================================//
 //  CLASS DEFINITION
@@ -180,10 +181,10 @@ class Translator
     /**
      * @abstract   Convert Array Parameters to String
      *
-     * @param  string  $param1     chaine de param1
-     * @param  string  $param2     chaine de param2
-     * @param  string  $param3     chaine de param3
-     * @param  string  $param4     chaine de param4
+     * @param  string|array|ArrayObject  $param1     chaine de param1
+     * @param  string|array|ArrayObject  $param2     chaine de param2
+     * @param  string|array|ArrayObject  $param3     chaine de param3
+     * @param  string|array|ArrayObject  $param4     chaine de param4
      *
      * @return void
      */
@@ -191,16 +192,16 @@ class Translator
     {
         //====================================================================//
         // Replace arrays by counts strings.
-        if (is_array($param1) || is_a($param1, "ArrayObject")) {
+        if (is_array($param1) || ($param1 instanceof ArrayObject)) {
             $param1 = "x " . count($param1);
         }
-        if (is_array($param2) || is_a($param2, "ArrayObject")) {
+        if (is_array($param2) || ($param2 instanceof ArrayObject)) {
             $param2 = "x " . count($param2);
         }
-        if (is_array($param3) || is_a($param3, "ArrayObject")) {
+        if (is_array($param3) || ($param3 instanceof ArrayObject)) {
             $param3 = "x " . count($param3);
         }
-        if (is_array($param4) || is_a($param4, "ArrayObject")) {
+        if (is_array($param4) || ($param4 instanceof ArrayObject)) {
             $param4 = "x " . count($param4);
         }
     }
@@ -295,7 +296,7 @@ class Translator
         if (empty($this->trans[$key]) && isset($tab[1])) {
             //====================================================================//
             // Store Line Translation Key
-            $value=trim(preg_replace('/\\n/', "\n", $tab[1]));
+            $value=trim( (string) preg_replace('/\\n/', "\n", $tab[1]));
             $this->trans[$key]=$value;
         }
     }

@@ -176,7 +176,7 @@ trait ObjectsFakerTrait
      *   @abstract   Check if Field Need to e in List
      *
      *   @param      ArrayObject    $field          Field Definition
-     *   @param      array          $originData     Original Object Data
+     *   @param      null|array     $originData     Original Object Data
      *
      *   @return     bool
      */
@@ -259,7 +259,7 @@ trait ObjectsFakerTrait
         //====================================================================//
         // Detects Id Fields    => Cannot Generate Fake for Id Fields Here...
         if (($id = self::isIdField($type))) {
-            return $className::fake($id["ObjectType"], array_merge_recursive($this->settings, $options));
+            return $className::fake(array_merge_recursive($this->settings, $options), $id["ObjectType"]);
         }
         
         //====================================================================//

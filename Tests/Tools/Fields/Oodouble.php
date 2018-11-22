@@ -2,10 +2,12 @@
 
 namespace Splash\Tests\Tools\Fields;
 
+use ArrayObject;
+
 /**
  * @abstract    Double Field : Float Value as Text
  */
-class Oodouble
+class Oodouble implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -18,21 +20,23 @@ class Oodouble
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
         //==============================================================================
+        //      Verify Data is an Array
+        if (is_array($data) || ($data instanceof ArrayObject)) {
+            return "Field Data is not Double or Float Value.";
+        }        
+        //==============================================================================
         //      Verify Data is a Double or Zero
         if (is_double($data) || ($data == 0)) {
             return true;
+        }
         //==============================================================================
         //      Verify Data is a Double as String
-        } elseif (is_string($data) && (is_double(floatval($data)))) {
+        if (is_string($data) && (is_double(floatval($data)))) {
             return true;
         }
         return "Field Data is not Double or Float Value.";
@@ -43,11 +47,9 @@ class Oodouble
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public static function fake()
+    public static function fake($settings)
     {
         return (double) mt_rand(1, 1000) / 10;
     }
@@ -57,15 +59,7 @@ class Oodouble
     //==============================================================================
     
     /**
-     * Compare Two Data Block to See if similar (Update Required)
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param       mixed   $source     Original Data Block
-     * @param       mixed   $target     New Data Block
-     * @param       array   $settings   User Defined Faker Settings
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
     public static function compare($source, $target, $settings)
     {

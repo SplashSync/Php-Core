@@ -5,7 +5,7 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * @abstract    Bool Field : Basic Boolean
  */
-class Oobool
+class Oobool implements FieldInterface
 {
     
     //==============================================================================
@@ -19,11 +19,7 @@ class Oobool
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -41,8 +37,15 @@ class Oobool
 
         //==============================================================================
         //      Verify Data is an Int as Bool
-        if (($data === 0) || ($data === 1) || ($data === "0")|| ($data === "1")) {
-            return true;
+        if (is_scalar($data)) {
+            if (($data === "0")|| ($data === "1")) {
+                return true;
+            }
+        }
+        if (is_int($data)) {
+            if (($data === 0) || ($data === 1)) {
+                return true;
+            }
         }
         
         return "Field Data is not a Boolean.";
@@ -53,26 +56,17 @@ class Oobool
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public static function fake()
+    public static function fake($settings)
     {
         return (mt_rand()%2)?true:false;
     }
     
     /**
-     * Compare Two Data Block to See if similar (Update Required)
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param   mixed   $source     Original Data Block
-     * @param   mixed   $target     New Data Block
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
-    public static function compare($source, $target)
+    public static function compare($source, $target, $settings)
     {
         //====================================================================//
         //  Raw text Compare

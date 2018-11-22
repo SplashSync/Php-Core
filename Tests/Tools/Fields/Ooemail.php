@@ -5,7 +5,7 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * @abstract    Email Field : Standard Email Address
  */
-class Ooemail extends Oovarchar
+class Ooemail extends Oovarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -18,11 +18,7 @@ class Ooemail extends Oovarchar
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -52,21 +48,17 @@ class Ooemail extends Oovarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {
-        $name   = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand()));
+        $name   = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand()));
         //==============================================================================
         //      Apply Domain Constraint
         if (isset($settings["emailDomain"]) && is_string($settings["emailDomain"])) {
             $domain     = $settings["emailDomain"];
         } else {
-            $domain     = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(100, 1000)));
+            $domain     = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(100, 1000)));
         }
         
         //==============================================================================
@@ -74,7 +66,7 @@ class Ooemail extends Oovarchar
         if (isset($settings["emailExtension"]) && is_string($settings["emailExtension"])) {
             $extension  = $settings["emailExtension"];
         } else {
-            $extension  = preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(10, 100)));
+            $extension  = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(10, 100)));
         }
                 
         return $name . "@" . $domain . "." . $extension;
@@ -85,16 +77,9 @@ class Ooemail extends Oovarchar
     //==============================================================================
     
     /**
-     * Compare Two Data Block to See if similar (Update Required)
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param   mixed   $source     Original Data Block
-     * @param   mixed   $target     New Data Block
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
-    public static function compare($source, $target)
+    public static function compare($source, $target, $settings)
     {
         //====================================================================//
         //  Both Texts Are Empty

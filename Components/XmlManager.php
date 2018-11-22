@@ -86,7 +86,7 @@ class XmlManager
     /**
      * @abstract     Method to convert XML string into Array
      * @param        string     $xml
-     * @return       array      $result
+     * @return      array|string|false
      */
     protected function xmlToArray($xml)
     {
@@ -114,7 +114,7 @@ class XmlManager
     /**
      * @abstract     Method to convert XML string into SimpleXmlElement Object
      * @param        string                 $xml
-     * @return       SimpleXMLElement       $result
+     * @return       SimpleXMLElement|false
      */
     private function xmlToElements($xml)
     {
@@ -124,7 +124,7 @@ class XmlManager
             $result = simplexml_load_string($xml, "SimpleXMLElement", LIBXML_NOERROR);
         } catch (Exception $ex) {
             $this->fault = $ex->getMessage();
-            return null;
+            return false;
         }
         return $result;
     }
@@ -164,7 +164,7 @@ class XmlManager
                 // Safety Check
                 if ($xml->startElement($key) != true) {
                     $this->fault = "Xml Parser - Wrong StartElement Key "
-                            . ": " . print_r($key, 1) . " Value : " . print_r($value, 1);
+                            . ": " . print_r($key, true) . " Value : " . print_r($value, true);
                 }
                 //====================================================================//
                 // Recurcive Add Of This Array
@@ -224,11 +224,16 @@ class XmlManager
     
     /**
      * @abstract    Convert a SimpleXML object to an Array
-     * @param       SimpleXMLElement    $element
-     * @return      array               $array
+     * @param       SimpleXMLElement|false    $element
+     * @return      array|string|false
      */
     private static function simpleXmlToArray($element)
     {
+        //====================================================================//
+        // Safety Check
+        if (false === $element) {
+            return false;
+        }        
         //====================================================================//
         // Init Result
         $result         =   array();
@@ -272,11 +277,16 @@ class XmlManager
     
     /**
      * @abstract    Convert a SimpleXML object to an ArrayObject
-     * @param       SimpleXMLElement    $element
+     * @param       SimpleXMLElement|false    $element
      * @return      ArrayObject|string|false
      */
     private static function simpleXmlToArrayObject($element)
     {
+        //====================================================================//
+        // Safety Check
+        if (false === $element) {
+            return false;
+        }        
         //====================================================================//
         // Init Result
         $result             =   new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);

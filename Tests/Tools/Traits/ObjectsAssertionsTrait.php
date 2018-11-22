@@ -88,6 +88,9 @@ trait ObjectsAssertionsTrait
         // Verify Type is Valid
         $className = self::isValidType($type);
         $this->assertNotEmpty($className, "Field Type '" . $type . "' is not a Valid Splash Field Type." . $comment);
+        if (false === $className) {
+            return false;
+        } 
     
         //====================================================================//
         // Verify Data is Valid
@@ -101,7 +104,7 @@ trait ObjectsAssertionsTrait
      * @abstract    Load Object Field from List
      * @param       string      $itemType           Field Microdata Type Url
      * @param       string      $itemProp           Field Microdata Property Name
-     * @return      ArrayObject
+     * @return     null|ArrayObject
      */
     private function loadObjectFieldByTag($itemType, $itemProp)
     {
@@ -110,8 +113,7 @@ trait ObjectsAssertionsTrait
         $this->assertNotEmpty($this->fields, "Objects Fields List is Empty! Did you load it?");
         //====================================================================//
         //   Touch this Field
-        $field       =   FieldsManager::findFieldByTag($this->fields, $itemType, $itemProp);
-        return $field;
+        return FieldsManager::findFieldByTag($this->fields, $itemType, $itemProp);
     }
     
     /**

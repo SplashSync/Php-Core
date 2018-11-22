@@ -7,7 +7,7 @@ namespace Splash\Tests\Tools\Fields;
  * @abstract    Url Field : Full Link, generic URI
  * @see http://www.faqs.org/rfcs/rfc2396.html
  */
-class Oourl extends Oovarchar
+class Oourl extends Oovarchar implements FieldInterface
 {
 
     //==============================================================================
@@ -21,11 +21,7 @@ class Oourl extends Oovarchar
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -55,15 +51,11 @@ class Oourl extends Oovarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {
-        $domain =   preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode(mt_rand(100, 1000))));
+        $domain =   preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode((string) mt_rand(100, 1000))));
         $prefix =   !empty($settings["Url_Prefix"]) ? $settings["Url_Prefix"] : null;
         $sufix  =   !empty($settings["Url_Sufix"])   ? $settings["Url_Sufix"] : ".splashsync.com";
         

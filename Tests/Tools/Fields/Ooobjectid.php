@@ -4,11 +4,12 @@ namespace Splash\Tests\Tools\Fields;
 
 use Splash\Client\Splash;
 use Splash\Models\Fields\FieldsManagerTrait;
+use ArrayObject;
 
 /**
  * @abstract    Object ID Field : price definition Array
  */
-class Ooobjectid
+class Ooobjectid implements FieldInterface
 {
     use FieldsManagerTrait;
 
@@ -23,11 +24,7 @@ class Ooobjectid
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid.
-     *
-     * @param string $data
-     *
-     * @return string|true
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -36,16 +33,20 @@ class Ooobjectid
         if (is_null($data) || empty($data) || ('0' === $data)) {
             return true;
         }
-
         //==============================================================================
         //      Verify Data is a string
         if (!empty($data) && !is_string($data)) {
             return 'Field  Data is not a String.';
         }
-
+        //==============================================================================
+        //      Verify Data is an Array
+        if (is_array($data) || ($data instanceof ArrayObject)) {
+            return 'Field  Data is not a String.';
+        }
+        
         //==============================================================================
         //      Verify Data is an Id Field
-        $list = explode(IDSPLIT, $data);
+        $list = explode(IDSPLIT, (string) $data);
         if (is_array($list) && (2 == count($list))) {
             return true;
         }
@@ -58,14 +59,9 @@ class Ooobjectid
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations.
-     *
-     * @param string $objectType Pointed Object Type Name
-     * @param array  $settings   User Defined Faker Settings
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public static function fake($objectType, $settings)
+    public static function fake($settings, $objectType = null )
     {
         //====================================================================//
         // Get Object List
@@ -98,16 +94,9 @@ class Ooobjectid
     //==============================================================================
 
     /**
-     * Compare Two Data Block to See if similar (Update Required).
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param mixed $source Original Data Block
-     * @param mixed $target New Data Block
-     *
-     * @return bool TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
-    public static function compare($source, $target)
+    public static function compare($source, $target, $settings)
     {
         //dump($Source);
         //dump($Target);

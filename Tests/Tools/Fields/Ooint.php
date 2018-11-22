@@ -5,7 +5,7 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * @abstract    Integer Field
  */
-class Ooint
+class Ooint implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -18,11 +18,7 @@ class Ooint
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -49,11 +45,9 @@ class Ooint
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public static function fake()
+    public static function fake($settings)
     {
         return mt_rand(1, 1000);
     }
@@ -63,16 +57,9 @@ class Ooint
     //==============================================================================
     
     /**
-     * Compare Two Data Block to See if similar (Update Required)
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param   mixed   $source     Original Data Block
-     * @param   mixed   $target     New Data Block
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
-    public static function compare($source, $target)
+    public static function compare($source, $target, $settings)
     {
         //====================================================================//
         // Compare Float Values

@@ -54,7 +54,7 @@ class Splash extends SplashCore
         $intTimer = microtime(true);
         //====================================================================//
         // Run NuSOAP Call
-        $result = self::ws()->call(SPL_S_PING, null, 1);
+        $result = self::ws()->call(SPL_S_PING, null, true);
         //====================================================================//
         //  Messages Debug Informations
         //====================================================================//
@@ -65,14 +65,13 @@ class Splash extends SplashCore
         }
         //====================================================================//
         // Analyze NuSOAP results
-        if (isset($result->result) && (true == $result->result) && ($silent)) {
+        if ($result && isset($result->result) && (true == $result->result) && ($silent)) {
             self::log()->cleanLog();
-
             return true;
         }
         //====================================================================//
         // If Not Silent, Display result
-        if (isset($result->result) && (true == $result->result)) {
+        if ($result && isset($result->result) && (true == $result->result)) {
             return self::log()->msg('Remote Client Ping Passed ('.self::ws()->url.')');
         }
 
@@ -113,7 +112,7 @@ class Splash extends SplashCore
         }
         //====================================================================//
         // Analyze NuSOAP results
-        if (!isset($result->result) || (true != $result->result)) {
+        if (!$result || !isset($result->result) || (true != $result->result)) {
             return self::log()->err('Remote Client Connection Failed ('.self::ws()->url.')');
         }
         //====================================================================//
@@ -135,7 +134,7 @@ class Splash extends SplashCore
      * @abstract     Submit an Update for a Local Object
      *
      * @param string    $objectType object Type Name
-     * @param array|int $local      object Local Id or Array of Local Id
+     * @param array|string|int $local      object Local Id or Array of Local Id
      * @param string    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      * @param string    $user       User Name
      * @param string    $comment    Operation Comment for Historics
@@ -168,7 +167,7 @@ class Splash extends SplashCore
         Splash::ws()->addTask(
             SPL_F_COMMIT,
             $params,
-            Splash::trans('MsgSchRemoteCommit', $action, $objectType, Splash::count($local))
+            Splash::trans('MsgSchRemoteCommit', (string) $action, $objectType, (string) Splash::count($local))
         );
         //====================================================================//
         // Execute Task
@@ -181,7 +180,7 @@ class Splash extends SplashCore
     /**
      * @abstract     Check if Commit Call was Successful
      *
-     * @param ArrayObject $response Splash Server Response
+     * @param ArrayObject|false $response Splash Server Response
      *
      * @return bool
      */
@@ -189,7 +188,7 @@ class Splash extends SplashCore
     {
         //====================================================================//
         // Analyze NuSOAP results
-        if (!isset($response->result) || (true != $response->result)) {
+        if (!$response || !isset($response->result) || (true != $response->result)) {
             return false;
         }
 
@@ -199,18 +198,18 @@ class Splash extends SplashCore
     /**
      * @abstract     Build Call Parameters Array
      *
-     * @param array     $pbjectType object Type Name
-     * @param array|int $local      object Local Id or Array of Local Id
-     * @param int       $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string    $objectType object Type Name
+     * @param array|string|int $local      object Local Id or Array of Local Id
+     * @param string    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      * @param string    $user       User Name
      * @param string    $comment    Operation Comment for Historics
      *
      * @return arrayObject
      */
-    private static function getCommitParameters($pbjectType, $local = null, $action = null, $user = '', $comment = '')
+    private static function getCommitParameters($objectType, $local = null, $action = null, $user = '', $comment = '')
     {
         $params = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $params->type = $pbjectType;                              // Type of the Object
+        $params->type = $objectType;                              // Type of the Object
         $params->id = $local;                                   // Id of Modified object
         $params->action = $action;                                  // Action Type On this Object
         $params->user = $user;                                    // Operation User Name for Historics
@@ -221,9 +220,9 @@ class Splash extends SplashCore
     /**
      * @abstract     Check if Commit is Allowed Local Object
      *
-     * @param array     $objectType object Type Name
-     * @param array|int $local      object Local Id or Array of Local Id
-     * @param int       $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string     $objectType object Type Name
+     * @param array|string|int $local      object Local Id or Array of Local Id
+     * @param string       $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      *
      * @return bool
      */
@@ -232,7 +231,7 @@ class Splash extends SplashCore
         //====================================================================//
         // Verify this Object is Locked ==> No Action on this Node
         //====================================================================//
-        if (is_array($local) || is_a($local, 'ArrayObject')) {
+        if (is_array($local)) {
             foreach ($local as $value) {
                 if (Splash::object($objectType)->isLocked($value)) {
                     return false;
@@ -257,19 +256,19 @@ class Splash extends SplashCore
      * @abstract     Check if Commit we Are in Travis Mode
      *
      * @param string    $objectType object Type Name
-     * @param array|int $local      object Local Id or Array of Local Id
-     * @param int       $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param array|int|string|null $local      object Local Id or Array of Local Id
+     * @param string       $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      *
      * @return bool
      */
-    private static function isTravisMode($objectType, $local, $action)
+    private static function isTravisMode($objectType, $local, $action = null)
     {
         //====================================================================//
         // Detect Travis from SERVER CONSTANTS
         if (empty(Splash::input('SPLASH_TRAVIS'))) {
             return false;
         }
-        $objectIds = (is_array($local) || is_a($local, 'ArrayObject')) ? implode('|', $local) : $local;
+        $objectIds = is_array($local) ? implode('|', $local) : $local;
         self::log()->war('Module Commit Skipped ('.$objectType.', '.$action.', '.$objectIds.')');
 
         return true;

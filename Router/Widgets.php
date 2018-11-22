@@ -54,19 +54,13 @@ class Widgets
             //====================================================================//
             //  READING A WIDGET DEFINITION
             case SPL_F_WIDGET_DEFINITION:
-                $widgetClass    = Splash::widget($task->params->type);
-                if ($widgetClass) {
-                    $response->data = $widgetClass->description();
-                }
+                $response->data = Splash::widget($task->params->type)->description();
                 break;
                 
             //====================================================================//
             //  READING A WIDGET CONTENTS
             case SPL_F_WIDGET_GET:
-                $widgetClass    = Splash::widget($task->params->type);
-                if ($widgetClass) {
-                    $response->data = $widgetClass->Get($task->params->params);
-                }
+                $response->data = Splash::widget($task->params->type)->get($task->params->params);
                 break;
 
                 

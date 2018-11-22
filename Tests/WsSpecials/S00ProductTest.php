@@ -183,7 +183,7 @@ class S00ProductTest extends ObjectsCase
      * @param       ArrayObject $field          Current Tested Field (ArrayObject)
      * @param       bool        $unik           Ask for Unik Field Data
      *
-     * @return      array|bool      Generated Data Block or False if not Allowed
+     * @return      array|false      Generated Data Block or False if not Allowed
      */
     public function prepareForTesting($objectType, $field = null, $unik = true)
     {
@@ -192,7 +192,6 @@ class S00ProductTest extends ObjectsCase
         if (!$this->verifyTestIsAllowed($objectType, $field)) {
             return false;
         }
-        
         
         //====================================================================//
         //   Load Fields
@@ -203,11 +202,15 @@ class S00ProductTest extends ObjectsCase
         if (is_null($field)) {
             $field   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "alternateName");
         }
-
+        $this->assertNotEmpty($field);
+        if (is_null($field)) {
+            return false;
+        }
         //====================================================================//
-        // Generated Object Data
+        //  Generated Object Data
         $fakeData = $this->generateObjectData($objectType, $field, $unik);
-
+        $this->assertInternalType('array', $fakeData);
+        
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications
         if (!empty($this->currentVariation)) {
@@ -218,6 +221,6 @@ class S00ProductTest extends ObjectsCase
 
         //====================================================================//
         // Return Generated Object Data
-        return array_merge($fakeData, $this->currentVariation, $this->currentImages);
+        return array_merge(is_array($fakeData) ? $fakeData : array(), $this->currentVariation, $this->currentImages);
     }
 }

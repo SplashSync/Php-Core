@@ -5,7 +5,7 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * @abstract    Varchar Field : Basic text
  */
-class Oovarchar
+class Oovarchar implements FieldInterface
 {
 
     //==============================================================================
@@ -19,11 +19,7 @@ class Oovarchar
     //==============================================================================
 
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -38,18 +34,14 @@ class Oovarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @param      array   $settings   User Defined Faker Settings
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {
         //==============================================================================
         //      generate Random String
-        $data   =   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
-        $data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
+        $data   =   preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(900, mt_getrandmax())));
+        $data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(900, mt_getrandmax())));
         
         //==============================================================================
         //      Apply Constraints
@@ -71,13 +63,13 @@ class Oovarchar
         //      Apply Min Length Constraint
         if (isset($settings["minLength"]) && is_numeric($settings["minLength"])) {
             while (strlen($data) < $settings["minLength"]) {
-                $data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode(mt_rand(900, mt_getrandmax())));
+                $data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(900, mt_getrandmax())));
             }
         }
         //==============================================================================
         //      Apply Max Length Constraint
         if (isset($settings["maxLength"]) && is_numeric($settings["maxLength"])) {
-            $data   =   substr($data, 0, $settings["maxLength"]);
+            $data   =   substr($data, 0, (int) $settings["maxLength"]);
         }
     }
 
@@ -104,16 +96,9 @@ class Oovarchar
     //==============================================================================
     
     /**
-     * Compare Two Data Block to See if similar (Update Required)
-     *
-     * !important : Target Data is always validated before compare
-     *
-     * @param   mixed   $source     Original Data Block
-     * @param   mixed   $target     New Data Block
-     *
-     * @return  bool                TRUE if both Data Block Are Similar
+     * {@inheritdoc}
      */
-    public static function compare($source, $target)
+    public static function compare($source, $target, $settings)
     {
         //====================================================================//
         //  Both Texts Are Empty

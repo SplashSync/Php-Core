@@ -9,7 +9,7 @@ namespace Splash\Tests\Tools\Fields;
  *
  * @see         ISO 639-1 : http://www.iso.org/iso/language_codes
  */
-class Oolang extends Oovarchar
+class Oolang extends Oovarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
@@ -22,11 +22,7 @@ class Oolang extends Oovarchar
     //==============================================================================
     
     /**
-     * Verify given Raw Data is Valid
-     *
-     * @param   string $data
-     *
-     * @return true|string
+     * {@inheritdoc}
      */
     public static function validate($data)
     {
@@ -42,9 +38,7 @@ class Oolang extends Oovarchar
     //==============================================================================
 
     /**
-     * Generate Fake Raw Field Data for Debugger Simulations
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public static function fake($settings)
     {

@@ -1,5 +1,7 @@
 <?php
 
+global $finder;
+
 $header = <<<'EOF'
  This file is part of SplashSync Project.
 

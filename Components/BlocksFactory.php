@@ -103,15 +103,17 @@ class BlocksFactory
      *  @abstract   Set Block Data Array Key
      *
      *  @param      string      $name
-     *  @param      array       $value
+     *  @param      string|array       $value
      *
      *  @return     $this
      */
     public function setData($name, $value)
     {
-        //====================================================================//
-        // Impact Block Data Array
-        $this->new->data[$name]   = $value;
+        if (!is_null($this->new)) {
+            //====================================================================//
+            // Impact Block Data Array
+            $this->new->data[$name]   = $value;
+        }
         
         return $this;
     }
@@ -143,9 +145,11 @@ class BlocksFactory
      */
     public function setOption($name, $value)
     {
-        //====================================================================//
-        // Impact Block Data Array
-        $this->new->option[$name]   = $value;
+        if (!is_null($this->new)) {
+            //====================================================================//
+            // Impact Block Data Array
+            $this->new->option[$name]   = $value;
+        }        
         
         return $this;
     }

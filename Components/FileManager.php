@@ -50,14 +50,16 @@ class FileManager
         //====================================================================//
         // PHPUNIT Exception => Look First in Local FileSystem
         //====================================================================//
-        if (SPLASH_DEBUG) {
+        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {  
             $filePath   = dirname(__DIR__) . "/Resources/files/"  . $file;
             if (is_file($filePath)) {
-                return $this->readFile($filePath, $md5);
+                $file   =  $this->readFile($filePath, $md5);
+                return is_array($file) ? $file : false;
             }
             $imgPath    = dirname(__DIR__) . "/Resources/img/"  . $file;
             if (is_file($imgPath)) {
-                return $this->readFile($imgPath, $md5);
+                $file   =  $this->readFile($imgPath, $md5);
+                return is_array($file) ? $file : false;
             }
         }
         
@@ -68,13 +70,13 @@ class FileManager
         $params->md5        = $md5;
         //====================================================================//
         // Add Task to Ws Task List
-        Splash::ws()->addTask(SPL_F_GETFILE, $params, Splash::trans("MsgSchRemoteReadFile", $file));
+        Splash::ws()->addTask(SPL_F_GETFILE, $params, Splash::trans("MsgSchRemoteReadFile", (string) $file));
         //====================================================================//
         // Execute Task
         $response   =   Splash::ws()->call(SPL_S_FILE);
         //====================================================================//
         // Analyze NuSOAP results
-        if (!isset($response->result) || ($response->result != true)) {
+        if (!$response || !isset($response->result) || ($response->result != true)) {
             return false;
         }
 
@@ -153,12 +155,12 @@ class FileManager
         // Read file Informations
         Splash::log()->deb("Splash - Get File Infos : File ".$path." exists.");
         $infos              = array();
-        $owner              = posix_getpwuid(fileowner($path));
+        $owner              = posix_getpwuid((int) fileowner($path));
         $infos["owner"]     = $owner["name"];
         $infos["readable"]  = is_readable($path);
         $infos["writable"]  = is_writable($path);
         $infos["mtime"]     = filemtime($path);
-        $infos["modified"]  = date("F d Y H:i:s.", $infos["mtime"]);
+        $infos["modified"]  = date("F d Y H:i:s.", (int) $infos["mtime"]);
         $infos["md5"]       = md5_file($path);
         $infos["size"]      = filesize($path);
         return $infos;
@@ -224,7 +226,7 @@ class FileManager
         // Fill file Informations
         $infos = array();
         $infos["filename"]  = basename($path);
-        $infos["raw"]       = base64_encode(fread($filehandle, filesize($path)));
+        $infos["raw"]       = base64_encode((string) fread($filehandle, (int) filesize($path)));
         fclose($filehandle);
         $infos["md5"]       = md5_file($path);
         $infos["size"]      = filesize($path);
@@ -259,7 +261,7 @@ class FileManager
         Splash::log()->deb("MsgFileRead", $fileName);
         //====================================================================//
         // Read File Contents
-        return base64_encode(file_get_contents($fileName));
+        return base64_encode((string) file_get_contents($fileName));
     }
     
     /**
@@ -287,12 +289,12 @@ class FileManager
         $fullpath = $dir.$file;
         //====================================================================//
         // Check if folder exists or create it
-        if (!is_dir($dir)) {
-            mkdir($dir, 0775, true);
+        if (!is_dir((string) $dir)) {
+            mkdir((string) $dir, 0775, true);
         }
         //====================================================================//
         // Check if folder exists
-        if (!is_dir($dir)) {
+        if (!is_dir((string) $dir)) {
             Splash::log()->war("ErrFileDirNoExists", __FUNCTION__, $dir);
         }
         //====================================================================//
@@ -306,7 +308,7 @@ class FileManager
             }
             //====================================================================//
             // Check if file is writable
-            if (!is_writable($file)) {
+            if (!is_writable((string) $file)) {
                 return Splash::log()->err("ErrFileWriteable", __FUNCTION__, $file);
             }
         }
@@ -319,7 +321,7 @@ class FileManager
         
         //====================================================================//
         // Write file
-        fwrite($filehandle, base64_decode($raw));
+        fwrite($filehandle,(string)  base64_decode((string) $raw));
         fclose($filehandle);
         
         //====================================================================//
@@ -364,12 +366,13 @@ class FileManager
      */
     public function deleteFile($path = null, $md5 = null)
     {
+        $fPath   =   (string) $path;
         //====================================================================//
         // Safety Checks
-        if (empty(dirname($path))) {
+        if (empty(dirname($fPath))) {
             return Splash::log()->err("ErrFileDirMissing", __FUNCTION__);
         }
-        if (empty(basename($path))) {
+        if (empty(basename($fPath))) {
             return Splash::log()->err("ErrFileFileMissing", __FUNCTION__);
         }
         if (empty($md5)) {
@@ -377,19 +380,19 @@ class FileManager
         }
         //====================================================================//
         // Check if folder exists
-        if (!is_dir(dirname($path))) {
-            Splash::log()->war("ErrFileDirNoExists", __FUNCTION__, dirname($path));
+        if (!is_dir(dirname($fPath))) {
+            Splash::log()->war("ErrFileDirNoExists", __FUNCTION__, dirname($fPath));
         }
         //====================================================================//
         // Check if file exists
-        if (is_file($path) && (md5_file($path) === $md5)) {
-            Splash::log()->deb("MsgFileExists", __FUNCTION__, basename($path));
+        if (is_file($fPath) && (md5_file($fPath) === $md5)) {
+            Splash::log()->deb("MsgFileExists", __FUNCTION__, basename($fPath));
             //====================================================================//
             // Delete File
-            if (unlink($path)) {
-                return Splash::log()->msg("MsgFileDeleted", __FUNCTION__, basename($path));
+            if (unlink($fPath)) {
+                return Splash::log()->msg("MsgFileDeleted", __FUNCTION__, basename($fPath));
             }
-            return Splash::log()->err("ErrFileDeleted", __FUNCTION__, basename($path));
+            return Splash::log()->err("ErrFileDeleted", __FUNCTION__, basename($fPath));
         }
         
         return true;

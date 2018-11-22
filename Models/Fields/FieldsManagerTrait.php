@@ -229,8 +229,8 @@ trait FieldsManagerTrait
         }
         //====================================================================//
         // Detect Objects Id Fields
-        if (self::isIdField($fieldId)) {
-            $fieldId = self::objectType($fieldId);
+        if (self::isIdField((string) $fieldId)) {
+            $fieldId = self::objectType((string) $fieldId);
         }
 
         return $fieldId;
@@ -336,20 +336,20 @@ trait FieldsManagerTrait
                 return $filteredData[$filter];
             }
 
-            //====================================================================//
+        //====================================================================//
         // List Field
         } else {
             //====================================================================//
             // Check List Exists
-            if (!array_key_exists($isList['listname'], $filteredData)) {
+            if (!isset($filteredData[self::listName($filter)])) {
                 return null;
             }
 
             //====================================================================//
             // Parse Raw List Data
             $result = array();
-            foreach ($filteredData[$isList['listname']] as $key => $item) {
-                $result[$key] = $item[$isList['fieldname']];
+            foreach ($filteredData[self::listName($filter)] as $key => $item) {
+                $result[$key] = $item[self::fieldName($filter)];
             }
 
             return $result;
@@ -433,7 +433,7 @@ trait FieldsManagerTrait
             //====================================================================//
             // Search for Field in Item Block
             foreach ($filters as $fieldId) {
-                if (array_key_exists($fieldId, $fieldData)) {
+                if (isset($fieldData[$fieldId])) {
                     $filteredItems[$fieldId] = $fieldData[$fieldId];
                 }
             }

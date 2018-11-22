@@ -47,9 +47,10 @@ class A02ConnectTest extends AbstractBaseCase
         //====================================================================//
         //   Prepare Request Data
         $request    =   Splash::ws()->pack(array(true));
+        $this->assertNotEmpty($request, "Connect Request is Empty..?");
         //====================================================================//
         //   Execute Connect From Splash Server to Module
-        $response   =   SplashServer::connect(Splash::configuration()->WsIdentifier, $request);
+        $response   =   SplashServer::connect(Splash::configuration()->WsIdentifier,(string) $request);
         $data       = $this->checkResponse($response);
         //====================================================================//
         //   Verify Response
@@ -61,12 +62,12 @@ class A02ConnectTest extends AbstractBaseCase
         
         //====================================================================//
         //   Execute Connect with No Server Id
-        $noId       =   SplashServer::connect(null, $request);
+        $noId       =   SplashServer::connect("",(string) $request);
         $this->assertEmpty($noId, "Connection with No Server Id MUST be rejected => Empty Response");
 
         //====================================================================//
         //   Execute Connect with Wrong Server Id
-        $wrongId    =   SplashServer::connect(rand(1E6, 1E10), $request);
+        $wrongId    =   SplashServer::connect((string) rand((int) 1E6,(int) 1E10), (string) $request);
         $this->assertEmpty($wrongId, "Connection with Wrong Server Id MUST be rejected => Empty Response");
         
         //====================================================================//
@@ -81,7 +82,7 @@ class A02ConnectTest extends AbstractBaseCase
         $request    =   Splash::ws()->pack(array(true));
         //====================================================================//
         //   Change WebService Encryption Key
-        Splash::configuration()->WsEncryptionKey = rand(1E6, 1E10);
+        Splash::configuration()->WsEncryptionKey = (string) rand((int) 1E6,(int) 1E10);
         Splash::ws()->setup();
         //====================================================================//
         //   Prepare Request Data
@@ -94,7 +95,7 @@ class A02ConnectTest extends AbstractBaseCase
         //====================================================================//
         //   Execute Connect with Right Server Id but Wrong Encryption
         //====================================================================//
-        $wrongResponse      =   SplashServer::connect(Splash::configuration()->WsIdentifier, $wrongRequest);
+        $wrongResponse      =   SplashServer::connect(Splash::configuration()->WsIdentifier,(string)  $wrongRequest);
         //====================================================================//
         //   Verify Response
         $this->assertEmpty($wrongResponse, "Connection with Wrong Data Encryption MUST be rejected => Empty Response");

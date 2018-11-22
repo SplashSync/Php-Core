@@ -65,7 +65,7 @@ class SplashServer
         
         //====================================================================//
         // Transmit Answer with No Encryption
-        return Splash::ws()->pack(self::$Outputs, 1);
+        return Splash::ws()->pack(self::$Outputs, true);
     }
     
     /**

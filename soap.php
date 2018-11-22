@@ -12,8 +12,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Splash;
-
 /**
  * @abstract    This is Head include file for Splash PHP Module on WebService Request
  * @author      B. Paquier <contact@splashsync.com>
@@ -44,13 +42,12 @@ define("SPLASH_SERVER_MODE", 1);
 //  SERVER MODE - Answer NuSOAP Requests
 //====================================================================//
 // Detect NuSOAP requests send by Splash Server
-if (strpos(Splash::input("HTTP_USER_AGENT"), "SOAP") !== false) {
+$userAgent  =   Splash::input("HTTP_USER_AGENT");
+if ($userAgent && (strpos($userAgent, "SOAP") !== false)) {
     Splash::log()->deb("Splash Started In Server Mode");
-            
     //====================================================================//
     //   Declare WebService Available Functions
     require_once(dirname(__FILE__) . "/inc/server.inc.php");
-
     //====================================================================//
     // Build SOAP Server & Register a method available for clients
     Splash::com()->buildServer();

@@ -32,7 +32,7 @@ class ChecksumHelper
     {
         //====================================================================//
         // Safety Check
-        if (!self::isValid($input)) {
+        if (is_null($input) || !self::isValid($input)) {
             return null;
         }
         //====================================================================//
@@ -42,13 +42,13 @@ class ChecksumHelper
     
     /**
      * @abstract    Compute Md5 CheckSum from Arguments
-     * @return      string                  Unik Md5 Checksum
+     * @return      null|string                  Unik Md5 Checksum
      */
     public static function fromValues()
     {
         //====================================================================//
         // Return Encoded CheckSum from Function Args
-        return self::fromArray(func_num_args());
+        return self::fromArray(func_get_args());
     }
     
     /**
@@ -60,7 +60,7 @@ class ChecksumHelper
     {
         //====================================================================//
         // Safety Check
-        if (!self::isValid($input)) {
+        if (is_null($input) || !self::isValid($input)) {
             return null;
         }
         //====================================================================//
@@ -70,13 +70,13 @@ class ChecksumHelper
 
     /**
      * @abstract    Compute Debug CheckSum String from Arguments
-     * @return      string                  Unik String Checksum
+     * @return      null|string                  Unik String Checksum
      */
     public static function debugFromValues()
     {
         //====================================================================//
         // Return Debug CheckSum String from Function Args
-        return self::debugFromArray(func_num_args());
+        return self::debugFromArray(func_get_args());
     }
     
     /**
@@ -86,7 +86,7 @@ class ChecksumHelper
      */
     private static function isValid($input)
     {
-        if (!is_array($input) && !is_a($input, "ArrayObject")) {
+        if (!is_array($input)) {
             return false;
         }
         foreach ($input as $value) {

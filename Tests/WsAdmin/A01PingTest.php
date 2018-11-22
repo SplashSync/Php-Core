@@ -60,7 +60,7 @@ class A01PingTest extends AbstractBaseCase
         //====================================================================//
         //   Execute Ping From Splash Server to Module
         $response   =   SplashServer::ping();
-        $data       =   Splash::ws()->unPack($response, 1);
+        $data       =   Splash::ws()->unPack($response, true);
 
         //====================================================================//
         //   Verify Response

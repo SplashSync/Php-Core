@@ -34,7 +34,7 @@ abstract class AbstractBaseCase extends TestCase
     {
         //====================================================================//
         //   Filter Tested Object Types  =>> Skip
-        if ( defined("SPLASH_TYPES") && is_scalar(SPLASH_TYPES) && !empty(explode(",", SPLASH_TYPES))) {
+        if ( defined("SPLASH_TYPES") && is_string(SPLASH_TYPES) && !empty(explode(",", SPLASH_TYPES))) {
             if ( !in_array($objectType, explode(",", SPLASH_TYPES))) {
                 return false;
             }
@@ -56,7 +56,7 @@ abstract class AbstractBaseCase extends TestCase
     {
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
-        if ( defined("SPLASH_FIELDS") && is_scalar(SPLASH_FIELDS) && !empty(explode(",", SPLASH_FIELDS))) {
+        if ( defined("SPLASH_FIELDS") && is_string(SPLASH_FIELDS) && !empty(explode(",", SPLASH_FIELDS))) {
             if ( !in_array($identifier, explode(",", SPLASH_FIELDS))) {
                 return false;
             }
@@ -104,7 +104,7 @@ abstract class AbstractBaseCase extends TestCase
      * @abstract      Verify Response Is Valid
      *
      * @param   string      $response       WebService Raw Response Block
-     * @param   string      $config         WebService Request Configuration
+     * @param   ArrayObject $config         WebService Request Configuration
      *
      * @return  ArrayObject
      */
@@ -125,19 +125,19 @@ abstract class AbstractBaseCase extends TestCase
         
         //====================================================================//
         // CHECK RESPONSE LOG
-        if (array_key_exists("log", $data)) {
+        if (isset($data->log)) {
             $this->checkResponseLog($data->log, $config);
         }
         
         //====================================================================//
         // CHECK RESPONSE SERVER INFOS
-        if (array_key_exists("server", $data)) {
+        if (isset($data->server)) {
             $this->checkResponseServer($data->server);
         }
         
         //====================================================================//
         // CHECK RESPONSE TASKS RESULTS
-        if (array_key_exists("tasks", $data)) {
+        if (isset($data->tasks)) {
             $this->checkResponseTasks($data->tasks, $config);
         }
         
@@ -153,8 +153,8 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * @abstract      Verify Response Log Is Valid
      *
-     * @param   ArrayObject     $logs           WebService Log Array
-     * @param   string          $config         WebService Request Configuration
+     * @param   ArrayObject   $logs           WebService Log Array
+     * @param   ArrayObject         $config         WebService Request Configuration
      */
     public function checkResponseLog($logs, $config = null)
     {
@@ -180,7 +180,7 @@ abstract class AbstractBaseCase extends TestCase
         
         //====================================================================//
         // SERVER LOG With Silent Option Activated
-        if (is_a($config, "ArrayObject") && array_key_exists("silent", $config)) {
+        if (($config instanceof ArrayObject) && isset($config->silent)) {
             $this->assertEmpty($logs->war, "Requested Silent operation but Received Warnings, Why??");
             $this->assertEmpty($logs->msg, "Requested Silent operation but Received Messages, Why??");
             $this->assertEmpty($logs->deb, "Requested Silent operation but Received Debug Traces, Why??");
@@ -188,7 +188,7 @@ abstract class AbstractBaseCase extends TestCase
 
         //====================================================================//
         // SERVER LOG Without Debug Option Activated
-        if (is_a($config, "ArrayObject") && !array_key_exists("debug", $config)) {
+        if (($config instanceof ArrayObject) && !isset($config->debug)) {
             $this->assertEmpty($logs->deb, "Requested Non Debug operation but Received Debug Traces, Why??");
         }
             
@@ -205,7 +205,7 @@ abstract class AbstractBaseCase extends TestCase
      */
     public function checkResponseLogArray($logs, $type, $name)
     {
-        if (!array_key_exists($type, $logs) || empty($logs->$type)) {
+        if (!isset($logs->$type) || empty($logs->$type)) {
             return;
         }
         
@@ -244,7 +244,7 @@ abstract class AbstractBaseCase extends TestCase
      * @abstract      Verify Response Tasks Results are Valid
      *
      * @param   ArrayObject     $tasks          WebService Server Tasks Results Array
-     * @param   string          $config         WebService Request Configuration
+     * @param   ArrayObject     $config         WebService Request Configuration
      * 
      * @return      void
      */
@@ -273,7 +273,7 @@ abstract class AbstractBaseCase extends TestCase
             
             //====================================================================//
             // TASKS Delay Data
-            if (is_a($config, "ArrayObject") && !array_key_exists("trace", $config)) {
+            if (($config instanceof ArrayObject) && !isset($config->trace)) {
                 $this->assertArrayHasKey("delayms", $task, "Task Results => Trace requested but DelayMs is Missing");
                 $this->assertArrayHasKey("delaystr", $task, "Task Results => Trace requested but DelayStr is Missing");
                 $this->assertNotEmpty($task["delayms"], "Task Results => Trace requested but DelayMs is Empty");
@@ -297,7 +297,7 @@ abstract class AbstractBaseCase extends TestCase
         $response   =   Splash::ws()->simulate($service);
         //====================================================================//
         //   Check Response
-        $data       =   $this->checkResponse($response);
+        $data       =   $this->checkResponse((string) $response);
         //====================================================================//
         //   Extract Task Result
         if (is_a($data->tasks, "ArrayObject")) {
@@ -330,7 +330,7 @@ abstract class AbstractBaseCase extends TestCase
         $this->assertNotEmpty($response, "Response Block is Empty");
         //====================================================================//
         // DECODE BLOCK
-        $data       =   Splash::ws()->unPack($response);
+        $data       =   Splash::ws()->unPack((string) $response);
         //====================================================================//
         // CHECK RESPONSE DATA
         $this->assertNotEmpty($data, "Response Data is Empty or Malformed");

@@ -112,7 +112,7 @@ class Objects
         return $response;
     }
     
-    private static function checkResponse(&$response)
+    private static function checkResponse($response)
     {
         if ($response->data != false) {
             $response->result   = true;
