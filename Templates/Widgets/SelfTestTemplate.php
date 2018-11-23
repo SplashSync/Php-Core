@@ -22,14 +22,14 @@
 namespace   Splash\Templates\Widgets;
 
 use Splash\Core\SplashCore      as Splash;
-use Splash\Models\WidgetBase;
+use Splash\Models\AbstractWidget;
 
 /**
  * @abstract    SelfTest Template Widget for Splash Modules
  *
  * @author B. Paquier <contact@splashsync.com>
  */
-class SelfTestTemplate extends WidgetBase
+class SelfTestTemplate extends AbstractWidget
 {
     //====================================================================//
     // Define Standard Options for this Widget

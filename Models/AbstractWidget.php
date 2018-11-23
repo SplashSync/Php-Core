@@ -25,6 +25,7 @@ use Splash\Components\BlocksFactory;
 use Splash\Components\FieldsFactory;
 use Splash\Core\SplashCore      as Splash;
 use Splash\Models\Widgets\DatesManagerTrait;
+use Splash\Models\Widgets\WidgetInterface;
 
 //====================================================================//
 //********************************************************************//
@@ -34,7 +35,7 @@ use Splash\Models\Widgets\DatesManagerTrait;
 //********************************************************************//
 //====================================================================//
 
-abstract class WidgetBase
+abstract class AbstractWidget implements WidgetInterface
 {
     use DatesManagerTrait;
     

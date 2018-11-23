@@ -29,7 +29,7 @@ trait SimpleFieldsTrait
      *
      *  @return       self
      */
-    protected function getSimple($fieldName, $objectName = "Object", $default = null)
+    protected function getSimple($fieldName, $objectName = "object", $default = null)
     {
         if (isset($this->{$objectName}->{$fieldName})) {
             $this->out[$fieldName] = trim($this->{$objectName}->{$fieldName});
@@ -49,7 +49,7 @@ trait SimpleFieldsTrait
      *
      *  @return       self
      */
-    protected function getSimpleBool($fieldName, $objectName = "Object", $default = false)
+    protected function getSimpleBool($fieldName, $objectName = "object", $default = false)
     {
         if (isset($this->{$objectName}->{$fieldName})) {
             $this->out[$fieldName] = (bool) trim($this->{$objectName}->{$fieldName});
@@ -69,7 +69,7 @@ trait SimpleFieldsTrait
      *
      *  @return       self
      */
-    protected function getSimpleDouble($fieldName, $objectName = "Object", $default = 0)
+    protected function getSimpleDouble($fieldName, $objectName = "object", $default = 0)
     {
         if (isset($this->{$objectName}->{$fieldName})) {
             $this->out[$fieldName] = (double) trim($this->{$objectName}->{$fieldName});
@@ -90,7 +90,7 @@ trait SimpleFieldsTrait
      *
      *  @return       self
      */
-    protected function getSimpleBit($fieldName, $position, $objectName = "Object", $default = false)
+    protected function getSimpleBit($fieldName, $position, $objectName = "object", $default = false)
     {
         if (isset($this->{$objectName}->{$fieldName})) {
             $this->out[$fieldName] = (bool) (($this->{$objectName}->{$fieldName} >> $position) & 1);
@@ -111,7 +111,7 @@ trait SimpleFieldsTrait
      *
      *  @return       self
      */
-    protected function setSimple($fieldName, $fieldData, $objectName = "Object")
+    protected function setSimple($fieldName, $fieldData, $objectName = "object")
     {
         //====================================================================//
         //  Compare Field Data
@@ -134,7 +134,7 @@ trait SimpleFieldsTrait
      *
      *  @return       self
      */
-    protected function setSimpleFloat($fieldName, $fieldData, $objectName = "Object")
+    protected function setSimpleFloat($fieldName, $fieldData, $objectName = "object")
     {
         //====================================================================//
         //  Compare Field Data
@@ -159,7 +159,7 @@ trait SimpleFieldsTrait
      *
      *  @return       self
      */
-    protected function setSimpleBit($fieldName, $position, $fieldData, $objectName = "Object")
+    protected function setSimpleBit($fieldName, $position, $fieldData, $objectName = "object")
     {
         //====================================================================//
         //  Compare Field Data
@@ -185,7 +185,7 @@ trait SimpleFieldsTrait
      *
      * @return  self
      */
-    protected function getGeneric($fieldName, $objectName = "Object")
+    protected function getGeneric($fieldName, $objectName = "object")
     {
         $this->out[$fieldName] = $this->{$objectName}->{ "get" . $fieldName}();
 
@@ -201,7 +201,7 @@ trait SimpleFieldsTrait
      *
      * @return      self
      */
-    protected function setGeneric($fieldName, $fieldData, $objectName = "Object")
+    protected function setGeneric($fieldName, $fieldData, $objectName = "object")
     {
         //====================================================================//
         //  Compare Field Data
