@@ -451,8 +451,8 @@ class SplashCore
         }
         //====================================================================//
         // Verify Local Core Class Exist & is Valid
-        if (true == self::validate()->isValidLocalClass()) {
-            throw new Exception('You requested access to Local Class, but it Invalid...');
+        if (!self::validate()->isValidLocalClass()) {
+            throw new Exception('You requested access to Local Class, but it is Invalid...');
         }
         //====================================================================//
         // Initialize Class
