@@ -229,7 +229,7 @@ class S00ProductTest extends ObjectsCase
 
         //====================================================================//
         //   Load Fields
-        $fields = Splash::object($objectType)->fields();
+        $this->fields = Splash::object($objectType)->fields();
 
         //====================================================================//
         //   Ensure a Field is Requested
@@ -248,9 +248,9 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications
         if (!empty($this->currentVariation)) {
-            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeCode');
-            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeName');
-            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeValue');
+            $this->fields[] = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeCode');
+            $this->fields[] = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeName');
+            $this->fields[] = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeValue');
         }
 
         //====================================================================//
