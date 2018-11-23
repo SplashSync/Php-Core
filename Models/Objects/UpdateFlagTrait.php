@@ -47,7 +47,7 @@ trait UpdateFlagTrait
      * @param       string  $custom     Custom Falg Name
      * @return      self
      */
-    protected function needUpdate($custom = "Object")
+    protected function needUpdate($custom = "object")
     {
         if (self::isCustom($custom)) {
             $this->custom[$custom]   =   true;
@@ -63,7 +63,7 @@ trait UpdateFlagTrait
      * @param       string  $custom     Custom Falg Name
      * @return      self
      */
-    protected function isUpdated($custom = "Object")
+    protected function isUpdated($custom = "object")
     {
         if (self::isCustom($custom)) {
             $this->custom[$custom]   =   false;
@@ -79,7 +79,7 @@ trait UpdateFlagTrait
      * @param       string  $custom     Custom Falg Name
      * @return      bool
      */
-    protected function isToUpdate($custom = "Object")
+    protected function isToUpdate($custom = "object")
     {
         if (self::isCustom($custom)) {
             return isset($this->custom[$custom]) ? $this->custom[$custom] : false;
@@ -95,7 +95,7 @@ trait UpdateFlagTrait
      */
     private function isCustom($custom)
     {
-        if ("Object" == $custom) {
+        if ("object" == $custom) {
             return false;
         }
         if (is_null($custom) || !is_scalar($custom) || empty($custom)) {
