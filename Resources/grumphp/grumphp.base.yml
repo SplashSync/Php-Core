@@ -34,7 +34,8 @@ parameters:
     ascii:
         failed:     "%core_dir%/grumphp-grumpy.txt"
         succeeded:  "%core_dir%/grumphp-happy.txt"
-        
+    process_timeout: 180
+    
     #############################################        
     #   Tasks Configs        
     tasks:
