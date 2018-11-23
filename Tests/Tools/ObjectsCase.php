@@ -344,7 +344,7 @@ class ObjectsCase extends AbstractBaseCase
         
         //====================================================================//
         //   Check Object Type is OK
-        $this->assertSame(
+        $this->assertEquals(
             $commited->type,
             $objectType,
             "Change Commit => Object Type is wrong. "
@@ -353,7 +353,7 @@ class ObjectsCase extends AbstractBaseCase
         
         //====================================================================//
         //   Check Object Action is OK
-        $this->assertSame(
+        $this->assertEquals(
             $commited->action,
             $action,
             "Change Commit => Change Type is wrong. (Expected " . $action . " / Given " . $commited->action
@@ -392,7 +392,7 @@ class ObjectsCase extends AbstractBaseCase
             $firstId = array_shift($commited->id);
             //====================================================================//
             //   Verify First Object Id is OK
-            $this->assertSame(
+            $this->assertEquals(
                 $firstId,
                 $objectId,
                 "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $firstId
@@ -400,7 +400,7 @@ class ObjectsCase extends AbstractBaseCase
         } else {
             //====================================================================//
             //   Check Object Id is OK
-            $this->assertSame(
+            $this->assertEquals(
                 $commited->id,
                 $objectId,
                 "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $commited->id

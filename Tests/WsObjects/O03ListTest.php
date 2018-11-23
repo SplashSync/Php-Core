@@ -161,7 +161,7 @@ class O03ListTest extends ObjectsCase
         //====================================================================//
         // Verify List Meta Informations
         unset($data["meta"]);
-        $this->assertSame(
+        $this->assertEquals(
             $meta["current"],
             count($data),
             $objectType . " List => Current Object Count is different from Given Meta['current'] count."

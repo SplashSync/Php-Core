@@ -158,7 +158,7 @@ class O02FieldsTest extends ObjectsCase
             $this->assertArrayInternalType($field, "tag", "string", "Field Linking Tag");
         }
         if (array_key_exists("tag", $field) && array_key_exists("itemtype", $field) && !empty($field["itemtype"])) {
-            $this->assertSame(
+            $this->assertEquals(
                 $field["tag"],
                 md5($field["itemprop"] . IDSPLIT . $field["itemtype"]),
                 "Field Tag do not match with defined MicroData. Expected Format: md5('itemprop'@'itemptype') "

@@ -175,7 +175,7 @@ trait ObjectsValidatorTrait
         
         //====================================================================//
         // Verify Field Type is List Type Identifier
-        $this->assertSame(
+        $this->assertEquals(
             $listType["listname"],
             SPL_T_LIST,
             "List Field Type Must match Format 'type'@list. (Given " . print_r($fieldType, true) . ")"

@@ -221,7 +221,7 @@ trait ObjectsDataTrait
         
         //====================================================================//
         // Verify Data Count is similar
-        $this->assertSame(
+        $this->assertEquals(
             count($list1),
             count($list2),
             "Source and Target List Data have different number of Items "

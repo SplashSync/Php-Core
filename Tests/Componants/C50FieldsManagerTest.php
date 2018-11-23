@@ -29,7 +29,7 @@ class C50FieldsManagerTest extends TestCase
 {
     use \Splash\Models\Objects\ObjectsTrait;
     use \Splash\Models\Objects\ListsTrait;
-    
+
     protected function setUp()
     {
         parent::setUp();
@@ -37,99 +37,103 @@ class C50FieldsManagerTest extends TestCase
         // BOOT MODULE
         Splash::core();
     }
-    
+
     //==============================================================================
     //      FIELDS LIST FUNCTIONS
     //==============================================================================
-    
+
     // TODO
-    
+
     //==============================================================================
     //      LISTS FIELDS MANAGEMENT
     //==============================================================================
 
     /**
      * @dataProvider providerIsListFieldFunction
+     *
      * @param mixed $input
      * @param mixed $result
      */
     public function testIsListFieldFunction($input, $result)
     {
-        $this->assertSame($result, FieldsManager::isListField($input));
+        $this->assertEquals($result, FieldsManager::isListField($input));
     }
 
     public function providerIsListFieldFunction()
     {
         return array(
             array(null,                 false),
-            array("",                   false),
-            array("Whatever",           false),
-            array("object::id",         false),
-            array("object@list",        array("fieldname" => "object",       "listname" => "list")),
-            array("list@object",        array("fieldname" => "list",         "listname" => "object")),
-            array("object::id@list",    array("fieldname" => "object::id",   "listname" => "list")),
-            array("object-id@list",     array("fieldname" => "object-id",   "listname" => "list")),
+            array('',                   false),
+            array('Whatever',           false),
+            array('object::id',         false),
+            array('object@list',        array('fieldname' => 'object',       'listname' => 'list')),
+            array('list@object',        array('fieldname' => 'list',         'listname' => 'object')),
+            array('object::id@list',    array('fieldname' => 'object::id',   'listname' => 'list')),
+            array('object-id@list',     array('fieldname' => 'object-id',   'listname' => 'list')),
         );
     }
-    
+
     /**
      * @dataProvider providerFieldNameFunction
+     *
      * @param mixed $input
      * @param mixed $result
      */
     public function testFieldNameFunction($input, $result)
     {
-        $this->assertSame($result, FieldsManager::fieldName($input));
+        $this->assertEquals($result, FieldsManager::fieldName($input));
     }
 
     public function providerFieldNameFunction()
     {
         return array(
             array(null,                 false),
-            array("",                   false),
-            array("Whatever",           false),
-            array("object::id",         false),
-            array("object@list",        "object"),
-            array("list@object",        "list"),
-            array("object::id@list",    "object::id"),
-            array("object@list::id",    "object"),
-            array("object-id@list",     "object-id"),
+            array('',                   false),
+            array('Whatever',           false),
+            array('object::id',         false),
+            array('object@list',        'object'),
+            array('list@object',        'list'),
+            array('object::id@list',    'object::id'),
+            array('object@list::id',    'object'),
+            array('object-id@list',     'object-id'),
         );
     }
 
     /**
      * @dataProvider providerListNameFunction
+     *
      * @param mixed $input
      * @param mixed $result
      */
     public function testListNameFunction($input, $result)
     {
-        $this->assertSame($result, FieldsManager::listName($input));
+        $this->assertEquals($result, FieldsManager::listName($input));
     }
 
     public function providerListNameFunction()
     {
         return array(
             array(null,                 false),
-            array("",                   false),
-            array("Whatever",           false),
-            array("object::id",         false),
-            array("object@list",        "list"),
-            array("list@object",        "object"),
-            array("object::id@list",    "list"),
-            array("object@list::id",    "list::id"),
-            array("object-id@list",     "list"),
+            array('',                   false),
+            array('Whatever',           false),
+            array('object::id',         false),
+            array('object@list',        'list'),
+            array('list@object',        'object'),
+            array('object::id@list',    'list'),
+            array('object@list::id',    'list::id'),
+            array('object-id@list',     'list'),
         );
     }
-    
+
     /**
      * @dataProvider providerBaseTypeFunction
+     *
      * @param mixed $input
      * @param mixed $result
      */
     public function testBaseTypeFunction($input, $result)
     {
-        $this->assertSame($result, FieldsManager::baseType($input));
+        $this->assertEquals($result, FieldsManager::baseType($input));
     }
 
     public function providerBaseTypeFunction()
@@ -137,129 +141,132 @@ class C50FieldsManagerTest extends TestCase
         //====================================================================//
         // BOOT MODULE
         Splash::core();
-        
+
         return array(
             array(null,                 false),
-            array("",                   ""),
-            array("Whatever",           "Whatever"),
-            array("object::id",         "id"),
-            array("object@list",        "object"),
-            array("list@object",        "list"),
-            array("id::object@list",    "object"),
-            array("object@list::id",    "object"),
-            array("object-id@list",     "object-id"),
+            array('',                   ''),
+            array('Whatever',           'Whatever'),
+            array('object::id',         'id'),
+            array('object@list',        'object'),
+            array('list@object',        'list'),
+            array('id::object@list',    'object'),
+            array('object@list::id',    'object'),
+            array('object-id@list',     'object-id'),
             array(
-                self::objects()->Encode("Object", SPL_T_ID),
-                "Object"
+                self::objects()->Encode('Object', SPL_T_ID),
+                'Object',
             ),
             array(
-                self::lists()->Encode("Listname", "FieldName"),
-                "FieldName"
-            ),
-            array(
-                self::lists()->Encode(
-                    "ListName",
-                    (string) self::objects()->Encode("Object", SPL_T_ID)
-                ),
-                "Object"
+                self::lists()->Encode('Listname', 'FieldName'),
+                'FieldName',
             ),
             array(
                 self::lists()->Encode(
-                    (string) self::objects()->Encode("Object", SPL_T_ID),
-                    "FieldName"
+                    'ListName',
+                    (string) self::objects()->Encode('Object', SPL_T_ID)
                 ),
-                "FieldName"
+                'Object',
             ),
             array(
                 self::lists()->Encode(
-                    (string) self::objects()->Encode("Error", SPL_T_ID),
-                    (string) self::objects()->Encode("Object", SPL_T_ID)
+                    (string) self::objects()->Encode('Object', SPL_T_ID),
+                    'FieldName'
                 ),
-                "Object"
+                'FieldName',
+            ),
+            array(
+                self::lists()->Encode(
+                    (string) self::objects()->Encode('Error', SPL_T_ID),
+                    (string) self::objects()->Encode('Object', SPL_T_ID)
+                ),
+                'Object',
             ),
         );
     }
-    
+
     //==============================================================================
     //      OBJECT ID FIELDS MANAGEMENT
     //==============================================================================
-    
+
     /**
      * @dataProvider providerIsIdFieldFunction
+     *
      * @param mixed $input
      * @param mixed $result
      */
     public function testIsIdFieldFunction($input, $result)
     {
-        $this->assertSame($result, FieldsManager::isIdField($input));
+        $this->assertEquals($result, FieldsManager::isIdField($input));
     }
 
     public function providerIsIdFieldFunction()
     {
         return array(
             array(null,                 false),
-            array("",                   false),
-            array("Whatever",           false),
-            array("id::type",           array("ObjectType" => "type",        "ObjectId" => "id")),
-            array("id::type@list",      array("ObjectType" => "type@list",   "ObjectId" => "id")),
-            array("id@list::type",      array("ObjectType" => "type",        "ObjectId" => "id@list")),
-            array("id-id::type-list",   array("ObjectType" => "type-list",   "ObjectId" => "id-id")),
+            array('',                   false),
+            array('Whatever',           false),
+            array('id::type',           array('ObjectType' => 'type',        'ObjectId' => 'id')),
+            array('id::type@list',      array('ObjectType' => 'type@list',   'ObjectId' => 'id')),
+            array('id@list::type',      array('ObjectType' => 'type',        'ObjectId' => 'id@list')),
+            array('id-id::type-list',   array('ObjectType' => 'type-list',   'ObjectId' => 'id-id')),
         );
     }
-    
+
     /**
      * @dataProvider providerObjectIdFunction
+     *
      * @param mixed $input
      * @param mixed $result
      */
     public function testObjectIdFunction($input, $result)
     {
-        $this->assertSame($result, FieldsManager::objectId($input));
+        $this->assertEquals($result, FieldsManager::objectId($input));
     }
 
     public function providerObjectIdFunction()
     {
         return array(
             array(null,                 false),
-            array("",                   false),
-            array("Whatever",           false),
-            array("id::object",         "id"),
-            array("object::id",         "object"),
-            array("object@list",        false),
-            array("list@object",        false),
-            array("id::object@list",    "id"),
-            array("object@list::id",    "object@list"),
+            array('',                   false),
+            array('Whatever',           false),
+            array('id::object',         'id'),
+            array('object::id',         'object'),
+            array('object@list',        false),
+            array('list@object',        false),
+            array('id::object@list',    'id'),
+            array('object@list::id',    'object@list'),
         );
     }
 
     /**
      * @dataProvider providerObjectTypeFunction
+     *
      * @param mixed $input
      * @param mixed $result
      */
     public function testObjectTypeFunction($input, $result)
     {
-        $this->assertSame($result, FieldsManager::objectType($input));
+        $this->assertEquals($result, FieldsManager::objectType($input));
     }
 
     public function providerObjectTypeFunction()
     {
         return array(
             array(null,                 false),
-            array("",                   false),
-            array("Whatever",           false),
-            array("id::object",         "object"),
-            array("object::id",         "id"),
-            array("object@list",        false),
-            array("list@object",        false),
-            array("id::object@list",    "object@list"),
-            array("object@list::id",    "id"),
+            array('',                   false),
+            array('Whatever',           false),
+            array('id::object',         'object'),
+            array('object::id',         'id'),
+            array('object@list',        false),
+            array('list@object',        false),
+            array('id::object@list',    'object@list'),
+            array('object@list::id',    'id'),
         );
     }
-    
+
     //==============================================================================
     //      OBJECTS DATA BLOCKS FUNCTIONS
     //==============================================================================
-            
+
     // TODO
 }
