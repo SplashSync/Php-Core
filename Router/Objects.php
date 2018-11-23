@@ -1,15 +1,16 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 /**
@@ -20,13 +21,12 @@
 
 namespace   Splash\Router;
 
-use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
+use Splash\Core\SplashCore      as Splash;
 
 //====================================================================//
 //   INCLUDES
 //====================================================================//
-
 
 //====================================================================//
 //  CLASS DEFINITION
@@ -51,7 +51,7 @@ class Objects
         //====================================================================//
         //  READING OF SERVER OBJECT LIST
         //====================================================================//
-        if ($task->name === SPL_F_OBJECTS) {
+        if (SPL_F_OBJECTS === $task->name) {
             return self::doObjects($task);
         }
         
@@ -66,19 +66,21 @@ class Objects
         //====================================================================//
         // Execute Admin Actions
         //====================================================================//
-        if (in_array($task->name, [ SPL_F_DESC , SPL_F_FIELDS , SPL_F_LIST ])) {
+        if (in_array($task->name, array( SPL_F_DESC , SPL_F_FIELDS , SPL_F_LIST ), true)) {
             return self::doAdminActions($task);
         }
-        if (in_array($task->name, [ SPL_F_GET , SPL_F_SET , SPL_F_DEL ])) {
+        if (in_array($task->name, array( SPL_F_GET , SPL_F_SET , SPL_F_DEL ), true)) {
             return self::doSyncActions($task);
         }
-        if (in_array($task->name, [ SPL_F_COMMIT ])) {
+        if (in_array($task->name, array( SPL_F_COMMIT ), true)) {
             Splash::log()->war("Objects - Requested task not found => " . $task->name);
+
             return self::getEmptyResponse($task);
         }
         //====================================================================//
         // Task Not Found
         Splash::log()->err("Objects - Requested task not found => " . $task->name);
+
         return self::checkResponse(self::getEmptyResponse($task));
     }
      
@@ -114,9 +116,10 @@ class Objects
     
     private static function checkResponse($response)
     {
-        if ($response->data != false) {
+        if (false != $response->data) {
             $response->result   = true;
         }
+
         return $response;
     }
     
@@ -133,18 +136,21 @@ class Objects
         // Verify Requested Object Type is Available
         if (empty($task->params)) {
             Splash::log()->err("Object Router - Missing Task Parameters... ");
+
             return false;
-        
-        //====================================================================//
+            //====================================================================//
         // Verify Requested Object Type is Available
-        } elseif (empty($task->params->type)) {
+        }
+        if (empty($task->params->type)) {
             Splash::log()->err("Object Router - Missing Object Type... ");
+
             return false;
-            
-        //====================================================================//
+            //====================================================================//
         // Verify Requested Object Type is Valid
-        } elseif (Splash::validate()->isValidObject($task->params->type) != true) {
+        }
+        if (true != Splash::validate()->isValidObject($task->params->type)) {
             Splash::log()->err("Object Router - Object Type is Invalid... ");
+
             return false;
         }
 
@@ -170,15 +176,15 @@ class Objects
             //====================================================================//
             case SPL_F_DESC:
                 $response->data     =   $objectClass->description();
-                break;
 
+                break;
             //====================================================================//
             //  READING OF Available Fields
             //====================================================================//
             case SPL_F_FIELDS:
                 $response->data     =   $objectClass->fields();
+
                 break;
-            
             //====================================================================//
             //  READING OF OBJECT LIST
             //====================================================================//
@@ -186,8 +192,10 @@ class Objects
                 $filters            = isset($task->params->filters) ?   $task->params->filters  : null;
                 $params             = isset($task->params->params)  ?   $task->params->params   : null;
                 $response->data     = $objectClass->objectsList($filters, $params);
+
                 break;
         }
+
         return self::checkResponse($response);
     }
             
@@ -218,22 +226,24 @@ class Objects
             //====================================================================//
             case SPL_F_GET:
                 $response->data     =   self::doGet($objectClass, $objectId, $fields);
+
                 break;
-            
             //====================================================================//
             //  WRITTING OF OBJECT DATA
             //====================================================================//
             case SPL_F_SET:
                 $response->data     =   self::doSet($objectClass, $objectId, $fields);
+
                 break;
-                
             //====================================================================//
             //  DELETE OF AN OBJECT
             //====================================================================//
             case SPL_F_DEL:
                 $response->data     =   self::doDelete($objectClass, $objectId);
+
                 break;
         }
+
         return self::checkResponse($response);
     }
     

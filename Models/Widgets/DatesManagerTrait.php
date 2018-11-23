@@ -1,15 +1,16 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace   Splash\Models\Widgets;
@@ -32,7 +33,6 @@ trait DatesManagerTrait
 
     protected function importDates($params)
     {
-        
         //====================================================================//
         //  Import Dates Parameters
         if (isset($params["DateStart"]) && !empty($params["DateStart"])) {
@@ -54,30 +54,6 @@ trait DatesManagerTrait
         //====================================================================//
         //  Generate Dates Formater String
         $this->importDatesFormat();
-    }
-    
-    private function importDatesFormat()
-    {
-        //====================================================================//
-        //  Generate Dates Formater String
-        switch ($this->GroupBy) {
-            case "m":
-                $this->LabelFormat  = "Y-m";
-                $this->DateInterval = new \DateInterval("P1M");
-                break;
-            case "d":
-                $this->LabelFormat  = "Y-m-d";
-                $this->DateInterval = new \DateInterval("P1D");
-                break;
-            case "h":
-                $this->LabelFormat  = "Y-m-d H:00";
-                $this->DateInterval = new \DateInterval("PT1H");
-                break;
-            default:
-                $this->LabelFormat  = "Y-m";
-                $this->DateInterval = new \DateInterval("P1M");
-                break;
-        }
     }
     
     protected function parseDatedData($inputs)
@@ -102,5 +78,33 @@ trait DatesManagerTrait
         }
 
         return $outputs;
+    }
+    
+    private function importDatesFormat()
+    {
+        //====================================================================//
+        //  Generate Dates Formater String
+        switch ($this->GroupBy) {
+            case "m":
+                $this->LabelFormat  = "Y-m";
+                $this->DateInterval = new \DateInterval("P1M");
+
+                break;
+            case "d":
+                $this->LabelFormat  = "Y-m-d";
+                $this->DateInterval = new \DateInterval("P1D");
+
+                break;
+            case "h":
+                $this->LabelFormat  = "Y-m-d H:00";
+                $this->DateInterval = new \DateInterval("PT1H");
+
+                break;
+            default:
+                $this->LabelFormat  = "Y-m";
+                $this->DateInterval = new \DateInterval("P1M");
+
+                break;
+        }
     }
 }

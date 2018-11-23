@@ -1,12 +1,23 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools;
 
 use ArrayObject;
-
-use Splash\Tests\Tools\TestCase;
-    
 use Splash\Client\Splash;
+use Splash\Tests\Tools\TestCase;
 
 /**
  * @abstract    Abstract Base Class for Splash Modules Tests
@@ -34,8 +45,8 @@ abstract class AbstractBaseCase extends TestCase
     {
         //====================================================================//
         //   Filter Tested Object Types  =>> Skip
-        if ( defined("SPLASH_TYPES") && is_string(SPLASH_TYPES) && !empty(explode(",", SPLASH_TYPES))) {
-            if ( !in_array($objectType, explode(",", SPLASH_TYPES))) {
+        if (defined("SPLASH_TYPES") && is_string(SPLASH_TYPES) && !empty(explode(",", SPLASH_TYPES))) {
+            if (!in_array($objectType, explode(",", SPLASH_TYPES), true)) {
                 return false;
             }
         }
@@ -44,6 +55,7 @@ abstract class AbstractBaseCase extends TestCase
         if (Splash::object($objectType)->getIsDisabled()) {
             return false;
         }
+
         return true;
     }
     
@@ -56,23 +68,22 @@ abstract class AbstractBaseCase extends TestCase
     {
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
-        if ( defined("SPLASH_FIELDS") && is_string(SPLASH_FIELDS) && !empty(explode(",", SPLASH_FIELDS))) {
-            if ( !in_array($identifier, explode(",", SPLASH_FIELDS))) {
+        if (defined("SPLASH_FIELDS") && is_string(SPLASH_FIELDS) && !empty(explode(",", SPLASH_FIELDS))) {
+            if (!in_array($identifier, explode(",", SPLASH_FIELDS), true)) {
                 return false;
             }
         }
-        return true;
-    }    
-    
 
-            
+        return true;
+    }
+    
     /**
      * @abstract        GENERATE FAKE SPLASH SERVER HOST URL
      *
      * @see             SERVER_NAME parameter that must be defined in PhpUnit Configuration File
      *
      * @return string   Local Server Soap Url
-     * 
+     *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getLocalServerSoapUrl()
@@ -110,7 +121,6 @@ abstract class AbstractBaseCase extends TestCase
      */
     public function checkResponse($response, $config = null)
     {
-        
         //====================================================================//
         // RESPONSE BLOCK IS NOT EMPTY
         $this->assertNotEmpty($response, "Response Block is Empty");
@@ -147,6 +157,7 @@ abstract class AbstractBaseCase extends TestCase
             print_r($data);
         }
         $this->assertNotEmpty($data->result, "Request Result is not True, Why??");
+
         return $data;
     }
     
@@ -173,7 +184,7 @@ abstract class AbstractBaseCase extends TestCase
         // UNEXPECTED SERVER LOG ITEMS
         foreach (array_keys($logs->getArrayCopy()) as $key) {
             $this->assertTrue(
-                    in_array($key, array("err", "msg", "war", "deb")), 
+                    in_array($key, array("err", "msg", "war", "deb"), true),
                     "Received Unexpected Log Messages. ( Data->log->" . $key . ")"
                     );
         }
@@ -205,14 +216,14 @@ abstract class AbstractBaseCase extends TestCase
      */
     public function checkResponseLogArray($logs, $type, $name)
     {
-        if (!isset($logs->$type) || empty($logs->$type)) {
+        if (!isset($logs->{$type}) || empty($logs->{$type})) {
             return;
         }
         
         //====================================================================//
         // SERVER LOG FORMAT
-        $this->assertInstanceOf("ArrayObject", $logs->$type, "Logger " . $name . " List is Not an ArrayObject");
-        foreach ($logs->$type as $message) {
+        $this->assertInstanceOf("ArrayObject", $logs->{$type}, "Logger " . $name . " List is Not an ArrayObject");
+        foreach ($logs->{$type} as $message) {
             $this->assertTrue((is_scalar($message) || is_null($message)), $name . " is Not a string. (" . print_r($message, true) . ")");
         }
     }
@@ -245,7 +256,7 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @param   ArrayObject     $tasks          WebService Server Tasks Results Array
      * @param   ArrayObject     $config         WebService Request Configuration
-     * 
+     *
      * @return      void
      */
     public function checkResponseTasks($tasks, $config = null)
@@ -285,6 +296,9 @@ abstract class AbstractBaseCase extends TestCase
     /**
      *      @abstract   Perform generic Server Side Action
      *
+     * @param mixed $service
+     * @param mixed $action
+     * @param mixed $description
      *      @return     mixed
      */
     protected function genericAction($service, $action, $description, array $parameters = array(true))
@@ -315,6 +329,9 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * @abstract    Perform generic Server Side Action
      *
+     * @param mixed $service
+     * @param mixed $action
+     * @param mixed $description
      * @return  mixed
      */
     protected function genericErrorAction($service, $action, $description, array $parameters = array(true))

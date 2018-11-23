@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Traits\Product;
 
 use Splash\Client\Splash;
@@ -11,7 +24,6 @@ use Splash\Client\Splash;
  */
 trait VariantsTrait
 {
-
     //==============================================================================
     //      SPLASH PRODUCT VARIANTS SPECIFIC FUNCTIONS
     //==============================================================================
@@ -25,7 +37,7 @@ trait VariantsTrait
         
         $name   =  $this->getVariantName();
         for ($i=0; $i<2; $i++) {
-            $result[]   =   array_merge($name, $this->getVariantAttributes(['VariantA','VariantB']));
+            $result[]   =   array_merge($name, $this->getVariantAttributes(array('VariantA','VariantB')));
         }
 
         return $result;
@@ -53,6 +65,7 @@ trait VariantsTrait
 
     /**
      * @abstract    Generate Variations Attributes
+     * @param mixed $attributesCodes
      */
     public function getVariantAttributes($attributesCodes)
     {
@@ -67,6 +80,7 @@ trait VariantsTrait
         foreach ($attributesCodes as $attributesCode) {
             $result[] = $this->getVariantCustomAttribute($attributesCode);
         }
+
         return array(
             self::lists()->listName($code->id) => $result
         );
@@ -74,6 +88,7 @@ trait VariantsTrait
 
     /**
      * @abstract    Generate Variations CustomAttribute
+     * @param mixed $attributesCode
      */
     public function getVariantCustomAttribute($attributesCode)
     {
@@ -96,12 +111,12 @@ trait VariantsTrait
             self::lists()->fieldName($name->id)     =>      self::fakeFieldData(
                 $name->type,
                 null,
-                array_merge_recursive($name->options, ["minLength" =>   3, "maxLength" =>   5])
+                array_merge_recursive($name->options, array("minLength" =>   3, "maxLength" =>   5))
             ),
             self::lists()->fieldName($value->id)     =>      self::fakeFieldData(
                 $value->type,
                 null,
-                array_merge_recursive($value->options, ["minLength" =>   5, "maxLength" =>   10])
+                array_merge_recursive($value->options, array("minLength" =>   5, "maxLength" =>   10))
             ),
         );
     }
@@ -115,7 +130,7 @@ trait VariantsTrait
         foreach (parent::objectFieldsProvider() as $field) {
             //====================================================================//
             // Filter Non Product Fields
-            if ($field[1] != "Product") {
+            if ("Product" != $field[1]) {
                 continue;
             }
 //            //====================================================================//
@@ -128,6 +143,7 @@ trait VariantsTrait
         if (empty($fields)) {
             $this->markTestSkipped('This Server has no Product Object Type.');
         }
+
         return $fields;
     }
 }

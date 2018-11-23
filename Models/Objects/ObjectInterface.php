@@ -1,19 +1,17 @@
 <?php
-/**
- * This file is part of SplashSync Project.
+
+/*
+ *  This file is part of SplashSync Project.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- *  @author    Splash Sync <www.splashsync.com>
- *  @copyright 2015-2017 Splash Sync
- *  @license   GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
- *
- **/
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace   Splash\Models\Objects;
 
@@ -22,8 +20,6 @@ namespace   Splash\Models\Objects;
  */
 interface ObjectInterface
 {
-
-
     /**
      *  @abstract   Get Description Array for requested Object Type
      *
@@ -64,7 +60,7 @@ interface ObjectInterface
      * @param   array   $fields             List of requested fields
      *
      * @return  array                       Object Data
-    */
+     */
     public function get($objectId = null, $fields = 0);
 
     /**
@@ -82,7 +78,7 @@ interface ObjectInterface
      *
      * @param      string   $objectId       Object Id
      *
-     * @return     string|false
+     * @return     false|string
      */
     public function delete($objectId = null);
     

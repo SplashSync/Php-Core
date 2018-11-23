@@ -1,11 +1,23 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Traits;
 
 use ArrayObject;
-
 use Splash\Components\FieldsManager;
- 
+
 /**
  * @abstract    Splash Test Tools - Objects PhpUnit Specific Assertions
  *
@@ -58,7 +70,7 @@ trait ObjectsAssertionsTrait
      */
     public function assertIsSplashBool($data, $comment)
     {
-        $test = is_bool($data) || ($data === "0") || ($data === "1");
+        $test = is_bool($data) || ("0" === $data) || ("1" === $data);
         $this->assertTrue($test, $comment);
     }
     
@@ -101,35 +113,6 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract    Load Object Field from List
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @return     null|ArrayObject
-     */
-    private function loadObjectFieldByTag($itemType, $itemProp)
-    {
-        //====================================================================//
-        //   Ensure Fields List is Loaded
-        $this->assertNotEmpty($this->fields, "Objects Fields List is Empty! Did you load it?");
-        //====================================================================//
-        //   Touch this Field
-        return FieldsManager::findFieldByTag($this->fields, $itemType, $itemProp);
-    }
-    
-    /**
-     * @abstract    Build Test Result Comment
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       string      $testComment
-     * @param       string      $comment
-     * @return      string
-     */
-    private static function buildResult($itemType, $itemProp, $testComment, $comment = null)
-    {
-        return $comment . " (" . $itemType . ":" . $itemProp . ") " . $testComment;
-    }
-    
-    /**
      * @abstract    Verify Object Field is Defined
      * @param       string      $itemType           Field Microdata Type Url
      * @param       string      $itemProp           Field Microdata Property Name
@@ -168,7 +151,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            in_array($field->type, $formats),
+            in_array($field->type, $formats, true),
             self::buildResult($itemType, $itemProp, " must be a " . implode("|", $formats), $comment)
         );
         $this->assertTrue(
@@ -313,5 +296,34 @@ trait ObjectsAssertionsTrait
             $field->inlist,
             $comment . " " . $itemType . ":" . $itemProp . " must be readable."
         );
+    }
+    
+    /**
+     * @abstract    Load Object Field from List
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @return     null|ArrayObject
+     */
+    private function loadObjectFieldByTag($itemType, $itemProp)
+    {
+        //====================================================================//
+        //   Ensure Fields List is Loaded
+        $this->assertNotEmpty($this->fields, "Objects Fields List is Empty! Did you load it?");
+        //====================================================================//
+        //   Touch this Field
+        return FieldsManager::findFieldByTag($this->fields, $itemType, $itemProp);
+    }
+    
+    /**
+     * @abstract    Build Test Result Comment
+     * @param       string      $itemType           Field Microdata Type Url
+     * @param       string      $itemProp           Field Microdata Property Name
+     * @param       string      $testComment
+     * @param       string      $comment
+     * @return      string
+     */
+    private static function buildResult($itemType, $itemProp, $testComment, $comment = null)
+    {
+        return $comment . " (" . $itemType . ":" . $itemProp . ") " . $testComment;
     }
 }

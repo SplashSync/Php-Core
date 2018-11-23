@@ -1,10 +1,22 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Componants;
 
 use PHPUnit\Framework\TestCase;
-
 use Splash\Components\FieldsManager;
-
 use Splash\Core\SplashCore     as Splash;
 
 /**
@@ -38,10 +50,12 @@ class C50FieldsManagerTest extends TestCase
 
     /**
      * @dataProvider providerIsListFieldFunction
+     * @param mixed $input
+     * @param mixed $result
      */
     public function testIsListFieldFunction($input, $result)
     {
-        $this->assertEquals($result, FieldsManager::isListField($input));
+        $this->assertSame($result, FieldsManager::isListField($input));
     }
 
     public function providerIsListFieldFunction()
@@ -51,19 +65,21 @@ class C50FieldsManagerTest extends TestCase
             array("",                   false),
             array("Whatever",           false),
             array("object::id",         false),
-            array("object@list",        ["fieldname" => "object",       "listname" => "list"]),
-            array("list@object",        ["fieldname" => "list",         "listname" => "object"]),
-            array("object::id@list",    ["fieldname" => "object::id",   "listname" => "list"]),
-            array("object-id@list",     ["fieldname" => "object-id",   "listname" => "list"]),
+            array("object@list",        array("fieldname" => "object",       "listname" => "list")),
+            array("list@object",        array("fieldname" => "list",         "listname" => "object")),
+            array("object::id@list",    array("fieldname" => "object::id",   "listname" => "list")),
+            array("object-id@list",     array("fieldname" => "object-id",   "listname" => "list")),
         );
     }
     
     /**
      * @dataProvider providerFieldNameFunction
+     * @param mixed $input
+     * @param mixed $result
      */
     public function testFieldNameFunction($input, $result)
     {
-        $this->assertEquals($result, FieldsManager::fieldName($input));
+        $this->assertSame($result, FieldsManager::fieldName($input));
     }
 
     public function providerFieldNameFunction()
@@ -83,10 +99,12 @@ class C50FieldsManagerTest extends TestCase
 
     /**
      * @dataProvider providerListNameFunction
+     * @param mixed $input
+     * @param mixed $result
      */
     public function testListNameFunction($input, $result)
     {
-        $this->assertEquals($result, FieldsManager::listName($input));
+        $this->assertSame($result, FieldsManager::listName($input));
     }
 
     public function providerListNameFunction()
@@ -106,10 +124,12 @@ class C50FieldsManagerTest extends TestCase
     
     /**
      * @dataProvider providerBaseTypeFunction
+     * @param mixed $input
+     * @param mixed $result
      */
     public function testBaseTypeFunction($input, $result)
     {
-        $this->assertEquals($result, FieldsManager::baseType($input));
+        $this->assertSame($result, FieldsManager::baseType($input));
     }
 
     public function providerBaseTypeFunction()
@@ -166,10 +186,12 @@ class C50FieldsManagerTest extends TestCase
     
     /**
      * @dataProvider providerIsIdFieldFunction
+     * @param mixed $input
+     * @param mixed $result
      */
     public function testIsIdFieldFunction($input, $result)
     {
-        $this->assertEquals($result, FieldsManager::isIdField($input));
+        $this->assertSame($result, FieldsManager::isIdField($input));
     }
 
     public function providerIsIdFieldFunction()
@@ -178,19 +200,21 @@ class C50FieldsManagerTest extends TestCase
             array(null,                 false),
             array("",                   false),
             array("Whatever",           false),
-            array("id::type",           ["ObjectType" => "type",        "ObjectId" => "id"]),
-            array("id::type@list",      ["ObjectType" => "type@list",   "ObjectId" => "id"]),
-            array("id@list::type",      ["ObjectType" => "type",        "ObjectId" => "id@list"]),
-            array("id-id::type-list",   ["ObjectType" => "type-list",   "ObjectId" => "id-id"]),
+            array("id::type",           array("ObjectType" => "type",        "ObjectId" => "id")),
+            array("id::type@list",      array("ObjectType" => "type@list",   "ObjectId" => "id")),
+            array("id@list::type",      array("ObjectType" => "type",        "ObjectId" => "id@list")),
+            array("id-id::type-list",   array("ObjectType" => "type-list",   "ObjectId" => "id-id")),
         );
     }
     
     /**
      * @dataProvider providerObjectIdFunction
+     * @param mixed $input
+     * @param mixed $result
      */
     public function testObjectIdFunction($input, $result)
     {
-        $this->assertEquals($result, FieldsManager::objectId($input));
+        $this->assertSame($result, FieldsManager::objectId($input));
     }
 
     public function providerObjectIdFunction()
@@ -210,10 +234,12 @@ class C50FieldsManagerTest extends TestCase
 
     /**
      * @dataProvider providerObjectTypeFunction
+     * @param mixed $input
+     * @param mixed $result
      */
     public function testObjectTypeFunction($input, $result)
     {
-        $this->assertEquals($result, FieldsManager::objectType($input));
+        $this->assertSame($result, FieldsManager::objectType($input));
     }
 
     public function providerObjectTypeFunction()

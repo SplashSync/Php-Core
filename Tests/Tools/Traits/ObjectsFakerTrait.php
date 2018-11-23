@@ -1,9 +1,21 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Traits;
 
 use ArrayObject;
-
 use Splash\Client\Splash;
 
 /**
@@ -30,7 +42,10 @@ trait ObjectsFakerTrait
     {
         //====================================================================//
         // Safety Check => $ObjectType is a valid
-        $this->assertTrue(in_array($objectType, Splash::objects()), "Invalid Object Type Name. (" . $objectType . ")");
+        $this->assertTrue(
+            in_array($objectType, Splash::objects(), true),
+            "Invalid Object Type Name. (" . $objectType . ")"
+        );
 
         //====================================================================//
         // Create Empty Object Data Array
@@ -73,50 +88,13 @@ trait ObjectsFakerTrait
             //====================================================================//
             // For Associated Fields
             foreach ($fields as $field) {
-                if (in_array($field->id, $outField->asso)) {
+                if (in_array($field->id, $outField->asso, true)) {
                     $outputs[$field->id] = $field;
                 }
             }
         }
         
         return $outputs;
-    }
-    
-    /**
-     *   @abstract   Check if Field Need to be in List
-     *
-     *   @param      ArrayObject    $field          Field Definition
-     *   @param      array          $fieldsList     Object Field Ids List
-     *
-     *   @return     bool
-     */
-    private function isFieldNeeded($field, $fieldsList = false)
-    {
-        //====================================================================//
-        // Check if Fields is Writable
-        if (!$field->write) {
-            return false;
-        }
-        //====================================================================//
-        // Check if Fields is Needed
-        //====================================================================//
-
-        //====================================================================//
-        // Required Field
-        if ($field->required) {
-            return true;
-        }
-        //====================================================================//
-        // If NO Fields List is Given => Select All Write Fields
-        if (($fieldsList == false) || !is_array($fieldsList)) {
-            return true;
-        }
-        //====================================================================//
-        // Field is in Requested List
-        if (!in_array($field->id, $fieldsList)) {
-            return false;
-        }
-        return true;
     }
     
     /**
@@ -142,10 +120,12 @@ trait ObjectsFakerTrait
             //====================================================================//
             // Generate Single Fields Dummy Data (is Not a List Field)
             if (!self::isListField($field->id)) {
-                $outputs[$field->id] = (self::isFieldToPreserve($field, $originData) ?
+                $outputs[$field->id] = (
+                    self::isFieldToPreserve($field, $originData) ?
                         $originData[$field->id] :
                         self::fakeFieldData($field->type, $field->choices, $field->options)
                     );
+
                 continue;
             }
             
@@ -169,30 +149,8 @@ trait ObjectsFakerTrait
                 $outputs[$listName][$key][$fieldName] = $data[$fieldName];
             }
         }
-        return $outputs;
-    }
 
-    /**
-     *   @abstract   Check if Field Need to e in List
-     *
-     *   @param      ArrayObject    $field          Field Definition
-     *   @param      null|array     $originData     Original Object Data
-     *
-     *   @return     bool
-     */
-    private static function isFieldToPreserve($field, $originData)
-    {
-        //====================================================================//
-        // Check if Origin Data Exists
-        if (empty($originData) || !isset($originData[$field->id]) || empty($originData[$field->id])) {
-            return false;
-        }
-        //====================================================================//
-        // Check if Fields Should be Tested or Not
-        if (!$field->notest) {
-            return false;
-        }
-        return true;
+        return $outputs;
     }
     
     /**
@@ -241,7 +199,7 @@ trait ObjectsFakerTrait
      *   @param      array   $choices    Object Field Possible Values
      *   @param      array   $options     Object Field Values Options
      *
-     *   @return     bool|string|array
+     *   @return     array|bool|string
      */
     public function fakeFieldData($type, $choices = null, $options = array())
     {
@@ -253,7 +211,7 @@ trait ObjectsFakerTrait
         //====================================================================//
         // Verify Field Type is Valid
         $className = self::isValidType($type);
-        if ($className == false) {
+        if (false == $className) {
             return false;
         }
         //====================================================================//
@@ -266,9 +224,10 @@ trait ObjectsFakerTrait
         // Take Values From Given Choices
         if (!empty($choices)) {
             $index = mt_rand(0, count($choices) - 1);
-            if (isset($choices[$index]["key"]) && ($type == SPL_T_VARCHAR)) {
+            if (isset($choices[$index]["key"]) && (SPL_T_VARCHAR == $type)) {
                 return (string) $choices[$index]["key"];
-            } elseif (isset($choices[$index]["key"])) {
+            }
+            if (isset($choices[$index]["key"])) {
                 return $choices[$index]["key"];
             }
         }
@@ -276,5 +235,67 @@ trait ObjectsFakerTrait
         //====================================================================//
         // Generate Single Field Data Type is Valid
         return $className::fake(array_merge_recursive($this->settings, $options));
+    }
+    
+    /**
+     *   @abstract   Check if Field Need to be in List
+     *
+     *   @param      ArrayObject    $field          Field Definition
+     *   @param      array          $fieldsList     Object Field Ids List
+     *
+     *   @return     bool
+     */
+    private function isFieldNeeded($field, $fieldsList = false)
+    {
+        //====================================================================//
+        // Check if Fields is Writable
+        if (!$field->write) {
+            return false;
+        }
+        //====================================================================//
+        // Check if Fields is Needed
+        //====================================================================//
+
+        //====================================================================//
+        // Required Field
+        if ($field->required) {
+            return true;
+        }
+        //====================================================================//
+        // If NO Fields List is Given => Select All Write Fields
+        if ((false == $fieldsList) || !is_array($fieldsList)) {
+            return true;
+        }
+        //====================================================================//
+        // Field is in Requested List
+        if (!in_array($field->id, $fieldsList, true)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     *   @abstract   Check if Field Need to e in List
+     *
+     *   @param      ArrayObject    $field          Field Definition
+     *   @param      null|array     $originData     Original Object Data
+     *
+     *   @return     bool
+     */
+    private static function isFieldToPreserve($field, $originData)
+    {
+        //====================================================================//
+        // Check if Origin Data Exists
+        if (empty($originData) || !isset($originData[$field->id]) || empty($originData[$field->id])) {
+            return false;
+        }
+        //====================================================================//
+        // Check if Fields Should be Tested or Not
+        if (!$field->notest) {
+            return false;
+        }
+
+        return true;
     }
 }

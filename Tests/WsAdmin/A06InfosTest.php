@@ -1,8 +1,21 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\WsAdmin;
 
 use ArrayObject;
-
 use Splash\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
@@ -23,7 +36,6 @@ class A06InfosTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
 
-    
     public function testFromAdmin()
     {
         //====================================================================//
@@ -34,10 +46,8 @@ class A06InfosTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
     
-    
     public function verifyResponse($data)
     {
-        
         //====================================================================//
         //   Verify Main Informations
         $this->assertArrayHasKey("shortdesc", $data, "Server Short Description is Missing");
@@ -64,7 +74,7 @@ class A06InfosTest extends AbstractBaseCase
 
         //====================================================================//
         //   Verify Server Icon
-        $tooltip  =    "Set it by using Splash::File()->ReadFileContents(\"/path\my\icon.ico\")";
+        $tooltip  =    "Set it by using Splash::File()->ReadFileContents(\"/path\\my\\icon.ico\")";
         $this->assertArrayInternalType($data, "icoraw", "string", "Raw Ico is Missing. " . $tooltip);
         
         $this->assertTrue(

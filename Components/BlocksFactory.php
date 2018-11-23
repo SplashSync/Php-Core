@@ -1,21 +1,22 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace   Splash\Components;
 
-use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
+use Splash\Core\SplashCore      as Splash;
 
 /**
  * @abstract    This Class is a Generator for Widget Blocks Contents
@@ -60,50 +61,12 @@ class BlocksFactory
         $this->new            = null;
         $this->blocks         = array();
     }
-
-    //====================================================================//
-    //  BLOCKS CONTENTS MANAGEMENT
-    //====================================================================//
-
-    /**
-     *  @abstract   Create a new block with default parameters
-     *
-     *  @param      string      $blockType       Standard Widget Block Type
-     *  @param      array       $blockOptions    Block Options
-     *
-     *  @return     $this
-     */
-    private function addBlock($blockType, $blockOptions = null)
-    {
-        //====================================================================//
-        // Commit Last Created if not already done
-        if (!empty($this->new)) {
-            $this->commit();
-        }
-        //====================================================================//
-        // Unset Current
-        unset($this->new);
-        //====================================================================//
-        // Create new empty block
-        $this->new          =   new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
-        //====================================================================//
-        // Set Block Type
-        $this->new->type        =   $blockType;
-        //====================================================================//
-        // Set Block Options
-        $this->new->options     =   $blockOptions;
-        //====================================================================//
-        // Set Block Data
-        $this->new->data        =   array();
-        
-        return $this;
-    }
     
     /**
      *  @abstract   Set Block Data Array Key
      *
      *  @param      string      $name
-     *  @param      string|array       $value
+     *  @param      array|string       $value
      *
      *  @return     $this
      */
@@ -155,31 +118,6 @@ class BlocksFactory
     }
     
     /**
-     *  @abstract   Save Current New Block in list & Clean
-     *
-     *  @return     bool
-     */
-    private function commit()
-    {
-        //====================================================================//
-        // Safety Checks
-        if (empty($this->new)) {
-            return true;
-        }
-        //====================================================================//
-        // Create Field List
-        if (empty($this->blocks)) {
-            $this->blocks   = array();
-        }
-        //====================================================================//
-        // Insert Field List
-        $this->blocks[] = $this->new;
-        unset($this->new);
-        
-        return true;
-    }
-    
-    /**
      * @abstract   Save Current New Block, Return List & Clean
      * @return     array|false
      */
@@ -194,14 +132,13 @@ class BlocksFactory
         // Safety Checks
         if (empty($this->blocks)) {
             return Splash::log()->err("ErrBlocksNoList");
+        }
         //====================================================================//
         // Return fields List
-        } else {
-            $buffer = $this->blocks;
-            unset($this->blocks);
-            return $buffer;
-        }
-        return false;
+        $buffer = $this->blocks;
+        $this->blocks = null;
+
+        return $buffer;
     }
     
     //====================================================================//
@@ -285,7 +222,6 @@ class BlocksFactory
         return $this;
     }
     
-    
     //====================================================================//
     //  BLOCKS || SPARK INFOS BLOCK
     //====================================================================//
@@ -334,7 +270,7 @@ class BlocksFactory
         $chartOptions = array(),
         $blockOptions = self::COMMONS_OPTIONS
     ) {
-        if (!in_array($chartType, ["Bar", "Area", "Line"])) {
+        if (!in_array($chartType, array("Bar", "Area", "Line"), true)) {
             $blockContents   = array("warning"   => "Wrong Morris Chart Block Type (ie: Bar, Area, Line)");
             $this->addNotificationsBlock($blockContents);
         }
@@ -377,5 +313,68 @@ class BlocksFactory
         $this->extractData($chartOptions, "title");
         
         return $this;
+    }
+
+    //====================================================================//
+    //  BLOCKS CONTENTS MANAGEMENT
+    //====================================================================//
+
+    /**
+     *  @abstract   Create a new block with default parameters
+     *
+     *  @param      string      $blockType       Standard Widget Block Type
+     *  @param      array       $blockOptions    Block Options
+     *
+     *  @return     $this
+     */
+    private function addBlock($blockType, $blockOptions = null)
+    {
+        //====================================================================//
+        // Commit Last Created if not already done
+        if (!empty($this->new)) {
+            $this->commit();
+        }
+        //====================================================================//
+        // Unset Current
+        $this->new = null;
+        //====================================================================//
+        // Create new empty block
+        $this->new          =   new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        //====================================================================//
+        // Set Block Type
+        $this->new->type        =   $blockType;
+        //====================================================================//
+        // Set Block Options
+        $this->new->options     =   $blockOptions;
+        //====================================================================//
+        // Set Block Data
+        $this->new->data        =   array();
+        
+        return $this;
+    }
+    
+    /**
+     *  @abstract   Save Current New Block in list & Clean
+     *
+     *  @return     bool
+     */
+    private function commit()
+    {
+        //====================================================================//
+        // Safety Checks
+        if (empty($this->new)) {
+            return true;
+        }
+        //====================================================================//
+        // Create Field List
+        if (empty($this->blocks)) {
+            $this->blocks   = array();
+        }
+        //====================================================================//
+        // Insert Field List
+        $this->blocks[] = $this->new;
+        $this->new = null;
+        
+        return true;
     }
 }

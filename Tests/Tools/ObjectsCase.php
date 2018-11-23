@@ -1,9 +1,22 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools;
 
-use Splash\Client\Splash;
 use ArrayObject;
+use Splash\Client\Splash;
 
 /**
  * @abstract    Splash Test Tools - Objects Test Case Base Class
@@ -12,7 +25,6 @@ use ArrayObject;
  */
 class ObjectsCase extends AbstractBaseCase
 {
-
     use \Splash\Models\Fields\FieldsManagerTrait;
     use \Splash\Tests\Tools\Traits\ObjectsDataTrait;
     use \Splash\Tests\Tools\Traits\ObjectsFakerTrait;
@@ -28,118 +40,77 @@ class ObjectsCase extends AbstractBaseCase
      * @var array
      */
     private $settings = array(
-        
-            //==============================================================================
-            //  List generation
-            'ListItems'                 =>  2,               // Number of Items to Add in Lists
+        //==============================================================================
+        //  List generation
+        'ListItems'                 =>  2,               // Number of Items to Add in Lists
 
-            //==============================================================================
-            //  Double & Prices Fields
-            "DoublesPrecision"          =>  6,              // Default Doubles Compare Precision (Number of Digits)
+        //==============================================================================
+        //  Double & Prices Fields
+        "DoublesPrecision"          =>  6,              // Default Doubles Compare Precision (Number of Digits)
         
-            //==============================================================================
-            //  Currency Fields
-            "Currency"                  =>  "EUR",          // Default Currency
+        //==============================================================================
+        //  Currency Fields
+        "Currency"                  =>  "EUR",          // Default Currency
             
-            //==============================================================================
-            //  Price Fields
-            "VAT"                       =>  20,              // Default Vat Rate
-            "PriceBase"                 =>  "HT",            // Default Price base
-            "PricesPrecision"           =>  6,               // Default Prices Compare Precision (Number of Digits)
+        //==============================================================================
+        //  Price Fields
+        "VAT"                       =>  20,              // Default Vat Rate
+        "PriceBase"                 =>  "HT",            // Default Price base
+        "PricesPrecision"           =>  6,               // Default Prices Compare Precision (Number of Digits)
             
-            //==============================================================================
-            //  Url Generator Parameters
-            "Url_Prefix"                => "",               // Add a prefix to generated Url (i.e: http://)
-            "Url_Sufix"                 => ".splashsync.com",// Add a sufix to generated Url
+        //==============================================================================
+        //  Url Generator Parameters
+        "Url_Prefix"                => "",               // Add a prefix to generated Url (i.e: http://)
+        "Url_Sufix"                 => ".splashsync.com",// Add a sufix to generated Url
             
-            //==============================================================================
-            //  Multilanguage Fields
-            "Langs"                     =>  array(          // Available Languages for Multilang Fields
-                "en_US",
-                "fr_FR",
-                "fr_BE",
-                "fr_CA",
-                ),
+        //==============================================================================
+        //  Multilanguage Fields
+        "Langs"                     =>  array(          // Available Languages for Multilang Fields
+            "en_US",
+            "fr_FR",
+            "fr_BE",
+            "fr_CA",
+        ),
             
-            //==============================================================================
-            //  Country Fields
-            "Country"                    =>  array(          // Defaults State Iso Codes
-                "US",
-                "FR",
-                "BE",
-                "CA",
-                ),
+        //==============================================================================
+        //  Country Fields
+        "Country"                    =>  array(          // Defaults State Iso Codes
+            "US",
+            "FR",
+            "BE",
+            "CA",
+        ),
             
-            //==============================================================================
-            //  State Fields
-            "States"                    =>  array(          // Defaults State Iso Codes
-                "CA",
-                "FL"
-                ),
+        //==============================================================================
+        //  State Fields
+        "States"                    =>  array(          // Defaults State Iso Codes
+            "CA",
+            "FL"
+        ),
            
-            //==============================================================================
-            //  Files Fields
-            "Files"                    =>  array(          // Defaults Raw Files
-                "fake-file1.pdf",
-                "fake-file2.pdf",
-                "fake-file3.pdf",
-                "fake-file4.pdf",
-                ),
+        //==============================================================================
+        //  Files Fields
+        "Files"                    =>  array(          // Defaults Raw Files
+            "fake-file1.pdf",
+            "fake-file2.pdf",
+            "fake-file3.pdf",
+            "fake-file4.pdf",
+        ),
             
-            //==============================================================================
-            //  Images Fields
-            "Images"                    =>  array(          // Defaults Image Files
-                "fake-image1.jpg",
-                "fake-image2.jpg",
-                "fake-image3.jpg",
-                "fake-image4.jpg",
-                ),
-            
-//            //==============================================================================
-//            //  Objects Id Fields
-//            //  Default is An Empty List To be completed by User Before Generation
-//            "Objects"                   =>  array(),
+        //==============================================================================
+        //  Images Fields
+        "Images"                    =>  array(          // Defaults Image Files
+            "fake-image1.jpg",
+            "fake-image2.jpg",
+            "fake-image3.jpg",
+            "fake-image4.jpg",
+        ),
+        
+        //            //==============================================================================
+        //            //  Objects Id Fields
+        //            //  Default is An Empty List To be completed by User Before Generation
+        //            "Objects"                   =>  array(),
     );
-
-    protected function loadLocalTestParameters()
-    {
-        //====================================================================//
-        // Safety Check
-        if (!method_exists(Splash::local(), "TestParameters")) {
-            return;
-        }
-        //====================================================================//
-        // Read Local Parameters
-        $localTestSettings  =   Splash::local()->testParameters();
-        
-        //====================================================================//
-        // Validate Local Parameters
-        if (!Splash::validate()->isValidLocalTestParameterArray($localTestSettings)) {
-            return;
-        }
-        
-        //====================================================================//
-        // Import Local Parameters
-        foreach ($localTestSettings as $key => $value) {
-            $this->settings[$key]   =   $value;
-        }
-    }
-    
-    protected function loadLocalTestSequence($testSequence)
-    {
-        //====================================================================//
-        // Check if Local Tests Sequences are defined
-        if (!method_exists(Splash::local(), "TestSequences")) {
-            return;
-        }
-        //====================================================================//
-        // Setup Test Sequence
-        Splash::local()->testSequences($testSequence);
-        
-        //====================================================================//
-        // Reload Local Tests Parameters
-        $this->loadLocalTestParameters();
-    }
     
     protected function setUp()
     {
@@ -181,110 +152,6 @@ class ObjectsCase extends AbstractBaseCase
     public function assertIsFirstCommited($action, $objectType, $objectId)
     {
         $this->assertIsCommited($action, $objectType, $objectId, true);
-    }
-      
-    /**
-     * @abstract        Verify First Commit is Valid and Conform to Expected
-     *
-     * @param string    $action         Expected Action
-     * @param string    $objectType     Expected Object Type
-     * @param string    $objectId       Expected Object Id
-     * @param bool      $first          Check First or Last Commited
-     *
-     */
-    private function assertIsCommited($action, $objectType, $objectId, $first = true)
-    {
-        //====================================================================//
-        //   Verify Object Change Was Commited
-        $this->assertNotEmpty(
-            Splash::$commited,
-            "No Object Change Commited by your Module. Please check your triggers."
-        );
-        
-        //====================================================================//
-        //   Get First / Last Commited
-        $commited = $first ? array_shift(Splash::$commited) : array_pop(Splash::$commited);
-        
-        //====================================================================//
-        //   Check Object Type is OK
-        $this->assertEquals(
-            $commited->type,
-            $objectType,
-            "Change Commit => Object Type is wrong. "
-                . "(Expected " . $objectType . " / Given " . $commited->type
-        );
-        
-        //====================================================================//
-        //   Check Object Action is OK
-        $this->assertEquals(
-            $commited->action,
-            $action,
-            "Change Commit => Change Type is wrong. (Expected " . $action . " / Given " . $commited->action
-        );
-        
-        //====================================================================//
-        //   Check Object Id value Format
-        $this->assertTrue(
-            is_scalar($commited->id) || is_array($commited->id) || is_a($commited->id, "ArrayObject"),
-            "Change Commit => Object Id Value is in wrong Format. "
-                . "(Expected String or Array of Strings. / Given "
-                . print_r($commited->id, true)
-        );
-        
-        //====================================================================//
-        //   If Commited an Array of Ids
-        if (is_array($commited->id) || is_a($commited->id, "ArrayObject")) {
-            //====================================================================//
-            //   Detect Array Object
-            if ($commited->id instanceof ArrayObject) {
-                $commited->id   =   $commited->id->getArrayCopy();
-            }
-            //====================================================================//
-            //   Check each Object Ids
-            foreach ($commited->id as $objectId) {
-                $this->assertTrue(
-                    is_scalar($objectId),
-                    "Change Commit => Object Id Array Value is in wrong Format. "
-                        . "(Expected String or Integer. / Given "
-                        . print_r($objectId, true)
-                );
-            }
-            //====================================================================//
-            //   Extract First Object Id
-            $firstId = array_shift($commited->id);
-            //====================================================================//
-            //   Verify First Object Id is OK
-            $this->assertEquals(
-                $firstId,
-                $objectId,
-                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $firstId
-            );
-        } else {
-            //====================================================================//
-            //   Check Object Id is OK
-            $this->assertEquals(
-                $commited->id,
-                $objectId,
-                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $commited->id
-            );
-        }
-        
-        //====================================================================//
-        //   Check Infos are Not Empty
-        $this->assertNotEmpty($commited->user, "Change Commit => User Name is Empty");
-        $this->assertNotEmpty($commited->comment, "Change Commit => Action Comment is Empty");
-    }
-    
-    /**
-     * @abstract        Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation
-     *
-     * @param string    $objectType     Expected Object Type
-     * @param string    $objectId       Expected Object Id
-     */
-    protected function setCurrentObject($objectType, $objectId)
-    {
-        $this->settings["CurrentType"]  =   $objectType;
-        $this->settings["CurrentId"]    =   $objectId;
     }
     
     //====================================================================//
@@ -372,6 +239,58 @@ class ObjectsCase extends AbstractBaseCase
         
         return $result;
     }
+
+    protected function loadLocalTestParameters()
+    {
+        //====================================================================//
+        // Safety Check
+        if (!method_exists(Splash::local(), "TestParameters")) {
+            return;
+        }
+        //====================================================================//
+        // Read Local Parameters
+        $localTestSettings  =   Splash::local()->testParameters();
+        
+        //====================================================================//
+        // Validate Local Parameters
+        if (!Splash::validate()->isValidLocalTestParameterArray($localTestSettings)) {
+            return;
+        }
+        
+        //====================================================================//
+        // Import Local Parameters
+        foreach ($localTestSettings as $key => $value) {
+            $this->settings[$key]   =   $value;
+        }
+    }
+    
+    protected function loadLocalTestSequence($testSequence)
+    {
+        //====================================================================//
+        // Check if Local Tests Sequences are defined
+        if (!method_exists(Splash::local(), "TestSequences")) {
+            return;
+        }
+        //====================================================================//
+        // Setup Test Sequence
+        Splash::local()->testSequences($testSequence);
+        
+        //====================================================================//
+        // Reload Local Tests Parameters
+        $this->loadLocalTestParameters();
+    }
+    
+    /**
+     * @abstract        Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation
+     *
+     * @param string    $objectType     Expected Object Type
+     * @param string    $objectId       Expected Object Id
+     */
+    protected function setCurrentObject($objectType, $objectId)
+    {
+        $this->settings["CurrentType"]  =   $objectType;
+        $this->settings["CurrentId"]    =   $objectId;
+    }
     
     //==============================================================================
     //      OBJECTS DELETE AT THE END OF TESTS
@@ -399,5 +318,98 @@ class ObjectsCase extends AbstractBaseCase
             }
             Splash::object($object["ObjectType"])->delete($object["ObjectId"]);
         }
+    }
+      
+    /**
+     * @abstract        Verify First Commit is Valid and Conform to Expected
+     *
+     * @param string    $action         Expected Action
+     * @param string    $objectType     Expected Object Type
+     * @param string    $objectId       Expected Object Id
+     * @param bool      $first          Check First or Last Commited
+     *
+     */
+    private function assertIsCommited($action, $objectType, $objectId, $first = true)
+    {
+        //====================================================================//
+        //   Verify Object Change Was Commited
+        $this->assertNotEmpty(
+            Splash::$commited,
+            "No Object Change Commited by your Module. Please check your triggers."
+        );
+        
+        //====================================================================//
+        //   Get First / Last Commited
+        $commited = $first ? array_shift(Splash::$commited) : array_pop(Splash::$commited);
+        
+        //====================================================================//
+        //   Check Object Type is OK
+        $this->assertSame(
+            $commited->type,
+            $objectType,
+            "Change Commit => Object Type is wrong. "
+                . "(Expected " . $objectType . " / Given " . $commited->type
+        );
+        
+        //====================================================================//
+        //   Check Object Action is OK
+        $this->assertSame(
+            $commited->action,
+            $action,
+            "Change Commit => Change Type is wrong. (Expected " . $action . " / Given " . $commited->action
+        );
+        
+        //====================================================================//
+        //   Check Object Id value Format
+        $this->assertTrue(
+            is_scalar($commited->id) || is_array($commited->id) || is_a($commited->id, "ArrayObject"),
+            "Change Commit => Object Id Value is in wrong Format. "
+                . "(Expected String or Array of Strings. / Given "
+                . print_r($commited->id, true)
+        );
+        
+        //====================================================================//
+        //   If Commited an Array of Ids
+        if (is_array($commited->id) || is_a($commited->id, "ArrayObject")) {
+            //====================================================================//
+            //   Detect Array Object
+            if ($commited->id instanceof ArrayObject) {
+                $commited->id   =   $commited->id->getArrayCopy();
+            }
+            //====================================================================//
+            //   Check each Object Ids
+            foreach ($commited->id as $objectId) {
+                $this->assertInternalType(
+                    'scalar',
+                    $objectId,
+                    "Change Commit => Object Id Array Value is in wrong Format. "
+                        . "(Expected String or Integer. / Given "
+                        . print_r($objectId, true)
+                );
+            }
+            //====================================================================//
+            //   Extract First Object Id
+            $firstId = array_shift($commited->id);
+            //====================================================================//
+            //   Verify First Object Id is OK
+            $this->assertSame(
+                $firstId,
+                $objectId,
+                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $firstId
+            );
+        } else {
+            //====================================================================//
+            //   Check Object Id is OK
+            $this->assertSame(
+                $commited->id,
+                $objectId,
+                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $commited->id
+            );
+        }
+        
+        //====================================================================//
+        //   Check Infos are Not Empty
+        $this->assertNotEmpty($commited->user, "Change Commit => User Name is Empty");
+        $this->assertNotEmpty($commited->comment, "Change Commit => Action Comment is Empty");
     }
 }

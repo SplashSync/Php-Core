@@ -1,15 +1,16 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Client;
@@ -67,6 +68,7 @@ class Splash extends SplashCore
         // Analyze NuSOAP results
         if ($result && isset($result->result) && (true == $result->result) && ($silent)) {
             self::log()->cleanLog();
+
             return true;
         }
         //====================================================================//
@@ -133,11 +135,11 @@ class Splash extends SplashCore
     /**
      * @abstract     Submit an Update for a Local Object
      *
-     * @param string    $objectType object Type Name
-     * @param array|string|int $local      object Local Id or Array of Local Id
-     * @param string    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     * @param string    $user       User Name
-     * @param string    $comment    Operation Comment for Historics
+     * @param string           $objectType object Type Name
+     * @param array|int|string $local      object Local Id or Array of Local Id
+     * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string           $user       User Name
+     * @param string           $comment    Operation Comment for Historics
      *
      * @return bool
      */
@@ -198,11 +200,11 @@ class Splash extends SplashCore
     /**
      * @abstract     Build Call Parameters Array
      *
-     * @param string    $objectType object Type Name
-     * @param array|string|int $local      object Local Id or Array of Local Id
-     * @param string    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     * @param string    $user       User Name
-     * @param string    $comment    Operation Comment for Historics
+     * @param string           $objectType object Type Name
+     * @param array|int|string $local      object Local Id or Array of Local Id
+     * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string           $user       User Name
+     * @param string           $comment    Operation Comment for Historics
      *
      * @return arrayObject
      */
@@ -220,9 +222,9 @@ class Splash extends SplashCore
     /**
      * @abstract     Check if Commit is Allowed Local Object
      *
-     * @param string     $objectType object Type Name
-     * @param array|string|int $local      object Local Id or Array of Local Id
-     * @param string       $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string           $objectType object Type Name
+     * @param array|int|string $local      object Local Id or Array of Local Id
+     * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      *
      * @return bool
      */
@@ -255,9 +257,9 @@ class Splash extends SplashCore
     /**
      * @abstract     Check if Commit we Are in Travis Mode
      *
-     * @param string    $objectType object Type Name
-     * @param array|int|string|null $local      object Local Id or Array of Local Id
-     * @param string       $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string                $objectType object Type Name
+     * @param null|array|int|string $local      object Local Id or Array of Local Id
+     * @param string                $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      *
      * @return bool
      */

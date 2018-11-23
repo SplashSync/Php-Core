@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Fields;
 
 use ArrayObject;
@@ -7,11 +20,11 @@ use ArrayObject;
 /**
  * @abstract    Multilangual Text Field : Multilangual Short Text Array
  *
-//====================================================================//
-// Sample :
-// $data["name"]["iso_code"]            =>      Value
-// Where name is field name and code is a valid SPL_T_LANG Iso Language Code
-//====================================================================//
+ * //====================================================================//
+ * // Sample :
+ * // $data["name"]["iso_code"]            =>      Value
+ * // Where name is field name and code is a valid SPL_T_LANG Iso Language Code
+ * //====================================================================//
  *
  */
 class Oomvarchar implements FieldInterface
@@ -33,7 +46,7 @@ class Oomvarchar implements FieldInterface
     {
         //==============================================================================
         //      Verify Data is Not Empty
-        if (is_null($data) || (is_scalar($data) && ($data === ""))) {
+        if (is_null($data) || (is_scalar($data) && ("" === $data))) {
             return true;
         }
         //==============================================================================
@@ -53,17 +66,6 @@ class Oomvarchar implements FieldInterface
         return true;
     }
     
-    private static function validateIsMultilangData($key, $value)
-    {
-        if (empty($key) || !is_string($key)) {
-            return "Multi-Language Key must be a non empty String.";
-        }
-        if (!empty($value) && !is_string($value) && !is_numeric($value)) {
-            return "Multi-Language Data is not a String.";
-        }
-        return true;
-    }
-    
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -77,6 +79,7 @@ class Oomvarchar implements FieldInterface
         foreach ($settings["Langs"] as $lang) {
             $fake[$lang] = Oovarchar::fake($settings);
         }
+
         return $fake;
     }
     
@@ -107,6 +110,19 @@ class Oomvarchar implements FieldInterface
                 return false;
             }
         }
+
+        return true;
+    }
+    
+    private static function validateIsMultilangData($key, $value)
+    {
+        if (empty($key) || !is_string($key)) {
+            return "Multi-Language Key must be a non empty String.";
+        }
+        if (!empty($value) && !is_string($value) && !is_numeric($value)) {
+            return "Multi-Language Data is not a String.";
+        }
+
         return true;
     }
 }

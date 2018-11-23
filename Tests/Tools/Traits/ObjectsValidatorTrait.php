@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Traits;
 
 use Splash\Models\Fields\FieldsManagerTrait;
@@ -26,7 +39,7 @@ trait ObjectsValidatorTrait
     /**
      *   @abstract   Verify this parameter is a valid sync data type
      *   @param      string      $fieldType     Data Type Name String
-     *   @return     string|false
+     *   @return     false|string
      */
     public static function isValidType($fieldType)
     {
@@ -39,14 +52,14 @@ trait ObjectsValidatorTrait
         // Detects Lists Fields
         //====================================================================//
         $list = self::isListField($fieldType);
-        if ($list != false) {
+        if (false != $list) {
             $fieldType = $list["fieldname"];
         }
         //====================================================================//
         // Detects Id Fields
         //====================================================================//
         $id = self::isIdField($fieldType);
-        if ($id != false) {
+        if (false != $id) {
             $fieldType = "objectid";
         }
         
@@ -78,7 +91,7 @@ trait ObjectsValidatorTrait
         //====================================================================//
         // Verify Field Type is Valid
         $className = self::isValidType($fieldType);
-        if ($className == false) {
+        if (false == $className) {
             return false;
         }
         
@@ -133,6 +146,7 @@ trait ObjectsValidatorTrait
             self::isValidData($data[$fieldId], $fieldType),
             $fieldId . " => Field Raw Data is not a valid " . $fieldType .  ". (" . print_r($data[$fieldId], true) . ")"
         );
+
         return true;
     }
         
@@ -161,7 +175,7 @@ trait ObjectsValidatorTrait
         
         //====================================================================//
         // Verify Field Type is List Type Identifier
-        $this->assertEquals(
+        $this->assertSame(
             $listType["listname"],
             SPL_T_LIST,
             "List Field Type Must match Format 'type'@list. (Given " . print_r($fieldType, true) . ")"
@@ -193,6 +207,7 @@ trait ObjectsValidatorTrait
         foreach ($listData as $listValue) {
             $this->isValidFieldData($listValue, $listId["fieldname"], $fieldType);
         }
+
         return true;
     }
 }

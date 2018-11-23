@@ -1,11 +1,23 @@
 <?php
 
-namespace Splash\Tests\WsAdmin;
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
-use Splash\Tests\Tools\AbstractBaseCase;
+namespace Splash\Tests\WsAdmin;
 
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
+use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
  * @abstract    Admin Test Suite - Ping Client Verifications
@@ -14,11 +26,6 @@ use Splash\Server\SplashServer;
  */
 class A01PingTest extends AbstractBaseCase
 {
-    public function testDummy()
-    {
-        $this->assertTrue(true);
-    }
-
     protected function setUp()
     {
         //====================================================================//
@@ -26,7 +33,7 @@ class A01PingTest extends AbstractBaseCase
         Splash::reboot();
         //====================================================================//
         // Force Module to Use NuSOAP if Php SOAP Selected
-        if (Splash::configuration()->WsMethod == "SOAP") {
+        if ("SOAP" == Splash::configuration()->WsMethod) {
             Splash::configuration()->WsMethod = "NuSOAP";
         }
         //====================================================================//
@@ -34,12 +41,17 @@ class A01PingTest extends AbstractBaseCase
         Splash::configuration()->WsHost = $this->getLocalServerSoapUrl();
         Splash::ws()->setup();
     }
+    public function testDummy()
+    {
+        $this->assertTrue(true);
+    }
     
     public function testPingClientAction()
     {
         if (!empty(Splash::input("SPLASH_TRAVIS"))) {
             //   Skip Test without Warnings
             $this->assertTrue(true);
+
             return;
         }
 
@@ -56,7 +68,6 @@ class A01PingTest extends AbstractBaseCase
     
     public function testPingServerAction()
     {
-        
         //====================================================================//
         //   Execute Ping From Splash Server to Module
         $response   =   SplashServer::ping();

@@ -18,6 +18,7 @@ EOF;
 $config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
+        '@PSR2' => true,
         '@PHP56Migration' => true,
         '@PHPUnit60Migration:risky' => true,
         'align_multiline_comment' => true,

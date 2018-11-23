@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Fields;
 
 use ArrayObject;
@@ -7,20 +20,20 @@ use ArrayObject;
 /**
  * @abstract    Price Field : price definition Array
  *
-//====================================================================//
-// Price Definition Array
-// Sample : Required Informations
-// $data["price"]["base"]           =>  BOOL      Reference Price With or Without Tax? True => With VAT
-// $data["price"]["ht"]             =>  DOUBLE    Price Without Tax
-// $data["price"]["ttc"]            =>  DOUBLE    Price With Tax
-// $data["price"]["vat"]            =>  DOUBLE    VAT Tax in Percent
-// $data["price"]["tax"]            =>  DOUBLE    VAT Tax amount
-// Sample : Optionnal Informations
-// $data["price"]["symbol"]         =>  STRING    Currency Symbol
-// $data["price"]["code"]           =>  STRING    Currency Code
-// $data["price"]["name"]           =>  STRING    Currency Name
-// Where code field is a valid SPL_T_CURRENCY Iso Currency Code
-//====================================================================//
+ * //====================================================================//
+ * // Price Definition Array
+ * // Sample : Required Informations
+ * // $data["price"]["base"]           =>  BOOL      Reference Price With or Without Tax? True => With VAT
+ * // $data["price"]["ht"]             =>  DOUBLE    Price Without Tax
+ * // $data["price"]["ttc"]            =>  DOUBLE    Price With Tax
+ * // $data["price"]["vat"]            =>  DOUBLE    VAT Tax in Percent
+ * // $data["price"]["tax"]            =>  DOUBLE    VAT Tax amount
+ * // Sample : Optionnal Informations
+ * // $data["price"]["symbol"]         =>  STRING    Currency Symbol
+ * // $data["price"]["code"]           =>  STRING    Currency Code
+ * // $data["price"]["name"]           =>  STRING    Currency Name
+ * // Where code field is a valid SPL_T_CURRENCY Iso Currency Code
+ * //====================================================================//
  *
  */
 class Ooprice implements FieldInterface
@@ -70,6 +83,104 @@ class Ooprice implements FieldInterface
         }
 
         return true;
+    }
+    
+    //==============================================================================
+    //      FAKE DATA GENERATOR
+    //==============================================================================
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fake($settings)
+    {
+        $price      =   mt_rand(1000, 100000)/100;
+        $currency   =   !empty($settings["Currency"])       ?   $settings["Currency"]       :"EUR";
+        $symbol     =   !empty($settings["CurrencySymbol"]) ?   $settings["CurrencySymbol"] :"&euro";
+        $vat        =   isset($settings["VAT"])             ?   $settings["VAT"]            :20;
+        $type       =   !empty($settings["PriceBase"])      ?   $settings["PriceBase"]      :"HT";
+        
+        if ("HT" == $type) {
+            return  self::encodePrice((double) $price, (double) $vat, null, $currency, $symbol, "");
+        }
+  
+        return  self::encodePrice(null, (double) $vat, (double) $price, $currency, $symbol, "");
+    }
+    
+    //==============================================================================
+    //      DATA COMPARATOR (OPTIONNAL)
+    //==============================================================================
+    
+    /**
+     * {@inheritdoc}
+     */
+    public static function compare($source, $target, $settings)
+    {
+        //====================================================================//
+        //  If Raw Text received, Not Array ==> Raw text Compare
+        if (!is_array($source) && !is_a($target, "ArrayObject")
+            && !is_array($target) && !is_a($target, "ArrayObject")) {
+            return ($source === $target)?true:false;
+        }
+        //====================================================================//
+        // Compare Amounts
+        if (!self::compareAmounts($source, $target, $settings)) {
+            return false;
+        }
+        //====================================================================//
+        // Compare Currency If Set on Both Sides
+        if (!self::compareCurrency($source, $target)) {
+            return false;
+        }
+        //====================================================================//
+        // Prices Are Identical
+        return true;
+    }
+    
+    //====================================================================//
+    //  PRICE TYPES MANAGEMENT
+    //====================================================================//
+    
+    /**
+     * @abstract    Build a new price field array
+     * @param   double      $taxExcl        Price Without VAT
+     * @param   double      $vat            VAT percentile
+     * @param   double      $taxIncl        Price With VAT
+     * @param   string      $code           Price Currency Code
+     * @param   string      $symbol         Price Currency Symbol
+     * @param   string      $name           Price Currency Name
+     * @return  array|string
+     */
+    public static function encodePrice($taxExcl = null, $vat = 0, $taxIncl = null, $code = "", $symbol = "", $name = "")
+    {
+        //====================================================================//
+        // Safety Checks
+        if (!is_double($taxExcl) && !is_double($taxIncl)) {
+            return __FUNCTION__ . "Price Value is Invalid";
+        }
+        if (is_double($taxExcl) && is_double($taxIncl)) {
+            return __FUNCTION__ . "Price Value is Invalid";
+        }
+        if (!is_double($vat)) {
+            return __FUNCTION__ . "Price VAT is Invalid";
+        }
+        
+        //====================================================================//
+        // Build Price Array
+        $price = array("vat" => $vat, "code" => $code,"symbol" => $symbol,"name" => $name);
+        if (is_double($taxExcl)) {
+            $price["base"]  =    0;
+            $price["ht"]    =    $taxExcl;
+            $price["tax"]   =    $taxExcl * ($vat/100);
+            $price["ttc"]   =    $taxExcl * (1 + $vat/100);
+        } else {
+            $price["base"]  =    1;
+            $price["ht"]    =    $taxIncl / (1 + $vat/100);
+            $price["tax"]   =    $taxIncl - $price["ht"];
+            $price["ttc"]   =    $taxIncl;
+        }
+
+        return $price;
     }
     
     private static function validateContentsAvailablility($price)
@@ -135,59 +246,6 @@ class Ooprice implements FieldInterface
         return true;
     }
     
-    //==============================================================================
-    //      FAKE DATA GENERATOR
-    //==============================================================================
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function fake($settings)
-    {
-        $price      =   mt_rand(1000, 100000)/100;
-        $currency   =   !empty($settings["Currency"])       ?   $settings["Currency"]       :"EUR";
-        $symbol     =   !empty($settings["CurrencySymbol"]) ?   $settings["CurrencySymbol"] :"&euro";
-        $vat        =   isset($settings["VAT"])             ?   $settings["VAT"]            :20;
-        $type       =   !empty($settings["PriceBase"])      ?   $settings["PriceBase"]      :"HT";
-        
-        if ($type == "HT") {
-            return  self::encodePrice((double) $price, (double) $vat, null, $currency, $symbol, "");
-        } else {
-            return  self::encodePrice(null, (double) $vat, (double) $price, $currency, $symbol, "");
-        }
-    }
-    
-    //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
-    //==============================================================================
-    
-    /**
-     * {@inheritdoc}
-     */
-    public static function compare($source, $target, $settings)
-    {
-        
-        //====================================================================//
-        //  If Raw Text received, Not Array ==> Raw text Compare
-        if (!is_array($source) && !is_a($target, "ArrayObject")
-            && !is_array($target) && !is_a($target, "ArrayObject")) {
-            return ($source === $target)?true:false;
-        }
-        //====================================================================//
-        // Compare Amounts
-        if (!self::compareAmounts($source, $target, $settings)) {
-            return false;
-        }
-        //====================================================================//
-        // Compare Currency If Set on Both Sides
-        if (!self::compareCurrency($source, $target)) {
-            return false;
-        }
-        //====================================================================//
-        // Prices Are Identical
-        return true;
-    }
-    
     private static function compareAmounts($source, $target, $settings)
     {
         //====================================================================//
@@ -235,51 +293,7 @@ class Ooprice implements FieldInterface
         if (abs(round($source, $settings["PricesPrecision"]) - round($target, $settings["PricesPrecision"])) > 1E-6) {
             return false;
         }
+
         return true;
-    }
-    
-    //====================================================================//
-    //  PRICE TYPES MANAGEMENT
-    //====================================================================//
-    
-    /**
-     * @abstract    Build a new price field array
-     * @param   double      $taxExcl        Price Without VAT
-     * @param   double      $vat            VAT percentile
-     * @param   double      $taxIncl        Price With VAT
-     * @param   string      $code           Price Currency Code
-     * @param   string      $symbol         Price Currency Symbol
-     * @param   string      $name           Price Currency Name
-     * @return  array|string
-     */
-    public static function encodePrice($taxExcl = null, $vat = 0, $taxIncl = null, $code = "", $symbol = "", $name = "")
-    {
-        //====================================================================//
-        // Safety Checks
-        if (!is_double($taxExcl) && !is_double($taxIncl)) {
-            return __FUNCTION__ . "Price Value is Invalid";
-        }
-        if (is_double($taxExcl) && is_double($taxIncl)) {
-            return __FUNCTION__ . "Price Value is Invalid";
-        }
-        if (!is_double($vat)) {
-            return __FUNCTION__ . "Price VAT is Invalid";
-        }
-        
-        //====================================================================//
-        // Build Price Array
-        $price = array("vat" => $vat, "code" => $code,"symbol" => $symbol,"name" => $name);
-        if (is_double($taxExcl)) {
-            $price["base"]  =    0;
-            $price["ht"]    =    $taxExcl;
-            $price["tax"]   =    $taxExcl * ($vat/100);
-            $price["ttc"]   =    $taxExcl * (1 + $vat/100);
-        } else {
-            $price["base"]  =    1;
-            $price["ht"]    =    $taxIncl / (1 + $vat/100);
-            $price["tax"]   =    $taxIncl - $price["ht"];
-            $price["ttc"]   =    $taxIncl;
-        }
-        return $price;
     }
 }

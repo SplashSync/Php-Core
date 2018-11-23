@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Fields;
 
 /**
@@ -7,7 +20,6 @@ namespace Splash\Tests\Tools\Fields;
  */
 class Oovarchar implements FieldInterface
 {
-
     //==============================================================================
     //      Structural Data
     //==============================================================================
@@ -26,6 +38,7 @@ class Oovarchar implements FieldInterface
         if (!empty($data) && !is_string($data)) {
             return "Field Data is not a String.";
         }
+
         return true;
     }
     
@@ -49,6 +62,25 @@ class Oovarchar implements FieldInterface
         self::applyCaseConstrains($settings, $data);
        
         return $data;
+    }
+    
+    //==============================================================================
+    //      DATA COMPARATOR (OPTIONNAL)
+    //==============================================================================
+    
+    /**
+     * {@inheritdoc}
+     */
+    public static function compare($source, $target, $settings)
+    {
+        //====================================================================//
+        //  Both Texts Are Empty
+        if (empty($source) && empty($target)) {
+            return true;
+        }
+        //====================================================================//
+        //  Raw text Compare
+        return ($source === $target)?true:false;
     }
     
     /**
@@ -89,24 +121,5 @@ class Oovarchar implements FieldInterface
         if (isset($settings["isUpperCase"]) && !empty($settings["isUpperCase"])) {
             $data   = strtoupper($data);
         }
-    }
-    
-    //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
-    //==============================================================================
-    
-    /**
-     * {@inheritdoc}
-     */
-    public static function compare($source, $target, $settings)
-    {
-        //====================================================================//
-        //  Both Texts Are Empty
-        if (empty($source) && empty($target)) {
-            return true;
-        }
-        //====================================================================//
-        //  Raw text Compare
-        return ($source === $target)?true:false;
     }
 }

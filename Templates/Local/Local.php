@@ -1,43 +1,29 @@
 <?php
+
 /*
- * Copyright (C) 2011-2014  Bernard Paquier       <bernard.paquier@gmail.com>
+ *  This file is part of SplashSync Project.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
- *
- *  \Id 	$Id: osws-local-Main.class.php 136 2014-10-12 22:33:28Z Nanard33 $
- *  \version    $Revision: 136 $
- *  \date       $LastChangedDate: 2014-10-13 00:33:28 +0200 (lun. 13 oct. 2014) $
- *  \ingroup    Splash - OpenSource Synchronisation Service
- *  \brief      Core Local Server Definition Class
- *  \class      SplashLocal
- *  \remarks    Designed for Splash Module - Dolibar ERP Version
-*/
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace Splash\Local;
 
 use ArrayObject;
-use Splash\Models\LocalClassInterface;
 use Splash\Core\SplashCore      as Splash;
+use Splash\Models\LocalClassInterface;
 
 /**
  * @abstract    Local System Core Management Class
  */
 class Local implements LocalClassInterface
 {
-    
     //====================================================================//
     // General Class Variables
     // Place Here Any SPECIFIC Variable for your Core Module Class
@@ -58,11 +44,11 @@ class Local implements LocalClassInterface
         //====================================================================//
     }
 
-//====================================================================//
-// *******************************************************************//
-//  MANDATORY CORE MODULE LOCAL FUNCTIONS
-// *******************************************************************//
-//====================================================================//
+    //====================================================================//
+    // *******************************************************************//
+    //  MANDATORY CORE MODULE LOCAL FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
     
     /**
      *  @abstract       Return Local Server Parameters as Array
@@ -97,7 +83,6 @@ class Local implements LocalClassInterface
      */
     public function includes()
     {
-
         //====================================================================//
         // When Library is called in server mode ONLY
         //====================================================================//
@@ -106,10 +91,9 @@ class Local implements LocalClassInterface
         //====================================================================//
         // When Library is called in client mode ONLY
         //====================================================================//
-        } else {
-            // NOTHING TO DO
         }
-
+        // NOTHING TO DO
+        
         //====================================================================//
         // When Library is called in both client & server mode
         //====================================================================//
@@ -183,11 +167,11 @@ class Local implements LocalClassInterface
         return $response;
     }
     
-//====================================================================//
-// *******************************************************************//
-//  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
-// *******************************************************************//
-//====================================================================//
+    //====================================================================//
+    // *******************************************************************//
+    //  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
     
     /**
      * @abstract       Return Local Server Test Sequences as Aarray
@@ -201,6 +185,7 @@ class Local implements LocalClassInterface
      *
      *      If Name = ASequenceName, Function will Setup Sequence on Local System.
      *
+     * @param null|mixed $name
      * @return         array       $Sequences
      */
     public function testSequences($name = null)
@@ -209,11 +194,9 @@ class Local implements LocalClassInterface
             case "Sequence1":
                 // DO SEQUENCE SETUP
                 return array();
-                
             case "Sequence2":
                 // DO SEQUENCE SETUP
                 return array();
-                
             case "List":
                 return array("Sequence1", "Sequence2" );
         }
@@ -237,14 +220,11 @@ class Local implements LocalClassInterface
     {
         //====================================================================//
         // Init Parameters Array
-        $parameters       =     array();
-
+        return array();
         // CHANGE SOMETHING
-        
-        return $parameters;
     }
     
-//====================================================================//
+    //====================================================================//
 // *******************************************************************//
 // Place Here Any SPECIFIC or COMMON Local Functions
 // *******************************************************************//

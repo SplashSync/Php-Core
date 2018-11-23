@@ -1,19 +1,17 @@
 <?php
-/**
- * This file is part of SplashSync Project.
+
+/*
+ *  This file is part of SplashSync Project.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- *  @author    Splash Sync <www.splashsync.com>
- *  @copyright 2015-2017 Splash Sync
- *  @license   GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
- *
- **/
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace   Splash\Models\Objects;
 
@@ -40,7 +38,7 @@ trait IntelParserTrait
      *              to control all fields were imported at the end of Set Operation
      * @var ArrayObject
      */
-    protected $in            = null;
+    protected $in;
     
     /**
      * Get Operations Output Buffer
@@ -48,7 +46,7 @@ trait IntelParserTrait
      * @abstract This variable is used to store Object Array during Get Operations
      * @var ArrayObject
      */
-    protected $out            = null;
+    protected $out;
     
     /**
      * Work Object Class
@@ -56,9 +54,8 @@ trait IntelParserTrait
      * @abstract This variable is used to store current working Object during Set & Get Operations
      * @var mixed
      */
-    protected $object         = null;
+    protected $object;
     
-      
     //====================================================================//
     // Class Main Functions
     //====================================================================//
@@ -118,6 +115,7 @@ trait IntelParserTrait
             foreach ($this->in as $fieldName) {
                 Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $fieldName);
             }
+
             return false;
         }
         //====================================================================//
@@ -165,6 +163,7 @@ trait IntelParserTrait
             foreach ($this->in as $fieldName => $fieldData) {
                 Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $fieldName);
             }
+
             return false;
         }
         
@@ -178,20 +177,22 @@ trait IntelParserTrait
     /**
      * @abstract    Identify Generic Functions
      *
+     * @param mixed $prefix
      * @return      self
      */
     public function identifyFunctions($prefix)
     {
         $result = array();
         foreach (get_class_methods(__CLASS__) as $method) {
-            if (strpos($method, $prefix) !== 0) {
+            if (0 !== strpos($method, $prefix)) {
                 continue;
             }
-            if (strpos($method, "Fields") === false) {
+            if (false === strpos($method, "Fields")) {
                 continue;
             }
             $result[]   =   $method;
         }
+
         return $result;
     }
     
@@ -219,6 +220,7 @@ trait IntelParserTrait
                 );
             }
         }
+
         return true;
     }
 
@@ -238,6 +240,7 @@ trait IntelParserTrait
             if (empty($this->in[$fieldId])) {
                 return false;
             }
+
             return true;
         }
         //====================================================================//

@@ -1,19 +1,17 @@
 <?php
-/**
- * This file is part of SplashSync Project.
+
+/*
+ *  This file is part of SplashSync Project.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- *  @author    Splash Sync <www.splashsync.com>
- *  @copyright 2015-2017 Splash Sync
- *  @license   GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
- *
- **/
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace   Splash\Models\Helpers;
 
@@ -36,7 +34,7 @@ class ImagesHelper
      *  @param      string      $filePath       Image Full path on local system
      *  @param      string      $publicUrl      Complete Public Url of this image if available
      *
-     *  @return     false|array                 Splash Image Array or False
+     *  @return     array|false                 Splash Image Array or False
      */
     public static function encode($name, $fileName, $filePath, $publicUrl = null)
     {
@@ -99,7 +97,7 @@ class ImagesHelper
      *  @param      string      $absoluteUrl    Image Absolute Url
      *  @param      string      $publicUrl      Complete Public Url of this image if available
      *
-     *  @return     false|array                 Splash Image Array or False
+     *  @return     array|false                 Splash Image Array or False
      */
     public static function encodeFromUrl($name, $absoluteUrl, $publicUrl = null)
     {

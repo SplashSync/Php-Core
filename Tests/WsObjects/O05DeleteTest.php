@@ -1,8 +1,22 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\WsObjects;
 
-use Splash\Tests\Tools\ObjectsCase;
 use Splash\Client\Splash;
+use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * @abstract    Objects Test Suite - Fields List Verifications
@@ -11,10 +25,10 @@ use Splash\Client\Splash;
  */
 class O05DeleteTest extends ObjectsCase
 {
-
-   
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromModule($testSequence, $objectType)
     {
@@ -23,7 +37,7 @@ class O05DeleteTest extends ObjectsCase
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
-        if ($dummyData == false) {
+        if (false == $dummyData) {
             return true;
         }
         
@@ -50,6 +64,8 @@ class O05DeleteTest extends ObjectsCase
 
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromService($testSequence, $objectType)
     {
@@ -58,7 +74,7 @@ class O05DeleteTest extends ObjectsCase
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
-        if ($dummyData == false) {
+        if (false == $dummyData) {
             return true;
         }
         
@@ -72,7 +88,12 @@ class O05DeleteTest extends ObjectsCase
         
         //====================================================================//
         //   Execute Action Directly on Module
-        $data = $this->genericAction(SPL_S_OBJECTS, SPL_F_DEL, __METHOD__, [ "id" => $objectId, "type" => $objectType]);
+        $data = $this->genericAction(
+            SPL_S_OBJECTS,
+            SPL_F_DEL,
+            __METHOD__,
+            array( "id" => $objectId, "type" => $objectType)
+        );
         
         //====================================================================//
         //   Verify Response
@@ -81,6 +102,8 @@ class O05DeleteTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromObjectsServiceErrors($testSequence, $objectType)
     {
@@ -88,16 +111,15 @@ class O05DeleteTest extends ObjectsCase
         
         //====================================================================//
         //      Request definition without Sending Parameters
-        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, []);
+        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, array());
         //====================================================================//
         //      Request definition without Sending ObjectType
-        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "id" => null ]);
+        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, array( "id" => null ));
         //====================================================================//
         //      Request definition without Sending ObjectId
-        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, [ "type" => $objectType]);
+        $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, array( "type" => $objectType));
     }
 
-    
     public function verifyTestIsAllowed($objectType)
     {
         $definition = Splash::object($objectType)->description();
@@ -113,10 +135,10 @@ class O05DeleteTest extends ObjectsCase
         if (!$definition["allow_push_deleted"]) {
             return false;
         }
+
         return true;
     }
 
-    
     public function prepareForTesting($objectType)
     {
         //====================================================================//
@@ -177,7 +199,6 @@ class O05DeleteTest extends ObjectsCase
             "New Object Id is not an Integer or a Strings"
         );
     }
-    
     
     public function verifyDeleteResponse($objectType, $objectId, $data)
     {

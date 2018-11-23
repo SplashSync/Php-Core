@@ -1,22 +1,17 @@
 <?php
+
 /*
- * Copyright (C) 2011-2014  Bernard Paquier       <bernard.paquier@gmail.com>
+ *  This file is part of SplashSync Project.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
-*/
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
                     
 //====================================================================//
 // *******************************************************************//
@@ -26,8 +21,8 @@
 
 namespace   Splash\Templates\Widgets;
 
-use Splash\Models\WidgetBase;
 use Splash\Core\SplashCore      as Splash;
+use Splash\Models\WidgetBase;
 
 /**
  * @abstract    SelfTest Template Widget for Splash Modules
@@ -36,6 +31,14 @@ use Splash\Core\SplashCore      as Splash;
  */
 class SelfTestTemplate extends WidgetBase
 {
+    //====================================================================//
+    // Define Standard Options for this Widget
+    // Override this array to change default options for your widget
+    public static $OPTIONS       = array(
+        "Width"     =>      self::SIZE_DEFAULT,
+        'UseCache'      =>  true,
+        'CacheLifeTime' =>  1,
+    );
     /**
      * @abstract  Widget Name
      */
@@ -50,15 +53,6 @@ class SelfTestTemplate extends WidgetBase
      * @abstract  Widget Icon (FontAwesome or Glyph ico tag)
      */
     protected static $ICO     =  "fa fa-info-circle";
-    
-    //====================================================================//
-    // Define Standard Options for this Widget
-    // Override this array to change default options for your widget
-    public static $OPTIONS       = array(
-        "Width"     =>      self::SIZE_DEFAULT,
-        'UseCache'      =>  true,
-        'CacheLifeTime' =>  1,
-    );
     
     //====================================================================//
     // Class Main Functions
@@ -115,14 +109,13 @@ class SelfTestTemplate extends WidgetBase
         return $this->render();
     }
         
-
     //====================================================================//
     // Blocks Generation Functions
     //====================================================================//
 
     /**
-    *   @abstract     Block Building - Text Intro
-    */
+     *   @abstract     Block Building - Text Intro
+     */
     private function buildIntroBlock()
     {
         //====================================================================//
@@ -131,8 +124,8 @@ class SelfTestTemplate extends WidgetBase
     }
     
     /**
-    *   @abstract     Block Building - Notifications Parameters
-    */
+     *   @abstract     Block Building - Notifications Parameters
+     */
     private function buildNotificationsBlock()
     {
         //====================================================================//
@@ -144,27 +137,27 @@ class SelfTestTemplate extends WidgetBase
         //====================================================================//
         // If test was passed
         if (empty($logs->err)) {
-            $this->blocksFactory()->addNotificationsBlock(["success" => "Self-Test Passed!"]);
+            $this->blocksFactory()->addNotificationsBlock(array("success" => "Self-Test Passed!"));
         }
         //====================================================================//
         // Add Error Notifications
         foreach ($logs->err as $message) {
-            $this->blocksFactory()->addNotificationsBlock(["error" => $message]);
+            $this->blocksFactory()->addNotificationsBlock(array("error" => $message));
         }
         //====================================================================//
         // Add Warning Notifications
         foreach ($logs->war as $message) {
-            $this->blocksFactory()->addNotificationsBlock(["warning" => $message]);
+            $this->blocksFactory()->addNotificationsBlock(array("warning" => $message));
         }
         //====================================================================//
         // Add Success Notifications
         foreach ($logs->msg as $message) {
-            $this->blocksFactory()->addNotificationsBlock(["success" => $message]);
+            $this->blocksFactory()->addNotificationsBlock(array("success" => $message));
         }
         //====================================================================//
         // Add Debug Notifications
         foreach ($logs->deb as $message) {
-            $this->blocksFactory()->addNotificationsBlock(["info" => $message]);
+            $this->blocksFactory()->addNotificationsBlock(array("info" => $message));
         }
     }
     

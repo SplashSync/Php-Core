@@ -1,27 +1,28 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Components\NuSOAP;
 
+use nusoap_client;
+use nusoap_server;
 use Splash\Core\SplashCore      as Splash;
 use Splash\Models\CommunicationInterface;
 
-use nusoap_client;
-use nusoap_server;
-
 /**
  * @abstract    Communication Interface Class for NuSOAP Webservice
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 class NuSOAPInterface implements CommunicationInterface
@@ -30,7 +31,7 @@ class NuSOAPInterface implements CommunicationInterface
      * @var nusoap_client
      */
     protected $client;
-    
+
     /**
      * @var nusoap_server
      */
@@ -39,7 +40,7 @@ class NuSOAPInterface implements CommunicationInterface
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -47,7 +48,7 @@ class NuSOAPInterface implements CommunicationInterface
     {
         //====================================================================//
         // Include NuSOAP Classes
-        require_once(dirname(__FILE__) . "/nusoap.php");
+        require_once dirname(__FILE__).'/nusoap.php';
         //====================================================================//
         // Initiate new NuSoap Client
         $this->client = new nusoap_client($targetUrl);
@@ -58,7 +59,7 @@ class NuSOAPInterface implements CommunicationInterface
         }
         //====================================================================//
         // Setup NuSOAP Curl Option if Possible
-        if (in_array('curl', get_loaded_extensions())) {
+        if (in_array('curl', get_loaded_extensions(), true)) {
             $this->client->setUseCURL(true);
         }
         //====================================================================//
@@ -68,7 +69,7 @@ class NuSOAPInterface implements CommunicationInterface
         // Define Timeout for client response
         $this->client->response_timeout = Splash::configuration()->WsTimout;
     }
-        
+
     /**
      * {@inheritdoc}
      */
@@ -76,7 +77,7 @@ class NuSOAPInterface implements CommunicationInterface
     {
         //====================================================================//
         // Log Call Informations in debug buffer
-        Splash::log()->deb("[NuSOAP] Call Url= '" . $this->client->endpoint . "' Service='" . $service . "'");
+        Splash::log()->deb("[NuSOAP] Call Url= '".$this->client->endpoint."' Service='".$service."'");
         //====================================================================//
         // Execute NuSOAP Call
         $response = $this->client->call($service, $data);
@@ -85,11 +86,11 @@ class NuSOAPInterface implements CommunicationInterface
         if (isset($this->client->fault) && !empty($this->client->fault)) {
             //====================================================================//
             //  Debug Informations
-            Splash::log()->deb("[NuSOAP] Fault Details='"   . $this->client->faultdetail . "'");
+            Splash::log()->deb("[NuSOAP] Fault Details='".$this->client->faultdetail."'");
             //====================================================================//
             //  Log Error Message
             Splash::log()->err(
-                "ErrWsNuSOAPFault",
+                'ErrWsNuSOAPFault',
                 (string) $this->client->faultcode,
                 (string) $this->client->faultstring
             );
@@ -97,11 +98,11 @@ class NuSOAPInterface implements CommunicationInterface
 
         return $response;
     }
-        
+
     //====================================================================//
     // WEBSERVICE SERVER SIDE
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -109,10 +110,10 @@ class NuSOAPInterface implements CommunicationInterface
     {
         //====================================================================//
         // Include NuSOAP Classes
-        require_once(dirname(__FILE__) . "/nusoap.php");
+        require_once dirname(__FILE__).'/nusoap.php';
         //====================================================================//
         // Initialize NuSOAP Server Class
-        $this->server           = new nusoap_server();
+        $this->server = new nusoap_server();
         //====================================================================//
         // Register a method available for clients
         $this->server->register(SPL_S_PING);           // Check Availability
@@ -122,7 +123,7 @@ class NuSOAPInterface implements CommunicationInterface
         $this->server->register(SPL_S_FILE);            // Files management requests
         $this->server->register(SPL_S_WIDGETS);         // Informations requests
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -132,7 +133,7 @@ class NuSOAPInterface implements CommunicationInterface
             $this->server->service((string) file_get_contents('php://input'));
         }
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -145,10 +146,10 @@ class NuSOAPInterface implements CommunicationInterface
         }
         //====================================================================//
         // Prepare Fault Message.
-        $content  = "NuSOAP call: service died unexpectedly!! ";
-        $content .= $error["message"] . " on File " . $error["file"] . " Line " . $error["line"];
+        $content = 'NuSOAP call: service died unexpectedly!! ';
+        $content .= $error['message'].' on File '.$error['file'].' Line '.$error['line'];
         //====================================================================//
         // Log Fault Details In SOAP Structure.
-        $this->server->fault($error["type"], $content);
+        $this->server->fault($error['type'], $content);
     }
 }

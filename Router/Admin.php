@@ -1,21 +1,22 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace   Splash\Router;
 
-use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
+use Splash\Core\SplashCore      as Splash;
 
 /**
  * @abstract    Server Request Routiung Class, Execute/Route actions on Admin Service Requests.
@@ -24,7 +25,6 @@ use ArrayObject;
  */
 class Admin
 {
-            
     /**
      *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
      *
@@ -48,39 +48,39 @@ class Admin
             //  READING OF SERVER OBJECT LIST
             case SPL_F_GET_OBJECTS:
                 $response->data = Splash::objects();
-                if ($response->data != false) {
+                if (false != $response->data) {
                     $response->result   = true;
                 }
+
                 break;
-                
             //====================================================================//
             //  READING OF SERVER WIDGETS LIST
             case SPL_F_GET_WIDGETS:
                 $response->data = Splash::widgets();
-                if ($response->data != false) {
+                if (false != $response->data) {
                     $response->result   = true;
                 }
+
                 break;
-            
             //====================================================================//
             //  READING OF SERVER SELFTEST RESULTS
             case SPL_F_GET_SELFTEST:
                 $response->result  =   Splash::selfTest();
                 $response->data    =   $response->result;
+
                 break;
-            
             //====================================================================//
             //  READING OF SERVER INFORMATIONS
             case SPL_F_GET_INFOS:
                 $response->data = Splash::informations();
-                if ($response->data != false) {
+                if (false != $response->data) {
                     $response->result   = true;
                 }
 
                 break;
-                
             default:
                 Splash::log()->err("Admin - Requested task not found => " . $task->name);
+
                 break;
         }
         

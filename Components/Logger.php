@@ -1,23 +1,23 @@
 <?php
-/*
- * This file is part of SplashSync Project.
- *
- * Copyright (C) Splash Sync <www.splashsync.com>
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace   Splash\Components;
 
-use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
 use Countable;
+use Splash\Core\SplashCore      as Splash;
 
 /**
  * @abstract    Requests Log & Debug Management Class
@@ -31,18 +31,6 @@ class Logger
     const CMD_COLOR_WAR     =   33;
     const CMD_COLOR_DEB     =   97;
     const CMD_COLOR_NONE    =   0;
-    
-    /**
-     * @abstract   Store Show Debug Messages
-     * @var        Bool
-     */
-    private $debug;
-    
-    /**
-     * @abstract   Store Show Debug Messages
-     * @var        String
-     */
-    private $prefix;
     
     /**
      * @abstract   Success Messages
@@ -69,6 +57,18 @@ class Logger
     public $deb = array();
     
     /**
+     * @abstract   Store Show Debug Messages
+     * @var        Bool
+     */
+    private $debug;
+    
+    /**
+     * @abstract   Store Show Debug Messages
+     * @var        String
+     */
+    private $prefix;
+    
+    /**
      * @abstract      Class Constructor
      *
      * @param          bool     $debug      Allow Debug
@@ -88,9 +88,9 @@ class Logger
     //====================================================================//
 
     /**
-      * @abstract   Clean WebServer Class Logs Messages
-      * @return     bool
-      */
+     * @abstract   Clean WebServer Class Logs Messages
+     * @return     bool
+     */
     public function cleanLog()
     {
         if (isset($this->err)) {
@@ -106,20 +106,21 @@ class Logger
             $this->deb = array();
         }
         $this->deb("Log Messages Buffer Cleaned");
+
         return   true;
     }
 
     /**
-      * @abstract      Log WebServer Error Messages
-      *
-      * @param      string|null      $text       Input String / Key to translate
-      * @param      string|null      $param1     Translation Parameter 1
-      * @param      string|null      $param2     Translation Parameter 2
-      * @param      string|null      $param3     Translation Parameter 3
-      * @param      string|null      $param4     Translation Parameter 4
-      *
-      * @return     False
-      */
+     * @abstract      Log WebServer Error Messages
+     *
+     * @param      null|string      $text       Input String / Key to translate
+     * @param      null|string      $param1     Translation Parameter 1
+     * @param      null|string      $param2     Translation Parameter 2
+     * @param      null|string      $param3     Translation Parameter 3
+     * @param      null|string      $param4     Translation Parameter 4
+     *
+     * @return     False
+     */
     public function err($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
         //====================================================================//
@@ -139,19 +140,20 @@ class Logger
         //====================================================================//
         // Add Message To Log File
         self::addLogToFile($message, "ERROR");
+
         return   false;
     }
    
     /**
-      * @abstract      Log WebServer Warning Messages
-      *
-      * @param      string|null      $text       Input String / Key to translate
-      * @param      string|null      $param1     Translation Parameter 1
-      * @param      string|null      $param2     Translation Parameter 2
-      * @param      string|null      $param3     Translation Parameter 3
-      * @param      string|null      $param4     Translation Parameter 4
-      *
-      * @return     True
+     * @abstract      Log WebServer Warning Messages
+     *
+     * @param      null|string      $text       Input String / Key to translate
+     * @param      null|string      $param1     Translation Parameter 1
+     * @param      null|string      $param2     Translation Parameter 2
+     * @param      null|string      $param3     Translation Parameter 3
+     * @param      null|string      $param4     Translation Parameter 4
+     *
+     * @return     True
      */
     public function war($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
@@ -172,20 +174,21 @@ class Logger
         //====================================================================//
         // Add Message To Log File
         self::addLogToFile($message, "WARNING");
+
         return   true;
     }
 
     /**
-      * @abstract      Log WebServer Commons Messages
-      *
-      * @param      string|null      $text       Input String / Key to translate
-      * @param      string|null      $param1     Translation Parameter 1
-      * @param      string|null      $param2     Translation Parameter 2
-      * @param      string|null      $param3     Translation Parameter 3
-      * @param      string|null      $param4     Translation Parameter 4
-      *
-      * @return     True
-      */
+     * @abstract      Log WebServer Commons Messages
+     *
+     * @param      null|string      $text       Input String / Key to translate
+     * @param      null|string      $param1     Translation Parameter 1
+     * @param      null|string      $param2     Translation Parameter 2
+     * @param      null|string      $param3     Translation Parameter 3
+     * @param      null|string      $param4     Translation Parameter 4
+     *
+     * @return     True
+     */
     public function msg($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
         //====================================================================//
@@ -205,20 +208,21 @@ class Logger
         //====================================================================//
         // Add Message To Log File
         self::addLogToFile($message, "MESSAGE");
+
         return   true;
     }
 
     /**
-      * @abstract      Log WebServer Debug Messages
-      *
-      * @param      string|null      $text       Input String / Key to translate
-      * @param      string|null      $param1     Translation Parameter 1
-      * @param      string|null      $param2     Translation Parameter 2
-      * @param      string|null      $param3     Translation Parameter 3
-      * @param      string|null      $param4     Translation Parameter 4
-      *
-      * @return     True
-      */
+     * @abstract      Log WebServer Debug Messages
+     *
+     * @param      null|string      $text       Input String / Key to translate
+     * @param      null|string      $param1     Translation Parameter 1
+     * @param      null|string      $param2     Translation Parameter 2
+     * @param      null|string      $param3     Translation Parameter 3
+     * @param      null|string      $param4     Translation Parameter 4
+     *
+     * @return     True
+     */
     public function deb($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
         //====================================================================//
@@ -238,13 +242,13 @@ class Logger
         //====================================================================//
         // Add Message To Log File
         self::addLogToFile($message, "DEBUG");
+
         return   true;
     }
    
-
     /**
      * @abstract    Return All WebServer current Log WebServer in Html format
-     * @param   ArrayObject|array|null  $msgArray
+     * @param   null|array|ArrayObject  $msgArray
      * @param   string      $title
      * @param   string      $color
      * @return  string
@@ -288,6 +292,7 @@ class Logger
         if ($clean) {
             $this->cleanLog();
         }
+
         return $html;
     }
    
@@ -303,38 +308,21 @@ class Logger
             case "Error":
                 $color = "#FF3300";
                 $text  = "&nbsp;KO&nbsp;";
+
                 break;
             case "Warning":
                 $color = "#FF9933";
                 $text  = "&nbsp;WAR&nbsp;";
+
                 break;
             default:
                 $color = "#006600";
                 $text  = "&nbsp;OK&nbsp;";
+
                 break;
         }
         
         return '[<font color="' . $color . '">' . $text . '</font>]&nbsp;&nbsp;&nbsp;' . $message . PHP_EOL . "</br>";
-    }
-    
-    /**
-     * @abstract    Return All WebServer current Log WebServer in Html Checklist format
-     * @param   ArrayObject|array|null      $msgArray
-     * @param   string          $type
-     * @return  string|null
-     */
-    private function getHtmlList($msgArray, $type)
-    {
-        $html  = null;
-        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
-            //====================================================================//
-            // Add Messages
-            foreach ($msgArray as $message) {
-                $html .= $this->getHtmlListItem($message, $type);
-            }
-        }
-        
-        return $html;
     }
    
     /**
@@ -356,6 +344,7 @@ class Logger
         if ($clean) {
             $this->cleanLog();
         }
+
         return $html;
     }
    
@@ -369,26 +358,6 @@ class Logger
     public static function getConsoleLine($text, $title = "", $color = 0)
     {
         return PHP_EOL . "\e[". $color ."m" . $title . html_entity_decode($text) . "\e[0m";
-    }
-
-    /**
-     * @abstract    Return All WebServer current Log WebServer Console Colored format
-     * @param   ArrayObject|array|null  $msgArray
-     * @param   string      $title
-     * @param   int      $color
-     * @return  string
-     */
-    private function getConsole($msgArray, $title = "", $color = 0)
-    {
-        $result  = "";
-        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
-            //====================================================================//
-            // Add Messages
-            foreach ($msgArray as $txt) {
-                $result .= self::getConsoleLine($txt, $title, $color);
-            }
-        }
-        return $result;
     }
    
     /**
@@ -411,6 +380,7 @@ class Logger
         if ($clean) {
             $this->cleanLog();
         }
+
         return $result;
     }
    
@@ -439,6 +409,7 @@ class Logger
         if ($clean) {
             $this->cleanLog();
         }
+
         return $raw;
     }
    
@@ -468,38 +439,8 @@ class Logger
             $this->mergeCore("deb", $logs->deb);
             $this->addLogBlockToFile($logs->deb, "DEBUG");
         }
+
         return true;
-    }
-   
-    /**
-     * @abstract    Merge Messages from a second class with current class
-     * @param       string              $logType        Type of Logs to Merge
-     * @param       array|ArrayObject   $logArray       Second logging array
-     * @return      void
-     */
-    private function mergeCore($logType, $logArray)
-    {
-        //====================================================================//
-        // Fast Line
-        if (empty($logArray)) {
-            return;
-        }
-        //====================================================================//
-        // Detect ArrayObjects
-        if ($logArray instanceof ArrayObject) {
-            $logArray = $logArray->getArrayCopy();
-        }
-        //====================================================================//
-        // If Current Log is Empty
-        if (!isset($this->$logType)) {
-            $this->$logType = $logArray;
-        //====================================================================//
-        // Really merge Logs
-        } else {
-            foreach ($logArray as $message) {
-                array_push($this->$logType, $message);
-            }
-        }
     }
 
     /**
@@ -516,9 +457,10 @@ class Logger
         $this->debug = $debug;
         //====================================================================//
         // Delete Existing Debug Messages
-        if (($debug == 0) && isset($this->debug)) {
-            unset($this->deb);
+        if ((0 == $debug) && isset($this->debug)) {
+            $this->deb = null;
         }
+
         return true;
     }
    
@@ -534,37 +476,6 @@ class Logger
         $this->prefix = $prefix;
         
         return true;
-    }
-    
-    //====================================================================//
-    //  VARIOUS TOOLS
-    //====================================================================//
-   
-    /**
-     *  @abstract   Read & Returns var_dump() standard php function html result
-     *
-     *  @param      mixed       $var        Any Object to dump
-     *
-     *  @return     string                HTML display string of this object
-     */
-    private function getVarDump($var)
-    {
-        //====================================================================//
-        // Safety Check
-        if (empty($var)) {
-            return "Empty Object";
-        }
-
-        //====================================================================//
-        // Var Dump reading
-        ob_start();                     // Turn on output buffering
-        var_dump($var);                 // Dumps information about a variable
-        $html = ob_get_contents();         // Read the contents of the output buffer
-        ob_end_clean();                 // Clean (erase) the output buffer and turn off output buffering
-
-        //====================================================================//
-        // Return Contents
-        return "<PRE>" . $html . "</PRE>";
     }
 
     /**
@@ -627,6 +538,109 @@ class Logger
         }
     }
     
+    /**
+     * @abstract    Return All WebServer current Log WebServer in Html Checklist format
+     * @param   null|array|ArrayObject      $msgArray
+     * @param   string          $type
+     * @return  null|string
+     */
+    private function getHtmlList($msgArray, $type)
+    {
+        $html  = null;
+        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
+            //====================================================================//
+            // Add Messages
+            foreach ($msgArray as $message) {
+                $html .= $this->getHtmlListItem($message, $type);
+            }
+        }
+        
+        return $html;
+    }
+
+    /**
+     * @abstract    Return All WebServer current Log WebServer Console Colored format
+     * @param   null|array|ArrayObject  $msgArray
+     * @param   string      $title
+     * @param   int      $color
+     * @return  string
+     */
+    private function getConsole($msgArray, $title = "", $color = 0)
+    {
+        $result  = "";
+        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
+            //====================================================================//
+            // Add Messages
+            foreach ($msgArray as $txt) {
+                $result .= self::getConsoleLine($txt, $title, $color);
+            }
+        }
+
+        return $result;
+    }
+   
+    /**
+     * @abstract    Merge Messages from a second class with current class
+     * @param       string              $logType        Type of Logs to Merge
+     * @param       array|ArrayObject   $logArray       Second logging array
+     * @return      void
+     */
+    private function mergeCore($logType, $logArray)
+    {
+        //====================================================================//
+        // Fast Line
+        if (empty($logArray)) {
+            return;
+        }
+        //====================================================================//
+        // Detect ArrayObjects
+        if ($logArray instanceof ArrayObject) {
+            $logArray = $logArray->getArrayCopy();
+        }
+        //====================================================================//
+        // If Current Log is Empty
+        if (!isset($this->{$logType})) {
+            $this->{$logType} = $logArray;
+        //====================================================================//
+        // Really merge Logs
+        } else {
+            foreach ($logArray as $message) {
+                array_push($this->{$logType}, $message);
+            }
+        }
+    }
+    
+    //====================================================================//
+    //  VARIOUS TOOLS
+    //====================================================================//
+   
+    /**
+     *  @abstract   Read & Returns var_dump() standard php function html result
+     *
+     *  @param      mixed       $var        Any Object to dump
+     *
+     *  @return     string                HTML display string of this object
+     */
+    private function getVarDump($var)
+    {
+        //====================================================================//
+        // Safety Check
+        if (empty($var)) {
+            return "Empty Object";
+        }
+
+        //====================================================================//
+        // Var Dump reading
+        ob_start();                     // Turn on output buffering
+        var_dump($var);                 // Dumps information about a variable
+        $html = ob_get_contents();         // Read the contents of the output buffer
+        ob_end_clean();                 // Clean (erase) the output buffer and turn off output buffering
+
+        //====================================================================//
+        // Return Contents
+        return "<PRE>" . $html . "</PRE>";
+    }
+    
     //====================================================================//
     //  LOG FILE MANAGEMENT
     //====================================================================//
@@ -643,7 +657,7 @@ class Logger
     {
         //====================================================================//
         // Safety Check
-        if (Splash::configuration()->Logging == 0) {
+        if (0 == Splash::configuration()->Logging) {
             return true;
         }
         //====================================================================//
@@ -663,12 +677,13 @@ class Logger
             fclose($filefd);
             @chmod($logfile, 0604);
         }
+
         return true;
     }
     
     /**
      * @abstract    Add a message to Log File
-     * @param   ArrayObject|array|null      $msgArray   Array of Message text to log
+     * @param   null|array|ArrayObject      $msgArray   Array of Message text to log
      * @param   string          $logType    Message Type
      * @return  true
      */
@@ -676,7 +691,7 @@ class Logger
     {
         //====================================================================//
         // Safety Check
-        if (Splash::configuration()->Logging == false) {
+        if (false == Splash::configuration()->Logging) {
             return true;
         }
         //====================================================================//
@@ -688,6 +703,7 @@ class Logger
                 self::addLogToFile(utf8_decode(html_entity_decode($message)), $logType);
             }
         }
+
         return true;
     }
 }

@@ -1,14 +1,28 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Fields;
 
 /**
  * @abstract    Multilangual Text Field : Multilangual Long Text Array
  *
-//====================================================================//
-// Sample :
-// $data["name"]["iso_code"]            =>      Value
-// Where name is field name and code is a valid SPL_T_LANG Iso Language Code
-//====================================================================//
+ * //====================================================================//
+ * // Sample :
+ * // $data["name"]["iso_code"]            =>      Value
+ * // Where name is field name and code is a valid SPL_T_LANG Iso Language Code
+ * //====================================================================//
  *
  */
 class Oomtext implements FieldInterface
@@ -44,6 +58,7 @@ class Oomtext implements FieldInterface
         foreach ($settings["Langs"] as $lang) {
             $fake[$lang] = Ootext::fake($settings);
         }
+
         return $fake;
     }
     
@@ -74,6 +89,7 @@ class Oomtext implements FieldInterface
                 return false;
             }
         }
+
         return true;
     }
 }

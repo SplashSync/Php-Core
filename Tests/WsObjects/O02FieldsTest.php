@@ -1,9 +1,23 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\WsObjects;
 
-use Splash\Tests\Tools\ObjectsCase;
-use Splash\Client\Splash;
 use ArrayObject;
+use Splash\Client\Splash;
+use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * @abstract    Objects Test Suite - Fields List Verifications
@@ -12,9 +26,10 @@ use ArrayObject;
  */
 class O02FieldsTest extends ObjectsCase
 {
-    
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromModule($testSequence, $objectType)
     {
@@ -35,6 +50,8 @@ class O02FieldsTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromObjectsService($testSequence, $objectType)
     {
@@ -42,7 +59,12 @@ class O02FieldsTest extends ObjectsCase
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $data = $this->genericAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__, [ "id" => null, "type" => $objectType]);
+        $data = $this->genericAction(
+            SPL_S_OBJECTS,
+            SPL_F_FIELDS,
+            __METHOD__,
+            array( "id" => null, "type" => $objectType)
+        );
         
         //====================================================================//
         //   Verify Response
@@ -74,7 +96,6 @@ class O02FieldsTest extends ObjectsCase
         }
     }
     
-    
     /**
      * @abstract    Verify Main Field Informations are in right format
      *
@@ -105,7 +126,7 @@ class O02FieldsTest extends ObjectsCase
             $objectId   =   self::isIdField($fieldType);
             
             $this->assertTrue(
-                in_array($objectId["ObjectType"], Splash::objects()),
+                in_array($objectId["ObjectType"], Splash::objects(), true),
                 "Object ID Field of Type '" . $objectId["ObjectType"] . "' is not a Valid. "
                     . "This Object Type was not found."
             );
@@ -137,7 +158,7 @@ class O02FieldsTest extends ObjectsCase
             $this->assertArrayInternalType($field, "tag", "string", "Field Linking Tag");
         }
         if (array_key_exists("tag", $field) && array_key_exists("itemtype", $field) && !empty($field["itemtype"])) {
-            $this->assertEquals(
+            $this->assertSame(
                 $field["tag"],
                 md5($field["itemprop"] . IDSPLIT . $field["itemtype"]),
                 "Field Tag do not match with defined MicroData. Expected Format: md5('itemprop'@'itemptype') "

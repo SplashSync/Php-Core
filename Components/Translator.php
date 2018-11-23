@@ -1,15 +1,16 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 /**
@@ -19,8 +20,8 @@
 
 namespace   Splash\Components;
 
-use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
+use Splash\Core\SplashCore      as Splash;
 
 //====================================================================//
 //  CLASS DEFINITION
@@ -44,12 +45,10 @@ class Translator
      */
     private $loadedTranslations;
 
-    
     //====================================================================//
     //  TRANSLATIONS MANAGEMENT
     //====================================================================//
 
-    
     /**
      * @abstract    Load translations from a specified INI file into Static array.
      *              If data for file already loaded, do nothing.
@@ -83,7 +82,7 @@ class Translator
         
         //====================================================================//
         // Select Language to Load
-        if ($language == null) {
+        if (null == $language) {
             //====================================================================//
             // Load Default Language from Local System
             if (empty(Splash::configuration()->DefaultLanguage)) {
@@ -110,10 +109,10 @@ class Translator
         
         //====================================================================//
         // If Default Language Used
-        if ($isForced == null) {
+        if (null == $isForced) {
             //====================================================================//
             // Load English Language Fallback Translations
-            if ($language != SPLASH_DF_LANG) {
+            if (SPLASH_DF_LANG != $language) {
                 $this->load($fileName, SPLASH_DF_LANG);
             }
 
@@ -173,18 +172,16 @@ class Translator
         $str = htmlentities($str, ENT_QUOTES);
         //====================================================================//
         // Restore HTML tags
-        $str = str_replace(array('__lt__','__gt__','__quot__'), array('<','>','"',), $str);
-
-        return $str;
+        return str_replace(array('__lt__','__gt__','__quot__'), array('<','>','"',), $str);
     }
 
     /**
      * @abstract   Convert Array Parameters to String
      *
-     * @param  string|array|ArrayObject  $param1     chaine de param1
-     * @param  string|array|ArrayObject  $param2     chaine de param2
-     * @param  string|array|ArrayObject  $param3     chaine de param3
-     * @param  string|array|ArrayObject  $param4     chaine de param4
+     * @param  array|ArrayObject|string  $param1     chaine de param1
+     * @param  array|ArrayObject|string  $param2     chaine de param2
+     * @param  array|ArrayObject|string  $param3     chaine de param3
+     * @param  array|ArrayObject|string  $param4     chaine de param4
      *
      * @return void
      */
@@ -220,7 +217,6 @@ class Translator
      */
     private function getLangFileName($fileName, $language)
     {
-        
         //====================================================================//
         // Search for Local Redirection
         //====================================================================//
@@ -281,7 +277,7 @@ class Translator
     {
         //====================================================================//
         // Filter empty lines
-        if (($line[0] == "\n") || ($line[0] == " ") || ($line[0] == "#") || ($line[0] == ";")) {
+        if (("\n" == $line[0]) || (" " == $line[0]) || ("#" == $line[0]) || (";" == $line[0])) {
             return;
         }
         //====================================================================//

@@ -1,11 +1,23 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Core;
 
-use Splash\Models\LocalClassInterface;
-
-use Splash\Tests\Tools\TestCase;
-
 use Splash\Core\SplashCore     as Splash;
+use Splash\Models\LocalClassInterface;
+use Splash\Tests\Tools\TestCase;
 
 /**
  * @abstract    Core Test Suite - Raw Folders & Class Structure Verifications
@@ -14,10 +26,8 @@ use Splash\Core\SplashCore     as Splash;
  */
 class C01ClassesTest extends TestCase
 {
-
     public function testSplashCoreClass()
     {
-        
         //====================================================================//
         //   VERIFY SPLASH MODULE BASE
         //====================================================================//
@@ -25,42 +35,42 @@ class C01ClassesTest extends TestCase
         //====================================================================//
         //   Core Splash Module
         $this->assertInstanceOf(
-            "Splash\Core\SplashCore",
+            "Splash\\Core\\SplashCore",
             Splash::core(),
             "Splash Core Class is Not from of Right Instance"
         );
         //====================================================================//
         //   Splash Log Manager
         $this->assertInstanceOf(
-            "Splash\Components\Logger",
+            "Splash\\Components\\Logger",
             Splash::log(),
             "Splash Logger Class is Not from of Right Instance"
         );
         //====================================================================//
         //   Splash Webservice Manager
         $this->assertInstanceOf(
-            "Splash\Components\Webservice",
+            "Splash\\Components\\Webservice",
             Splash::ws(),
             "Splash Webservice Class is Not from of Right Instance"
         );
         //====================================================================//
         //   Splash Router Manager
         $this->assertInstanceOf(
-            "Splash\Components\Router",
+            "Splash\\Components\\Router",
             Splash::router(),
             "Splash Router Class is Not from of Right Instance"
         );
         //====================================================================//
         //   Splash Files Manager
         $this->assertInstanceOf(
-            "Splash\Components\FileManager",
+            "Splash\\Components\\FileManager",
             Splash::file(),
             "Splash File Manager Class is Not from of Right Instance"
         );
         //====================================================================//
         //   Splash Validation Manager
         $this->assertInstanceOf(
-            "Splash\Components\Validator",
+            "Splash\\Components\\Validator",
             Splash::validate(),
             "Splash Validator Class is Not from of Right Instance"
         );
@@ -68,14 +78,14 @@ class C01ClassesTest extends TestCase
         //====================================================================//
         //   Splash Xml Manager
         $this->assertInstanceOf(
-            "Splash\Components\XmlManager",
+            "Splash\\Components\\XmlManager",
             Splash::xml(),
             "Splash Xml Manager Class is Not from of Right Instance"
         );
         //====================================================================//
         //   Splash Translator Manager
         $this->assertInstanceOf(
-            "Splash\Components\Translator",
+            "Splash\\Components\\Translator",
             Splash::translator(),
             "Splash Translator Class is Not from of Right Instance"
         );
@@ -104,7 +114,6 @@ class C01ClassesTest extends TestCase
     
     public function testSplashClientClass()
     {
-        
         //====================================================================//
         //   VERIFY SPLASH SERVER MODULE
         //====================================================================//
@@ -112,7 +121,7 @@ class C01ClassesTest extends TestCase
         //====================================================================//
         //   Server Splash Module
         $this->assertInstanceOf(
-            "Splash\Client\Splash",
+            "Splash\\Client\\Splash",
             new \Splash\Client\Splash(),
             "Splash Client Class is Not from of Right Instance"
         );
@@ -120,7 +129,6 @@ class C01ClassesTest extends TestCase
 
     public function testSplashServerClass()
     {
-        
         //====================================================================//
         //   VERIFY SPLASH SERVER MODULE
         //====================================================================//
@@ -128,7 +136,7 @@ class C01ClassesTest extends TestCase
         //====================================================================//
         //   Server Splash Module
         $this->assertInstanceOf(
-            "Splash\Server\SplashServer",
+            "Splash\\Server\\SplashServer",
             new \Splash\Server\SplashServer(),
             "Splash Server Class is Not from of Right Instance"
         );
@@ -136,7 +144,7 @@ class C01ClassesTest extends TestCase
         //====================================================================//
         //   Server Splash Module
         $this->assertInstanceOf(
-            "Splash\Models\CommunicationInterface",
+            "Splash\\Models\\CommunicationInterface",
             Splash::com(),
             "Splash Communication Interface is Not from of Right Instance"
         );
@@ -144,7 +152,6 @@ class C01ClassesTest extends TestCase
     
     public function testModuleLocalClass()
     {
-        
         //====================================================================//
         //   VERIFY SPLASH MODULE LOCAL CLASS
         //====================================================================//
@@ -154,7 +161,7 @@ class C01ClassesTest extends TestCase
         $this->assertNotEmpty(
             Splash::local(),
             "Splash Local Class Not found. Check you local class"
-                . " is defined and autoloaded from Namespace Splash\Local\Local."
+                . " is defined and autoloaded from Namespace Splash\\Local\\Local."
                 . " Or loaded on System init by Splash::setLocalClass function."
         );
         
@@ -189,7 +196,6 @@ class C01ClassesTest extends TestCase
 
     public function testModuleLocalPaths()
     {
-        
         //====================================================================//
         //   VERIFY SPLASH MODULE LOCAL PATHS
         //====================================================================//
@@ -205,18 +211,18 @@ class C01ClassesTest extends TestCase
         //====================================================================//
         //   Verify Local Mandatory Paths Exists
         $objectsPath = Splash::getLocalPath() . "/Objects";
-        $this->assertTrue(
-            is_dir($objectsPath),
+        $this->assertDirectoryExists(
+            $objectsPath,
             "Splash Local Objects folder MUST be define in " . $objectsPath . "."
         );
         $widgetsPath = Splash::getLocalPath() . "/Widgets";
-        $this->assertTrue(
-            is_dir($widgetsPath),
+        $this->assertDirectoryExists(
+            $widgetsPath,
             "Splash Local Widgets folder MUST be define in " . $widgetsPath . "."
         );
         $translationsPath = Splash::getLocalPath() . "/Translations";
-        $this->assertTrue(
-            is_dir($translationsPath),
+        $this->assertDirectoryExists(
+            $translationsPath,
             "Splash Local Translations folder MUST be define in " . $translationsPath . "."
         );
     }

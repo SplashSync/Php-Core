@@ -1,15 +1,16 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Models;
@@ -21,12 +22,11 @@ use ArrayObject;
  */
 interface LocalClassInterface
 {
-
-//====================================================================//
-// *******************************************************************//
-//  MANDATORY CORE MODULE LOCAL FUNCTIONS
-// *******************************************************************//
-//====================================================================//
+    //====================================================================//
+    // *******************************************************************//
+    //  MANDATORY CORE MODULE LOCAL FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
     
     /**
      *  @abstract       Return Local Server Parameters as Array
@@ -59,7 +59,6 @@ interface LocalClassInterface
      */
     public function includes();
 
-           
     /**
      * @abstract       Return Local Server Self Test Result
      *
@@ -89,11 +88,11 @@ interface LocalClassInterface
      */
     public function informations($informations);
     
-//====================================================================//
-// *******************************************************************//
-//  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
-// *******************************************************************//
-//====================================================================//
+    //====================================================================//
+    // *******************************************************************//
+    //  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
     
     /**
      * @abstract       Return Local Server Test Sequences as Aarray
@@ -107,6 +106,7 @@ interface LocalClassInterface
      *
      *      If Name = ASequenceName, Function will Setup Sequence on Local System.
      *
+     * @param null|mixed $name
      * @return         array       $Sequences
      */
     public function testSequences($name = null);

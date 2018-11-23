@@ -1,12 +1,24 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Core;
 
-use Splash\Tests\Tools\TestCase;
-
-use Splash\Core\SplashCore     as Splash;
-
 use Splash\Components\Logger;
+use Splash\Core\SplashCore     as Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
+use Splash\Tests\Tools\TestCase;
 
 /**
  * @abstract    Core Test Suite - Raw Folders & Class Structure Verifications
@@ -15,14 +27,13 @@ use Splash\Tests\Tools\AbstractBaseCase;
  */
 class C00StartupTest extends TestCase
 {
-    
     const   SPLIT   =   "----------------------------------------------------------------";
       
     const   SPLASH1 =   " ______     ______   __         ______     ______     __  __    ";
-    const   SPLASH2 =   "/\  ___\   /\  == \ /\ \       /\  __ \   /\  ___\   /\ \_\ \   ";
-    const   SPLASH3 =   "\ \___  \  \ \  _-/ \ \ \____  \ \  __ \  \ \___  \  \ \  __ \  ";
-    const   SPLASH4 =   " \/\_____\  \ \_\    \ \_____\  \ \_\ \_\  \/\_____\  \ \_\ \_\ ";
-    const   SPLASH5 =   "  \/_____/   \/_/     \/_____/   \/_/\/_/   \/_____/   \/_/\/_/ ";
+    const   SPLASH2 =   "/\\  ___\\   /\\  == \\ /\\ \\       /\\  __ \\   /\\  ___\\   /\\ \\_\\ \\   ";
+    const   SPLASH3 =   "\\ \\___  \\  \\ \\  _-/ \\ \\ \\____  \\ \\  __ \\  \\ \\___  \\  \\ \\  __ \\  ";
+    const   SPLASH4 =   " \\/\\_____\\  \\ \\_\\    \\ \\_____\\  \\ \\_\\ \\_\\  \\/\\_____\\  \\ \\_\\ \\_\\ ";
+    const   SPLASH5 =   "  \\/_____/   \\/_/     \\/_____/   \\/_/\\/_/   \\/_____/   \\/_/\\/_/ ";
     const   SPLASH6 =   "                                                                ";
             
     /**
@@ -70,6 +81,7 @@ class C00StartupTest extends TestCase
         $objectTypes    =   Splash::objects();
         if (!is_array($objectTypes)) {
             echo Logger::getConsoleLine(" !! Invalid Objects List !! ", " - Tested Objects ", Logger::CMD_COLOR_DEB);
+
             return;
         }
         foreach ($objectTypes as $key => $objectType) {
@@ -97,7 +109,7 @@ class C00StartupTest extends TestCase
         if (!empty(Splash::local()->testSequences("List"))) {
             $testSequences  =   Splash::local()->testSequences("List");
         }
-        if ($testSequences === "None") {
+        if ("None" === $testSequences) {
             return;
         }
         echo Logger::getConsoleLine(implode(" | ", $testSequences), "- Test Sequences: ", Logger::CMD_COLOR_DEB);

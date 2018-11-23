@@ -1,9 +1,21 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Traits\Product;
 
 use ArrayObject;
-
 use Splash\Client\Splash;
 use Splash\Tests\Tools\Fields\Ooimage as Image;
 
@@ -21,16 +33,104 @@ trait ImagesTrait
     /** @var array */
     private $targetImages;
     
-    /** @var string|false */
+    /** @var false|string */
     private $listId;
-    /** @var string|false */
+    /** @var false|string */
     private $imageId;
-    /** @var string|false */
+    /** @var false|string */
     private $isCoverId;
-    /** @var string|false */
+    /** @var false|string */
     private $isVisibleId;
-    /** @var string|false */
+    /** @var false|string */
     private $positionId;
+    
+    /**
+     * @abstract     Provide Products Images Tests Combinations
+     */
+    public function productImagesProvider()
+    {
+        $result = array();
+        //====================================================================//
+        //   For Each Object Types
+        foreach ($this->objectTypesProvider() as $testCase) {
+            //====================================================================//
+            //   Setup Sequence
+            $this->loadLocalTestSequence($testCase[0]);
+            //====================================================================//
+            //   Check Test is Allowed
+            if (!$this->isAllowedProductImagesTests($testCase[1])) {
+                continue;
+            }
+            //====================================================================//
+            //   For Each Object Types
+            foreach ($this->getProductImagesSequences() as $imgSequence) {
+                $dataSet    =   $testCase;
+                $dataSet[3] =   $this->getFakeImages($imgSequence);
+                $result[]   =   $dataSet;
+            }
+//            $Result[]   =   $DataSet;
+        }
+        if (empty($result)) {
+            $this->markTestSkipped('No Product Images Combination Found.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * @abstract     Provide Products Images Combinations to Test
+     */
+    public function getProductImagesSequences()
+    {
+        $combinations   =   array();
+        
+        //====================================================================//
+        //   Images Sets Definitions
+        //====================================================================//
+        //   $ImageIndex, $setCover, $setVisible, $setPosition
+        //====================================================================//
+        
+        //====================================================================//
+        //   Basic Set
+        $combinations[] =   array(
+            array(1,true,true,0),
+        );
+        
+        //====================================================================//
+        //   Basic Set
+        $combinations[] =   array(
+            array(1,true,true,0),
+            array(2,false,true,1),
+            array(3,false,true,2),
+        );
+        
+        //====================================================================//
+        //   Basic Set with Hidden Images
+        $combinations[] =   array(
+            array(1,true,true,0),
+            array(2,false,false,1),
+            array(3,false,true,2),
+        );
+        
+        //====================================================================//
+        //   Advanced Set with Cover not in First Position
+        $combinations[] =   array(
+            array(1,false,true,0),
+            array(2,true,true,1),
+            array(3,false,true,2),
+        );
+        
+        //====================================================================//
+        //   Advanced Set with Cover not in First Position & Not Visible
+        $combinations[] =   array(
+            array(1,false,true,0),
+            array(3,false,true,1),
+            array(2,false,true,2),
+            array(4,true,false,3),
+        );
+        
+        return new ArrayObject($combinations, ArrayObject::ARRAY_AS_PROPS);
+    }
 
     //==============================================================================
     //      SPLASH PRODUCT IMAGES SPECIFIC FUNCTIONS
@@ -38,6 +138,9 @@ trait ImagesTrait
 
     /**
      * @abstract    Base Test for Products Images Writing
+     * @param mixed $testSequence
+     * @param mixed $objectType
+     * @param mixed $images
      */
     protected function coreTestImagesFromModule($testSequence, $objectType, $images)
     {
@@ -46,6 +149,7 @@ trait ImagesTrait
         //====================================================================//
         if (is_null($testSequence)) {
             $this->assertTrue(true);
+
             return;
         }
         $this->loadLocalTestSequence($testSequence);
@@ -61,7 +165,7 @@ trait ImagesTrait
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $newData = $this->prepareForTesting($objectType);
-        if ($newData == false) {
+        if (false == $newData) {
             return true;
         }
         
@@ -87,7 +191,48 @@ trait ImagesTrait
     }
     
     /**
+     * @abstract    Identify Image in List by Md5 and Active Flag
+     * @param   array       $source         Source Image
+     * @param   string      $imageId        Image Field Id
+     * @param   string      $flagId         Flag Field Id
+     * @return  null|array
+     */
+    protected function findImageByMd5AndFlag($source, $imageId, $flagId)
+    {
+        //====================================================================//
+        //   Check if Image Md5 is Set
+        $this->assertNotEmpty(
+            $source[$imageId]["md5"],
+            "Source Image has no Md5... Check input Combinations!"
+        );
+
+        //====================================================================//
+        //   Walk on Target Images
+        foreach ($this->targetImages as $image) {
+            //====================================================================//
+            //   Compare Images Md5
+            if ($image[$imageId]["md5"] != $source[$imageId]["md5"]) {
+                continue;
+            }
+            //====================================================================//
+            //   Compare Images Flags
+            if (!isset($image[$flagId]) || empty($image[$flagId])) {
+                continue;
+            }
+
+            return $image;
+        }
+        //====================================================================//
+        //   Images not Found
+        return null;
+    }
+    
+    /**
      * @abstract    Generate Image Item
+     * @param mixed $index
+     * @param mixed $setCover
+     * @param mixed $setVisible
+     * @param mixed $setPosition
      */
     private function getFakeImageItem($index, $setCover, $setVisible, $setPosition)
     {
@@ -103,7 +248,7 @@ trait ImagesTrait
         
         //====================================================================//
         //   Generate Random Attributes Set
-        $spashImage =   Image::fake(["Images" => [ "fake-image" . $index . ".jpg"]]);
+        $spashImage =   Image::fake(array("Images" => array( "fake-image" . $index . ".jpg")));
         $item   =   array(
             self::lists()->fieldName($image->id)    =>      $spashImage,
             self::lists()->fieldName($isCover->id)  =>      $setCover,
@@ -114,11 +259,13 @@ trait ImagesTrait
         if ($position->write) {
             $item[self::lists()->fieldName($position->id)]  =   $setPosition;
         }
+
         return $item;
     }
 
     /**
      * @abstract    Generate Fake Images List
+     * @param mixed $combination
      */
     private function getFakeImages($combination)
     {
@@ -255,49 +402,13 @@ trait ImagesTrait
         $this->positionId     = self::lists()->fieldName($position->id);
         //====================================================================//
         //   Build To Read Fields Ids
-        $this->targetFields =   [$image->id, $isCover->id, $isVisible->id, $position->id];
+        $this->targetFields =   array($image->id, $isCover->id, $isVisible->id, $position->id);
         //====================================================================//
         //   Check Required Fields
         $this->assertNotEmpty($this->imageId);
         $this->assertNotEmpty($this->isCoverId);
         $this->assertNotEmpty($this->isVisibleId);
         $this->assertNotEmpty($this->positionId);
-    }
-    
-    /**
-     * @abstract    Identify Image in List by Md5 and Active Flag
-     * @param   array       $source         Source Image
-     * @param   string      $imageId        Image Field Id
-     * @param   string      $flagId         Flag Field Id
-     * @return  array|null
-     */
-    protected function findImageByMd5AndFlag($source, $imageId, $flagId)
-    {
-        //====================================================================//
-        //   Check if Image Md5 is Set
-        $this->assertNotEmpty(
-            $source[$imageId]["md5"],
-            "Source Image has no Md5... Check input Combinations!"
-        );
-
-        //====================================================================//
-        //   Walk on Target Images
-        foreach ($this->targetImages as $image) {
-            //====================================================================//
-            //   Compare Images Md5
-            if ($image[$imageId]["md5"] != $source[$imageId]["md5"]) {
-                continue;
-            }
-            //====================================================================//
-            //   Compare Images Flags
-            if (!isset($image[$flagId]) || empty($image[$flagId])) {
-                continue;
-            }
-            return $image;
-        }
-        //====================================================================//
-        //   Images not Found
-        return null;
     }
     
     /**
@@ -351,6 +462,7 @@ trait ImagesTrait
     
     /**
      * @abstract     Check if Product Images Tests is Required
+     * @param mixed $objectType
      */
     private function isAllowedProductImagesTests($objectType)
     {
@@ -369,93 +481,7 @@ trait ImagesTrait
         if (!$imgList || !$imgList->write) {
             return false;
         }
-        return true;
-    }
-    
-    /**
-     * @abstract     Provide Products Images Tests Combinations
-     */
-    public function productImagesProvider()
-    {
-        $result = array();
-        //====================================================================//
-        //   For Each Object Types
-        foreach ($this->objectTypesProvider() as $testCase) {
-            //====================================================================//
-            //   Setup Sequence
-            $this->loadLocalTestSequence($testCase[0]);
-            //====================================================================//
-            //   Check Test is Allowed
-            if (!$this->isAllowedProductImagesTests($testCase[1])) {
-                continue;
-            }
-            //====================================================================//
-            //   For Each Object Types
-            foreach ($this->getProductImagesSequences() as $imgSequence) {
-                $dataSet    =   $testCase;
-                $dataSet[3] =   $this->getFakeImages($imgSequence);
-                $result[]   =   $dataSet;
-            }
-//            $Result[]   =   $DataSet;
-        }
-        if (empty($result)) {
-            $this->markTestSkipped('No Product Images Combination Found.');
-        }
-        return $result;
-    }
 
-    /**
-     * @abstract     Provide Products Images Combinations to Test
-     */
-    public function getProductImagesSequences()
-    {
-        $combinations   =   array();
-        
-        //====================================================================//
-        //   Images Sets Definitions
-        //====================================================================//
-        //   $ImageIndex, $setCover, $setVisible, $setPosition
-        //====================================================================//
-        
-        //====================================================================//
-        //   Basic Set
-        $combinations[] =   array(
-            array(1,true,true,0),
-        );
-        
-        //====================================================================//
-        //   Basic Set
-        $combinations[] =   array(
-            array(1,true,true,0),
-            array(2,false,true,1),
-            array(3,false,true,2),
-        );
-        
-        //====================================================================//
-        //   Basic Set with Hidden Images
-        $combinations[] =   array(
-            array(1,true,true,0),
-            array(2,false,false,1),
-            array(3,false,true,2),
-        );
-        
-        //====================================================================//
-        //   Advanced Set with Cover not in First Position
-        $combinations[] =   array(
-            array(1,false,true,0),
-            array(2,true,true,1),
-            array(3,false,true,2),
-        );
-        
-        //====================================================================//
-        //   Advanced Set with Cover not in First Position & Not Visible
-        $combinations[] =   array(
-            array(1,false,true,0),
-            array(3,false,true,1),
-            array(2,false,true,2),
-            array(4,true,false,3),
-        );
-        
-        return new ArrayObject($combinations, ArrayObject::ARRAY_AS_PROPS);
+        return true;
     }
 }

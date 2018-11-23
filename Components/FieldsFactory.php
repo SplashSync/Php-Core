@@ -1,21 +1,22 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace   Splash\Components;
 
-use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
+use Splash\Core\SplashCore      as Splash;
 
 /**
  * @abstract    This Class is a Generator for Objects Fields Definition
@@ -24,6 +25,14 @@ use ArrayObject;
  */
 class FieldsFactory
 {
+    //==============================================================================
+    //      Favorites Sync Modes
+    //==============================================================================
+
+    const MODE_BOTH     =           "both";
+    const MODE_READ     =           "read";
+    const MODE_WRITE    =           "write";
+    
     //==============================================================================
     //      Meta Data Access MicroDatas
     //==============================================================================
@@ -53,6 +62,9 @@ class FieldsFactory
         "write"     =>  true,                   //  Field is Writable (Bool)
         "inlist"    =>  false,                  //  Field is Available in Object List Response (Bool)
         //==============================================================================
+        //      SYNC MODE
+        "syncmode"  =>  self::MODE_BOTH,        //  Field Favorite Sync Mode (read|write|both)
+        //==============================================================================
         //      SCHEMA.ORG IDENTIFICATION
         "itemprop"  =>  null,                   //  Field Unique Schema.Org "Like" Property Name
         "itemtype"  =>  null,                   //  Field Unique Schema.Org Object Url
@@ -79,7 +91,6 @@ class FieldsFactory
      */
     private $empty;
 
-    
     /**
      * @abstract   New Object Field Storage
      * @var        null|ArrayObject
@@ -128,7 +139,7 @@ class FieldsFactory
         }
         //====================================================================//
         // Unset Current
-        unset($this->new);
+        $this->new = null;
         //====================================================================//
         // Create new empty field
         $this->new          =   new ArrayObject($this->empty, ArrayObject::ARRAY_AS_PROPS);
@@ -145,6 +156,7 @@ class FieldsFactory
         if (!is_null($fieldName)) {
             $this->name($fieldName);
         }
+
         return $this;
     }
     
@@ -333,6 +345,46 @@ class FieldsFactory
     }
     
     /**
+     * @bstract   Signify Server Current New Field Prefer ReadOnly Mode
+     *
+     * @return     $this
+     */
+    public function setPreferRead()
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {
+            Splash::log()->err("ErrFieldsNoNew");
+        } else {
+            //====================================================================//
+            // Update New Field structure
+            $this->new->mode    = self::MODE_READ;
+        }
+        
+        return $this;
+    }
+
+    /**
+     * @bstract   Signify Server Current New Field Prefer WriteOnly Mode
+     *
+     * @return     $this
+     */
+    public function setPreferWrite()
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {
+            Splash::log()->err("ErrFieldsNoNew");
+        } else {
+            //====================================================================//
+            // Update New Field structure
+            $this->new->mode    = self::MODE_WRITE;
+        }
+        
+        return $this;
+    }
+    
+    /**
      * @abstract   Update Current New Field set list of associated fields
      *
      * @return     $this
@@ -347,7 +399,7 @@ class FieldsFactory
             //====================================================================//
             // Field Clear Fields Associations
             if (!empty($this->new->asso)) {
-                unset($this->new->asso);
+                $this->new->asso = null;
             }
             
             //====================================================================//
@@ -424,28 +476,6 @@ class FieldsFactory
         
         return $this;
     }
-    
-    /**
-     * @abstract   Update Current New Field set its unik tag for autolinking
-     *
-     * @param      string      $fieldTag       Field Unik Tag
-     *
-     * @return     $this
-     */
-    protected function setTag($fieldTag)
-    {
-        //====================================================================//
-        // Safety Checks ==> Verify a new Field Exists
-        if (empty($this->new)) {
-            Splash::log()->err("ErrFieldsNoNew");
-        } else {
-            //====================================================================//
-            // Update New Field structure
-            $this->new->tag     = md5($fieldTag);
-        }
-        
-        return $this;
-    }
         
     /**
      * @abstract   Update Current New Field set as not possible to test
@@ -479,6 +509,7 @@ class FieldsFactory
         foreach ($fieldChoices as $value => $description) {
             $this->addChoice($value, $description);
         }
+
         return $this;
     }
 
@@ -520,6 +551,7 @@ class FieldsFactory
         foreach ($fieldOptions as $type => $value) {
             $this->addOption($type, $value);
         }
+
         return $this;
     }
 
@@ -544,6 +576,113 @@ class FieldsFactory
             // Update New Field structure
             $this->new->options[$type]   = $value;
         }
+
+        return $this;
+    }
+    
+    /**
+     * @abstract   Save Current New Field in list & Clean current new field
+     *
+     * @return     ArrayObject[]|false
+     */
+    public function publish()
+    {
+        //====================================================================//
+        // Commit Last Created if not already done
+        if (!empty($this->new)) {
+            $this->commit();
+        }
+        //====================================================================//
+        // Safety Checks
+        if (empty($this->fields)) {
+            return Splash::log()->err("ErrFieldsNoList");
+            //====================================================================//
+        // Return fields List
+        }
+        $buffer = $this->fields;
+        $this->fields = null;
+
+        return $buffer;
+
+        return false;
+    }
+    
+    /**
+     * @abstract   Seach for a Field by unik tag
+     *
+     * @param   array       $fieldList      Array Of Field definition
+     * @param   string      $fieldTag       Field Unik Tag
+     *
+     * @return  ArrayObject|false
+     */
+    public function seachtByTag($fieldList, $fieldTag)
+    {
+        //====================================================================//
+        // Safety Checks
+        if (!count($fieldList)) {
+            return false;
+        }
+        if (empty($fieldTag)) {
+            return false;
+        }
+        //====================================================================//
+        // Walk Through List and select by Tag
+        foreach ($fieldList as $field) {
+            if ($field["tag"] == $fieldTag) {
+                return $field;
+            }
+        }
+
+        return false;
+    }
+    /**
+     * @abstract   Seach for a Field by id
+     *
+     * @param   array       $fieldList      Array Of Field definition
+     * @param   string      $fieldId        Field Identifier
+     *
+     * @return  ArrayObject|false
+     */
+    public function seachtById($fieldList, $fieldId)
+    {
+        //====================================================================//
+        // Safety Checks
+        if (!count($fieldList)) {
+            return false;
+        }
+        if (empty($fieldId)) {
+            return false;
+        }
+        //====================================================================//
+        // Walk Through List and select by Tag
+        foreach ($fieldList as $field) {
+            if ($field["id"] == $fieldId) {
+                return $field;
+            }
+        }
+
+        return false;
+    }
+    
+    /**
+     * @abstract   Update Current New Field set its unik tag for autolinking
+     *
+     * @param      string      $fieldTag       Field Unik Tag
+     *
+     * @return     $this
+     */
+    protected function setTag($fieldTag)
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {
+            Splash::log()->err("ErrFieldsNoNew");
+        } else {
+            //====================================================================//
+            // Update New Field structure
+            $this->new->tag     = md5($fieldTag);
+        }
+        
         return $this;
     }
     
@@ -559,6 +698,7 @@ class FieldsFactory
         if (!isset($this->new) || empty($this->new)) {
             return false;
         }
+
         return $this->validate($this->new);
     }
     
@@ -585,6 +725,7 @@ class FieldsFactory
         // Verify - Field Id No Spacial Chars
         if ($field->id !== preg_replace('/[^a-zA-Z0-9-_@]/u', '', $field->id)) {
             Splash::log()->war("ErrFieldsInvalidId", $field->id);
+
             return false;
         }
         //====================================================================//
@@ -621,96 +762,15 @@ class FieldsFactory
         //====================================================================//
         // Validate New Field
         if (!$this->verify()) {
-            unset($this->new);
+            $this->new = null;
+
             return false;
         }
         //====================================================================//
         // Insert Field List
         $this->fields[] = $this->new;
-        unset($this->new);
+        $this->new = null;
         
         return true;
-    }
-    
-    /**
-     * @abstract   Save Current New Field in list & Clean current new field
-     *
-     * @return     ArrayObject[]|false
-     */
-    public function publish()
-    {
-        //====================================================================//
-        // Commit Last Created if not already done
-        if (!empty($this->new)) {
-            $this->commit();
-        }
-        //====================================================================//
-        // Safety Checks
-        if (empty($this->fields)) {
-            return Splash::log()->err("ErrFieldsNoList");
-        //====================================================================//
-        // Return fields List
-        } else {
-            $buffer = $this->fields;
-            unset($this->fields);
-            return $buffer;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * @abstract   Seach for a Field by unik tag
-     *
-     * @param   array       $fieldList      Array Of Field definition
-     * @param   string      $fieldTag       Field Unik Tag
-     *
-     * @return  ArrayObject|false
-     */
-    public function seachtByTag($fieldList, $fieldTag)
-    {
-        //====================================================================//
-        // Safety Checks
-        if (!count($fieldList)) {
-            return false;
-        }
-        if (empty($fieldTag)) {
-            return false;
-        }
-        //====================================================================//
-        // Walk Through List and select by Tag
-        foreach ($fieldList as $field) {
-            if ($field["tag"] == $fieldTag) {
-                return $field;
-            }
-        }
-        return false;
-    }
-    /**
-     * @abstract   Seach for a Field by id
-     *
-     * @param   array       $fieldList      Array Of Field definition
-     * @param   string      $fieldId        Field Identifier
-     *
-     * @return  ArrayObject|false
-     */
-    public function seachtById($fieldList, $fieldId)
-    {
-        //====================================================================//
-        // Safety Checks
-        if (!count($fieldList)) {
-            return false;
-        }
-        if (empty($fieldId)) {
-            return false;
-        }
-        //====================================================================//
-        // Walk Through List and select by Tag
-        foreach ($fieldList as $field) {
-            if ($field["id"] == $fieldId) {
-                return $field;
-            }
-        }
-        return false;
     }
 }

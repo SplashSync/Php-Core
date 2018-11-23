@@ -1,11 +1,24 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Traits;
 
-use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
-use PHPUnit\Framework\TestCase;
 use ArrayObject;
+use PHPUnit\Framework\TestCase;
 use Splash\Tests\Tools\Fields\FieldInterface;
+use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
 
 /**
  * @abstract    Splash Test Tools - Objects Data Management
@@ -14,12 +27,11 @@ use Splash\Tests\Tools\Fields\FieldInterface;
  */
 trait ObjectsDataTrait
 {
-        
     /**
      * @abstract    Check Two Data Blocks Have Similar Data
      *
-     * @param   ArrayObject|array   $block1             Raw Data to Compare
-     * @param   ArrayObject|array   $block2             Raw Data to Compare
+     * @param   array|ArrayObject   $block1             Raw Data to Compare
+     * @param   array|ArrayObject   $block2             Raw Data to Compare
      * @param   TestCase  $testController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
      * @param   string  $comment            Comment on this Test
      *
@@ -53,6 +65,7 @@ trait ObjectsDataTrait
         // If Test Controller Given
         if ($testController && ($testController instanceof TestCase)) {
             $testController->assertEquals($block1, $block2, (string) $comment);
+
             return true;
         }
             
@@ -83,7 +96,6 @@ trait ObjectsDataTrait
      */
     public function compareDataBlocks($fields, $block1, $block2, $comment = null)
     {
-
         //====================================================================//
         // For Each Object Fields
         foreach ($fields as $field) {
@@ -119,7 +131,7 @@ trait ObjectsDataTrait
                 
             //====================================================================//
             // If Compare Failled => Return Fail Code
-            if ($result !== true) {
+            if (true !== $result) {
                 return $result;
             }
         }
@@ -139,7 +151,6 @@ trait ObjectsDataTrait
      */
     private function compareField($fieldType, $block1, $block2, $comment = null)
     {
-        
         //====================================================================//
         // Build Full ClassName
         if (ObjectId::decodeIdField($fieldType)) {
@@ -210,7 +221,7 @@ trait ObjectsDataTrait
         
         //====================================================================//
         // Verify Data Count is similar
-        $this->assertEquals(
+        $this->assertSame(
             count($list1),
             count($list2),
             "Source and Target List Data have different number of Items "
@@ -244,7 +255,7 @@ trait ObjectsDataTrait
             //====================================================================//
             // Compare Items
             $result = $this->compareField($fieldType, $item1[$fieldName], $item2[$fieldName], $comment);
-            if ($result !== true) {
+            if (true !== $result) {
                 return $result;
             }
         }

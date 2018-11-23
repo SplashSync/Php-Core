@@ -1,19 +1,17 @@
 <?php
-/**
- * This file is part of SplashSync Project.
+
+/*
+ *  This file is part of SplashSync Project.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- *  @author    Splash Sync <www.splashsync.com>
- *  @copyright 2015-2017 Splash Sync
- *  @license   GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
- *
- **/
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace   Splash\Models\Objects;
 
@@ -22,7 +20,6 @@ namespace   Splash\Models\Objects;
  */
 trait UpdateFlagTrait
 {
-    
     /**
      * Set Operations Updated Flag
      *
@@ -57,6 +54,7 @@ trait UpdateFlagTrait
         } else {
             $this->update   =   true;
         }
+
         return $this;
     }
 
@@ -72,6 +70,7 @@ trait UpdateFlagTrait
         } else {
             $this->update   =   false;
         }
+
         return $this;
     }
     
@@ -84,9 +83,9 @@ trait UpdateFlagTrait
     {
         if (self::isCustom($custom)) {
             return isset($this->custom[$custom]) ? $this->custom[$custom] : false;
-        } else {
-            return $this->update;
         }
+  
+        return $this->update;
     }
     
     /**
@@ -96,12 +95,13 @@ trait UpdateFlagTrait
      */
     private function isCustom($custom)
     {
-        if ($custom == "Object") {
+        if ("Object" == $custom) {
             return false;
         }
         if (is_null($custom) || !is_scalar($custom) || empty($custom)) {
             return false;
         }
+
         return true;
     }
 }

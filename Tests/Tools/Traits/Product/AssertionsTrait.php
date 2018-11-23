@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\Tools\Traits\Product;
 
 /**
@@ -9,7 +22,6 @@ namespace Splash\Tests\Tools\Traits\Product;
  */
 trait AssertionsTrait
 {
-    
     //==============================================================================
     //      SPLASH PRODUCT SPECIFIC ASSERTIONS
     //==============================================================================
@@ -21,10 +33,12 @@ trait AssertionsTrait
      */
     public function assertIsProductType($objectType)
     {
-        if ($objectType != "Product") {
+        if ("Product" != $objectType) {
             $this->assertTrue(true);
+
             return false;
         }
+
         return true;
     }
     
@@ -39,7 +53,12 @@ trait AssertionsTrait
         $comment    =   "Product Name with Options";
         $this->assertFieldIsDefined("http://schema.org/Product", "name", $comment);
         $this->assertFieldIsRead("http://schema.org/Product", "name", $comment);
-        $this->assertFieldHasFormat("http://schema.org/Product", "name", [SPL_T_VARCHAR, SPL_T_MVARCHAR], $comment);
+        $this->assertFieldHasFormat(
+            "http://schema.org/Product",
+            "name",
+            array(SPL_T_VARCHAR, SPL_T_MVARCHAR),
+            $comment
+        );
         
         //====================================================================//
         //   Verify Product Base Name
@@ -59,7 +78,7 @@ trait AssertionsTrait
             $this->assertFieldHasFormat(
                 "http://schema.org/Product",
                 "alternateName",
-                [SPL_T_VARCHAR, SPL_T_MVARCHAR],
+                array(SPL_T_VARCHAR, SPL_T_MVARCHAR),
                 $baseComment
             );
             
@@ -83,7 +102,7 @@ trait AssertionsTrait
         $this->assertFieldHasFormat(
             "http://schema.org/Product",
             "description",
-            [SPL_T_VARCHAR, SPL_T_MVARCHAR],
+            array(SPL_T_VARCHAR, SPL_T_MVARCHAR),
             $comment
         );
         $this->assertFieldIsRead(
@@ -103,7 +122,7 @@ trait AssertionsTrait
         $this->assertFieldHasFormat(
             "http://schema.org/Product",
             "articleBody",
-            [SPL_T_TEXT, SPL_T_MTEXT],
+            array(SPL_T_TEXT, SPL_T_MTEXT),
             $comment
         );
     }
@@ -115,7 +134,7 @@ trait AssertionsTrait
     public function assertValidProductFlags()
     {
         $itemProp   =  "http://schema.org/Product";
-        $formats    =   [SPL_T_BOOL];
+        $formats    =   array(SPL_T_BOOL);
         
         //====================================================================//
         //   Enabled Flag
@@ -144,7 +163,7 @@ trait AssertionsTrait
     public function assertValidProductPrices()
     {
         $itemProp   =  "http://schema.org/Product";
-        $formats    =   [SPL_T_PRICE];
+        $formats    =   array(SPL_T_PRICE);
         
         //====================================================================//
         //   Main Customer Price
@@ -166,11 +185,11 @@ trait AssertionsTrait
     public function assertValidProductShipping()
     {
         $itemProp   =  "http://schema.org/Product";
-        $formats    =   [SPL_T_DOUBLE];
+        $formats    =   array(SPL_T_DOUBLE);
         
         //====================================================================//
         //   Verify All Dimensions Fields
-        $fields     =  ["width", "depth", "height", "surface", "volume", "weight"];
+        $fields     =  array("width", "depth", "height", "surface", "volume", "weight");
         foreach ($fields as $field) {
             $this->assertFieldHasFormat($itemProp, $field, $formats, "Product " . ucwords($field));
             $this->assertFieldIsRead($itemProp, $field, "Product " . ucwords($field));
@@ -196,28 +215,28 @@ trait AssertionsTrait
         $comment    =   "Product Images List";
         $this->assertFieldIsDefined($itemProp, "image", $comment);
         $this->assertFieldIsRead($itemProp, "image", $comment);
-        $this->assertFieldHasFormat($itemProp, "image", [SPL_T_IMG . "@" . SPL_T_LIST], $comment);
+        $this->assertFieldHasFormat($itemProp, "image", array(SPL_T_IMG . "@" . SPL_T_LIST), $comment);
         
         //====================================================================//
         //   Verify Cover Flag
         $coverComment   =   "Product Image is Cover Flag";
         $this->assertFieldIsDefined($itemProp, "isCover", $coverComment);
         $this->assertFieldIsRead($itemProp, "isCover", $coverComment);
-        $this->assertFieldHasFormat($itemProp, "isCover", [SPL_T_BOOL . "@" . SPL_T_LIST], $coverComment);
+        $this->assertFieldHasFormat($itemProp, "isCover", array(SPL_T_BOOL . "@" . SPL_T_LIST), $coverComment);
         
         //====================================================================//
         //   Verify Visible Flag
         $enComment      =   "Product Image is Visible Flag";
         $this->assertFieldIsDefined($itemProp, "isVisibleImage", $enComment);
         $this->assertFieldIsRead($itemProp, "isVisibleImage", $enComment);
-        $this->assertFieldHasFormat($itemProp, "isVisibleImage", [SPL_T_BOOL . "@" . SPL_T_LIST], $enComment);
+        $this->assertFieldHasFormat($itemProp, "isVisibleImage", array(SPL_T_BOOL . "@" . SPL_T_LIST), $enComment);
         
         //====================================================================//
         //   Verify Image Position
         $posComment     =   "Product Image Position";
         $this->assertFieldIsDefined($itemProp, "positionImage", $posComment);
         $this->assertFieldIsRead($itemProp, "positionImage", $posComment);
-        $this->assertFieldHasFormat($itemProp, "positionImage", [SPL_T_INT . "@" . SPL_T_LIST], $posComment);
+        $this->assertFieldHasFormat($itemProp, "positionImage", array(SPL_T_INT . "@" . SPL_T_LIST), $posComment);
         
         //====================================================================//
         //   Write Verifications
@@ -241,27 +260,27 @@ trait AssertionsTrait
         if (!$variantCode) {
             return;
         }
-        $formats    =   [
+        $formats    =   array(
             SPL_T_VARCHAR . "@" . SPL_T_LIST,
             SPL_T_MVARCHAR . "@" . SPL_T_LIST
-        ];
+        );
 
         //====================================================================//
         //   Verify Attributes Code is Not Multilang
         $this->assertFieldHasFormat(
             $itemProp,
             "VariantAttributeCode",
-            [SPL_T_VARCHAR . "@" . SPL_T_LIST],
+            array(SPL_T_VARCHAR . "@" . SPL_T_LIST),
             "Product Variant Attribute Code"
         );
         
         //====================================================================//
         //   Verify Attributes Fields
-        $fields     =  [
+        $fields     =  array(
             "VariantAttributeCode"  => "Variant Attribute Code",
             "VariantAttributeName"  => "Variant Attribute Name",
             "VariantAttributeValue" => "Variant Attribute Value",
-            ];
+        );
         foreach ($fields as $fieldId => $fieldName) {
             //====================================================================//
             //   Common Read Verifications

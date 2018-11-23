@@ -1,28 +1,27 @@
 <?php
-/*
- * This file is part of SplashSync Project.
- *
- * Copyright (C) Splash Sync <www.splashsync.com>
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace   Splash\Components;
 
 use ArrayObject;
 use Exception;
 use Splash\Core\SplashCore      as Splash;
-
 use Splash\Models\LocalClassInterface;
 use Splash\Models\Objects\ObjectInterface;
-use Splash\Models\Widgets\WidgetInterface;
 use Splash\Models\ObjectsProviderInterface;
+use Splash\Models\Widgets\WidgetInterface;
 use Splash\Models\WidgetsProviderInterface;
 
 /**
@@ -50,13 +49,13 @@ class Validator
     //====================================================================//
 
     /**
-    *   @abstract   Verify Local Core Class Exists & Is Valid
-    *
+     *   @abstract   Verify Local Core Class Exists & Is Valid
+     *
      * @return  bool
-    */
+     */
     public function isValidLocalClass()
     {
-        $className = SPLASH_CLASS_PREFIX . "\Local";
+        $className = SPLASH_CLASS_PREFIX . "\\Local";
         //====================================================================//
         // Verify Results in Cache
         if (isset($this->ValidLocalClass[$className])) {
@@ -67,7 +66,7 @@ class Validator
 
         //====================================================================//
         // Verify Splash Local Core Class Exists
-        if (class_exists($className) == false) {
+        if (false == class_exists($className)) {
             return Splash::log()->err(Splash::trans("ErrLocalClass", $className));
         }
         
@@ -80,6 +79,7 @@ class Validator
             }
         } catch (Exception $exc) {
             echo $exc->getMessage();
+
             return Splash::log()->err($exc->getMessage());
         }
         
@@ -89,10 +89,11 @@ class Validator
     }
     
     /**
-    *   @abstract   Verify Local Core Parameters are Valid
-    *
+     *   @abstract   Verify Local Core Parameters are Valid
+     *
+     * @param mixed $input
      * @return  bool
-    */
+     */
     public function isValidLocalParameterArray($input)
     {
         //====================================================================//
@@ -116,10 +117,11 @@ class Validator
     }
 
     /**
-    *   @abstract   Verify Local Test Parameters are Valid
-    *
+     *   @abstract   Verify Local Test Parameters are Valid
+     *
+     * @param mixed $input
      * @return  bool
-    */
+     */
     public function isValidLocalTestParameterArray($input)
     {
         //====================================================================//
@@ -127,14 +129,15 @@ class Validator
         if (!is_array($input)) {
             return Splash::log()->err(Splash::trans("ErrorCfgNotAnArray", get_class($input)));
         }
+
         return true;
     }
     
     /**
-    *   @abstract   Verify Webserver Informations are Valid
-    *
+     *   @abstract   Verify Webserver Informations are Valid
+     *
      * @return  bool
-    */
+     */
     public function isValidServerInfos()
     {
         $infos     = Splash::ws()->getServerInfos();
@@ -155,11 +158,13 @@ class Validator
         //====================================================================//
         if (!isset($infos['ServerHost']) || empty($infos['ServerHost'])) {
             Splash::log()->err(Splash::trans("ErrEmptyServerHost"));
+
             return Splash::log()->err(Splash::trans("ErrEmptyServerHostDesc"));
         }
 
         if (!isset($infos['ServerPath']) || empty($infos['ServerPath'])) {
             Splash::log()->err(Splash::trans("ErrEmptyServerPath"));
+
             return Splash::log()->err(Splash::trans("ErrEmptyServerPathDesc"));
         }
         
@@ -173,16 +178,17 @@ class Validator
     
     /**
      * @abstract   Verify Webserver is a LocalHost
+     * @param mixed $infos
      */
     public function isLocalInstallation($infos)
     {
-        if (strpos($infos['ServerHost'], "localhost") !== false) {
+        if (false !== strpos($infos['ServerHost'], "localhost")) {
             Splash::log()->war(Splash::trans("WarIsLocalhostServer"));
-        } elseif (strpos($infos['ServerIP'], "127.0.0.1") !== false) {
+        } elseif (false !== strpos($infos['ServerIP'], "127.0.0.1")) {
             Splash::log()->war(Splash::trans("WarIsLocalhostServer"));
         }
         
-        if (Splash::input("REQUEST_SCHEME") === "https") {
+        if ("https" === Splash::input("REQUEST_SCHEME")) {
             Splash::log()->war(Splash::trans("WarIsHttpsServer"));
         }
     }
@@ -229,72 +235,8 @@ class Validator
         }
         
         $this->ValidLocalObject[$objectType] = true;
-        return true;
-    }
 
-    /**
-     *      @abstract     Verify a Local Object File is Valid.
-     *      @param        string    $objectType     Object Type Name
-     * @return  bool
-     */
-    private function isValidObjectFile($objectType)
-    {
-        //====================================================================//
-        // Verify Local Path Exist
-        if ($this->isValidLocalPath() == false) {
-            return false;
-        }
-        
-        //====================================================================//
-        // Verify Object File Exist
-        $filename = Splash::getLocalPath() . "/Objects/" . $objectType . ".php";
-        if (file_exists($filename) == false) {
-            $msg = "Local Object File Not Found.</br>";
-            $msg.= "Current Filename : " . $filename . "";
-            return Splash::log()->err($msg);
-        }
-        
         return true;
-    }
-    
-    /**
-     *      @abstract     Verify Availability of a Local Object Class.
-     *      @param        string    $objectType     Object Type Name
-     *      @return       bool
-     */
-    private function isValidObjectClass($objectType)
-    {
-        //====================================================================//
-        // Check if Object Manager is Overriden
-        if (Splash::local() instanceof ObjectsProviderInterface) {
-            //====================================================================//
-            // Retrieve Object Manager ClassName
-            $className = get_class(Splash::local()->object($objectType));
-        } else {
-            $className = SPLASH_CLASS_PREFIX . "\Objects\\" . $objectType;
-        }
-        //====================================================================//
-        // Verify Splash Local Core Class Exists
-        if (class_exists($className) == false) {
-            return Splash::log()->err(Splash::trans("ErrLocalClass", $objectType));
-        }
-        
-        //====================================================================//
-        // Verify Local Object Core Class Functions Exists
-        //====================================================================//
-        
-        //====================================================================//
-        // Read Object Disable Flag
-        if ($this->isValidLocalFunction("getIsDisabled", $className) == false) {
-            return false;
-        }
-        if ($className::getIsDisabled()) {
-            return false;
-        }
-        
-        //====================================================================//
-        // Verify Local Object Class Implements ObjectInterface
-        return is_subclass_of($className, ObjectInterface::class);
     }
     
     /**
@@ -306,7 +248,7 @@ class Validator
     {
         //====================================================================//
         // Verify Type Name is in List
-        return in_array($objectType, Splash::objects());
+        return in_array($objectType, Splash::objects(), true);
     }
 
     //====================================================================//
@@ -339,6 +281,7 @@ class Validator
         if (is_numeric($objectId) && ($objectId < 0)) {
             return Splash::log()->err("ErrNegObjectId");
         }
+
         return Splash::log()->deb("MsgObjectIdOk");
     }
     
@@ -361,6 +304,7 @@ class Validator
         if (empty($fieldsList)) {
             return Splash::log()->err("ErrEmptyFieldList");
         }
+
         return Splash::log()->deb("MsgFieldListOk");
     }
     
@@ -405,73 +349,8 @@ class Validator
             return false;
         }
         $this->ValidLocalWidget[$widgetType] = true;
-        return true;
-    }
-    
-    /**
-     *      @abstract     Verify a Local Widget File is Valid.
-     *      @param        string    $widgetType     Widget Type Name
-     * @return  bool
-     */
-    private function isValidWidgetFile($widgetType)
-    {
-        //====================================================================//
-        // Verify Local Path Exist
-        if ($this->isValidLocalPath() == false) {
-            return false;
-        }
-        //====================================================================//
-        // Verify Object File Exist
-        $filename = Splash::getLocalPath() . "/Widgets/" . $widgetType . ".php";
-        if (file_exists($filename) == false) {
-            $msg = "Local Widget File Not Found.</br>";
-            $msg.= "Current Filename : " . $filename . "";
-            return Splash::log()->err($msg);
-        }
-        return true;
-    }
-    
-    /**
-     * @abstract     Verify Availability of a Local Widget Class.
-     * @param   string      $widgetType         Widget Type Name
-     * @return  bool
-     */
-    private function isValidWidgetClass($widgetType)
-    {
-        //====================================================================//
-        // Check if Widget Manager is Overriden
-        if (Splash::local() instanceof WidgetsProviderInterface) {
-            //====================================================================//
-            // Retrieve Widget Manager ClassName
-            $className = get_class(Splash::local()->widget($widgetType));
-        } else {
-            $className = SPLASH_CLASS_PREFIX . "\Widgets\\" .$widgetType;
-        }
 
-        //====================================================================//
-        // Verify Splash Local Core Class Exists
-        if (class_exists($className) == false) {
-            return Splash::log()->err(Splash::trans("ErrLocalClass", $widgetType));
-        }
-        
-        //====================================================================//
-        // Verify Local Widget Core Class Functions Exists
-        //====================================================================//
-        
-        //====================================================================//
-        // Read Object Disable Flag
-        if ($this->isValidLocalFunction("getIsDisabled", $className) == false) {
-            $this->ValidLocalWidget[$widgetType] = false;
-            return false;
-        }
-        if ($className::getIsDisabled()) {
-            $this->ValidLocalWidget[$widgetType] = false;
-            return false;
-        }
-        
-        //====================================================================//
-        // Verify Local Object Class Implements WidgetInterface
-        return is_subclass_of($className, WidgetInterface::class);
+        return true;
     }
     
     //====================================================================//
@@ -494,11 +373,13 @@ class Validator
             // Verify Local Path Exist
             if (is_null($path) || !is_dir($path)) {
                 $this->ValidLocalPath = false;
+
                 return Splash::log()->err(Splash::trans("ErrLocalPath", (string) $path));
             }
             
             $this->ValidLocalPath = true;
         }
+
         return $this->ValidLocalPath;
     }
     
@@ -516,7 +397,7 @@ class Validator
         //====================================================================//
         // Prefill ClassName
         if (is_null($className)) {
-            $className = SPLASH_CLASS_PREFIX . "\Local";
+            $className = SPLASH_CLASS_PREFIX . "\\Local";
         }
         //====================================================================//
         // Verify Result in Cache
@@ -526,8 +407,9 @@ class Validator
 
         //====================================================================//
         // Verify Class Method Exists
-        if (method_exists($className, $method) == false) {
+        if (false == method_exists($className, $method)) {
             $this->ValidLocalFunctions[$className][$method] = false;
+
             return $required?Splash::log()->err(Splash::trans("ErrLocalFunction", $className, $method)):false;
         }
         $this->ValidLocalFunctions[$className][$method] = true;
@@ -553,6 +435,7 @@ class Validator
                 "PHP : Your PHP version is too low to use Splash (" . PHP_VERSION . "). PHP >5.6 is Requiered."
             );
         }
+
         return Splash::log()->msg(
             "PHP : Your PHP version is compatible with Splash (" . PHP_VERSION . ")"
         );
@@ -573,6 +456,7 @@ class Validator
                 );
             }
         }
+
         return Splash::log()->msg(
             "PHP : Required PHP Extension are installed (" . implode(', ', $extensions) . ")"
         );
@@ -585,13 +469,150 @@ class Validator
      */
     public function isValidSOAPMethod()
     {
-        if (!in_array(Splash::configuration()->WsMethod, ["SOAP", "NuSOAP"])) {
+        if (!in_array(Splash::configuration()->WsMethod, array("SOAP", "NuSOAP"), true)) {
             return Splash::log()->err(
                 "Config : Your selected an unknown SOAP Method (" . Splash::configuration()->WsMethod . ")."
             );
         }
+
         return Splash::log()->msg(
             "Config : SOAP Method is Ok (" . Splash::configuration()->WsMethod . ")."
         );
+    }
+
+    /**
+     *      @abstract     Verify a Local Object File is Valid.
+     *      @param        string    $objectType     Object Type Name
+     * @return  bool
+     */
+    private function isValidObjectFile($objectType)
+    {
+        //====================================================================//
+        // Verify Local Path Exist
+        if (false == $this->isValidLocalPath()) {
+            return false;
+        }
+        
+        //====================================================================//
+        // Verify Object File Exist
+        $filename = Splash::getLocalPath() . "/Objects/" . $objectType . ".php";
+        if (false == file_exists($filename)) {
+            $msg = "Local Object File Not Found.</br>";
+            $msg.= "Current Filename : " . $filename . "";
+
+            return Splash::log()->err($msg);
+        }
+        
+        return true;
+    }
+    
+    /**
+     *      @abstract     Verify Availability of a Local Object Class.
+     *      @param        string    $objectType     Object Type Name
+     *      @return       bool
+     */
+    private function isValidObjectClass($objectType)
+    {
+        //====================================================================//
+        // Check if Object Manager is Overriden
+        if (Splash::local() instanceof ObjectsProviderInterface) {
+            //====================================================================//
+            // Retrieve Object Manager ClassName
+            $className = get_class(Splash::local()->object($objectType));
+        } else {
+            $className = SPLASH_CLASS_PREFIX . "\\Objects\\" . $objectType;
+        }
+        //====================================================================//
+        // Verify Splash Local Core Class Exists
+        if (false == class_exists($className)) {
+            return Splash::log()->err(Splash::trans("ErrLocalClass", $objectType));
+        }
+        
+        //====================================================================//
+        // Verify Local Object Core Class Functions Exists
+        //====================================================================//
+        
+        //====================================================================//
+        // Read Object Disable Flag
+        if (false == $this->isValidLocalFunction("getIsDisabled", $className)) {
+            return false;
+        }
+        if ($className::getIsDisabled()) {
+            return false;
+        }
+        
+        //====================================================================//
+        // Verify Local Object Class Implements ObjectInterface
+        return is_subclass_of($className, ObjectInterface::class);
+    }
+    
+    /**
+     *      @abstract     Verify a Local Widget File is Valid.
+     *      @param        string    $widgetType     Widget Type Name
+     * @return  bool
+     */
+    private function isValidWidgetFile($widgetType)
+    {
+        //====================================================================//
+        // Verify Local Path Exist
+        if (false == $this->isValidLocalPath()) {
+            return false;
+        }
+        //====================================================================//
+        // Verify Object File Exist
+        $filename = Splash::getLocalPath() . "/Widgets/" . $widgetType . ".php";
+        if (false == file_exists($filename)) {
+            $msg = "Local Widget File Not Found.</br>";
+            $msg.= "Current Filename : " . $filename . "";
+
+            return Splash::log()->err($msg);
+        }
+
+        return true;
+    }
+    
+    /**
+     * @abstract     Verify Availability of a Local Widget Class.
+     * @param   string      $widgetType         Widget Type Name
+     * @return  bool
+     */
+    private function isValidWidgetClass($widgetType)
+    {
+        //====================================================================//
+        // Check if Widget Manager is Overriden
+        if (Splash::local() instanceof WidgetsProviderInterface) {
+            //====================================================================//
+            // Retrieve Widget Manager ClassName
+            $className = get_class(Splash::local()->widget($widgetType));
+        } else {
+            $className = SPLASH_CLASS_PREFIX . "\\Widgets\\" .$widgetType;
+        }
+
+        //====================================================================//
+        // Verify Splash Local Core Class Exists
+        if (false == class_exists($className)) {
+            return Splash::log()->err(Splash::trans("ErrLocalClass", $widgetType));
+        }
+        
+        //====================================================================//
+        // Verify Local Widget Core Class Functions Exists
+        //====================================================================//
+        
+        //====================================================================//
+        // Read Object Disable Flag
+        if (false == $this->isValidLocalFunction("getIsDisabled", $className)) {
+            $this->ValidLocalWidget[$widgetType] = false;
+
+            return false;
+        }
+        if ($className::getIsDisabled()) {
+            $this->ValidLocalWidget[$widgetType] = false;
+
+            return false;
+        }
+        
+        //====================================================================//
+        // Verify Local Object Class Implements WidgetInterface
+        return is_subclass_of($className, WidgetInterface::class);
     }
 }

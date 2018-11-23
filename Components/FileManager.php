@@ -1,15 +1,16 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 /**
@@ -19,8 +20,8 @@
 
 namespace   Splash\Components;
 
-use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
+use Splash\Core\SplashCore      as Splash;
 
 //====================================================================//
 //   INCLUDES
@@ -32,14 +33,13 @@ use ArrayObject;
 
 class FileManager
 {
-
     /**
      * @abstract   Read a file from Splash Server
      *
      * @param      string      $file       File Identifier (Given by Splash Server)
      * @param      string      $md5        Local FileName
      *
-     * @return     false|array       $file       False if not found, else file contents array
+     * @return     array|false       $file       False if not found, else file contents array
      */
     public function getFile($file = null, $md5 = null)
     {
@@ -54,11 +54,13 @@ class FileManager
             $filePath   = dirname(__DIR__) . "/Resources/files/"  . $file;
             if (is_file($filePath)) {
                 $file   =  $this->readFile($filePath, $md5);
+
                 return is_array($file) ? $file : false;
             }
             $imgPath    = dirname(__DIR__) . "/Resources/img/"  . $file;
             if (is_file($imgPath)) {
                 $file   =  $this->readFile($imgPath, $md5);
+
                 return is_array($file) ? $file : false;
             }
         }
@@ -87,7 +89,7 @@ class FileManager
      *  @param      string      $path       Full Path to Local File
      *  @param      string      $md5        Local File Checksum
      *
-     *  @return     bool|array       $infos      0 if not found, else file informations array
+     *  @return     array|bool       $infos      0 if not found, else file informations array
      *
      *              File Information Array Structure
      *              $infos["owner"]     =>  File Owner Name (Human Readable);
@@ -97,7 +99,6 @@ class FileManager
      *              $infos["modified"]  =>  Last Modification Date (Human Readable);
      *              $infos["md5"]       =>  File MD5 Checksum
      *              $infos["size"]      =>  File Size in bytes
-     *
      *
      *  @remark     For all file access functions, File Checksumm is used to ensure
      *              the server who send request was allowed by local server to read
@@ -146,6 +147,7 @@ class FileManager
         $infos["modified"]  = date("F d Y H:i:s.", (int) $infos["mtime"]);
         $infos["md5"]       = md5_file($path);
         $infos["size"]      = filesize($path);
+
         return $infos;
     }
 
@@ -155,7 +157,7 @@ class FileManager
      *  @param      string      $path       Full Path to Local File
      *  @param      string      $md5        Local File Checksum
      *
-     *  @return     bool|array       $file       0 if not found, else file contents array
+     *  @return     array|bool       $file       0 if not found, else file contents array
      *
      *              File Information Array Structure
      *              $infos["filename"]  =>  File Name
@@ -201,7 +203,7 @@ class FileManager
         //====================================================================//
         // Open File
         $filehandle = fopen($path, "rb");
-        if ($filehandle == false) {
+        if (false == $filehandle) {
             return Splash::log()->err("ErrFileRead", __FUNCTION__, $path);
         }
         
@@ -214,6 +216,7 @@ class FileManager
         $infos["md5"]       = md5_file($path);
         $infos["size"]      = filesize($path);
         Splash::log()->deb("MsgFileRead", __FUNCTION__, basename($path));
+
         return $infos;
     }
 
@@ -298,13 +301,13 @@ class FileManager
         //====================================================================//
         // Open File
         $filehandle = fopen($fullpath, 'w');
-        if ($filehandle == false) {
+        if (false == $filehandle) {
             return Splash::log()->war("ErrFileOpen", __FUNCTION__, $fullpath);
         }
         
         //====================================================================//
         // Write file
-        fwrite($filehandle, (string)  base64_decode((string) $raw));
+        fwrite($filehandle, (string)  base64_decode((string) $raw, true));
         fclose($filehandle);
         
         //====================================================================//
@@ -312,25 +315,7 @@ class FileManager
         if ($md5 !== md5_file($fullpath)) {
             return Splash::log()->err("ErrFileWrite", __FUNCTION__, $file);
         }
-        return true;
-    }
 
-    private function isWriteValidInputs($dir = null, $file = null, $md5 = null, $raw = null)
-    {
-        //====================================================================//
-        // Safety Checks
-        if (empty($dir)) {
-            return Splash::log()->err("ErrFileDirMissing", __FUNCTION__);
-        }
-        if (empty($file)) {
-            return Splash::log()->err("ErrFileFileMissing", __FUNCTION__);
-        }
-        if (empty($md5)) {
-            return Splash::log()->err("ErrFileMd5Missing", __FUNCTION__);
-        }
-        if (empty($raw)) {
-            return Splash::log()->err("ErrFileRawMissing", __FUNCTION__);
-        }
         return true;
     }
     
@@ -375,9 +360,30 @@ class FileManager
             if (unlink($fPath)) {
                 return Splash::log()->msg("MsgFileDeleted", __FUNCTION__, basename($fPath));
             }
+
             return Splash::log()->err("ErrFileDeleted", __FUNCTION__, basename($fPath));
         }
         
+        return true;
+    }
+
+    private function isWriteValidInputs($dir = null, $file = null, $md5 = null, $raw = null)
+    {
+        //====================================================================//
+        // Safety Checks
+        if (empty($dir)) {
+            return Splash::log()->err("ErrFileDirMissing", __FUNCTION__);
+        }
+        if (empty($file)) {
+            return Splash::log()->err("ErrFileFileMissing", __FUNCTION__);
+        }
+        if (empty($md5)) {
+            return Splash::log()->err("ErrFileMd5Missing", __FUNCTION__);
+        }
+        if (empty($raw)) {
+            return Splash::log()->err("ErrFileRawMissing", __FUNCTION__);
+        }
+
         return true;
     }
 }

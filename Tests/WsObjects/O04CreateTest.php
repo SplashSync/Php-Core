@@ -1,8 +1,22 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\WsObjects;
 
-use Splash\Tests\Tools\ObjectsCase;
 use Splash\Client\Splash;
+use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * @abstract    Objects Test Suite - Object create Verification Verifications
@@ -11,9 +25,10 @@ use Splash\Client\Splash;
  */
 class O04CreateTest extends ObjectsCase
 {
-    
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromModule($testSequence, $objectType)
     {
@@ -22,7 +37,7 @@ class O04CreateTest extends ObjectsCase
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
-        if ($dummyData == false) {
+        if (false == $dummyData) {
             return true;
         }
         
@@ -37,6 +52,8 @@ class O04CreateTest extends ObjectsCase
 
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromService($testSequence, $objectType)
     {
@@ -45,7 +62,7 @@ class O04CreateTest extends ObjectsCase
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
-        if ($dummyData == false) {
+        if (false == $dummyData) {
             return true;
         }
         
@@ -55,7 +72,7 @@ class O04CreateTest extends ObjectsCase
             SPL_S_OBJECTS,
             SPL_F_SET,
             __METHOD__,
-            [ "id" => null, "type" => $objectType, "fields" => $dummyData]
+            array( "id" => null, "type" => $objectType, "fields" => $dummyData)
         );
         
         //====================================================================//
@@ -73,6 +90,7 @@ class O04CreateTest extends ObjectsCase
             return true;
         }
         $this->assertTrue(true, "Object Creation not Allowed, Test Skipped.");
+
         return false;
     }
 

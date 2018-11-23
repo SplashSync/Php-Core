@@ -1,24 +1,21 @@
 <?php
-/**
- * This file is part of SplashSync Project.
+
+/*
+ *  This file is part of SplashSync Project.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- *  @author    Splash Sync <www.splashsync.com>
- *  @copyright 2015-2017 Splash Sync
- *  @license   GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
- *
- **/
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace   Splash\Models\Helpers;
 
 use ArrayObject;
-
 use Splash\Core\SplashCore      as Splash;
 
 /**
@@ -29,7 +26,7 @@ class PricesHelper
     /**
      * @abstract   Build a new price field array
      *
-     * @param      double|null      $taxExcl        Price Without VAT (Or Null if Price Send with VAT)
+     * @param      null|double      $taxExcl        Price Without VAT (Or Null if Price Send with VAT)
      * @param      double      $vat            VAT percentile
      * @param      double      $taxIncl        Price With VAT
      * @param      string      $code           Price Currency Code
@@ -44,18 +41,22 @@ class PricesHelper
         // Safety Checks
         if (!is_double($taxExcl) && !is_double($taxIncl)) {
             Splash::log()->err("ErrPriceInvalid", __FUNCTION__);
+
             return "Error Invalid Price";
         }
         if (is_double($taxExcl) && is_double($taxIncl)) {
             Splash::log()->err("ErrPriceBothValues", __FUNCTION__);
+
             return "Error Too Much Input Values";
         }
         if (!is_double($vat)) {
             Splash::log()->err("ErrPriceNoVATValue", __FUNCTION__);
+
             return "Error Invalid VAT";
         }
         if (empty($code)) {
             Splash::log()->err("ErrPriceNoCurrCode", __FUNCTION__);
+
             return "Error no Currency Code";
         }
         //====================================================================//
@@ -72,6 +73,7 @@ class PricesHelper
             $price["tax"]   =    $taxIncl - $price["ht"];
             $price["ttc"]   =    $taxIncl;
         }
+
         return $price;
     }
     
@@ -95,6 +97,7 @@ class PricesHelper
             if (!self::isValid($price2)) {
                 Splash::log()->www(__FUNCTION__ . " Price 2", $price2);
             }
+
             return false;
         }
         //====================================================================//
@@ -178,6 +181,87 @@ class PricesHelper
     }
     
     /**
+     * @abstract   Extract Data from Price Array
+     *
+     * @param      array       $price          Price field definition Array
+     * @param      string      $key            Data Key
+     *
+     * @return     double|false
+     */
+    public static function extract($price, $key = "ht")
+    {
+        // Check Contents
+        if (!isset($price[$key])) {
+            return false;
+        }
+        if (!empty($price[$key]) && !is_numeric($price[$key])) {
+            return false;
+        }
+        // Return Result
+        return (double) $price[$key];
+    }
+    
+    /**
+     * @abstract   Extract Price without VAT from Price Array
+     *
+     * @param      array       $price          Price field definition Array
+     *
+     * @return     double|false
+     */
+    public static function taxExcluded($price)
+    {
+        return self::extract($price, 'ht');
+    }
+
+    /**
+     * @abstract   Extract Price with VAT from Price Array
+     *
+     * @param      array       $price          Price field definition Array
+     *
+     * @return     double|false
+     */
+    public static function taxIncluded($price)
+    {
+        return self::extract($price, 'ttc');
+    }
+        
+    /**
+     * @abstract   Extract Price with VAT from Price Array
+     *
+     * @param      array       $price          Price field definition Array
+     *
+     * @return     double|false
+     */
+    public static function taxPercent($price)
+    {
+        return self::extract($price, 'vat');
+    }
+    
+    /**
+     * @abstract   Extract Price VAT Ratio from Price Array
+     *
+     * @param      array       $price          Price field definition Array
+     *
+     * @return     double
+     */
+    public static function taxRatio($price)
+    {
+        return (double) self::extract($price, 'vat') / 100;
+    }
+    
+    /**
+     * @abstract   Extract Price Tax Amount from Price Array
+     *
+     * @param      array       $price          Price field definition Array
+     *
+     * @return     double|false
+     */
+    public static function taxAmount($price)
+    {
+        return self::extract($price, 'tax');
+    }
+    
+    /**
      * @abstract   Verify Price Array Amount Infos are Available
      *
      * @param      array|ArrayObject       $price          Price field definition Array
@@ -224,88 +308,7 @@ class PricesHelper
         if (!isset($price["name"])) {
             return false;
         }
-        return true;
-    }
-    
-    /**
-     * @abstract   Extract Data from Price Array
-     *
-     * @param      array       $price          Price field definition Array
-     * @param      string      $key            Data Key
-     *
-     * @return     false|double
-     */
-    public static function extract($price, $key = "ht")
-    {
-        // Check Contents
-        if (!isset($price[$key])) {
-            return false;
-        }
-        if (!empty($price[$key]) && !is_numeric($price[$key])) {
-            return false;
-        }
-        // Return Result
-        return (double) $price[$key];
-    }
-    
-    /**
-     * @abstract   Extract Price without VAT from Price Array
-     *
-     * @param      array       $price          Price field definition Array
-     *
-     * @return     false|double
-     */
-    public static function taxExcluded($price)
-    {
-        return self::extract($price, 'ht');
-    }
 
-    /**
-     * @abstract   Extract Price with VAT from Price Array
-     *
-     * @param      array       $price          Price field definition Array
-     *
-     * @return     false|double
-     */
-    public static function taxIncluded($price)
-    {
-        return self::extract($price, 'ttc');
-    }
-        
-    /**
-     * @abstract   Extract Price with VAT from Price Array
-     *
-     * @param      array       $price          Price field definition Array
-     *
-     * @return     false|double
-     */
-    public static function taxPercent($price)
-    {
-        return self::extract($price, 'vat');
-    }
-    
-    /**
-     * @abstract   Extract Price VAT Ratio from Price Array
-     *
-     * @param      array       $price          Price field definition Array
-     *
-     * @return     double
-     */
-    public static function taxRatio($price)
-    {
-        return (double) self::extract($price, 'vat') / 100;
-    }
-    
-    
-    /**
-     * @abstract   Extract Price Tax Amount from Price Array
-     *
-     * @param      array       $price          Price field definition Array
-     *
-     * @return     false|double
-     */
-    public static function taxAmount($price)
-    {
-        return self::extract($price, 'tax');
+        return true;
     }
 }

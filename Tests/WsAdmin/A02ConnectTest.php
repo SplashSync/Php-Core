@@ -1,11 +1,23 @@
 <?php
 
-namespace Splash\Tests\WsAdmin;
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
-use Splash\Tests\Tools\AbstractBaseCase;
+namespace Splash\Tests\WsAdmin;
 
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
+use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
  * @abstract    Admin Test Suite - Connect Client Verifications
@@ -30,6 +42,7 @@ class A02ConnectTest extends AbstractBaseCase
         if (!empty(Splash::input("SPLASH_TRAVIS"))) {
             //   Skip Test without Warnings
             $this->assertTrue(true);
+
             return;
         }
         //====================================================================//
@@ -87,7 +100,7 @@ class A02ConnectTest extends AbstractBaseCase
         //====================================================================//
         //   Prepare Request Data
         $wrongRequest       =   Splash::ws()->pack(array(true));
-        $this->assertNotEquals($request, $wrongRequest);
+        $this->assertNotSame($request, $wrongRequest);
         //====================================================================//
         //   Restore WebService Encryption Key
         Splash::reboot();

@@ -1,9 +1,23 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\WsObjects;
 
-use Splash\Tests\Tools\ObjectsCase;
-use Splash\Client\Splash;
 use ArrayObject;
+use Splash\Client\Splash;
+use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * @abstract    Objects Test Suite - Objects List Reading Verifications
@@ -12,10 +26,10 @@ use ArrayObject;
  */
 class O03ListTest extends ObjectsCase
 {
-    
-    
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromModule($testSequence, $objectType)
     {
@@ -36,6 +50,8 @@ class O03ListTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromObjectsService($testSequence, $objectType)
     {
@@ -43,7 +59,12 @@ class O03ListTest extends ObjectsCase
         
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $data = $this->genericAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__, [ "id" => null, "type" => $objectType]);
+        $data = $this->genericAction(
+            SPL_S_OBJECTS,
+            SPL_F_LIST,
+            __METHOD__,
+            array( "id" => null, "type" => $objectType)
+        );
         
         //====================================================================//
         //   Verify Response
@@ -68,7 +89,6 @@ class O03ListTest extends ObjectsCase
         $this->verifyAvailableFields($data, $objectType);
     }
     
-
     public function verifyAvailableFields($data, $objectType)
     {
         //====================================================================//
@@ -91,7 +111,6 @@ class O03ListTest extends ObjectsCase
                 $objectType . " List => Object Identifier (id) is not String convertible."
             );
 
-             
             //====================================================================//
             // Verify all "inlist" fields are available
             foreach ($fields as $field) {
@@ -142,7 +161,7 @@ class O03ListTest extends ObjectsCase
         //====================================================================//
         // Verify List Meta Informations
         unset($data["meta"]);
-        $this->assertEquals(
+        $this->assertSame(
             $meta["current"],
             count($data),
             $objectType . " List => Current Object Count is different from Given Meta['current'] count."

@@ -1,15 +1,16 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 /**
@@ -20,12 +21,9 @@
 namespace   Splash\Models;
 
 use ArrayObject;
-
-use Splash\Core\SplashCore      as Splash;
-
-use Splash\Components\FieldsFactory;
 use Splash\Components\BlocksFactory;
-
+use Splash\Components\FieldsFactory;
+use Splash\Core\SplashCore      as Splash;
 use Splash\Models\Widgets\DatesManagerTrait;
 
 //====================================================================//
@@ -52,6 +50,12 @@ abstract class WidgetBase
     const SIZE_M        = "col-sm-12 col-md-6 col-lg-6";
     const SIZE_L        = "col-sm-12 col-md-6 col-lg-8";
     const SIZE_XL       = "col-sm-12 col-md-12 col-lg-12";
+
+    //====================================================================//
+    // Define Standard Options for this Widget
+    // Override this array to change default options for your widget
+    public static $OPTIONS       = array(
+    );
     
     /**
      * @var FieldsFactory
@@ -84,16 +88,8 @@ abstract class WidgetBase
     protected static $ICO     =  "fa fa-info";
 
     //====================================================================//
-    // Define Standard Options for this Widget
-    // Override this array to change default options for your widget
-    public static $OPTIONS       = array(
-    );
-
-    
-    //====================================================================//
     // General Class Variables
     //====================================================================//
-    
     
     /**
      * Get Operations Output Buffer
@@ -103,7 +99,6 @@ abstract class WidgetBase
      * @var array
      */
     private $Out            = array();
-    
     
     //====================================================================//
     //  STATIC CLASS ACCESS
@@ -257,7 +252,7 @@ abstract class WidgetBase
         $maxsize = 0
     ) {
         return Splash::translator()
-                ->translate($key, $param1, $param2, $param3, $param4, $maxsize);
+            ->translate($key, $param1, $param2, $param3, $param4, $maxsize);
     }
 
     //====================================================================//
@@ -288,6 +283,7 @@ abstract class WidgetBase
     public function setTitle($text)
     {
         $this->Out["title"]     =   self::trans($text);
+
         return $this;
     }
     
@@ -301,6 +297,7 @@ abstract class WidgetBase
     public function setSubTitle($text)
     {
         $this->Out["subtitle"]     =   self::trans($text);
+
         return $this;
     }
     
@@ -314,6 +311,7 @@ abstract class WidgetBase
     public function setIcon($text)
     {
         $this->Out["icon"]     =   $text;
+
         return $this;
     }
     
@@ -327,6 +325,7 @@ abstract class WidgetBase
     public function setBlocks($blocks)
     {
         $this->Out["blocks"]     =   $blocks;
+
         return $this;
     }
     

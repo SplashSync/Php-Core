@@ -1,21 +1,22 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace   Splash\Router;
 
-use Splash\Core\SplashCore      as Splash;
 use ArrayObject;
+use Splash\Core\SplashCore      as Splash;
 
 /**
  * @abstract    Server Request Routiung Class, Execute/Route actions on Widgets Service Requests.
@@ -49,33 +50,34 @@ class Widgets
             //  READING OF SERVER WIDGETS LIST
             case SPL_F_WIDGET_LIST:
                 $response->data = Splash::widgets();
+
                 break;
-            
             //====================================================================//
             //  READING A WIDGET DEFINITION
             case SPL_F_WIDGET_DEFINITION:
                 $response->data = Splash::widget($task->params->type)->description();
+
                 break;
-                
             //====================================================================//
             //  READING A WIDGET CONTENTS
             case SPL_F_WIDGET_GET:
                 $response->data = Splash::widget($task->params->type)->get($task->params->params);
-                break;
 
-                
+                break;
             default:
                 Splash::log()->err(
                     "Info Router - Requested task was not found => " . $task->name . " (" . $task->desc . ")"
                 );
+
                 break;
         }
         
         //====================================================================//
         // Task results post treatment
-        if ($response->data != false) {
+        if (false != $response->data) {
             $response->result = true;
         }
+
         return $response;
     }
 

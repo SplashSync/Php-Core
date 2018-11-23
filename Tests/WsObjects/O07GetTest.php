@@ -1,9 +1,23 @@
 <?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Tests\WsObjects;
 
-use Splash\Tests\Tools\ObjectsCase;
-use Splash\Client\Splash;
 use ArrayObject;
+use Splash\Client\Splash;
+use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * @abstract    Objects Test Suite - Object Reading Verifications
@@ -12,7 +26,6 @@ use ArrayObject;
  */
 class O07GetTest extends ObjectsCase
 {
-
     /**
      * @var array
      */
@@ -25,6 +38,9 @@ class O07GetTest extends ObjectsCase
 
     /**
      * @dataProvider objectFieldsProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
+     * @param mixed $field
      */
     public function testGetSingleFieldFromModule($testSequence, $objectType, $field)
     {
@@ -55,6 +71,8 @@ class O07GetTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testGetAllFieldsFromModule($testSequence, $objectType)
     {
@@ -85,6 +103,8 @@ class O07GetTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromObjectsService($testSequence, $objectType)
     {
@@ -104,7 +124,7 @@ class O07GetTest extends ObjectsCase
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
-            [ "type" => $objectType, "id" => $objectId, "fields" => $fields]
+            array( "type" => $objectType, "id" => $objectId, "fields" => $fields)
         );
         
         //====================================================================//
@@ -114,6 +134,8 @@ class O07GetTest extends ObjectsCase
 
     /**
      * @dataProvider objectTypesProvider
+     * @param mixed $testSequence
+     * @param mixed $objectType
      */
     public function testFromObjectsServiceErrors($testSequence, $objectType)
     {
@@ -128,7 +150,7 @@ class O07GetTest extends ObjectsCase
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
-            [ "type" => $objectType, "fields" => array()]
+            array( "type" => $objectType, "fields" => array())
         );
         //====================================================================//
         //      Request Reading but Sending NUll ObjectID
@@ -136,13 +158,13 @@ class O07GetTest extends ObjectsCase
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
-            [ "type" => $objectType, "id" => null, "fields" => array()]
+            array( "type" => $objectType, "id" => null, "fields" => array())
         );
         $this->genericErrorAction(
             SPL_S_OBJECTS,
             SPL_F_GET,
             __METHOD__,
-            [ "type" => $objectType, "id" => 0, "fields" => array()]
+            array( "type" => $objectType, "id" => 0, "fields" => array())
         );
     }
 
@@ -172,15 +194,16 @@ class O07GetTest extends ObjectsCase
         //   Verify Objects List is Not Empty
         if ($this->objectCount[$objectType] <= 0) {
             $this->markTestSkipped('No Objects in Database.');
+
             return false;
         }
         
         //====================================================================//
         //   Return First Object of List
         $nextObject = array_shift($this->objectList[$objectType]);
+
         return $nextObject["id"];
     }
-    
     
     public function verifyResponse($data, $fields, $objectId)
     {
@@ -192,7 +215,7 @@ class O07GetTest extends ObjectsCase
         //====================================================================//
         //   Verify Object Id is Present
         $this->assertArrayHasKey("id", $data, "Object Identifier ['id'] is not defined in returned Data Block.");
-        $this->assertEquals($data["id"], $objectId, "Object Identifier ['id'] is different in returned Data Block.");
+        $this->assertSame($data["id"], $objectId, "Object Identifier ['id'] is different in returned Data Block.");
         
         //====================================================================//
         //  Verify Field Data
