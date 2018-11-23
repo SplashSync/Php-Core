@@ -17,8 +17,11 @@ script:
     
     - composer update --no-suggest
     - php ./vendor/bin/grumphp run --testsuite=travis
+
+    # With PHP > 7.0 => Execute CsFixer
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=csfixer; fi    
     
-    # With PHP 7 => Execute Phpstan 
+    # With PHP > 7.0 => Execute Phpstan 
     - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=phpstan; fi    
 
     # Execute Core Tests   

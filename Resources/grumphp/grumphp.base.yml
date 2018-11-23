@@ -124,6 +124,9 @@ parameters:
                 - phpcs 
                 - phpmd
                 - phpcpd
+
+        csfixer:
+            tasks: 
                 - phpcsfixer
                 - phpcsfixer2
                 
