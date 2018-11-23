@@ -32,9 +32,9 @@ trait SimpleFieldsTrait
     protected function getSimple($fieldName, $objectName = "Object", $default = null)
     {
         if (isset($this->{$objectName}->{$fieldName})) {
-            $this->Out[$fieldName] = trim($this->{$objectName}->{$fieldName});
+            $this->out[$fieldName] = trim($this->{$objectName}->{$fieldName});
         } else {
-            $this->Out[$fieldName] = $default;
+            $this->out[$fieldName] = $default;
         }
 
         return $this;
@@ -52,9 +52,9 @@ trait SimpleFieldsTrait
     protected function getSimpleBool($fieldName, $objectName = "Object", $default = false)
     {
         if (isset($this->{$objectName}->{$fieldName})) {
-            $this->Out[$fieldName] = (bool) trim($this->{$objectName}->{$fieldName});
+            $this->out[$fieldName] = (bool) trim($this->{$objectName}->{$fieldName});
         } else {
-            $this->Out[$fieldName] = (bool) $default;
+            $this->out[$fieldName] = (bool) $default;
         }
 
         return $this;
@@ -72,9 +72,9 @@ trait SimpleFieldsTrait
     protected function getSimpleDouble($fieldName, $objectName = "Object", $default = 0)
     {
         if (isset($this->{$objectName}->{$fieldName})) {
-            $this->Out[$fieldName] = (double) trim($this->{$objectName}->{$fieldName});
+            $this->out[$fieldName] = (double) trim($this->{$objectName}->{$fieldName});
         } else {
-            $this->Out[$fieldName] = (double) $default;
+            $this->out[$fieldName] = (double) $default;
         }
 
         return $this;
@@ -93,9 +93,9 @@ trait SimpleFieldsTrait
     protected function getSimpleBit($fieldName, $position, $objectName = "Object", $default = false)
     {
         if (isset($this->{$objectName}->{$fieldName})) {
-            $this->Out[$fieldName] = (bool) (($this->{$objectName}->{$fieldName} >> $position) & 1);
+            $this->out[$fieldName] = (bool) (($this->{$objectName}->{$fieldName} >> $position) & 1);
         } else {
-            $this->Out[$fieldName] = (bool) $default;
+            $this->out[$fieldName] = (bool) $default;
         }
 
         return $this;
@@ -187,7 +187,7 @@ trait SimpleFieldsTrait
      */
     protected function getGeneric($fieldName, $objectName = "Object")
     {
-        $this->Out[$fieldName] = $this->{$objectName}->{ "get" . $fieldName}();
+        $this->out[$fieldName] = $this->{$objectName}->{ "get" . $fieldName}();
 
         return $this;
     }
