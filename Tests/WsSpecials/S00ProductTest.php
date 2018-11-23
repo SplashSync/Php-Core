@@ -229,12 +229,12 @@ class S00ProductTest extends ObjectsCase
 
         //====================================================================//
         //   Load Fields
-        $this->fields = Splash::object($objectType)->fields();
+        $fields = Splash::object($objectType)->fields();
 
         //====================================================================//
         //   Ensure a Field is Requested
         if (is_null($field)) {
-            $field = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'alternateName');
+            $field = self::findFieldByTag($fields, 'http://schema.org/Product', 'alternateName');
         }
         $this->assertNotEmpty($field);
         if (is_null($field)) {
@@ -248,9 +248,9 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications
         if (!empty($this->currentVariation)) {
-            $this->fields[] = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeCode');
-            $this->fields[] = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeName');
-            $this->fields[] = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeValue');
+            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeCode');
+            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeName');
+            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeValue');
         }
 
         //====================================================================//
