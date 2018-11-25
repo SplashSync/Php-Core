@@ -78,7 +78,7 @@ interface ObjectInterface
      *
      * @param      string   $objectId       Object Id
      *
-     * @return     false|string
+     * @return     bool
      */
     public function delete($objectId = null);
     
