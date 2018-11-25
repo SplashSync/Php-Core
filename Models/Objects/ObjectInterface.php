@@ -59,7 +59,7 @@ interface ObjectInterface
      * @param   string  $objectId           Object Id.
      * @param   array   $fields             List of requested fields
      *
-     * @return  array                       Object Data
+     * @return  false|array
      */
     public function get($objectId = null, $fields = 0);
 
@@ -69,7 +69,7 @@ interface ObjectInterface
      * @param   string  $objectId           Object Id.  If NULL, Object needs to be created.
      * @param   array   $objectData         List of requested fields
      *
-     * @return  false|string                      Object Id.  If False, Object wasn't created.
+     * @return  false|string        Object Id.  If False, Object wasn't created.
      */
     public function set($objectId = null, $objectData = null);
 
