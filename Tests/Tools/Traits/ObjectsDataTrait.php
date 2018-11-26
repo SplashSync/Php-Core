@@ -113,8 +113,8 @@ trait ObjectsDataTrait
                 $result = $this->compareListField(
                     $fieldType["fieldname"],
                     $field->id,
-                    is_null($data1) ? array() : $data1,
-                    is_null($data2) ? array() : $data2,
+                    $data1,
+                    $data2,
                     $comment . "->" . $field->id
                 );
                 

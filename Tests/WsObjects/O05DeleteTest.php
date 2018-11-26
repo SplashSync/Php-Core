@@ -51,11 +51,11 @@ class O05DeleteTest extends ObjectsCase
 
         //====================================================================//
         // Lock New Objects To Avoid Action Commit
-        Splash::object($objectType)->lock($objectId);
+        Splash::object($objectType)->lock((string) $objectId);
 
         //====================================================================//
         //   Delete Object on Module
-        $data = Splash::object($objectType)->delete($objectId);
+        $data = Splash::object($objectType)->delete((string) $objectId);
         
         //====================================================================//
         //   Verify Response

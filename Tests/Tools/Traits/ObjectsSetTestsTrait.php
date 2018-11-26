@@ -138,12 +138,13 @@ trait ObjectsSetTestsTrait
         
         //====================================================================//
         //   Verify Object Change Was Commited
-        $this->assertIsFirstCommited($action, $objectType, $objectId);
+        $this->assertIsFirstCommited($action, $objectType, (string) $objectId);
         
         //====================================================================//
         //   Read Object Data
         $currentData    =   Splash::object($objectType)
-            ->get($objectId, $this->reduceFieldList($this->fields));
+            ->get((string) $objectId, $this->reduceFieldList($this->fields));
+        $this->assertInternalType('array', $currentData);
         //====================================================================//
         //   Verify Object Data are Ok
         $this->compareDataBlocks($this->fields, $expectedData, $currentData, $objectType);
@@ -263,7 +264,7 @@ trait ObjectsSetTestsTrait
         Splash::object($objectType)->unLock();
         //====================================================================//
         // Lock This Object To Avoid Being Selected for Linking
-        $this->setCurrentObject($objectType, $objectId);
+        $this->setCurrentObject($objectType, (string) $objectId);
         //====================================================================//
         // Retun Object Id
         return $objectId;

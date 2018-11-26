@@ -370,7 +370,7 @@ class ObjectsCase extends AbstractBaseCase
         
         //====================================================================//
         //   If Commited an Array of Ids
-        if (is_array($commited->id) || is_a($commited->id, "ArrayObject")) {
+        if (is_array($commited->id) || ($commited->id instanceof ArrayObject)) {
             //====================================================================//
             //   Detect Array Object
             if ($commited->id instanceof ArrayObject) {
