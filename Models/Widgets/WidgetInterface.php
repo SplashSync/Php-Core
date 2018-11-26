@@ -32,7 +32,7 @@ interface WidgetInterface
      *
      * @param       array   $parameters           List of Parameters
      *
-     * @return      false|array                   Widget Data
+     * @return      array|false                   Widget Data
      */
     public function get($parameters = array());
 }

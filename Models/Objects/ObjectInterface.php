@@ -59,7 +59,7 @@ interface ObjectInterface
      * @param   string  $objectId           Object Id.
      * @param   array   $fields             List of requested fields
      *
-     * @return  false|array
+     * @return  array|false
      */
     public function get($objectId = null, $fields = 0);
 
