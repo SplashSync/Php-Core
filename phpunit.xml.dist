@@ -16,8 +16,8 @@
 >
 
     <testsuites>
-        <testsuite name="Componants">
-            <directory>Tests/Componants</directory>
+        <testsuite name="Managers">
+            <directory>Tests/managers</directory>
         </testsuite>
     </testsuites>
 
