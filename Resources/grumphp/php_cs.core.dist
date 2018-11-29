@@ -2,7 +2,7 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->exclude('vendor')
-    ->exclude('Componants/NuSOAP/nusoap.php')
+    ->exclude('Components/NuSOAP/nusoap.php')
     ->in(dirname(dirname(__DIR__)))
 ;
 
