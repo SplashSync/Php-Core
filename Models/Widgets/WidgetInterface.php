@@ -35,4 +35,9 @@ interface WidgetInterface
      * @return      array|false                   Widget Data
      */
     public function get($parameters = array());
+    
+    /**
+     * @abstract   Return Widget Status
+     */
+    public static function getIsDisabled();
 }
