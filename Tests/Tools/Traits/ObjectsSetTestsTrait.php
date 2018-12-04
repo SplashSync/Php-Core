@@ -26,45 +26,47 @@ use Splash\Client\Splash;
 trait ObjectsSetTestsTrait
 {
     /** @var array */
-    protected $fields           = array();
+    protected $fields = array();
 
     /**
-     * @var string      Md5 CheckSum of Current Field Data Block
+     * @var string Md5 CheckSum of Current Field Data Block
      */
     protected $fieldMd5;
-    
+
     /**
      * @abstract    Execute Single Field Test From Service
-     * @param       string      $objectType         Splash Object Type Name
-     * @param       ArrayObject $field              Current Tested Field (ArrayObject)
-     * @param       string      $forceObjectId      Object Id (Update) or Null (Create)
-     * @return      bool
+     *
+     * @param string      $objectType    Splash Object Type Name
+     * @param ArrayObject $field         Current Tested Field (ArrayObject)
+     * @param string      $forceObjectId Object Id (Update) or Null (Create)
+     *
+     * @return bool
      */
     public function coreTestSetSingleFieldFromService($objectType, $field, $forceObjectId = null)
     {
         //====================================================================//
         //   OBJECT CREATE TEST
         //====================================================================//
-        
+
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $newData = $this->prepareForTesting($objectType, $field);
         if (false == $newData) {
             return true;
         }
-        
+
         //====================================================================//
         //   Execute Create Test
         $objectId = $this->setObjectFromService($objectType, $newData, $forceObjectId);
-        
+
         //====================================================================//
         // BOOT or REBOOT MODULE
         $this->setUp();
-        
+
         //====================================================================//
         //   OBJECT UPDATE TEST
         //====================================================================//
-        
+
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $updateData = $this->prepareForTesting($objectType, $field);
@@ -76,32 +78,32 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         //   Execute Update Test
         $this->setObjectFromService($objectType, $updateData, $objectId);
-        
+
         //====================================================================//
         //   OBJECT DELETE
         //====================================================================//
-        
+
         //====================================================================//
         // If Test was Forced on a Specific Object (Local Sequences)
         if (!is_null($forceObjectId)) {
             return true;
         }
-        
+
         //====================================================================//
         //   Delete Object From Module
         $this->deleteObjectFromModule($objectType, $objectId);
     }
-        
+
     /**
      * @abstract    Ensure Set/Write Test is Possible & Generate Fake Object Data
      *              -> This Function uses Preloaded Fields
      *              -> If Md5 provided, check Current Field was Modified
      *
-     * @param       string      $objectType     Current Object Type
-     * @param       ArrayObject $field          Current Tested Field (ArrayObject)
-     * @param       bool        $unik           Ask for Unik Field Data
+     * @param string      $objectType Current Object Type
+     * @param ArrayObject $field      Current Tested Field (ArrayObject)
+     * @param bool        $unik       Ask for Unik Field Data
      *
-     * @return      array|false      Generated Data Block or False if not Allowed
+     * @return array|false Generated Data Block or False if not Allowed
      */
     public function prepareForTesting($objectType, $field, $unik = true)
     {
@@ -114,100 +116,110 @@ trait ObjectsSetTestsTrait
         // Return Generated Object Data
         return $this->generateObjectData($objectType, $field, $unik);
     }
-    
+
     //==============================================================================
     //      DATA VERIFICATION FUNCTIONS
     //==============================================================================
-    
+
+    /**
+     * Verify Client Object Set Reponse.
+     *
+     * @param string $objectType
+     * @param string $objectId
+     * @param string $action
+     * @param array  $expectedData
+     */
     public function verifySetResponse($objectType, $objectId, $action, $expectedData)
     {
         //====================================================================//
         //   Verify Object Id Is Not Empty
-        $this->assertNotEmpty($objectId, "Returned New Object Id is Empty");
+        $this->assertNotEmpty($objectId, 'Returned New Object Id is Empty');
 
         //====================================================================//
         //   Add Object Id to Created List
         $this->addTestedObject($objectType, $objectId);
-        
+
         //====================================================================//
         //   Verify Object Id Is in Right Format
         $this->assertTrue(
             is_integer($objectId) || is_string($objectId),
-            "New Object Id is not an Integer or a Strings"
+            'New Object Id is not an Integer or a Strings'
         );
-        
+
         //====================================================================//
         //   Verify Object Change Was Commited
         $this->assertIsFirstCommited($action, $objectType, (string) $objectId);
-        
+
         //====================================================================//
         //   Read Object Data
-        $currentData    =   Splash::object($objectType)
+        $currentData = Splash::object($objectType)
             ->get((string) $objectId, $this->reduceFieldList($this->fields));
         $this->assertInternalType('array', $currentData);
         //====================================================================//
         //   Verify Object Data are Ok
         $this->compareDataBlocks($this->fields, $expectedData, $currentData, $objectType);
     }
-    
+
     public function verifyDeleteResponse($objectType, $objectId, $data)
     {
         //====================================================================//
         //   Verify Response
-        $this->assertIsSplashBool($data, "Object Delete Response Must be a Bool");
-        $this->assertNotEmpty($data, "Object Delete Response is Not True");
-        
+        $this->assertIsSplashBool($data, 'Object Delete Response Must be a Bool');
+        $this->assertNotEmpty($data, 'Object Delete Response is Not True');
+
         //====================================================================//
         // Lock New Objects To Avoid Action Commit
         Splash::object($objectType)->lock($objectId);
-        
+
         //====================================================================//
         //   Verify Repeating Delete as Same Result
-        $repeatedResponse    =   Splash::object($objectType)->delete($objectId);
+        $repeatedResponse = Splash::object($objectType)->delete($objectId);
         $this->assertTrue(
             $repeatedResponse,
-            "Object Repeated Delete, Must return True even if Object Already Deleted."
+            'Object Repeated Delete, Must return True even if Object Already Deleted.'
         );
-        
+
         //====================================================================//
         //   Verify Object not Present anymore
-        $fields         =   $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
-        $getResponse    =   Splash::object($objectType)->get($objectId, $fields);
-        $this->assertFalse($getResponse, "Object Not Delete, I can still read it!!");
+        $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
+        $getResponse = Splash::object($objectType)->get($objectId, $fields);
+        $this->assertFalse($getResponse, 'Object Not Delete, I can still read it!!');
     }
-    
+
     //==============================================================================
     //      COMPLETE TESTS EXECUTION FUNCTIONS
     //==============================================================================
-    
+
     /**
      * @abstract    Execute Single Field Test From Module
-     * @param       string      $objectType         Splash Object Type Name
-     * @param       ArrayObject $field              Current Tested Field (ArrayObject)
-     * @param       string      $forceObjectId      Object Id (Update) or Null (Create)
-     * @return      bool
+     *
+     * @param string      $objectType    Splash Object Type Name
+     * @param ArrayObject $field         Current Tested Field (ArrayObject)
+     * @param string      $forceObjectId Object Id (Update) or Null (Create)
+     *
+     * @return bool
      */
     protected function coreTestSetSingleFieldFromModule($objectType, $field, $forceObjectId = null)
     {
         //====================================================================//
         //   OBJECT CREATE TEST
         //====================================================================//
-        
+
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $newData = $this->prepareForTesting($objectType, $field);
         if (false == $newData) {
             return true;
         }
-        
+
         //====================================================================//
         //   Execute Create Test
         $objectId = $this->setObjectFromModule($objectType, $newData, $forceObjectId);
-                
+
         //====================================================================//
         //   OBJECT UPDATE TEST
         //====================================================================//
-        
+
         //====================================================================//
         //   Update Data Focused Field Data
         $updateData = $this->prepareForTesting($objectType, $field);
@@ -219,31 +231,34 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         //   Execute Update Test
         $this->setObjectFromModule($objectType, $updateData, $objectId);
-        
+
         //====================================================================//
         //   OBJECT DELETE
         //====================================================================//
-        
+
         //====================================================================//
         // If Test was Forced on a Specific Object (Local Sequences)
         if (!is_null($forceObjectId)) {
             return true;
         }
-        
+
         //====================================================================//
         //   Delete Object From Module
         $this->deleteObjectFromModule($objectType, $objectId);
     }
-    
+
     //==============================================================================
     //      UNIT TESTS EXECUTION FUNCTIONS
     //==============================================================================
-    
+
     /**
      * @abstract    Execute Object Create or Update Test with Given Data (From Module)
-     * @param       string      $objectType         Splash Object Type Name
-     * @param       array       $objectData         Splash Data Block
-     * @param       string      $forceObjectId      Object Id (Update) or Null (Create)
+     *
+     * @param string $objectType    Splash Object Type Name
+     * @param array  $objectData    Splash Data Block
+     * @param string $forceObjectId Object Id (Update) or Null (Create)
+     *
+     * @return string
      */
     protected function setObjectFromModule($objectType, $objectData, $forceObjectId = null)
     {
@@ -269,12 +284,15 @@ trait ObjectsSetTestsTrait
         // Retun Object Id
         return $objectId;
     }
-    
+
     /**
      * @abstract    Execute Object Create or Update Test with Given Data (From Service)
-     * @param       string      $objectType         Splash Object Type Name
-     * @param       array       $objectData         Splash Data Block
-     * @param       string      $forceObjectId      Object Id (Update) or Null (Create)
+     *
+     * @param string $objectType    Splash Object Type Name
+     * @param array  $objectData    Splash Data Block
+     * @param string $forceObjectId Object Id (Update) or Null (Create)
+     *
+     * @return string
      */
     protected function setObjectFromService($objectType, $objectData, $forceObjectId = null)
     {
@@ -287,8 +305,12 @@ trait ObjectsSetTestsTrait
             SPL_S_OBJECTS,
             SPL_F_SET,
             __METHOD__,
-            array( "id" => $forceObjectId, "type" => $objectType, "fields" => $objectData)
+            array('id' => $forceObjectId, 'type' => $objectType, 'fields' => $objectData)
         );
+        //====================================================================//
+        //   Verify Object Id Is Not Empty
+        $this->assertNotEmpty($objectId, 'Returned New Object Id is Empty');
+        $this->assertInternalType('string', $objectId, 'Returned New Object Id is Empty');
         //====================================================================//
         //   Verify Response
         $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $objectData);
@@ -302,11 +324,12 @@ trait ObjectsSetTestsTrait
         // Retun Object Id
         return $objectId;
     }
-    
+
     /**
      * @abstract    Execute Object Delete Test (From Module)
-     * @param       string      $objectType         Splash Object Type Name
-     * @param       string      $objectId           Object Id
+     *
+     * @param string $objectType Splash Object Type Name
+     * @param string $objectId   Object Id
      */
     protected function deleteObjectFromModule($objectType, $objectId)
     {
@@ -320,7 +343,7 @@ trait ObjectsSetTestsTrait
         //   Verify Response
         $this->verifyDeleteResponse($objectType, $objectId, $data);
     }
-    
+
     //==============================================================================
     //      TESTS PREPARATION FUNCTIONS
     //==============================================================================
@@ -332,17 +355,17 @@ trait ObjectsSetTestsTrait
         $this->assertNotEmpty($definition);
         //====================================================================//
         //   Verify Create is Allowed
-        if (!$definition["allow_push_created"]) {
+        if (!$definition['allow_push_created']) {
             return false;
         }
         //====================================================================//
         //   Verify Update is Allowed
-        if (!$definition["allow_push_updated"]) {
+        if (!$definition['allow_push_updated']) {
             return false;
         }
         //====================================================================//
         //   Verify Delete is Allowed
-        if (!$definition["allow_push_deleted"]) {
+        if (!$definition['allow_push_deleted']) {
             return false;
         }
         //====================================================================//
@@ -350,7 +373,7 @@ trait ObjectsSetTestsTrait
         if (!is_null($field) && $field->notest) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -359,18 +382,18 @@ trait ObjectsSetTestsTrait
      *              -> This Function uses Preloaded Fields
      *              -> If Md5 provided, check Current Field was Modified
      *
-     * @param       string      $objectType     Current Object Type
-     * @param       ArrayObject $field          Current Tested Field (ArrayObject)
-     * @param       bool        $unik           Ask for Unik Field Data
+     * @param string      $objectType Current Object Type
+     * @param ArrayObject $field      Current Tested Field (ArrayObject)
+     * @param bool        $unik       Ask for Unik Field Data
      *
-     * @return      array|false      Generated Data Block or False if not Allowed
+     * @return array|false Generated Data Block or False if not Allowed
      */
     protected function generateObjectData($objectType, $field, $unik = true)
     {
         //====================================================================//
         // Generate Required Fields List
-        $this->fields   =   $this->fakeFieldsList($objectType, array($field->id), true);
-        
+        $this->fields = $this->fakeFieldsList($objectType, array($field->id), true);
+
         //====================================================================//
         // Prepare Fake Object Data
         //====================================================================//
@@ -378,7 +401,7 @@ trait ObjectsSetTestsTrait
         do {
             //====================================================================//
             // Generate Object Data
-            $fakeData       =   $this->fakeObjectData($this->fields);
+            $fakeData = $this->fakeObjectData($this->fields);
             if (false == $fakeData) {
                 return false;
             }
@@ -391,14 +414,14 @@ trait ObjectsSetTestsTrait
 
                 return $fakeData;
             }
-            
+
             $fakeDataMd5 = $this->getFakeDataMd5($fakeData, $field);
 
             //====================================================================//
             //   Ensure Field Data was modified
-            $try++;
+            ++$try;
         } while (($this->fieldMd5 === $fakeDataMd5) && ($try < 5));
-        
+
         //====================================================================//
         // Store MD5 of New Generated Field Data
         $this->fieldMd5 = $this->getFakeDataMd5($fakeData, $field);
@@ -407,20 +430,20 @@ trait ObjectsSetTestsTrait
         // Return Generated Object Data
         return $fakeData;
     }
-    
+
     /**
      * @abstract    Generate Object Data Md5 Checksum to Ensure Data are different
      *
-     * @param       array       $fakeData       Faker Object Data Set
-     * @param       ArrayObject $field          Current Tested Field (ArrayObject)
+     * @param array       $fakeData Faker Object Data Set
+     * @param ArrayObject $field    Current Tested Field (ArrayObject)
      *
-     * @return      string                      Md5 CheckSum
+     * @return string Md5 CheckSum
      */
     protected function getFakeDataMd5($fakeData, $field)
     {
         //====================================================================//
         // Filter data to focus on Tested Field
-        $filteredData   =   $this->filterData($fakeData, array($field->id));
+        $filteredData = $this->filterData($fakeData, array($field->id));
         //====================================================================//
         // Data Block is Empty(i.e: ReadOnly Field)
         if (empty($filteredData)) {

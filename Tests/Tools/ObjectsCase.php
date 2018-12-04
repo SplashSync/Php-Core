@@ -112,6 +112,9 @@ class ObjectsCase extends AbstractBaseCase
         //            "Objects"                   =>  array(),
     );
     
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -158,6 +161,10 @@ class ObjectsCase extends AbstractBaseCase
     //   Data Provider Functions
     //====================================================================//
     
+    /**
+     * Data Privider : Objects Types Tests Sequences
+     * @return array
+     */
     public function objectTypesProvider()
     {
         $result = array();
@@ -196,6 +203,10 @@ class ObjectsCase extends AbstractBaseCase
         return $result;
     }
 
+    /**
+     * Data Privider : Objects Types x Fields Tests Sequences
+     * @return array
+     */
     public function objectFieldsProvider()
     {
         $result = array();
@@ -240,46 +251,6 @@ class ObjectsCase extends AbstractBaseCase
         return $result;
     }
 
-    protected function loadLocalTestParameters()
-    {
-        //====================================================================//
-        // Safety Check
-        if (!method_exists(Splash::local(), "TestParameters")) {
-            return;
-        }
-        //====================================================================//
-        // Read Local Parameters
-        $localTestSettings  =   Splash::local()->testParameters();
-        
-        //====================================================================//
-        // Validate Local Parameters
-        if (!Splash::validate()->isValidLocalTestParameterArray($localTestSettings)) {
-            return;
-        }
-        
-        //====================================================================//
-        // Import Local Parameters
-        foreach ($localTestSettings as $key => $value) {
-            $this->settings[$key]   =   $value;
-        }
-    }
-    
-    protected function loadLocalTestSequence($testSequence)
-    {
-        //====================================================================//
-        // Check if Local Tests Sequences are defined
-        if (!method_exists(Splash::local(), "TestSequences")) {
-            return;
-        }
-        //====================================================================//
-        // Setup Test Sequence
-        Splash::local()->testSequences($testSequence);
-        
-        //====================================================================//
-        // Reload Local Tests Parameters
-        $this->loadLocalTestParameters();
-    }
-    
     /**
      * @abstract        Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation
      *
@@ -296,6 +267,11 @@ class ObjectsCase extends AbstractBaseCase
     //      OBJECTS DELETE AT THE END OF TESTS
     //==============================================================================
     
+    /**
+     * Add Object Id to List of Tested Objects (To delete at the End)
+     * @param string $objectType
+     * @param int|string $objectId
+     */
     protected function addTestedObject($objectType, $objectId = null)
     {
         $this->createdObjects[] =   array(
@@ -304,6 +280,9 @@ class ObjectsCase extends AbstractBaseCase
         );
     }
     
+    /**
+     * Delete all Objects Created for Testing
+     */
     protected function cleanTestedObjects()
     {
         foreach ($this->createdObjects as $object) {
@@ -327,7 +306,6 @@ class ObjectsCase extends AbstractBaseCase
      * @param string    $objectType     Expected Object Type
      * @param string    $objectId       Expected Object Id
      * @param bool      $first          Check First or Last Commited
-     *
      */
     private function assertIsCommited($action, $objectType, $objectId, $first = true)
     {

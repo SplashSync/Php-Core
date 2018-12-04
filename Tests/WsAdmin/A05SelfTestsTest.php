@@ -15,6 +15,7 @@
 
 namespace Splash\Tests\WsAdmin;
 
+use ArrayObject;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
@@ -25,8 +26,19 @@ use Splash\Tests\Tools\AbstractBaseCase;
  */
 class A05SelfTestsTest extends AbstractBaseCase
 {
-    public function testFromLocalClass()
+    /**
+     * Test Perform SelfTest from Local Class
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testSelfTestFromClass(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
         //====================================================================//
         //   Execute Action From Module
         $data = Splash::local()->selfTest();
@@ -35,8 +47,19 @@ class A05SelfTestsTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
 
-    public function testFromAdmin()
+    /**
+     * Test Perform SelfTest from Admin Service
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testSelfTestFromAdmin(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_SELFTEST, __METHOD__);
@@ -45,11 +68,16 @@ class A05SelfTestsTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
     
-    public function verifyResponse($data)
+    /**
+     * Verify Client Response.
+     *
+     * @param ArrayObject|bool|string $data
+     */
+    private function verifyResponse($data)
     {
         //====================================================================//
         //   Render Logs if Fails*
-        if (!$data) {
+        if (true !== $data) {
             fwrite(STDOUT, Splash::log()->getConsoleLog());
         }
         //====================================================================//

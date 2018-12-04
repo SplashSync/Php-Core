@@ -15,6 +15,7 @@
 
 namespace Splash\Tests\WsAdmin;
 
+use ArrayObject;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
@@ -25,8 +26,19 @@ use Splash\Tests\Tools\AbstractBaseCase;
  */
 class A03ObjectsTest extends AbstractBaseCase
 {
-    public function testObjectsFromClass()
+    /**
+     * Test Loading Objects List from Local Class
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testObjectsFromClass(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+    
         //====================================================================//
         //   Execute Action From Module
         $data = Splash::objects();
@@ -40,8 +52,18 @@ class A03ObjectsTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
 
-    public function testObjectsFromAdminService()
+    /**
+     * Test Loading Objects List from Admin Service
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testObjectsFromAdminService(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_OBJECTS, __METHOD__);
@@ -50,8 +72,18 @@ class A03ObjectsTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
     
-    public function testObjectsFromObjectsService()
+    /**
+     * Test Loading Objects List from Admin Service
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testObjectsFromObjectsService(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(SPL_S_OBJECTS, SPL_F_OBJECTS, __METHOD__);
@@ -60,7 +92,12 @@ class A03ObjectsTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
     
-    public function verifyResponse($data)
+    /**
+     * Verify Client Response.
+     *
+     * @param ArrayObject|bool|string $data
+     */
+    private function verifyResponse($data)
     {
         //====================================================================//
         //   Verify Response

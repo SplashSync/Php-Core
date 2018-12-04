@@ -26,6 +26,9 @@ use Splash\Tests\Tools\AbstractBaseCase;
  */
 class A02ConnectTest extends AbstractBaseCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         //====================================================================//
@@ -37,8 +40,21 @@ class A02ConnectTest extends AbstractBaseCase
         Splash::ws()->setup();
     }
     
-    public function testConnectClientAction()
+    /**
+     * Test of Client Connect
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testConnectClientAction(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
+        //====================================================================//
+        //   Check Test Mode Allow Server Ping
         if (!empty(Splash::input("SPLASH_TRAVIS"))) {
             //   Skip Test without Warnings
             $this->assertTrue(true);
@@ -55,8 +71,19 @@ class A02ConnectTest extends AbstractBaseCase
         Splash::log()->cleanLog();
     }
     
-    public function testConnectServerAction()
+    /**
+     * Test of Server Connect
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testConnectServerAction(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
         //====================================================================//
         //   Prepare Request Data
         $request    =   Splash::ws()->pack(array(true));
@@ -88,8 +115,19 @@ class A02ConnectTest extends AbstractBaseCase
         ob_start();
     }
     
-    public function testConnectServerWrongDataAction()
+    /**
+     * Test of Server Connect with Wrong Data
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testConnectServerWrongDataAction($testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
         //====================================================================//
         //   Prepare Ok Request Data
         $request    =   Splash::ws()->pack(array(true));
@@ -115,6 +153,6 @@ class A02ConnectTest extends AbstractBaseCase
         
         //====================================================================//
         //   Re-Execute Connect From Splash Server to Module
-        $this->testConnectServerAction();
+        $this->testConnectServerAction($testSequence);
     }
 }

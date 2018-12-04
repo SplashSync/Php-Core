@@ -26,8 +26,19 @@ use Splash\Tests\Tools\AbstractBaseCase;
  */
 class A04WidgetsTest extends AbstractBaseCase
 {
-    public function testObjectsFromClass()
+    /**
+     * Test Loading Widgets List from Local Class
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testWidgetsFromClass(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
         //====================================================================//
         //   Execute Action From Module
         $data = Splash::widgets();
@@ -41,8 +52,19 @@ class A04WidgetsTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
 
-    public function testWidgetsActionFromAdmin()
+    /**
+     * Test Loading Widgets List from Admin Service
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testWidgetsActionFromAdmin(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_WIDGETS, __METHOD__);
@@ -51,8 +73,19 @@ class A04WidgetsTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
     
-    public function testWidgetsActionFromWidgets()
+    /**
+     * Test Loading Widgets List from Widgets Service
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testWidgetsActionFromWidgets(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(SPL_S_WIDGETS, SPL_F_WIDGET_LIST, __METHOD__);
@@ -61,7 +94,12 @@ class A04WidgetsTest extends AbstractBaseCase
         $this->verifyResponse($data);
     }
     
-    public function verifyResponse($data)
+    /**
+     * Verify Client Response.
+     *
+     * @param ArrayObject|bool|string $data
+     */
+    private function verifyResponse($data)
     {
         //====================================================================//
         //   Verify Response

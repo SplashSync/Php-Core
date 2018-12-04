@@ -28,8 +28,8 @@ class O01DescriptionTest extends ObjectsCase
 {
     /**
      * @dataProvider objectTypesProvider
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
      */
     public function testFromModule($testSequence, $objectType)
     {
@@ -49,8 +49,8 @@ class O01DescriptionTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
      */
     public function testFromObjectsService($testSequence, $objectType)
     {

@@ -27,6 +27,15 @@ abstract class AbstractBaseCase extends TestCase
     use \Splash\Tests\Tools\Traits\ObjectsValidatorTrait;
     use \Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
         
+    /**
+     * Formater Fake Field Generator Options
+     * @var array
+     */
+    private $settings = array();
+    
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -293,13 +302,94 @@ abstract class AbstractBaseCase extends TestCase
         }
     }
     
+    //====================================================================//
+    //   Data Provider Functions
+    //====================================================================//
+    
     /**
-     *      @abstract   Perform generic Server Side Action
+     * Data Privider : Simple Tests Sequences
+     * @return array
+     */
+    public function sequencesProvider()
+    {
+        $result = array();
+        $testSequences  =   array("None");
+        
+        self::setUp();
+
+        //====================================================================//
+        // Check if Local Tests Sequences are defined
+        if (method_exists(Splash::local(), "TestSequences")) {
+            $testSequences  =   Splash::local()->testSequences("List");
+        }
+        //====================================================================//
+        // Prepare Sequences Array
+        foreach ($testSequences as $testSequence) {
+            $result[]   =   array($testSequence);
+        }
+        
+        self::tearDown();
+        
+        return $result;
+    }
+    
+    /**
+     * Load or Reload Tests Parameters for Current Test Sequence
+     */
+    protected function loadLocalTestParameters()
+    {
+        //====================================================================//
+        // Safety Check
+        if (!method_exists(Splash::local(), "TestParameters")) {
+            return;
+        }
+        //====================================================================//
+        // Read Local Parameters
+        $localTestSettings  =   Splash::local()->testParameters();
+        
+        //====================================================================//
+        // Validate Local Parameters
+        if (!Splash::validate()->isValidLocalTestParameterArray($localTestSettings)) {
+            return;
+        }
+        
+        //====================================================================//
+        // Import Local Parameters
+        foreach ($localTestSettings as $key => $value) {
+            $this->settings[$key]   =   $value;
+        }
+    }
+
+    /**
+     * Configure Environement for this Test Sequence
      *
-     * @param mixed $service
-     * @param mixed $action
-     * @param mixed $description
-     *      @return     mixed
+     * @param string $testSequence
+     */
+    protected function loadLocalTestSequence(string $testSequence)
+    {
+        //====================================================================//
+        // Check if Local Tests Sequences are defined
+        if (!method_exists(Splash::local(), "TestSequences")) {
+            return;
+        }
+        //====================================================================//
+        // Setup Test Sequence
+        Splash::local()->testSequences($testSequence);
+        
+        //====================================================================//
+        // Reload Local Tests Parameters
+        $this->loadLocalTestParameters();
+    }
+    
+    /**
+     * @abstract   Perform generic Server Side Action
+     *
+     * @param string $service
+     * @param string $action
+     * @param string $description
+     * @param array  $parameters
+     *
+     * @return ArrayObject|bool|string
      */
     protected function genericAction($service, $action, $description, array $parameters = array(true))
     {
@@ -329,10 +419,12 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * @abstract    Perform generic Server Side Action
      *
-     * @param mixed $service
-     * @param mixed $action
-     * @param mixed $description
-     * @return  mixed
+     * @param string $service
+     * @param string $action
+     * @param string $description
+     * @param array  $parameters
+     *
+     * @return ArrayObject
      */
     protected function genericErrorAction($service, $action, $description, array $parameters = array(true))
     {

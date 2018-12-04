@@ -26,6 +26,9 @@ use Splash\Tests\Tools\AbstractBaseCase;
  */
 class A01PingTest extends AbstractBaseCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         //====================================================================//
@@ -41,13 +44,22 @@ class A01PingTest extends AbstractBaseCase
         Splash::configuration()->WsHost = $this->getLocalServerSoapUrl();
         Splash::ws()->setup();
     }
-    public function testDummy()
+
+    /**
+     * Test of Client Ping
+     *
+     * @dataProvider sequencesProvider
+     *
+     * @param string $testSequence
+     */
+    public function testPingClientAction(string $testSequence)
     {
-        $this->assertTrue(true);
-    }
-    
-    public function testPingClientAction()
-    {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+
+        //====================================================================//
+        //   Check Test Mode Allow Server Ping
         if (!empty(Splash::input("SPLASH_TRAVIS"))) {
             //   Skip Test without Warnings
             $this->assertTrue(true);
@@ -66,8 +78,17 @@ class A01PingTest extends AbstractBaseCase
         Splash::log()->cleanLog();
     }
     
-    public function testPingServerAction()
+    /**
+     * Test of Server Ping
+     * @dataProvider sequencesProvider
+     * @param string $testSequence
+     */
+    public function testPingServerAction(string $testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
         //====================================================================//
         //   Execute Ping From Splash Server to Module
         $response   =   SplashServer::ping();
