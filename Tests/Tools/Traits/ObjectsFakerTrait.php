@@ -98,12 +98,12 @@ trait ObjectsFakerTrait
     }
     
     /**
-     *   @abstract   Create Fake/Dummy Object Data
+     * @abstract   Create Fake/Dummy Object Data
      *
-     *   @param      array   $fieldsList     Object Field List
-     *   @param      array   $originData     Original Object Data
+     * @param      array   $fieldsList     Object Field List
+     * @param      array   $originData     Original Object Data
      *
-     *   @return     array
+     * @return     array
      */
     public function fakeObjectData($fieldsList, $originData = null)
     {
@@ -123,7 +123,11 @@ trait ObjectsFakerTrait
                 $outputs[$field->id] = (
                     self::isFieldToPreserve($field, $originData) ?
                         $originData[$field->id] :
-                        self::fakeFieldData($field->type, $field->choices, $field->options)
+                        self::fakeFieldData(
+                            $field->type,
+                            self::toArray($field->choices),
+                            self::toArray($field->options)
+                        )
                     );
 
                 continue;
@@ -193,13 +197,13 @@ trait ObjectsFakerTrait
     }
     
     /**
-     *   @abstract   Create Fake Field data
+     * @abstract   Create Fake Field data
      *
-     *   @param      string  $type       Object Field Type
-     *   @param      array   $choices    Object Field Possible Values
-     *   @param      array   $options     Object Field Values Options
+     * @param      string  $type       Object Field Type
+     * @param      array   $choices    Object Field Possible Values
+     * @param      array   $options     Object Field Values Options
      *
-     *   @return     array|bool|string
+     * @return     array|bool|string
      */
     public function fakeFieldData($type, $choices = null, $options = array())
     {
@@ -231,7 +235,7 @@ trait ObjectsFakerTrait
                 return $choices[$index]["key"];
             }
         }
-        
+
         //====================================================================//
         // Generate Single Field Data Type is Valid
         return $className::fake(array_merge_recursive($this->settings, $options));

@@ -36,11 +36,11 @@ trait ObjectsAssertionsTrait
      * @abstract        Verify if Data is present in Array and in right Internal Format
      *
      * @param mixed     $data           Tested Array
-     * @param mixed     $key            Tested Array Key
-     * @param mixed     $type           Expected Data Type
+     * @param string    $key            Tested Array Key
+     * @param string    $type           Expected Data Type
      * @param string    $comment
      */
-    public function assertArrayInternalType($data, $key, $type, $comment)
+    public function assertArrayInternalType($data, string $key, string $type, string $comment)
     {
         $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
         $this->assertNotEmpty($data[$key], $comment . " => Key '" . $key . "' is Empty");
@@ -51,26 +51,58 @@ trait ObjectsAssertionsTrait
      * @abstract        Verify if Data is present in Array and in right Internal Format
      *
      * @param mixed     $data           Tested Array
-     * @param mixed     $key            Tested Array Key
-     * @param mixed     $type           Expected Data Type
+     * @param string    $key            Tested Array Key
+     * @param string    $type           Expected Data Type
      * @param string    $comment
      */
-    public function assertArrayInstanceOf($data, $key, $type, $comment)
+    public function assertArrayInstanceOf($data, string $key, string $type, string $comment)
     {
         $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
         $this->assertNotEmpty($data[$key], $comment . " => Key '" . $key . "' is Empty");
-        $this->assertInstanceOf($type, $data[$key], $comment . " => Key '" . $key . "' is of Expected Internal Type");
+        $this->assertInstanceOf(
+            $type,
+            $data[$key],
+            $comment . " => Key '" . $key . "' is of Expected Instance of " . $type
+        );
     }
     
     /**
-     * @abstract        Verify if Data is a valid Splash Data Block Bool Value
+     * Verify if Data is a valid Splash Data Block Bool Value
      *
      * @param mixed     $data
      * @param string    $comment
      */
-    public function assertIsSplashBool($data, $comment)
+    public function assertIsSplashBool($data, string $comment)
     {
         $test = is_bool($data) || ("0" === $data) || ("1" === $data);
+        $this->assertTrue($test, $comment);
+    }
+    
+    /**
+     * Verify if Data is present in Array and is Splash Bool
+     *
+     * @param mixed     $data           Tested Array
+     * @param string    $key            Tested Array Key
+     * @param string    $comment
+     */
+    public function assertArraySplashBool($data, string $key, string $comment)
+    {
+        $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
+        $this->assertIsSplashBool(
+            $data[$key],
+            $comment . " => Key '" . $key . "' is of Expected Bool Type (bool | '0' | '1')"
+        );
+    }
+
+    /**
+     * Verify if Data is a valid Splash Data Block Array Value
+     *
+     * @param mixed     $data
+     * @param string    $comment
+     */
+    public function assertIsSplashArray($data, string $comment)
+    {
+        $test = is_array($data)  || ($data instanceof ArrayObject) || ("" === $data);
         $this->assertTrue($test, $comment);
     }
     
@@ -78,15 +110,18 @@ trait ObjectsAssertionsTrait
      * @abstract        Verify if Data is present in Array and is Splash Bool
      *
      * @param mixed     $data           Tested Array
-     * @param mixed     $key            Tested Array Key
+     * @param string    $key            Tested Array Key
      * @param string    $comment
      */
-    public function assertArraySplashBool($data, $key, $comment)
+    public function assertArraySplashArray($data, string $key, string $comment)
     {
         $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
-        $this->assertIsSplashBool($data[$key], $comment . " => Key '" . $key . "' is of Expected Internal Type");
+        $this->assertIsSplashArray(
+            $data[$key],
+            $comment . " => Key '" . $key . "' is of Expected Array Type (array | null | '')"
+        );
     }
-
+    
     /**
      * @abstract        Verify if Data is a valid Splash Field Data Value
      *
@@ -94,7 +129,7 @@ trait ObjectsAssertionsTrait
      * @param string    $type
      * @param string    $comment
      */
-    public function assertIsValidSplashFieldData($data, $type, $comment)
+    public function assertIsValidSplashFieldData($data, string $type, string $comment)
     {
         //====================================================================//
         // Verify Type is Valid
@@ -119,7 +154,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsDefined($itemType, $itemProp, $comment = null)
+    public function assertFieldIsDefined($itemType, $itemProp, string $comment = null)
     {
         //====================================================================//
         //   Touch this Field
@@ -140,7 +175,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $comment
      * @return void
      */
-    public function assertFieldHasFormat($itemType, $itemProp, $formats, $comment = null)
+    public function assertFieldHasFormat($itemType, $itemProp, $formats, string $comment = null)
     {
         //====================================================================//
         //   Touch this Field
@@ -167,7 +202,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsRead($itemType, $itemProp, $comment = null)
+    public function assertFieldIsRead($itemType, $itemProp, string $comment = null)
     {
         //====================================================================//
         //   Touch this Field
@@ -190,7 +225,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsWrite($itemType, $itemProp, $comment = null)
+    public function assertFieldIsWrite($itemType, $itemProp, string $comment = null)
     {
         //====================================================================//
         //   Touch this Field
@@ -213,7 +248,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $comment
      * @return void
      */
-    public function assertFieldNotWrite($itemType, $itemProp, $comment = null)
+    public function assertFieldNotWrite($itemType, $itemProp, string $comment = null)
     {
         //====================================================================//
         //   Touch this Field
@@ -236,7 +271,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsRequired($itemType, $itemProp, $comment = null)
+    public function assertFieldIsRequired($itemType, $itemProp, string $comment = null)
     {
         //====================================================================//
         //   Touch this Field
@@ -259,7 +294,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $comment
      * @return void
      */
-    public function assertFieldNotRequired($itemType, $itemProp, $comment = null)
+    public function assertFieldNotRequired($itemType, $itemProp, string $comment = null)
     {
         //====================================================================//
         //   Touch this Field
@@ -282,7 +317,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $comment
      * @return void
      */
-    public function assertFieldIsInList($itemType, $itemProp, $comment = null)
+    public function assertFieldIsInList($itemType, $itemProp, string $comment = null)
     {
         //====================================================================//
         //   Touch this Field
@@ -322,7 +357,7 @@ trait ObjectsAssertionsTrait
      * @param       string      $comment
      * @return      string
      */
-    private static function buildResult($itemType, $itemProp, $testComment, $comment = null)
+    private static function buildResult($itemType, $itemProp, $testComment, string $comment = null)
     {
         return $comment . " (" . $itemType . ":" . $itemProp . ") " . $testComment;
     }

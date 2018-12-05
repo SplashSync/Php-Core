@@ -26,6 +26,8 @@ use Splash\Tests\Tools\ObjectsCase;
 class O04CreateTest extends ObjectsCase
 {
     /**
+     * Test Create an Object from Local Class
+     *
      * @dataProvider objectTypesProvider
      *
      * @param mixed $testSequence
@@ -33,6 +35,8 @@ class O04CreateTest extends ObjectsCase
      */
     public function testFromModule($testSequence, $objectType)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
 
         //====================================================================//
@@ -52,6 +56,8 @@ class O04CreateTest extends ObjectsCase
     }
 
     /**
+     * Test Create an Object from Object Service
+     *
      * @dataProvider objectTypesProvider
      *
      * @param mixed $testSequence
@@ -59,6 +65,8 @@ class O04CreateTest extends ObjectsCase
      */
     public function testFromService($testSequence, $objectType)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
 
         //====================================================================//
@@ -82,6 +90,12 @@ class O04CreateTest extends ObjectsCase
         $this->verifyResponse($objectType, $objectId);
     }
 
+    /**
+     * Verify Test Allowed for this Object Type
+     *
+     * @param string $objectType
+     * @return boolean
+     */
     public function verifyTestIsAllowed($objectType)
     {
         $definition = Splash::object($objectType)->description();
@@ -96,6 +110,13 @@ class O04CreateTest extends ObjectsCase
         return false;
     }
 
+    /**
+     * Prepare Fake Object Dataset for Test
+     *
+     * @param string $objectType
+     *
+     * @return array|false
+     */
     public function prepareForTesting($objectType)
     {
         //====================================================================//

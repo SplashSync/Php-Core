@@ -16,6 +16,7 @@
 namespace Splash\Tests\Tools;
 
 use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\TestCase;
 
@@ -459,5 +460,30 @@ abstract class AbstractBaseCase extends TestCase
         ob_start();
         
         return $task["data"];
+    }
+    
+    /**
+     * @abstract    Normalize Array or ArrayObject to Array
+     *
+     * @param null|array|ArrayObject|string $data
+     *
+     * @throws Exception
+     * @return array
+     *
+     */
+    protected static function toArray($data) : array
+    {
+        if (($data instanceof ArrayObject)) {
+            return $data->getArrayCopy();
+        }
+        if (is_null($data) || ("" === $data)) {
+            return array();
+        }
+
+        if (is_scalar($data)) {
+            throw new Exception("This Data Should a Splash Array Data");
+        }
+            
+        return $data;
     }
 }

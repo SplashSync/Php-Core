@@ -27,12 +27,15 @@ use Splash\Tests\Tools\ObjectsCase;
 class O02FieldsTest extends ObjectsCase
 {
     /**
+     * Test Reading Object Fields from Local Class
      * @dataProvider objectTypesProvider
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
      */
-    public function testFromModule($testSequence, $objectType)
+    public function testFieldsFromModule($testSequence, $objectType)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
@@ -49,12 +52,16 @@ class O02FieldsTest extends ObjectsCase
     }
     
     /**
+     * Test Reading Object Fields from Objects Service
+     *
      * @dataProvider objectTypesProvider
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
      */
-    public function testFromObjectsService($testSequence, $objectType)
+    public function testFieldsFromObjectsService($testSequence, $objectType)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
         
         //====================================================================//
@@ -71,13 +78,28 @@ class O02FieldsTest extends ObjectsCase
         $this->verifyResponse($data);
     }
 
-    public function testFromObjectsServiceErrors()
+    /**
+     * Test Reading Object Fields Errors from Objects Service
+     *
+     * @dataProvider objectTypesProvider
+     * @param string $testSequence
+     */
+    public function testFieldsFromObjectsServiceErrors($testSequence)
     {
+        //====================================================================//
+        //   Configure Env. for Test Sequence
+        $this->loadLocalTestSequence($testSequence);
+        
         //====================================================================//
         //      Request definition without Sending ObjectType
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__);
     }
     
+    /**
+     * Verify Client Response.
+     *
+     * @param ArrayObject|bool|string $data
+     */
     public function verifyResponse($data)
     {
         //====================================================================//
@@ -136,10 +158,13 @@ class O02FieldsTest extends ObjectsCase
         // All Required Informations are Available and is right format
         $this->assertArrayInternalType($field, "id", "string", "Field Identifier");
         $this->assertArrayInternalType($field, "name", "string", "Field Name");
+        $this->assertArrayInternalType($field, "desc", "string", "Field Description");
         $this->assertArraySplashBool($field, "required", "Field Required Flag");
         $this->assertArraySplashBool($field, "write", "Field Write Flag");
         $this->assertArraySplashBool($field, "read", "Field Read Flag");
         $this->assertArraySplashBool($field, "inlist", "Field In List Flag");
+        $this->assertArraySplashArray($field, "choices", "Field Possible Values [key => xxx, value => yyy] ");
+        $this->assertArraySplashArray($field, "options", "Field Faker Options [key => value]");
     }
     
     public function verifyFieldMetaData($field)
@@ -149,7 +174,6 @@ class O02FieldsTest extends ObjectsCase
         if (array_key_exists("itemtype", $field) && !empty($field["itemtype"])) {
             $this->assertArrayInternalType($field, "itemtype", "string", "Field MicroData URL");
             $this->assertArrayInternalType($field, "itemprop", "string", "Field MicroData Property");
-//                $this->isExtUrl         ($Field["itemtype"], "itemtype");
         }
         
         //====================================================================//
@@ -169,17 +193,10 @@ class O02FieldsTest extends ObjectsCase
     public function verifyFieldOptional($field)
     {
         //====================================================================//
-        // Field Description
-        if (array_key_exists("desc", $field)) {
-            $this->assertArrayInternalType($field, "desc", "string", "Field Description");
-        }
-            
-        //====================================================================//
         // Field Format
         if (array_key_exists("format", $field)) {
             $this->assertArrayInternalType($field, "format", "string", "Field Format Description");
         }
-        
         //====================================================================//
         // Field No Test Flag
         if (array_key_exists("notest", $field)) {
