@@ -142,18 +142,18 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         //   Verify Object Id Is in Right Format
         $this->assertTrue(
-            is_integer($objectId) || is_string($objectId),
+            is_numeric($objectId) || is_string($objectId),
             'New Object Id is not an Integer or a Strings'
         );
 
         //====================================================================//
         //   Verify Object Change Was Commited
-        $this->assertIsFirstCommited($action, $objectType, (string) $objectId);
+        $this->assertIsFirstCommited($action, $objectType, $objectId);
 
         //====================================================================//
         //   Read Object Data
         $currentData = Splash::object($objectType)
-            ->get((string) $objectId, $this->reduceFieldList($this->fields));
+            ->get($objectId, $this->reduceFieldList($this->fields));
         $this->assertInternalType('array', $currentData);
         //====================================================================//
         //   Verify Object Data are Ok
@@ -258,7 +258,7 @@ trait ObjectsSetTestsTrait
      * @param array  $objectData    Splash Data Block
      * @param string $forceObjectId Object Id (Update) or Null (Create)
      *
-     * @return string
+     * @return false|string
      */
     protected function setObjectFromModule($objectType, $objectData, $forceObjectId = null)
     {
@@ -272,6 +272,10 @@ trait ObjectsSetTestsTrait
         //   Update Object on Module
         $objectId = Splash::object($objectType)->set($forceObjectId, $objectData);
         //====================================================================//
+        //   Verify Object Id Is Not Empty
+        $this->assertNotEmpty($objectId, 'Returned New Object Id is Empty');
+        $this->assertInternalType('string', $objectId, 'Returned New Object Id is Empty');
+        //====================================================================//
         //   Verify Response
         $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $objectData);
         //====================================================================//
@@ -279,7 +283,7 @@ trait ObjectsSetTestsTrait
         Splash::object($objectType)->unLock();
         //====================================================================//
         // Lock This Object To Avoid Being Selected for Linking
-        $this->setCurrentObject($objectType, (string) $objectId);
+        $this->setCurrentObject($objectType, $objectId);
         //====================================================================//
         // Retun Object Id
         return $objectId;

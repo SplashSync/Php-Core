@@ -471,7 +471,7 @@ abstract class AbstractBaseCase extends TestCase
      * @return array
      *
      */
-    protected static function toArray($data) : array
+    protected static function toArray($data)
     {
         if (($data instanceof ArrayObject)) {
             return $data->getArrayCopy();

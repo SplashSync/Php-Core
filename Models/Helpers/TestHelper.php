@@ -35,8 +35,11 @@ class TestHelper
      *
      * @return arrayObject
      */
-    public static function simObjectCommit($objectType, $local = null, $action = null, $user = 'PhpUnit', $comment = 'Commit Simulated for PhpUnit')
+    public static function simObjectCommit($objectType, $local, $action, $user = 'PhpUnit', $comment = '')
     {
+        if (empty($comment)) {
+            $comment = 'Commit Simulated';
+        }
         $params = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         $params->type = $objectType;            // Type of the Object
         $params->id = $local;                   // Id of Modified object
