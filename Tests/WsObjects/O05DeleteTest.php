@@ -50,6 +50,9 @@ class O05DeleteTest extends ObjectsCase
         $this->verifyCreateResponse($objectType, $objectId);
 
         //====================================================================//
+        // Clean Objects Commited Array
+        Splash::$commited = array();
+        //====================================================================//
         // Lock New Objects To Avoid Action Commit
         Splash::object($objectType)->lock((string) $objectId);
 
@@ -86,6 +89,9 @@ class O05DeleteTest extends ObjectsCase
         //   Verify Response
         $this->verifyCreateResponse($objectType, $objectId);
         
+        //====================================================================//
+        // Clean Objects Commited Array
+        Splash::$commited = array();
         //====================================================================//
         //   Execute Action Directly on Module
         $data = $this->genericAction(
@@ -206,6 +212,10 @@ class O05DeleteTest extends ObjectsCase
         //   Verify Response
         $this->assertIsSplashBool($data, "Object Delete Response Must be a Bool");
         $this->assertNotEmpty($data, "Object Delete Response is Not True");
+        
+        //====================================================================//
+        //   Verify Object Change Was Commited
+        $this->assertIsLastCommited(SPL_A_DELETE, $objectType, (string) $objectId);
         
         //====================================================================//
         //   Verify Repeating Delete as Same Result

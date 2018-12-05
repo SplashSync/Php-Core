@@ -178,7 +178,11 @@ trait ObjectsFakerTrait
         // Generate Unik Dummy Fields Data
         $listData = array();
         while (count($listData) < $nbItems) {
-            $data           =   self::fakeFieldData($type["fieldname"], $field->choices, $field->options);
+            $data           =   self::fakeFieldData(
+                $type["fieldname"],
+                self::toArray($field->choices),
+                self::toArray($field->options)
+            );
             $md5            =   md5(serialize($data));
             $listData[$md5] =   $data;
         }
