@@ -258,7 +258,7 @@ trait ObjectsSetTestsTrait
      * @param array  $objectData    Splash Data Block
      * @param string $forceObjectId Object Id (Update) or Null (Create)
      *
-     * @return false|string
+     * @return string
      */
     protected function setObjectFromModule($objectType, $objectData, $forceObjectId = null)
     {
