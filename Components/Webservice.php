@@ -413,13 +413,13 @@ class Webservice
 
         //====================================================================//
         // Server Infos
-        $response->ServerType = 'PHP';                            // INFO - Server Language Type
+        $response->ServerType = 'PHP';                              // INFO - Server Language Type
         $response->ServerVersion = PHP_VERSION;                     // INFO - Server Language Version
-        $response->ProtocolVersion = SPL_PROTOCOL;                     // INFO - Server Protocal Version
+        $response->ProtocolVersion = SPL_PROTOCOL;                  // INFO - Server Protocal Version
         //====================================================================//
         // Server Infos
-        $response->Self = Splash::input('PHP_SELF');           // INFO - Current Url
-        $response->ServerAddress = Splash::input('SERVER_ADDR');        // INFO - Server IP Address
+        $response->Self = Splash::input('PHP_SELF');                // INFO - Current Url
+        $response->ServerAddress = Splash::input('SERVER_ADDR');    // INFO - Server IP Address
         // Read System Folder without symlinks
         $response->ServerRoot = realpath((string) Splash::input('DOCUMENT_ROOT'));
         $response->UserAgent = Splash::input('HTTP_USER_AGENT');    // INFO - Browser User Agent
@@ -725,7 +725,7 @@ class Webservice
         if (!empty($this->tasks)) {
             $this->outputs->tasks = $this->tasks;
             $this->outputs->taskscount = count($this->outputs->tasks);
-            Splash::log()->deb('[NuSOAP] Call Loaded '.$this->outputs->tasks->count().' Internal tasks');
+            Splash::log()->deb('[WS] Call Loaded '.$this->outputs->tasks->count().' Internal tasks');
         } else {
             $this->outputs->tasks = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         }
@@ -735,7 +735,7 @@ class Webservice
         if (!empty($tasks)) {
             $this->outputs->tasks->append($tasks);
             $this->outputs->taskscount = count($tasks);
-            Splash::log()->deb('[NuSOAP] Call Loaded '.count($tasks).' External tasks');
+            Splash::log()->deb('[WS] Call Loaded '.count($tasks).' External tasks');
         }
 
         return true;
@@ -786,7 +786,7 @@ class Webservice
         } else {
             //====================================================================//
             //  Add Information to Debug Log
-            Splash::log()->deb("[NuSOAP] Id='".print_r($this->id, true)."'");
+            Splash::log()->deb("[WS] Id='".print_r($this->id, true)."'");
             //====================================================================//
             //  Error Message
             return Splash::log()->err('ErrWsNoResponse', $this->outputs->service, $this->url);
