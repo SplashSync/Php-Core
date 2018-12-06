@@ -77,7 +77,7 @@ class A05SelfTestsTest extends AbstractBaseCase
     {
         //====================================================================//
         //   Render Logs if Fails*
-        if (true !== $data) {
+        if (true != $data) {
             fwrite(STDOUT, Splash::log()->getConsoleLog());
         }
         //====================================================================//
