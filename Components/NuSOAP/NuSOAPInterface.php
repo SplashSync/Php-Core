@@ -44,7 +44,7 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function buildClient($targetUrl)
+    public function buildClient($targetUrl, $httpUser = null, $httpPwd = null)
     {
         //====================================================================//
         // Include NuSOAP Classes
@@ -52,6 +52,11 @@ class NuSOAPInterface implements CommunicationInterface
         //====================================================================//
         // Initiate new NuSoap Client
         $this->client = new nusoap_client($targetUrl);
+        //====================================================================//
+        // Complete Options with Http Auth if Needed
+        if (is_scalar($httpUser) && !empty($httpUser) && is_scalar($httpPwd) && !empty($httpPwd)) {
+            $this->client->setCredentials($httpUser, $httpPwd);
+        }
         //====================================================================//
         // Setup NuSOAP Debug Level
         if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {

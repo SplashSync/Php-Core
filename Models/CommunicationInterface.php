@@ -17,50 +17,53 @@ namespace Splash\Models;
 
 /**
  * @abstract    Communication Interface Class for Webservice Low Level Implementation
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
-
 interface CommunicationInterface
 {
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
     //====================================================================//
-    
+
     /**
      * @abstract   Create & Setup WebService Client
      *
-     * @param   string  $tagretUrl    Target Url
+     * @param string      $targetUrl Target Url
+     * @param null|string $httpUser  User for Http Authentification
+     * @param null|string $httpPwd   Password for Http Authentification
      *
      * @return self
      */
-    public function buildClient($tagretUrl);
-        
+    public function buildClient($targetUrl, $httpUser = null, $httpPwd = null);
+
     /**
      * @abstract   Execute WebService Client Request
      *
-     * @param string    $service   Target Service
-     * @param array    $data      Request Raw Data
+     * @param string $service Target Service
+     * @param array  $data    Request Raw Data
      *
-     * @return     mixed    Raw Response
+     * @return mixed Raw Response
      */
     public function call($service, $data);
-        
+
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
     //====================================================================//
-    
+
     /**
      * @abstract   Create & Setup WebService Server
      */
     public function buildServer();
-    
+
     /**
      * @abstract   Responds to WebService Requests
      */
     public function handle();
-    
+
     /**
      * @abstract   Log Errors if Server fail during a request
+     *
      * @param mixed $error
      */
     public function fault($error);

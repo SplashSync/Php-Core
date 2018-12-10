@@ -32,6 +32,11 @@ class SOAPInterface implements CommunicationInterface
      * @var string
      */
     protected $location;
+
+    /**
+     * @var array
+     */
+    protected $options;
     
     /**
      * @var SoapClient
@@ -50,16 +55,31 @@ class SOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function buildClient($targetUrl)
+    public function buildClient($targetUrl, $httpUser = null, $httpPwd = null)
     {
+        //====================================================================//
+        // Store Target Url
         $this->location = $targetUrl;
 
-        $this->client = new SoapClient(null, array(
+        //====================================================================//
+        // Build Options Array
+        $this->options = array(
             'location' => $targetUrl,
             'uri' => Splash::input('SERVER_NAME'),
             'connection_timeout' => Splash::configuration()->WsTimout,
             'exceptions' => false,
-        ));
+        );
+        
+        //====================================================================//
+        // Complete Options with Http Auth if Needed
+        if (is_scalar($httpUser) && !empty($httpUser) && is_scalar($httpPwd) && !empty($httpPwd)) {
+            $this->options["login"] = $httpUser;
+            $this->options["password"] = $httpPwd;
+        }
+        
+        //====================================================================//
+        // Build Generic Soap Client
+        $this->client = new SoapClient(null, $this->options);
     }
 
     /**

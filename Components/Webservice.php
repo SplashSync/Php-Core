@@ -33,16 +33,28 @@ class Webservice
     const       SPLASHHOST = 'www.splashsync.com/ws/soap';
     //====================================================================//
     // Webservice Call Url
+    /** @var string */
     public $url;
     //====================================================================//
     // Remote Server Address
+    /** @var string */
     protected $host = self::SPLASHHOST;
     //====================================================================//
     // Unik Client Identifier ( 1 to 8 Char)
+    /** @var string */
     protected $id = '';
     //====================================================================//
     // Unik Key for encrypt data transmission with this Server
+    /** @var string */
     protected $key = '';
+    //====================================================================//
+    // Http Authentification
+    /** @var bool */
+    protected $httpAuth = false;
+    /** @var string */
+    protected $httpUser;
+    /** @var string */
+    protected $httpPassword;
     //====================================================================//
     // Webservice Tasks Buffer
     private $tasks;
@@ -89,6 +101,18 @@ class Webservice
             $this->host = Splash::configuration()->WsHost;
         } else {
             $this->host = self::SPLASHHOST;
+        }
+        
+        //====================================================================//
+        // If Http Auth is Required => Setup User & Password
+        if (isset(Splash::configuration()->HttpAuth) && !empty(Splash::configuration()->HttpAuth)) {
+            $this->httpAuth = true;
+        }
+        if ($this->httpAuth && isset(Splash::configuration()->HttpUser)) {
+            $this->httpUser = Splash::configuration()->HttpUser;
+        }
+        if ($this->httpAuth && isset(Splash::configuration()->HttpPassword)) {
+            $this->httpPassword = Splash::configuration()->HttpPassword;
         }
 
         //====================================================================//
@@ -556,7 +580,18 @@ class Webservice
         if (empty($this->key)) {
             return Splash::log()->err('ErrWsNoKey');
         }
-
+        
+        //====================================================================//
+        // Verify Http Auth Configuration
+        if ($this->httpAuth) {
+            if (empty($this->httpUser)) {
+                return Splash::log()->err('ErrWsNoHttpUser');
+            }
+            if (empty($this->httpPassword)) {
+                return Splash::log()->err('ErrWsNoHttpPwd');
+            }
+        }
+        
         return true;
     }
 
@@ -757,7 +792,7 @@ class Webservice
         }
         //====================================================================//
         // Build Webservice Client
-        Splash::com()->buildClient($this->url);
+        Splash::com()->buildClient($this->url, $this->httpUser, $this->httpPassword);
 
         return true;
     }
