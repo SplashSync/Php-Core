@@ -17,7 +17,7 @@
 
     <testsuites>
         <testsuite name="Managers">
-            <directory>Tests/managers</directory>
+            <directory>Tests/Managers</directory>
         </testsuite>
     </testsuites>
 
