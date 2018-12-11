@@ -449,7 +449,7 @@ abstract class AbstractBaseCase extends TestCase
                 continue;
             }
             $results[]  =  ($task instanceof ArrayObject) ? $task->getArrayCopy() : $task;
-        } while(!empty($task));
+        } while (!empty($task));
 
         //====================================================================//
         //   Turn On Output Buffering Again
