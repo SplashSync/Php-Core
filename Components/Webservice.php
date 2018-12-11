@@ -374,14 +374,14 @@ class Webservice
      *
      * @return false|mixed
      */
-    public static function getNextResult($response)
+    public static function getNextResult(&$response)
     {
         //====================================================================//
         // Extract Next Task From Buffer
         $task = self::getNextTask($response);
         //====================================================================//
         // Analyze SOAP Results
-        if (!$task || !isset($response->data)) {
+        if (!$task || !isset($task->data)) {
             return false;
         }
         //====================================================================//

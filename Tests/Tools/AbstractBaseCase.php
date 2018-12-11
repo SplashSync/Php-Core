@@ -383,12 +383,12 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     * @abstract   Perform generic Server Side Action
+     * Perform Generic Server Side Action
      *
-     * @param string $service
-     * @param string $action
-     * @param string $description
-     * @param array  $parameters
+     * @param string $service   Webservice Service Name
+     * @param string $action    Webservice Action Name
+     * @param string $description Task Description
+     * @param array  $parameters    Task Parameters
      *
      * @return ArrayObject|bool|string
      */
@@ -418,12 +418,53 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     * @abstract    Perform generic Server Side Action
+     * Perform Multiple Server Side Action
      *
-     * @param string $service
-     * @param string $action
-     * @param string $description
-     * @param array  $parameters
+     * @param string $service   Webservice Service Name
+     * @param string $action    Webservice Action Name
+     * @param string $description Task Description
+     * @param array  $tasksParameters    Array of Task Parameters
+     *
+     * @return ArrayObject|bool|string
+     */
+    protected function multipleAction($service, $action, $description, array $tasksParameters = array())
+    {
+        //====================================================================//
+        //   Prepare Request Data
+        foreach ($tasksParameters as $parameters) {
+            Splash::ws()->addTask($action, $parameters, $description);
+        }
+        //====================================================================//
+        //   Execute Action From Splash Server to Module
+        $response   =   Splash::ws()->simulate($service);
+        //====================================================================//
+        //   Check Response
+        $data       =   $this->checkResponse((string) $response);
+        //====================================================================//
+        //   Extract Task Results
+        $results = array();
+        do {
+            $task = Splash::ws()->getNextResult($data);
+            if (!$task) {
+                continue;
+            }
+            $results[]  =  ($task instanceof ArrayObject) ? $task->getArrayCopy() : $task;
+        } while(!empty($task));
+
+        //====================================================================//
+        //   Turn On Output Buffering Again
+        ob_start();
+        
+        return $results;
+    }
+    
+    /**
+     * Perform generic Server Side Action
+     *
+     * @param string $service   Webservice Service Name
+     * @param string $action    Webservice Action Name
+     * @param string $description Task Description
+     * @param array  $parameters    Task Parameters
      *
      * @return ArrayObject
      */
