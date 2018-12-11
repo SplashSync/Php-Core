@@ -425,7 +425,7 @@ abstract class AbstractBaseCase extends TestCase
      * @param string $description Task Description
      * @param array  $tasksParameters    Array of Task Parameters
      *
-     * @return ArrayObject|bool|string
+     * @return array
      */
     protected function multipleAction($service, $action, $description, array $tasksParameters = array())
     {
