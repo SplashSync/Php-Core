@@ -33,7 +33,7 @@ class A04WidgetsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testWidgetsFromClass(string $testSequence)
+    public function testWidgetsFromClass($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -59,7 +59,7 @@ class A04WidgetsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testWidgetsActionFromAdmin(string $testSequence)
+    public function testWidgetsActionFromAdmin($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -80,7 +80,7 @@ class A04WidgetsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testWidgetsActionFromWidgets(string $testSequence)
+    public function testWidgetsActionFromWidgets($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

@@ -52,7 +52,7 @@ class A01PingTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testPingClientAction(string $testSequence)
+    public function testPingClientAction($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -83,7 +83,7 @@ class A01PingTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      * @param string $testSequence
      */
-    public function testPingServerAction(string $testSequence)
+    public function testPingServerAction($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

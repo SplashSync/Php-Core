@@ -33,7 +33,7 @@ class A03ObjectsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testObjectsFromClass(string $testSequence)
+    public function testObjectsFromClass($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -59,7 +59,7 @@ class A03ObjectsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testObjectsFromAdminService(string $testSequence)
+    public function testObjectsFromAdminService($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -79,7 +79,7 @@ class A03ObjectsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testObjectsFromObjectsService(string $testSequence)
+    public function testObjectsFromObjectsService($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

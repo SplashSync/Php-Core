@@ -47,7 +47,7 @@ class A02ConnectTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testConnectClientAction(string $testSequence)
+    public function testConnectClientAction($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -78,7 +78,7 @@ class A02ConnectTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testConnectServerAction(string $testSequence)
+    public function testConnectServerAction($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

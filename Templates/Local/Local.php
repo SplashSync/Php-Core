@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Local;
+namespace Splash\Templates\Local;
 
 use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
@@ -66,6 +66,7 @@ class Local implements LocalClassInterface
      */
     public function parameters()
     {
+        return array();
     }
     
     /**

@@ -33,7 +33,7 @@ class A05SelfTestsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testSelfTestFromClass(string $testSequence)
+    public function testSelfTestFromClass($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -54,7 +54,7 @@ class A05SelfTestsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testSelfTestFromAdmin(string $testSequence)
+    public function testSelfTestFromAdmin($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

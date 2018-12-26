@@ -401,7 +401,7 @@ class Logger
      */
     public function getRawLog($clean = false)
     {
-        $raw = new ArrayObject();
+        $raw = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         if ($this->err) {
             $raw->err = $this->err;
         }

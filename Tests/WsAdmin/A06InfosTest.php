@@ -33,7 +33,7 @@ class A06InfosTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testInformationsFromClass(string $testSequence)
+    public function testInformationsFromClass($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -53,7 +53,7 @@ class A06InfosTest extends AbstractBaseCase
      *
      * @param string $testSequence
      */
-    public function testInformationsFromAdmin(string $testSequence)
+    public function testInformationsFromAdmin($testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

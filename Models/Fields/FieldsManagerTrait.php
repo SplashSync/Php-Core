@@ -428,13 +428,13 @@ trait FieldsManagerTrait
             $filteredItems = array();
             //====================================================================//
             // Search for Field in Item Block
-            if (!is_array($fieldData) && !is_a($fieldData, 'ArrayObject')) {
+            if (!is_array($fieldData) && !($fieldData instanceof ArrayObject)) {
                 continue;
             }
             //====================================================================//
             // Search for Field in Item Block
             foreach ($filters as $fieldId) {
-                if (isset($fieldData[$fieldId])) {
+                if (array_key_exists($fieldId, $fieldData)) {
                     $filteredItems[$fieldId] = $fieldData[$fieldId];
                 }
             }
@@ -445,41 +445,41 @@ trait FieldsManagerTrait
     }
 
     /**
-     * @abstract   Normalize An Object Data Block (ie: before Compare)
+     * Normalize An Object Data Block (ie: before Compare)
      *
-     * @param mixed $inputArray Input Array
+     * @param mixed $input Input Array
      *
      * @return array Sorted Array
      */
-    public static function normalize(&$inputArray)
+    public static function normalize(&$input)
     {
         //==============================================================================
         //      Convert ArrayObjects To Simple Array
-        if (is_a($inputArray, 'ArrayObject')) {
-            $inputArray = $inputArray->getArrayCopy();
+        if ($input instanceof ArrayObject) {
+            $input = $input->getArrayCopy();
             //==============================================================================
             // Normalize Contents
-            self::normalize($inputArray);
+            self::normalize($input);
 
         //==============================================================================
         // Normalize Array Contents
-        } elseif (is_array($inputArray)) {
-            foreach ($inputArray as &$value) {
+        } elseif (is_array($input)) {
+            foreach ($input as &$value) {
                 self::normalize($value);
             }
 
-            //==============================================================================
+        //==============================================================================
         // Normalize Bool as Strings
-        } elseif (is_bool($inputArray)) {
-            $inputArray = $inputArray ? '1' : '0';
+        } elseif (is_bool($input)) {
+            $input = $input ? '1' : '0';
 
         //==============================================================================
         // Normalize Numbers as Strings
-        } elseif (is_numeric($inputArray)) {
-            $inputArray = strval($inputArray);
+        } elseif (is_numeric($input)) {
+            $input = strval($input);
         }
 
-        return $inputArray;
+        return $input;
     }
 
     /**
