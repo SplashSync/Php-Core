@@ -202,8 +202,8 @@ class UnitConverter
         // Convert Source to Base Unit then Apply Target Factor
 //        if (extension_loaded("bcmath")) {
 //            return (float) bcdiv( bcmul($value, $toFactor, 9), $fromFactor, 9);
-//        }        
-//        
+//        }
+//
         return (float) ($value * ($toFactor / $fromFactor));
     }
 }
