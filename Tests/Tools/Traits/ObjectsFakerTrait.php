@@ -225,7 +225,7 @@ trait ObjectsFakerTrait
         //====================================================================//
         // Detects Id Fields    => Cannot Generate Fake for Id Fields Here...
         if (($id = self::isIdField($type))) {
-            return $className::fake(array_merge_recursive($this->settings, $options), $id["ObjectType"]);
+            return $className::fake(array_replace_recursive($this->settings, $options), $id["ObjectType"]);
         }
         
         //====================================================================//
@@ -242,7 +242,7 @@ trait ObjectsFakerTrait
 
         //====================================================================//
         // Generate Single Field Data Type is Valid
-        return $className::fake(array_merge_recursive($this->settings, $options));
+        return $className::fake(array_replace_recursive($this->settings, $options));
     }
     
     /**

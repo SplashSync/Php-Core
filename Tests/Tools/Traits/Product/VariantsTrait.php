@@ -111,12 +111,12 @@ trait VariantsTrait
             self::lists()->fieldName($name->id)     =>      self::fakeFieldData(
                 $name->type,
                 null,
-                array_merge_recursive($name->options, array("minLength" =>   3, "maxLength" =>   5))
+                array_replace_recursive($name->options, array("minLength" =>   3, "maxLength" =>   5))
             ),
             self::lists()->fieldName($value->id)     =>      self::fakeFieldData(
                 $value->type,
                 null,
-                array_merge_recursive($value->options, array("minLength" =>   5, "maxLength" =>   10))
+                array_replace_recursive($value->options, array("minLength" =>   5, "maxLength" =>   10))
             ),
         );
     }
