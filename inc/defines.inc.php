@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,19 +33,19 @@ define("SPLASH_WS_METHOD", "SOAP");                 // Module Webservice Method
 define("SPLASH_TIMEOUT", 30);                       // Client response timout in seconds
 define("SPLASH_CRYPT_METHOD", "AES-256-CBC");       // Define Data Encryption Method
 define("SPLASH_ENCODE", "XML");                     // Messages Encoding Format (XML, JSON)
-define("SPLASH_CLASS_PREFIX", "\\Splash\\Local");     // Prefix To be Applied to all Local Class
+define("SPLASH_CLASS_PREFIX", "\\Splash\\Local");   // Prefix To be Applied to all Local Class
 
 //====================================================================//
 // Show Debug Messages
 if (!defined('SPLASH_DEBUG')) {
-    define("SPLASH_DEBUG", false);         // Activate Debug Mode or Not
+    define("SPLASH_DEBUG", false);                  // Activate Debug Mode or Not
 }
 
 //====================================================================//
 // Defaults Parameters
-define("SPLASH_LOCALPATH", "/..");             // Relative Address to Local Library Folder
-define("SPLASH_DF_LANG", "en_US");           // Module Default Translation Language
-define("SPLASH_LOGGING", false);             // Enable activity logging on INI file
-define("SPLASH_TRACE_IN", false);             // Log Inputs Messages
-define("SPLASH_TRACE_OUT", false);             // Log Outputs Messages
-define("SPLASH_TRACE_TASKS", false);             // Log Tasks Execution Events
+define("SPLASH_LOCALPATH", "/..");                  // Relative Address to Local Library Folder
+define("SPLASH_DF_LANG", "en_US");                  // Module Default Translation Language
+define("SPLASH_LOGGING", false);                    // Enable activity logging on INI file
+define("SPLASH_TRACE_IN", false);                   // Log Inputs Messages
+define("SPLASH_TRACE_OUT", false);                  // Log Outputs Messages
+define("SPLASH_TRACE_TASKS", false);                // Log Tasks Execution Events
