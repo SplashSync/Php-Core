@@ -25,14 +25,9 @@ use Splash\Tests\Tools\TestCase;
  */
 abstract class AbstractBaseCase extends TestCase
 {
+    use \Splash\Tests\Tools\Traits\SettingsTrait;
     use \Splash\Tests\Tools\Traits\ObjectsValidatorTrait;
     use \Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
-        
-    /**
-     * Formater Fake Field Generator Options
-     * @var array
-     */
-    private $settings = array();
     
     /**
      * {@inheritdoc}
