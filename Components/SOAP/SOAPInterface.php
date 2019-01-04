@@ -34,6 +34,11 @@ class SOAPInterface implements CommunicationInterface
     protected $location;
 
     /**
+     * @var string
+     */
+    protected $uri;
+    
+    /**
      * @var array
      */
     protected $options;
@@ -62,10 +67,16 @@ class SOAPInterface implements CommunicationInterface
         $this->location = $targetUrl;
 
         //====================================================================//
+        // Store Client Url
+        $this->uri = Splash::input('SERVER_NAME')
+                ? Splash::input('SERVER_NAME')
+                : Splash::configuration()->WsHost;
+        
+        //====================================================================//
         // Build Options Array
         $this->options = array(
             'location' => $targetUrl,
-            'uri' => Splash::input('SERVER_NAME'),
+            'uri' => $this->uri,
             'connection_timeout' => Splash::configuration()->WsTimout,
             'exceptions' => false,
         );

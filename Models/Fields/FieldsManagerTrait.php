@@ -468,7 +468,7 @@ trait FieldsManagerTrait
                 self::normalize($value);
             }
 
-        //==============================================================================
+            //==============================================================================
         // Normalize Bool as Strings
         } elseif (is_bool($input)) {
             $input = $input ? '1' : '0';
