@@ -29,8 +29,8 @@
     },
     
     "autoload-dev": {
-        "psr-4": { 
-            "Splash\\Local\\": "Templates/Local", 
+        "psr-4": {
+            "Splash\\Local\\": "Resources/grumphp", 
             "Splash\\Tests\\": "Tests/" 
         }
     },

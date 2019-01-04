@@ -427,9 +427,14 @@ trait FieldsManagerTrait
         foreach ($objectData as $fieldData) {
             $filteredItems = array();
             //====================================================================//
-            // Search for Field in Item Block
+            // Ensure Item is An Array of Fields
             if (!is_array($fieldData) && !($fieldData instanceof ArrayObject)) {
                 continue;
+            }
+            //====================================================================//
+            // Convert ArrayObjects to Array
+            if ($fieldData instanceof ArrayObject) {
+                $fieldData = $fieldData->getArrayCopy();
             }
             //====================================================================//
             // Search for Field in Item Block
