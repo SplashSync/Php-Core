@@ -1,9 +1,9 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('vendor')
-    ->exclude('Components/NuSOAP/nusoap.php')
     ->in(dirname(dirname(__DIR__)))
+    ->exclude('vendor')
+    ->exclude('Components/NuSOAP')
 ;
 
 include_once "php_cs.rules.dist";
