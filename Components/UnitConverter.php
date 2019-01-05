@@ -44,6 +44,7 @@ class UnitConverter
     const LENGTH_KM = 1E-3;
     const LENGTH_FOOT = 3.280839895;
     const LENGTH_INCH = 39.370078740;
+    const LENGTH_YARD = 1.09361329834;
 
     //====================================================================//
     // SURFACE UNITS FACTORS (From M2 to ...)
