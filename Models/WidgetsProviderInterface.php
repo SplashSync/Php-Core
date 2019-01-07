@@ -26,7 +26,7 @@ interface WidgetsProviderInterface
     /**
      * @abstract   Build list of Available Widgets
      *
-     * @return     string[]
+     * @return string[]
      */
     public function widgets();
 
@@ -36,7 +36,7 @@ interface WidgetsProviderInterface
      *
      * @params     string $WidgetType       Specify Widgets Type Name
      *
-     * @return     WidgetInterface
+     * @return WidgetInterface
      */
     public function widget(string $widgetType);
 }

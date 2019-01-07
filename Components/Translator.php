@@ -15,6 +15,7 @@
 
 /**
  * @abstract    Splash Core Integrated Translation Management Class.
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -35,13 +36,15 @@ class Translator
 {
     /**
      * @abstract   Translations Storage Array
-     * @var        Array
+     *
+     * @var Array
      */
     private $trans;
     
     /**
      * @abstract   Loaded Translation Files array
-     * @var        Array
+     *
+     * @var Array
      */
     private $loadedTranslations;
 
@@ -55,12 +58,11 @@ class Translator
      *              All data in translation array are stored in UTF-8 format.
      *              trans_loaded is completed with $file key.
      *
-     * @param  string  $fileName    File name to load (.ini file).
-     *                              Must be "file" or "file@local" for local language files:
-     *                              If $FileName is "file@local" instead of "file" then we look for local lang file
-     *                              in localpath/langs/code_CODE/file.lang
-     *
-     * @param  string  $language    Force Loading of a specific ISO Language Code (Example en_US or fr_FR or es_ES)
+     * @param string $fileName File name to load (.ini file).
+     *                         Must be "file" or "file@local" for local language files:
+     *                         If $FileName is "file@local" instead of "file" then we look for local lang file
+     *                         in localpath/langs/code_CODE/file.lang
+     * @param string $language Force Loading of a specific ISO Language Code (Example en_US or fr_FR or es_ES)
      *
      * @return bool
      *
@@ -130,13 +132,14 @@ class Translator
      *                  et si toujours pas trouve, il est retourne tel quel
      *                  Les parametres de cette methode peuvent contenir de balises HTML.
      *
-     * @param  string  $key        Key to translate
-     * @param  string  $param1     chaine de param1
-     * @param  string  $param2     chaine de param2
-     * @param  string  $param3     chaine de param3
-     * @param  string  $param4     chaine de param4
-     * @param  int     $maxsize    Max length of text
-     * @return string              Translated string (encoded into HTML entities and UTF8)
+     * @param string $key     Key to translate
+     * @param string $param1  chaine de param1
+     * @param string $param2  chaine de param2
+     * @param string $param3  chaine de param3
+     * @param string $param4  chaine de param4
+     * @param int    $maxsize Max length of text
+     *
+     * @return string Translated string (encoded into HTML entities and UTF8)
      */
     public function translate($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $maxsize = 0)
     {
@@ -178,10 +181,10 @@ class Translator
     /**
      * @abstract   Convert Array Parameters to String
      *
-     * @param  array|ArrayObject|string  $param1     chaine de param1
-     * @param  array|ArrayObject|string  $param2     chaine de param2
-     * @param  array|ArrayObject|string  $param3     chaine de param3
-     * @param  array|ArrayObject|string  $param4     chaine de param4
+     * @param array|ArrayObject|string $param1 chaine de param1
+     * @param array|ArrayObject|string $param2 chaine de param2
+     * @param array|ArrayObject|string $param3 chaine de param3
+     * @param array|ArrayObject|string $param4 chaine de param4
      *
      * @return void
      */
@@ -206,12 +209,11 @@ class Translator
     /**
      * @abstract    Build Translation filename based on specified $file and ISO Language Code.
      *
-     * @param  string  $fileName    File name to load (.ini file).
-     *                              Must be "file" or "file@local" for local language files:
-     *                              If $FileName is "file@local" instead of "file" then we look for local lang file
-     *                              in localpath/langs/code_CODE/file.lang
-     *
-     * @param  string  $language   ISO Language Code (Example en_US or fr_FR or es_ES)
+     * @param string $fileName File name to load (.ini file).
+     *                         Must be "file" or "file@local" for local language files:
+     *                         If $FileName is "file@local" instead of "file" then we look for local lang file
+     *                         in localpath/langs/code_CODE/file.lang
+     * @param string $language ISO Language Code (Example en_US or fr_FR or es_ES)
      *
      * @return string
      */
@@ -241,7 +243,7 @@ class Translator
     /**
      * @abstract   Load Speficied file onto static language collection
      *
-     * @param  string  $fullPath   Full path to language file to load (.ini file).
+     * @param string $fullPath Full path to language file to load (.ini file).
      *
      * @return bool
      *

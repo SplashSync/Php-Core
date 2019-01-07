@@ -16,6 +16,7 @@
 /**
  * @abstract    Global SplashSync Webservice Functions Constants & Definitions
  *              DO NOT EDIT OR CHANGE ANY CONTENTS OF THIS FILE
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 

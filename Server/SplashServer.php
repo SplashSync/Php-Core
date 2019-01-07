@@ -16,6 +16,7 @@
 /**
  * @abstract    Splash Sync Server. Manage Splash Requests & Responses.
  *              This file is included only in case on NuSOAP call to slave server.
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -159,6 +160,7 @@ class SplashServer
    
     /**
      *      @abstract       Class Initialisation
+     *
      *      @return         bool
      */
     public static function init()
@@ -298,11 +300,11 @@ class SplashServer
      * @abstract    All-In-One SOAP Server Messages Reception & Dispaching
      *              Unpack all pending tasks and send order to local task routers for execution.
      *
-     * @param       string      $serverId       WebService Node Identifier
-     * @param       string      $data           WebService Packaged Data Inputs
-     * @param       string      $routerName     Name of the router function to use for task execution
+     * @param string $serverId   WebService Node Identifier
+     * @param string $data       WebService Packaged Data Inputs
+     * @param string $routerName Name of the router function to use for task execution
      *
-     * @return      mixed    WebService Packaged Data Outputs or NUSOAP Error
+     * @return mixed WebService Packaged Data Outputs or NUSOAP Error
      */
     private static function run($serverId, $data, $routerName)
     {

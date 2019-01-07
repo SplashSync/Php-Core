@@ -28,6 +28,7 @@ class O03ListTest extends ObjectsCase
 {
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      */
@@ -50,6 +51,7 @@ class O03ListTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      */

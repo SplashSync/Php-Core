@@ -31,7 +31,8 @@ class ObjectsCase extends AbstractBaseCase
     
     /**
      * @abstract    List of Created & Tested Object used to delete if test failled.
-     * @var     array
+     *
+     * @var array
      */
     private $createdObjects  =   array();
     
@@ -59,9 +60,9 @@ class ObjectsCase extends AbstractBaseCase
     /**
      * @abstract        Verify Last Commit is Valid and Conform to Expected
      *
-     * @param string    $action         Expected Action
-     * @param string    $objectType     Expected Object Type
-     * @param string    $objectId       Expected Object Id
+     * @param string $action     Expected Action
+     * @param string $objectType Expected Object Type
+     * @param string $objectId   Expected Object Id
      */
     public function assertIsLastCommited($action, $objectType, $objectId)
     {
@@ -71,9 +72,9 @@ class ObjectsCase extends AbstractBaseCase
     /**
      * @abstract        Verify First Commit is Valid and Conform to Expected
      *
-     * @param string    $action         Expected Action
-     * @param string    $objectType     Expected Object Type
-     * @param string    $objectId       Expected Object Id
+     * @param string $action     Expected Action
+     * @param string $objectType Expected Object Type
+     * @param string $objectId   Expected Object Id
      */
     public function assertIsFirstCommited($action, $objectType, $objectId)
     {
@@ -86,6 +87,7 @@ class ObjectsCase extends AbstractBaseCase
     
     /**
      * Data Privider : Objects Types Tests Sequences
+     *
      * @return array
      */
     public function objectTypesProvider()
@@ -128,6 +130,7 @@ class ObjectsCase extends AbstractBaseCase
 
     /**
      * Data Privider : Objects Types x Fields Tests Sequences
+     *
      * @return array
      */
     public function objectFieldsProvider()
@@ -177,8 +180,8 @@ class ObjectsCase extends AbstractBaseCase
     /**
      * @abstract        Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation
      *
-     * @param string    $objectType     Expected Object Type
-     * @param string    $objectId       Expected Object Id
+     * @param string $objectType Expected Object Type
+     * @param string $objectId   Expected Object Id
      */
     protected function setCurrentObject($objectType, $objectId)
     {
@@ -192,7 +195,8 @@ class ObjectsCase extends AbstractBaseCase
     
     /**
      * Add Object Id to List of Tested Objects (To delete at the End)
-     * @param string $objectType
+     *
+     * @param string     $objectType
      * @param int|string $objectId
      */
     protected function addTestedObject($objectType, $objectId = null)
@@ -225,10 +229,10 @@ class ObjectsCase extends AbstractBaseCase
     /**
      * @abstract        Verify First Commit is Valid and Conform to Expected
      *
-     * @param string    $action         Expected Action
-     * @param string    $objectType     Expected Object Type
-     * @param string    $objectId       Expected Object Id
-     * @param bool      $first          Check First or Last Commited
+     * @param string $action     Expected Action
+     * @param string $objectType Expected Object Type
+     * @param string $objectId   Expected Object Id
+     * @param bool   $first      Check First or Last Commited
      */
     private function assertIsCommited($action, $objectType, $objectId, $first = true)
     {

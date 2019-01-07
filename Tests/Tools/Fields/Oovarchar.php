@@ -85,9 +85,11 @@ class Oovarchar implements FieldInterface
     
     /**
      * @abstract    Apply Case Constrains
-     * @param   array       $settings   User Defined Faker Settings
-     * @param   string      $data
-     * @return  void
+     *
+     * @param array  $settings User Defined Faker Settings
+     * @param string $data
+     *
+     * @return void
      */
     private static function applyLengthConstrains($settings, &$data)
     {
@@ -107,9 +109,11 @@ class Oovarchar implements FieldInterface
 
     /**
      * @abstract    Apply Case Constrains
-     * @param   array       $settings   User Defined Faker Settings
-     * @param   string      $data
-     * @return  void
+     *
+     * @param array  $settings User Defined Faker Settings
+     * @param string $data
+     *
+     * @return void
      */
     private static function applyCaseConstrains($settings, &$data)
     {

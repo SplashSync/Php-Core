@@ -100,10 +100,10 @@ trait ObjectsFakerTrait
     /**
      * @abstract   Create Fake/Dummy Object Data
      *
-     * @param      array   $fieldsList     Object Field List
-     * @param      array   $originData     Original Object Data
+     * @param array $fieldsList Object Field List
+     * @param array $originData Original Object Data
      *
-     * @return     array
+     * @return array
      */
     public function fakeObjectData($fieldsList, $originData = null)
     {
@@ -203,11 +203,11 @@ trait ObjectsFakerTrait
     /**
      * @abstract   Create Fake Field data
      *
-     * @param      string  $type       Object Field Type
-     * @param      array   $choices    Object Field Possible Values
-     * @param      array   $options     Object Field Values Options
+     * @param string $type    Object Field Type
+     * @param array  $choices Object Field Possible Values
+     * @param array  $options Object Field Values Options
      *
-     * @return     array|bool|string
+     * @return array|bool|string
      */
     public function fakeFieldData($type, $choices = null, $options = array())
     {

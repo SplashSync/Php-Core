@@ -38,6 +38,7 @@ class O07GetTest extends ObjectsCase
 
     /**
      * @dataProvider objectFieldsProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      * @param mixed $field
@@ -71,6 +72,7 @@ class O07GetTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      */
@@ -103,6 +105,7 @@ class O07GetTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      */
@@ -134,6 +137,7 @@ class O07GetTest extends ObjectsCase
 
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      */

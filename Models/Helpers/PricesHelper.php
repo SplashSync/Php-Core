@@ -26,14 +26,14 @@ class PricesHelper
     /**
      * @abstract   Build a new price field array
      *
-     * @param      null|double      $taxExcl        Price Without VAT (Or Null if Price Send with VAT)
-     * @param      double      $vat            VAT percentile
-     * @param      double      $taxIncl        Price With VAT
-     * @param      string      $code           Price Currency Code
-     * @param      string      $symbol         Price Currency Symbol
-     * @param      string      $name           Price Currency Name
+     * @param null|double $taxExcl Price Without VAT (Or Null if Price Send with VAT)
+     * @param double      $vat     VAT percentile
+     * @param double      $taxIncl Price With VAT
+     * @param string      $code    Price Currency Code
+     * @param string      $symbol  Price Currency Symbol
+     * @param string      $name    Price Currency Name
      *
-     * @return     array|string
+     * @return array|string
      */
     public static function encode($taxExcl, $vat, $taxIncl = null, $code = "", $symbol = "", $name = "")
     {
@@ -80,10 +80,10 @@ class PricesHelper
     /**
      * @abstract   Compare Two Price Array
      *
-     * @param      array       $price1          Price field Array
-     * @param      array       $price2          Price field Array
+     * @param array $price1 Price field Array
+     * @param array $price2 Price field Array
      *
-     * @return     bool
+     * @return bool
      */
     public static function compare($price1, $price2)
     {
@@ -113,10 +113,10 @@ class PricesHelper
     /**
      * @abstract   Compare Two Price Array without Validation
      *
-     * @param      array       $price1          Price field Array
-     * @param      array       $price2          Price field Array
+     * @param array $price1 Price field Array
+     * @param array $price2 Price field Array
      *
-     * @return     bool
+     * @return bool
      */
     public static function compareAmounts($price1, $price2)
     {
@@ -152,9 +152,9 @@ class PricesHelper
     /**
      * @abstract   Verify Price field array
      *
-     * @param      mixed       $price          Price field definition Array
+     * @param mixed $price Price field definition Array
      *
-     * @return     bool
+     * @return bool
      */
     public static function isValid($price)
     {
@@ -183,10 +183,10 @@ class PricesHelper
     /**
      * @abstract   Extract Data from Price Array
      *
-     * @param      array       $price          Price field definition Array
-     * @param      string      $key            Data Key
+     * @param array  $price Price field definition Array
+     * @param string $key   Data Key
      *
-     * @return     double|false
+     * @return double|false
      */
     public static function extract($price, $key = "ht")
     {
@@ -204,9 +204,9 @@ class PricesHelper
     /**
      * @abstract   Extract Price without VAT from Price Array
      *
-     * @param      array       $price          Price field definition Array
+     * @param array $price Price field definition Array
      *
-     * @return     double|false
+     * @return double|false
      */
     public static function taxExcluded($price)
     {
@@ -216,9 +216,9 @@ class PricesHelper
     /**
      * @abstract   Extract Price with VAT from Price Array
      *
-     * @param      array       $price          Price field definition Array
+     * @param array $price Price field definition Array
      *
-     * @return     double|false
+     * @return double|false
      */
     public static function taxIncluded($price)
     {
@@ -228,9 +228,9 @@ class PricesHelper
     /**
      * @abstract   Extract Price with VAT from Price Array
      *
-     * @param      array       $price          Price field definition Array
+     * @param array $price Price field definition Array
      *
-     * @return     double|false
+     * @return double|false
      */
     public static function taxPercent($price)
     {
@@ -240,9 +240,9 @@ class PricesHelper
     /**
      * @abstract   Extract Price VAT Ratio from Price Array
      *
-     * @param      array       $price          Price field definition Array
+     * @param array $price Price field definition Array
      *
-     * @return     double
+     * @return double
      */
     public static function taxRatio($price)
     {
@@ -252,9 +252,9 @@ class PricesHelper
     /**
      * @abstract   Extract Price Tax Amount from Price Array
      *
-     * @param      array       $price          Price field definition Array
+     * @param array $price Price field definition Array
      *
-     * @return     double|false
+     * @return double|false
      */
     public static function taxAmount($price)
     {
@@ -264,9 +264,9 @@ class PricesHelper
     /**
      * @abstract   Verify Price Array Amount Infos are Available
      *
-     * @param      array|ArrayObject       $price          Price field definition Array
+     * @param array|ArrayObject $price Price field definition Array
      *
-     * @return     bool
+     * @return bool
      */
     private static function isValidAmount($price)
     {
@@ -288,9 +288,9 @@ class PricesHelper
     /**
      * @abstract   Verify Price Array Currency Infos are Available
      *
-     * @param      array|ArrayObject       $price          Price field definition Array
+     * @param array|ArrayObject $price Price field definition Array
      *
-     * @return     bool
+     * @return bool
      */
     private static function isValidCurrency($price)
     {

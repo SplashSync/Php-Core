@@ -21,6 +21,7 @@ use Splash\Core\SplashCore      as Splash;
 /**
  * @abstract    Server Request Routiung Class, Execute/Route actions on Widgets Service Requests.
  *              This file is included only in case on NuSOAP call to slave server.
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 class Widgets

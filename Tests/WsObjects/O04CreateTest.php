@@ -94,6 +94,7 @@ class O04CreateTest extends ObjectsCase
      * Verify Test Allowed for this Object Type
      *
      * @param string $objectType
+     *
      * @return boolean
      */
     public function verifyTestIsAllowed($objectType)

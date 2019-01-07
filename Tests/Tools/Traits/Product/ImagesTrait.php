@@ -138,6 +138,7 @@ trait ImagesTrait
 
     /**
      * @abstract    Base Test for Products Images Writing
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      * @param mixed $images
@@ -192,10 +193,12 @@ trait ImagesTrait
     
     /**
      * @abstract    Identify Image in List by Md5 and Active Flag
-     * @param   array       $source         Source Image
-     * @param   string      $imageId        Image Field Id
-     * @param   string      $flagId         Flag Field Id
-     * @return  null|array
+     *
+     * @param array  $source  Source Image
+     * @param string $imageId Image Field Id
+     * @param string $flagId  Flag Field Id
+     *
+     * @return null|array
      */
     protected function findImageByMd5AndFlag($source, $imageId, $flagId)
     {
@@ -229,6 +232,7 @@ trait ImagesTrait
     
     /**
      * @abstract    Generate Image Item
+     *
      * @param mixed $index
      * @param mixed $setCover
      * @param mixed $setVisible
@@ -265,6 +269,7 @@ trait ImagesTrait
 
     /**
      * @abstract    Generate Fake Images List
+     *
      * @param mixed $combination
      */
     private function getFakeImages($combination)
@@ -290,9 +295,10 @@ trait ImagesTrait
 
     /**
      * @abstract    Verify Images are Correctly Stored
-     * @param   string      $objectType
-     * @param   string      $objectId
-     * @param   array       $source
+     *
+     * @param string $objectType
+     * @param string $objectId
+     * @param array  $source
      */
     private function verifyImages($objectType, $objectId, $source)
     {
@@ -369,8 +375,10 @@ trait ImagesTrait
 
     /**
      * @abstract    Verify Images are Correctly Stored
-     * @param       string      $objectType
-     * @return      void
+     *
+     * @param string $objectType
+     *
+     * @return void
      */
     private function verifyImagesFields($objectType)
     {
@@ -413,10 +421,12 @@ trait ImagesTrait
     
     /**
      * @abstract    Verify Visible Image Flag
-     * @param   array       $source         Source Image
-     * @param   string      $imageId        Image Field Id
-     * @param   string      $isVisibleId    is Visible Flag Field Id
-     * @return  void
+     *
+     * @param array  $source      Source Image
+     * @param string $imageId     Image Field Id
+     * @param string $isVisibleId is Visible Flag Field Id
+     *
+     * @return void
      */
     private function verifyVisibleImages($source, $imageId, $isVisibleId)
     {
@@ -438,9 +448,10 @@ trait ImagesTrait
     
     /**
      * @abstract    Verify Cover Image Flag
-     * @param   array       $source         Source Image
-     * @param   string      $imageId        Image Field Id
-     * @param   string      $isCoverId      is Cover Flag Field Id
+     *
+     * @param array  $source    Source Image
+     * @param string $imageId   Image Field Id
+     * @param string $isCoverId is Cover Flag Field Id
      */
     private function verifyCoverImages($source, $imageId, $isCoverId)
     {
@@ -462,6 +473,7 @@ trait ImagesTrait
     
     /**
      * @abstract     Check if Product Images Tests is Required
+     *
      * @param mixed $objectType
      */
     private function isAllowedProductImagesTests($objectType)

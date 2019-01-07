@@ -16,6 +16,7 @@
 /**
  * @abstract    Server Request Routiung Class, Execute/Route actions on Objects Service Requests.
  *              This file is included only in case on NuSOAP call to slave server.
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -126,9 +127,9 @@ class Objects
     /**
      * @abstract   Verify Received Task
      *
-     * @param      ArrayObject     $task       Full Task Request Array
+     * @param ArrayObject $task Full Task Request Array
      *
-     * @return     bool
+     * @return bool
      */
     private static function isValidTask($task)
     {

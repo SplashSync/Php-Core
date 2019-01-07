@@ -28,7 +28,9 @@ class O02FieldsTest extends ObjectsCase
 {
     /**
      * Test Reading Object Fields from Local Class
+     *
      * @dataProvider objectTypesProvider
+     *
      * @param string $testSequence
      * @param string $objectType
      */
@@ -55,6 +57,7 @@ class O02FieldsTest extends ObjectsCase
      * Test Reading Object Fields from Objects Service
      *
      * @dataProvider objectTypesProvider
+     *
      * @param string $testSequence
      * @param string $objectType
      */
@@ -82,6 +85,7 @@ class O02FieldsTest extends ObjectsCase
      * Test Reading Object Fields Errors from Objects Service
      *
      * @dataProvider objectTypesProvider
+     *
      * @param string $testSequence
      */
     public function testFieldsFromObjectsServiceErrors($testSequence)

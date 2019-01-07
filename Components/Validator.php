@@ -494,7 +494,7 @@ class Validator
     /**
      * @abstract     Verify a Local Object File is Valid.
      *
-     * @param        string    $objectType     Object Type Name
+     * @param string $objectType Object Type Name
      *
      * @return bool
      */
@@ -522,9 +522,9 @@ class Validator
     /**
      * @abstract     Verify Availability of a Local Object Class.
      *
-     * @param        string    $objectType     Object Type Name
+     * @param string $objectType Object Type Name
      *
-     * @return       bool
+     * @return bool
      */
     private function isValidObjectClass($objectType)
     {
@@ -564,7 +564,7 @@ class Validator
     /**
      * @abstract     Verify a Local Widget File is Valid.
      *
-     * @param        string    $widgetType     Widget Type Name
+     * @param string $widgetType Widget Type Name
      *
      * @return bool
      */

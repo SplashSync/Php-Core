@@ -22,8 +22,10 @@ class ChecksumHelper
 {
     /**
      * @abstract    Compute Md5 CheckSum from Object Attributes
-     * @param       array       $input      Array of Object Data ($Code => $Value)
-     * @return      null|string             Unik Md5 Checksum
+     *
+     * @param array $input Array of Object Data ($Code => $Value)
+     *
+     * @return null|string Unik Md5 Checksum
      */
     public static function fromArray($input = null)
     {
@@ -39,7 +41,8 @@ class ChecksumHelper
     
     /**
      * @abstract    Compute Md5 CheckSum from Arguments
-     * @return      null|string                  Unik Md5 Checksum
+     *
+     * @return null|string Unik Md5 Checksum
      */
     public static function fromValues()
     {
@@ -50,8 +53,10 @@ class ChecksumHelper
     
     /**
      * @abstract    Compute Debug CheckSum String from Object Attributes
-     * @param       array       $input      Array of Object Data ($Code => $Value)
-     * @return      null|string             Unik String Checksum
+     *
+     * @param array $input Array of Object Data ($Code => $Value)
+     *
+     * @return null|string Unik String Checksum
      */
     public static function debugFromArray($input = null)
     {
@@ -67,7 +72,8 @@ class ChecksumHelper
 
     /**
      * @abstract    Compute Debug CheckSum String from Arguments
-     * @return      null|string                  Unik String Checksum
+     *
+     * @return null|string Unik String Checksum
      */
     public static function debugFromValues()
     {
@@ -78,8 +84,10 @@ class ChecksumHelper
     
     /**
      * @abstract    Verify inputs
-     * @param       array       $input      Array of Object Data ($Code => $Value)
-     * @return      bool
+     *
+     * @param array $input Array of Object Data ($Code => $Value)
+     *
+     * @return bool
      */
     private static function isValid($input)
     {
@@ -97,8 +105,10 @@ class ChecksumHelper
     
     /**
      * @abstract    Encode CheckSum from Array
-     * @param       array       $input      Array of Object Data ($Code => $Value)
-     * @return      string                  Unik Md5 Checksum
+     *
+     * @param array $input Array of Object Data ($Code => $Value)
+     *
+     * @return string Unik Md5 Checksum
      */
     private static function getEncoded($input)
     {
@@ -112,8 +122,10 @@ class ChecksumHelper
     
     /**
      * @abstract    Encode CheckSum from Array
-     * @param       array       $input      Array of Object Data ($Code => $Value)
-     * @return      string                  Unik String Checksum
+     *
+     * @param array $input Array of Object Data ($Code => $Value)
+     *
+     * @return string Unik String Checksum
      */
     private static function getDebug($input)
     {

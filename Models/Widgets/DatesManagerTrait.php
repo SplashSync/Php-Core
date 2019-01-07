@@ -17,6 +17,7 @@ namespace   Splash\Models\Widgets;
 
 /**
  * @abstract    Date Management for Splash Widgets.
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 trait DatesManagerTrait

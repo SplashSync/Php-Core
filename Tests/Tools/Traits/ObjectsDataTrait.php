@@ -30,10 +30,10 @@ trait ObjectsDataTrait
     /**
      * @abstract    Check Two Data Blocks Have Similar Data
      *
-     * @param   array|ArrayObject   $block1             Raw Data to Compare
-     * @param   array|ArrayObject   $block2             Raw Data to Compare
-     * @param   TestCase  $testController     Provide PhpUnit Test Controller Class to Use PhpUnit assertions
-     * @param   string  $comment            Comment on this Test
+     * @param array|ArrayObject $block1         Raw Data to Compare
+     * @param array|ArrayObject $block2         Raw Data to Compare
+     * @param TestCase          $testController Provide PhpUnit Test Controller Class to Use PhpUnit assertions
+     * @param string            $comment        Comment on this Test
      *
      * @return bool
      */
@@ -87,10 +87,10 @@ trait ObjectsDataTrait
     /**
      * @abstract    Check Two Object Data Blocks using Field's Compare functions
      *
-     * @param   array   $fields             Array of OpenObject Fields Definitions
-     * @param   array   $block1             Raw Data to Compare
-     * @param   array   $block2             Raw Data to Compare
-     * @param   string  $comment            Comment on this Test
+     * @param array  $fields  Array of OpenObject Fields Definitions
+     * @param array  $block1  Raw Data to Compare
+     * @param array  $block2  Raw Data to Compare
+     * @param string $comment Comment on this Test
      *
      * @return bool
      */
@@ -142,10 +142,10 @@ trait ObjectsDataTrait
     /**
      * @abstract    Check Two Object Data Blocks using Field's Compare functions
      *
-     * @param   string  $fieldType          Field Type Name
-     * @param   array   $block1             Raw Data to Compare
-     * @param   array   $block2             Raw Data to Compare
-     * @param   string  $comment            Comment on this Test
+     * @param string $fieldType Field Type Name
+     * @param array  $block1    Raw Data to Compare
+     * @param array  $block2    Raw Data to Compare
+     * @param string $comment   Comment on this Test
      *
      * @return bool
      */
@@ -197,11 +197,11 @@ trait ObjectsDataTrait
     /**
      * @abstract    Check Two List Data Blocks using Field's Compare functions
      *
-     * @param   string  $fieldType          Field Type Name
-     * @param   string  $fieldId            Field Identifier
-     * @param   array   $block1             Raw Data to Compare
-     * @param   array   $block2             Raw Data to Compare
-     * @param   string  $comment            Comment on this Test
+     * @param string $fieldType Field Type Name
+     * @param string $fieldId   Field Identifier
+     * @param array  $block1    Raw Data to Compare
+     * @param array  $block2    Raw Data to Compare
+     * @param string $comment   Comment on this Test
      *
      * @return bool
      */

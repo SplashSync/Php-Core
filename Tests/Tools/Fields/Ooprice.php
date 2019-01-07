@@ -143,13 +143,15 @@ class Ooprice implements FieldInterface
     
     /**
      * @abstract    Build a new price field array
-     * @param   double      $taxExcl        Price Without VAT
-     * @param   double      $vat            VAT percentile
-     * @param   double      $taxIncl        Price With VAT
-     * @param   string      $code           Price Currency Code
-     * @param   string      $symbol         Price Currency Symbol
-     * @param   string      $name           Price Currency Name
-     * @return  array|string
+     *
+     * @param double $taxExcl Price Without VAT
+     * @param double $vat     VAT percentile
+     * @param double $taxIncl Price With VAT
+     * @param string $code    Price Currency Code
+     * @param string $symbol  Price Currency Symbol
+     * @param string $name    Price Currency Name
+     *
+     * @return array|string
      */
     public static function encodePrice($taxExcl = null, $vat = 0, $taxIncl = null, $code = "", $symbol = "", $name = "")
     {

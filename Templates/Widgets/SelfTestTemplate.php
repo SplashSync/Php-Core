@@ -69,9 +69,9 @@ class SelfTestTemplate extends AbstractWidget
     /**
      * @abstract    Return requested Customer Data
      *
-     * @param       array   $params               Widget Inputs Parameters
+     * @param array $params Widget Inputs Parameters
      *
-     * @return      array
+     * @return array
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function get($params = null)

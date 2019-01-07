@@ -15,6 +15,7 @@
 
 /**
  * @abstract    This class is a base class for all Splash Widgets.
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -109,6 +110,7 @@ abstract class AbstractWidget implements WidgetInterface
     /**
      *      @abstract   Get a singleton FieldsFactory Class
      *                  Acces to Object Fields Creation Functions
+     *
      *      @return     FieldsFactory
      */
     public static function fieldsFactory()
@@ -133,6 +135,7 @@ abstract class AbstractWidget implements WidgetInterface
     /**
      *      @abstract   Get a singleton BlocksFactory Class
      *                  Acces to Widgets Contents Blocks Functions
+     *
      *      @return     BlocksFactory
      */
     public static function blocksFactory()
@@ -242,6 +245,7 @@ abstract class AbstractWidget implements WidgetInterface
      *      @param  string  $param3     chaine de param3
      *      @param  string  $param4     chaine de param4
      *      @param  int     $maxsize    Max length of text
+     *
      *      @return string              Translated string (encoded into HTML entities and UTF8)
      */
     public static function trans(

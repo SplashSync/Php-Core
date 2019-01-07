@@ -29,6 +29,7 @@ class O00ObjectBaseTest extends ObjectsCase
 {
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      */

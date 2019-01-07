@@ -80,7 +80,9 @@ class A01PingTest extends AbstractBaseCase
     
     /**
      * Test of Server Ping
+     *
      * @dataProvider sequencesProvider
+     *
      * @param string $testSequence
      */
     public function testPingServerAction($testSequence)

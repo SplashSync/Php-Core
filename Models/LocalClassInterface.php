@@ -40,7 +40,7 @@ interface LocalClassInterface
      *         ["WsEncryptionKey"]      =>>  Name of Module Default Language
      *         ["DefaultLanguage"]      =>>  Name of Module Default Language
      *
-     * @return  array   $parameters
+     * @return array $parameters
      */
     public function parameters();
     
@@ -55,7 +55,7 @@ interface LocalClassInterface
      *
      *      This is triggered by global constant SPLASH_SERVER_MODE.
      *
-     * @return         bool
+     * @return bool
      */
     public function includes();
 
@@ -71,7 +71,7 @@ interface LocalClassInterface
      *
      *      Use Module Logging system & translation tools to return test results Logs
      *
-     * @return         bool    global test result
+     * @return bool global test result
      */
     public function selfTest();
     
@@ -82,9 +82,9 @@ interface LocalClassInterface
      *
      *      This function return Remote Server Informatiosn to display on Server Profile
      *
-     * @param   ArrayObject     $informations       Informations Inputs
+     * @param ArrayObject $informations Informations Inputs
      *
-     * @return  ArrayObject
+     * @return ArrayObject
      */
     public function informations($informations);
     
@@ -107,7 +107,8 @@ interface LocalClassInterface
      *      If Name = ASequenceName, Function will Setup Sequence on Local System.
      *
      * @param null|mixed $name
-     * @return         array       $Sequences
+     *
+     * @return array $Sequences
      */
     public function testSequences($name = null);
     

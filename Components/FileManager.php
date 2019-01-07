@@ -15,6 +15,7 @@
 
 /**
  * @abstract    Low Level Files Management Class
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -36,10 +37,10 @@ class FileManager
     /**
      * @abstract   Read a file from Splash Server
      *
-     * @param      string      $file       File Identifier (Given by Splash Server)
-     * @param      string      $md5        Local FileName
+     * @param string $file File Identifier (Given by Splash Server)
+     * @param string $md5  Local FileName
      *
-     * @return     array|false       $file       False if not found, else file contents array
+     * @return array|false $file       False if not found, else file contents array
      */
     public function getFile($file = null, $md5 = null)
     {
@@ -223,9 +224,9 @@ class FileManager
     /**
      * @abstract   Read a file contents from local filesystem & encode it to base64 format
      *
-     * @param      string      $fileName       Full path local FileName
+     * @param string $fileName Full path local FileName
      *
-     * @return     false|string  Base64 encoded raw file
+     * @return false|string Base64 encoded raw file
      */
     public function readFileContents($fileName = null)
     {
@@ -256,12 +257,12 @@ class FileManager
      * @remark     For all function used remotly, all parameters have default predefined values
      *              in order to avoid remote execution errors.
      *
-     * @param      string      $dir        Local File Directory
-     * @param      string      $file       Local FileName
-     * @param      string      $md5        File MD5 Checksum
-     * @param      string      $raw        Raw File Contents (base64 Encoded)
+     * @param string $dir  Local File Directory
+     * @param string $file Local FileName
+     * @param string $md5  File MD5 Checksum
+     * @param string $raw  Raw File Contents (base64 Encoded)
      *
-     * @return     bool
+     * @return bool
      */
     public function writeFile($dir = null, $file = null, $md5 = null, $raw = null)
     {

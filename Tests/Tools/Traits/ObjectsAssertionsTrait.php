@@ -35,10 +35,10 @@ trait ObjectsAssertionsTrait
     /**
      * @abstract        Verify if Data is present in Array and in right Internal Format
      *
-     * @param mixed     $data           Tested Array
-     * @param string    $key            Tested Array Key
-     * @param string    $type           Expected Data Type
-     * @param string    $comment
+     * @param mixed  $data    Tested Array
+     * @param string $key     Tested Array Key
+     * @param string $type    Expected Data Type
+     * @param string $comment
      */
     public function assertArrayInternalType($data, string $key, string $type, string $comment)
     {
@@ -50,10 +50,10 @@ trait ObjectsAssertionsTrait
     /**
      * @abstract        Verify if Data is present in Array and in right Internal Format
      *
-     * @param mixed     $data           Tested Array
-     * @param string    $key            Tested Array Key
-     * @param string    $type           Expected Data Type
-     * @param string    $comment
+     * @param mixed  $data    Tested Array
+     * @param string $key     Tested Array Key
+     * @param string $type    Expected Data Type
+     * @param string $comment
      */
     public function assertArrayInstanceOf($data, string $key, string $type, string $comment)
     {
@@ -69,8 +69,8 @@ trait ObjectsAssertionsTrait
     /**
      * Verify if Data is a valid Splash Data Block Bool Value
      *
-     * @param mixed     $data
-     * @param string    $comment
+     * @param mixed  $data
+     * @param string $comment
      */
     public function assertIsSplashBool($data, string $comment)
     {
@@ -81,9 +81,9 @@ trait ObjectsAssertionsTrait
     /**
      * Verify if Data is present in Array and is Splash Bool
      *
-     * @param mixed     $data           Tested Array
-     * @param string    $key            Tested Array Key
-     * @param string    $comment
+     * @param mixed  $data    Tested Array
+     * @param string $key     Tested Array Key
+     * @param string $comment
      */
     public function assertArraySplashBool($data, string $key, string $comment)
     {
@@ -97,8 +97,8 @@ trait ObjectsAssertionsTrait
     /**
      * Verify if Data is a valid Splash Data Block Array Value
      *
-     * @param mixed     $data
-     * @param string    $comment
+     * @param mixed  $data
+     * @param string $comment
      */
     public function assertIsSplashArray($data, string $comment)
     {
@@ -109,9 +109,9 @@ trait ObjectsAssertionsTrait
     /**
      * @abstract        Verify if Data is present in Array and is Splash Bool
      *
-     * @param mixed     $data           Tested Array
-     * @param string    $key            Tested Array Key
-     * @param string    $comment
+     * @param mixed  $data    Tested Array
+     * @param string $key     Tested Array Key
+     * @param string $comment
      */
     public function assertArraySplashArray($data, string $key, string $comment)
     {
@@ -125,9 +125,9 @@ trait ObjectsAssertionsTrait
     /**
      * @abstract        Verify if Data is a valid Splash Field Data Value
      *
-     * @param mixed     $data
-     * @param string    $type
-     * @param string    $comment
+     * @param mixed  $data
+     * @param string $type
+     * @param string $comment
      */
     public function assertIsValidSplashFieldData($data, string $type, string $comment)
     {
@@ -149,9 +149,11 @@ trait ObjectsAssertionsTrait
     
     /**
      * @abstract    Verify Object Field is Defined
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       string      $comment
+     *
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
+     * @param string $comment
+     *
      * @return void
      */
     public function assertFieldIsDefined($itemType, $itemProp, string $comment = null)
@@ -169,10 +171,12 @@ trait ObjectsAssertionsTrait
     
     /**
      * @abstract    Verify Object Field is in Allowed Formats
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       array       $formats            Array of Allowed Splash Field Formats
-     * @param       string      $comment
+     *
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
+     * @param array  $formats  Array of Allowed Splash Field Formats
+     * @param string $comment
+     *
      * @return void
      */
     public function assertFieldHasFormat($itemType, $itemProp, $formats, string $comment = null)
@@ -197,9 +201,11 @@ trait ObjectsAssertionsTrait
     
     /**
      * @abstract    Verify Object Field is Readable
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       string      $comment
+     *
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
+     * @param string $comment
+     *
      * @return void
      */
     public function assertFieldIsRead($itemType, $itemProp, string $comment = null)
@@ -220,9 +226,11 @@ trait ObjectsAssertionsTrait
 
     /**
      * @abstract    Verify Object Field is Writeable
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       string      $comment
+     *
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
+     * @param string $comment
+     *
      * @return void
      */
     public function assertFieldIsWrite($itemType, $itemProp, string $comment = null)
@@ -243,9 +251,11 @@ trait ObjectsAssertionsTrait
     
     /**
      * @abstract    Verify Object Field is NOT Writeable
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       string      $comment
+     *
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
+     * @param string $comment
+     *
      * @return void
      */
     public function assertFieldNotWrite($itemType, $itemProp, string $comment = null)
@@ -266,9 +276,11 @@ trait ObjectsAssertionsTrait
     
     /**
      * @abstract    Verify Object Field is Required
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       string      $comment
+     *
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
+     * @param string $comment
+     *
      * @return void
      */
     public function assertFieldIsRequired($itemType, $itemProp, string $comment = null)
@@ -289,9 +301,11 @@ trait ObjectsAssertionsTrait
     
     /**
      * @abstract    Verify Object Field is NOT Required
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       string      $comment
+     *
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
+     * @param string $comment
+     *
      * @return void
      */
     public function assertFieldNotRequired($itemType, $itemProp, string $comment = null)
@@ -312,9 +326,11 @@ trait ObjectsAssertionsTrait
 
     /**
      * @abstract    Verify Object Field is In List
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       string      $comment
+     *
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
+     * @param string $comment
+     *
      * @return void
      */
     public function assertFieldIsInList($itemType, $itemProp, string $comment = null)
@@ -335,9 +351,11 @@ trait ObjectsAssertionsTrait
     
     /**
      * @abstract    Load Object Field from List
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @return     null|ArrayObject
+     *
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
+     *
+     * @return null|ArrayObject
      */
     private function loadObjectFieldByTag($itemType, $itemProp)
     {
@@ -351,11 +369,13 @@ trait ObjectsAssertionsTrait
     
     /**
      * @abstract    Build Test Result Comment
-     * @param       string      $itemType           Field Microdata Type Url
-     * @param       string      $itemProp           Field Microdata Property Name
-     * @param       string      $testComment
-     * @param       string      $comment
-     * @return      string
+     *
+     * @param string $itemType    Field Microdata Type Url
+     * @param string $itemProp    Field Microdata Property Name
+     * @param string $testComment
+     * @param string $comment
+     *
+     * @return string
      */
     private static function buildResult($itemType, $itemProp, $testComment, string $comment = null)
     {

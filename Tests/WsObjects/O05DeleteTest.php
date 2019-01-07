@@ -27,6 +27,7 @@ class O05DeleteTest extends ObjectsCase
 {
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      */
@@ -67,6 +68,7 @@ class O05DeleteTest extends ObjectsCase
 
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      */
@@ -108,6 +110,7 @@ class O05DeleteTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param mixed $testSequence
      * @param mixed $objectType
      */

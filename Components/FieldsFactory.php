@@ -20,6 +20,7 @@ use Splash\Core\SplashCore      as Splash;
 
 /**
  * @abstract    This Class is a Generator for Objects Fields Definition
+ *
  * @author      B. Paquier <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
@@ -87,19 +88,22 @@ class FieldsFactory
 
     /**
      * @abstract   Empty Template Object Field Storage
-     * @var        Array
+     *
+     * @var Array
      */
     private $empty;
 
     /**
      * @abstract   New Object Field Storage
-     * @var        null|ArrayObject
+     *
+     * @var null|ArrayObject
      */
     private $new;
     
     /**
      * @abstract   Object Fields List Storage
-     * @var        Array
+     *
+     * @var Array
      */
     private $fields;
     
@@ -124,11 +128,11 @@ class FieldsFactory
     /**
      * @abstract   Create a new Field Definition with default parameters
      *
-     * @param      string      $fieldType       Standard Data Type (Refer Splash.Inc.php)
-     * @param      string      $fieldId         Local Data Identifier (Shall be unik on local machine)
-     * @param      string      $fieldName       Data Name (Will Be Translated by Splash if Possible)
+     * @param string $fieldType Standard Data Type (Refer Splash.Inc.php)
+     * @param string $fieldId   Local Data Identifier (Shall be unik on local machine)
+     * @param string $fieldName Data Name (Will Be Translated by Splash if Possible)
      *
-     * @return     $this
+     * @return $this
      */
     public function create($fieldType, $fieldId = null, $fieldName = null)
     {
@@ -163,9 +167,9 @@ class FieldsFactory
     /**
      * @abstract   Set Current New Field Identifier
      *
-     * @param      string      $fieldId         Local Data Identifier (Shall be unik on local machine)
+     * @param string $fieldId Local Data Identifier (Shall be unik on local machine)
      *
-     * @return     $this
+     * @return $this
      */
     public function identifier($fieldId)
     {
@@ -185,9 +189,9 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set as it inside a list
      *
-     * @param      string      $listName         Name of List
+     * @param string $listName Name of List
      *
-     * @return     $this
+     * @return $this
      */
     public function inList($listName)
     {
@@ -216,9 +220,9 @@ class FieldsFactory
     /**
      * @abstract   Set Current New Field Name (Translated)
      *
-     * @param      string      $fieldName       Data Name (Will Be Translated if Possible)
+     * @param string $fieldName Data Name (Will Be Translated if Possible)
      *
-     * @return     $this
+     * @return $this
      */
     public function name($fieldName)
     {
@@ -241,9 +245,9 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field with descriptions (Translated)
      *
-     * @param      string      $fieldDesc       Data Description (Will Be Translated if Possible)
+     * @param string $fieldDesc Data Description (Will Be Translated if Possible)
      *
-     * @return     $this
+     * @return $this
      */
     public function description($fieldDesc)
     {
@@ -263,9 +267,9 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field with Field Group Name (Translated)
      *
-     * @param      string      $fieldGroup       Data Group (Will Be Translated if Possible)
+     * @param string $fieldGroup Data Group (Will Be Translated if Possible)
      *
-     * @return     $this
+     * @return $this
      */
     public function group($fieldGroup)
     {
@@ -285,7 +289,7 @@ class FieldsFactory
     /**
      * @bstract   Update Current New Field set as Read Only Field
      *
-     * @return     $this
+     * @return $this
      */
     public function isReadOnly()
     {
@@ -306,7 +310,7 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set as Write Only Field
      *
-     * @return     $this
+     * @return $this
      */
     public function isWriteOnly()
     {
@@ -327,7 +331,7 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set as required for creation
      *
-     * @return     $this
+     * @return $this
      */
     public function isRequired()
     {
@@ -347,7 +351,7 @@ class FieldsFactory
     /**
      * @bstract   Signify Server Current New Field Prefer ReadOnly Mode
      *
-     * @return     $this
+     * @return $this
      */
     public function setPreferRead()
     {
@@ -367,7 +371,7 @@ class FieldsFactory
     /**
      * @bstract   Signify Server Current New Field Prefer WriteOnly Mode
      *
-     * @return     $this
+     * @return $this
      */
     public function setPreferWrite()
     {
@@ -387,7 +391,7 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set list of associated fields
      *
-     * @return     $this
+     * @return $this
      */
     public function association()
     {
@@ -415,7 +419,7 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set as available in objects list
      *
-     * @return     $this
+     * @return $this
      */
     public function isListed()
     {
@@ -435,7 +439,7 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set as recommended for logging
      *
-     * @return     $this
+     * @return $this
      */
     public function isLogged()
     {
@@ -455,10 +459,10 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set its meta informations for autolinking
      *
-     * @param      string      $itemType   Field Microdata Type Url
-     * @param      string      $itemProp   Field Microdata Property Name
+     * @param string $itemType Field Microdata Type Url
+     * @param string $itemProp Field Microdata Property Name
      *
-     * @return     $this
+     * @return $this
      */
     public function microData($itemType, $itemProp)
     {
@@ -480,7 +484,7 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set as not possible to test
      *
-     * @return     $this
+     * @return $this
      */
     public function isNotTested()
     {
@@ -500,9 +504,9 @@ class FieldsFactory
     /**
      * @abstract   Add Possible Choice to Current New Field Name (Translated)
      *
-     * @param      array      $fieldChoices      Possible Choice Array (Value => Decsription)
+     * @param array $fieldChoices Possible Choice Array (Value => Decsription)
      *
-     * @return     $this
+     * @return $this
      */
     public function addChoices($fieldChoices)
     {
@@ -516,10 +520,10 @@ class FieldsFactory
     /**
      * @abstract   Add Possible Choice to Current New Field Name (Translated)
      *
-     * @param      string      $value          Possible Choice Value
-     * @param      string      $description    Choice Description for Display (Will Be Translated if Possible)
+     * @param string $value       Possible Choice Value
+     * @param string $description Choice Description for Display (Will Be Translated if Possible)
      *
-     * @return     $this
+     * @return $this
      */
     public function addChoice($value, $description)
     {
@@ -542,9 +546,9 @@ class FieldsFactory
     /**
      * @abstract   Add New Options Array for Current Field
      *
-     * @param      array      $fieldOptions     Array of Options (Type => Value)
+     * @param array $fieldOptions Array of Options (Type => Value)
      *
-     * @return     $this
+     * @return $this
      */
     public function addOptions($fieldOptions)
     {
@@ -558,10 +562,10 @@ class FieldsFactory
     /**
      * @abstract   Add New Option for Current Field
      *
-     * @param      string      $type           Constrain Type
-     * @param      string      $value          Constrain Value
+     * @param string $type  Constrain Type
+     * @param string $value Constrain Value
      *
-     * @return     $this
+     * @return $this
      */
     public function addOption($type, $value = true)
     {
@@ -583,7 +587,7 @@ class FieldsFactory
     /**
      * @abstract   Save Current New Field in list & Clean current new field
      *
-     * @return     ArrayObject[]|false
+     * @return ArrayObject[]|false
      */
     public function publish()
     {
@@ -610,10 +614,10 @@ class FieldsFactory
     /**
      * @abstract   Seach for a Field by unik tag
      *
-     * @param   array       $fieldList      Array Of Field definition
-     * @param   string      $fieldTag       Field Unik Tag
+     * @param array  $fieldList Array Of Field definition
+     * @param string $fieldTag  Field Unik Tag
      *
-     * @return  ArrayObject|false
+     * @return ArrayObject|false
      */
     public function seachtByTag($fieldList, $fieldTag)
     {
@@ -638,10 +642,10 @@ class FieldsFactory
     /**
      * @abstract   Seach for a Field by id
      *
-     * @param   array       $fieldList      Array Of Field definition
-     * @param   string      $fieldId        Field Identifier
+     * @param array  $fieldList Array Of Field definition
+     * @param string $fieldId   Field Identifier
      *
-     * @return  ArrayObject|false
+     * @return ArrayObject|false
      */
     public function seachtById($fieldList, $fieldId)
     {
@@ -667,9 +671,9 @@ class FieldsFactory
     /**
      * @abstract   Update Current New Field set its unik tag for autolinking
      *
-     * @param      string      $fieldTag       Field Unik Tag
+     * @param string $fieldTag Field Unik Tag
      *
-     * @return     $this
+     * @return $this
      */
     protected function setTag($fieldTag)
     {
@@ -689,7 +693,7 @@ class FieldsFactory
     /**
      * @abstract   Verify Current New Field data
      *
-     * @return     bool
+     * @return bool
      */
     private function verify()
     {
@@ -704,8 +708,10 @@ class FieldsFactory
     
     /**
      * @abstract    Validate Field Definition
-     * @param   ArrayObject    $field
-     * @return  boolean
+     *
+     * @param ArrayObject $field
+     *
+     * @return boolean
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -745,7 +751,7 @@ class FieldsFactory
     /**
      * @abstract   Save Current New Field in list & Clean current new field
      *
-     * @return     bool
+     * @return bool
      */
     private function commit()
     {

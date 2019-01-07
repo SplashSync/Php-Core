@@ -25,6 +25,7 @@ trait UpdateFlagTrait
      *
      * @abstract This flag is set when an update is done during Set Operation.
      *           Using this flag is useful to reduce exchanges with databases
+     *
      * @var bool
      */
     private $update         = false;
@@ -34,6 +35,7 @@ trait UpdateFlagTrait
      *
      * @abstract This flag is set when an update is done during Set Operation.
      *           Using this flag is useful to reduce exchanges with databases
+     *
      * @var bool
      */
     private $custom         = array();
@@ -44,8 +46,10 @@ trait UpdateFlagTrait
 
     /**
      * @abstract    Flag Object For Database Update
-     * @param       string  $custom     Custom Falg Name
-     * @return      self
+     *
+     * @param string $custom Custom Falg Name
+     *
+     * @return self
      */
     protected function needUpdate($custom = "object")
     {
@@ -60,8 +64,10 @@ trait UpdateFlagTrait
 
     /**
      * @abstract    Clear Update Flag
-     * @param       string  $custom     Custom Falg Name
-     * @return      self
+     *
+     * @param string $custom Custom Falg Name
+     *
+     * @return self
      */
     protected function isUpdated($custom = "object")
     {
@@ -76,8 +82,10 @@ trait UpdateFlagTrait
     
     /**
      * @abstract    is Database Update Needed
-     * @param       string  $custom     Custom Falg Name
-     * @return      bool
+     *
+     * @param string $custom Custom Falg Name
+     *
+     * @return bool
      */
     protected function isToUpdate($custom = "object")
     {
@@ -90,8 +98,10 @@ trait UpdateFlagTrait
     
     /**
      * @abstract    is Custom Flag Request
-     * @param       string  $custom     Custom Falg Name
-     * @return      bool
+     *
+     * @param string $custom Custom Falg Name
+     *
+     * @return bool
      */
     private function isCustom($custom)
     {

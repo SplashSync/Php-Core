@@ -28,7 +28,9 @@ trait AssertionsTrait
     
     /**
      * @abstract        Verify Object Type is Product
-     * @param string    $objectType         Tested Object Type Name
+     *
+     * @param string $objectType Tested Object Type Name
+     *
      * @return bool
      */
     public function assertIsProductType($objectType)
@@ -44,6 +46,7 @@ trait AssertionsTrait
     
     /**
      * @abstract        Verify Product Title Fields
+     *
      * @return void
      */
     public function assertValidTitle()
@@ -89,6 +92,7 @@ trait AssertionsTrait
     
     /**
      * @abstract        Verify Product Short Description
+     *
      * @return void
      */
     public function assertValidShortDescription()
@@ -114,6 +118,7 @@ trait AssertionsTrait
 
     /**
      * @abstract        Verify Product Long Description
+     *
      * @return void
      */
     public function assertValidLongDescription()
@@ -129,6 +134,7 @@ trait AssertionsTrait
 
     /**
      * @abstract        Verify Product Main Flags
+     *
      * @return void
      */
     public function assertValidProductFlags()
@@ -158,6 +164,7 @@ trait AssertionsTrait
     
     /**
      * @abstract        Verify Product Prices
+     *
      * @return void
      */
     public function assertValidProductPrices()
@@ -180,6 +187,7 @@ trait AssertionsTrait
     
     /**
      * @abstract        Verify Product Shipping Infos
+     *
      * @return void
      */
     public function assertValidProductShipping()
@@ -199,6 +207,7 @@ trait AssertionsTrait
     
     /**
      * @abstract        Verify Product Images Fields
+     *
      * @return void
      */
     public function assertValidProductImages()
@@ -249,6 +258,7 @@ trait AssertionsTrait
 
     /**
      * @abstract        Verify Product Variants Fields
+     *
      * @return void
      */
     public function assertValidProductVariants()

@@ -15,6 +15,7 @@
 
 /**
  * @abstract    This is Head include file for Splash PHP Module on WebService Request
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 

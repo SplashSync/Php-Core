@@ -15,6 +15,7 @@
 
 /**
  * @abstract    Xml Encoding & Decoding Functions Collector Class
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -37,6 +38,7 @@ class XmlManager
 
     /**
      *      @abstract   XMLWriter Class
+     *
      *      @var        XMLWriter
      *      @static
      */
@@ -61,8 +63,10 @@ class XmlManager
 
     /**
      * @abstract     Method to convert Object into XML string
-     * @param        array      $obj
-     * @return       string
+     *
+     * @param array $obj
+     *
+     * @return string
      */
     public function objectToXml($obj)
     {
@@ -83,8 +87,10 @@ class XmlManager
     
     /**
      * @abstract     Method to convert XML string into ArrayObject
-     * @param        string     $xml
-     * @return       ArrayObject|false|string
+     *
+     * @param string $xml
+     *
+     * @return ArrayObject|false|string
      */
     public function xmlToArrayObject($xml)
     {
@@ -95,8 +101,10 @@ class XmlManager
 
     /**
      * @abstract     Method to convert XML string into Array
-     * @param        string     $xml
-     * @return      array|false|string
+     *
+     * @param string $xml
+     *
+     * @return array|false|string
      */
     protected function xmlToArray($xml)
     {
@@ -111,8 +119,10 @@ class XmlManager
     
     /**
      * @abstract     Method to convert XML string into SimpleXmlElement Object
-     * @param        string                 $xml
-     * @return       false|SimpleXMLElement
+     *
+     * @param string $xml
+     *
+     * @return false|SimpleXMLElement
      */
     private function xmlToElements($xml)
     {
@@ -131,9 +141,11 @@ class XmlManager
     
     /**
      * @abstract     Recursive Method to Object  XML string
-     * @param        XMLWriter  $xml
-     * @param        mixed      $object
-     * @return       array      $result
+     *
+     * @param XMLWriter $xml
+     * @param mixed     $object
+     *
+     * @return array $result
      */
     private function objectToXmlCore(XMLWriter $xml, $object)
     {
@@ -207,9 +219,11 @@ class XmlManager
 
     /**
      * @abstract     Filter XML Key to remove single numeric keys by adding a prefix
-     * @param        string     $key
-     * @param        string     $prefix
-     * @return       string     $result
+     *
+     * @param string $key
+     * @param string $prefix
+     *
+     * @return string $result
      */
     private static function keysFilter($key, $prefix)
     {
@@ -226,8 +240,10 @@ class XmlManager
     
     /**
      * @abstract    Convert a SimpleXML object to an Array
-     * @param       false|SimpleXMLElement    $element
-     * @return      array|false|string
+     *
+     * @param false|SimpleXMLElement $element
+     *
+     * @return array|false|string
      */
     private static function simpleXmlToArray($element)
     {
@@ -281,8 +297,10 @@ class XmlManager
     
     /**
      * @abstract    Convert a SimpleXML object to an ArrayObject
-     * @param       false|SimpleXMLElement    $element
-     * @return      ArrayObject|false|string
+     *
+     * @param false|SimpleXMLElement $element
+     *
+     * @return ArrayObject|false|string
      */
     private static function simpleXmlToArrayObject($element)
     {

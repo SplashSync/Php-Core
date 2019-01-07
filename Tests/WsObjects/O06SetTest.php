@@ -29,9 +29,10 @@ class O06SetTest extends ObjectsCase
        
     /**
      * @dataProvider objectFieldsProvider
-     * @param mixed $testSequence
-     * @param mixed $objectType
-     * @param mixed $field
+     *
+     * @param mixed      $testSequence
+     * @param mixed      $objectType
+     * @param mixed      $field
      * @param null|mixed $forceObjectId
      */
     public function testSetSingleFieldFromModule($testSequence, $objectType, $field, $forceObjectId = null)
@@ -47,9 +48,10 @@ class O06SetTest extends ObjectsCase
     
     /**
      * @dataProvider objectFieldsProvider
-     * @param mixed $testSequence
-     * @param mixed $objectType
-     * @param mixed $field
+     *
+     * @param mixed      $testSequence
+     * @param mixed      $objectType
+     * @param mixed      $field
      * @param null|mixed $forceObjectId
      */
     public function testSetSingleFieldFromService($testSequence, $objectType, $field, $forceObjectId = null)

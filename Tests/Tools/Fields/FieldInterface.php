@@ -29,7 +29,7 @@ interface FieldInterface
     /**
      * Verify given Raw Data is Valid
      *
-     * @param  null|Array|ArrayObject|bool|int|string $data
+     * @param null|Array|ArrayObject|bool|int|string $data
      *
      * @return string|true
      */
@@ -42,7 +42,7 @@ interface FieldInterface
     /**
      * Generate Fake Raw Field Data for Debugger Simulations
      *
-     * @param array   $settings   User Defined Faker Settings
+     * @param array $settings User Defined Faker Settings
      *
      * @return mixed
      */
@@ -53,11 +53,11 @@ interface FieldInterface
      *
      * !important : Target Data is always validated before compare
      *
-     * @param   mixed   $source     Original Data Block
-     * @param   mixed   $target     New Data Block
-     * @param   array   $settings   User Defined Faker Settings
+     * @param mixed $source   Original Data Block
+     * @param mixed $target   New Data Block
+     * @param array $settings User Defined Faker Settings
      *
-     * @return  bool
+     * @return bool
      */
     public static function compare($source, $target, $settings);
 }

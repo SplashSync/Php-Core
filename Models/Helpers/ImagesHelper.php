@@ -147,9 +147,9 @@ class ImagesHelper
     /**
      * @abstract    Ues CURL to detect Remote Image Size
      *
-     * @param   string  $imageUrl
+     * @param string $imageUrl
      *
-     * @return  int
+     * @return int
      */
     private static function getRemoteFileSize($imageUrl)
     {

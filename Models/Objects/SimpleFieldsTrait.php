@@ -180,10 +180,10 @@ trait SimpleFieldsTrait
     /**
      * @abstract    Common reading of a Field using Generic Getters & Setters
      *
-     * @param   string  $fieldName      Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
-     * @param   string  $objectName     Name of private object to read (Default : "object")
+     * @param string $fieldName  Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
+     * @param string $objectName Name of private object to read (Default : "object")
      *
-     * @return  self
+     * @return self
      */
     protected function getGeneric($fieldName, $objectName = "object")
     {
@@ -195,11 +195,11 @@ trait SimpleFieldsTrait
     /**
      * @abstract    Common Writing of a Field using Generic Getters & Setters
      *
-     * @param       string      $fieldName      Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
-     * @param       mixed       $fieldData      Field Data
-     * @param       string      $objectName     Name of private object to read (Default : "object")
+     * @param string $fieldName  Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
+     * @param mixed  $fieldData  Field Data
+     * @param string $objectName Name of private object to read (Default : "object")
      *
-     * @return      self
+     * @return self
      */
     protected function setGeneric($fieldName, $fieldData, $objectName = "object")
     {

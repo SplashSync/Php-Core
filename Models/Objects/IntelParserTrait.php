@@ -36,6 +36,7 @@ trait IntelParserTrait
      * @abstract This variable is used to store Object Array during Set Operations
      *              Each time a field is imported, unset it from this buffer
      *              to control all fields were imported at the end of Set Operation
+     *
      * @var ArrayObject
      */
     protected $in;
@@ -44,6 +45,7 @@ trait IntelParserTrait
      * Get Operations Output Buffer
      *
      * @abstract This variable is used to store Object Array during Get Operations
+     *
      * @var ArrayObject
      */
     protected $out;
@@ -52,6 +54,7 @@ trait IntelParserTrait
      * Work Object Class
      *
      * @abstract This variable is used to store current working Object during Set & Get Operations
+     *
      * @var mixed
      */
     protected $object;
@@ -178,7 +181,8 @@ trait IntelParserTrait
      * @abstract    Identify Generic Functions
      *
      * @param mixed $prefix
-     * @return      self
+     *
+     * @return self
      */
     public function identifyFunctions($prefix)
     {
@@ -199,7 +203,7 @@ trait IntelParserTrait
     /**
      * @abstract    Check Required Fields
      *
-     * @return      bool
+     * @return bool
      */
     public function verifyRequiredFields()
     {
@@ -226,9 +230,10 @@ trait IntelParserTrait
 
     /**
      * @abstract    Check Required Fields
-     * @param   string  $fieldId    Object Field Identifier
      *
-     * @return  bool
+     * @param string $fieldId Object Field Identifier
+     *
+     * @return bool
      */
     private function verifyRequiredFieldIsAvailable($fieldId)
     {

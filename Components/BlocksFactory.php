@@ -20,6 +20,7 @@ use Splash\Core\SplashCore      as Splash;
 
 /**
  * @abstract    This Class is a Generator for Widget Blocks Contents
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -41,13 +42,15 @@ class BlocksFactory
     
     /**
      * @abstract   New Widget Block Storage
-     * @var        null|ArrayObject
+     *
+     * @var null|ArrayObject
      */
     private $new;
     
     /**
      * @abstract   Widget Block List Storage
-     * @var        Array
+     *
+     * @var Array
      */
     private $blocks;
     
@@ -119,7 +122,8 @@ class BlocksFactory
     
     /**
      * @abstract   Save Current New Block, Return List & Clean
-     * @return     array|false
+     *
+     * @return array|false
      */
     public function render()
     {
@@ -173,7 +177,6 @@ class BlocksFactory
      *                          ["warning"]     Warning Message
      *                          ["info"]        Info Message
      *                          ["success"]     Success Message
-     *
      *  @param      array   $blockOptions       Block Options
      *
      *  @return     $this
@@ -209,7 +212,6 @@ class BlocksFactory
      *  @abstract   Create a new Table Block
      *
      *  @param      array   $contents           Array of Rows Contents (Text or Html)
-     *
      *  @param      array   $blockOptions       Block Options
      *
      *  @return     $this
@@ -230,7 +232,6 @@ class BlocksFactory
      *  @abstract   Create a new Table Block
      *
      *  @param      array   $contents           Array of Rows Contents (Text or Html)
-     *
      *  @param      array   $blockOptions       Block Options
      *
      *  @return     $this
@@ -257,12 +258,12 @@ class BlocksFactory
     /**
      * @abstract   Create a new Morris Bar Graph Block
      *
-     * @param   array   $dataSet            Morris DataSet Array
-     * @param   string  $chartType          Rendering Mode
-     * @param   array   $chartOptions       Rendering passed Options
-     * @param   array   $blockOptions       Block Options
+     * @param array  $dataSet      Morris DataSet Array
+     * @param string $chartType    Rendering Mode
+     * @param array  $chartOptions Rendering passed Options
+     * @param array  $blockOptions Block Options
      *
-     * @return  $this
+     * @return $this
      */
     public function addMorrisGraphBlock(
         $dataSet,
@@ -294,11 +295,11 @@ class BlocksFactory
     /**
      * @abstract   Create a new Morris Donut Graph Block
      *
-     * @param   array   $dataSet            Morris DataSet Array
-     * @param   array   $chartOptions       Rendering passed Options
-     * @param   array   $blockOptions       Block Options
+     * @param array $dataSet      Morris DataSet Array
+     * @param array $chartOptions Rendering passed Options
+     * @param array $blockOptions Block Options
      *
-     * @return  $this
+     * @return $this
      */
     public function addMorrisDonutBlock($dataSet, $chartOptions = array(), $blockOptions = self::COMMONS_OPTIONS)
     {

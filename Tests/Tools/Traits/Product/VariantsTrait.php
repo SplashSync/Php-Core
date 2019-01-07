@@ -45,7 +45,8 @@ trait VariantsTrait
 
     /**
      * @abstract    Generate Variations Base Name Fialds Data
-     * @return      array
+     *
+     * @return array
      */
     public function getVariantName()
     {
@@ -65,6 +66,7 @@ trait VariantsTrait
 
     /**
      * @abstract    Generate Variations Attributes
+     *
      * @param mixed $attributesCodes
      */
     public function getVariantAttributes($attributesCodes)
@@ -88,6 +90,7 @@ trait VariantsTrait
 
     /**
      * @abstract    Generate Variations CustomAttribute
+     *
      * @param mixed $attributesCode
      */
     public function getVariantCustomAttribute($attributesCode)

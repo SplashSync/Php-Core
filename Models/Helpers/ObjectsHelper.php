@@ -27,10 +27,10 @@ class ObjectsHelper
     /**
      * @abstract   Create an Object Identifier String
      *
-     * @param   string      $objectType     Object Type Name.
-     * @param   string      $objectId       Object Identifier
+     * @param string $objectType Object Type Name.
+     * @param string $objectId   Object Identifier
      *
-     * @return     false|string
+     * @return false|string
      */
     public static function encode($objectType, $objectId)
     {
@@ -50,8 +50,10 @@ class ObjectsHelper
     
     /**
      * @abstract   Retrieve Identifier from an Object Identifier String
-     * @param      string      $objectId           Object Identifier String.
-     * @return     false|string
+     *
+     * @param string $objectId Object Identifier String.
+     *
+     * @return false|string
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function id($objectId)

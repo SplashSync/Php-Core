@@ -71,10 +71,10 @@ class UnitConverter
     /**
      * Convert Weight form KiloGram to Target Unit
      *
-     * @param float $weight         Weight Value
-     * @param float $toFactor     Target Unit Factor
+     * @param float $weight   Weight Value
+     * @param float $toFactor Target Unit Factor
      *
-     * @return  float    Weight Value in Target unit
+     * @return float Weight Value in Target unit
      */
     public static function convertWeight($weight, $toFactor)
     {
@@ -84,10 +84,10 @@ class UnitConverter
     /**
      * Convert Weight form All Units to KiloGram
      *
-     * @param float $weight         Weight Raw Value
-     * @param float $fromFactor     Source Unit Factor
+     * @param float $weight     Weight Raw Value
+     * @param float $fromFactor Source Unit Factor
      *
-     * @return  float    Weight Value in Kilogram
+     * @return float Weight Value in Kilogram
      */
     public static function normalizeWeight($weight, $fromFactor)
     {
@@ -101,10 +101,10 @@ class UnitConverter
     /**
      * Convert Length form Meter to Target Unit
      *
-     * @param float $length     Length Value
-     * @param float $toFactor   Target Unit Factor
+     * @param float $length   Length Value
+     * @param float $toFactor Target Unit Factor
      *
-     * @return  float    Length Value in Target unit
+     * @return float Length Value in Target unit
      */
     public static function convertLength($length, $toFactor)
     {
@@ -114,10 +114,10 @@ class UnitConverter
     /**
      * Convert Length form All Units to Meter
      *
-     * @param float $length         Length Raw Value
-     * @param float $fromFactor     Source Unit Factor
+     * @param float $length     Length Raw Value
+     * @param float $fromFactor Source Unit Factor
      *
-     * @return  float    Length Value in Meter
+     * @return float Length Value in Meter
      */
     public static function normalizeLength($length, $fromFactor)
     {
@@ -131,10 +131,10 @@ class UnitConverter
     /**
      * Convert Surface form Square Meter to Target Unit
      *
-     * @param float $surface     Surface Value
-     * @param float $toFactor   Target Unit Factor
+     * @param float $surface  Surface Value
+     * @param float $toFactor Target Unit Factor
      *
-     * @return  float    Surface Value in Target unit
+     * @return float Surface Value in Target unit
      */
     public static function convertSurface($surface, $toFactor)
     {
@@ -144,10 +144,10 @@ class UnitConverter
     /**
      * Convert Surface form All Units to Square Meter
      *
-     * @param float $surface        Surface Raw Value
-     * @param float $fromFactor     Source Unit Factor
+     * @param float $surface    Surface Raw Value
+     * @param float $fromFactor Source Unit Factor
      *
-     * @return  float    Surface Value in Square Meter
+     * @return float Surface Value in Square Meter
      */
     public static function normalizeSurface($surface, $fromFactor)
     {
@@ -161,10 +161,10 @@ class UnitConverter
     /**
      * Convert Volume form Cube Meter to Target Unit
      *
-     * @param float $volume     Volume Value
-     * @param float $toFactor   Target Unit Factor
+     * @param float $volume   Volume Value
+     * @param float $toFactor Target Unit Factor
      *
-     * @return  float    Volume Value in Target unit
+     * @return float Volume Value in Target unit
      */
     public static function convertVolume($volume, $toFactor)
     {
@@ -174,10 +174,10 @@ class UnitConverter
     /**
      * Convert Volume form All Units to Cube Meter
      *
-     * @param float $volume        Volume Raw Value
-     * @param float $fromFactor     Source Unit Factor
+     * @param float $volume     Volume Raw Value
+     * @param float $fromFactor Source Unit Factor
      *
-     * @return  float    Volume Value in Cube Meter
+     * @return float Volume Value in Cube Meter
      */
     public static function normalizeVolume($volume, $fromFactor)
     {
@@ -191,9 +191,9 @@ class UnitConverter
     /**
      * Convert any Kind of Value from a unit to another.
      *
-     * @param float $value          Value to Convert
-     * @param float $fromFactor     Source Unit Factor
-     * @param float $toFactor       Target Unit Factor
+     * @param float $value      Value to Convert
+     * @param float $fromFactor Source Unit Factor
+     * @param float $toFactor   Target Unit Factor
      *
      * @return float
      */

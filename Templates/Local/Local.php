@@ -35,6 +35,7 @@ class Local implements LocalClassInterface
         
     /**
      *      @abstract       Class Constructor (Used only if localy necessary)
+     *
      *      @return         int                     0 if KO, >0 if OK
      */
     public function __construct()
@@ -62,7 +63,7 @@ class Local implements LocalClassInterface
      *         ["WsEncryptionKey"]      =>>  Name of Module Default Language
      *         ["DefaultLanguage"]      =>>  Name of Module Default Language
      *
-     * @return  array   $parameters
+     * @return array $parameters
      */
     public function parameters()
     {
@@ -80,7 +81,7 @@ class Local implements LocalClassInterface
      *
      *      This is triggered by global constant SPLASH_SERVER_MODE.
      *
-     * @return         bool
+     * @return bool
      */
     public function includes()
     {
@@ -114,7 +115,7 @@ class Local implements LocalClassInterface
      *
      *      Use Module Logging system & translation tools to return test results Logs
      *
-     * @return         bool    global test result
+     * @return bool global test result
      */
     public function selfTest()
     {
@@ -187,7 +188,8 @@ class Local implements LocalClassInterface
      *      If Name = ASequenceName, Function will Setup Sequence on Local System.
      *
      * @param null|mixed $name
-     * @return         array       $Sequences
+     *
+     * @return array $Sequences
      */
     public function testSequences($name = null)
     {

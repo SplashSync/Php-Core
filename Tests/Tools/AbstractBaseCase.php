@@ -43,8 +43,10 @@ abstract class AbstractBaseCase extends TestCase
 
     /**
      * @abstract    Check if Object Type Is to be tested or Not
-     * @param       string  $objectType         Object Type Name
-     * @return      bool
+     *
+     * @param string $objectType Object Type Name
+     *
+     * @return bool
      */
     public static function isAllowedObjectType($objectType)
     {
@@ -66,8 +68,10 @@ abstract class AbstractBaseCase extends TestCase
     
     /**
      * @abstract    Check if Object Field ID Is to be tested or Not
-     * @param       string  $identifier         Object Field Identifier
-     * @return      bool
+     *
+     * @param string $identifier Object Field Identifier
+     *
+     * @return bool
      */
     public static function isAllowedObjectField($identifier)
     {
@@ -87,7 +91,7 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @see             SERVER_NAME parameter that must be defined in PhpUnit Configuration File
      *
-     * @return string   Local Server Soap Url
+     * @return string Local Server Soap Url
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
@@ -119,10 +123,10 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * @abstract      Verify Response Is Valid
      *
-     * @param   string      $response       WebService Raw Response Block
-     * @param   ArrayObject $config         WebService Request Configuration
+     * @param string      $response WebService Raw Response Block
+     * @param ArrayObject $config   WebService Request Configuration
      *
-     * @return  ArrayObject
+     * @return ArrayObject
      */
     public function checkResponse($response, $config = null)
     {
@@ -169,8 +173,8 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * @abstract      Verify Response Log Is Valid
      *
-     * @param   ArrayObject   $logs           WebService Log Array
-     * @param   ArrayObject         $config         WebService Request Configuration
+     * @param ArrayObject $logs   WebService Log Array
+     * @param ArrayObject $config WebService Request Configuration
      */
     public function checkResponseLog($logs, $config = null)
     {
@@ -214,10 +218,12 @@ abstract class AbstractBaseCase extends TestCase
     }
     /**
      * @abstract    Verify Response Log Is Valid
-     * @param       ArrayObject     $logs        WebService Log Array
-     * @param       string          $type       Log Key
-     * @param       string          $name       Log Type Name
-     * @return      void
+     *
+     * @param ArrayObject $logs WebService Log Array
+     * @param string      $type Log Key
+     * @param string      $name Log Type Name
+     *
+     * @return void
      */
     public function checkResponseLogArray($logs, $type, $name)
     {
@@ -235,8 +241,10 @@ abstract class AbstractBaseCase extends TestCase
     
     /**
      * @abstract    Verify Response Server Infos Are Valid
-     * @param       ArrayObject     $server         WebService Server Infos Array
-     * @return      void
+     *
+     * @param ArrayObject $server WebService Server Infos Array
+     *
+     * @return void
      */
     public function checkResponseServer($server)
     {
@@ -259,10 +267,10 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * @abstract      Verify Response Tasks Results are Valid
      *
-     * @param   ArrayObject     $tasks          WebService Server Tasks Results Array
-     * @param   ArrayObject     $config         WebService Request Configuration
+     * @param ArrayObject $tasks  WebService Server Tasks Results Array
+     * @param ArrayObject $config WebService Request Configuration
      *
-     * @return      void
+     * @return void
      */
     public function checkResponseTasks($tasks, $config = null)
     {
@@ -304,6 +312,7 @@ abstract class AbstractBaseCase extends TestCase
     
     /**
      * Data Privider : Simple Tests Sequences
+     *
      * @return array
      */
     public function sequencesProvider()
@@ -380,10 +389,10 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Perform Generic Server Side Action
      *
-     * @param string $service   Webservice Service Name
-     * @param string $action    Webservice Action Name
+     * @param string $service     Webservice Service Name
+     * @param string $action      Webservice Action Name
      * @param string $description Task Description
-     * @param array  $parameters    Task Parameters
+     * @param array  $parameters  Task Parameters
      *
      * @return ArrayObject|bool|string
      */
@@ -415,10 +424,10 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Perform Multiple Server Side Action
      *
-     * @param string $service   Webservice Service Name
-     * @param string $action    Webservice Action Name
-     * @param string $description Task Description
-     * @param array  $tasksParameters    Array of Task Parameters
+     * @param string $service         Webservice Service Name
+     * @param string $action          Webservice Action Name
+     * @param string $description     Task Description
+     * @param array  $tasksParameters Array of Task Parameters
      *
      * @return array
      */
@@ -456,10 +465,10 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Perform generic Server Side Action
      *
-     * @param string $service   Webservice Service Name
-     * @param string $action    Webservice Action Name
+     * @param string $service     Webservice Service Name
+     * @param string $action      Webservice Action Name
      * @param string $description Task Description
-     * @param array  $parameters    Task Parameters
+     * @param array  $parameters  Task Parameters
      *
      * @return ArrayObject
      */
@@ -504,6 +513,7 @@ abstract class AbstractBaseCase extends TestCase
      * @param null|array|ArrayObject|string $data
      *
      * @throws Exception
+     *
      * @return array
      *
      */

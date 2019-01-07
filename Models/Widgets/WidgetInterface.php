@@ -30,9 +30,9 @@ interface WidgetInterface
     /**
      * @abstract    Return requested Widget Data
      *
-     * @param       array   $parameters           List of Parameters
+     * @param array $parameters List of Parameters
      *
-     * @return      array|false                   Widget Data
+     * @return array|false Widget Data
      */
     public function get($parameters = array());
     

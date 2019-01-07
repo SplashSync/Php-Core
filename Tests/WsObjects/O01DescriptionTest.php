@@ -28,6 +28,7 @@ class O01DescriptionTest extends ObjectsCase
 {
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param string $testSequence
      * @param string $objectType
      */
@@ -49,6 +50,7 @@ class O01DescriptionTest extends ObjectsCase
     
     /**
      * @dataProvider objectTypesProvider
+     *
      * @param string $testSequence
      * @param string $objectType
      */

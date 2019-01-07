@@ -29,7 +29,8 @@ trait ChecksumTrait
     
     /**
      * @abstract   Get a singleton Checksum Helper Class
-     * @return     ChecksumHelper
+     *
+     * @return ChecksumHelper
      */
     public static function md5()
     {
@@ -45,7 +46,8 @@ trait ChecksumTrait
     
     /**
      * @abstract   Get a singleton Checksum Helper Class
-     * @return     ChecksumHelper
+     *
+     * @return ChecksumHelper
      */
     public static function checksum()
     {

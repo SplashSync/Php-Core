@@ -30,7 +30,7 @@ trait UnitsHelperTrait
     /**
      * Get a singleton Unit Converter Class
      *
-     * @return     UnitConverter
+     * @return UnitConverter
      */
     public static function units()
     {
