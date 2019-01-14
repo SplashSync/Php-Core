@@ -15,13 +15,10 @@
 
 namespace Splash\Tests\Tools;
 
-use ArrayObject;
 use Splash\Client\Splash;
 
 /**
- * @abstract    Splash Test Tools - Objects Test Case Base Class
- *
- * @author SplashSync <contact@splashsync.com>
+ * Splash Test Tools - Objects Test Case Base Class
  */
 class ObjectsCase extends AbstractBaseCase
 {
@@ -30,7 +27,7 @@ class ObjectsCase extends AbstractBaseCase
     use \Splash\Tests\Tools\Traits\ObjectsFakerTrait;
     
     /**
-     * @abstract    List of Created & Tested Object used to delete if test failled.
+     * List of Created & Tested Object used to delete if test failled.
      *
      * @var array
      */
@@ -55,30 +52,6 @@ class ObjectsCase extends AbstractBaseCase
         // Load Module Local Configuration (In Safe Mode)
         //====================================================================//
         $this->loadLocalTestParameters();
-    }
-    
-    /**
-     * @abstract        Verify Last Commit is Valid and Conform to Expected
-     *
-     * @param string $action     Expected Action
-     * @param string $objectType Expected Object Type
-     * @param string $objectId   Expected Object Id
-     */
-    public function assertIsLastCommited($action, $objectType, $objectId)
-    {
-        $this->assertIsCommited($action, $objectType, $objectId, false);
-    }
-
-    /**
-     * @abstract        Verify First Commit is Valid and Conform to Expected
-     *
-     * @param string $action     Expected Action
-     * @param string $objectType Expected Object Type
-     * @param string $objectId   Expected Object Id
-     */
-    public function assertIsFirstCommited($action, $objectType, $objectId)
-    {
-        $this->assertIsCommited($action, $objectType, $objectId, true);
     }
     
     //====================================================================//
@@ -224,97 +197,5 @@ class ObjectsCase extends AbstractBaseCase
             }
             Splash::object($object["ObjectType"])->delete($object["ObjectId"]);
         }
-    }
-      
-    /**
-     * @abstract        Verify First Commit is Valid and Conform to Expected
-     *
-     * @param string $action     Expected Action
-     * @param string $objectType Expected Object Type
-     * @param string $objectId   Expected Object Id
-     * @param bool   $first      Check First or Last Commited
-     */
-    private function assertIsCommited($action, $objectType, $objectId, $first = true)
-    {
-        //====================================================================//
-        //   Verify Object Change Was Commited
-        $this->assertNotEmpty(
-            Splash::$commited,
-            "No Object Change Commited by your Module. Please check your triggers."
-        );
-        
-        //====================================================================//
-        //   Get First / Last Commited
-        $commited = $first ? array_shift(Splash::$commited) : array_pop(Splash::$commited);
-        
-        //====================================================================//
-        //   Check Object Type is OK
-        $this->assertEquals(
-            $commited->type,
-            $objectType,
-            "Change Commit => Object Type is wrong. "
-                . "(Expected " . $objectType . " / Given " . $commited->type
-        );
-        
-        //====================================================================//
-        //   Check Object Action is OK
-        $this->assertEquals(
-            $commited->action,
-            $action,
-            "Change Commit => Change Type is wrong. (Expected " . $action . " / Given " . $commited->action
-        );
-        
-        //====================================================================//
-        //   Check Object Id value Format
-        $this->assertTrue(
-            is_scalar($commited->id) || is_array($commited->id) || is_a($commited->id, "ArrayObject"),
-            "Change Commit => Object Id Value is in wrong Format. "
-                . "(Expected String or Array of Strings. / Given "
-                . print_r($commited->id, true)
-        );
-        
-        //====================================================================//
-        //   If Commited an Array of Ids
-        if (is_array($commited->id) || ($commited->id instanceof ArrayObject)) {
-            //====================================================================//
-            //   Detect Array Object
-            if ($commited->id instanceof ArrayObject) {
-                $commited->id   =   $commited->id->getArrayCopy();
-            }
-            //====================================================================//
-            //   Check each Object Ids
-            foreach ($commited->id as $objectId) {
-                $this->assertInternalType(
-                    'scalar',
-                    $objectId,
-                    "Change Commit => Object Id Array Value is in wrong Format. "
-                        . "(Expected String or Integer. / Given "
-                        . print_r($objectId, true)
-                );
-            }
-            //====================================================================//
-            //   Extract First Object Id
-            $firstId = array_shift($commited->id);
-            //====================================================================//
-            //   Verify First Object Id is OK
-            $this->assertEquals(
-                $firstId,
-                $objectId,
-                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $firstId
-            );
-        } else {
-            //====================================================================//
-            //   Check Object Id is OK
-            $this->assertEquals(
-                $commited->id,
-                $objectId,
-                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $commited->id
-            );
-        }
-        
-        //====================================================================//
-        //   Check Infos are Not Empty
-        $this->assertNotEmpty($commited->user, "Change Commit => User Name is Empty");
-        $this->assertNotEmpty($commited->comment, "Change Commit => Action Comment is Empty");
     }
 }

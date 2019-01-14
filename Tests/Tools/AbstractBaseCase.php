@@ -370,7 +370,7 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @param string $testSequence
      */
-    protected function loadLocalTestSequence(string $testSequence)
+    protected function loadLocalTestSequence($testSequence)
     {
         //====================================================================//
         // Check if Local Tests Sequences are defined
