@@ -49,11 +49,13 @@ trait ObjectsSetTestsTrait
         //====================================================================//
 
         //====================================================================//
-        //   Generate Dummy Object Data (Required Fields Only)
-        $this->originData = $this->prepareForTesting($objectType, $field);
-        if (false == $this->originData) {
+        //   Generate Dummy New Object Data (Required Fields Only)
+        $this->originData = null;
+        $newData = $this->prepareForTesting($objectType, $field);
+        if (false == $newData) {
             return true;
         }
+        $this->originData = $newData;
 
         //====================================================================//
         //   Execute Create Test
@@ -206,11 +208,13 @@ trait ObjectsSetTestsTrait
         //====================================================================//
 
         //====================================================================//
-        //   Generate Dummy Object Data (Required Fields Only)
-        $this->originData = $this->prepareForTesting($objectType, $field);
-        if (false == $this->originData) {
+        //   Generate Dummy New Object Data (Required Fields Only)
+        $this->originData = null;
+        $newData = $this->prepareForTesting($objectType, $field);
+        if (false == $newData) {
             return true;
         }
+        $this->originData = $newData;
 
         //====================================================================//
         //   Execute Create Test

@@ -29,7 +29,7 @@ trait ObjectsFakerTrait
      * Object original Data
      * Used to Protect Required & NotTested fields from Update
      *
-     * @var null|array|false
+     * @var null|array
      */
     protected $originData;
     
