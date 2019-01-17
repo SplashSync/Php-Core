@@ -20,3 +20,5 @@
 .directory
 save-commands.json
 /.php_cs.cache
+/nbproject/private/
+nbproject/

@@ -50,14 +50,14 @@ trait ObjectsSetTestsTrait
 
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
-        $newData = $this->prepareForTesting($objectType, $field);
-        if (false == $newData) {
+        $this->originData = $this->prepareForTesting($objectType, $field);
+        if (false == $this->originData) {
             return true;
         }
 
         //====================================================================//
         //   Execute Create Test
-        $objectId = $this->setObjectFromService($objectType, $newData, $forceObjectId);
+        $objectId = $this->setObjectFromService($objectType, $this->originData, $forceObjectId);
 
         //====================================================================//
         // BOOT or REBOOT MODULE
@@ -207,14 +207,14 @@ trait ObjectsSetTestsTrait
 
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
-        $newData = $this->prepareForTesting($objectType, $field);
-        if (false == $newData) {
+        $this->originData = $this->prepareForTesting($objectType, $field);
+        if (false == $this->originData) {
             return true;
         }
 
         //====================================================================//
         //   Execute Create Test
-        $objectId = $this->setObjectFromModule($objectType, $newData, $forceObjectId);
+        $objectId = $this->setObjectFromModule($objectType, $this->originData, $forceObjectId);
 
         //====================================================================//
         //   OBJECT UPDATE TEST

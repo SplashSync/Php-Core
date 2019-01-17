@@ -19,24 +19,32 @@ use ArrayObject;
 use Splash\Client\Splash;
 
 /**
- * @abstract    Splash Test Tools - Objects Faker trait
+ * Splash Test Tools - Objects Faker trait
  *
  * @author SplashSync <contact@splashsync.com>
  */
 trait ObjectsFakerTrait
 {
+    /**
+     * Object original Data
+     * Used to Protect Required & NotTested fields from Update
+     *
+     * @var null|array|false
+     */
+    protected $originData;
+    
     //==============================================================================
     //      FAKE DATA GENERATORS
     //==============================================================================
     
     /**
-     *   @abstract   Generate Fake Object Fields List
+     * Generate Fake Object Fields List
      *
-     *   @param      string     $objectType     Object Type Name
-     *   @param      array      $fieldsList     Object Field Ids List
-     *   @param      bool       $associate      Include Associated Fields
+     * @param string $objectType Object Type Name
+     * @param array  $fieldsList Object Field Ids List
+     * @param bool   $associate  Include Associated Fields
      *
-     *   @return     array      $Out            Array of Fields
+     * @return array $Out            Array of Fields
      */
     public function fakeFieldsList($objectType, $fieldsList = false, $associate = false)
     {
@@ -98,14 +106,13 @@ trait ObjectsFakerTrait
     }
     
     /**
-     * @abstract   Create Fake/Dummy Object Data
+     * Create Fake/Dummy Object Data
      *
      * @param array $fieldsList Object Field List
-     * @param array $originData Original Object Data
      *
      * @return array
      */
-    public function fakeObjectData($fieldsList, $originData = null)
+    public function fakeObjectData($fieldsList)
     {
         //====================================================================//
         // Create Dummy Data Array
@@ -121,8 +128,8 @@ trait ObjectsFakerTrait
             // Generate Single Fields Dummy Data (is Not a List Field)
             if (!self::isListField($field->id)) {
                 $outputs[$field->id] = (
-                    self::isFieldToPreserve($field, $originData) ?
-                        $originData[$field->id] :
+                    $this->isFieldToPreserve($field) ?
+                        $this->originData[$field->id] :
                         self::fakeFieldData(
                             $field->type,
                             self::toArray($field->choices),
@@ -158,11 +165,11 @@ trait ObjectsFakerTrait
     }
     
     /**
-     *   @abstract   Create Fake/Dummy Object List Data
+     * Create Fake/Dummy Object List Data
      *
-     *   @param      ArrayObject   $field          Object Field Definition
+     * @param ArrayObject $field Object Field Definition
      *
-     *   @return     array
+     * @return array
      */
     public function fakeListData($field)
     {
@@ -201,7 +208,7 @@ trait ObjectsFakerTrait
     }
     
     /**
-     * @abstract   Create Fake Field data
+     * Create Fake Field data
      *
      * @param string $type    Object Field Type
      * @param array  $choices Object Field Possible Values
@@ -246,12 +253,12 @@ trait ObjectsFakerTrait
     }
     
     /**
-     *   @abstract   Check if Field Need to be in List
+     * Check if Field Need to be in List
      *
-     *   @param      ArrayObject    $field          Field Definition
-     *   @param      array          $fieldsList     Object Field Ids List
+     * @param ArrayObject $field      Field Definition
+     * @param array       $fieldsList Object Field Ids List
      *
-     *   @return     bool
+     * @return bool
      */
     private function isFieldNeeded($field, $fieldsList = false)
     {
@@ -284,18 +291,22 @@ trait ObjectsFakerTrait
     }
 
     /**
-     *   @abstract   Check if Field Need to e in List
+     * Check if Field Need to e in List
      *
-     *   @param      ArrayObject    $field          Field Definition
-     *   @param      null|array     $originData     Original Object Data
+     * @param ArrayObject $field Field Definition
      *
-     *   @return     bool
+     * @return bool
      */
-    private static function isFieldToPreserve($field, $originData)
+    private function isFieldToPreserve($field)
     {
         //====================================================================//
         // Check if Origin Data Exists
-        if (empty($originData) || !isset($originData[$field->id]) || empty($originData[$field->id])) {
+        if (!is_array($this->originData)) {
+            return false;
+        }
+        //====================================================================//
+        // Check if Origin Data Exists
+        if (!isset($this->originData[$field->id]) || empty($this->originData[$field->id])) {
             return false;
         }
         //====================================================================//
