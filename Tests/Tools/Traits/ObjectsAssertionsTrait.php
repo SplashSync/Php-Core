@@ -431,13 +431,13 @@ trait ObjectsAssertionsTrait
             }
             //====================================================================//
             //   Check each Object Ids
-            foreach ($commited->id as $objectId) {
+            foreach ($commited->id as $commitedObjectId) {
                 $this->assertInternalType(
                     'scalar',
-                    $objectId,
+                    $commitedObjectId,
                     "Change Commit => Object Id Array Value is in wrong Format. "
                         . "(Expected String or Integer. / Given "
-                        . print_r($objectId, true)
+                        . print_r($commitedObjectId, true)
                 );
             }
             //====================================================================//
