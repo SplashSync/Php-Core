@@ -18,7 +18,7 @@ namespace   Splash\Models\Objects;
 use Splash\Models\Helpers\ImagesHelper;
 
 /**
- * @abstract    This class implements access to Images Fields Helper.
+ * This class implements access to Images Fields Helper.
  */
 trait ImagesTrait
 {
@@ -28,9 +28,9 @@ trait ImagesTrait
     private static $ImagesHelper;
     
     /**
-     *      @abstract   Get a singleton List Helper Class
+     * Get a singleton List Helper Class
      *
-     *      @return     ImagesHelper
+     * @return ImagesHelper
      */
     public static function images()
     {

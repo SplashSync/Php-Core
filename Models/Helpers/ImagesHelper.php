@@ -18,7 +18,7 @@ namespace   Splash\Models\Helpers;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    Helper for Images Fields Management
+ * Helper for Images Fields Management
  */
 class ImagesHelper
 {
@@ -27,14 +27,14 @@ class ImagesHelper
     //====================================================================//
     
     /**
-     *  @abstract   Build a new image field array
+     * Build a new image field array
      *
-     *  @param      string      $name           Image Name
-     *  @param      string      $fileName       Image Filename with Extension
-     *  @param      string      $filePath       Image Full path on local system
-     *  @param      string      $publicUrl      Complete Public Url of this image if available
+     * @param string $name      Image Name
+     * @param string $fileName  Image Filename with Extension
+     * @param string $filePath  Image Full path on local system
+     * @param string $publicUrl Complete Public Url of this image if available
      *
-     *  @return     array|false                 Splash Image Array or False
+     * @return array|false Splash Image Array or False
      */
     public static function encode($name, $fileName, $filePath, $publicUrl = null)
     {
@@ -91,13 +91,13 @@ class ImagesHelper
     }
     
     /**
-     *  @abstract   Build a new image field array
+     * Build a new image field array
      *
-     *  @param      string      $name           Image Name
-     *  @param      string      $absoluteUrl    Image Absolute Url
-     *  @param      string      $publicUrl      Complete Public Url of this image if available
+     * @param string $name        Image Name
+     * @param string $absoluteUrl Image Absolute Url
+     * @param string $publicUrl   Complete Public Url of this image if available
      *
-     *  @return     array|false                 Splash Image Array or False
+     * @return array|false Splash Image Array or False
      */
     public static function encodeFromUrl($name, $absoluteUrl, $publicUrl = null)
     {
@@ -145,7 +145,35 @@ class ImagesHelper
     }
     
     /**
-     * @abstract    Ues CURL to detect Remote Image Size
+     * Uses CURL to GET Remote Image Once
+     *
+     * @param string $imageUrl
+     *
+     * @return bool
+     */
+    public static function touchRemoteFile($imageUrl)
+    {
+        // Get cURL resource
+        $curl = curl_init($imageUrl);
+        if (!$curl) {
+            return false;
+        }
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $imageUrl,
+            CURLOPT_USERAGENT => 'Splash cURL Agent'
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        // Close request to clear up some resources
+        curl_close($curl);
+        
+        return (false != $resp);
+    }
+    
+    /**
+     * Ues CURL to detect Remote Image Size
      *
      * @param string $imageUrl
      *
