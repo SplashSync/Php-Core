@@ -40,9 +40,9 @@ trait ObjectsFakerTrait
     /**
      * Generate Fake Object Fields List
      *
-     * @param string $objectType Object Type Name
-     * @param array  $fieldsList Object Field Ids List
-     * @param bool   $associate  Include Associated Fields
+     * @param string      $objectType Object Type Name
+     * @param array|false $fieldsList Object Field Ids List
+     * @param bool        $associate  Include Associated Fields
      *
      * @return array $Out            Array of Fields
      */
@@ -256,7 +256,7 @@ trait ObjectsFakerTrait
      * Check if Field Need to be in List
      *
      * @param ArrayObject $field      Field Definition
-     * @param array       $fieldsList Object Field Ids List
+     * @param array|false $fieldsList Object Field Ids List
      *
      * @return bool
      */

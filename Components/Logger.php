@@ -468,7 +468,7 @@ class Logger
         //====================================================================//
         // Delete Existing Debug Messages
         if ((0 == $debug) && isset($this->debug)) {
-            $this->deb = null;
+            $this->deb = array();
         }
 
         return true;

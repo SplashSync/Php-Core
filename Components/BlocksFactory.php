@@ -140,7 +140,7 @@ class BlocksFactory
         //====================================================================//
         // Return fields List
         $buffer = $this->blocks;
-        $this->blocks = null;
+        $this->blocks = array();
 
         return $buffer;
     }

@@ -255,6 +255,6 @@ class S00ProductTest extends ObjectsCase
 
         //====================================================================//
         // Return Generated Object Data
-        return array_merge(is_array($fakeData) ? $fakeData : array(), $this->currentVariation, $this->currentImages);
+        return array_merge($fakeData, $this->currentVariation, $this->currentImages);
     }
 }

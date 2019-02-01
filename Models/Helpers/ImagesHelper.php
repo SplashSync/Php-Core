@@ -125,7 +125,7 @@ class ImagesHelper
         $image["name"]          = $name;
         //====================================================================//
         // Image Filename
-        $image["filename"]      = basename(parse_url($absoluteUrl, PHP_URL_PATH));
+        $image["filename"]      = basename((string) parse_url($absoluteUrl, PHP_URL_PATH));
         //====================================================================//
         // Image Full Path
         $image["path"]          = $absoluteUrl;

@@ -475,7 +475,7 @@ class Webservice
         } else {
             $fullPath = dirname(__DIR__);
             $relPath = explode((string) $response->ServerRoot, $fullPath);
-            if (isset($relPath[1])) {
+            if (is_array($relPath) && isset($relPath[1])) {
                 $response->ServerPath = $relPath[1].'/soap.php';
             } else {
                 $response->ServerPath = null;

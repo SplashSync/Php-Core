@@ -61,7 +61,7 @@ interface ObjectInterface
      *
      * @return array|false
      */
-    public function get($objectId = null, $fields = 0);
+    public function get($objectId = null, $fields = array());
 
     /**
      * @abstract     Update or Create requested Object Data

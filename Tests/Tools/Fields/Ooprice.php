@@ -153,7 +153,7 @@ class Ooprice implements FieldInterface
      *
      * @return array|string
      */
-    public static function encodePrice($taxExcl = null, $vat = 0, $taxIncl = null, $code = "", $symbol = "", $name = "")
+    public static function encodePrice($taxExcl = null, $vat = 0.0, $taxIncl = null, $code = "", $symbol = "", $name = "")
     {
         //====================================================================//
         // Safety Checks

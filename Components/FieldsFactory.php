@@ -563,7 +563,7 @@ class FieldsFactory
      * @abstract   Add New Option for Current Field
      *
      * @param string $type  Constrain Type
-     * @param string $value Constrain Value
+     * @param bool|string $value Constrain Value
      *
      * @return $this
      */
@@ -587,7 +587,7 @@ class FieldsFactory
     /**
      * @abstract   Save Current New Field in list & Clean current new field
      *
-     * @return ArrayObject[]|false
+     * @return false|array[ArrayObject]
      */
     public function publish()
     {
@@ -604,11 +604,9 @@ class FieldsFactory
         // Return fields List
         }
         $buffer = $this->fields;
-        $this->fields = null;
+        $this->fields = array();
 
         return $buffer;
-
-        return false;
     }
     
     /**
