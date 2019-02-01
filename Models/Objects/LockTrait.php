@@ -58,7 +58,7 @@ trait LockTrait
         
         //====================================================================//
         //  Log
-        Splash::log()->deb("MsgLockObject", static::$NAME,(string) $objectId);
+        Splash::log()->deb("MsgLockObject", static::$NAME, (string) $objectId);
         
         return true;
     }
@@ -68,7 +68,7 @@ trait LockTrait
      */
     public function isLocked($objectId = "new")
     {
-        Splash::log()->deb("MsgisLockedStart", static::$NAME,(string)  $objectId);
+        Splash::log()->deb("MsgisLockedStart", static::$NAME, (string)  $objectId);
         
         //====================================================================//
         // Verify Object Identifier is not Empty
@@ -87,7 +87,7 @@ trait LockTrait
         }
         //====================================================================//
         //  Log
-        Splash::log()->deb("MsgisLocked", static::$NAME,(string)  $objectId);
+        Splash::log()->deb("MsgisLocked", static::$NAME, (string)  $objectId);
 
         return true;
     }
@@ -117,7 +117,7 @@ trait LockTrait
         $this->locks->offsetUnset($objectId);
         //====================================================================//
         //  Log
-        Splash::log()->deb("MsgUnlockSuccess", static::$NAME,(string)  $objectId);
+        Splash::log()->deb("MsgUnlockSuccess", static::$NAME, (string)  $objectId);
 
         return true;
     }

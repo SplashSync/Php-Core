@@ -148,12 +148,12 @@ class Ooprice implements FieldInterface
      * @param double $vat     VAT percentile
      * @param double $taxIncl Price With VAT
      * @param string $code    Price Currency Code
-     * @param string $symbol  Price Currency Symbol
+     * @param string $pic     Price Currency Symbol
      * @param string $name    Price Currency Name
      *
      * @return array|string
      */
-    public static function encodePrice($taxExcl = null, $vat = 0.0, $taxIncl = null, $code = "", $symbol = "", $name = "")
+    public static function encodePrice($taxExcl = null, $vat = 0.0, $taxIncl = null, $code = "", $pic = "", $name = "")
     {
         //====================================================================//
         // Safety Checks
@@ -169,7 +169,7 @@ class Ooprice implements FieldInterface
         
         //====================================================================//
         // Build Price Array
-        $price = array("vat" => $vat, "code" => $code,"symbol" => $symbol,"name" => $name);
+        $price = array("vat" => $vat, "code" => $code,"symbol" => $pic,"name" => $name);
         if (is_double($taxExcl)) {
             $price["base"]  =    0;
             $price["ht"]    =    $taxExcl;

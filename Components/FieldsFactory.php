@@ -562,7 +562,7 @@ class FieldsFactory
     /**
      * @abstract   Add New Option for Current Field
      *
-     * @param string $type  Constrain Type
+     * @param string      $type  Constrain Type
      * @param bool|string $value Constrain Value
      *
      * @return $this
