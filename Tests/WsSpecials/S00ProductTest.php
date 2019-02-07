@@ -21,7 +21,7 @@ use Splash\Tests\Tools\ObjectsCase;
 use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
 
 /**
- * @abstract    Product Special Test Suite - Products Fields Verifications
+ * Product Special Test Suite - Products Fields Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -43,8 +43,8 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
      */
     public function testFieldsDefinition($testSequence, $objectType)
     {
@@ -79,10 +79,10 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      *
-     * @param mixed      $testSequence
-     * @param mixed      $objectType
-     * @param mixed      $field
-     * @param null|mixed $forceObjectId
+     * @param string      $testSequence
+     * @param string      $objectType
+     * @param ArrayObject $field
+     * @param null|string $forceObjectId
      */
     public function testVariantsFromModule($testSequence, $objectType, $field, $forceObjectId = null)
     {
@@ -119,10 +119,10 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      *
-     * @param mixed      $testSequence
-     * @param mixed      $objectType
-     * @param mixed      $field
-     * @param null|mixed $forceObjectId
+     * @param string      $testSequence
+     * @param string      $objectType
+     * @param ArrayObject $field
+     * @param null|string $forceObjectId
      */
     public function testVariantsFieldFromService($testSequence, $objectType, $field, $forceObjectId = null)
     {
@@ -159,9 +159,9 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider productImagesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
-     * @param mixed $images
+     * @param string $testSequence
+     * @param string $objectType
+     * @param array  $images
      */
     public function testImagesFromModule($testSequence, $objectType, $images)
     {
@@ -171,9 +171,9 @@ class S00ProductTest extends ObjectsCase
     /**
      * @dataProvider productImagesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
-     * @param mixed $images
+     * @param string $testSequence
+     * @param string $objectType
+     * @param array  $images
      */
     public function testVariantImagesFromModule($testSequence, $objectType, $images)
     {
@@ -208,10 +208,10 @@ class S00ProductTest extends ObjectsCase
     }
 
     /**
-     * @abstract    Override Parent Function to Add Variants Attributes
-     * @abstract    Ensure Set/Write Test is Possible & Generate Fake Object Data
-     *              -> This Function uses Preloaded Fields
-     *              -> If Md5 provided, check Current Field was Modified
+     * Override Parent Function to Add Variants Attributes
+     * Ensure Set/Write Test is Possible & Generate Fake Object Data
+     *  -> This Function uses Preloaded Fields
+     *  -> If Md5 provided, check Current Field was Modified
      *
      * @param string      $objectType Current Object Type
      * @param ArrayObject $field      Current Tested Field (ArrayObject)
@@ -233,8 +233,12 @@ class S00ProductTest extends ObjectsCase
 
         //====================================================================//
         //   Ensure a Field is Requested
+        // Alternate Name if Exists (VAriable Product)
+        // Else Base Name
         if (is_null($field)) {
-            $field = self::findFieldByTag($fields, 'http://schema.org/Product', 'alternateName');
+            $name = self::findFieldByTag($fields, 'http://schema.org/Product', 'name');
+            $altName = self::findFieldByTag($fields, 'http://schema.org/Product', 'alternateName');
+            $field = $altName ? $altName : $name;
         }
         $this->assertNotEmpty($field);
         if (is_null($field)) {
