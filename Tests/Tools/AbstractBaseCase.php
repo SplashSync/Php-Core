@@ -213,8 +213,8 @@ abstract class AbstractBaseCase extends TestCase
         // UNEXPECTED SERVER LOG ITEMS
         foreach (array_keys($logs->getArrayCopy()) as $key) {
             $this->assertTrue(
-                    in_array($key, array("err", "msg", "war", "deb"), true),
-                    "Received Unexpected Log Messages. ( Data->log->" . $key . ")"
+                in_array($key, array("err", "msg", "war", "deb"), true),
+                "Received Unexpected Log Messages. ( Data->log->" . $key . ")"
                     );
         }
         
