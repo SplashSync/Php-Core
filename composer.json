@@ -57,7 +57,7 @@
     },
     
     "conflict": {
-        "phpunit/phpunit":                  "~8.0"
+        "phpunit/phpunit":                  ">7.5.3|~8.0"
     }
     
     
