@@ -35,6 +35,9 @@ class S00ProductTest extends ObjectsCase
     use \Splash\Models\Objects\ListsTrait;
 
     /** @var array */
+    private const ATTRIBUTES = array('VariantA','VariantB');
+    
+    /** @var array */
     protected $currentVariation = array();
 
     /** @var array */
@@ -77,14 +80,15 @@ class S00ProductTest extends ObjectsCase
     }
 
     /**
+     * Test Creation of Products Variants from Module
+     *
      * @dataProvider objectFieldsProvider
      *
      * @param string      $testSequence
      * @param string      $objectType
      * @param ArrayObject $field
-     * @param null|string $forceObjectId
      */
-    public function testVariantsFromModule($testSequence, $objectType, $field, $forceObjectId = null)
+    public function testVariantsFromModule($testSequence, $objectType, $field)
     {
         //====================================================================//
         //   TEST INIT
@@ -106,25 +110,58 @@ class S00ProductTest extends ObjectsCase
             return;
         }
 
-        foreach ($this->objectVariantsProvider() as $variationData) {
+        //====================================================================//
+        //   CREATE A FIRST VARIANT PRODUCT
+        //====================================================================//
+
+        //====================================================================//
+        //   Setup Current Tested Variant
+        $this->currentVariation = array_merge(
+            $this->getProductsVariant(),
+            $this->getProductsAttributes(self::ATTRIBUTES)
+        );
+        
+        //====================================================================//
+        //   Execute Create First Product Variant
+        $newData = $this->prepareForTesting($objectType, $field);
+        $this->assertIsArray($newData);
+        $variantProductId = $this->setObjectFromModule($objectType, $newData);
+        
+        //====================================================================//
+        //   Create Multiple Variants for Same Product
+        //====================================================================//
+
+        for ($i=0; $i<3; $i++) {
             //====================================================================//
-            //   Store Current Tested Variant
-            $this->currentVariation = $variationData;
+            //   Load Fields
+            $this->fields = Splash::object($objectType)->fields();
+            $this->assertNotEmpty($this->fields, 'Product Fields List is Empty!');
+            //====================================================================//
+            //   Setup Current Tested Variant
+            $this->currentVariation = array_merge(
+                $this->getProductsVariant($variantProductId),
+                $this->getProductsAttributes(self::ATTRIBUTES)
+            );
             //====================================================================//
             //   Execute Set Test
-            $this->coreTestSetSingleFieldFromModule($objectType, $field, $forceObjectId);
+            $this->coreTestSetSingleFieldFromModule($objectType, $field);
         }
+        
+        //====================================================================//
+        //   Execute Delete First Product Variant
+        $this->deleteObjectFromModule($objectType, $variantProductId);
     }
 
     /**
+     * Test Creation of Products Variants from Service
+     *
      * @dataProvider objectFieldsProvider
      *
      * @param string      $testSequence
      * @param string      $objectType
      * @param ArrayObject $field
-     * @param null|string $forceObjectId
      */
-    public function testVariantsFieldFromService($testSequence, $objectType, $field, $forceObjectId = null)
+    public function testVariantsFieldFromService($testSequence, $objectType, $field)
     {
         //====================================================================//
         //   TEST INIT
@@ -146,17 +183,50 @@ class S00ProductTest extends ObjectsCase
             return;
         }
 
-        foreach ($this->objectVariantsProvider() as $variationData) {
+        //====================================================================//
+        //   CREATE A FIRST VARIANT PRODUCT
+        //====================================================================//
+
+        //====================================================================//
+        //   Setup Current Tested Variant
+        $this->currentVariation = array_merge(
+            $this->getProductsVariant(),
+            $this->getProductsAttributes(self::ATTRIBUTES)
+        );
+        //====================================================================//
+        //   Execute Create First Product Variant
+        $newData = $this->prepareForTesting($objectType, $field);
+        $this->assertIsArray($newData);
+        $variantProductId = $this->setObjectFromService($objectType, $newData);
+        
+        //====================================================================//
+        //   Create Multiple Variants for Same Product
+        //====================================================================//
+
+        for ($i=0; $i<3; $i++) {
             //====================================================================//
-            //   Store Current Tested Variant
-            $this->currentVariation = $variationData;
+            //   Load Fields
+            $this->fields = Splash::object($objectType)->fields();
+            $this->assertNotEmpty($this->fields, 'Product Fields List is Empty!');
+            //====================================================================//
+            //   Setup Current Tested Variant
+            $this->currentVariation = array_merge(
+                $this->getProductsVariant($variantProductId),
+                $this->getProductsAttributes(self::ATTRIBUTES)
+            );
             //====================================================================//
             //   Execute Set Test
-            $this->coreTestSetSingleFieldFromService($objectType, $field, $forceObjectId);
+            $this->coreTestSetSingleFieldFromService($objectType, $field);
         }
+        
+        //====================================================================//
+        //   Execute Delete First Product Variant
+        $this->deleteObjectFromModule($objectType, $variantProductId);
     }
 
     /**
+     * Test Product Images Writing from Module
+     *
      * @dataProvider productImagesProvider
      *
      * @param string $testSequence
@@ -169,6 +239,8 @@ class S00ProductTest extends ObjectsCase
     }
 
     /**
+     * Test Variant Products Images Writing from Module
+     *
      * @dataProvider productImagesProvider
      *
      * @param string $testSequence
@@ -252,6 +324,7 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications
         if (!empty($this->currentVariation)) {
+            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'Variants');
             $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeCode');
             $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeName');
             $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeValue');
