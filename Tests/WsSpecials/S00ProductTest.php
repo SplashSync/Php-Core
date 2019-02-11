@@ -35,7 +35,7 @@ class S00ProductTest extends ObjectsCase
     use \Splash\Models\Objects\ListsTrait;
 
     /** @var array */
-    private const ATTRIBUTES = array('VariantA','VariantB');
+    const ATTRIBUTES = array('VariantA','VariantB');
     
     /** @var array */
     protected $currentVariation = array();
@@ -131,7 +131,7 @@ class S00ProductTest extends ObjectsCase
         //   Create Multiple Variants for Same Product
         //====================================================================//
 
-        for ($i=0; $i<3; $i++) {
+        for ($i=0; $i<2; $i++) {
             //====================================================================//
             //   Load Fields
             $this->fields = Splash::object($objectType)->fields();
@@ -203,7 +203,7 @@ class S00ProductTest extends ObjectsCase
         //   Create Multiple Variants for Same Product
         //====================================================================//
 
-        for ($i=0; $i<3; $i++) {
+        for ($i=0; $i<2; $i++) {
             //====================================================================//
             //   Load Fields
             $this->fields = Splash::object($objectType)->fields();
@@ -269,10 +269,10 @@ class S00ProductTest extends ObjectsCase
             return;
         }
 
-        foreach ($this->objectVariantsProvider() as $variationData) {
+        for ($i=0; $i<2; $i++) {
             //====================================================================//
             //   Store Current Tested Variant
-            $this->currentVariation = $variationData;
+            $this->currentVariation = $this->getProductsAttributes(self::ATTRIBUTES);
             //====================================================================//
             //   Execute Set Test
             $this->coreTestImagesFromModule($testSequence, $objectType, $images);
