@@ -21,7 +21,7 @@ use Splash\Tests\Tools\AbstractBaseCase;
 use Splash\Tests\Tools\TestCase;
 
 /**
- * @abstract    Core Test Suite - Raw Folders & Class Structure Verifications
+ * Core Test Suite - Raw Folders & Class Structure Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -37,7 +37,7 @@ class C00StartupTest extends TestCase
     const   SPLASH6 =   "                                                                ";
             
     /**
-     * @abstract    Display of Tested Sequences | Objects | Fields
+     * Display of Tested Sequences | Objects | Fields
      */
     public function testDisplayTestContext()
     {
@@ -71,7 +71,7 @@ class C00StartupTest extends TestCase
     }
     
     /**
-     * @abstract    Display of Tested Objects List
+     * Display of Tested Objects List
      */
     private function displayTestedObjects()
     {
@@ -95,7 +95,7 @@ class C00StartupTest extends TestCase
     }
     
     /**
-     * @abstract    Display of Tested Sequences List
+     * Display of Tested Sequences List
      */
     private function displayTestedSequences()
     {
@@ -112,11 +112,19 @@ class C00StartupTest extends TestCase
         if ("None" === $testSequences) {
             return;
         }
+        foreach ($testSequences as $key => $testSequence) {
+            //====================================================================//
+            //   Filter Tested Sequence  =>> Skip
+            if (!AbstractBaseCase::isAllowedSequence($testSequence)) {
+                unset($testSequences[$key]);
+            }
+        }
+        
         echo Logger::getConsoleLine(implode(" | ", $testSequences), "- Test Sequences: ", Logger::CMD_COLOR_DEB);
     }
 
     /**
-     * @abstract    Display of Filter on Objets Fields
+     * Display of Filter on Objets Fields
      */
     private function displayFilteredFields()
     {

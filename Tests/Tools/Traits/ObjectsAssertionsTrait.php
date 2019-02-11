@@ -20,7 +20,7 @@ use Splash\Client\Splash;
 use Splash\Components\FieldsManager;
 
 /**
- * @abstract    Splash Test Tools - Objects PhpUnit Specific Assertions
+ * Splash Test Tools - Objects PhpUnit Specific Assertions
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -34,7 +34,7 @@ trait ObjectsAssertionsTrait
     //==============================================================================
     
     /**
-     * @abstract        Verify if Data is present in Array and in right Internal Format
+     * Verify if Data is present in Array and in right Internal Format
      *
      * @param mixed  $data    Tested Array
      * @param string $key     Tested Array Key
@@ -49,7 +49,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract        Verify if Data is present in Array and in right Internal Format
+     * Verify if Data is present in Array and in right Internal Format
      *
      * @param mixed  $data    Tested Array
      * @param string $key     Tested Array Key
@@ -108,7 +108,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract        Verify if Data is present in Array and is Splash Bool
+     * Verify if Data is present in Array and is Splash Bool
      *
      * @param mixed  $data    Tested Array
      * @param string $key     Tested Array Key
@@ -124,7 +124,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract        Verify if Data is a valid Splash Field Data Value
+     * Verify if Data is a valid Splash Field Data Value
      *
      * @param mixed  $data
      * @param string $type
@@ -149,7 +149,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract    Verify Object Field is Defined
+     * Verify Object Field is Defined
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -171,7 +171,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract    Verify Object Field is in Allowed Formats
+     * Verify Object Field is in Allowed Formats
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -192,7 +192,12 @@ trait ObjectsAssertionsTrait
         //   Verify this Field
         $this->assertTrue(
             in_array($field->type, $formats, true),
-            self::buildResult($itemType, $itemProp, " must be a " . implode("|", $formats), $comment)
+            self::buildResult(
+                $itemType,
+                $itemProp,
+                " must be a " . implode("|", $formats) . " Current is " . $field->type,
+                $comment
+            )
         );
         $this->assertTrue(
             $field->read,
@@ -201,7 +206,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract    Verify Object Field is Readable
+     * Verify Object Field is Readable
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -226,7 +231,7 @@ trait ObjectsAssertionsTrait
     }
 
     /**
-     * @abstract    Verify Object Field is Writeable
+     * Verify Object Field is Writeable
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -251,7 +256,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract    Verify Object Field is NOT Writeable
+     * Verify Object Field is NOT Writeable
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -276,7 +281,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract    Verify Object Field is Required
+     * Verify Object Field is Required
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -301,7 +306,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract    Verify Object Field is NOT Required
+     * Verify Object Field is NOT Required
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -326,7 +331,7 @@ trait ObjectsAssertionsTrait
     }
 
     /**
-     * @abstract    Verify Object Field is In List
+     * Verify Object Field is In List
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -351,7 +356,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract        Verify Last Commit is Valid and Conform to Expected
+     * Verify Last Commit is Valid and Conform to Expected
      *
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
@@ -363,7 +368,7 @@ trait ObjectsAssertionsTrait
     }
 
     /**
-     * @abstract        Verify First Commit is Valid and Conform to Expected
+     * Verify First Commit is Valid and Conform to Expected
      *
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
@@ -375,7 +380,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract        Verify First Commit is Valid and Conform to Expected
+     * Verify First Commit is Valid and Conform to Expected
      *
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
@@ -467,7 +472,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract    Load Object Field from List
+     * Load Object Field from List
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -485,7 +490,7 @@ trait ObjectsAssertionsTrait
     }
     
     /**
-     * @abstract    Build Test Result Comment
+     * Build Test Result Comment
      *
      * @param string $itemType    Field Microdata Type Url
      * @param string $itemProp    Field Microdata Property Name

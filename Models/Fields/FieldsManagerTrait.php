@@ -18,8 +18,8 @@ namespace Splash\Models\Fields;
 use ArrayObject;
 
 /**
- * @abstract    Fields Definition & Data Manager
- *              Collection of Basic STATIC Functions to Manage Splash Fields
+ * Fields Definition & Data Manager
+ * Collection of Basic STATIC Functions to Manage Splash Fields
  */
 trait FieldsManagerTrait
 {

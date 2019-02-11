@@ -80,8 +80,12 @@ class ObjectsCase extends AbstractBaseCase
         //====================================================================//
         //   For Each Test Sequence
         foreach ($testSequences as $testSequence) {
+            //====================================================================//
+            //   Filter Tested Sequences  =>> Skip
+            if (!self::isAllowedSequence($testSequence)) {
+                continue;
+            }
             $this->loadLocalTestSequence($testSequence);
-            
             //====================================================================//
             //   For Each Object Type
             foreach (Splash::objects() as $objectType) {
@@ -123,6 +127,11 @@ class ObjectsCase extends AbstractBaseCase
         //====================================================================//
         //   For Each Test Sequence
         foreach ($testSequences as $testSequence) {
+            //====================================================================//
+            //   Filter Tested Sequences  =>> Skip
+            if (!self::isAllowedSequence($testSequence)) {
+                continue;
+            }
             $this->loadLocalTestSequence($testSequence);
             //====================================================================//
             //   For Each Object Type
@@ -151,7 +160,7 @@ class ObjectsCase extends AbstractBaseCase
     }
 
     /**
-     * @abstract        Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation
+     * Set Current Tested Object to Filter Objects List upon Fake ObjectId Creation
      *
      * @param string $objectType Expected Object Type
      * @param string $objectId   Expected Object Id

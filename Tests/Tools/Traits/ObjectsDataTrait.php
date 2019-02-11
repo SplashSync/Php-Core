@@ -21,14 +21,14 @@ use Splash\Tests\Tools\Fields\FieldInterface;
 use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
 
 /**
- * @abstract    Splash Test Tools - Objects Data Management
+ * Splash Test Tools - Objects Data Management
  *
  * @author SplashSync <contact@splashsync.com>
  */
 trait ObjectsDataTrait
 {
     /**
-     * @abstract    Check Two Data Blocks Have Similar Data
+     * Check Two Data Blocks Have Similar Data
      *
      * @param array|ArrayObject $block1         Raw Data to Compare
      * @param array|ArrayObject $block2         Raw Data to Compare
@@ -85,7 +85,7 @@ trait ObjectsDataTrait
     }
     
     /**
-     * @abstract    Check Two Object Data Blocks using Field's Compare functions
+     * Check Two Object Data Blocks using Field's Compare functions
      *
      * @param array  $fields  Array of OpenObject Fields Definitions
      * @param array  $block1  Raw Data to Compare
@@ -140,7 +140,7 @@ trait ObjectsDataTrait
     }
     
     /**
-     * @abstract    Check Two Object Data Blocks using Field's Compare functions
+     * Check Two Object Data Blocks using Field's Compare functions
      *
      * @param string $fieldType Field Type Name
      * @param array  $block1    Raw Data to Compare
@@ -195,7 +195,7 @@ trait ObjectsDataTrait
     }
     
     /**
-     * @abstract    Check Two List Data Blocks using Field's Compare functions
+     * Check Two List Data Blocks using Field's Compare functions
      *
      * @param string $fieldType Field Type Name
      * @param string $fieldId   Field Identifier
@@ -213,7 +213,7 @@ trait ObjectsDataTrait
         $this->assertNotEmpty($fieldIdArray);
         $fieldName      =   $fieldIdArray["fieldname"];
         $listName       =   $fieldIdArray["listname"];
-
+        
         //====================================================================//
         // Extract List Data
         $list1 = $block1[$listName];

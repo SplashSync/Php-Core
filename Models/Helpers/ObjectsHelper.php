@@ -18,14 +18,14 @@ namespace   Splash\Models\Helpers;
 use Splash\Models\Fields\FieldsManagerTrait;
 
 /**
- * @abstract    Helper for Objects Fields Management
+ * Helper for Objects Fields Management
  */
 class ObjectsHelper
 {
     use FieldsManagerTrait;
    
     /**
-     * @abstract   Create an Object Identifier String
+     * Create an Object Identifier String
      *
      * @param string $objectType Object Type Name.
      * @param string $objectId   Object Identifier
@@ -49,7 +49,7 @@ class ObjectsHelper
     }
     
     /**
-     * @abstract   Retrieve Identifier from an Object Identifier String
+     * Retrieve Identifier from an Object Identifier String
      *
      * @param string $objectId Object Identifier String.
      *
@@ -64,11 +64,11 @@ class ObjectsHelper
     }
 
     /**
-     *      @abstract   Retrieve Object Type Name from an Object Identifier String
+     * Retrieve Object Type Name from an Object Identifier String
      *
-     *      @param      string      $objectId           Object Identifier String.
+     * @param      string      $objectId           Object Identifier String.
      *
-     *      @return     false|string
+     * @return     false|string
      */
     public static function type($objectId)
     {

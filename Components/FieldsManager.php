@@ -18,8 +18,8 @@ namespace Splash\Components;
 use Splash\Models\Fields\FieldsManagerTrait;
 
 /**
- * @abstract    Fields Definition & Data Manager
- *              Collection of Basic functions to Manage Splash Fields
+ * Fields Definition & Data Manager
+ * Collection of Basic functions to Manage Splash Fields
  */
 class FieldsManager
 {

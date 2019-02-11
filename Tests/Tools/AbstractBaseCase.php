@@ -21,7 +21,7 @@ use Splash\Client\Splash;
 use Splash\Tests\Tools\TestCase;
 
 /**
- * @abstract    Abstract Base Class for Splash Modules Tests
+ * Abstract Base Class for Splash Modules Tests
  */
 abstract class AbstractBaseCase extends TestCase
 {
@@ -42,7 +42,27 @@ abstract class AbstractBaseCase extends TestCase
     }
 
     /**
-     * @abstract    Check if Object Type Is to be tested or Not
+     * Check if Sequence Name Is to be tested or Not
+     *
+     * @param string $sequenceName Sequence Name
+     *
+     * @return bool
+     */
+    public static function isAllowedSequence($sequenceName)
+    {
+        //====================================================================//
+        //   Filter Tested Sequence Name  =>> Skip
+        if (defined("SPLASH_SEQUENCE") && is_string(SPLASH_SEQUENCE) && !empty(explode(",", SPLASH_SEQUENCE))) {
+            if (!in_array($sequenceName, explode(",", SPLASH_SEQUENCE), true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
+    /**
+     * Check if Object Type Is to be tested or Not
      *
      * @param string $objectType Object Type Name
      *
@@ -67,7 +87,7 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     * @abstract    Check if Object Field ID Is to be tested or Not
+     * Check if Object Field ID Is to be tested or Not
      *
      * @param string $identifier Object Field Identifier
      *
@@ -87,9 +107,9 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     * @abstract        GENERATE FAKE SPLASH SERVER HOST URL
+     * GENERATE FAKE SPLASH SERVER HOST URL
      *
-     * @see             SERVER_NAME parameter that must be defined in PhpUnit Configuration File
+     * @see SERVER_NAME parameter that must be defined in PhpUnit Configuration File
      *
      * @return string Local Server Soap Url
      *
@@ -121,7 +141,7 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     * @abstract      Verify Response Is Valid
+     * Verify Response Is Valid
      *
      * @param string      $response WebService Raw Response Block
      * @param ArrayObject $config   WebService Request Configuration
@@ -171,7 +191,7 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     * @abstract      Verify Response Log Is Valid
+     * Verify Response Log Is Valid
      *
      * @param ArrayObject $logs   WebService Log Array
      * @param ArrayObject $config WebService Request Configuration
@@ -217,7 +237,7 @@ abstract class AbstractBaseCase extends TestCase
         Splash::log()->merge($logs);
     }
     /**
-     * @abstract    Verify Response Log Is Valid
+     * Verify Response Log Is Valid
      *
      * @param ArrayObject $logs WebService Log Array
      * @param string      $type Log Key
@@ -240,7 +260,7 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     * @abstract    Verify Response Server Infos Are Valid
+     * Verify Response Server Infos Are Valid
      *
      * @param ArrayObject $server WebService Server Infos Array
      *
@@ -265,7 +285,7 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     * @abstract      Verify Response Tasks Results are Valid
+     * Verify Response Tasks Results are Valid
      *
      * @param ArrayObject $tasks  WebService Server Tasks Results Array
      * @param ArrayObject $config WebService Request Configuration
@@ -330,6 +350,11 @@ abstract class AbstractBaseCase extends TestCase
         //====================================================================//
         // Prepare Sequences Array
         foreach ($testSequences as $testSequence) {
+            //====================================================================//
+            //   Filter Tested Sequences  =>> Skip
+            if (!self::isAllowedSequence($testSequence)) {
+                continue;
+            }
             $result[]   =   array($testSequence);
         }
         
@@ -508,7 +533,7 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
-     * @abstract    Normalize Array or ArrayObject to Array
+     * Normalize Array or ArrayObject to Array
      *
      * @param null|array|ArrayObject|string $data
      *
