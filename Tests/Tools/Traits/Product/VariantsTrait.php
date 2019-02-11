@@ -15,10 +15,11 @@
 
 namespace Splash\Tests\Tools\Traits\Product;
 
-use Splash\Client\Splash;
+use Splash\Models\Helpers\ListsHelper;
+use Splash\Models\Helpers\ObjectsHelper;
 
 /**
- * @abstract    Splash Test Tools - Products Variants PhpUnit Specific Features
+ * Splash Test Tools - Products Variants PhpUnit Specific Features
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -29,47 +30,39 @@ trait VariantsTrait
     //==============================================================================
 
     /**
-     * @abstract    Generate Fields Variations Attributes
-     */
-    public function objectVariantsProvider()
-    {
-        $result = array();
-        
-        $name   =  $this->getVariantName();
-        for ($i=0; $i<2; $i++) {
-            $result[]   =   array_merge($name, $this->getVariantAttributes(array('VariantA','VariantB')));
-        }
-
-        return $result;
-    }
-
-    /**
-     * @abstract    Generate Variations Base Name Fialds Data
+     * Generate Product Variants Fields Data
+     *
+     * @param string $variantProductId Existing Variant Product Id
      *
      * @return array
      */
-    public function getVariantName()
+    public function getProductsVariant($variantProductId = null)
     {
         //====================================================================//
         //   Verify Product Base Name
-        $field   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "alternateName");
+        $field   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "Variants");
         $this->assertNotEmpty($field);
         if (is_null($field)) {
             return array();
         }
         //====================================================================//
-        //   Generate Random Value
-        return array(
-            $field->id  =>  self::fakeFieldData($field->type),
-        );
+        //   Generate Product Splash Object Id
+        if (is_null($variantProductId)) {
+            return array(ListsHelper::listName($field->id)  =>  array());
+        }
+        //====================================================================//
+        //   Return Field Value
+        return array(ListsHelper::listName($field->id)  =>  array(array(
+            ListsHelper::fieldName($field->id) => ObjectsHelper::encode("Product", $variantProductId)
+        )));
     }
 
     /**
-     * @abstract    Generate Variations Attributes
+     * Generate Variations Attributes
      *
-     * @param mixed $attributesCodes
+     * @param array $attributesCodes
      */
-    public function getVariantAttributes($attributesCodes)
+    public function getProductsAttributes($attributesCodes)
     {
         //====================================================================//
         //   Load Required Fields
@@ -89,7 +82,7 @@ trait VariantsTrait
     }
 
     /**
-     * @abstract    Generate Variations CustomAttribute
+     * Generate Variations CustomAttribute
      *
      * @param mixed $attributesCode
      */
@@ -125,7 +118,7 @@ trait VariantsTrait
     }
 
     /**
-     * @abstract    Override Parent Function to Filter on Products Fields
+     * Override Parent Function to Filter on Products Fields
      */
     public function objectFieldsProvider()
     {

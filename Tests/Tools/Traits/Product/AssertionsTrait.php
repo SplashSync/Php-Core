@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Traits\Product;
 
 /**
- * @abstract    Splash Test Tools - Products PhpUnit Specific Assertions
+ * Splash Test Tools - Products PhpUnit Specific Assertions
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -27,7 +27,7 @@ trait AssertionsTrait
     //==============================================================================
     
     /**
-     * @abstract        Verify Object Type is Product
+     * Verify Object Type is Product
      *
      * @param string $objectType Tested Object Type Name
      *
@@ -45,7 +45,7 @@ trait AssertionsTrait
     }
     
     /**
-     * @abstract        Verify Product Title Fields
+     * Verify Product Title Fields
      *
      * @return void
      */
@@ -91,7 +91,7 @@ trait AssertionsTrait
     }
     
     /**
-     * @abstract        Verify Product Short Description
+     * Verify Product Short Description
      *
      * @return void
      */
@@ -117,7 +117,7 @@ trait AssertionsTrait
     }
 
     /**
-     * @abstract        Verify Product Long Description
+     * Verify Product Long Description
      *
      * @return void
      */
@@ -133,7 +133,7 @@ trait AssertionsTrait
     }
 
     /**
-     * @abstract        Verify Product Main Flags
+     * Verify Product Main Flags
      *
      * @return void
      */
@@ -163,7 +163,7 @@ trait AssertionsTrait
     }
     
     /**
-     * @abstract        Verify Product Prices
+     * Verify Product Prices
      *
      * @return void
      */
@@ -186,7 +186,7 @@ trait AssertionsTrait
     }
     
     /**
-     * @abstract        Verify Product Shipping Infos
+     * Verify Product Shipping Infos
      *
      * @return void
      */
@@ -206,7 +206,7 @@ trait AssertionsTrait
     }
     
     /**
-     * @abstract        Verify Product Images Fields
+     * Verify Product Images Fields
      *
      * @return void
      */
@@ -257,7 +257,7 @@ trait AssertionsTrait
     }
 
     /**
-     * @abstract        Verify Product Variants Fields
+     * Verify Product Variants Fields
      *
      * @return void
      */
@@ -272,9 +272,17 @@ trait AssertionsTrait
         }
         $formats    =   array(
             SPL_T_VARCHAR . "@" . SPL_T_LIST,
-            SPL_T_MVARCHAR . "@" . SPL_T_LIST
+            "objectid::Product" . "@" .  SPL_T_LIST
         );
 
+        //====================================================================//
+        //   Verify Parent Product Id is Defined
+        $parentComment     =   "Variant Product Parent";
+        $this->assertFieldIsDefined($itemProp, "isVariationOf", $parentComment);
+        $this->assertFieldIsRead($itemProp, "isVariationOf", $parentComment);
+        $this->assertFieldNotWrite($itemProp, "isVariationOf", $parentComment);
+        $this->assertFieldHasFormat($itemProp, "isVariationOf", array(SPL_T_VARCHAR), $parentComment);
+        
         //====================================================================//
         //   Verify Attributes Code is Not Multilang
         $this->assertFieldHasFormat(
@@ -287,6 +295,7 @@ trait AssertionsTrait
         //====================================================================//
         //   Verify Attributes Fields
         $fields     =  array(
+            "Variants"              => "Product Variants List",
             "VariantAttributeCode"  => "Variant Attribute Code",
             "VariantAttributeName"  => "Variant Attribute Name",
             "VariantAttributeValue" => "Variant Attribute Value",
