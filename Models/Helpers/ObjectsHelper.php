@@ -66,9 +66,9 @@ class ObjectsHelper
     /**
      * Retrieve Object Type Name from an Object Identifier String
      *
-     * @param      string      $objectId           Object Identifier String.
+     * @param string $objectId Object Identifier String.
      *
-     * @return     false|string
+     * @return false|string
      */
     public static function type($objectId)
     {
