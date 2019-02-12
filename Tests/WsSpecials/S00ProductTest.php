@@ -93,25 +93,7 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   TEST INIT
         //====================================================================//
-        if (!$this->assertIsProductType($objectType)) {
-            return;
-        }
-        //====================================================================//
-        //   Verify Test is Required
-        if (!$this->verifyTestIsAllowed($objectType, $field)) {
-            return;
-        }        
-        $this->loadLocalTestSequence($testSequence);
-
-        //====================================================================//
-        //   Load Fields
-        $this->fields = Splash::object($objectType)->fields();
-        $this->assertNotEmpty($this->fields, 'Product Fields List is Empty!');
-
-        //====================================================================//
-        //   Verify Product Variants Are Defined
-        $variantCode = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeCode');
-        if (!$variantCode) {
+        if (!$this->initVariantsTest($testSequence, $objectType, $field)) {
             return;
         }
 
@@ -171,25 +153,7 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   TEST INIT
         //====================================================================//
-        if (!$this->assertIsProductType($objectType)) {
-            return;
-        }
-        //====================================================================//
-        //   Verify Test is Required
-        if (!$this->verifyTestIsAllowed($objectType, $field)) {
-            return;
-        }        
-        $this->loadLocalTestSequence($testSequence);
-
-        //====================================================================//
-        //   Load Fields
-        $this->fields = Splash::object($objectType)->fields();
-        $this->assertNotEmpty($this->fields, 'Product Fields List is Empty!');
-
-        //====================================================================//
-        //   Verify Product Variants Are Defined
-        $variantCode = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeCode');
-        if (!$variantCode) {
+        if (!$this->initVariantsTest($testSequence, $objectType, $field)) {
             return;
         }
 

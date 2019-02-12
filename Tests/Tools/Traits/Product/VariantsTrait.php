@@ -15,6 +15,8 @@
 
 namespace Splash\Tests\Tools\Traits\Product;
 
+use ArrayObject;
+use Splash\Client\Splash;
 use Splash\Models\Helpers\ListsHelper;
 use Splash\Models\Helpers\ObjectsHelper;
 
@@ -25,6 +27,32 @@ use Splash\Models\Helpers\ObjectsHelper;
  */
 trait VariantsTrait
 {
+    /**
+     * Override Parent Function to Filter on Products Fields
+     */
+    public function objectFieldsProvider()
+    {
+        $fields = array();
+        foreach (parent::objectFieldsProvider() as $field) {
+            //====================================================================//
+            // Filter Non Product Fields
+            if ("Product" != $field[1]) {
+                continue;
+            }
+//            //====================================================================//
+//            // DEBUG => Focus on a Specific Fields
+//            if ($field[2]->id != "image@images") {
+//                continue;
+//            }
+            $fields[] = $field;
+        }
+        if (empty($fields)) {
+            $this->markTestSkipped('This Server has no Product Object Type.');
+        }
+
+        return $fields;
+    }
+    
     //==============================================================================
     //      SPLASH PRODUCT VARIANTS SPECIFIC FUNCTIONS
     //==============================================================================
@@ -36,7 +64,7 @@ trait VariantsTrait
      *
      * @return array
      */
-    public function getProductsVariant($variantProductId = null)
+    protected function getProductsVariant($variantProductId = null)
     {
         //====================================================================//
         //   Verify Product Base Name
@@ -62,7 +90,7 @@ trait VariantsTrait
      *
      * @param array $attributesCodes
      */
-    public function getProductsAttributes($attributesCodes)
+    protected function getProductsAttributes($attributesCodes)
     {
         //====================================================================//
         //   Load Required Fields
@@ -86,7 +114,7 @@ trait VariantsTrait
      *
      * @param mixed $attributesCode
      */
-    public function getVariantCustomAttribute($attributesCode)
+    protected function getVariantCustomAttribute($attributesCode)
     {
         //====================================================================//
         //   Load Required Fields
@@ -116,30 +144,43 @@ trait VariantsTrait
             ),
         );
     }
-
+    
     /**
-     * Override Parent Function to Filter on Products Fields
+     * Prepare Test of Products Variants
+     *
+     * @param string      $testSequence
+     * @param string      $objectType
+     * @param ArrayObject $field
+     *
+     * @return bool
      */
-    public function objectFieldsProvider()
+    protected function initVariantsTest($testSequence, $objectType, $field)
     {
-        $fields = array();
-        foreach (parent::objectFieldsProvider() as $field) {
-            //====================================================================//
-            // Filter Non Product Fields
-            if ("Product" != $field[1]) {
-                continue;
-            }
-//            //====================================================================//
-//            // DEBUG => Focus on a Specific Fields
-//            if ($field[2]->id != "image@images") {
-//                continue;
-//            }
-            $fields[] = $field;
+        //====================================================================//
+        //   TEST INIT
+        //====================================================================//
+        if (!$this->assertIsProductType($objectType)) {
+            return false;
         }
-        if (empty($fields)) {
-            $this->markTestSkipped('This Server has no Product Object Type.');
+        //====================================================================//
+        //   Verify Test is Required
+        if (!$this->verifyTestIsAllowed($objectType, $field)) {
+            return false;
         }
+        $this->loadLocalTestSequence($testSequence);
 
-        return $fields;
+        //====================================================================//
+        //   Load Fields
+        $this->fields = Splash::object($objectType)->fields();
+        $this->assertNotEmpty($this->fields, 'Product Fields List is Empty!');
+
+        //====================================================================//
+        //   Verify Product Variants Are Defined
+        $variantCode = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeCode');
+        if (!$variantCode) {
+            return false;
+        }
+        
+        return true;
     }
 }
