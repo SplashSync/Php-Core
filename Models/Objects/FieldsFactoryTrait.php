@@ -19,7 +19,7 @@ use Splash\Components\FieldsFactory;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    Implement Access to Fields Factory using Splash Static Class
+ * Implement Access to Fields Factory using Splash Static Class
  */
 trait FieldsFactoryTrait
 {
@@ -29,10 +29,10 @@ trait FieldsFactoryTrait
     private static $fields;
     
     /**
-     *      @abstract   Get a singleton FieldsFactory Class
-     *                  Access to Object Fields Creation Functions
+     * Get a singleton FieldsFactory Class
+     * Access to Object Fields Creation Functions
      *
-     *      @return     FieldsFactory
+     * @return FieldsFactory
      */
     public static function fieldsFactory()
     {

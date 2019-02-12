@@ -27,7 +27,7 @@ use Splash\Core\SplashCore      as Splash;
 class FieldsFactory
 {
     //==============================================================================
-    //      Favorites Sync Modes
+    //  Favorites Sync Modes
     //==============================================================================
 
     const MODE_BOTH     =           "both";
@@ -35,7 +35,7 @@ class FieldsFactory
     const MODE_WRITE    =           "write";
     
     //==============================================================================
-    //      Meta Data Access MicroDatas
+    //  Meta Data Access MicroDatas
     //==============================================================================
     
     const META_URL              = "http://splashync.com/schemas";       // Splash Specific Schemas Url.
@@ -85,30 +85,38 @@ class FieldsFactory
     
     //====================================================================//
     // Data Storage
+    //====================================================================//
 
     /**
-     * @abstract   Empty Template Object Field Storage
+     * Empty Template Object Field Storage
      *
      * @var Array
      */
     private $empty;
 
     /**
-     * @abstract   New Object Field Storage
+     * New Object Field Storage
      *
      * @var null|ArrayObject
      */
     private $new;
     
     /**
-     * @abstract   Object Fields List Storage
+     * Object Fields List Storage
      *
      * @var Array
      */
     private $fields;
+
+    /**
+     * Fields Default Language
+     *
+     * @var null|string
+     */
+    private $dfLanguage;
     
     /**
-     * @abstract     Initialise Class
+     * Class Constructor
      */
     public function __construct()
     {
@@ -126,7 +134,7 @@ class FieldsFactory
     //====================================================================//
 
     /**
-     * @abstract   Create a new Field Definition with default parameters
+     * Create a new Field Definition with default parameters
      *
      * @param string $fieldType Standard Data Type (Refer Splash.Inc.php)
      * @param string $fieldId   Local Data Identifier (Shall be unik on local machine)
@@ -165,7 +173,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Set Current New Field Identifier
+     * Set Current New Field Identifier
      *
      * @param string $fieldId Local Data Identifier (Shall be unik on local machine)
      *
@@ -187,7 +195,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Update Current New Field set as it inside a list
+     * Update Current New Field set as it inside a list
      *
      * @param string $listName Name of List
      *
@@ -218,7 +226,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Set Current New Field Name (Translated)
+     * Set Current New Field Name (Translated)
      *
      * @param string $fieldName Data Name (Will Be Translated if Possible)
      *
@@ -243,7 +251,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Update Current New Field with descriptions (Translated)
+     * Update Current New Field with descriptions (Translated)
      *
      * @param string $fieldDesc Data Description (Will Be Translated if Possible)
      *
@@ -265,7 +273,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Update Current New Field with Field Group Name (Translated)
+     * Update Current New Field with Field Group Name (Translated)
      *
      * @param string $fieldGroup Data Group (Will Be Translated if Possible)
      *
@@ -287,7 +295,7 @@ class FieldsFactory
     }
     
     /**
-     * @bstract   Update Current New Field set as Read Only Field
+     * Update Current New Field set as Read Only Field
      *
      * @return $this
      */
@@ -308,7 +316,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Update Current New Field set as Write Only Field
+     * Update Current New Field set as Write Only Field
      *
      * @return $this
      */
@@ -329,11 +337,13 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Update Current New Field set as required for creation
+     * Update Current New Field set as required for creation
+     *
+     * @param null|bool $isRequired
      *
      * @return $this
      */
-    public function isRequired()
+    public function isRequired($isRequired = true)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -342,14 +352,14 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->required  = true;
+            $this->new->required  = (bool) $isRequired;
         }
         
         return $this;
     }
     
     /**
-     * @bstract   Signify Server Current New Field Prefer ReadOnly Mode
+     * Signify Server Current New Field Prefer ReadOnly Mode
      *
      * @return $this
      */
@@ -369,7 +379,7 @@ class FieldsFactory
     }
 
     /**
-     * @bstract   Signify Server Current New Field Prefer WriteOnly Mode
+     * Signify Server Current New Field Prefer WriteOnly Mode
      *
      * @return $this
      */
@@ -389,7 +399,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Update Current New Field set list of associated fields
+     * Update Current New Field set list of associated fields
      *
      * @return $this
      */
@@ -417,11 +427,13 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Update Current New Field set as available in objects list
+     * Update Current New Field set as available in objects list
+     *
+     * @param null|bool $isListed
      *
      * @return $this
      */
-    public function isListed()
+    public function isListed($isListed = true)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -430,18 +442,20 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->inlist  = true;
+            $this->new->inlist  = (bool) $isListed;
         }
         
         return $this;
     }
     
     /**
-     * @abstract   Update Current New Field set as recommended for logging
+     * Update Current New Field set as recommended for logging
+     *
+     * @param null|bool $isLogged
      *
      * @return $this
      */
-    public function isLogged()
+    public function isLogged($isLogged = true)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -450,14 +464,14 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->log  = true;
+            $this->new->log  = (bool) $isLogged;
         }
         
         return $this;
     }
     
     /**
-     * @abstract   Update Current New Field set its meta informations for autolinking
+     * Update Current New Field set its meta informations for autolinking
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -482,7 +496,7 @@ class FieldsFactory
     }
         
     /**
-     * @abstract   Update Current New Field set as not possible to test
+     * Update Current New Field set as not possible to test
      *
      * @return $this
      */
@@ -502,7 +516,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Add Possible Choice to Current New Field Name (Translated)
+     * Add Possible Choice to Current New Field Name (Translated)
      *
      * @param array $fieldChoices Possible Choice Array (Value => Decsription)
      *
@@ -518,7 +532,7 @@ class FieldsFactory
     }
 
     /**
-     * @abstract   Add Possible Choice to Current New Field Name (Translated)
+     * Add Possible Choice to Current New Field Name (Translated)
      *
      * @param string $value       Possible Choice Value
      * @param string $description Choice Description for Display (Will Be Translated if Possible)
@@ -544,7 +558,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Add New Options Array for Current Field
+     * Add New Options Array for Current Field
      *
      * @param array $fieldOptions Array of Options (Type => Value)
      *
@@ -560,7 +574,7 @@ class FieldsFactory
     }
 
     /**
-     * @abstract   Add New Option for Current Field
+     * Add New Option for Current Field
      *
      * @param string      $type  Constrain Type
      * @param bool|string $value Constrain Value
@@ -583,9 +597,82 @@ class FieldsFactory
 
         return $this;
     }
+
+    /**
+     * Select Default Language for Field List
+     *
+     * @param null|string $isoCode Language ISO Code (i.e en_US | fr_FR)
+     *
+     * @return $this
+     */
+    public function setDefaultLanguage($isoCode)
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify Language ISO Code
+        if (!is_string($isoCode) || (strlen($isoCode) < 2)) {
+            Splash::log()->err("Default Language ISO Code is Invalid");
+            
+            return $this;
+        }
+        //====================================================================//
+        // Store Default Language ISO Code
+        $this->dfLanguage = $isoCode;
+
+        return $this;
+    }
+
+    /**
+     * Configure Current Field with Multilangual Options
+     *
+     * @param null|string $isoCode Language ISO Code (i.e en_US | fr_FR)
+     *
+     * @return $this
+     */
+    public function setMultilang($isoCode)
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {
+            Splash::log()->err("ErrFieldsNoNew");
+            
+            return $this;
+        }
+        //====================================================================//
+        // Safety Checks ==> Verify Language ISO Code
+        if (!is_string($isoCode) || (strlen($isoCode) < 2)) {
+            Splash::log()->err("Language ISO Code is Invalid");
+            
+            return $this;
+        }
+        //====================================================================//
+        // Safety Checks ==> Verify Field Type is Allowed
+        if (!in_array($this->new->type, array(SPL_T_VARCHAR, SPL_T_TEXT), true)) {
+            Splash::log()->err("ErrFieldsWrongLang");
+            
+            return $this;
+        }
+        
+        //====================================================================//
+        // Default Language ==> Only Setup Language Option
+        $this->addOption("language", $isoCode);
+        //====================================================================//
+        // Other Language ==> Complete Field Setup
+        if ($isoCode != $this->dfLanguage) {
+            $this->identifier($this->new->id . "_" . $isoCode);
+            if (!empty($this->new->itemtype)) {
+                $this->microData($this->new->itemtype . "/" . $isoCode, $this->new->itemprop);
+            }
+        }
+
+        return $this;
+    }
+    
+    //====================================================================//
+    //  FIELDS :: LIST GENERATION
+    //====================================================================//
     
     /**
-     * @abstract   Save Current New Field in list & Clean current new field
+     * Save Current New Field in list & Clean current new field
      *
      * @return false|array[ArrayObject]
      */
@@ -610,7 +697,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Seach for a Field by unik tag
+     * Seach for a Field by unik tag
      *
      * @param array  $fieldList Array Of Field definition
      * @param string $fieldTag  Field Unik Tag
@@ -638,7 +725,7 @@ class FieldsFactory
         return false;
     }
     /**
-     * @abstract   Seach for a Field by id
+     * Seach for a Field by id
      *
      * @param array  $fieldList Array Of Field definition
      * @param string $fieldId   Field Identifier
@@ -667,13 +754,13 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Update Current New Field set its unik tag for autolinking
+     * Update Current New Field set its unik tag for autolinking
      *
      * @param string $fieldTag Field Unik Tag
      *
      * @return $this
      */
-    protected function setTag($fieldTag)
+    private function setTag($fieldTag)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
@@ -689,7 +776,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Verify Current New Field data
+     * Verify Current New Field data
      *
      * @return bool
      */
@@ -705,7 +792,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract    Validate Field Definition
+     * Validate Field Definition
      *
      * @param ArrayObject $field
      *
@@ -747,7 +834,7 @@ class FieldsFactory
     }
     
     /**
-     * @abstract   Save Current New Field in list & Clean current new field
+     * Save Current New Field in list & Clean current new field
      *
      * @return bool
      */
