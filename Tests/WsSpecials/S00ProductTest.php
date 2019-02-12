@@ -111,7 +111,7 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   Execute Create First Product Variant
         $newData = $this->prepareForTesting($objectType, $field);
-        $this->assertIsArray($newData);
+        $this->assertInternalType("array", $newData);
         $variantProductId = $this->setObjectFromModule($objectType, $newData);
         
         //====================================================================//
@@ -170,7 +170,7 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   Execute Create First Product Variant
         $newData = $this->prepareForTesting($objectType, $field);
-        $this->assertIsArray($newData);
+        $this->assertInternalType("array", $newData);
         $variantProductId = $this->setObjectFromService($objectType, $newData);
         
         //====================================================================//
