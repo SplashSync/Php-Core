@@ -96,6 +96,11 @@ class S00ProductTest extends ObjectsCase
         if (!$this->assertIsProductType($objectType)) {
             return;
         }
+        //====================================================================//
+        //   Verify Test is Required
+        if (!$this->verifyTestIsAllowed($objectType, $field)) {
+            return;
+        }        
         $this->loadLocalTestSequence($testSequence);
 
         //====================================================================//
@@ -169,6 +174,11 @@ class S00ProductTest extends ObjectsCase
         if (!$this->assertIsProductType($objectType)) {
             return;
         }
+        //====================================================================//
+        //   Verify Test is Required
+        if (!$this->verifyTestIsAllowed($objectType, $field)) {
+            return;
+        }        
         $this->loadLocalTestSequence($testSequence);
 
         //====================================================================//
@@ -305,7 +315,7 @@ class S00ProductTest extends ObjectsCase
 
         //====================================================================//
         //   Ensure a Field is Requested
-        // Alternate Name if Exists (VAriable Product)
+        // Alternate Name if Exists (Variable Product)
         // Else Base Name
         if (is_null($field)) {
             $name = self::findFieldByTag($fields, 'http://schema.org/Product', 'name');
@@ -329,7 +339,6 @@ class S00ProductTest extends ObjectsCase
             $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeName');
             $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeValue');
         }
-
         //====================================================================//
         // Return Generated Object Data
         return array_merge($fakeData, $this->currentVariation, $this->currentImages);

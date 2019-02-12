@@ -131,7 +131,7 @@ trait VariantsTrait
             }
 //            //====================================================================//
 //            // DEBUG => Focus on a Specific Fields
-//            if ($Field[2]->id == "image@images") {
+//            if ($field[2]->id != "image@images") {
 //                continue;
 //            }
             $fields[] = $field;
