@@ -30,6 +30,7 @@ class S00ProductTest extends ObjectsCase
     use ObjectsSetTestsTrait;
 
     use \Splash\Tests\Tools\Traits\Product\AssertionsTrait;
+    use \Splash\Tests\Tools\Traits\Product\DefinitionsTrait;
     use \Splash\Tests\Tools\Traits\Product\VariantsTrait;
     use \Splash\Tests\Tools\Traits\Product\ImagesTrait;
     use \Splash\Models\Objects\ListsTrait;
@@ -107,7 +108,7 @@ class S00ProductTest extends ObjectsCase
             $this->getProductsVariant(),
             $this->getProductsAttributes(self::ATTRIBUTES)
         );
-        
+
         //====================================================================//
         //   Execute Create First Product Variant
         $newData = $this->prepareForTesting($objectType, $field);
@@ -252,7 +253,7 @@ class S00ProductTest extends ObjectsCase
             $this->coreTestImagesFromModule($testSequence, $objectType, $images);
         }
     }
-
+    
     /**
      * Override Parent Function to Add Variants Attributes
      * Ensure Set/Write Test is Possible & Generate Fake Object Data
@@ -282,8 +283,8 @@ class S00ProductTest extends ObjectsCase
         // Alternate Name if Exists (Variable Product)
         // Else Base Name
         if (is_null($field)) {
-            $name = self::findFieldByTag($fields, 'http://schema.org/Product', 'name');
-            $altName = self::findFieldByTag($fields, 'http://schema.org/Product', 'alternateName');
+            $name = self::findFieldByTag($fields, static::$itemProp, 'name');
+            $altName = self::findFieldByTag($fields, static::$itemProp, 'alternateName');
             $field = $altName ? $altName : $name;
         }
         $this->assertNotEmpty($field);
@@ -298,13 +299,17 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications
         if (!empty($this->currentVariation)) {
-            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'Variants');
-            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeCode');
-            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeName');
-            $this->fields[] = self::findFieldByTag($fields, 'http://schema.org/Product', 'VariantAttributeValue');
+            // List of Product Variants
+            $this->fields[] = self::findFieldByTag($fields, static::$itemProp, 'Variants');
+            // Variant Attribute Codes
+            $this->fields[] = self::findFieldByTag($fields, static::$itemProp, static::$attrCode);
+            // Variant Attribute Name
+            $this->fields = array_merge($this->fields, $this->findMultiFields(static::$attrName, $fields));
+            // Variant Attribute Value
+            $this->fields = array_merge($this->fields, $this->findMultiFields(static::$attrValue, $fields));
         }
         //====================================================================//
         // Return Generated Object Data
         return array_merge($fakeData, $this->currentVariation, $this->currentImages);
-    }
+    }    
 }
