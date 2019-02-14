@@ -68,7 +68,7 @@ trait VariantsTrait
     {
         //====================================================================//
         //   Verify Product Base Name
-        $field   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "Variants");
+        $field   =   self::findFieldByTag($this->fields, static::$itemProp, "Variants");
         $this->assertNotEmpty($field);
         if (is_null($field)) {
             return array();
@@ -94,7 +94,7 @@ trait VariantsTrait
     {
         //====================================================================//
         //   Load Required Fields
-        $code   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeCode");
+        $code   =   self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
         $this->assertNotEmpty($code);
         if (is_null($code)) {
             return array();
@@ -112,37 +112,64 @@ trait VariantsTrait
     /**
      * Generate Variations CustomAttribute
      *
-     * @param mixed $attributesCode
+     * @param string $attributesCode
+     * 
+     * @return array
      */
     protected function getVariantCustomAttribute($attributesCode)
     {
         //====================================================================//
         //   Load Required Fields
-        $code   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeCode");
+        //====================================================================//
+        
+        /** 
+         * @var string $code 
+         */
+        $code   =   self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
         $this->assertNotEmpty($code);
-        $name   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeName");
-        $this->assertNotEmpty($name);
-        $value  =   self::findFieldByTag($this->fields, "http://schema.org/Product", "VariantAttributeValue");
-        $this->assertNotEmpty($value);
-        if (is_null($code) || is_null($name) || is_null($value)) {
-            return array();
-        }
+        
+        /** 
+         * @var ArrayObject[] $value 
+         */
+        $names   =   $this->findMultiFields(static::$attrName);
+        $this->assertInternalType("array", $names);
+        $this->assertNotEmpty($names);
+        
+        /** 
+         * @var ArrayObject[] $value 
+         */
+        $values  =   $this->findMultiFields(static::$attrValue);
+        $this->assertInternalType("array", $values);
+        $this->assertNotEmpty($values);
         
         //====================================================================//
         //   Generate Random Attributes Set
-        return array(
-            self::lists()->fieldName($code->id)     =>      strtolower($attributesCode),
-            self::lists()->fieldName($name->id)     =>      self::fakeFieldData(
+        //====================================================================//
+        
+        $attributesSet = array();
+        //====================================================================//
+        // Setup Attribute Type Code
+        $attributesSet[self::lists()->fieldName($code->id)] = strtolower($attributesCode);
+        //====================================================================//
+        // Setup Attribute Type Names
+        foreach ($names as $name) {
+            $attributesSet[self::lists()->fieldName($name->id)] = self::fakeFieldData(
                 $name->type,
                 null,
                 array_replace_recursive($name->options, array("minLength" =>   3, "maxLength" =>   5))
-            ),
-            self::lists()->fieldName($value->id)     =>      self::fakeFieldData(
+            );
+        }
+        //====================================================================//
+        // Setup Attribute Value Names
+        foreach ($values as $value) {
+            $attributesSet[self::lists()->fieldName($value->id)] = self::fakeFieldData(
                 $value->type,
                 null,
-                array_replace_recursive($value->options, array("minLength" =>   5, "maxLength" =>   10))
-            ),
-        );
+                array_replace_recursive($name->options, array("minLength" =>   5, "maxLength" =>   10))
+            );
+        }
+        
+        return $attributesSet;
     }
     
     /**
@@ -168,19 +195,48 @@ trait VariantsTrait
             return false;
         }
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Load Fields
         $this->fields = Splash::object($objectType)->fields();
         $this->assertNotEmpty($this->fields, 'Product Fields List is Empty!');
-
         //====================================================================//
         //   Verify Product Variants Are Defined
-        $variantCode = self::findFieldByTag($this->fields, 'http://schema.org/Product', 'VariantAttributeCode');
+        $variantCode = self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
         if (!$variantCode) {
             return false;
         }
         
         return true;
     }
+    
+    /**
+     * Identify All Multilangual Fields for an Attribute
+     *
+     * @param string $itemtype Item Prop Type
+     * @param null|ArrayObject[] Object Fields List
+     * @param ArrayObject[]
+     */
+    protected function findMultiFields($itemtype, $fieldsList = null)
+    {
+
+        $response = array();
+        $fields = is_null($fieldsList) ? $this->fields : $fieldsList;
+        //====================================================================//
+        //   Walk on Available Languages
+        if(is_array($this->settings["Langs"])) {
+            foreach ($this->settings["Langs"] as $isoCode) {
+                //====================================================================//
+                //   Search for This Field
+                $field = ($this->settings["Default_Lang"] == $isoCode) 
+                        ? self::findFieldByTag($fields, self::$itemProp, $itemtype)
+                        : self::findFieldByTag($fields, self::$itemProp . "/" . $isoCode, $itemtype);
+                //====================================================================//
+                //   Field Not Found
+                if($field instanceof ArrayObject) {
+                    $response[$field->id] = $field;
+                }
+            }
+        }
+        return $response;
+    }    
 }

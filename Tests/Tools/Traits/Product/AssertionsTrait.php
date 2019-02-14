@@ -54,10 +54,10 @@ trait AssertionsTrait
         //====================================================================//
         //   Verify this Field
         $comment    =   "Product Name with Options";
-        $this->assertFieldIsDefined("http://schema.org/Product", "name", $comment);
-        $this->assertFieldIsRead("http://schema.org/Product", "name", $comment);
+        $this->assertFieldIsDefined(static::$itemProp, static::$fullTitle, $comment);
+        $this->assertFieldIsRead(static::$itemProp, static::$fullTitle, $comment);
         $this->assertFieldHasFormat(
-            "http://schema.org/Product",
+            static::$itemProp,
             "name",
             array(SPL_T_VARCHAR, SPL_T_MVARCHAR),
             $comment
@@ -65,28 +65,20 @@ trait AssertionsTrait
         
         //====================================================================//
         //   Verify Product Base Name
-        $baseName   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "alternateName");
+        $baseName   =   self::findFieldByTag($this->fields, static::$itemProp, static::$baseTitle);
         if ($baseName) {
             $baseComment    =   "Product Name without Options";
-            $this->assertFieldIsRead(
-                "http://schema.org/Product",
-                "alternateName",
-                $baseComment
-            );
-            $this->assertFieldIsWrite(
-                "http://schema.org/Product",
-                "alternateName",
-                $baseComment
-            );
+            $this->assertFieldIsRead(static::$itemProp, static::$baseTitle, $baseComment);
+            $this->assertFieldIsWrite(static::$itemProp, static::$baseTitle, $baseComment);
             $this->assertFieldHasFormat(
-                "http://schema.org/Product",
-                "alternateName",
+                static::$itemProp,
+                static::$baseTitle,
                 array(SPL_T_VARCHAR, SPL_T_MVARCHAR),
                 $baseComment
             );
             
             $comment    =   "When Product Name without Options is provided, Product Name";
-            $this->assertFieldNotWrite("http://schema.org/Product", "name", $comment);
+            $this->assertFieldNotWrite(static::$itemProp, static::$fullTitle, $comment);
         }
     }
     
@@ -99,18 +91,18 @@ trait AssertionsTrait
     {
         $comment    =   "Product Short Description";
         $this->assertFieldIsDefined(
-            "http://schema.org/Product",
+            static::$itemProp,
             "description",
             $comment
         );
         $this->assertFieldHasFormat(
-            "http://schema.org/Product",
+            static::$itemProp,
             "description",
             array(SPL_T_VARCHAR, SPL_T_MVARCHAR),
             $comment
         );
         $this->assertFieldIsRead(
-            "http://schema.org/Product",
+            static::$itemProp,
             "description",
             $comment
         );
@@ -125,7 +117,7 @@ trait AssertionsTrait
     {
         $comment    =   "Product Long Description";
         $this->assertFieldHasFormat(
-            "http://schema.org/Product",
+            static::$itemProp,
             "articleBody",
             array(SPL_T_TEXT, SPL_T_MTEXT),
             $comment
@@ -139,7 +131,7 @@ trait AssertionsTrait
      */
     public function assertValidProductFlags()
     {
-        $itemProp   =  "http://schema.org/Product";
+        $itemProp   =  static::$itemProp;
         $formats    =   array(SPL_T_BOOL);
         
         //====================================================================//
@@ -169,7 +161,7 @@ trait AssertionsTrait
      */
     public function assertValidProductPrices()
     {
-        $itemProp   =  "http://schema.org/Product";
+        $itemProp   =  static::$itemProp;
         $formats    =   array(SPL_T_PRICE);
         
         //====================================================================//
@@ -192,7 +184,7 @@ trait AssertionsTrait
      */
     public function assertValidProductShipping()
     {
-        $itemProp   =  "http://schema.org/Product";
+        $itemProp   =  static::$itemProp;
         $formats    =   array(SPL_T_DOUBLE);
         
         //====================================================================//
@@ -212,7 +204,7 @@ trait AssertionsTrait
      */
     public function assertValidProductImages()
     {
-        $itemProp   =  "http://schema.org/Product";
+        $itemProp   =  static::$itemProp;
         //====================================================================//
         //   Verify Product Images Defined
         $image   =   self::findFieldByTag($this->fields, $itemProp, "image");
@@ -263,7 +255,7 @@ trait AssertionsTrait
      */
     public function assertValidProductVariants()
     {
-        $itemProp   =  "http://schema.org/Product";
+        $itemProp   =  static::$itemProp;
         //====================================================================//
         //   Verify Product Variants Are Defined
         $variantCode    =   self::findFieldByTag($this->fields, $itemProp, "VariantAttributeCode");

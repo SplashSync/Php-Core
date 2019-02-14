@@ -51,6 +51,7 @@ trait SettingsTrait
             
         //==============================================================================
         //  Multilanguage Fields
+        "Default_Lang"              => "en_US",         // Default Language for Testing
         "Langs"                     =>  array(          // Available Languages for Multilang Fields
             "en_US",
             "fr_FR",
