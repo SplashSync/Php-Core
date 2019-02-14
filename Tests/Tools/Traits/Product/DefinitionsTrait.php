@@ -27,53 +27,55 @@ trait DefinitionsTrait
     //      SPLASH PRODUCT SPECIFIC ITEM PROP & TYPES
     //==============================================================================
     
-    /** 
+    /**
      * Generic Product ItemProp for Schemas
      * Field Type: VARCHAR
-     * @var string 
+     *
+     * @var string
      */
     protected static $itemProp = "http://schema.org/Product";
     
-    /** 
+    /**
      * Multilangual Product Complete Title. Base Title + Options
      * Field Type: VARCHAR
+     *
      * @example My Perfect Product - Size XL, Color Blue
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected static $fullTitle = "name";
 
-    /** 
+    /**
      * Multilangual Product Base Title. Base Title without Options
      * Field Type: VARCHAR
+     *
      * @example My Perfect Product
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected static $baseTitle = "alternateName";
     
-    /** 
-     * Product Variant Attribute Code 
+    /**
+     * Product Variant Attribute Code
      * Field Type: VARCHAR
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected static $attrCode = "VariantAttributeCode";
     
-    /** 
+    /**
      * Multilangual Product Variant Attribute Name
      * Field Type: VARCHAR
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected static $attrName = "VariantAttributeName";
     
-    /** 
+    /**
      * Multilangual Product Variant Attribute Value
      * Field Type: VARCHAR
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected static $attrValue = "VariantAttributeValue";
-    
 }

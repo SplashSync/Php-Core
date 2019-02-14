@@ -113,7 +113,7 @@ trait VariantsTrait
      * Generate Variations CustomAttribute
      *
      * @param string $attributesCode
-     * 
+     *
      * @return array
      */
     protected function getVariantCustomAttribute($attributesCode)
@@ -122,21 +122,21 @@ trait VariantsTrait
         //   Load Required Fields
         //====================================================================//
         
-        /** 
-         * @var string $code 
+        /**
+         * @var ArrayObject $code
          */
         $code   =   self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
         $this->assertNotEmpty($code);
         
-        /** 
-         * @var ArrayObject[] $value 
+        /**
+         * @var ArrayObject[] $value
          */
         $names   =   $this->findMultiFields(static::$attrName);
         $this->assertInternalType("array", $names);
         $this->assertNotEmpty($names);
         
-        /** 
-         * @var ArrayObject[] $value 
+        /**
+         * @var ArrayObject[] $value
          */
         $values  =   $this->findMultiFields(static::$attrValue);
         $this->assertInternalType("array", $values);
@@ -165,7 +165,7 @@ trait VariantsTrait
             $attributesSet[self::lists()->fieldName($value->id)] = self::fakeFieldData(
                 $value->type,
                 null,
-                array_replace_recursive($name->options, array("minLength" =>   5, "maxLength" =>   10))
+                array_replace_recursive($value->options, array("minLength" =>   5, "maxLength" =>   10))
             );
         }
         
@@ -212,31 +212,32 @@ trait VariantsTrait
     /**
      * Identify All Multilangual Fields for an Attribute
      *
-     * @param string $itemtype Item Prop Type
-     * @param null|ArrayObject[] Object Fields List
-     * @param ArrayObject[]
+     * @param string             $itemtype   Item Prop Type
+     * @param null|ArrayObject[] $fieldsList Object Fields List
+     *
+     * @return ArrayObject[]
      */
     protected function findMultiFields($itemtype, $fieldsList = null)
     {
-
         $response = array();
         $fields = is_null($fieldsList) ? $this->fields : $fieldsList;
         //====================================================================//
         //   Walk on Available Languages
-        if(is_array($this->settings["Langs"])) {
+        if (is_array($this->settings["Langs"])) {
             foreach ($this->settings["Langs"] as $isoCode) {
                 //====================================================================//
                 //   Search for This Field
-                $field = ($this->settings["Default_Lang"] == $isoCode) 
+                $field = ($this->settings["Default_Lang"] == $isoCode)
                         ? self::findFieldByTag($fields, self::$itemProp, $itemtype)
                         : self::findFieldByTag($fields, self::$itemProp . "/" . $isoCode, $itemtype);
                 //====================================================================//
                 //   Field Not Found
-                if($field instanceof ArrayObject) {
+                if ($field instanceof ArrayObject) {
                     $response[$field->id] = $field;
                 }
             }
         }
+
         return $response;
-    }    
+    }
 }
