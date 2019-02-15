@@ -355,7 +355,8 @@ abstract class AbstractBaseCase extends TestCase
             if (!self::isAllowedSequence($testSequence)) {
                 continue;
             }
-            $result[]   =   array($testSequence);
+            $dataSetName = '[' . $testSequence. "]";
+            $result[$dataSetName]   =   array($testSequence);
         }
         
         self::tearDown();

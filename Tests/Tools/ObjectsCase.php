@@ -96,7 +96,8 @@ class ObjectsCase extends AbstractBaseCase
                 }
                 //====================================================================//
                 //   Add Object Type to List
-                $result[] = array($testSequence, $objectType);
+                $dataSetName = '[' . $testSequence. "] ". $objectType;
+                $result[$dataSetName] = array($testSequence, $objectType);
             }
         }
         
@@ -149,7 +150,8 @@ class ObjectsCase extends AbstractBaseCase
                     if (!self::isAllowedObjectField($field->id)) {
                         continue;
                     }
-                    $result[] = array($testSequence, $objectType, $field);
+                    $dataSetName = '[' . $testSequence. "] ". $objectType . "->". $field->id;
+                    $result[$dataSetName] = array($testSequence, $objectType, $field);
                 }
             }
         }
