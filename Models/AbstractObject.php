@@ -16,20 +16,22 @@
 namespace   Splash\Models;
 
 use Splash\Core\SplashCore      as Splash;
-use Splash\Models\Objects\FieldsFactoryTrait;
-use Splash\Models\Objects\LockTrait;
-use Splash\Models\Objects\ObjectInterface;
-use Splash\Models\Objects\TranslatorTrait;
+use Splash\Models\Objects;
 
 /**
- * @abstract    Base Class for class for Splash Objects.
+ * Base Class for class for Splash Objects.
+ *
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
-abstract class AbstractObject implements ObjectInterface
+abstract class AbstractObject implements Objects\ObjectInterface
 {
-    use FieldsFactoryTrait;
-    use LockTrait;
-    use TranslatorTrait;
+    use Objects\FieldsFactoryTrait;
+    use Objects\LockTrait;
+    use Objects\TranslatorTrait;
+    use Objects\PricesTrait;
+    use Objects\ImagesTrait;
+    use Objects\ObjectsTrait;
+    use Objects\ListsTrait;
     
     /**
      *  Object Disable Flag. Override this flag to disable Object.
@@ -84,7 +86,9 @@ abstract class AbstractObject implements ObjectInterface
     //====================================================================//
 
     /**
-     *      @abstract   Return type of this Object Class
+     * Return type of this Object Class
+     *
+     * @return string
      */
     public static function getType()
     {
@@ -92,7 +96,9 @@ abstract class AbstractObject implements ObjectInterface
     }
     
     /**
-     *      @abstract   Return name of this Object Class
+     * Return name of this Object Class
+     *
+     * @return string
      */
     public function getName()
     {
@@ -100,7 +106,9 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     *      @abstract   Return Description of this Object Class
+     * Return Description of this Object Class
+     *
+     * @return string
      */
     public function getDesc()
     {
@@ -116,7 +124,9 @@ abstract class AbstractObject implements ObjectInterface
     }
     
     /**
-     *      @abstract   Return Object Icon
+     * Return Object Icon
+     *
+     * @return string
      */
     public static function getIcon()
     {

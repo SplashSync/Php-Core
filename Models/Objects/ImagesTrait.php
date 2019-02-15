@@ -23,7 +23,9 @@ use Splash\Models\Helpers\ImagesHelper;
 trait ImagesTrait
 {
     /**
-     * @var Static Class Storage
+     * Static Class Storage
+     *
+     * @var ImagesHelper
      */
     private static $ImagesHelper;
     

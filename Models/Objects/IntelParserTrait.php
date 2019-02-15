@@ -19,7 +19,7 @@ use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    This class implements Intelligent Parser to Access Objects Data
+ * This class implements Intelligent Parser to Access Objects Data
  */
 trait IntelParserTrait
 {
@@ -33,9 +33,9 @@ trait IntelParserTrait
     /**
      * Set Operations Input Buffer
      *
-     * @abstract This variable is used to store Object Array during Set Operations
-     *              Each time a field is imported, unset it from this buffer
-     *              to control all fields were imported at the end of Set Operation
+     * This variable is used to store Object Array during Set Operations
+     * Each time a field is imported, unset it from this buffer
+     * to control all fields were imported at the end of Set Operation
      *
      * @var ArrayObject
      */
@@ -44,7 +44,7 @@ trait IntelParserTrait
     /**
      * Get Operations Output Buffer
      *
-     * @abstract This variable is used to store Object Array during Get Operations
+     * This variable is used to store Object Array during Get Operations
      *
      * @var ArrayObject
      */
@@ -53,11 +53,18 @@ trait IntelParserTrait
     /**
      * Work Object Class
      *
-     * @abstract This variable is used to store current working Object during Set & Get Operations
+     * This variable is used to store current working Object during Set & Get Operations
      *
      * @var mixed
      */
     protected $object;
+    
+    /**
+     * Buffer for All Available Class Methods
+     *
+     * @var array
+     */
+    private $classMethods;
     
     //====================================================================//
     // Class Main Functions
@@ -137,71 +144,54 @@ trait IntelParserTrait
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Init Reading
-        $this->in           =   $list;
-        $this->isUpdated();
+        $newObjectId    = null;         // If Object Created, we MUST Return Object Id
+        $this->in       = $list;        // Store List of Field to Write in Buffer
+        $this->isUpdated();             // Clear Updated Flag before Writing
+        
         //====================================================================//
-        // Init Object
-        if ($objectId) {
-            $this->object   =   $this->load($objectId);
-        } else {
-            $this->object   =   $this->create();
-        }
+        // Load or Create Requested Object
+        //====================================================================//
+        $this->object   =   $objectId ? $this->load($objectId) : $this->create();
+        //====================================================================//
+        // Safety Check => Object Now Loaded
         if (!is_object($this->object)) {
             return false;
         }
         //====================================================================//
-        // Run Throw All Requested Fields
-        //====================================================================//
-        $fields = is_a($this->in, "ArrayObject") ? $this->in->getArrayCopy() : $this->in;
-        foreach ($fields as $fieldName => $fieldData) {
-            //====================================================================//
-            // Write Requested Fields
-            foreach ($this->identifyFunctions("set") as $method) {
-                $this->{$method}($fieldName, $fieldData);
-            }
-        }
-        //====================================================================//
-        // Verify Requested Fields List is now Empty => All Fields Writen Successfully
-        if (count($this->in)) {
-            foreach ($this->in as $fieldName => $fieldData) {
-                Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $fieldName);
-            }
-
-            return false;
+        // New Object Created => Store new Object Identifier
+        if (!$objectId) {
+            $newObjectId = $this->getObjectIdentifier();
         }
         
-        return $this->update($this->isToUpdate());
-    }
-    
-    //====================================================================//
-    //  TOOLING FUNCTION
-    //====================================================================//
-
-    /**
-     * @abstract    Identify Generic Functions
-     *
-     * @param mixed $prefix
-     *
-     * @return self
-     */
-    public function identifyFunctions($prefix)
-    {
-        $result = array();
-        foreach (get_class_methods(__CLASS__) as $method) {
-            if (0 !== strpos($method, $prefix)) {
-                continue;
-            }
-            if (false === strpos($method, "Fields")) {
-                continue;
-            }
-            $result[]   =   $method;
+        //====================================================================//
+        // Execute Write Operations on Object
+        //====================================================================//
+        if (false == $this->setObjectFieldsData()) {
+            return $newObjectId ? $newObjectId : false;
+        }
+        
+        //====================================================================//
+        // Update Requested Object
+        //====================================================================//
+        $update = $this->update($this->isToUpdate());
+        //====================================================================//
+        // Update Fail ?
+        if (empty($update)) {
+            //====================================================================//
+            // If New Object => Return Object Identifier
+            // Existing Object => Return False
+            return $newObjectId ? $newObjectId : false;
         }
 
-        return $result;
+        return $update;
     }
+
+    //====================================================================//
+    //  VERIFY FUNCTIONS
+    //====================================================================//
     
     /**
-     * @abstract    Check Required Fields
+     * Check Required Fields are Available
      *
      * @return bool
      */
@@ -227,9 +217,76 @@ trait IntelParserTrait
 
         return true;
     }
+    
+    //====================================================================//
+    //  TOOLING FUNCTIONS
+    //====================================================================//
 
     /**
-     * @abstract    Check Required Fields
+     * Execute Write Operations on Object
+     *
+     * @return bool
+     */
+    private function setObjectFieldsData()
+    {
+        //====================================================================//
+        // Walk on All Requested Fields
+        //====================================================================//
+        $fields = is_a($this->in, "ArrayObject") ? $this->in->getArrayCopy() : $this->in;
+        foreach ($fields as $fieldName => $fieldData) {
+            //====================================================================//
+            // Write Requested Fields
+            foreach ($this->identifyFunctions("set") as $method) {
+                $this->{$method}($fieldName, $fieldData);
+            }
+        }
+        
+        //====================================================================//
+        // Verify Requested Fields List is now Empty => All Fields Writen Successfully
+        //====================================================================//
+        if (count($this->in)) {
+            foreach ($this->in as $fieldName => $fieldData) {
+                Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $fieldName);
+            }
+
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Identify Generic Functions
+     *
+     * @param mixed $prefix
+     *
+     * @return self
+     */
+    private function identifyFunctions($prefix)
+    {
+        //====================================================================//
+        // Load List of Available Class Methods
+        if (!isset($this->classMethods)) {
+            $this->classMethods = get_class_methods(__CLASS__);
+        }
+        //====================================================================//
+        // Prepare List of Available Methods
+        $result = array();
+        foreach ($this->classMethods as $method) {
+            if (0 !== strpos($method, $prefix)) {
+                continue;
+            }
+            if (false === strpos($method, "Fields")) {
+                continue;
+            }
+            $result[]   =   $method;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Check Required Fields
      *
      * @param string $fieldId Object Field Identifier
      *
