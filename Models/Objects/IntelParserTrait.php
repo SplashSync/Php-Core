@@ -64,21 +64,21 @@ trait IntelParserTrait
      *
      * @var array
      */
-    private static $classBuildMethods;
+    protected static $classBuildMethods;
 
     /**
      * Buffer for All Available Class Getter Methods
      *
      * @var array
      */
-    private static $classGetMethods;
+    protected static $classGetMethods;
 
     /**
      * Buffer for All Available Class Setter Methods
      *
      * @var array
      */
-    private static $classSetMethods;
+    protected static $classSetMethods;
     
     //====================================================================//
     // Class Main Functions
@@ -180,7 +180,7 @@ trait IntelParserTrait
         //====================================================================//
         // Execute Write Operations on Object
         //====================================================================//
-        if (false == $this->setObjectFieldsData()) {
+        if (false == $this->setObjectData()) {
             return $newObjectId ? $newObjectId : false;
         }
         
@@ -241,7 +241,7 @@ trait IntelParserTrait
      *
      * @return bool
      */
-    private function setObjectFieldsData()
+    private function setObjectData()
     {
         //====================================================================//
         // Walk on All Requested Fields
