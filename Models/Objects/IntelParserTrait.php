@@ -60,11 +60,25 @@ trait IntelParserTrait
     protected $object;
     
     /**
-     * Buffer for All Available Class Methods
+     * Buffer for All Available Class Fields Building Methods
      *
      * @var array
      */
-    private $classMethods;
+    private static $classBuildMethods;
+
+    /**
+     * Buffer for All Available Class Getter Methods
+     *
+     * @var array
+     */
+    private static $classGetMethods;
+
+    /**
+     * Buffer for All Available Class Setter Methods
+     *
+     * @var array
+     */
+    private static $classSetMethods;
     
     //====================================================================//
     // Class Main Functions
@@ -79,7 +93,7 @@ trait IntelParserTrait
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         
-        foreach ($this->identifyFunctions("build") as $method) {
+        foreach ($this->identifyBuildMethods() as $method) {
             $this->{$method}();
         }
         
@@ -115,7 +129,7 @@ trait IntelParserTrait
         foreach ($fields as $key => $fieldName) {
             //====================================================================//
             // Read Requested Fields
-            foreach ($this->identifyFunctions("get") as $method) {
+            foreach ($this->identifyGetMethods() as $method) {
                 $this->{$method}($key, $fieldName);
             }
         }
@@ -236,7 +250,7 @@ trait IntelParserTrait
         foreach ($fields as $fieldName => $fieldData) {
             //====================================================================//
             // Write Requested Fields
-            foreach ($this->identifyFunctions("set") as $method) {
+            foreach ($this->identifySetMethods() as $method) {
                 $this->{$method}($fieldName, $fieldData);
             }
         }
@@ -256,23 +270,66 @@ trait IntelParserTrait
     }
     
     /**
+     * Identify Generic Fields Building Functions
+     *
+     * @return array
+     */
+    private function identifyBuildMethods()
+    {
+        //====================================================================//
+        // Load Methods From Cache
+        if (!isset(static::$classBuildMethods)) {
+            static::$classBuildMethods = self::identifyMethods("build");
+        }
+        
+        return static::$classBuildMethods;
+    }
+
+    /**
+     * Identify Generic Fields Getter Functions
+     *
+     * @return array
+     */
+    private function identifyGetMethods()
+    {
+        //====================================================================//
+        // Load Methods From Cache
+        if (!isset(static::$classGetMethods)) {
+            static::$classGetMethods = self::identifyMethods("get");
+        }
+        
+        return static::$classGetMethods;
+    }
+
+    /**
+     * Identify Generic Fields Getter Functions
+     *
+     * @return array
+     */
+    private function identifySetMethods()
+    {
+        //====================================================================//
+        // Load Methods From Cache
+        if (!isset(static::$classSetMethods)) {
+            static::$classSetMethods = self::identifyMethods("set");
+        }
+        
+        return static::$classSetMethods;
+    }
+    
+    /**
      * Identify Generic Functions
      *
      * @param mixed $prefix
      *
-     * @return self
+     * @return array
      */
-    private function identifyFunctions($prefix)
+    private static function identifyMethods($prefix)
     {
-        //====================================================================//
-        // Load List of Available Class Methods
-        if (!isset($this->classMethods)) {
-            $this->classMethods = get_class_methods(__CLASS__);
-        }
         //====================================================================//
         // Prepare List of Available Methods
         $result = array();
-        foreach ($this->classMethods as $method) {
+        foreach (get_class_methods(__CLASS__) as $method) {
             if (0 !== strpos($method, $prefix)) {
                 continue;
             }
