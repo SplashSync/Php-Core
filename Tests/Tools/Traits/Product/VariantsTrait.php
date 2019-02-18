@@ -33,7 +33,7 @@ trait VariantsTrait
     public function objectFieldsProvider()
     {
         $fields = array();
-        foreach (parent::objectFieldsProvider() as $field) {
+        foreach (parent::objectFieldsProvider() as $index => $field) {
             //====================================================================//
             // Filter Non Product Fields
             if ("Product" != $field[1]) {
@@ -44,7 +44,7 @@ trait VariantsTrait
 //            if ($field[2]->id != "image@images") {
 //                continue;
 //            }
-            $fields[] = $field;
+            $fields[$index] = $field;
         }
         if (empty($fields)) {
             $this->markTestSkipped('This Server has no Product Object Type.');
@@ -156,7 +156,7 @@ trait VariantsTrait
             $attributesSet[self::lists()->fieldName($name->id)] = self::fakeFieldData(
                 $name->type,
                 null,
-                array_replace_recursive($name->options, array("minLength" =>   3, "maxLength" =>   5))
+                array_replace_recursive($name->options, array("minLength" =>   4, "maxLength" =>   7))
             );
         }
         //====================================================================//
