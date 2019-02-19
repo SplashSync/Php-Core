@@ -91,7 +91,7 @@ class Oovarchar implements FieldInterface
      *
      * @return void
      */
-    private static function applyLengthConstrains($settings, &$data)
+    public static function applyLengthConstrains($settings, &$data)
     {
         //==============================================================================
         //      Apply Min Length Constraint
@@ -115,7 +115,7 @@ class Oovarchar implements FieldInterface
      *
      * @return void
      */
-    private static function applyCaseConstrains($settings, &$data)
+    public static function applyCaseConstrains($settings, &$data)
     {
         //==============================================================================
         //      Apply Case Constraint

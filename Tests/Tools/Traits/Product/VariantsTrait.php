@@ -19,6 +19,7 @@ use ArrayObject;
 use Splash\Client\Splash;
 use Splash\Models\Helpers\ListsHelper;
 use Splash\Models\Helpers\ObjectsHelper;
+use Splash\Tests\Tools\Fields\Oovarchar;
 
 /**
  * Splash Test Tools - Products Variants PhpUnit Specific Features
@@ -149,7 +150,9 @@ trait VariantsTrait
         $attributesSet = array();
         //====================================================================//
         // Setup Attribute Type Code
-        $attributesSet[self::lists()->fieldName($code->id)] = strtolower($attributesCode);
+        Oovarchar::applyCaseConstrains($code->options, $attributesCode);
+        $attributesSet[self::lists()->fieldName($code->id)] = $attributesCode;
+        
         //====================================================================//
         // Setup Attribute Type Names
         foreach ($names as $name) {
