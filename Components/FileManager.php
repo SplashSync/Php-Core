@@ -359,7 +359,7 @@ class FileManager
             //====================================================================//
             // Delete File
             if (unlink($fPath)) {
-                return Splash::log()->msg("MsgFileDeleted", __FUNCTION__, basename($fPath));
+                return Splash::log()->deb("MsgFileDeleted", __FUNCTION__, basename($fPath));
             }
 
             return Splash::log()->err("ErrFileDeleted", __FUNCTION__, basename($fPath));

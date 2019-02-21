@@ -40,8 +40,8 @@ class C11LocalCoreClassTest extends TestCase
         $this->assertNotEmpty($parameters, "Returned Empty Parameters");
         $this->assertArrayHasKey("WsIdentifier", $parameters, "Local Parameter is Missing");
         $this->assertArrayHasKey("WsEncryptionKey", $parameters, "Local Parameter is Missing");
-        $this->assertNotEmpty($parameters["WsIdentifier"], "Local Parameter is Empty");
-        $this->assertNotEmpty($parameters["WsEncryptionKey"], "Local Parameter is Empty");
+        $this->assertNotEmpty($parameters["WsIdentifier"], "Local Parameter WsIdentifier is Empty");
+        $this->assertNotEmpty($parameters["WsEncryptionKey"], "Local Parameter WsEncryptionKey is Empty");
         
         //====================================================================//
         //   Verify Module Parsing

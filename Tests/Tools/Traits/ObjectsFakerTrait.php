@@ -43,10 +43,11 @@ trait ObjectsFakerTrait
      * @param string      $objectType Object Type Name
      * @param array|false $fieldsList Object Field Ids List
      * @param bool        $associate  Include Associated Fields
+     * @param bool        $nonTested  Include Non Tested Fields
      *
      * @return array $Out            Array of Fields
      */
-    public function fakeFieldsList($objectType, $fieldsList = false, $associate = false)
+    public function fakeFieldsList($objectType, $fieldsList = false, $associate = false, $nonTested = true)
     {
         //====================================================================//
         // Safety Check => $ObjectType is a valid
@@ -71,7 +72,7 @@ trait ObjectsFakerTrait
         foreach ($fields as $field) {
             //====================================================================//
             // Check if Fields is Needed
-            if (!$this->isFieldNeeded($field, $fieldsList)) {
+            if (!$this->isFieldNeeded($field, $fieldsList, $nonTested)) {
                 continue;
             }
             //====================================================================//
@@ -183,17 +184,31 @@ trait ObjectsFakerTrait
         
         //====================================================================//
         // Generate Unik Dummy Fields Data
-        $listData = array();
+        $listData   = array();
+        $nbTry      = 0;
         while (count($listData) < $nbItems) {
+            //====================================================================//
+            // Generate Dummy Fields Data
             $data           =   self::fakeFieldData(
                 $type["fieldname"],
                 self::toArray($field->choices),
                 self::toArray($field->options)
             );
-            $md5            =   md5(serialize($data));
+            //====================================================================//
+            // Compute Md5
+            // or Use Try Count In Case we were not able to generate Unik Data
+            $md5            =   ($nbTry < 10) ? md5(serialize($data)) : $nbTry;
             $listData[$md5] =   $data;
+            $nbTry++;
         }
-
+        //====================================================================//
+        // Data Set is Not Unik => Add A Warning
+        if ($nbTry >= 10) {
+            print_r("Unable to Generate Unik List Dataset from Field: " . $field->id . PHP_EOL);
+            print_r("Generated List may Contain Duplicated Values" . PHP_EOL);
+            print_r("Possible Fix: Ensure Pointed Object List is NOT Empty" . PHP_EOL);
+        }
+        
         //====================================================================//
         // Create Dummy List Data
         $outputs = array();
@@ -257,10 +272,11 @@ trait ObjectsFakerTrait
      *
      * @param ArrayObject $field      Field Definition
      * @param array|false $fieldsList Object Field Ids List
+     * @param bool        $nonTested  Include Non Tested Fields
      *
      * @return bool
      */
-    private function isFieldNeeded($field, $fieldsList = false)
+    private function isFieldNeeded($field, $fieldsList = false, $nonTested = true)
     {
         //====================================================================//
         // Check if Fields is Writable
@@ -275,6 +291,11 @@ trait ObjectsFakerTrait
         // Required Field
         if ($field->required) {
             return true;
+        }
+        //====================================================================//
+        // Non Tested Field
+        if ((true == $field->notest) && (false == $nonTested)) {
+            return false;
         }
         //====================================================================//
         // If NO Fields List is Given => Select All Write Fields

@@ -534,6 +534,43 @@ abstract class AbstractBaseCase extends TestCase
     }
     
     /**
+     * Perform Generic Server Side Action (Without Verifications)
+     *
+     * @param string $service     Webservice Service Name
+     * @param string $action      Webservice Action Name
+     * @param string $description Task Description
+     * @param array  $parameters  Task Parameters
+     *
+     * @return ArrayObject|bool|string
+     */
+    protected function genericFastAction($service, $action, $description, array $parameters = array(true))
+    {
+        //====================================================================//
+        //   Prepare Request Data
+        Splash::ws()->addTask($action, $parameters, $description);
+        //====================================================================//
+        //   Execute Action From Splash Server to Module
+        $response   =   Splash::ws()->simulate($service);
+        if (false === $response) {
+            return false;
+        }
+        //====================================================================//
+        // DECODE BLOCK
+        $data       =   Splash::ws()->unPack($response);
+        //====================================================================//
+        //   Extract Task Result
+        if (is_a($data->tasks, "ArrayObject")) {
+            $data->tasks = $data->tasks->getArrayCopy();
+        }
+        $task = array_shift($data->tasks);
+        //====================================================================//
+        //   Turn On Output Buffering Again
+        ob_start();
+        
+        return $task["data"];
+    }
+    
+    /**
      * Normalize Array or ArrayObject to Array
      *
      * @param null|array|ArrayObject|string $data
