@@ -88,20 +88,20 @@ trait ObjectsMassActionsTrait
      *
      * @param string $sequence
      * @param string $objectType Splash Object Type Name
-     * @param int    $maxTested  Number of Objects to Test
+     * @param int    $max        Number of Objects to Test
      * @param bool   $verify     Shall we Verify Objects after Writing?
      * @param bool   $delete     Shall we Delete Objects after Writing?
      *
      * @return bool
      */
-    public function coreTestMassCreateUpdateDelete($sequence, $objectType, $maxTested = 10, $verify = true, $delete = true)
+    public function coreTestMassCreateUpdateDelete($sequence, $objectType, $max=10, $verify=true, $delete=true)
     {
         //====================================================================//
         // Load Test Sequence
         $this->loadLocalTestSequence($sequence);
         //====================================================================//
         // Execute Mass Create Test with Verifications
-        $this->coreTestMassCreate($objectType, $maxTested, $verify);
+        $this->coreTestMassCreate($objectType, $max, $verify);
         //====================================================================//
         // Execute Mass Update Test with Verifications
         $this->coreTestMassUpdate($objectType, $verify);
