@@ -94,7 +94,7 @@ trait ObjectsMassActionsTrait
      *
      * @return bool
      */
-    public function coreTestMassCreateUpdateDelete($sequence, $objectType, $max=10, $verify=true, $delete=true)
+    public function coreTestMassCreateUpdateDelete($sequence, $objectType, $max = 10, $verify = true, $delete = true)
     {
         //====================================================================//
         // Load Test Sequence
