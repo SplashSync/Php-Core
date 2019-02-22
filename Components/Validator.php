@@ -108,11 +108,11 @@ class Validator
         // Required Parameters are Available
         //====================================================================//
         if (!array_key_exists('WsIdentifier', $input)) {
-            return Splash::log()->err(Splash::trans('ErrorCfgKeyMissing', 'WsIdentifier'));
+            return Splash::log()->err(Splash::trans('ErrWsNoId'));
         }
 
         if (!array_key_exists('WsEncryptionKey', $input)) {
-            return Splash::log()->err(Splash::trans('ErrorCfgKeyMissing', 'WsEncryptionKey'));
+            return Splash::log()->err(Splash::trans('ErrWsNoKey'));
         }
 
         return true;

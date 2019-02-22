@@ -396,6 +396,7 @@ class SplashCore
 
         //====================================================================//
         //  Load Translation File
+        self::translator()->load('ws');
         self::translator()->load('validate');
 
         return self::core()->valid;
