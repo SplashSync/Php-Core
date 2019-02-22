@@ -36,6 +36,20 @@ trait ObjectsMassActionsTrait
      * @var int
      */
     protected $maxTested = 10;
+
+    /**
+     * Number of Objects in a Batch Request
+     *
+     * @var int
+     */
+    protected $batchSize = 5;
+    
+    /**
+     * Test Objects After Action?
+     *
+     * @var bool
+     */
+    protected $verify = true;
     
     /**
      * Storage for Tested Objects Ids
@@ -113,7 +127,7 @@ trait ObjectsMassActionsTrait
     }
     
     /**
-     * Execute a Complete Mass Create/Update/Delete Test From Service
+     * Execute a Complete Mass Create/Delete Test From Service
      *
      * @param string $sequence
      * @param string $objectType Splash Object Type Name
@@ -139,6 +153,68 @@ trait ObjectsMassActionsTrait
     }
     
     /**
+     * Execute a Complete Mass Create/Delete Test From Service
+     *
+     * @param string $seq    Test Sequence Name
+     * @param string $type   Splash Object Type Name
+     * @param int    $max    Number of Objects to Test
+     * @param int    $batch  Number of Objects to send in Same Batch Request
+     * @param bool   $verify Shall we Verify Objects after Writing?
+     * @param bool   $delete Shall we Delete Objects after Writing?
+     *
+     * @return bool
+     */
+    public function coreTestBatchCreateDelete($seq, $type, $max = 10, $batch = 5, $verify = true, $delete = true)
+    {
+        //====================================================================//
+        // Load Test Sequence
+        $this->loadLocalTestSequence($seq);
+        //====================================================================//
+        // Execute Mass Create Test with Verifications
+        $this->coreTestBatchCreate($type, $max, $batch, $verify);
+        if ($delete) {
+            //====================================================================//
+            // Execute Mass Delete Test with Verifications
+            $this->coreTestMassDelete($type, $verify);
+        }
+    }
+    
+    /**
+     * Execute a Complete Mass Create/Delete Test From Service
+     *
+     * @param string $seq    Test Sequence Name
+     * @param string $type   Splash Object Type Name
+     * @param int    $max    Number of Objects to Test
+     * @param int    $batch  Number of Objects to send in Same Batch Request
+     * @param bool   $verify Shall we Verify Objects after Writing?
+     * @param bool   $delete Shall we Delete Objects after Writing?
+     *
+     * @return bool
+     */
+    public function coreTestBatchCreateUpdateDelete($seq, $type, $max = 10, $batch = 5, $verify = true, $delete = true)
+    {
+        //====================================================================//
+        // Load Test Sequence
+        $this->loadLocalTestSequence($seq);
+        //====================================================================//
+        // Execute Mass Create Test with Verifications
+        $this->coreTestBatchCreate($type, $max, $batch, $verify);
+        //====================================================================//
+        // Execute Mass Update Test with Verifications
+        $this->coreTestBatchUpdate($type, $max, $batch, $verify);
+        if ($delete) {
+            //====================================================================//
+            // Execute Mass Delete Test with Verifications
+            $this->coreTestMassDelete($type, $verify);
+        }
+    }
+    
+    //==============================================================================
+    //      MASS UNIT TESTS EXECUTION FUNCTIONS
+    //      WE SEND MULTIPLE OBJECTS WITH SINGLE REQUESTS
+    //==============================================================================
+    
+    /**
      * Execute Mass Create Test From Service
      *
      * @param string $objectType Splash Object Type Name
@@ -150,6 +226,7 @@ trait ObjectsMassActionsTrait
     protected function coreTestMassCreate($objectType, $maxTested = 10, $verify = true)
     {
         $this->maxTested = $maxTested;
+        $this->verify = $verify;
         
         //====================================================================//
         //   INIT & GENERATE DATA FOR OBJECTS
@@ -162,10 +239,6 @@ trait ObjectsMassActionsTrait
             return true;
         }
         
-        //====================================================================//
-        // Store Number of Objects Before Test
-        $this->countBefore = $this->countAvailableObjects($objectType);
-
         //====================================================================//
         //   MASS OBJECT CREATE TEST
         //====================================================================//
@@ -202,25 +275,10 @@ trait ObjectsMassActionsTrait
         Splash::object($objectType)->unLock();
         
         //====================================================================//
-        // Store Number of Objects After Test
-        $this->countAfter = $this->countAvailableObjects($objectType);
-        $this->assertEquals(
-            $this->countBefore + $this->maxTested,
-            $this->countAfter,
-            "Number of Objects After tests is Wrong"
-        );
-        
-        //====================================================================//
         //   VERIFY OBJECTS DATA
         //====================================================================//
         
-        if ($verify) {
-            for ($i=1; $i<= $this->maxTested; $i++) {
-                //====================================================================//
-                //   Verify Object Data
-                $this->verifySetResponse($objectType, $this->objectsIds[$i], $this->inputData[$i]);
-            }
-        }
+        $this->verifySetResponse($objectType, $this->objectsIds, $this->inputData, $this->maxTested);
     }
 
     /**
@@ -237,6 +295,7 @@ trait ObjectsMassActionsTrait
         //   INIT & GENERATE DATA FOR OBJECTS
         //====================================================================//
 
+        $this->verify = $verify;
         $this->assertNotEmpty($this->objectsIds, 'Objects Ids List is Empty, Please run Mass Create Test Before');
         
         //====================================================================//
@@ -246,10 +305,6 @@ trait ObjectsMassActionsTrait
         if (false == $newData) {
             return true;
         }
-        
-        //====================================================================//
-        // Store Number of Objects Before Test
-        $this->countBefore = $this->countAvailableObjects($objectType);
         
         //====================================================================//
         //   MASS OBJECT UPDATE TEST
@@ -301,13 +356,7 @@ trait ObjectsMassActionsTrait
         //   VERIFY OBJECTS DATA
         //====================================================================//
         
-        if ($verify) {
-            for ($i=1; $i<= $this->maxTested; $i++) {
-                //====================================================================//
-                //   Verify Object Data
-                $this->verifySetResponse($objectType, $this->objectsIds[$i], $this->inputData[$i]);
-            }
-        }
+        $this->verifySetResponse($objectType, $this->objectsIds, $this->inputData, 0);
     }
     
     /**
@@ -323,7 +372,8 @@ trait ObjectsMassActionsTrait
         //====================================================================//
         //   INIT & GENERATE DATA FOR OBJECTS
         //====================================================================//
-
+        
+        $this->verify = $verify;
         $this->assertNotEmpty($this->objectsIds, 'Objects Ids List is Empty, Please run Mass Create Test Before');
         
         //====================================================================//
@@ -332,10 +382,6 @@ trait ObjectsMassActionsTrait
         if (false == $newData) {
             return true;
         }
-        
-        //====================================================================//
-        // Store Number of Objects Before Test
-        $this->countBefore = $this->countAvailableObjects($objectType);
         
         //====================================================================//
         //   MASS OBJECT DELETE TEST
@@ -373,25 +419,147 @@ trait ObjectsMassActionsTrait
         }
         
         //====================================================================//
-        // Store Number of Objects After Test
-        $this->countAfter = $this->countAvailableObjects($objectType);
-        $this->assertEquals(
-            $this->countBefore - $this->maxTested,
-            $this->countAfter,
-            "Number of Objects After tests is wrong"
-        );
+        //   VERIFY OBJECTS DATA
+        //====================================================================//
+        
+        $this->verifyDeleteResponse($objectType, $this->objectsIds, -1 * $this->maxTested);
+    }
+
+    //==============================================================================
+    //      BATCH UNIT TESTS EXECUTION FUNCTIONS
+    //      WE SEND OBJECTS WITH BATCH TASKS REQUESTS
+    //==============================================================================
+    
+    /**
+     * Execute Batch Create Test From Service
+     *
+     * @param string $objectType Splash Object Type Name
+     * @param int    $maxTested  Number of Objects to Test
+     * @param int    $batch      Number of Objects to send in Same Batch Request
+     * @param bool   $verify     Shall we Verify Objects after Writing?
+     *
+     * @return bool
+     */
+    protected function coreTestBatchCreate($objectType, $maxTested = 10, $batch = 5, $verify = true)
+    {
+        $this->coreTestBatchAction($objectType, $maxTested, $batch, true, $verify);
+    }
+
+    /**
+     * Execute Batch Update Test From Service
+     *
+     * @param string $objectType Splash Object Type Name
+     * @param int    $maxTested  Number of Objects to Test
+     * @param int    $batch      Number of Objects to send in Same Batch Request
+     * @param bool   $verify     Shall we Verify Objects after Writing?
+     *
+     * @return bool
+     */
+    protected function coreTestBatchUpdate($objectType, $maxTested = 10, $batch = 5, $verify = true)
+    {
+        $this->coreTestBatchAction($objectType, $maxTested, $batch, false, $verify);
+    }
+    
+    /**
+     * BAse Execute Batch Action Test From Service
+     *
+     * @param string $objectType Splash Object Type Name
+     * @param int    $max        Number of Objects to Test
+     * @param int    $batch      Number of Objects to send in Same Batch Request
+     * @param bool   $create     Shall we Create or Update Objects?
+     * @param bool   $verify     Shall we Verify Objects after Writing?
+     *
+     * @return bool
+     */
+    protected function coreTestBatchAction($objectType, $max = 10, $batch = 5, $create = true, $verify = true)
+    {
+        $this->maxTested = $max;
+        $this->batchSize = $batch;
+        $this->verify = $verify;
+        
+        //====================================================================//
+        //   INIT & GENERATE DATA FOR OBJECTS
+        //====================================================================//
+        
+        if (!$create) {
+            $this->assertNotEmpty($this->objectsIds, 'Objects Ids List is Empty, Please run Create Test Before');
+        }
+
+        //====================================================================//
+        //   Generate Dummy New Object Data (All RW & Tested Fields Only)
+        $newData = $this->prepareForTesting($objectType);
+        if (false == $newData) {
+            return true;
+        }
+        
+        //====================================================================//
+        //   MASS OBJECT CREATE TEST
+        //====================================================================//
+        $buffer = array();
+        for ($i=1; $i<= $this->maxTested; $i++) {
+            //====================================================================//
+            // Setup Empty Object Id
+            if ($create) {
+                $this->objectsIds[$i]   =   false;
+            }
+            //====================================================================//
+            // Add Task Parameters to Buffer
+            $buffer[$i] = array(
+                'id'        => $create ? null : $this->objectsIds[$i],
+                'type'      => $objectType,
+                'fields'    => $this->inputData[$i]
+            );
+            //====================================================================//
+            // Add Task Parameters to Buffer
+            if ((0 != $i % $this->batchSize) && ($i != $this->maxTested)) {
+                continue;
+            }
+            //====================================================================//
+            //   Execute Create Batch Action From Service
+            $this->doBatchAction($objectType, $buffer);
+            $buffer = array();
+        }
         
         //====================================================================//
         //   VERIFY OBJECTS DATA
         //====================================================================//
         
-        if ($verify) {
-            for ($i=1; $i<= $this->maxTested; $i++) {
-                //====================================================================//
-                //   Verify Object Data
-                $this->verifyDeleteResponse($objectType, $this->objectsIds[$i]);
-            }
+        $this->verifySetResponse(
+            $objectType,
+            $this->objectsIds,
+            $this->inputData,
+            $create ? $this->maxTested :0
+        );
+    }
+    
+    /**
+     * Do Batch Action
+     *
+     * @param string $objectType Splash Object Type Name
+     * @param array  $buffer     Splash Tasks Data Buffer
+     */
+    private function doBatchAction($objectType, $buffer)
+    {
+        //====================================================================//
+        // Lock New Objects To Avoid Action Commit
+        Splash::object($objectType)->lock();
+        //====================================================================//
+        //   Execute Create Batch Action From Service
+        $response = $this->multipleAction(SPL_S_OBJECTS, SPL_F_SET, __METHOD__, $buffer);
+        //====================================================================//
+        //   Verify Batch was Successfull
+        $this->assertNotEmpty($response, 'Batch Action: Batch response is Empty');
+        $this->assertEmpty(Splash::log()->err, 'Batch: Errors Returned');
+        //====================================================================//
+        //   Parse Batch Respopnse
+        foreach (array_keys($buffer) as $key => $index) {
+            $this->objectsIds[$index]   =   $response[$key];
+            //   Verify Object Id Is Not Empty
+            $this->assertNotEmpty($this->objectsIds[$index], 'Batch : Resturned Object Id is Empty');
         }
+        //====================================================================//
+        // UnLock New Objects To Avoid Action Commit
+        Splash::object($objectType)->unLock();
     }
     
     //==============================================================================
@@ -405,8 +573,37 @@ trait ObjectsMassActionsTrait
      *
      * @return int
      */
-    protected function countAvailableObjects($objectType)
+    private function countAvailableObjects($objectType)
     {
+        //====================================================================//
+        //   Read Objects List
+        $objectsList = Splash::object($objectType)->objectsList();
+        //====================================================================//
+        //   Extract Objects Count
+        if (!isset($objectsList["meta"]["total"])) {
+            return 0;
+        }
+
+        return $objectsList["meta"]["total"];
+    }
+    
+    /**
+     * Verify Total Count of Objects.
+     *
+     * @param string $objectType    Object Type Name
+     * @param int    $expectedDelta Expected Diff between Before & After Tests
+     */
+    private function verifyAvailableObjects($objectType, $expectedDelta = 0)
+    {
+        //====================================================================//
+        // Store Number of Objects After Test
+        $this->countAfter = $this->countAvailableObjects($objectType);
+        $this->assertEquals(
+            $this->countBefore + $expectedDelta,
+            $this->countAfter,
+            "Objects count After|Before tests is wrong. Did you missed something?? Created Duplicates??"
+        );
+        
         //====================================================================//
         //   Read Objects List
         $objectsList = Splash::object($objectType)->objectsList();
@@ -422,57 +619,74 @@ trait ObjectsMassActionsTrait
     /**
      * Verify Client Object Set Reponse.
      *
-     * @param string $objectType
-     * @param string $objectId
-     * @param array  $expectedData
+     * @param string $objectType    Object Type Name
+     * @param array  $objectIds     Array Of Tested Ids
+     * @param array  $expectedData  Array of Written Data
+     * @param int    $expectedDelta Expected Diff between Before & After Tests
      */
-    protected function verifySetResponse($objectType, $objectId, $expectedData)
+    private function verifySetResponse($objectType, $objectIds, $expectedData, $expectedDelta = 0)
     {
-        //====================================================================//
-        //   Verify Object Id Is Not Empty
-        $this->assertNotEmpty($objectId, 'Returned New Object Id is Empty');
-        //====================================================================//
-        //   Add Object Id to Created List
-        $this->addTestedObject($objectType, $objectId);
-        //====================================================================//
-        //   Verify Object Id Is in Right Format
-        $this->assertTrue(
-            is_numeric($objectId) || is_string($objectId),
-            'New Object Id is not an Integer or a Strings'
-        );
-        //====================================================================//
-        //   Read Object Data
-        $currentData = Splash::object($objectType)
-            ->get($objectId, $this->reduceFieldList($this->fields));
-        $this->assertInternalType('array', $currentData);
-        //====================================================================//
-        //   Verify Object Data are Ok
-        $this->compareDataBlocks($this->fields, $expectedData, $currentData, $objectType);
+        $this->verifyAvailableObjects($objectType, $expectedDelta);
+        if (!$this->verify) {
+            return;
+        }
+            
+        for ($i=1; $i<= $this->maxTested; $i++) {
+            //====================================================================//
+            //   Verify Object Id Is Not Empty
+            $this->assertNotEmpty($objectIds[$i], 'Returned New Object Id is Empty');
+            //====================================================================//
+            //   Add Object Id to Created List
+            $this->addTestedObject($objectType, $objectIds[$i]);
+            //====================================================================//
+            //   Verify Object Id Is in Right Format
+            $this->assertTrue(
+                is_numeric($objectIds[$i]) || is_string($objectIds[$i]),
+                'New Object Id is not an Integer or a Strings'
+            );
+            //====================================================================//
+            //   Read Object Data
+            $currentData = Splash::object($objectType)
+                ->get($objectIds[$i], $this->reduceFieldList($this->fields));
+            $this->assertInternalType('array', $currentData);
+            //====================================================================//
+            //   Verify Object Data are Ok
+            $this->compareDataBlocks($this->fields, $expectedData[$i], $currentData, $objectType);
+        }
     }
 
     /**
      * Verify Client Object Delete Reponse.
      *
      * @param string $objectType
-     * @param string $objectId
+     * @param string $objectType    Object Type Name
+     * @param array  $objectIds     Array Of Tested Ids
+     * @param int    $expectedDelta Expected Diff between Before & After Tests
      */
-    protected function verifyDeleteResponse($objectType, $objectId)
+    private function verifyDeleteResponse($objectType, $objectIds, $expectedDelta = 0)
     {
-        //====================================================================//
-        // Lock New Objects To Avoid Action Commit
-        Splash::object($objectType)->lock($objectId);
-        //====================================================================//
-        //   Verify Repeating Delete as Same Result
-        $repeatedResponse = Splash::object($objectType)->delete($objectId);
-        $this->assertTrue(
-            $repeatedResponse,
-            'Object Repeated Delete, Must return True even if Object Already Deleted.'
-        );
-        //====================================================================//
-        //   Verify Object not Present anymore
-        $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
-        $getResponse = Splash::object($objectType)->get($objectId, $fields);
-        $this->assertFalse($getResponse, 'Object Not Delete, I can still read it!!');
+        $this->verifyAvailableObjects($objectType, $expectedDelta);
+        if (!$this->verify) {
+            return;
+        }
+            
+        for ($i=1; $i<= $this->maxTested; $i++) {
+            //====================================================================//
+            // Lock New Objects To Avoid Action Commit
+            Splash::object($objectType)->lock($objectIds[$i]);
+            //====================================================================//
+            //   Verify Repeating Delete as Same Result
+            $repeatedResponse = Splash::object($objectType)->delete($objectIds[$i]);
+            $this->assertTrue(
+                $repeatedResponse,
+                'Object Repeated Delete, Must return True even if Object Already Deleted.'
+            );
+            //====================================================================//
+            //   Verify Object not Present anymore
+            $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
+            $getResponse = Splash::object($objectType)->get($objectIds[$i], $fields);
+            $this->assertFalse($getResponse, 'Object Not Delete, I can still read it!!');
+        }
     }
     
     //==============================================================================
@@ -488,7 +702,7 @@ trait ObjectsMassActionsTrait
      *
      * @return array|false Generated Data Block or False if not Allowed
      */
-    protected function prepareForTesting($objectType)
+    private function prepareForTesting($objectType)
     {
         //====================================================================//
         //   Verify Test is Required
@@ -506,6 +720,9 @@ trait ObjectsMassActionsTrait
             );
         }
         //====================================================================//
+        // Store Number of Objects Before Test
+        $this->countBefore = $this->countAvailableObjects($objectType);
+        //====================================================================//
         // Return Generated Object Data
         return $this->inputData;
     }
@@ -517,7 +734,7 @@ trait ObjectsMassActionsTrait
      *
      * @return boolean
      */
-    protected function verifyTestIsAllowed($objectType)
+    private function verifyTestIsAllowed($objectType)
     {
         $definition = Splash::object($objectType)->description();
 
@@ -550,7 +767,7 @@ trait ObjectsMassActionsTrait
      *
      * @return array|false Generated Data Block or False if not Allowed
      */
-    protected function generateObjectData($objectType)
+    private function generateObjectData($objectType)
     {
         //====================================================================//
         // Generate Required Fields List
