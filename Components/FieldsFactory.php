@@ -297,15 +297,17 @@ class FieldsFactory
     /**
      * Update Current New Field set as Read Only Field
      *
+     * @param null|bool $isReadOnly
+     *
      * @return $this
      */
-    public function isReadOnly()
+    public function isReadOnly($isReadOnly = true)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
         if (empty($this->new)) {
             Splash::log()->err("ErrFieldsNoNew");
-        } else {
+        } elseif ($isReadOnly) {
             //====================================================================//
             // Update New Field structure
             $this->new->read    = true;
@@ -318,15 +320,17 @@ class FieldsFactory
     /**
      * Update Current New Field set as Write Only Field
      *
+     * @param null|bool $isWriteOnly
+     *
      * @return $this
      */
-    public function isWriteOnly()
+    public function isWriteOnly($isWriteOnly = true)
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
         if (empty($this->new)) {
             Splash::log()->err("ErrFieldsNoNew");
-        } else {
+        } elseif ($isWriteOnly) {
             //====================================================================//
             // Update New Field structure
             $this->new->read    = false;
