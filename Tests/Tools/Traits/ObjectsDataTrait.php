@@ -222,8 +222,8 @@ trait ObjectsDataTrait
         //====================================================================//
         // Verify Data Count is similar
         $this->assertEquals(
-            count($list1),
-            count($list2),
+            count(self::toArray($list1)),
+            count(self::toArray($list2)),
             "Source and Target List Data have different number of Items "
                 . PHP_EOL . " Source " . print_r($list1, true)
                 . PHP_EOL . " Target " . print_r($list2, true)
