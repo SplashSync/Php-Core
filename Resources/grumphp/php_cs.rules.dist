@@ -79,6 +79,8 @@ $config = PhpCsFixer\Config::create()
         'phpdoc_separation' => true,
         'phpdoc_trim_consecutive_blank_line_separation' => true,
         'phpdoc_types_order' => true,
+        'phpdoc_no_empty_return' => true,
+        'phpdoc_trim' => true,
         'return_assignment' => true,
         'semicolon_after_instruction' => true,
         'single_line_comment_style' => true,
@@ -86,6 +88,12 @@ $config = PhpCsFixer\Config::create()
         'strict_param' => true,
         'string_line_ending' => true,
         'yoda_style' => true,
+        'no_whitespace_in_blank_line' => true,
+        'single_quote' => false,
+        'concat_space' => true,
+        'binary_operator_spaces' => true,
+        'no_unused_imports' => true,
+        
     ])
     ->setFinder($finder)
 ;
