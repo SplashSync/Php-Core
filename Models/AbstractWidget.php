@@ -108,10 +108,10 @@ abstract class AbstractWidget implements WidgetInterface
     //====================================================================//
     
     /**
-     *      @abstract   Get a singleton FieldsFactory Class
-     *                  Acces to Object Fields Creation Functions
+     * Get a singleton FieldsFactory Class
+     * Acces to Object Fields Creation Functions
      *
-     *      @return     FieldsFactory
+     * @return FieldsFactory
      */
     public static function fieldsFactory()
     {
@@ -133,8 +133,8 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *      @abstract   Get a singleton BlocksFactory Class
-     *                  Acces to Widgets Contents Blocks Functions
+     * Get a singleton BlocksFactory Class
+     * Acces to Widgets Contents Blocks Functions
      *
      *      @return     BlocksFactory
      */
@@ -158,7 +158,9 @@ abstract class AbstractWidget implements WidgetInterface
     //====================================================================//
 
     /**
-     *      @abstract   Return type of this Widget Class
+     * Return type of this Widget Class
+     *
+     * @return string
      */
     public static function getType()
     {
@@ -166,7 +168,9 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *      @abstract   Return name of this Widget Class
+     * Return name of this Widget Class
+     *
+     * @return string
      */
     public function getName()
     {
@@ -174,7 +178,9 @@ abstract class AbstractWidget implements WidgetInterface
     }
 
     /**
-     *      @abstract   Return Description of this Widget Class
+     * Return Description of this Widget Class
+     *
+     * @return string
      */
     public function getDesc()
     {
@@ -182,7 +188,9 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *      @abstract   Return Widget Status
+     * Return Widget Status
+     *
+     * @return null|bool
      */
     public static function getIsDisabled()
     {
@@ -190,7 +198,9 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *      @abstract   Return Widget Icon
+     * Return Widget Icon
+     *
+     * @return string
      */
     public static function getIcon()
     {
@@ -198,7 +208,9 @@ abstract class AbstractWidget implements WidgetInterface
     }
 
     /**
-     *      @abstract   Return Widget Defaults Options
+     * Return Widget Defaults Options
+     *
+     * @return array
      */
     public static function getOptions()
     {
@@ -206,7 +218,10 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *      @abstract   Return Widget Customs Parameters
+     * Return Widget Customs Parameters
+     * Used to Customize Widget on Splash Dashboard
+     *
+     * @return array Array of Field from Fields Factory
      */
     public function getParameters()
     {
@@ -218,18 +233,17 @@ abstract class AbstractWidget implements WidgetInterface
     //====================================================================//
 
     /**
-     *      @abstract       Load translations from a specified INI file into Static array.
-     *                      If data for file already loaded, do nothing.
-     *                      All data in translation array are stored in UTF-8 format.
-     *                      trans_loaded is completed with $file key.
+     * Load translations from a specified INI file into Static array.
+     * If data for file already loaded, do nothing.
+     * All data in translation array are stored in UTF-8 format.
+     * trans_loaded is completed with $file key.
      *
-     *      @param  string  $fileName   File name to load (.ini file).
-     *                                  Must be "file" or "file@local" for local language files:
-     *                                  If $FileName is "file@local" instead of "file" then we look for local lang file
-     *                                  in localpath/langs/code_CODE/file.lang
+     * @param string $fileName File name to load (.ini file).
+     *                         Must be "file" or "file@local" for local language files:
+     *                         If $FileName is "file@local" instead of "file" then we look for local lang file
+     *                         in localpath/langs/code_CODE/file.lang
      *
-     *      @return bool
-     *
+     * @return bool
      */
     public function load($fileName)
     {
@@ -237,16 +251,16 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *      @abstract   Return text translated of text received as parameter (and encode it into HTML)
+     * Return text translated of text received as parameter (and encode it into HTML)
      *
-     *      @param  string  $key        Key to translate
-     *      @param  string  $param1     chaine de param1
-     *      @param  string  $param2     chaine de param2
-     *      @param  string  $param3     chaine de param3
-     *      @param  string  $param4     chaine de param4
-     *      @param  int     $maxsize    Max length of text
+     * @param string $key     Key to translate
+     * @param string $param1  chaine de param1
+     * @param string $param2  chaine de param2
+     * @param string $param3  chaine de param3
+     * @param string $param4  chaine de param4
+     * @param int    $maxsize Max length of text
      *
-     *      @return string              Translated string (encoded into HTML entities and UTF8)
+     * @return string Translated string (encoded into HTML entities and UTF8)
      */
     public static function trans(
         $key,
@@ -265,9 +279,9 @@ abstract class AbstractWidget implements WidgetInterface
     //====================================================================//
 
     /**
-     *      @abstract   Run Validation procedure on this object Class & Return return
+     * Run Validation procedure on this object Class & Return return
      *
-     *      @return     bool
+     * @return bool
      */
     public function validate()
     {
@@ -279,11 +293,11 @@ abstract class AbstractWidget implements WidgetInterface
     //====================================================================//
 
     /**
-     *  @abstract   Set Widget Title
+     * Set Widget Title
      *
-     *  @param      string   $text
+     * @param string $text
      *
-     *  @return     $this
+     * @return $this
      */
     public function setTitle($text)
     {
@@ -293,11 +307,11 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *  @abstract   Set Widget SubTitle
+     * Set Widget SubTitle
      *
-     *  @param      string   $text
+     * @param string $text
      *
-     *  @return     $this
+     * @return $this
      */
     public function setSubTitle($text)
     {
@@ -307,11 +321,11 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *  @abstract   Set Widget Icon
+     * Set Widget Icon
      *
-     *  @param      string   $text
+     * @param string $text
      *
-     *  @return     $this
+     * @return $this
      */
     public function setIcon($text)
     {
@@ -321,11 +335,11 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *  @abstract   Set Widget Blocks
+     * Set Widget Blocks
      *
-     *  @param      array   $blocks
+     * @param array $blocks
      *
-     *  @return     $this
+     * @return $this
      */
     public function setBlocks($blocks)
     {
@@ -335,9 +349,9 @@ abstract class AbstractWidget implements WidgetInterface
     }
     
     /**
-     *  @abstract   Render / Return Widget Data Array
+     * Render / Return Widget Data Array
      *
-     *  @return     array
+     * @return array
      */
     public function render()
     {
@@ -349,9 +363,9 @@ abstract class AbstractWidget implements WidgetInterface
     //====================================================================//
 
     /**
-     *  @abstract   Get Definition Array for requested Widget Type
+     * Get Definition Array for requested Widget Type
      *
-     *  @return     array
+     * @return array
      */
     public function description()
     {

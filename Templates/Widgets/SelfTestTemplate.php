@@ -25,32 +25,42 @@ use Splash\Core\SplashCore      as Splash;
 use Splash\Models\AbstractWidget;
 
 /**
- * @abstract    SelfTest Template Widget for Splash Modules
+ * SelfTest Template Widget for Splash Modules
  *
  * @author B. Paquier <contact@splashsync.com>
  */
 class SelfTestTemplate extends AbstractWidget
 {
-    //====================================================================//
-    // Define Standard Options for this Widget
-    // Override this array to change default options for your widget
+    /**
+     * Define Standard Options for this Widget
+     * Override this array to change default options for your widget
+     *
+     * @var array
+     */
     public static $OPTIONS       = array(
         "Width"     =>      self::SIZE_DEFAULT,
         'UseCache'      =>  true,
         'CacheLifeTime' =>  1,
     );
+    
     /**
-     * @abstract  Widget Name
+     * Widget Name
+     *
+     * @var string
      */
     protected static $NAME            =  "Server SelfTest";
     
     /**
-     * @abstract  Widget Description
+     * Widget Description
+     *
+     * @var string
      */
     protected static $DESCRIPTION     =  "Results of your Server SelfTests";
     
     /**
-     * @abstract  Widget Icon (FontAwesome or Glyph ico tag)
+     * Widget Icon (FontAwesome or Glyph ico tag)
+     *
+     * @var string
      */
     protected static $ICO     =  "fa fa-info-circle";
     
@@ -59,7 +69,9 @@ class SelfTestTemplate extends AbstractWidget
     //====================================================================//
     
     /**
-     *      @abstract   Return Widget Customs Options
+     * Return Widget Customs Options
+     *
+     * @return array
      */
     public function options()
     {
@@ -67,14 +79,11 @@ class SelfTestTemplate extends AbstractWidget
     }
         
     /**
-     * @abstract    Return requested Customer Data
+     * {@inheritdoc}
      *
-     * @param array $params Widget Inputs Parameters
-     *
-     * @return array
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function get($params = null)
+    public function get($params = array())
     {
         //====================================================================//
         // Stack Trace
@@ -114,7 +123,7 @@ class SelfTestTemplate extends AbstractWidget
     //====================================================================//
 
     /**
-     *   @abstract     Block Building - Text Intro
+     * Block Building - Text Intro
      */
     private function buildIntroBlock()
     {
@@ -124,7 +133,7 @@ class SelfTestTemplate extends AbstractWidget
     }
     
     /**
-     *   @abstract     Block Building - Notifications Parameters
+     * Block Building - Notifications Parameters
      */
     private function buildNotificationsBlock()
     {
@@ -160,8 +169,4 @@ class SelfTestTemplate extends AbstractWidget
             $this->blocksFactory()->addNotificationsBlock(array("info" => $message));
         }
     }
-    
-    //====================================================================//
-    // Class Tooling Functions
-    //====================================================================//
 }

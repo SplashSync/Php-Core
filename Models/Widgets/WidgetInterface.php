@@ -15,29 +15,33 @@
 
 namespace   Splash\Models\Widgets;
 
+use ArrayObject;
+
 /**
- * @abstract    Splash Widget Interface
+ * Splash Widget Interface
  */
 interface WidgetInterface
 {
     /**
-     *  @abstract   Get Description Array for requested Widget Type
+     * Get Description Array for requested Widget Type
      *
-     *  @return     array
+     * @return array
      */
     public function description();
             
     /**
-     * @abstract    Return requested Widget Data
+     * Return requested Widget Data
      *
-     * @param array $parameters List of Parameters
+     * @param array|ArrayObject $parameters List of Parameters
      *
      * @return array|false Widget Data
      */
     public function get($parameters = array());
     
     /**
-     * @abstract   Return Widget Status
+     * Return Widget Status
+     *
+     * @return null|bool
      */
     public static function getIsDisabled();
 }
