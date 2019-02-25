@@ -28,8 +28,8 @@ use Splash\Server\SplashServer;
 
 //====================================================================//
 // Splash Module & Dependecies Autoloader
-require_once(dirname(dirname(dirname(__FILE__))) . "/autoload.php");
-require_once(dirname(__FILE__) . "/inc/fatal.inc.php");
+require_once(dirname(dirname(dirname(__FILE__)))."/autoload.php");
+require_once(dirname(__FILE__)."/inc/fatal.inc.php");
 
 //====================================================================//
 // Setup Php Specific Settings
@@ -39,23 +39,23 @@ error_reporting(E_ERROR);
 //====================================================================//
 // Notice internal routines we are in server request mode
 define("SPLASH_SERVER_MODE", 1);
-    
+
 //====================================================================//
 //  SERVER MODE - Answer NuSOAP Requests
 //====================================================================//
 // Detect NuSOAP requests send by Splash Server
-$userAgent  =   Splash::input("HTTP_USER_AGENT");
+$userAgent = Splash::input("HTTP_USER_AGENT");
 if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     Splash::log()->deb("Splash Started In Server Mode");
     //====================================================================//
     //   Declare WebService Available Functions
-    require_once(dirname(__FILE__) . "/inc/server.inc.php");
+    require_once(dirname(__FILE__)."/inc/server.inc.php");
     //====================================================================//
     // Build SOAP Server & Register a method available for clients
     Splash::com()->buildServer();
     //====================================================================//
     // Register shuttdown method available for fatal errors reteival
-    register_shutdown_function(__NAMESPACE__ . '\fatal_handler');
+    register_shutdown_function(__NAMESPACE__.'\fatal_handler');
     //====================================================================//
     // Turn on output buffering
     ob_start();

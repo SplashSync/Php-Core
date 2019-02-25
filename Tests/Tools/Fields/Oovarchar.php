@@ -24,7 +24,7 @@ class Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT           =   'Varchar';
+    protected $FORMAT = 'Varchar';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -41,7 +41,7 @@ class Oovarchar implements FieldInterface
 
         return true;
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -53,21 +53,21 @@ class Oovarchar implements FieldInterface
     {
         //==============================================================================
         //      generate Random String
-        $data   =   preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(900, mt_getrandmax())));
-        $data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(900, mt_getrandmax())));
-        
+        $data = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(900, mt_getrandmax())));
+        $data .= preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(900, mt_getrandmax())));
+
         //==============================================================================
         //      Apply Constraints
         self::applyLengthConstrains($settings, $data);
         self::applyCaseConstrains($settings, $data);
-       
+
         return $data;
     }
-    
+
     //==============================================================================
     //      DATA COMPARATOR (OPTIONNAL)
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */
@@ -82,14 +82,12 @@ class Oovarchar implements FieldInterface
         //  Raw text Compare
         return ($source === $target)?true:false;
     }
-    
+
     /**
      * @abstract    Apply Case Constrains
      *
      * @param array  $settings User Defined Faker Settings
      * @param string $data
-     *
-     * @return void
      */
     public static function applyLengthConstrains($settings, &$data)
     {
@@ -97,13 +95,13 @@ class Oovarchar implements FieldInterface
         //      Apply Min Length Constraint
         if (isset($settings["minLength"]) && is_numeric($settings["minLength"])) {
             while (strlen($data) < $settings["minLength"]) {
-                $data  .=   preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(900, mt_getrandmax())));
+                $data .= preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(900, mt_getrandmax())));
             }
         }
         //==============================================================================
         //      Apply Max Length Constraint
         if (isset($settings["maxLength"]) && is_numeric($settings["maxLength"])) {
-            $data   =   substr($data, 0, (int) $settings["maxLength"]);
+            $data = substr($data, 0, (int) $settings["maxLength"]);
         }
     }
 
@@ -112,18 +110,16 @@ class Oovarchar implements FieldInterface
      *
      * @param array  $settings User Defined Faker Settings
      * @param string $data
-     *
-     * @return void
      */
     public static function applyCaseConstrains($settings, &$data)
     {
         //==============================================================================
         //      Apply Case Constraint
         if (isset($settings["isLowerCase"]) && !empty($settings["isLowerCase"])) {
-            $data   = strtolower($data);
+            $data = strtolower($data);
         }
         if (isset($settings["isUpperCase"]) && !empty($settings["isUpperCase"])) {
-            $data   = strtoupper($data);
+            $data = strtoupper($data);
         }
     }
 }

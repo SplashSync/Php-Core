@@ -72,12 +72,12 @@ class A01PingTest extends AbstractBaseCase
         $this->assertTrue(
             Splash::ping(),
             "Test of Splash Server Ping Fail. "
-                . "Maybe this server is not connected? Check your configuration."
+                ."Maybe this server is not connected? Check your configuration."
         );
-        
+
         Splash::log()->cleanLog();
     }
-    
+
     /**
      * Test of Server Ping
      *
@@ -90,11 +90,11 @@ class A01PingTest extends AbstractBaseCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Ping From Splash Server to Module
-        $response   =   SplashServer::ping();
-        $data       =   Splash::ws()->unPack($response, true);
+        $response = SplashServer::ping();
+        $data = Splash::ws()->unPack($response, true);
 
         //====================================================================//
         //   Verify Response

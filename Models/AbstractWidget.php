@@ -21,7 +21,6 @@
 
 namespace   Splash\Models;
 
-use ArrayObject;
 use Splash\Components\BlocksFactory;
 use Splash\Components\FieldsFactory;
 use Splash\Core\SplashCore      as Splash;
@@ -39,60 +38,60 @@ use Splash\Models\Widgets\WidgetInterface;
 abstract class AbstractWidget implements WidgetInterface
 {
     use DatesManagerTrait;
-    
+
     //====================================================================//
     // *******************************************************************//
     //  WIDGET GENERICS PARAMETERS
     // *******************************************************************//
     //====================================================================//
 
-    const SIZE_XS       = "col-sm-6 col-md-4 col-lg-3";
-    const SIZE_SM       = "col-sm-6 col-md-6 col-lg-4";
-    const SIZE_DEFAULT  = "col-sm-12 col-md-6 col-lg-6";
-    const SIZE_M        = "col-sm-12 col-md-6 col-lg-6";
-    const SIZE_L        = "col-sm-12 col-md-6 col-lg-8";
-    const SIZE_XL       = "col-sm-12 col-md-12 col-lg-12";
+    const SIZE_XS = "col-sm-6 col-md-4 col-lg-3";
+    const SIZE_SM = "col-sm-6 col-md-6 col-lg-4";
+    const SIZE_DEFAULT = "col-sm-12 col-md-6 col-lg-6";
+    const SIZE_M = "col-sm-12 col-md-6 col-lg-6";
+    const SIZE_L = "col-sm-12 col-md-6 col-lg-8";
+    const SIZE_XL = "col-sm-12 col-md-12 col-lg-12";
 
     //====================================================================//
     // Define Standard Options for this Widget
     // Override this array to change default options for your widget
-    public static $OPTIONS       = array(
+    public static $OPTIONS = array(
     );
-    
+
     /**
      * @var FieldsFactory
      */
     protected static $fields;
-    
+
     /**
      * @var BlocksFactory
      */
     protected static $blocks;
-    
+
     /**
      *  Widget Disable Flag. Override this flag to disable Widget.
      */
-    protected static $DISABLED        =  false;
-    
+    protected static $DISABLED = false;
+
     /**
      *  Widget Name
      */
-    protected static $NAME            =  __CLASS__;
-    
+    protected static $NAME = __CLASS__;
+
     /**
      *  Widget Description
      */
-    protected static $DESCRIPTION     =  __CLASS__;
+    protected static $DESCRIPTION = __CLASS__;
 
     /**
      *  Widget Icon (FontAwesome or Glyph ico tag)
      */
-    protected static $ICO     =  "fa fa-info";
+    protected static $ICO = "fa fa-info";
 
     //====================================================================//
     // General Class Variables
     //====================================================================//
-    
+
     /**
      * Get Operations Output Buffer
      *
@@ -100,13 +99,13 @@ abstract class AbstractWidget implements WidgetInterface
      *
      * @var array
      */
-    private $Out            = array();
-    
+    private $Out = array();
+
     //====================================================================//
     //  STATIC CLASS ACCESS
     //  Creation & Acces to all subclasses Instances
     //====================================================================//
-    
+
     /**
      * Get a singleton FieldsFactory Class
      * Acces to Object Fields Creation Functions
@@ -120,18 +119,18 @@ abstract class AbstractWidget implements WidgetInterface
         if (isset(self::$fields)) {
             return self::$fields;
         }
-        
+
         //====================================================================//
         // Initialize Class
-        self::$fields        = new FieldsFactory();
-        
+        self::$fields = new FieldsFactory();
+
         //====================================================================//
         //  Load Translation File
         Splash::translator()->load("objects");
-        
+
         return self::$fields;
     }
-    
+
     /**
      * Get a singleton BlocksFactory Class
      * Acces to Widgets Contents Blocks Functions
@@ -145,14 +144,14 @@ abstract class AbstractWidget implements WidgetInterface
         if (isset(self::$blocks)) {
             return self::$blocks;
         }
-        
+
         //====================================================================//
         // Initialize Class
-        self::$blocks        = new BlocksFactory();
-        
+        self::$blocks = new BlocksFactory();
+
         return self::$blocks;
     }
-    
+
     //====================================================================//
     //  COMMON CLASS INFORMATIONS
     //====================================================================//
@@ -166,7 +165,7 @@ abstract class AbstractWidget implements WidgetInterface
     {
         return pathinfo(__FILE__, PATHINFO_FILENAME);
     }
-    
+
     /**
      * Return name of this Widget Class
      *
@@ -186,7 +185,7 @@ abstract class AbstractWidget implements WidgetInterface
     {
         return self::trans(static::$DESCRIPTION);
     }
-    
+
     /**
      * Return Widget Status
      *
@@ -196,7 +195,7 @@ abstract class AbstractWidget implements WidgetInterface
     {
         return static::$DISABLED;
     }
-    
+
     /**
      * Return Widget Icon
      *
@@ -216,7 +215,7 @@ abstract class AbstractWidget implements WidgetInterface
     {
         return static::$OPTIONS;
     }
-    
+
     /**
      * Return Widget Customs Parameters
      * Used to Customize Widget on Splash Dashboard
@@ -227,7 +226,7 @@ abstract class AbstractWidget implements WidgetInterface
     {
         return array();
     }
-    
+
     //====================================================================//
     //  TRANSLATIONS MANAGEMENT
     //====================================================================//
@@ -249,7 +248,7 @@ abstract class AbstractWidget implements WidgetInterface
     {
         return Splash::translator()->load($fileName);
     }
-    
+
     /**
      * Return text translated of text received as parameter (and encode it into HTML)
      *
@@ -287,7 +286,7 @@ abstract class AbstractWidget implements WidgetInterface
     {
         return Splash::validate()->isValidWidget(__CLASS__);
     }
-  
+
     //====================================================================//
     //  COMMON CLASS SETTERS
     //====================================================================//
@@ -301,11 +300,11 @@ abstract class AbstractWidget implements WidgetInterface
      */
     public function setTitle($text)
     {
-        $this->Out["title"]     =   self::trans($text);
+        $this->Out["title"] = self::trans($text);
 
         return $this;
     }
-    
+
     /**
      * Set Widget SubTitle
      *
@@ -315,11 +314,11 @@ abstract class AbstractWidget implements WidgetInterface
      */
     public function setSubTitle($text)
     {
-        $this->Out["subtitle"]     =   self::trans($text);
+        $this->Out["subtitle"] = self::trans($text);
 
         return $this;
     }
-    
+
     /**
      * Set Widget Icon
      *
@@ -329,11 +328,11 @@ abstract class AbstractWidget implements WidgetInterface
      */
     public function setIcon($text)
     {
-        $this->Out["icon"]     =   $text;
+        $this->Out["icon"] = $text;
 
         return $this;
     }
-    
+
     /**
      * Set Widget Blocks
      *
@@ -343,11 +342,11 @@ abstract class AbstractWidget implements WidgetInterface
      */
     public function setBlocks($blocks)
     {
-        $this->Out["blocks"]     =   $blocks;
+        $this->Out["blocks"] = $blocks;
 
         return $this;
     }
-    
+
     /**
      * Render / Return Widget Data Array
      *
@@ -357,7 +356,7 @@ abstract class AbstractWidget implements WidgetInterface
     {
         return $this->Out;
     }
-    
+
     //====================================================================//
     //  COMMON CLASS SERVER ACTIONS
     //====================================================================//
@@ -372,23 +371,23 @@ abstract class AbstractWidget implements WidgetInterface
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        
+
         //====================================================================//
         // Build & Return Widget Description Array
         return array(
             //====================================================================//
             // General Object definition
-            "type"          =>  $this->getType(),                   // Widget Type Name
-            "name"          =>  $this->getName(),                   // Widget Display Neme
-            "description"   =>  $this->getDesc(),                   // Widget Descritioon
-            "icon"          =>  $this->getIcon(),                   // Widget Icon
-            "disabled"      =>  $this->getIsDisabled(),             // Is This Widget Enabled or Not?
+            "type" => $this->getType(),                   // Widget Type Name
+            "name" => $this->getName(),                   // Widget Display Neme
+            "description" => $this->getDesc(),                   // Widget Descritioon
+            "icon" => $this->getIcon(),                   // Widget Icon
+            "disabled" => $this->getIsDisabled(),             // Is This Widget Enabled or Not?
             //====================================================================//
             // Widget Default Options
-            "options"       =>  $this->getOptions(),                // Widget Default Options Array
+            "options" => $this->getOptions(),                // Widget Default Options Array
             //====================================================================//
             // Widget Parameters
-            "parameters"    =>  $this->getParameters(),             // Widget Default Options Array
+            "parameters" => $this->getParameters(),             // Widget Default Options Array
         );
     }
 }

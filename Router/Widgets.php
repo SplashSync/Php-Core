@@ -38,11 +38,11 @@ class Widgets
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        Splash::log()->deb("Widgets => " . $task->name);
+        Splash::log()->deb("Widgets => ".$task->name);
         //====================================================================//
         // Initial Response
-        $response  = self::getEmptyResponse($task);
-        
+        $response = self::getEmptyResponse($task);
+
         //====================================================================//
         // Execute Requested Task
         //====================================================================//
@@ -67,12 +67,12 @@ class Widgets
                 break;
             default:
                 Splash::log()->err(
-                    "Info Router - Requested task was not found => " . $task->name . " (" . $task->desc . ")"
+                    "Info Router - Requested task was not found => ".$task->name." (".$task->desc.")"
                 );
 
                 break;
         }
-        
+
         //====================================================================//
         // Task results post treatment
         if (false != $response->data) {
@@ -98,16 +98,16 @@ class Widgets
         //====================================================================//
         // Initial Tasks results ArrayObject
         $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        
+
         //====================================================================//
         // Set Default Result to False
-        $response->result       =   false;
-        $response->data         =   null;
-        
+        $response->result = false;
+        $response->data = null;
+
         //====================================================================//
         // Insert Task Description Informations
-        $response->name         =   $task->name;
-        $response->desc         =   $task->desc;
+        $response->name = $task->name;
+        $response->desc = $task->desc;
 
         return $response;
     }

@@ -30,19 +30,19 @@ class FieldsFactory
     //  Favorites Sync Modes
     //==============================================================================
 
-    const MODE_BOTH     =           "both";
-    const MODE_READ     =           "read";
-    const MODE_WRITE    =           "write";
-    
+    const MODE_BOTH = "both";
+    const MODE_READ = "read";
+    const MODE_WRITE = "write";
+
     //==============================================================================
     //  Meta Data Access MicroDatas
     //==============================================================================
-    
-    const META_URL              = "http://splashync.com/schemas";       // Splash Specific Schemas Url.
-    const META_OBJECTID         = "ObjectId";                           // Splash Object Id.
-    const META_DATECREATED      = "DateCreated";                        // Splash Object Create Date.
-    const META_ORIGIN_NODE_ID   = "SourceNodeId";                       // Object Source Server Identifier
-    
+
+    const META_URL = "http://splashync.com/schemas";       // Splash Specific Schemas Url.
+    const META_OBJECTID = "ObjectId";                           // Splash Object Id.
+    const META_DATECREATED = "DateCreated";                        // Splash Object Create Date.
+    const META_ORIGIN_NODE_ID = "SourceNodeId";                       // Object Source Server Identifier
+
     /**
      * Default Field Definition Resolver Array
      *
@@ -51,38 +51,38 @@ class FieldsFactory
     private static $defaultFields = array(
         //==============================================================================
         //      GENERAL FIELD PROPS
-        "required"  =>  false,                  //  Field is Required to Create a New Object (Bool)
-        "type"      =>  null,                   //  Field Fomat Type Name
-        "id"        =>  null,                   //  Field Object Unique Identifier
-        "name"      =>  null,                   //  Field Humanized Name (String)
-        "desc"      =>  null,                   //  Field Description (String)
-        "group"     =>  null,                   //  Field Section/Group (String)
+        "required" => false,                  //  Field is Required to Create a New Object (Bool)
+        "type" => null,                   //  Field Fomat Type Name
+        "id" => null,                   //  Field Object Unique Identifier
+        "name" => null,                   //  Field Humanized Name (String)
+        "desc" => null,                   //  Field Description (String)
+        "group" => null,                   //  Field Section/Group (String)
         //==============================================================================
         //      ACCES PROPS
-        "read"      =>  true,                   //  Field is Readable (Bool)
-        "write"     =>  true,                   //  Field is Writable (Bool)
-        "inlist"    =>  false,                  //  Field is Available in Object List Response (Bool)
+        "read" => true,                   //  Field is Readable (Bool)
+        "write" => true,                   //  Field is Writable (Bool)
+        "inlist" => false,                  //  Field is Available in Object List Response (Bool)
         //==============================================================================
         //      SYNC MODE
-        "syncmode"  =>  self::MODE_BOTH,        //  Field Favorite Sync Mode (read|write|both)
+        "syncmode" => self::MODE_BOTH,        //  Field Favorite Sync Mode (read|write|both)
         //==============================================================================
         //      SCHEMA.ORG IDENTIFICATION
-        "itemprop"  =>  null,                   //  Field Unique Schema.Org "Like" Property Name
-        "itemtype"  =>  null,                   //  Field Unique Schema.Org Object Url
-        "tag"       =>  null,                   //  Field Unique Linker Tags (Self-Generated)
+        "itemprop" => null,                   //  Field Unique Schema.Org "Like" Property Name
+        "itemtype" => null,                   //  Field Unique Schema.Org Object Url
+        "tag" => null,                   //  Field Unique Linker Tags (Self-Generated)
         //==============================================================================
         //      DATA SPECIFIC FORMATS PROPS
-        "choices"   =>  array(),                //  Possible Values used in Editor & Debugger Only  (Array)
+        "choices" => array(),                //  Possible Values used in Editor & Debugger Only  (Array)
         //==============================================================================
         //      DATA LOGGING PROPS
-        "log"       =>  false,                  //  Field is To Log (Bool)
+        "log" => false,                  //  Field is To Log (Bool)
         //==============================================================================
         //      DEBUGGER PROPS
-        "asso"      =>  array(),                //  Associated Fields. Fields to Generate with this field.
-        "options"   =>  array(),                //  Fields Constraints to Generate Fake Data during Tests
-        "notest"    =>  false,                  //  Do No Perform Tests for this Field
+        "asso" => array(),                //  Associated Fields. Fields to Generate with this field.
+        "options" => array(),                //  Fields Constraints to Generate Fake Data during Tests
+        "notest" => false,                  //  Do No Perform Tests for this Field
     );
-    
+
     //====================================================================//
     // Data Storage
     //====================================================================//
@@ -100,7 +100,7 @@ class FieldsFactory
      * @var null|ArrayObject
      */
     private $new;
-    
+
     /**
      * Object Fields List Storage
      *
@@ -114,7 +114,7 @@ class FieldsFactory
      * @var null|string
      */
     private $dfLanguage;
-    
+
     /**
      * Class Constructor
      */
@@ -122,11 +122,11 @@ class FieldsFactory
     {
         //====================================================================//
         // Initialize Data Storage
-        $this->new            = null;
-        $this->fields         = array();
+        $this->new = null;
+        $this->fields = array();
         //====================================================================//
         // Initialize Template Field
-        $this->empty          = self::$defaultFields;
+        $this->empty = self::$defaultFields;
     }
 
     //====================================================================//
@@ -154,10 +154,10 @@ class FieldsFactory
         $this->new = null;
         //====================================================================//
         // Create new empty field
-        $this->new          =   new ArrayObject($this->empty, ArrayObject::ARRAY_AS_PROPS);
+        $this->new = new ArrayObject($this->empty, ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Set Field Type
-        $this->new->type    =   $fieldType;
+        $this->new->type = $fieldType;
         //====================================================================//
         // Set Field Identifier
         if (!is_null($fieldId)) {
@@ -171,7 +171,7 @@ class FieldsFactory
 
         return $this;
     }
-    
+
     /**
      * Set Current New Field Identifier
      *
@@ -188,12 +188,12 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->id    = $fieldId;
+            $this->new->id = $fieldId;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field set as it inside a list
      *
@@ -208,7 +208,7 @@ class FieldsFactory
         if (empty($listName)) {
             return $this;
         }
-        
+
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
         if (empty($this->new)) {
@@ -216,15 +216,15 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field Identifier
-            $this->new->id      =   $this->new->id . LISTSPLIT . $listName;
+            $this->new->id = $this->new->id.LISTSPLIT.$listName;
             //====================================================================//
             // Update New Field Type
-            $this->new->type    =   $this->new->type . LISTSPLIT . SPL_T_LIST;
+            $this->new->type = $this->new->type.LISTSPLIT.SPL_T_LIST;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Set Current New Field Name (Translated)
      *
@@ -241,15 +241,15 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->name    = $fieldName;
+            $this->new->name = $fieldName;
             if (empty($this->new->desc)) {
                 $this->description($fieldName);
             }
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field with descriptions (Translated)
      *
@@ -266,12 +266,12 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->desc    = Splash::trans(trim($fieldDesc));
+            $this->new->desc = Splash::trans(trim($fieldDesc));
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field with Field Group Name (Translated)
      *
@@ -288,12 +288,12 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->group    = Splash::trans(trim($fieldGroup));
+            $this->new->group = Splash::trans(trim($fieldGroup));
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field set as Read Only Field
      *
@@ -310,13 +310,13 @@ class FieldsFactory
         } elseif ($isReadOnly) {
             //====================================================================//
             // Update New Field structure
-            $this->new->read    = true;
-            $this->new->write   = false;
+            $this->new->read = true;
+            $this->new->write = false;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field set as Write Only Field
      *
@@ -333,13 +333,13 @@ class FieldsFactory
         } elseif ($isWriteOnly) {
             //====================================================================//
             // Update New Field structure
-            $this->new->read    = false;
-            $this->new->write   = true;
+            $this->new->read = false;
+            $this->new->write = true;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field set as required for creation
      *
@@ -356,12 +356,12 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->required  = (bool) $isRequired;
+            $this->new->required = (bool) $isRequired;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Signify Server Current New Field Prefer ReadOnly Mode
      *
@@ -376,9 +376,9 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->mode    = self::MODE_READ;
+            $this->new->mode = self::MODE_READ;
         }
-        
+
         return $this;
     }
 
@@ -396,12 +396,12 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->mode    = self::MODE_WRITE;
+            $this->new->mode = self::MODE_WRITE;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field set list of associated fields
      *
@@ -419,17 +419,17 @@ class FieldsFactory
             if (!empty($this->new->asso)) {
                 $this->new->asso = null;
             }
-            
+
             //====================================================================//
             // Set New Field Associations
             if (!empty(func_get_args())) {
-                $this->new->asso  = func_get_args();
+                $this->new->asso = func_get_args();
             }
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field set as available in objects list
      *
@@ -446,12 +446,12 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->inlist  = (bool) $isListed;
+            $this->new->inlist = (bool) $isListed;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field set as recommended for logging
      *
@@ -468,12 +468,12 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->log  = (bool) $isLogged;
+            $this->new->log = (bool) $isLogged;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Update Current New Field set its meta informations for autolinking
      *
@@ -491,14 +491,14 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->itemtype            = $itemType;
-            $this->new->itemprop            = $itemProp;
-            $this->setTag($itemProp . IDSPLIT . $itemType);
+            $this->new->itemtype = $itemType;
+            $this->new->itemprop = $itemProp;
+            $this->setTag($itemProp.IDSPLIT.$itemType);
         }
-        
+
         return $this;
     }
-        
+
     /**
      * Update Current New Field set as not possible to test
      *
@@ -513,12 +513,12 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->notest  = true;
+            $this->new->notest = true;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Add Possible Choice to Current New Field Name (Translated)
      *
@@ -552,15 +552,15 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->choices[]   = array(
-                "key"   =>  $value,
-                "value" =>  Splash::trans(trim($description))
+            $this->new->choices[] = array(
+                "key" => $value,
+                "value" => Splash::trans(trim($description))
             );
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Add New Options Array for Current Field
      *
@@ -596,7 +596,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->options[$type]   = $value;
+            $this->new->options[$type] = $value;
         }
 
         return $this;
@@ -615,7 +615,7 @@ class FieldsFactory
         // Safety Checks ==> Verify Language ISO Code
         if (!is_string($isoCode) || (strlen($isoCode) < 2)) {
             Splash::log()->err("Default Language ISO Code is Invalid");
-            
+
             return $this;
         }
         //====================================================================//
@@ -638,43 +638,43 @@ class FieldsFactory
         // Safety Checks ==> Verify a new Field Exists
         if (empty($this->new)) {
             Splash::log()->err("ErrFieldsNoNew");
-            
+
             return $this;
         }
         //====================================================================//
         // Safety Checks ==> Verify Language ISO Code
         if (!is_string($isoCode) || (strlen($isoCode) < 2)) {
             Splash::log()->err("Language ISO Code is Invalid");
-            
+
             return $this;
         }
         //====================================================================//
         // Safety Checks ==> Verify Field Type is Allowed
         if (!in_array($this->new->type, array(SPL_T_VARCHAR, SPL_T_TEXT), true)) {
             Splash::log()->err("ErrFieldsWrongLang");
-            
+
             return $this;
         }
-        
+
         //====================================================================//
         // Default Language ==> Only Setup Language Option
         $this->addOption("language", $isoCode);
         //====================================================================//
         // Other Language ==> Complete Field Setup
         if ($isoCode != $this->dfLanguage) {
-            $this->identifier($this->new->id . "_" . $isoCode);
+            $this->identifier($this->new->id."_".$isoCode);
             if (!empty($this->new->itemtype)) {
-                $this->microData($this->new->itemtype . "/" . $isoCode, $this->new->itemprop);
+                $this->microData($this->new->itemtype."/".$isoCode, $this->new->itemprop);
             }
         }
 
         return $this;
     }
-    
+
     //====================================================================//
     //  FIELDS :: LIST GENERATION
     //====================================================================//
-    
+
     /**
      * Save Current New Field in list & Clean current new field
      *
@@ -699,7 +699,7 @@ class FieldsFactory
 
         return $buffer;
     }
-    
+
     /**
      * Seach for a Field by unik tag
      *
@@ -756,7 +756,7 @@ class FieldsFactory
 
         return false;
     }
-    
+
     /**
      * Update Current New Field set its unik tag for autolinking
      *
@@ -773,12 +773,12 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->tag     = md5($fieldTag);
+            $this->new->tag = md5($fieldTag);
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Verify Current New Field data
      *
@@ -794,7 +794,7 @@ class FieldsFactory
 
         return $this->validate($this->new);
     }
-    
+
     /**
      * Validate Field Definition
      *
@@ -836,7 +836,7 @@ class FieldsFactory
 
         return true;
     }
-    
+
     /**
      * Save Current New Field in list & Clean current new field
      *
@@ -852,7 +852,7 @@ class FieldsFactory
         //====================================================================//
         // Create Field List
         if (empty($this->fields)) {
-            $this->fields   = array();
+            $this->fields = array();
         }
         //====================================================================//
         // Validate New Field
@@ -865,7 +865,7 @@ class FieldsFactory
         // Insert Field List
         $this->fields[] = $this->new;
         $this->new = null;
-        
+
         return true;
     }
 }

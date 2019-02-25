@@ -38,7 +38,7 @@ class A05SelfTestsTest extends AbstractBaseCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Action From Module
         $data = Splash::local()->selfTest();
@@ -59,7 +59,7 @@ class A05SelfTestsTest extends AbstractBaseCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_SELFTEST, __METHOD__);
@@ -67,7 +67,7 @@ class A05SelfTestsTest extends AbstractBaseCase
         //   Verify Response
         $this->verifyResponse($data);
     }
-    
+
     /**
      * Verify Client Response.
      *

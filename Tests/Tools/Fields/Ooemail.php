@@ -24,8 +24,8 @@ class Ooemail extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT         =   'Email';
-    
+    protected $FORMAT = 'Email';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -52,10 +52,10 @@ class Ooemail extends Oovarchar implements FieldInterface
         if (false !== !filter_var($data, FILTER_VALIDATE_EMAIL)) {
             return "Field Data is not an Email Address";
         }
-        
+
         return true;
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -65,30 +65,30 @@ class Ooemail extends Oovarchar implements FieldInterface
      */
     public static function fake($settings)
     {
-        $name   = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand()));
+        $name = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand()));
         //==============================================================================
         //      Apply Domain Constraint
         if (isset($settings["emailDomain"]) && is_string($settings["emailDomain"])) {
-            $domain     = $settings["emailDomain"];
+            $domain = $settings["emailDomain"];
         } else {
-            $domain     = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(100, 1000)));
+            $domain = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(100, 1000)));
         }
-        
+
         //==============================================================================
         //      Apply Extension Constraint
         if (isset($settings["emailExtension"]) && is_string($settings["emailExtension"])) {
-            $extension  = $settings["emailExtension"];
+            $extension = $settings["emailExtension"];
         } else {
-            $extension  = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(10, 100)));
+            $extension = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand(10, 100)));
         }
-                
-        return $name . "@" . $domain . "." . $extension;
+
+        return $name."@".$domain.".".$extension;
     }
-     
+
     //==============================================================================
     //      DATA COMPARATOR (OPTIONNAL)
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */

@@ -34,26 +34,26 @@ class BlocksFactory
     const COMMONS_OPTIONS = array(
         //==============================================================================
         //      Block BootStrap Width   => 100%
-        'Width'             =>      "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+        'Width' => "col-xs-12 col-sm-12 col-md-12 col-lg-12",
         //==============================================================================
         //      Allow Html Contents     => No
-        "AllowHtml"         =>      false
+        "AllowHtml" => false
     );
-    
+
     /**
      * @abstract   New Widget Block Storage
      *
      * @var null|ArrayObject
      */
     private $new;
-    
+
     /**
      * @abstract   Widget Block List Storage
      *
      * @var Array
      */
     private $blocks;
-    
+
     /**
      * @abstract    Initialise Class
      */
@@ -61,10 +61,10 @@ class BlocksFactory
     {
         //====================================================================//
         // Initialize Data Storage
-        $this->new            = null;
-        $this->blocks         = array();
+        $this->new = null;
+        $this->blocks = array();
     }
-    
+
     /**
      *  @abstract   Set Block Data Array Key
      *
@@ -78,12 +78,12 @@ class BlocksFactory
         if (!is_null($this->new)) {
             //====================================================================//
             // Impact Block Data Array
-            $this->new->data[$name]   = $value;
+            $this->new->data[$name] = $value;
         }
-        
+
         return $this;
     }
-    
+
     /**
      *  @abstract   Extract Block Data From Content Input Array
      *
@@ -97,10 +97,10 @@ class BlocksFactory
         if (isset($input[$index])) {
             $this->setData($index, $input[$index]);
         }
-        
+
         return $this;
     }
-    
+
     /**
      *  @abstract   Set Block Options Array Key
      *
@@ -114,12 +114,12 @@ class BlocksFactory
         if (!is_null($this->new)) {
             //====================================================================//
             // Impact Block Data Array
-            $this->new->option[$name]   = $value;
+            $this->new->option[$name] = $value;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * @abstract   Save Current New Block, Return List & Clean
      *
@@ -144,11 +144,11 @@ class BlocksFactory
 
         return $buffer;
     }
-    
+
     //====================================================================//
     //  BLOCKS || SIMPLE TEXT BLOCK
     //====================================================================//
-    
+
     /**
      *  @abstract   Create a new Text Block
      *
@@ -161,14 +161,14 @@ class BlocksFactory
     {
         $this->addBlock("TextBlock", $blockOptions);
         $this->setData("text", $text);
-        
+
         return $this;
     }
-    
+
     //====================================================================//
     //  BLOCKS || NOTIFICATIONS BLOCK
     //====================================================================//
-    
+
     /**
      *  @abstract   Create a new Notification Block
      *
@@ -200,14 +200,14 @@ class BlocksFactory
         if (isset($contents["success"])) {
             $this->setData("success", $contents["success"]);
         }
-        
+
         return $this;
     }
-    
+
     //====================================================================//
     //  BLOCKS || SIMPLE TABLE BLOCK
     //====================================================================//
-    
+
     /**
      *  @abstract   Create a new Table Block
      *
@@ -220,14 +220,14 @@ class BlocksFactory
     {
         $this->addBlock("TableBlock", $blockOptions);
         $this->setData("rows", $contents);
-        
+
         return $this;
     }
-    
+
     //====================================================================//
     //  BLOCKS || SPARK INFOS BLOCK
     //====================================================================//
-    
+
     /**
      *  @abstract   Create a new Table Block
      *
@@ -239,7 +239,7 @@ class BlocksFactory
     public function addSparkInfoBlock($contents, $blockOptions = self::COMMONS_OPTIONS)
     {
         $this->addBlock("SparkInfoBlock", $blockOptions);
-        
+
         //====================================================================//
         //  Add Contents
         $this->extractData($contents, "title");
@@ -247,14 +247,14 @@ class BlocksFactory
         $this->extractData($contents, "glyph_icon");
         $this->extractData($contents, "value");
         $this->extractData($contents, "chart");
-        
+
         return $this;
     }
 
     //====================================================================//
     //  BLOCKS || MORRIS GRAPHS BLOCK
     //====================================================================//
-    
+
     /**
      * @abstract   Create a new Morris Bar Graph Block
      *
@@ -272,23 +272,23 @@ class BlocksFactory
         $blockOptions = self::COMMONS_OPTIONS
     ) {
         if (!in_array($chartType, array("Bar", "Area", "Line"), true)) {
-            $blockContents   = array("warning"   => "Wrong Morris Chart Block Type (ie: Bar, Area, Line)");
+            $blockContents = array("warning" => "Wrong Morris Chart Block Type (ie: Bar, Area, Line)");
             $this->addNotificationsBlock($blockContents);
         }
         //====================================================================//
         //  Create Block
-        $this->addBlock("Morris" . $chartType . "Block", $blockOptions);
+        $this->addBlock("Morris".$chartType."Block", $blockOptions);
         //====================================================================//
         //  Add Set Chart Data
         $this->setData("dataset", $dataSet);
-        
+
         //====================================================================//
         //  Add Chart Parameters
         $this->extractData($chartOptions, "title");
         $this->extractData($chartOptions, "xkey");
         $this->extractData($chartOptions, "ykeys");
         $this->extractData($chartOptions, "labels");
-        
+
         return $this;
     }
 
@@ -312,7 +312,7 @@ class BlocksFactory
         //====================================================================//
         //  Add Chart Parameters
         $this->extractData($chartOptions, "title");
-        
+
         return $this;
     }
 
@@ -340,20 +340,20 @@ class BlocksFactory
         $this->new = null;
         //====================================================================//
         // Create new empty block
-        $this->new          =   new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $this->new = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Set Block Type
-        $this->new->type        =   $blockType;
+        $this->new->type = $blockType;
         //====================================================================//
         // Set Block Options
-        $this->new->options     =   $blockOptions;
+        $this->new->options = $blockOptions;
         //====================================================================//
         // Set Block Data
-        $this->new->data        =   array();
-        
+        $this->new->data = array();
+
         return $this;
     }
-    
+
     /**
      *  @abstract   Save Current New Block in list & Clean
      *
@@ -369,13 +369,13 @@ class BlocksFactory
         //====================================================================//
         // Create Field List
         if (empty($this->blocks)) {
-            $this->blocks   = array();
+            $this->blocks = array();
         }
         //====================================================================//
         // Insert Field List
         $this->blocks[] = $this->new;
         $this->new = null;
-        
+
         return true;
     }
 }

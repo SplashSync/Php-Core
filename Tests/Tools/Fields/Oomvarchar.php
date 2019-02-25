@@ -25,7 +25,6 @@ use ArrayObject;
  * // $data["name"]["iso_code"]            =>      Value
  * // Where name is field name and code is a valid SPL_T_LANG Iso Language Code
  * //====================================================================//
- *
  */
 class Oomvarchar implements FieldInterface
 {
@@ -33,8 +32,8 @@ class Oomvarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT        =   'MVarchar';
-    
+    protected $FORMAT = 'MVarchar';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -62,10 +61,10 @@ class Oomvarchar implements FieldInterface
                 return self::validateIsMultilangData($key, $value);
             }
         }
-        
+
         return true;
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -82,11 +81,11 @@ class Oomvarchar implements FieldInterface
 
         return $fake;
     }
-    
+
     //==============================================================================
     //      DATA COMPARATOR (OPTIONNAL)
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */
@@ -113,7 +112,7 @@ class Oomvarchar implements FieldInterface
 
         return true;
     }
-    
+
     private static function validateIsMultilangData($key, $value)
     {
         if (empty($key) || !is_string($key)) {

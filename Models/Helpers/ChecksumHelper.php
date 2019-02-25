@@ -38,7 +38,7 @@ class ChecksumHelper
         // return Encoded CheckSum
         return self::getEncoded($input);
     }
-    
+
     /**
      * @abstract    Compute Md5 CheckSum from Arguments
      *
@@ -50,7 +50,7 @@ class ChecksumHelper
         // Return Encoded CheckSum from Function Args
         return self::fromArray(func_get_args());
     }
-    
+
     /**
      * @abstract    Compute Debug CheckSum String from Object Attributes
      *
@@ -81,7 +81,7 @@ class ChecksumHelper
         // Return Debug CheckSum String from Function Args
         return self::debugFromArray(func_get_args());
     }
-    
+
     /**
      * @abstract    Verify inputs
      *
@@ -102,7 +102,7 @@ class ChecksumHelper
 
         return true;
     }
-    
+
     /**
      * @abstract    Encode CheckSum from Array
      *
@@ -119,7 +119,7 @@ class ChecksumHelper
         // Serialize Array & Encode Checksum
         return md5(strtolower(serialize($input)));
     }
-    
+
     /**
      * @abstract    Encode CheckSum from Array
      *
@@ -134,12 +134,12 @@ class ChecksumHelper
         ksort($input);
         //====================================================================//
         // Build CheckSum Debug Array
-        $debugArray =   array();
+        $debugArray = array();
         foreach ($input as $key => $value) {
-            $debugArray[]   =   strtolower($key);
-            $debugArray[]   =   strtolower($value);
+            $debugArray[] = strtolower($key);
+            $debugArray[] = strtolower($value);
         }
-        
+
         //====================================================================//
         // Implode Debug Array
         return implode("|", $debugArray);

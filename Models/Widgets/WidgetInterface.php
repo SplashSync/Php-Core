@@ -28,7 +28,7 @@ interface WidgetInterface
      * @return array
      */
     public function description();
-            
+
     /**
      * Return requested Widget Data
      *
@@ -37,7 +37,7 @@ interface WidgetInterface
      * @return array|false Widget Data
      */
     public function get($parameters = array());
-    
+
     /**
      * Return Widget Status
      *

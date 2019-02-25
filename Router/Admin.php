@@ -38,19 +38,19 @@ class Admin
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        Splash::log()->deb("Admin => " . $task->name . " (" . $task->desc . ")");
-        
+        Splash::log()->deb("Admin => ".$task->name." (".$task->desc.")");
+
         //====================================================================//
         // Initial Response
-        $response  = self::getEmptyResponse($task);
-        
+        $response = self::getEmptyResponse($task);
+
         switch ($task->name) {
             //====================================================================//
             //  READING OF SERVER OBJECT LIST
             case SPL_F_GET_OBJECTS:
                 $response->data = Splash::objects();
                 if (false != $response->data) {
-                    $response->result   = true;
+                    $response->result = true;
                 }
 
                 break;
@@ -59,15 +59,15 @@ class Admin
             case SPL_F_GET_WIDGETS:
                 $response->data = Splash::widgets();
                 if (false != $response->data) {
-                    $response->result   = true;
+                    $response->result = true;
                 }
 
                 break;
             //====================================================================//
             //  READING OF SERVER SELFTEST RESULTS
             case SPL_F_GET_SELFTEST:
-                $response->result  =   Splash::selfTest();
-                $response->data    =   $response->result;
+                $response->result = Splash::selfTest();
+                $response->data = $response->result;
 
                 break;
             //====================================================================//
@@ -75,19 +75,19 @@ class Admin
             case SPL_F_GET_INFOS:
                 $response->data = Splash::informations();
                 if (false != $response->data) {
-                    $response->result   = true;
+                    $response->result = true;
                 }
 
                 break;
             default:
-                Splash::log()->err("Admin - Requested task not found => " . $task->name);
+                Splash::log()->err("Admin - Requested task not found => ".$task->name);
 
                 break;
         }
-        
+
         return $response;
     }
-    
+
     //====================================================================//
     //  LOW LEVEL FUNCTIONS
     //====================================================================//
@@ -104,16 +104,16 @@ class Admin
         //====================================================================//
         // Initial Tasks results ArrayObject
         $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        
+
         //====================================================================//
         // Set Default Result to False
-        $response->result       =   false;
-        $response->data         =   null;
-        
+        $response->result = false;
+        $response->data = null;
+
         //====================================================================//
         // Insert Task Description Informations
-        $response->name         =   $task->name;
-        $response->desc         =   $task->desc;
+        $response->name = $task->name;
+        $response->desc = $task->desc;
 
         return $response;
     }

@@ -37,7 +37,7 @@ class S00ProductTest extends ObjectsCase
 
     /** @var array */
     const ATTRIBUTES = array('VariantA','VariantB');
-    
+
     /** @var array */
     protected $currentVariation = array();
 
@@ -114,12 +114,12 @@ class S00ProductTest extends ObjectsCase
         $newData = $this->prepareForTesting($objectType, $field);
         $this->assertInternalType("array", $newData);
         $variantProductId = $this->setObjectFromModule($objectType, $newData);
-        
+
         //====================================================================//
         //   Create Multiple Variants for Same Product
         //====================================================================//
 
-        for ($i=0; $i<2; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             //====================================================================//
             //   Load Fields
             $this->fields = Splash::object($objectType)->fields();
@@ -134,7 +134,7 @@ class S00ProductTest extends ObjectsCase
             //   Execute Set Test
             $this->coreTestSetSingleFieldFromModule($objectType, $field);
         }
-        
+
         //====================================================================//
         //   Execute Delete First Product Variant
         $this->deleteObjectFromModule($objectType, $variantProductId);
@@ -173,12 +173,12 @@ class S00ProductTest extends ObjectsCase
         $newData = $this->prepareForTesting($objectType, $field);
         $this->assertInternalType("array", $newData);
         $variantProductId = $this->setObjectFromService($objectType, $newData);
-        
+
         //====================================================================//
         //   Create Multiple Variants for Same Product
         //====================================================================//
 
-        for ($i=0; $i<2; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             //====================================================================//
             //   Load Fields
             $this->fields = Splash::object($objectType)->fields();
@@ -193,7 +193,7 @@ class S00ProductTest extends ObjectsCase
             //   Execute Set Test
             $this->coreTestSetSingleFieldFromService($objectType, $field);
         }
-        
+
         //====================================================================//
         //   Execute Delete First Product Variant
         $this->deleteObjectFromModule($objectType, $variantProductId);
@@ -244,7 +244,7 @@ class S00ProductTest extends ObjectsCase
             return;
         }
 
-        for ($i=0; $i<2; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             //====================================================================//
             //   Store Current Tested Variant
             $this->currentVariation = $this->getProductsAttributes(self::ATTRIBUTES);
@@ -253,7 +253,7 @@ class S00ProductTest extends ObjectsCase
             $this->coreTestImagesFromModule($testSequence, $objectType, $images);
         }
     }
-    
+
     /**
      * Override Parent Function to Add Variants Attributes
      * Ensure Set/Write Test is Possible & Generate Fake Object Data

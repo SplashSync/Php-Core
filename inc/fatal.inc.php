@@ -22,7 +22,7 @@ function fatal_handler()
 {
     //====================================================================//
     // Read Last Error
-    $error  =   error_get_last();
+    $error = error_get_last();
     if (!$error) {
         return;
     }
@@ -38,6 +38,6 @@ function fatal_handler()
     //====================================================================//
     // Non Fatal Error
     } else {
-        Splash::log()->war($error["message"] . " on File " . $error["file"] . " Line " . $error["line"]);
+        Splash::log()->war($error["message"]." on File ".$error["file"]." Line ".$error["line"]);
     }
 }

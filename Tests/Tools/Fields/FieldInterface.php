@@ -34,7 +34,7 @@ interface FieldInterface
      * @return string|true
      */
     public static function validate($data);
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -47,7 +47,7 @@ interface FieldInterface
      * @return mixed
      */
     public static function fake($settings);
-    
+
     /**
      * Compare Two Data Block to See if similar (Update Required)
      *

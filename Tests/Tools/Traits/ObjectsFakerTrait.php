@@ -32,11 +32,11 @@ trait ObjectsFakerTrait
      * @var null|array
      */
     protected $originData;
-    
+
     //==============================================================================
     //      FAKE DATA GENERATORS
     //==============================================================================
-    
+
     /**
      * Generate Fake Object Fields List
      *
@@ -53,20 +53,20 @@ trait ObjectsFakerTrait
         // Safety Check => $ObjectType is a valid
         $this->assertTrue(
             in_array($objectType, Splash::objects(), true),
-            "Invalid Object Type Name. (" . $objectType . ")"
+            "Invalid Object Type Name. (".$objectType.")"
         );
 
         //====================================================================//
         // Create Empty Object Data Array
-        $outputs    = array();
-        
+        $outputs = array();
+
         //====================================================================//
         // Load Object Fields Definition
         $fields = Splash::object($objectType)->fields();
         if (empty($fields)) {
             return $outputs;
         }
-        
+
         //====================================================================//
         // Generate Fields Data
         foreach ($fields as $field) {
@@ -79,13 +79,13 @@ trait ObjectsFakerTrait
             // Add Fields to List
             $outputs[$field->id] = $field;
         }
-        
+
         //====================================================================//
         // No Associated Fields
         if (!$associate) {
             return $outputs;
         }
-        
+
         //====================================================================//
         // Add Associated Fields to List
         foreach ($outputs as $outField) {
@@ -102,10 +102,10 @@ trait ObjectsFakerTrait
                 }
             }
         }
-        
+
         return $outputs;
     }
-    
+
     /**
      * Create Fake/Dummy Object Data
      *
@@ -121,7 +121,7 @@ trait ObjectsFakerTrait
         if (empty($fieldsList)) {
             return $outputs;
         }
-        
+
         //====================================================================//
         // Create Dummy Fields Data
         foreach ($fieldsList as $field) {
@@ -140,13 +140,13 @@ trait ObjectsFakerTrait
 
                 continue;
             }
-            
+
             //====================================================================//
             // Generate Dummy List  Data
-            $list       =   self::isListField($field->id);
-            $listName   =   $list["listname"];
-            $fieldName  =   $list["fieldname"];
-            $listData   =   self::fakeListData($field);
+            $list = self::isListField($field->id);
+            $listName = $list["listname"];
+            $fieldName = $list["fieldname"];
+            $listData = self::fakeListData($field);
             //====================================================================//
             // Create List
             if (!array_key_exists($listName, $outputs)) {
@@ -164,7 +164,7 @@ trait ObjectsFakerTrait
 
         return $outputs;
     }
-    
+
     /**
      * Create Fake/Dummy Object List Data
      *
@@ -176,20 +176,20 @@ trait ObjectsFakerTrait
     {
         //====================================================================//
         // Read Number of Items to Put in Lists
-        $nbItems =  $this->settings["ListItems"]?$this->settings["ListItems"]:2;
+        $nbItems = $this->settings["ListItems"]?$this->settings["ListItems"]:2;
         //====================================================================//
         // Parse List Identifiers
-        $list   =   self::isListField($field->id);
-        $type   =   self::isListField($field->type);
-        
+        $list = self::isListField($field->id);
+        $type = self::isListField($field->type);
+
         //====================================================================//
         // Generate Unik Dummy Fields Data
-        $listData   = array();
-        $nbTry      = 0;
+        $listData = array();
+        $nbTry = 0;
         while (count($listData) < $nbItems) {
             //====================================================================//
             // Generate Dummy Fields Data
-            $data           =   self::fakeFieldData(
+            $data = self::fakeFieldData(
                 $type["fieldname"],
                 self::toArray($field->choices),
                 self::toArray($field->options)
@@ -197,31 +197,31 @@ trait ObjectsFakerTrait
             //====================================================================//
             // Compute Md5
             // or Use Try Count In Case we were not able to generate Unik Data
-            $md5            =   ($nbTry < 10) ? md5(serialize($data)) : $nbTry;
-            $listData[$md5] =   $data;
+            $md5 = ($nbTry < 10) ? md5(serialize($data)) : $nbTry;
+            $listData[$md5] = $data;
             $nbTry++;
         }
         //====================================================================//
         // Data Set is Not Unik => Add A Warning
         if ($nbTry >= 10) {
-            print_r("Unable to Generate Unik List Dataset from Field: " . $field->id . PHP_EOL);
-            print_r("Generated List may Contain Duplicated Values" . PHP_EOL);
-            print_r("Possible Fix: Ensure Pointed Object List is NOT Empty" . PHP_EOL);
+            print_r("Unable to Generate Unik List Dataset from Field: ".$field->id.PHP_EOL);
+            print_r("Generated List may Contain Duplicated Values".PHP_EOL);
+            print_r("Possible Fix: Ensure Pointed Object List is NOT Empty".PHP_EOL);
         }
-        
+
         //====================================================================//
         // Create Dummy List Data
         $outputs = array();
-        
+
         //====================================================================//
         // Create Dummy Fields Data
         for ($i = 0; $i < $nbItems; $i++) {
             $outputs[][$list["fieldname"]] = array_shift($listData);
         }
-        
+
         return $outputs;
     }
-    
+
     /**
      * Create Fake Field data
      *
@@ -249,7 +249,7 @@ trait ObjectsFakerTrait
         if (($id = self::isIdField($type))) {
             return $className::fake(array_replace_recursive($this->settings, $options), $id["ObjectType"]);
         }
-        
+
         //====================================================================//
         // Take Values From Given Choices
         if (!empty($choices)) {
@@ -266,7 +266,7 @@ trait ObjectsFakerTrait
         // Generate Single Field Data Type is Valid
         return $className::fake(array_replace_recursive($this->settings, $options));
     }
-    
+
     /**
      * Check if Field Need to be in List
      *

@@ -32,7 +32,7 @@ trait ImagesTrait
     private $targetFields;
     /** @var array */
     private $targetImages;
-    
+
     /** @var false|string */
     private $listId;
     /** @var false|string */
@@ -43,7 +43,7 @@ trait ImagesTrait
     private $isVisibleId;
     /** @var false|string */
     private $positionId;
-    
+
     /**
      * @abstract     Provide Products Images Tests Combinations
      */
@@ -64,9 +64,9 @@ trait ImagesTrait
             //====================================================================//
             //   For Each Object Types
             foreach ($this->getProductImagesSequences() as $imgSequence) {
-                $dataSet    =   $testCase;
-                $dataSet[3] =   $this->getFakeImages($imgSequence);
-                $result[]   =   $dataSet;
+                $dataSet = $testCase;
+                $dataSet[3] = $this->getFakeImages($imgSequence);
+                $result[] = $dataSet;
             }
 //            $Result[]   =   $DataSet;
         }
@@ -82,53 +82,53 @@ trait ImagesTrait
      */
     public function getProductImagesSequences()
     {
-        $combinations   =   array();
-        
+        $combinations = array();
+
         //====================================================================//
         //   Images Sets Definitions
         //====================================================================//
         //   $ImageIndex, $setCover, $setVisible, $setPosition
         //====================================================================//
-        
+
         //====================================================================//
         //   Basic Set
-        $combinations[] =   array(
+        $combinations[] = array(
             array(1,true,true,0),
         );
-        
+
         //====================================================================//
         //   Basic Set
-        $combinations[] =   array(
+        $combinations[] = array(
             array(1,true,true,0),
             array(2,false,true,1),
             array(3,false,true,2),
         );
-        
+
         //====================================================================//
         //   Basic Set with Hidden Images
-        $combinations[] =   array(
+        $combinations[] = array(
             array(1,true,true,0),
             array(2,false,false,1),
             array(3,false,true,2),
         );
-        
+
         //====================================================================//
         //   Advanced Set with Cover not in First Position
-        $combinations[] =   array(
+        $combinations[] = array(
             array(1,false,true,0),
             array(2,true,true,1),
             array(3,false,true,2),
         );
-        
+
         //====================================================================//
         //   Advanced Set with Cover not in First Position & Not Visible
-        $combinations[] =   array(
+        $combinations[] = array(
             array(1,false,true,0),
             array(3,false,true,1),
             array(2,false,true,2),
             array(4,true,false,3),
         );
-        
+
         return new ArrayObject($combinations, ArrayObject::ARRAY_AS_PROPS);
     }
 
@@ -158,18 +158,18 @@ trait ImagesTrait
         //====================================================================//
         //   OBJECT CREATE TEST
         //====================================================================//
-        
+
         //====================================================================//
         //   Store Current Tested Images
-        $this->currentImages    =   $images;
-            
+        $this->currentImages = $images;
+
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $newData = $this->prepareForTesting($objectType);
         if (false == $newData) {
             return true;
         }
-        
+
         //====================================================================//
         //   Execute Create Test
         $objectId = $this->setObjectFromModule($objectType, $newData);
@@ -177,20 +177,20 @@ trait ImagesTrait
         //====================================================================//
         //   VERIFY IMAGES OBJECT DATA
         //====================================================================//
-        
+
         //====================================================================//
         //   Verify Visivble Images
         $this->verifyImages($objectType, $objectId, $newData);
-        
+
         //====================================================================//
         //   OBJECT DELETE
         //====================================================================//
-        
+
         //====================================================================//
         //   Delete Object From Module
         $this->deleteObjectFromModule($objectType, $objectId);
     }
-    
+
     /**
      * @abstract    Identify Image in List by Md5 and Active Flag
      *
@@ -229,7 +229,7 @@ trait ImagesTrait
         //   Images not Found
         return null;
     }
-    
+
     /**
      * @abstract    Generate Image Item
      *
@@ -242,26 +242,26 @@ trait ImagesTrait
     {
         //====================================================================//
         //   Load Required Fields
-        $image      =   self::findFieldByTag($this->fields, "http://schema.org/Product", "image");
-        $isCover    =   self::findFieldByTag($this->fields, "http://schema.org/Product", "isCover");
-        $isVisible  =   self::findFieldByTag($this->fields, "http://schema.org/Product", "isVisibleImage");
-        $position   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "positionImage");
+        $image = self::findFieldByTag($this->fields, "http://schema.org/Product", "image");
+        $isCover = self::findFieldByTag($this->fields, "http://schema.org/Product", "isCover");
+        $isVisible = self::findFieldByTag($this->fields, "http://schema.org/Product", "isVisibleImage");
+        $position = self::findFieldByTag($this->fields, "http://schema.org/Product", "positionImage");
         if (is_null($image) || is_null($isCover) || is_null($isVisible) || is_null($position)) {
             return array();
         }
-        
+
         //====================================================================//
         //   Generate Random Attributes Set
-        $spashImage =   Image::fake(array("Images" => array( "fake-image" . $index . ".jpg")));
-        $item   =   array(
-            self::lists()->fieldName($image->id)    =>      $spashImage,
-            self::lists()->fieldName($isCover->id)  =>      $setCover,
+        $spashImage = Image::fake(array("Images" => array( "fake-image".$index.".jpg")));
+        $item = array(
+            self::lists()->fieldName($image->id) => $spashImage,
+            self::lists()->fieldName($isCover->id) => $setCover,
         );
         if ($isVisible->write) {
-            $item[self::lists()->fieldName($isVisible->id)]   =   $setVisible;
+            $item[self::lists()->fieldName($isVisible->id)] = $setVisible;
         }
         if ($position->write) {
-            $item[self::lists()->fieldName($position->id)]  =   $setPosition;
+            $item[self::lists()->fieldName($position->id)] = $setPosition;
         }
 
         return $item;
@@ -276,7 +276,7 @@ trait ImagesTrait
     {
         //====================================================================//
         //   Load Required Fields
-        $image      =   self::findFieldByTag($this->fields, "http://schema.org/Product", "image");
+        $image = self::findFieldByTag($this->fields, "http://schema.org/Product", "image");
         //====================================================================//
         //   Check Required Fields
         $this->assertNotEmpty($image);
@@ -287,9 +287,9 @@ trait ImagesTrait
         //   Build Images List
         $images = array();
         foreach ($combination as $item) {
-            $images[]   =   $this->getFakeImageItem($item[0], $item[1], $item[2], $item[3]);
+            $images[] = $this->getFakeImageItem($item[0], $item[1], $item[2], $item[3]);
         }
-        
+
         return array(self::lists()->listName($image->id) => $images);
     }
 
@@ -305,19 +305,19 @@ trait ImagesTrait
         //====================================================================//
         //   Verify Images Fields are Valid
         $this->verifyImagesFields($objectType);
-        
+
         //====================================================================//
         //   READ OBJECT DATA
         //====================================================================//
 
         //====================================================================//
         //   Build List of Fields to Read
-        $toRead =   array_merge($this->reduceFieldList($this->fields), $this->targetFields);
-        
+        $toRead = array_merge($this->reduceFieldList($this->fields), $this->targetFields);
+
         //====================================================================//
         //   Read Object Data
-        $target    =   Splash::object($objectType)->get($objectId, $toRead);
-        
+        $target = Splash::object($objectType)->get($objectId, $toRead);
+
         //====================================================================//
         //   Verify Images Are Here
         $this->assertNotEmpty($source[$this->listId], "Source Product Images List is Empty");
@@ -328,7 +328,7 @@ trait ImagesTrait
         //====================================================================//
         //   VERIFY TARGET IMAGES
         //====================================================================//
-        
+
         //====================================================================//
         //   Walk on Target Images List
         $position = -1;
@@ -339,7 +339,7 @@ trait ImagesTrait
             //====================================================================//
             //   Check if Image Data is Valid
             $validate = Image::validate($targetImage[$this->imageId]);
-            $this->assertTrue($validate, "Target Image définition Array is Invalid " . $validate);
+            $this->assertTrue($validate, "Target Image définition Array is Invalid ".$validate);
             //====================================================================//
             //   Check if Image Flags are Set
             $this->assertArrayHasKey((string) $this->isVisibleId, $targetImage);
@@ -354,11 +354,11 @@ trait ImagesTrait
             );
             $position = $targetImage[$this->positionId];
         }
-        
+
         //====================================================================//
         //   SOURCE VS TARGET IMAGES
         //====================================================================//
-        
+
         //====================================================================//
         //   Walk on Source Images List
         foreach ($this->sourceImages as $srcImage) {
@@ -377,21 +377,19 @@ trait ImagesTrait
      * @abstract    Verify Images are Correctly Stored
      *
      * @param string $objectType
-     *
-     * @return void
      */
     private function verifyImagesFields($objectType)
     {
         //====================================================================//
         //   Load Fields
-        $this->fields   =   Splash::object($objectType)->fields();
+        $this->fields = Splash::object($objectType)->fields();
         $this->assertNotEmpty($this->fields, "Product Fields List is Empty!");
         //====================================================================//
         //   Load Required Fields
-        $image      =   self::findFieldByTag($this->fields, "http://schema.org/Product", "image");
-        $isCover    =   self::findFieldByTag($this->fields, "http://schema.org/Product", "isCover");
-        $isVisible  =   self::findFieldByTag($this->fields, "http://schema.org/Product", "isVisibleImage");
-        $position   =   self::findFieldByTag($this->fields, "http://schema.org/Product", "positionImage");
+        $image = self::findFieldByTag($this->fields, "http://schema.org/Product", "image");
+        $isCover = self::findFieldByTag($this->fields, "http://schema.org/Product", "isCover");
+        $isVisible = self::findFieldByTag($this->fields, "http://schema.org/Product", "isVisibleImage");
+        $position = self::findFieldByTag($this->fields, "http://schema.org/Product", "positionImage");
         if (is_null($image) || is_null($isCover) || is_null($isVisible) || is_null($position)) {
             return;
         }
@@ -403,14 +401,14 @@ trait ImagesTrait
         $this->assertNotEmpty($position, "Product Images Position Field not Found");
         //====================================================================//
         //   Extract Fields Ids
-        $this->listId         = self::lists()->listName($image->id);
-        $this->imageId        = self::lists()->fieldName($image->id);
-        $this->isCoverId      = self::lists()->fieldName($isCover->id);
-        $this->isVisibleId    = self::lists()->fieldName($isVisible->id);
-        $this->positionId     = self::lists()->fieldName($position->id);
+        $this->listId = self::lists()->listName($image->id);
+        $this->imageId = self::lists()->fieldName($image->id);
+        $this->isCoverId = self::lists()->fieldName($isCover->id);
+        $this->isVisibleId = self::lists()->fieldName($isVisible->id);
+        $this->positionId = self::lists()->fieldName($position->id);
         //====================================================================//
         //   Build To Read Fields Ids
-        $this->targetFields =   array($image->id, $isCover->id, $isVisible->id, $position->id);
+        $this->targetFields = array($image->id, $isCover->id, $isVisible->id, $position->id);
         //====================================================================//
         //   Check Required Fields
         $this->assertNotEmpty($this->imageId);
@@ -418,15 +416,13 @@ trait ImagesTrait
         $this->assertNotEmpty($this->isVisibleId);
         $this->assertNotEmpty($this->positionId);
     }
-    
+
     /**
      * @abstract    Verify Visible Image Flag
      *
      * @param array  $source      Source Image
      * @param string $imageId     Image Field Id
      * @param string $isVisibleId is Visible Flag Field Id
-     *
-     * @return void
      */
     private function verifyVisibleImages($source, $imageId, $isVisibleId)
     {
@@ -440,12 +436,12 @@ trait ImagesTrait
         //   Verify Image is Flagged as Visible
         $this->assertNotEmpty(
             $this->findImageByMd5AndFlag($source, $imageId, $isVisibleId),
-            "Source Image is NOT flagged as Visible in Target List" . PHP_EOL
-                . "Source : " . print_r($source, true)
-                . "Target : " . print_r($this->targetImages, true)
+            "Source Image is NOT flagged as Visible in Target List".PHP_EOL
+                ."Source : ".print_r($source, true)
+                ."Target : ".print_r($this->targetImages, true)
         );
     }
-    
+
     /**
      * @abstract    Verify Cover Image Flag
      *
@@ -465,12 +461,12 @@ trait ImagesTrait
         //   Verify Image is Flagged as Cover
         $this->assertNotEmpty(
             $this->findImageByMd5AndFlag($source, $imageId, $isCoverId),
-            "Source Image is NOT flagged as Cover in Target List" . PHP_EOL
-                . "Source : " . print_r($source, true)
-                . "Target : " . print_r($this->targetImages, true)
+            "Source Image is NOT flagged as Cover in Target List".PHP_EOL
+                ."Source : ".print_r($source, true)
+                ."Target : ".print_r($this->targetImages, true)
         );
     }
-    
+
     /**
      * @abstract     Check if Product Images Tests is Required
      *
@@ -485,11 +481,11 @@ trait ImagesTrait
         }
         //====================================================================//
         //   Load Fields
-        $this->fields   =   Splash::object($objectType)->fields();
+        $this->fields = Splash::object($objectType)->fields();
         $this->assertNotEmpty($this->fields, "Product Fields List is Empty!");
         //====================================================================//
         //   Verify Product has Writable Images List
-        $imgList    =   self::findFieldByTag($this->fields, "http://schema.org/Product", "image");
+        $imgList = self::findFieldByTag($this->fields, "http://schema.org/Product", "image");
         if (!$imgList || !$imgList->write) {
             return false;
         }

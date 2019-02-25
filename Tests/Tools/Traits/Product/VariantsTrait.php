@@ -53,7 +53,7 @@ trait VariantsTrait
 
         return $fields;
     }
-    
+
     //==============================================================================
     //      SPLASH PRODUCT VARIANTS SPECIFIC FUNCTIONS
     //==============================================================================
@@ -69,7 +69,7 @@ trait VariantsTrait
     {
         //====================================================================//
         //   Verify Product Base Name
-        $field   =   self::findFieldByTag($this->fields, static::$itemProp, "Variants");
+        $field = self::findFieldByTag($this->fields, static::$itemProp, "Variants");
         $this->assertNotEmpty($field);
         if (is_null($field)) {
             return array();
@@ -77,11 +77,11 @@ trait VariantsTrait
         //====================================================================//
         //   Generate Product Splash Object Id
         if (is_null($variantProductId)) {
-            return array(ListsHelper::listName($field->id)  =>  array());
+            return array(ListsHelper::listName($field->id) => array());
         }
         //====================================================================//
         //   Return Field Value
-        return array(ListsHelper::listName($field->id)  =>  array(array(
+        return array(ListsHelper::listName($field->id) => array(array(
             ListsHelper::fieldName($field->id) => ObjectsHelper::encode("Product", $variantProductId)
         )));
     }
@@ -95,7 +95,7 @@ trait VariantsTrait
     {
         //====================================================================//
         //   Load Required Fields
-        $code   =   self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
+        $code = self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
         $this->assertNotEmpty($code);
         if (is_null($code)) {
             return array();
@@ -122,44 +122,44 @@ trait VariantsTrait
         //====================================================================//
         //   Load Required Fields
         //====================================================================//
-        
+
         /**
          * @var ArrayObject $code
          */
-        $code   =   self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
+        $code = self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
         $this->assertNotEmpty($code);
-        
+
         /**
          * @var ArrayObject[] $value
          */
-        $names   =   $this->findMultiFields(static::$attrName);
+        $names = $this->findMultiFields(static::$attrName);
         $this->assertInternalType("array", $names);
         $this->assertNotEmpty($names);
-        
+
         /**
          * @var ArrayObject[] $value
          */
-        $values  =   $this->findMultiFields(static::$attrValue);
+        $values = $this->findMultiFields(static::$attrValue);
         $this->assertInternalType("array", $values);
         $this->assertNotEmpty($values);
-        
+
         //====================================================================//
         //   Generate Random Attributes Set
         //====================================================================//
-        
+
         $attributesSet = array();
         //====================================================================//
         // Setup Attribute Type Code
         Oovarchar::applyCaseConstrains($code->options, $attributesCode);
         $attributesSet[self::lists()->fieldName($code->id)] = $attributesCode;
-        
+
         //====================================================================//
         // Setup Attribute Type Names
         foreach ($names as $name) {
             $attributesSet[self::lists()->fieldName($name->id)] = self::fakeFieldData(
                 $name->type,
                 null,
-                array_replace_recursive($name->options, array("minLength" =>   4, "maxLength" =>   7))
+                array_replace_recursive($name->options, array("minLength" => 4, "maxLength" => 7))
             );
         }
         //====================================================================//
@@ -168,13 +168,13 @@ trait VariantsTrait
             $attributesSet[self::lists()->fieldName($value->id)] = self::fakeFieldData(
                 $value->type,
                 null,
-                array_replace_recursive($value->options, array("minLength" =>   5, "maxLength" =>   10))
+                array_replace_recursive($value->options, array("minLength" => 5, "maxLength" => 10))
             );
         }
-        
+
         return $attributesSet;
     }
-    
+
     /**
      * Prepare Test of Products Variants
      *
@@ -208,10 +208,10 @@ trait VariantsTrait
         if (!$variantCode) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Identify All Multilangual Fields for an Attribute
      *
@@ -232,7 +232,7 @@ trait VariantsTrait
                 //   Search for This Field
                 $field = ($this->settings["Default_Lang"] == $isoCode)
                         ? self::findFieldByTag($fields, self::$itemProp, $itemtype)
-                        : self::findFieldByTag($fields, self::$itemProp . "/" . $isoCode, $itemtype);
+                        : self::findFieldByTag($fields, self::$itemProp."/".$isoCode, $itemtype);
                 //====================================================================//
                 //   Field Not Found
                 if ($field instanceof ArrayObject) {

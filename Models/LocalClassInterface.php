@@ -27,7 +27,7 @@ interface LocalClassInterface
     //  MANDATORY CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
-    
+
     /**
      *  @abstract       Return Local Server Parameters as Array
      *
@@ -43,7 +43,7 @@ interface LocalClassInterface
      * @return array $parameters
      */
     public function parameters();
-    
+
     /**
      * @abstract       Include Local Includes Files
      *
@@ -74,7 +74,7 @@ interface LocalClassInterface
      * @return bool global test result
      */
     public function selfTest();
-    
+
     /**
      * @abstract    Update Server Informations with local Data
      *
@@ -87,13 +87,13 @@ interface LocalClassInterface
      * @return ArrayObject
      */
     public function informations($informations);
-    
+
     //====================================================================//
     // *******************************************************************//
     //  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
-    
+
     /**
      * @abstract       Return Local Server Test Sequences as Aarray
      *
@@ -111,7 +111,7 @@ interface LocalClassInterface
      * @return array $Sequences
      */
     public function testSequences($name = null);
-    
+
     /**
      *  @abstract       Return Local Server Test Parameters as Array
      *

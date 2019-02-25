@@ -26,7 +26,7 @@ class Oourl extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT         =   'Url';
+    protected $FORMAT = 'Url';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -67,10 +67,10 @@ class Oourl extends Oovarchar implements FieldInterface
      */
     public static function fake($settings)
     {
-        $domain =   preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode((string) mt_rand(100, 1000))));
-        $prefix =   !empty($settings["Url_Prefix"]) ? $settings["Url_Prefix"] : null;
-        $sufix  =   !empty($settings["Url_Sufix"])   ? $settings["Url_Sufix"] : ".splashsync.com";
-        
-        return $prefix . $domain . $sufix;
+        $domain = preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode((string) mt_rand(100, 1000))));
+        $prefix = !empty($settings["Url_Prefix"]) ? $settings["Url_Prefix"] : null;
+        $sufix = !empty($settings["Url_Sufix"])   ? $settings["Url_Sufix"] : ".splashsync.com";
+
+        return $prefix.$domain.$sufix;
     }
 }

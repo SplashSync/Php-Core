@@ -26,7 +26,7 @@ trait ObjectsTrait
      * @var ObjectsHelper
      */
     private static $ObjectsHelper;
-    
+
     /**
      *      @abstract   Get a singleton Objects Helper Class
      *
@@ -39,7 +39,7 @@ trait ObjectsTrait
             return self::$ObjectsHelper;
         }
         // Initialize Class
-        self::$ObjectsHelper        = new ObjectsHelper();
+        self::$ObjectsHelper = new ObjectsHelper();
         // Return Helper Class
         return self::$ObjectsHelper;
     }

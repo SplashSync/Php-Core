@@ -158,7 +158,7 @@ trait ObjectsSetTestsTrait
         //   Delete Object From Module
         $this->deleteObjectFromModule($objectType, $objectId);
     }
-    
+
     //==============================================================================
     //      UNIT TESTS EXECUTION FUNCTIONS
     //==============================================================================
@@ -335,7 +335,7 @@ trait ObjectsSetTestsTrait
         $getResponse = Splash::object($objectType)->get($objectId, $fields);
         $this->assertFalse($getResponse, 'Object Not Delete, I can still read it!!');
     }
-    
+
     //==============================================================================
     //      TESTS PREPARATION FUNCTIONS
     //==============================================================================
@@ -362,7 +362,7 @@ trait ObjectsSetTestsTrait
         // Return Generated Object Data
         return $this->generateObjectData($objectType, $field, $unik);
     }
-    
+
     /**
      * Verify if Test is Allowed for This Field
      *

@@ -38,14 +38,14 @@ class A04WidgetsTest extends AbstractBaseCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Action From Module
         $data = Splash::widgets();
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
         if (is_array($data)) {
-            $data   =   new ArrayObject($data);
+            $data = new ArrayObject($data);
         }
         //====================================================================//
         //   Verify Response
@@ -64,7 +64,7 @@ class A04WidgetsTest extends AbstractBaseCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_WIDGETS, __METHOD__);
@@ -72,7 +72,7 @@ class A04WidgetsTest extends AbstractBaseCase
         //   Verify Response
         $this->verifyResponse($data);
     }
-    
+
     /**
      * Test Loading Widgets List from Widgets Service
      *
@@ -85,7 +85,7 @@ class A04WidgetsTest extends AbstractBaseCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(SPL_S_WIDGETS, SPL_F_WIDGET_LIST, __METHOD__);
@@ -93,7 +93,7 @@ class A04WidgetsTest extends AbstractBaseCase
         //   Verify Response
         $this->verifyResponse($data);
     }
-    
+
     /**
      * Verify Client Response.
      *
@@ -112,7 +112,7 @@ class A04WidgetsTest extends AbstractBaseCase
             $this->assertInternalType(
                 "string",
                 $widgetType,
-                "Widgets Type is Not an String. (Given" . print_r($widgetType, true) . ")"
+                "Widgets Type is Not an String. (Given".print_r($widgetType, true).")"
             );
         }
     }

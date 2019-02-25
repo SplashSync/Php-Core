@@ -37,12 +37,12 @@ class SOAPInterface implements CommunicationInterface
      * @var string
      */
     protected $uri;
-    
+
     /**
      * @var array
      */
     protected $options;
-    
+
     /**
      * @var SoapClient
      */
@@ -71,7 +71,7 @@ class SOAPInterface implements CommunicationInterface
         $this->uri = Splash::input('SERVER_NAME')
                 ? Splash::input('SERVER_NAME')
                 : Splash::configuration()->WsHost;
-        
+
         //====================================================================//
         // Build Options Array
         $this->options = array(
@@ -80,14 +80,14 @@ class SOAPInterface implements CommunicationInterface
             'connection_timeout' => Splash::configuration()->WsTimout,
             'exceptions' => false,
         );
-        
+
         //====================================================================//
         // Complete Options with Http Auth if Needed
         if (is_scalar($httpUser) && !empty($httpUser) && is_scalar($httpPwd) && !empty($httpPwd)) {
             $this->options["login"] = $httpUser;
             $this->options["password"] = $httpPwd;
         }
-        
+
         //====================================================================//
         // Build Generic Soap Client
         $this->client = new SoapClient(null, $this->options);

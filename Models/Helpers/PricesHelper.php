@@ -63,20 +63,20 @@ class PricesHelper
         // Build Price Array
         $price = array("vat" => $vat, "code" => $code,"symbol" => $symbol,"name" => $name);
         if (!is_null($taxExcl)) {
-            $price["base"]  =    0;
-            $price["ht"]    =    $taxExcl;
-            $price["tax"]   =    $taxExcl * ($vat/100);
-            $price["ttc"]   =    $taxExcl * (1 + $vat/100);
+            $price["base"] = 0;
+            $price["ht"] = $taxExcl;
+            $price["tax"] = $taxExcl * ($vat / 100);
+            $price["ttc"] = $taxExcl * (1 + $vat / 100);
         } else {
-            $price["base"]  =    1;
-            $price["ht"]    =    $taxIncl / (1 + $vat/100);
-            $price["tax"]   =    $taxIncl - $price["ht"];
-            $price["ttc"]   =    $taxIncl;
+            $price["base"] = 1;
+            $price["ht"] = $taxIncl / (1 + $vat / 100);
+            $price["tax"] = $taxIncl - $price["ht"];
+            $price["ttc"] = $taxIncl;
         }
 
         return $price;
     }
-    
+
     /**
      * @abstract   Compare Two Price Array
      *
@@ -90,12 +90,12 @@ class PricesHelper
         //====================================================================//
         // Check Both Prices are valid
         if (!self::isValid($price1) || !self::isValid($price2)) {
-            Splash::log()->war(__FUNCTION__ . " : Given Prices are invalid");
+            Splash::log()->war(__FUNCTION__." : Given Prices are invalid");
             if (!self::isValid($price1)) {
-                Splash::log()->www(__FUNCTION__ . " Price 1", $price1);
+                Splash::log()->www(__FUNCTION__." Price 1", $price1);
             }
             if (!self::isValid($price2)) {
-                Splash::log()->www(__FUNCTION__ . " Price 2", $price2);
+                Splash::log()->www(__FUNCTION__." Price 2", $price2);
             }
 
             return false;
@@ -109,7 +109,7 @@ class PricesHelper
         // Compare Price
         return self::compareAmounts($price1, $price2);
     }
-    
+
     /**
      * @abstract   Compare Two Price Array without Validation
      *
@@ -148,7 +148,7 @@ class PricesHelper
         // Prices Are Identical
         return true;
     }
-    
+
     /**
      * @abstract   Verify Price field array
      *
@@ -176,10 +176,10 @@ class PricesHelper
         if (!self::isValidCurrency($price)) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * @abstract   Extract Data from Price Array
      *
@@ -200,7 +200,7 @@ class PricesHelper
         // Return Result
         return (double) $price[$key];
     }
-    
+
     /**
      * @abstract   Extract Price without VAT from Price Array
      *
@@ -224,7 +224,7 @@ class PricesHelper
     {
         return self::extract($price, 'ttc');
     }
-        
+
     /**
      * @abstract   Extract Price with VAT from Price Array
      *
@@ -236,7 +236,7 @@ class PricesHelper
     {
         return self::extract($price, 'vat');
     }
-    
+
     /**
      * @abstract   Extract Price VAT Ratio from Price Array
      *
@@ -248,7 +248,7 @@ class PricesHelper
     {
         return (double) self::extract($price, 'vat') / 100;
     }
-    
+
     /**
      * @abstract   Extract Price Tax Amount from Price Array
      *
@@ -260,7 +260,7 @@ class PricesHelper
     {
         return self::extract($price, 'tax');
     }
-    
+
     /**
      * @abstract   Verify Price Array Amount Infos are Available
      *
@@ -284,7 +284,7 @@ class PricesHelper
 
         return true;
     }
-    
+
     /**
      * @abstract   Verify Price Array Currency Infos are Available
      *

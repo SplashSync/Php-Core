@@ -15,8 +15,6 @@
 
 namespace Splash\Tests\Tools\Fields;
 
-use ArrayObject;
-
 /**
  * @abstract    DateTime Field : Date & Time as Text (Format Y-m-d G:i:s)
  *
@@ -28,8 +26,8 @@ class Oodatetime extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    const FORMAT        =   'DateTime';
-    
+    const FORMAT = 'DateTime';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -47,7 +45,7 @@ class Oodatetime extends Oovarchar implements FieldInterface
         //==============================================================================
         //      Verify Data is a Scalar
         if (!is_scalar($data)) {
-            return "Field Data is not a DateTime with right Format (" . SPL_T_DATETIMECAST . ").";
+            return "Field Data is not a DateTime with right Format (".SPL_T_DATETIMECAST.").";
         }
         //==============================================================================
         //      Verify Data is a DateTime Type
@@ -55,9 +53,9 @@ class Oodatetime extends Oovarchar implements FieldInterface
             return true;
         }
 
-        return "Field Data is not a DateTime with right Format (" . SPL_T_DATETIMECAST . ").";
+        return "Field Data is not a DateTime with right Format (".SPL_T_DATETIMECAST.").";
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -70,9 +68,9 @@ class Oodatetime extends Oovarchar implements FieldInterface
         //==============================================================================
         //      Generate a random DateTime
         $date = new \DateTime("now");
-        $date->modify('-' . mt_rand(1, 10) . ' months');
-        $date->modify('-' . mt_rand(1, 60) . ' minutes');
-        $date->modify('-' . mt_rand(1, 60) . ' seconds');
+        $date->modify('-'.mt_rand(1, 10).' months');
+        $date->modify('-'.mt_rand(1, 60).' minutes');
+        $date->modify('-'.mt_rand(1, 60).' seconds');
         //==============================================================================
         //      Return DateTime is Right Format
         return $date->format(SPL_T_DATETIMECAST);

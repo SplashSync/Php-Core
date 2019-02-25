@@ -23,7 +23,7 @@ use Splash\Models\Fields\FieldsManagerTrait;
 class ObjectsHelper
 {
     use FieldsManagerTrait;
-   
+
     /**
      * Create an Object Identifier String
      *
@@ -42,12 +42,12 @@ class ObjectsHelper
         if (empty($objectId)) {
             return false;
         }
-        
+
         //====================================================================//
         // Create & Return Field Id Data String
-        return   $objectId . IDSPLIT . $objectType;
+        return   $objectId.IDSPLIT.$objectType;
     }
-    
+
     /**
      * Retrieve Identifier from an Object Identifier String
      *

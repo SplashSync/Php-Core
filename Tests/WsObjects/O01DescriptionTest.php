@@ -41,13 +41,13 @@ class O01DescriptionTest extends ObjectsCase
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
         if (is_array($data)) {
-            $data   =   new ArrayObject($data);
+            $data = new ArrayObject($data);
         }
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
     }
-    
+
     /**
      * @dataProvider objectTypesProvider
      *
@@ -76,18 +76,18 @@ class O01DescriptionTest extends ObjectsCase
         //      Request definition without Sending ObjectType
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__);
     }
-    
+
     public function verifyResponse($data)
     {
         //====================================================================//
         //   Verify Response
         $this->assertNotEmpty($data, "Object Description is Empty");
         $this->assertInstanceOf("ArrayObject", $data, "Object Description is Not an ArrayObject");
-        
+
         //====================================================================//
         // All Informations are Available and is right format
         //====================================================================//
-        
+
         //====================================================================//
         // General Object definition
         $this->assertNotEmpty($data["type"], "Object Type is Empty");
@@ -103,7 +103,7 @@ class O01DescriptionTest extends ObjectsCase
         $this->assertIsSplashBool($data["allow_push_created"], "Allow Push Created Flag is Not a Bool.");
         $this->assertIsSplashBool($data["allow_push_updated"], "Allow Push Updated Flag is Not a Bool.");
         $this->assertIsSplashBool($data["allow_push_deleted"], "Allow Push Deleted Flag is Not a Bool.");
-        
+
         //====================================================================//
         // Object Default Configuration
         $this->assertIsSplashBool($data["enable_push_created"], "Enable Push Created Flag is Not a Bool.");

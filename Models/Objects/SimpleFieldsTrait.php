@@ -39,7 +39,7 @@ trait SimpleFieldsTrait
 
         return $this;
     }
-    
+
     /**
      *  @abstract     Common Reading of a Single Bool Field
      *
@@ -59,7 +59,7 @@ trait SimpleFieldsTrait
 
         return $this;
     }
-    
+
     /**
      *  @abstract     Common Reading of a Single Double Field
      *
@@ -79,7 +79,7 @@ trait SimpleFieldsTrait
 
         return $this;
     }
-    
+
     /**
      *  @abstract     Common Reading of a Single Bit Field
      *
@@ -100,7 +100,7 @@ trait SimpleFieldsTrait
 
         return $this;
     }
-    
+
     /**
      *  @abstract     Common Reading of a Single Field
      *                  => If Field Needs to be Updated, do Object Update & Set $this->update to true
@@ -124,7 +124,7 @@ trait SimpleFieldsTrait
 
         return $this;
     }
-    
+
     /**
      *  @abstract     Common Writing of a Single Field
      *
@@ -167,16 +167,16 @@ trait SimpleFieldsTrait
             //====================================================================//
             //  Update Field Data
             if ($fieldData) {
-                $this->{$objectName}->{$fieldName} =  $this->{$objectName}->{$fieldName} | (1 << $position);
+                $this->{$objectName}->{$fieldName} = $this->{$objectName}->{$fieldName} | (1 << $position);
             } else {
-                $this->{$objectName}->{$fieldName} =  $this->{$objectName}->{$fieldName} & ~ (1 << $position);
+                $this->{$objectName}->{$fieldName} = $this->{$objectName}->{$fieldName} & ~ (1 << $position);
             }
             $this->needUpdate($objectName);
         }
 
         return $this;
     }
-    
+
     /**
      * @abstract    Common reading of a Field using Generic Getters & Setters
      *
@@ -187,11 +187,11 @@ trait SimpleFieldsTrait
      */
     protected function getGeneric($fieldName, $objectName = "object")
     {
-        $this->out[$fieldName] = $this->{$objectName}->{ "get" . $fieldName}();
+        $this->out[$fieldName] = $this->{$objectName}->{ "get".$fieldName}();
 
         return $this;
     }
-    
+
     /**
      * @abstract    Common Writing of a Field using Generic Getters & Setters
      *
@@ -205,13 +205,13 @@ trait SimpleFieldsTrait
     {
         //====================================================================//
         //  Compare Field Data
-        $current    =   $this->{$objectName}->{ "get" . $fieldName}();
+        $current = $this->{$objectName}->{ "get".$fieldName}();
         if ($current == $fieldData) {
             return $this;
         }
         //====================================================================//
         //  Update Field Data
-        $this->{$objectName}->{ "set" . $fieldName}($fieldData);
+        $this->{$objectName}->{ "set".$fieldName}($fieldData);
         $this->needUpdate($objectName);
 
         return $this;

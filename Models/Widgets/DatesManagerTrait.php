@@ -27,7 +27,7 @@ trait DatesManagerTrait
     protected $DateInterval;
     protected $GroupBy;
     protected $LabelFormat;
-    
+
     //====================================================================//
     //  DATES MANAGEMENT
     //====================================================================//
@@ -37,72 +37,72 @@ trait DatesManagerTrait
         //====================================================================//
         //  Import Dates Parameters
         if (isset($params["DateStart"]) && !empty($params["DateStart"])) {
-            $this->DateStart    =   $params["DateStart"];
+            $this->DateStart = $params["DateStart"];
         } else {
-            $this->DateStart    =   (new \DateTime("first day of this month"))->format(SPL_T_DATECAST);
+            $this->DateStart = (new \DateTime("first day of this month"))->format(SPL_T_DATECAST);
         }
         if (isset($params["DateEnd"]) && !empty($params["DateEnd"])) {
-            $this->DateEnd      =   $params["DateEnd"];
+            $this->DateEnd = $params["DateEnd"];
         } else {
-            $this->DateEnd      =   (new \DateTime("last day of this month"))->format(SPL_T_DATECAST);
+            $this->DateEnd = (new \DateTime("last day of this month"))->format(SPL_T_DATECAST);
         }
         if (isset($params["GroupBy"]) && !empty($params["GroupBy"])) {
-            $this->GroupBy      =   $params["GroupBy"];
+            $this->GroupBy = $params["GroupBy"];
         } else {
-            $this->GroupBy      =   "d";
+            $this->GroupBy = "d";
         }
 
         //====================================================================//
         //  Generate Dates Formater String
         $this->importDatesFormat();
     }
-    
+
     protected function parseDatedData($inputs)
     {
-        $outputs       = array();
+        $outputs = array();
         if (!isset($this->DateStart) || !isset($this->DateEnd)) {
             return $outputs;
         }
-        
-        $start      = $current    = new \DateTime($this->DateStart);
-        $end        = new \DateTime($this->DateEnd);
-        
+
+        $start = $current = new \DateTime($this->DateStart);
+        $end = new \DateTime($this->DateEnd);
+
         while ($current < $end) {
             $key = $current->format($this->GroupBy);
 
             $outputs[] = array(
-                "label" =>  $current->format($this->LabelFormat),
-                "value" =>  (isset($inputs[$key]) ? $inputs[$key] : 0),
+                "label" => $current->format($this->LabelFormat),
+                "value" => (isset($inputs[$key]) ? $inputs[$key] : 0),
             );
-                    
-            $current    = $start->add($this->DateInterval);
+
+            $current = $start->add($this->DateInterval);
         }
 
         return $outputs;
     }
-    
+
     private function importDatesFormat()
     {
         //====================================================================//
         //  Generate Dates Formater String
         switch ($this->GroupBy) {
             case "m":
-                $this->LabelFormat  = "Y-m";
+                $this->LabelFormat = "Y-m";
                 $this->DateInterval = new \DateInterval("P1M");
 
                 break;
             case "d":
-                $this->LabelFormat  = "Y-m-d";
+                $this->LabelFormat = "Y-m-d";
                 $this->DateInterval = new \DateInterval("P1D");
 
                 break;
             case "h":
-                $this->LabelFormat  = "Y-m-d H:00";
+                $this->LabelFormat = "Y-m-d H:00";
                 $this->DateInterval = new \DateInterval("PT1H");
 
                 break;
             default:
-                $this->LabelFormat  = "Y-m";
+                $this->LabelFormat = "Y-m";
                 $this->DateInterval = new \DateInterval("P1M");
 
                 break;

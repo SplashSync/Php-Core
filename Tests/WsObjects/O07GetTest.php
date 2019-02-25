@@ -29,12 +29,12 @@ class O07GetTest extends ObjectsCase
     /**
      * @var array
      */
-    private $objectList     = array();
+    private $objectList = array();
 
     /**
      * @var array
      */
-    private $objectCount    = array();
+    private $objectCount = array();
 
     /**
      * @dataProvider objectFieldsProvider
@@ -46,7 +46,7 @@ class O07GetTest extends ObjectsCase
     public function testGetSingleFieldFromModule($testSequence, $objectType, $field)
     {
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Get next Available Object ID from Module
         $objectId = $this->getNextObjectId($objectType);
@@ -54,22 +54,22 @@ class O07GetTest extends ObjectsCase
         //====================================================================//
         //   Get Readable Object Fields List
         $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
-        
+
         //====================================================================//
         //   Execute Action Directly on Module
         $data = Splash::object($objectType)->get($objectId, $fields);
-        
+
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
         if (is_array($data)) {
-            $data   =   new ArrayObject($data);
+            $data = new ArrayObject($data);
         }
-        
+
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data, array($field), $objectId);
     }
-    
+
     /**
      * @dataProvider objectTypesProvider
      *
@@ -79,30 +79,30 @@ class O07GetTest extends ObjectsCase
     public function testGetAllFieldsFromModule($testSequence, $objectType)
     {
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Get next Available Object ID from Module
         $objectId = $this->getNextObjectId($objectType);
-        
+
         //====================================================================//
         //   Get Readable Object Fields List
         $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
-        
+
         //====================================================================//
         //   Execute Action Directly on Module
         $data = Splash::object($objectType)->get($objectId, $fields);
-        
+
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
         if (is_array($data)) {
-            $data   =   new ArrayObject($data);
+            $data = new ArrayObject($data);
         }
-        
+
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data, Splash::object($objectType)->fields(), $objectId);
     }
-    
+
     /**
      * @dataProvider objectTypesProvider
      *
@@ -112,15 +112,15 @@ class O07GetTest extends ObjectsCase
     public function testFromObjectsService($testSequence, $objectType)
     {
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Get next Available Object ID from Module
         $objectId = $this->getNextObjectId($objectType);
-        
+
         //====================================================================//
         //   Get Readable Object Fields List
         $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
-        
+
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(
@@ -129,7 +129,7 @@ class O07GetTest extends ObjectsCase
             __METHOD__,
             array( "type" => $objectType, "id" => $objectId, "fields" => $fields)
         );
-        
+
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data, Splash::object($objectType)->fields(), $objectId);
@@ -144,7 +144,7 @@ class O07GetTest extends ObjectsCase
     public function testFromObjectsServiceErrors($testSequence, $objectType)
     {
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //      Request definition without Sending ObjectType
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__);
@@ -184,16 +184,16 @@ class O07GetTest extends ObjectsCase
             //====================================================================//
             //   Get Object Count
             $this->objectCount[$objectType] = $list["meta"]["current"];
-            
+
             //====================================================================//
             //   Remove Meta Datats form Objects List
             unset($list["meta"]);
-            
+
             //====================================================================//
             //   Convert ArrayObjects
             $this->objectList[$objectType] = $list;
         }
-        
+
         //====================================================================//
         //   Verify Objects List is Not Empty
         if ($this->objectCount[$objectType] <= 0) {
@@ -201,14 +201,14 @@ class O07GetTest extends ObjectsCase
 
             return false;
         }
-        
+
         //====================================================================//
         //   Return First Object of List
         $nextObject = array_shift($this->objectList[$objectType]);
 
         return $nextObject["id"];
     }
-    
+
     public function verifyResponse($data, $fields, $objectId)
     {
         //====================================================================//
@@ -220,7 +220,7 @@ class O07GetTest extends ObjectsCase
         //   Verify Object Id is Present
         $this->assertArrayHasKey("id", $data, "Object Identifier ['id'] is not defined in returned Data Block.");
         $this->assertEquals($data["id"], $objectId, "Object Identifier ['id'] is different in returned Data Block.");
-        
+
         //====================================================================//
         //  Verify Field Data
         foreach ($fields as $field) {

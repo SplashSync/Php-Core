@@ -33,7 +33,7 @@ class C11LocalCoreClassTest extends TestCase
         //====================================================================//
 
         $parameters = Splash::local()->parameters();
-        
+
         //====================================================================//
         //   Verify Parameters
         $this->assertInternalType("array", $parameters, "Returned Local Parameters are Not inside an Array");
@@ -42,7 +42,7 @@ class C11LocalCoreClassTest extends TestCase
         $this->assertArrayHasKey("WsEncryptionKey", $parameters, "Local Parameter is Missing");
         $this->assertNotEmpty($parameters["WsIdentifier"], "Local Parameter WsIdentifier is Empty");
         $this->assertNotEmpty($parameters["WsEncryptionKey"], "Local Parameter WsEncryptionKey is Empty");
-        
+
         //====================================================================//
         //   Verify Module Parsing
         $this->assertTrue(
@@ -50,27 +50,27 @@ class C11LocalCoreClassTest extends TestCase
             "Local Parameter Module's Verifictaion failled."
         );
     }
-    
+
     public function testIncludesFunction()
     {
         //====================================================================//
         //   VERIFY LOCAL INCLUDES PASS & REPEATABLE
         //====================================================================//
-        for ($i=0; $i<5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->assertTrue(Splash::local()->includes(), "Local Include Must Return True & be repeatable.");
         }
     }
-    
+
     public function testSelfTestFunction()
     {
         //====================================================================//
         //   VERIFY LOCAL SELFTEST PASS & REPEATABLE
         //====================================================================//
-        for ($i=0; $i<5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->assertTrue(Splash::local()->selfTest(), "Local SelfTest Must Return True (Passed) & be repeatable.");
         }
     }
-    
+
     public function testInformationsFunction()
     {
         //====================================================================//
@@ -79,12 +79,12 @@ class C11LocalCoreClassTest extends TestCase
 
         //====================================================================//
         // Init Response Object
-        $input  = new ArrayObject(array("Dummy" => true), ArrayObject::ARRAY_AS_PROPS);
-        
+        $input = new ArrayObject(array("Dummy" => true), ArrayObject::ARRAY_AS_PROPS);
+
         //====================================================================//
         // Fetch Informations
         $output = Splash::local()->informations($input);
-        
+
         //====================================================================//
         //   Verify Informations
         $this->assertInstanceOf("ArrayObject", $output, "Returned Local Informations are Not inside an ArrayObject");
@@ -95,11 +95,11 @@ class C11LocalCoreClassTest extends TestCase
         $this->assertArrayHasKey("www", $output, "Local Informations is Missing");
         $this->assertArrayHasKey("email", $output, "Local Informations is Missing");
         $this->assertArrayHasKey("phone", $output, "Local Informations is Missing");
-        
+
         //====================================================================//
         //   Verify Module Informations are Still Present
         $this->assertArrayHasKey("Dummy", $output, "Splash Original Informations are Missing");
-        
+
         //====================================================================//
         //   Verify Module Parsing
         $this->assertNotEmpty(Splash::informations(), "Module Informations Reading failled.");

@@ -38,14 +38,14 @@ class A03ObjectsTest extends AbstractBaseCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-    
+
         //====================================================================//
         //   Execute Action From Module
         $data = Splash::objects();
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
         if (is_array($data)) {
-            $data   =   new \ArrayObject($data);
+            $data = new \ArrayObject($data);
         }
         //====================================================================//
         //   Verify Response
@@ -71,7 +71,7 @@ class A03ObjectsTest extends AbstractBaseCase
         //   Verify Response
         $this->verifyResponse($data);
     }
-    
+
     /**
      * Test Loading Objects List from Admin Service
      *
@@ -91,7 +91,7 @@ class A03ObjectsTest extends AbstractBaseCase
         //   Verify Response
         $this->verifyResponse($data);
     }
-    
+
     /**
      * Verify Client Response.
      *
@@ -110,7 +110,7 @@ class A03ObjectsTest extends AbstractBaseCase
             $this->assertInternalType(
                 "string",
                 $objectType,
-                "Objects Type is Not an String. (Given" . print_r($objectType, true) . ")"
+                "Objects Type is Not an String. (Given".print_r($objectType, true).")"
             );
         }
     }

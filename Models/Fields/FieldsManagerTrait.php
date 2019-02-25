@@ -509,7 +509,7 @@ trait FieldsManagerTrait
         //==============================================================================
         // Sort Main Contents
         ksort($inputArray);
-        
+
         return $inputArray;
     }
 }

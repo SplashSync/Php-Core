@@ -73,7 +73,7 @@ class XmlManager
         //====================================================================//
         // Create Transmition Object
         $tmp = new stdClass();
-        $tmp->SPLASH    =   $obj;
+        $tmp->SPLASH = $obj;
         //====================================================================//
         // Convert Object to XML Recursively
         $this->objectToXmlCore(self::$xml, $tmp);
@@ -84,7 +84,7 @@ class XmlManager
         // Output Result
         return self::$xml->outputMemory(true);
     }
-    
+
     /**
      * @abstract     Method to convert XML string into ArrayObject
      *
@@ -116,7 +116,7 @@ class XmlManager
     //====================================================================//
     //  XML Parser Low Level Core Functions
     //====================================================================//
-    
+
     /**
      * @abstract     Method to convert XML string into SimpleXmlElement Object
      *
@@ -138,7 +138,7 @@ class XmlManager
 
         return $result;
     }
-    
+
     /**
      * @abstract     Recursive Method to Object  XML string
      *
@@ -177,7 +177,7 @@ class XmlManager
                 // Safety Check
                 if (true != $xml->startElement($key)) {
                     $this->fault = "Xml Parser - Wrong StartElement Key "
-                            . ": " . print_r($key, true) . " Value : " . print_r($value, true);
+                            .": ".print_r($key, true)." Value : ".print_r($value, true);
                 }
                 //====================================================================//
                 // Recurcive Add Of This Array
@@ -193,14 +193,14 @@ class XmlManager
                 //====================================================================//
                 // Rename Numeric Keys
                 $key = self::keysFilter($key, 'string-');
-            
+
             //====================================================================//
             // Insert Numeric
             } elseif (is_numeric($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
                 $key = self::keysFilter($key, 'int-');
-            
+
             //====================================================================//
             // Insert Boolean
             } elseif (is_bool($value)) {
@@ -230,14 +230,14 @@ class XmlManager
         //====================================================================//
         // Convert Numeric Keys with Prefix
         if (is_numeric($key)) {
-            return $prefix . $key;
+            return $prefix.$key;
             //====================================================================//
         // Keap Scalar Keys
         }
-  
+
         return $key;
     }
-    
+
     /**
      * @abstract    Convert a SimpleXML object to an Array
      *
@@ -254,11 +254,11 @@ class XmlManager
         }
         //====================================================================//
         // Init Result
-        $result         =   array();
+        $result = array();
         //====================================================================//
         // Get First Level Childrens
-        $children       =   $element->children();
-        $isArrayElement =   false;
+        $children = $element->children();
+        $isArrayElement = false;
         //====================================================================//
         // For All Childrens
         foreach ($children as $elementName => $node) {
@@ -268,8 +268,8 @@ class XmlManager
             //====================================================================//
             // If Element Doesn't Already Exists => Store as Single Element
             if (!isset($result[$elementName])) {
-                $result[$elementName]    = array();
-                $result[$elementName]    = self::simpleXmlToArray($node);
+                $result[$elementName] = array();
+                $result[$elementName] = self::simpleXmlToArray($node);
 
                 continue;
             }
@@ -278,9 +278,9 @@ class XmlManager
             //====================================================================//
             // Convert Single Element to Array Element
             if (!is_array($result[$elementName])) {
-                $singleElement          =   $result[$elementName];       // Store Firts Element
-                $result[$elementName]    =   array();                    // Create New Array
-                $result[$elementName][]  =   $singleElement;             // Append To Array
+                $singleElement = $result[$elementName];       // Store Firts Element
+                $result[$elementName] = array();                    // Create New Array
+                $result[$elementName][] = $singleElement;             // Append To Array
             }
             //====================================================================//
             // Append Array Element
@@ -289,12 +289,12 @@ class XmlManager
         //====================================================================//
         // Return Single Element
         if (!$isArrayElement && '' == $children->getName()) {
-            $result =  base64_decode((string) $element, true);
+            $result = base64_decode((string) $element, true);
         }
 
         return $result;
     }
-    
+
     /**
      * @abstract    Convert a SimpleXML object to an ArrayObject
      *
@@ -311,11 +311,11 @@ class XmlManager
         }
         //====================================================================//
         // Init Result
-        $result             =   new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $result = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
         // Get First Level Childrens
-        $children           =   $element->children();
-        $isArrayElement     =   false;
+        $children = $element->children();
+        $isArrayElement = false;
         //====================================================================//
         // For All Childrens
         foreach ($children as $elementName => $node) {
@@ -325,8 +325,8 @@ class XmlManager
             //====================================================================//
             // If Element Doesn't Already Exists => Store as Single Element
             if (!isset($result[$elementName])) {
-                $result[$elementName]    = array();
-                $result[$elementName]    = self::simpleXmlToArrayObject($node);
+                $result[$elementName] = array();
+                $result[$elementName] = self::simpleXmlToArrayObject($node);
 
                 continue;
             }
@@ -335,9 +335,9 @@ class XmlManager
             //====================================================================//
             // Convert Single Element to Array Element
             if (!is_array($result[$elementName])) {
-                $singleElement           =   $result[$elementName];       // Store First Element
-                $result[$elementName]    =   array();                    // Create New Array
-                $result[$elementName][]  =   $singleElement;             // Append To Array
+                $singleElement = $result[$elementName];       // Store First Element
+                $result[$elementName] = array();                    // Create New Array
+                $result[$elementName][] = $singleElement;             // Append To Array
             }
             //====================================================================//
             // Append Array Element
@@ -346,7 +346,7 @@ class XmlManager
         //====================================================================//
         // Return Single Element
         if (!$isArrayElement && '' == $children->getName()) {
-            $result =  base64_decode((string) $element, true);
+            $result = base64_decode((string) $element, true);
         }
 
         return $result;

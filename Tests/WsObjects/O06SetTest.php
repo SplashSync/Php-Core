@@ -26,7 +26,7 @@ use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
 class O06SetTest extends ObjectsCase
 {
     use ObjectsSetTestsTrait;
-       
+
     /**
      * @dataProvider objectFieldsProvider
      *
@@ -40,12 +40,12 @@ class O06SetTest extends ObjectsCase
         //====================================================================//
         //   Load Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Set Test
         $this->coreTestSetSingleFieldFromModule($objectType, $field, $forceObjectId);
     }
-    
+
     /**
      * @dataProvider objectFieldsProvider
      *
@@ -59,7 +59,7 @@ class O06SetTest extends ObjectsCase
         //====================================================================//
         //   Load Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Set Test
         $this->coreTestSetSingleFieldFromService($objectType, $field, $forceObjectId);

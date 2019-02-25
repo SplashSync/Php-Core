@@ -28,10 +28,10 @@ class Oocurrency extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    const FORMAT        =   'Currency';
-    
-    public static $fakeData   =   array("EUR", "USD", "INR");
-    
+    const FORMAT = 'Currency';
+
+    public static $fakeData = array("EUR", "USD", "INR");
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -47,7 +47,7 @@ class Oocurrency extends Oovarchar implements FieldInterface
 
         return true;
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================

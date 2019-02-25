@@ -23,7 +23,6 @@ namespace Splash\Tests\Tools\Fields;
  * // $data["name"]["iso_code"]            =>      Value
  * // Where name is field name and code is a valid SPL_T_LANG Iso Language Code
  * //====================================================================//
- *
  */
 class Oomtext implements FieldInterface
 {
@@ -31,8 +30,8 @@ class Oomtext implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT        =   'MText';
-    
+    protected $FORMAT = 'MText';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -44,7 +43,7 @@ class Oomtext implements FieldInterface
     {
         return Oomvarchar::validate($data);
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -61,11 +60,11 @@ class Oomtext implements FieldInterface
 
         return $fake;
     }
-    
+
     //==============================================================================
     //      DATA COMPARATOR (OPTIONNAL)
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */

@@ -27,7 +27,7 @@ trait FieldsFactoryTrait
      * @var FieldsFactory
      */
     private static $fields;
-    
+
     /**
      * Get a singleton FieldsFactory Class
      * Access to Object Fields Creation Functions
@@ -41,15 +41,15 @@ trait FieldsFactoryTrait
         if (isset(self::$fields)) {
             return self::$fields;
         }
-        
+
         //====================================================================//
         // Initialize Class
-        self::$fields        = new FieldsFactory();
-        
+        self::$fields = new FieldsFactory();
+
         //====================================================================//
         //  Load Translation File
         Splash::translator()->load("objects");
-        
+
         return self::$fields;
     }
 }

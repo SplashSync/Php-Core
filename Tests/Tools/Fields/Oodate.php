@@ -26,8 +26,8 @@ class Oodate extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT           =   'Date';
-    
+    protected $FORMAT = 'Date';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -45,7 +45,7 @@ class Oodate extends Oovarchar implements FieldInterface
         //==============================================================================
         //      Verify Data is a Scalar
         if (!is_scalar($data)) {
-            return "Field Data is not a Date with right Format (" . SPL_T_DATECAST . ").";
+            return "Field Data is not a Date with right Format (".SPL_T_DATECAST.").";
         }
         //==============================================================================
         //      Verify Data is a DateTime Type
@@ -53,9 +53,9 @@ class Oodate extends Oovarchar implements FieldInterface
             return true;
         }
 
-        return "Field Data is not a Date with right Format (" . SPL_T_DATECAST . ").";
+        return "Field Data is not a Date with right Format (".SPL_T_DATECAST.").";
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -68,8 +68,8 @@ class Oodate extends Oovarchar implements FieldInterface
         //==============================================================================
         //      Generate a random DateTime
         $date = new \DateTime("now");
-        $date->modify('-' . mt_rand(1, 24) . ' months');
-        $date->modify('-' . mt_rand(1, 30) . ' days');
+        $date->modify('-'.mt_rand(1, 24).' months');
+        $date->modify('-'.mt_rand(1, 30).' days');
         //==============================================================================
         //      Return DateTime is Right Format
         return $date->format(SPL_T_DATECAST);

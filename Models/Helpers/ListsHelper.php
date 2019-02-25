@@ -23,11 +23,11 @@ use Splash\Models\Fields\FieldsManagerTrait;
 class ListsHelper
 {
     use FieldsManagerTrait;
-    
+
     //====================================================================//
     // FIELDS LIST IDENTIFIERS MANAGEMENT
     //====================================================================//
-   
+
     /**
      * @abstract   Create a List Field Identifier String
      *
@@ -48,13 +48,13 @@ class ListsHelper
         }
         //====================================================================//
         // Create & Return List Field Id Data String
-        return   $fieldName . LISTSPLIT . $listName;
+        return   $fieldName.LISTSPLIT.$listName;
     }
-    
+
     //====================================================================//
     // FIELDS LIST DATA MANAGEMENT
     //====================================================================//
-    
+
     /**
      * @abstract   Validate & Init List before Adding Data
      *
@@ -89,8 +89,6 @@ class ListsHelper
      * @param string     $fieldName List Field Identifier String
      * @param int|string $key       List Item Index Key
      * @param mixed      $itemData  Item Data
-     *
-     * @return void
      */
     public function insert(&$buffer, $listName, $fieldName, $key, $itemData)
     {

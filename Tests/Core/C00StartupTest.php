@@ -27,15 +27,15 @@ use Splash\Tests\Tools\TestCase;
  */
 class C00StartupTest extends TestCase
 {
-    const   SPLIT   =   "----------------------------------------------------------------";
-      
-    const   SPLASH1 =   " ______     ______   __         ______     ______     __  __    ";
-    const   SPLASH2 =   "/\\  ___\\   /\\  == \\ /\\ \\       /\\  __ \\   /\\  ___\\   /\\ \\_\\ \\   ";
-    const   SPLASH3 =   "\\ \\___  \\  \\ \\  _-/ \\ \\ \\____  \\ \\  __ \\  \\ \\___  \\  \\ \\  __ \\  ";
-    const   SPLASH4 =   " \\/\\_____\\  \\ \\_\\    \\ \\_____\\  \\ \\_\\ \\_\\  \\/\\_____\\  \\ \\_\\ \\_\\ ";
-    const   SPLASH5 =   "  \\/_____/   \\/_/     \\/_____/   \\/_/\\/_/   \\/_____/   \\/_/\\/_/ ";
-    const   SPLASH6 =   "                                                                ";
-            
+    const   SPLIT = "----------------------------------------------------------------";
+
+    const   SPLASH1 = " ______     ______   __         ______     ______     __  __    ";
+    const   SPLASH2 = "/\\  ___\\   /\\  == \\ /\\ \\       /\\  __ \\   /\\  ___\\   /\\ \\_\\ \\   ";
+    const   SPLASH3 = "\\ \\___  \\  \\ \\  _-/ \\ \\ \\____  \\ \\  __ \\  \\ \\___  \\  \\ \\  __ \\  ";
+    const   SPLASH4 = " \\/\\_____\\  \\ \\_\\    \\ \\_____\\  \\ \\_\\ \\_\\  \\/\\_____\\  \\ \\_\\ \\_\\ ";
+    const   SPLASH5 = "  \\/_____/   \\/_/     \\/_____/   \\/_/\\/_/   \\/_____/   \\/_/\\/_/ ";
+    const   SPLASH6 = "                                                                ";
+
     /**
      * Display of Tested Sequences | Objects | Fields
      */
@@ -46,7 +46,7 @@ class C00StartupTest extends TestCase
         //====================================================================//
 
         echo PHP_EOL;
-        
+
         echo Logger::getConsoleLine("", self::SPLIT, Logger::CMD_COLOR_MSG);
         echo Logger::getConsoleLine("", self::SPLASH1, Logger::CMD_COLOR_WAR);
         echo Logger::getConsoleLine("", self::SPLASH2, Logger::CMD_COLOR_WAR);
@@ -55,7 +55,7 @@ class C00StartupTest extends TestCase
         echo Logger::getConsoleLine("", self::SPLASH5, Logger::CMD_COLOR_WAR);
         echo Logger::getConsoleLine("", self::SPLASH6, Logger::CMD_COLOR_WAR);
         echo Logger::getConsoleLine("", self::SPLIT, Logger::CMD_COLOR_MSG);
-        
+
         //====================================================================//
         //   TEST MAIN INFORMATIONS
         //====================================================================//
@@ -63,13 +63,13 @@ class C00StartupTest extends TestCase
         $this->displayTestedObjects();
         $this->displayTestedSequences();
         $this->displayFilteredFields();
-        
+
         echo Logger::getConsoleLine("", self::SPLIT, Logger::CMD_COLOR_MSG);
-        echo PHP_EOL . ".";
-        
+        echo PHP_EOL.".";
+
         $this->assertTrue(true);
     }
-    
+
     /**
      * Display of Tested Objects List
      */
@@ -78,7 +78,7 @@ class C00StartupTest extends TestCase
         //====================================================================//
         //   TESTED OBJECTS
         //====================================================================//
-        $objectTypes    =   Splash::objects();
+        $objectTypes = Splash::objects();
         if (!is_array($objectTypes)) {
             echo Logger::getConsoleLine(" !! Invalid Objects List !! ", " - Tested Objects ", Logger::CMD_COLOR_DEB);
 
@@ -93,7 +93,7 @@ class C00StartupTest extends TestCase
         }
         echo Logger::getConsoleLine(implode(" | ", $objectTypes), "- Tested Objects: ", Logger::CMD_COLOR_DEB);
     }
-    
+
     /**
      * Display of Tested Sequences List
      */
@@ -102,12 +102,12 @@ class C00StartupTest extends TestCase
         //====================================================================//
         //   TESTED SEQUENCES
         //====================================================================//
-        
+
         //====================================================================//
         // Check if Local Tests Sequences are defined
-        $testSequences  =   "None";
+        $testSequences = "None";
         if (!empty(Splash::local()->testSequences("List"))) {
-            $testSequences  =   Splash::local()->testSequences("List");
+            $testSequences = Splash::local()->testSequences("List");
         }
         if ("None" === $testSequences) {
             return;
@@ -119,7 +119,7 @@ class C00StartupTest extends TestCase
                 unset($testSequences[$key]);
             }
         }
-        
+
         echo Logger::getConsoleLine(implode(" | ", $testSequences), "- Test Sequences: ", Logger::CMD_COLOR_DEB);
     }
 
@@ -131,7 +131,7 @@ class C00StartupTest extends TestCase
         //====================================================================//
         //   FILTERED FIELDS
         //====================================================================//
-        
+
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
         if (defined("SPLASH_FIELDS") && is_scalar(SPLASH_FIELDS) && !empty(explode(",", (string) SPLASH_FIELDS))) {

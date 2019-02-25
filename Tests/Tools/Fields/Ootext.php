@@ -24,7 +24,7 @@ class Ootext implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT        =   'Text';
+    protected $FORMAT = 'Text';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -38,10 +38,10 @@ class Ootext implements FieldInterface
         if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
-        
+
         return true;
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -53,11 +53,11 @@ class Ootext implements FieldInterface
     {
         return Oovarchar::fake($settings);
     }
-    
+
     //==============================================================================
     //      DATA COMPARATOR (OPTIONNAL)
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */

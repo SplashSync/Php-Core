@@ -36,7 +36,7 @@ class O00ObjectBaseTest extends ObjectsCase
     public function testLockFeature($testSequence, $objectType)
     {
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   FOR NEW OBJECTS
         //====================================================================//
@@ -46,7 +46,7 @@ class O00ObjectBaseTest extends ObjectsCase
         $this->assertTrue(Splash::object($objectType)->isLocked());
         Splash::object($objectType)->unLock();
         $this->assertFalse(Splash::object($objectType)->isLocked());
-        
+
         //====================================================================//
         //   FOR EXISTING OBJECTS
         //====================================================================//
@@ -60,7 +60,7 @@ class O00ObjectBaseTest extends ObjectsCase
         $this->assertTrue(Splash::object($objectType)->isLocked($intObjectId));
         Splash::object($objectType)->unLock($intObjectId);
         $this->assertFalse(Splash::object($objectType)->isLocked($intObjectId));
-        
+
         //====================================================================//
         //  String IDs
         $strObjectId = base64_encode((string) rand((int) 1E3, (int) 1E4));

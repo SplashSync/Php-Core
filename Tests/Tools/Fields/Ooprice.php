@@ -34,7 +34,6 @@ use ArrayObject;
  * // $data["price"]["name"]           =>  STRING    Currency Name
  * // Where code field is a valid SPL_T_CURRENCY Iso Currency Code
  * //====================================================================//
- *
  */
 class Ooprice implements FieldInterface
 {
@@ -42,8 +41,8 @@ class Ooprice implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT        =   'Price';
-    
+    protected $FORMAT = 'Price';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -69,13 +68,13 @@ class Ooprice implements FieldInterface
         if (!self::validateContentsAvailablility($data)) {
             return self::validateContentsAvailablility($data);
         }
-        
+
         //====================================================================//
         // Check Contents Type
         if (!self::validateCurrency($data)) {
             return self::validateCurrency($data);
         }
-        
+
         //====================================================================//
         // Check Contents Type
         if (!self::validateContentsTypes($data)) {
@@ -84,7 +83,7 @@ class Ooprice implements FieldInterface
 
         return true;
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -94,23 +93,23 @@ class Ooprice implements FieldInterface
      */
     public static function fake($settings)
     {
-        $price      =   mt_rand(1000, 100000)/100;
-        $currency   =   !empty($settings["Currency"])       ?   $settings["Currency"]       :"EUR";
-        $symbol     =   !empty($settings["CurrencySymbol"]) ?   $settings["CurrencySymbol"] :"&euro";
-        $vat        =   isset($settings["VAT"])             ?   $settings["VAT"]            :20;
-        $type       =   !empty($settings["PriceBase"])      ?   $settings["PriceBase"]      :"HT";
-        
+        $price = mt_rand(1000, 100000) / 100;
+        $currency = !empty($settings["Currency"])       ?   $settings["Currency"]       :"EUR";
+        $symbol = !empty($settings["CurrencySymbol"]) ?   $settings["CurrencySymbol"] :"&euro";
+        $vat = isset($settings["VAT"])             ?   $settings["VAT"]            :20;
+        $type = !empty($settings["PriceBase"])      ?   $settings["PriceBase"]      :"HT";
+
         if ("HT" == $type) {
             return  self::encodePrice((double) $price, (double) $vat, null, $currency, $symbol, "");
         }
-  
+
         return  self::encodePrice(null, (double) $vat, (double) $price, $currency, $symbol, "");
     }
-    
+
     //==============================================================================
     //      DATA COMPARATOR (OPTIONNAL)
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */
@@ -136,11 +135,11 @@ class Ooprice implements FieldInterface
         // Prices Are Identical
         return true;
     }
-    
+
     //====================================================================//
     //  PRICE TYPES MANAGEMENT
     //====================================================================//
-    
+
     /**
      * @abstract    Build a new price field array
      *
@@ -158,33 +157,33 @@ class Ooprice implements FieldInterface
         //====================================================================//
         // Safety Checks
         if (!is_double($taxExcl) && !is_double($taxIncl)) {
-            return __FUNCTION__ . "Price Value is Invalid";
+            return __FUNCTION__."Price Value is Invalid";
         }
         if (is_double($taxExcl) && is_double($taxIncl)) {
-            return __FUNCTION__ . "Price Value is Invalid";
+            return __FUNCTION__."Price Value is Invalid";
         }
         if (!is_double($vat)) {
-            return __FUNCTION__ . "Price VAT is Invalid";
+            return __FUNCTION__."Price VAT is Invalid";
         }
-        
+
         //====================================================================//
         // Build Price Array
         $price = array("vat" => $vat, "code" => $code,"symbol" => $pic,"name" => $name);
         if (is_double($taxExcl)) {
-            $price["base"]  =    0;
-            $price["ht"]    =    $taxExcl;
-            $price["tax"]   =    $taxExcl * ($vat/100);
-            $price["ttc"]   =    $taxExcl * (1 + $vat/100);
+            $price["base"] = 0;
+            $price["ht"] = $taxExcl;
+            $price["tax"] = $taxExcl * ($vat / 100);
+            $price["ttc"] = $taxExcl * (1 + $vat / 100);
         } else {
-            $price["base"]  =    1;
-            $price["ht"]    =    $taxIncl / (1 + $vat/100);
-            $price["tax"]   =    $taxIncl - $price["ht"];
-            $price["ttc"]   =    $taxIncl;
+            $price["base"] = 1;
+            $price["ht"] = $taxIncl / (1 + $vat / 100);
+            $price["tax"] = $taxIncl - $price["ht"];
+            $price["ttc"] = $taxIncl;
         }
 
         return $price;
     }
-    
+
     private static function validateContentsAvailablility($price)
     {
         //====================================================================//
@@ -210,10 +209,10 @@ class Ooprice implements FieldInterface
         if (!array_key_exists("tax", $price)) {
             return "Price Field => 'tax' total is missing.";
         }
-        
+
         return true;
     }
-    
+
     private static function validateCurrency($price)
     {
         //====================================================================//
@@ -227,10 +226,10 @@ class Ooprice implements FieldInterface
         if (!array_key_exists("name", $price)) {
             return "Price Field => Currency 'name' is missing.";
         }
-        
+
         return true;
     }
-    
+
     private static function validateContentsTypes($price)
     {
         //====================================================================//
@@ -247,7 +246,7 @@ class Ooprice implements FieldInterface
 
         return true;
     }
-    
+
     private static function compareAmounts($source, $target, $settings)
     {
         //====================================================================//
@@ -270,7 +269,7 @@ class Ooprice implements FieldInterface
 
         return true;
     }
-    
+
     private static function compareCurrency($source, $target)
     {
         //====================================================================//
@@ -287,7 +286,7 @@ class Ooprice implements FieldInterface
 
         return true;
     }
-    
+
     private static function isEqualFloat($source, $target, $settings)
     {
         //====================================================================//

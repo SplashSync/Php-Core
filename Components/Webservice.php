@@ -102,7 +102,7 @@ class Webservice
         } else {
             $this->host = self::SPLASHHOST;
         }
-        
+
         //====================================================================//
         // If Http Auth is Required => Setup User & Password
         if (isset(Splash::configuration()->HttpAuth) && !empty(Splash::configuration()->HttpAuth)) {
@@ -580,7 +580,7 @@ class Webservice
         if (empty($this->key)) {
             return Splash::log()->err('ErrWsNoKey');
         }
-        
+
         //====================================================================//
         // Verify Http Auth Configuration
         if ($this->httpAuth) {
@@ -591,7 +591,7 @@ class Webservice
                 return Splash::log()->err('ErrWsNoHttpPwd');
             }
         }
-        
+
         return true;
     }
 

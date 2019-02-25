@@ -37,37 +37,37 @@ class SelfTestTemplate extends AbstractWidget
      *
      * @var array
      */
-    public static $OPTIONS       = array(
-        "Width"     =>      self::SIZE_DEFAULT,
-        'UseCache'      =>  true,
-        'CacheLifeTime' =>  1,
+    public static $OPTIONS = array(
+        "Width" => self::SIZE_DEFAULT,
+        'UseCache' => true,
+        'CacheLifeTime' => 1,
     );
-    
+
     /**
      * Widget Name
      *
      * @var string
      */
-    protected static $NAME            =  "Server SelfTest";
-    
+    protected static $NAME = "Server SelfTest";
+
     /**
      * Widget Description
      *
      * @var string
      */
-    protected static $DESCRIPTION     =  "Results of your Server SelfTests";
-    
+    protected static $DESCRIPTION = "Results of your Server SelfTests";
+
     /**
      * Widget Icon (FontAwesome or Glyph ico tag)
      *
      * @var string
      */
-    protected static $ICO     =  "fa fa-info-circle";
-    
+    protected static $ICO = "fa fa-info-circle";
+
     //====================================================================//
     // Class Main Functions
     //====================================================================//
-    
+
     /**
      * Return Widget Customs Options
      *
@@ -77,7 +77,7 @@ class SelfTestTemplate extends AbstractWidget
     {
         return self::$OPTIONS;
     }
-        
+
     /**
      * {@inheritdoc}
      *
@@ -88,19 +88,19 @@ class SelfTestTemplate extends AbstractWidget
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        
+
         //====================================================================//
         // Setup Widget Core Informations
         //====================================================================//
 
         $this->setTitle($this->getName());
         $this->setIcon($this->getIcon());
-        
+
         //====================================================================//
         // Build Intro Text Block
         //====================================================================//
         $this->buildIntroBlock();
-        
+
         //====================================================================//
         // Build Inputs Block
         //====================================================================//
@@ -117,7 +117,7 @@ class SelfTestTemplate extends AbstractWidget
         // Publish Widget
         return $this->render();
     }
-        
+
     //====================================================================//
     // Blocks Generation Functions
     //====================================================================//
@@ -131,7 +131,7 @@ class SelfTestTemplate extends AbstractWidget
         // Into Text Block
         $this->blocksFactory()->addTextBlock("This widget show results of Local Server SelfTest");
     }
-    
+
     /**
      * Block Building - Notifications Parameters
      */

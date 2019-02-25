@@ -25,7 +25,7 @@ class ImagesHelper
     //====================================================================//
     //  IMAGE FIELDS MANAGEMENT
     //====================================================================//
-    
+
     /**
      * Build a new image field array
      *
@@ -50,17 +50,17 @@ class ImagesHelper
             return Splash::log()->err("ErrImgNoPath", __FUNCTION__);
         }
 
-        $fullPath   =   $filePath . $fileName;
+        $fullPath = $filePath.$fileName;
         //====================================================================//
         // Safety Checks - Validate Image
         if (!file_exists($fullPath)) {
             return Splash::log()->err("ErrImgNoPath", __FUNCTION__, $fullPath);
         }
-        $dimensions =   getimagesize($fullPath);
+        $dimensions = getimagesize($fullPath);
         if (empty($dimensions)) {
             return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $fullPath);
         }
-        
+
         //====================================================================//
         // Build Image Array
         $image = array();
@@ -68,28 +68,28 @@ class ImagesHelper
         // ADD MAIN INFOS
         //====================================================================//
         // Image Name
-        $image["name"]          = $name;
+        $image["name"] = $name;
         //====================================================================//
         // Image Filename
-        $image["filename"]      = $fileName;
+        $image["filename"] = $fileName;
         //====================================================================//
         // Image Full Path
-        $image["path"]          = $fullPath;
+        $image["path"] = $fullPath;
         //====================================================================//
         // Image Publics Url
-        $image["url"]           = $publicUrl;
+        $image["url"] = $publicUrl;
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
         // Images Informations
-        $image["width"]         = $dimensions[0];
-        $image["height"]        = $dimensions[1];
-        $image["md5"]           = md5_file($fullPath);
-        $image["size"]          = filesize($fullPath);
-        
+        $image["width"] = $dimensions[0];
+        $image["height"] = $dimensions[1];
+        $image["md5"] = md5_file($fullPath);
+        $image["size"] = filesize($fullPath);
+
         return $image;
     }
-    
+
     /**
      * Build a new image field array
      *
@@ -111,7 +111,7 @@ class ImagesHelper
         }
         //====================================================================//
         // Safety Checks - Validate Image
-        $dimensions =   getimagesize($absoluteUrl);
+        $dimensions = getimagesize($absoluteUrl);
         if (empty($dimensions)) {
             return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $absoluteUrl);
         }
@@ -122,28 +122,28 @@ class ImagesHelper
         // ADD MAIN INFOS
         //====================================================================//
         // Image Name
-        $image["name"]          = $name;
+        $image["name"] = $name;
         //====================================================================//
         // Image Filename
-        $image["filename"]      = basename((string) parse_url($absoluteUrl, PHP_URL_PATH));
+        $image["filename"] = basename((string) parse_url($absoluteUrl, PHP_URL_PATH));
         //====================================================================//
         // Image Full Path
-        $image["path"]          = $absoluteUrl;
+        $image["path"] = $absoluteUrl;
         //====================================================================//
         // Image Publics Url
-        $image["url"]           = $publicUrl;
+        $image["url"] = $publicUrl;
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
         // Images Informations
-        $image["width"]         = $dimensions[0];
-        $image["height"]        = $dimensions[1];
-        $image["md5"]           = md5_file($absoluteUrl);
-        $image["size"]          = self::getRemoteFileSize($absoluteUrl);
+        $image["width"] = $dimensions[0];
+        $image["height"] = $dimensions[1];
+        $image["md5"] = md5_file($absoluteUrl);
+        $image["size"] = self::getRemoteFileSize($absoluteUrl);
 
         return $image;
     }
-    
+
     /**
      * Uses CURL to GET Remote Image Once
      *
@@ -168,10 +168,10 @@ class ImagesHelper
         $resp = curl_exec($curl);
         // Close request to clear up some resources
         curl_close($curl);
-        
+
         return (false != $resp);
     }
-    
+
     /**
      * Ues CURL to detect Remote Image Size
      *
@@ -185,7 +185,7 @@ class ImagesHelper
         if (!$result) {
             return 0;
         }
-        
+
         curl_setopt($result, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($result, CURLOPT_HEADER, true);
         curl_setopt($result, CURLOPT_NOBODY, true);
@@ -193,7 +193,7 @@ class ImagesHelper
         curl_exec($result);
         $imageSize = curl_getinfo($result, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         curl_close($result);
-        
+
         return (int) $imageSize;
     }
 }

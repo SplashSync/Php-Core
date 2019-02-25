@@ -32,7 +32,7 @@ class Local implements LocalClassInterface
     //====================================================================//
     // Class Constructor
     //====================================================================//
-        
+
     /**
      *      @abstract       Class Constructor (Used only if localy necessary)
      *
@@ -50,7 +50,7 @@ class Local implements LocalClassInterface
     //  MANDATORY CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
-    
+
     /**
      *  @abstract       Return Local Server Parameters as Array
      *
@@ -69,7 +69,7 @@ class Local implements LocalClassInterface
     {
         return array();
     }
-    
+
     /**
      * @abstract       Include Local Includes Files
      *
@@ -95,14 +95,14 @@ class Local implements LocalClassInterface
         //====================================================================//
         }
         // NOTHING TO DO
-        
+
         //====================================================================//
         // When Library is called in both client & server mode
         //====================================================================//
 
         return true;
     }
-           
+
     /**
      * @abstract       Return Local Server Self Test Result
      *
@@ -121,7 +121,7 @@ class Local implements LocalClassInterface
     {
         return true;
     }
-    
+
     /**
      *  @abstract   Update Server Informations with local Data
      *
@@ -141,40 +141,40 @@ class Local implements LocalClassInterface
 
         //====================================================================//
         // Company Informations
-        $response->company          =   "...";
-        $response->address          =   "...";
-        $response->zip              =   "...";
-        $response->town             =   "...";
-        $response->country          =   "...";
-        $response->www              =   "...";
-        $response->email            =   "...";
-        $response->phone            =   "...";
-        
+        $response->company = "...";
+        $response->address = "...";
+        $response->zip = "...";
+        $response->town = "...";
+        $response->country = "...";
+        $response->www = "...";
+        $response->email = "...";
+        $response->phone = "...";
+
         //====================================================================//
         // Server Logo & Images
-        $response->icoraw           =   Splash::file()->readFileContents(
-            dirname(dirname(__DIR__)) . "/img/Splash-ico.png"
+        $response->icoraw = Splash::file()->readFileContents(
+            dirname(dirname(__DIR__))."/img/Splash-ico.png"
         );
-        $response->logourl          =   "https://www.splashsync.com/bundles/theme/img/splash-logo.png";
-        
+        $response->logourl = "https://www.splashsync.com/bundles/theme/img/splash-logo.png";
+
         //====================================================================//
         // Server Informations
-        $response->servertype       =   "Splash Php Core";
-        $response->serverurl        =   "https://www.splashsync.com";
-        
+        $response->servertype = "Splash Php Core";
+        $response->serverurl = "https://www.splashsync.com";
+
         //====================================================================//
         // Current Module Version
-        $response->moduleversion    =   SPLASH_VERSION;
-        
+        $response->moduleversion = SPLASH_VERSION;
+
         return $response;
     }
-    
+
     //====================================================================//
     // *******************************************************************//
     //  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
-    
+
     /**
      * @abstract       Return Local Server Test Sequences as Aarray
      *
@@ -204,7 +204,7 @@ class Local implements LocalClassInterface
                 return array("Sequence1", "Sequence2" );
         }
     }
-    
+
     /**
      *  @abstract       Return Local Server Test Parameters as Array
      *
@@ -226,7 +226,7 @@ class Local implements LocalClassInterface
         return array();
         // CHANGE SOMETHING
     }
-    
+
     //====================================================================//
 // *******************************************************************//
 // Place Here Any SPECIFIC or COMMON Local Functions

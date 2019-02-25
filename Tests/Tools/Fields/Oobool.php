@@ -24,7 +24,7 @@ class Oobool implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT        =   'Bool';
+    protected $FORMAT = 'Bool';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -50,7 +50,7 @@ class Oobool implements FieldInterface
         //==============================================================================
         //      Verify Data is an Int as Bool
         if (is_scalar($data)) {
-            if (("0" === $data)|| ("1" === $data)) {
+            if (("0" === $data) || ("1" === $data)) {
                 return true;
             }
         }
@@ -59,10 +59,10 @@ class Oobool implements FieldInterface
                 return true;
             }
         }
-        
+
         return "Field Data is not a Boolean.";
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -72,9 +72,9 @@ class Oobool implements FieldInterface
      */
     public static function fake($settings)
     {
-        return (mt_rand()%2)?true:false;
+        return (mt_rand() % 2)?true:false;
     }
-    
+
     /**
      * {@inheritdoc}
      */

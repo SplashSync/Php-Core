@@ -28,7 +28,7 @@ trait ImagesTrait
      * @var ImagesHelper
      */
     private static $ImagesHelper;
-    
+
     /**
      * Get a singleton List Helper Class
      *
@@ -41,7 +41,7 @@ trait ImagesTrait
             return self::$ImagesHelper;
         }
         // Initialize Class
-        self::$ImagesHelper        = new ImagesHelper();
+        self::$ImagesHelper = new ImagesHelper();
         // Return Helper Class
         return self::$ImagesHelper;
     }

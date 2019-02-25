@@ -39,20 +39,20 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Action Directly on Module
         $data = Splash::object($objectType)->fields();
         //====================================================================//
         //   Module May Return an Array (ArrayObject created by WebService)
         if (is_array($data)) {
-            $data   =   new ArrayObject($data);
+            $data = new ArrayObject($data);
         }
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
     }
-    
+
     /**
      * Test Reading Object Fields from Objects Service
      *
@@ -66,7 +66,7 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(
@@ -75,7 +75,7 @@ class O02FieldsTest extends ObjectsCase
             __METHOD__,
             array( "id" => null, "type" => $objectType)
         );
-        
+
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
@@ -93,12 +93,12 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //      Request definition without Sending ObjectType
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__);
     }
-    
+
     /**
      * Verify Client Response.
      *
@@ -110,7 +110,7 @@ class O02FieldsTest extends ObjectsCase
         //   Verify Response
         $this->assertNotEmpty($data, "Object Fields List is Empty");
         $this->assertInstanceOf("ArrayObject", $data, "Object Fields List is Not an ArrayObject");
-        
+
         //====================================================================//
         // All Fields Definitions are is right format
         //====================================================================//
@@ -121,7 +121,7 @@ class O02FieldsTest extends ObjectsCase
             $this->verifyFieldAssociations($fieldData, $data);
         }
     }
-    
+
     /**
      * @abstract    Verify Main Field Informations are in right format
      *
@@ -134,30 +134,30 @@ class O02FieldsTest extends ObjectsCase
         $this->assertArrayInternalType($field, "type", "string", "Field Type");
         $this->assertNotEmpty(
             self::isValidType($field["type"]),
-            "Field Type '" . $field["type"] . "' is not a Valid Splash Field Type."
+            "Field Type '".$field["type"]."' is not a Valid Splash Field Type."
         );
-        
+
         //====================================================================//
         // Remove List Name if List Fields Type
         if (self::isListField($field["type"])) {
-            $fieldListType  = self::isListField($field["type"]);
-            $fieldType      = $fieldListType["fieldname"];
+            $fieldListType = self::isListField($field["type"]);
+            $fieldType = $fieldListType["fieldname"];
         } else {
-            $fieldType      = $field["type"];
+            $fieldType = $field["type"];
         }
-                
+
         //====================================================================//
         // If Field is Id Field => Verify The given Object Type Exists
         if (self::isValidType($fieldType) && self::isIdField($fieldType)) {
-            $objectId   =   self::isIdField($fieldType);
-            
+            $objectId = self::isIdField($fieldType);
+
             $this->assertTrue(
                 in_array($objectId["ObjectType"], Splash::objects(), true),
-                "Object ID Field of Type '" . $objectId["ObjectType"] . "' is not a Valid. "
-                    . "This Object Type was not found."
+                "Object ID Field of Type '".$objectId["ObjectType"]."' is not a Valid. "
+                    ."This Object Type was not found."
             );
         }
-        
+
         //====================================================================//
         // All Required Informations are Available and is right format
         $this->assertArrayInternalType($field, "id", "string", "Field Identifier");
@@ -170,7 +170,7 @@ class O02FieldsTest extends ObjectsCase
         $this->assertArraySplashArray($field, "choices", "Field Possible Values [key => xxx, value => yyy] ");
         $this->assertArraySplashArray($field, "options", "Field Faker Options [key => value]");
     }
-    
+
     public function verifyFieldMetaData($field)
     {
         //====================================================================//
@@ -179,7 +179,7 @@ class O02FieldsTest extends ObjectsCase
             $this->assertArrayInternalType($field, "itemtype", "string", "Field MicroData URL");
             $this->assertArrayInternalType($field, "itemprop", "string", "Field MicroData Property");
         }
-        
+
         //====================================================================//
         // Field Tag
         if (array_key_exists("tag", $field) && !empty($field["tag"])) {
@@ -188,12 +188,12 @@ class O02FieldsTest extends ObjectsCase
         if (array_key_exists("tag", $field) && array_key_exists("itemtype", $field) && !empty($field["itemtype"])) {
             $this->assertEquals(
                 $field["tag"],
-                md5($field["itemprop"] . IDSPLIT . $field["itemtype"]),
+                md5($field["itemprop"].IDSPLIT.$field["itemtype"]),
                 "Field Tag do not match with defined MicroData. Expected Format: md5('itemprop'@'itemptype') "
             );
         }
     }
-    
+
     public function verifyFieldOptional($field)
     {
         //====================================================================//
@@ -207,7 +207,7 @@ class O02FieldsTest extends ObjectsCase
             $this->assertArraySplashBool($field, "notest", "Field NoTest Flag");
         }
     }
-    
+
     public function verifyFieldAssociations($field, $fields)
     {
         if (!array_key_exists("asso", $field) || empty($field["asso"])) {
@@ -228,7 +228,7 @@ class O02FieldsTest extends ObjectsCase
                     $assoField = $item;
                 }
             }
-            $this->assertNotEmpty($assoField, "Associated Field " . $fieldType . " isn't an existing Field Id String.");
+            $this->assertNotEmpty($assoField, "Associated Field ".$fieldType." isn't an existing Field Id String.");
         }
     }
 }

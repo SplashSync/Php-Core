@@ -55,7 +55,7 @@ class UnitConverter
     const AREA_KM2 = 1E-6;
     const AREA_FOOT2 = 10.763910417;
     const AREA_INCH2 = 1550.003100006;
-    
+
     //====================================================================//
     // VOLUME UNITS FACTORS (From M3 to ...)
     //====================================================================//
@@ -67,7 +67,7 @@ class UnitConverter
     const VOLUME_KM3 = 1E-9;
     const VOLUME_FOOT3 = 35.314666721;
     const VOLUME_INCH3 = 61023.744094732;
-    
+
     /**
      * Convert Weight form KiloGram to Target Unit
      *
@@ -93,11 +93,11 @@ class UnitConverter
     {
         return self::convert($weight, $fromFactor, self::MASS_KG);
     }
-    
+
     //====================================================================//
     // LENGTH UNITS CONVERTION
     //====================================================================//
-    
+
     /**
      * Convert Length form Meter to Target Unit
      *
@@ -123,11 +123,11 @@ class UnitConverter
     {
         return self::convert($length, $fromFactor, self::LENGTH_M);
     }
-    
+
     //====================================================================//
     // SURFACE UNITS CONVERTION
     //====================================================================//
-    
+
     /**
      * Convert Surface form Square Meter to Target Unit
      *
@@ -153,11 +153,11 @@ class UnitConverter
     {
         return self::convert($surface, $fromFactor, self::AREA_M2);
     }
-    
+
     //====================================================================//
     // VOLUME UNITS CONVERTION
     //====================================================================//
-    
+
     /**
      * Convert Volume form Cube Meter to Target Unit
      *
@@ -183,11 +183,11 @@ class UnitConverter
     {
         return self::convert($volume, $fromFactor, self::VOLUME_M3);
     }
-    
+
     //====================================================================//
     // CORE UNIT CONVERTOR
     //====================================================================//
-    
+
     /**
      * Convert any Kind of Value from a unit to another.
      *

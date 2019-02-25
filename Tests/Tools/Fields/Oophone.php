@@ -24,8 +24,8 @@ class Oophone extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT         =   'Phone';
-    
+    protected $FORMAT = 'Phone';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -46,7 +46,7 @@ class Oophone extends Oovarchar implements FieldInterface
         if (!is_string($data)) {
             return "Phone Number Field Data is not a String.";
         }
-        
+
         //==============================================================================
         //      Verify Data is a Phone Number
         if (preg_match('/^[+0-9. ()-]*$/', $data)) {
@@ -55,7 +55,7 @@ class Oophone extends Oovarchar implements FieldInterface
 
         return "Field Data is not a Phone Number.";
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================

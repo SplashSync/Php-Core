@@ -28,12 +28,12 @@ class Oostate extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    const FORMAT        =   'State';
-    
+    const FORMAT = 'State';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */
@@ -42,10 +42,10 @@ class Oostate extends Oovarchar implements FieldInterface
         if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
-        
+
         return true;
     }
-        
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -55,6 +55,6 @@ class Oostate extends Oovarchar implements FieldInterface
      */
     public static function fake($settings)
     {
-        return (mt_rand()%2)?"CA":"FL";
+        return (mt_rand() % 2)?"CA":"FL";
     }
 }

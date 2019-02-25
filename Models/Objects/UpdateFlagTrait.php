@@ -28,8 +28,8 @@ trait UpdateFlagTrait
      *
      * @var bool
      */
-    private $update         = false;
-    
+    private $update = false;
+
     /**
      * Set Custom Updated Flag
      *
@@ -38,8 +38,8 @@ trait UpdateFlagTrait
      *
      * @var bool
      */
-    private $custom         = array();
-    
+    private $custom = array();
+
     //====================================================================//
     //  Update Flag Management
     //====================================================================//
@@ -54,9 +54,9 @@ trait UpdateFlagTrait
     protected function needUpdate($custom = "object")
     {
         if (self::isCustom($custom)) {
-            $this->custom[$custom]   =   true;
+            $this->custom[$custom] = true;
         } else {
-            $this->update   =   true;
+            $this->update = true;
         }
 
         return $this;
@@ -72,14 +72,14 @@ trait UpdateFlagTrait
     protected function isUpdated($custom = "object")
     {
         if (self::isCustom($custom)) {
-            $this->custom[$custom]   =   false;
+            $this->custom[$custom] = false;
         } else {
-            $this->update   =   false;
+            $this->update = false;
         }
 
         return $this;
     }
-    
+
     /**
      * @abstract    is Database Update Needed
      *
@@ -92,10 +92,10 @@ trait UpdateFlagTrait
         if (self::isCustom($custom)) {
             return isset($this->custom[$custom]) ? $this->custom[$custom] : false;
         }
-  
+
         return $this->update;
     }
-    
+
     /**
      * @abstract    is Custom Flag Request
      *

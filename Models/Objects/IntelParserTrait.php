@@ -25,11 +25,11 @@ trait IntelParserTrait
 {
     use FieldsFactoryTrait;
     use UpdateFlagTrait;
-    
+
     //====================================================================//
     // General Class Variables
     //====================================================================//
-    
+
     /**
      * Set Operations Input Buffer
      *
@@ -40,7 +40,7 @@ trait IntelParserTrait
      * @var ArrayObject
      */
     protected $in;
-    
+
     /**
      * Get Operations Output Buffer
      *
@@ -49,7 +49,7 @@ trait IntelParserTrait
      * @var ArrayObject
      */
     protected $out;
-    
+
     /**
      * Work Object Class
      *
@@ -58,7 +58,7 @@ trait IntelParserTrait
      * @var mixed
      */
     protected $object;
-    
+
     /**
      * Buffer for All Available Class Fields Building Methods
      *
@@ -79,11 +79,11 @@ trait IntelParserTrait
      * @var array
      */
     protected static $classSetMethods;
-    
+
     //====================================================================//
     // Class Main Functions
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -92,16 +92,16 @@ trait IntelParserTrait
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        
+
         foreach ($this->identifyBuildMethods() as $method) {
             $this->{$method}();
         }
-        
+
         //====================================================================//
         // Publish Fields
         return $this->fieldsFactory()->publish();
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -115,13 +115,13 @@ trait IntelParserTrait
         $this->in = $fieldsList;
         //====================================================================//
         // Load Object
-        $this->object   =   $this->load($objectId);
+        $this->object = $this->load($objectId);
         if (!is_object($this->object)) {
             return false;
         }
         //====================================================================//
         // Init Response Array
-        $this->out  =   array( "id" => $objectId );
+        $this->out = array( "id" => $objectId );
         //====================================================================//
         // Run Through All Requested Fields
         //====================================================================//
@@ -147,7 +147,7 @@ trait IntelParserTrait
         //====================================================================//
         return $this->out;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -158,14 +158,14 @@ trait IntelParserTrait
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Init Reading
-        $newObjectId    = null;         // If Object Created, we MUST Return Object Id
-        $this->in       = $list;        // Store List of Field to Write in Buffer
+        $newObjectId = null;         // If Object Created, we MUST Return Object Id
+        $this->in = $list;        // Store List of Field to Write in Buffer
         $this->isUpdated();             // Clear Updated Flag before Writing
-        
+
         //====================================================================//
         // Load or Create Requested Object
         //====================================================================//
-        $this->object   =   $objectId ? $this->load($objectId) : $this->create();
+        $this->object = $objectId ? $this->load($objectId) : $this->create();
         //====================================================================//
         // Safety Check => Object Now Loaded
         if (!is_object($this->object)) {
@@ -176,14 +176,14 @@ trait IntelParserTrait
         if (!$objectId) {
             $newObjectId = $this->getObjectIdentifier();
         }
-        
+
         //====================================================================//
         // Execute Write Operations on Object
         //====================================================================//
         if (false == $this->setObjectData()) {
             return $newObjectId ? $newObjectId : false;
         }
-        
+
         //====================================================================//
         // Update Requested Object
         //====================================================================//
@@ -203,7 +203,7 @@ trait IntelParserTrait
     //====================================================================//
     //  VERIFY FUNCTIONS
     //====================================================================//
-    
+
     /**
      * Check Required Fields are Available
      *
@@ -224,14 +224,14 @@ trait IntelParserTrait
                     "ErrLocalFieldMissing",
                     __CLASS__,
                     __FUNCTION__,
-                    $field["name"] . "(" . $field["id"] . ")"
+                    $field["name"]."(".$field["id"].")"
                 );
             }
         }
 
         return true;
     }
-    
+
     //====================================================================//
     //  TOOLING FUNCTIONS
     //====================================================================//
@@ -254,7 +254,7 @@ trait IntelParserTrait
                 $this->{$method}($fieldName, $fieldData);
             }
         }
-        
+
         //====================================================================//
         // Verify Requested Fields List is now Empty => All Fields Writen Successfully
         //====================================================================//
@@ -265,10 +265,10 @@ trait IntelParserTrait
 
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Identify Generic Fields Building Functions
      *
@@ -281,7 +281,7 @@ trait IntelParserTrait
         if (!isset(static::$classBuildMethods)) {
             static::$classBuildMethods = self::identifyMethods("build");
         }
-        
+
         return static::$classBuildMethods;
     }
 
@@ -297,7 +297,7 @@ trait IntelParserTrait
         if (!isset(static::$classGetMethods)) {
             static::$classGetMethods = self::identifyMethods("get");
         }
-        
+
         return static::$classGetMethods;
     }
 
@@ -313,10 +313,10 @@ trait IntelParserTrait
         if (!isset(static::$classSetMethods)) {
             static::$classSetMethods = self::identifyMethods("set");
         }
-        
+
         return static::$classSetMethods;
     }
-    
+
     /**
      * Identify Generic Functions
      *
@@ -336,7 +336,7 @@ trait IntelParserTrait
             if (false === strpos($method, "Fields")) {
                 continue;
             }
-            $result[]   =   $method;
+            $result[] = $method;
         }
 
         return $result;
@@ -364,8 +364,8 @@ trait IntelParserTrait
         }
         //====================================================================//
         // List Field is required
-        $listName   = self::lists()->ListName($fieldId);
-        $fieldName  = self::lists()->FieldName($fieldId);
+        $listName = self::lists()->ListName($fieldId);
+        $fieldName = self::lists()->FieldName($fieldId);
         //====================================================================//
         // Check List is available
         if (empty($this->in[$listName])) {

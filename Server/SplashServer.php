@@ -28,7 +28,7 @@ use Splash\Core\SplashCore  as Splash;
 //====================================================================//
 //  CLASS DEFINITION
 //====================================================================//
- 
+
 class SplashServer
 {
     //====================================================================//
@@ -36,7 +36,7 @@ class SplashServer
     //====================================================================//
     private static $Inputs;         // Input Buffer
     private static $Outputs;        // Output Buffer
-    
+
     /**
      * @abstract       Class Constructor
      */
@@ -44,11 +44,11 @@ class SplashServer
     {
         self::init();
     }
-    
+
     //====================================================================//
     //  WEBSERVICE REGISTERED REQUEST FUNCTIONS
     //====================================================================//
-    
+
     /**
      *      @abstract      Minimal Test of Webservice connexion
      *
@@ -57,17 +57,17 @@ class SplashServer
     public static function ping()
     {
         self::init();
-        
+
         //====================================================================//
         // Simple Message reply, No Encryption
         Splash::log()->msg("Ping Successful.");
-        self::$Outputs->result  = true;
-        
+        self::$Outputs->result = true;
+
         //====================================================================//
         // Transmit Answer with No Encryption
         return Splash::ws()->pack(self::$Outputs, true);
     }
-    
+
     /**
      *      @abstract      Connect Webservice and fetch server informations
      *
@@ -94,13 +94,13 @@ class SplashServer
         //====================================================================//
         // Execute Request
         //====================================================================//
-        Splash::log()->msg("Connection Successful (" . Splash::getName() . " V" . Splash::getVersion() . ")");
+        Splash::log()->msg("Connection Successful (".Splash::getName()." V".Splash::getVersion().")");
         //====================================================================//
         // Transmit Answers To Master
         //====================================================================//
         return self::transmit(true);
     }
-    
+
     /**
      *      @abstract      Administrative server functions
      *
@@ -108,7 +108,6 @@ class SplashServer
      *      @param         string   $data       OsWs WebService Packaged Data Inputs
      *
      *      @return        mixed    WebService Packaged Data Outputs or NUSOAP Error
-     *
      */
     public static function admin($id, $data)
     {
@@ -153,11 +152,11 @@ class SplashServer
     {
         return self::run($id, $data, __FUNCTION__);
     }
-        
+
     //====================================================================//
     //  WEBSERVICE SERVER MANAGEMENT
     //====================================================================//
-   
+
     /**
      *      @abstract       Class Initialisation
      *
@@ -168,16 +167,16 @@ class SplashServer
         Splash::core();
         //====================================================================//
         // Initialize I/O Data Buffers
-        self::$Inputs          = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        self::$Outputs         = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        self::$Inputs = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        self::$Outputs = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
 
         return true;
     }
-   
+
     //====================================================================//
     //  SERVER STATUS & CONFIG DEBUG FUNCTIONS
     //====================================================================//
-        
+
     /**
      *      @abstract      Analyze & Debug Server Status
      *
@@ -190,9 +189,9 @@ class SplashServer
         try {
             //====================================================================//
             // Output Server Informations
-            $html   .=      Splash::log()->getHtmlListItem("Server Informations");
-            $html   .=      "<PRE>" . print_r(Splash::ws()->getServerInfos()->getArrayCopy(), true) . "</PRE>";
-            
+            $html .= Splash::log()->getHtmlListItem("Server Informations");
+            $html .= "<PRE>".print_r(Splash::ws()->getServerInfos()->getArrayCopy(), true)."</PRE>";
+
             //====================================================================//
             // Verify PHP Version
             Splash::validate()->isValidPHPVersion();
@@ -210,17 +209,17 @@ class SplashServer
             Splash::ws()->selfTest();
         } catch (\Exception $ex) {
             echo $ex->getMessage();
-            $html  .=   Splash::log()->getHtmlLogList(true);
+            $html .= Splash::log()->getHtmlLogList(true);
             echo $html;
 
             return null;
         }
 
-        $html  .=   Splash::log()->getHtmlLogList(true);
+        $html .= Splash::log()->getHtmlLogList(true);
 
         return $html;
     }
- 
+
     /**
      *      @abstract   Treat Received Data and Initialize Server before request exectution
      *
@@ -236,14 +235,14 @@ class SplashServer
         if (empty(self::$Inputs)) {
             return false;
         }
-        
+
         //====================================================================//
         // Import Server request Configuration
         if (isset(self::$Inputs->cfg) && !empty(self::$Inputs->cfg)) {
             //====================================================================//
             // Store Server Request Configuration
             Splash::configuration()->server = self::$Inputs->cfg;
-            
+
             //====================================================================//
             // Setup Debug allowed or not
             Splash::log()->setDebug(self::$Inputs->cfg->debug);
@@ -252,11 +251,11 @@ class SplashServer
             // Store Server Request Configuration
             Splash::configuration()->server = array();
         }
-        
+
         //====================================================================//
         // Fill Static Server Informations To Output
         self::$Outputs->server = Splash::ws()->getServerInfos();
-        
+
         return true;
     }
 
@@ -274,28 +273,28 @@ class SplashServer
         if (empty(self::$Outputs)) {
             return false;
         }
-        
+
         //====================================================================//
         // Prepare Data Output Buffer
         //====================================================================//
-        
+
         //====================================================================//
         // Set Global Operation Result
         self::$Outputs->result = $result;
-        
+
         //====================================================================//
         // Flush Php Output Buffer
         Splash::log()->flushOuputBuffer();
-        
+
         //====================================================================//
         // Transfers Log Reccords to _Out Buffer
         self::$Outputs->log = Splash::log();
-        
+
         //====================================================================//
         // Package data and return to Server
         return Splash::ws()->pack(self::$Outputs);
     }
-  
+
     /**
      * @abstract    All-In-One SOAP Server Messages Reception & Dispaching
      *              Unpack all pending tasks and send order to local task routers for execution.

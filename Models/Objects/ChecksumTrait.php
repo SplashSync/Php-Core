@@ -26,7 +26,7 @@ trait ChecksumTrait
      * @var Static Class Storage
      */
     private static $ChecksumHelper;
-    
+
     /**
      * @abstract   Get a singleton Checksum Helper Class
      *
@@ -39,11 +39,11 @@ trait ChecksumTrait
             return self::$ChecksumHelper;
         }
         // Initialize Class
-        self::$ChecksumHelper        = new ChecksumHelper();
+        self::$ChecksumHelper = new ChecksumHelper();
         // Return Helper Class
         return self::$ChecksumHelper;
     }
-    
+
     /**
      * @abstract   Get a singleton Checksum Helper Class
      *

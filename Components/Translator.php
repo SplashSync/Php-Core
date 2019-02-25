@@ -40,7 +40,7 @@ class Translator
      * @var Array
      */
     private $trans;
-    
+
     /**
      * @abstract   Loaded Translation Files array
      *
@@ -65,7 +65,6 @@ class Translator
      * @param string $language Force Loading of a specific ISO Language Code (Example en_US or fr_FR or es_ES)
      *
      * @return bool
-     *
      */
     public function load($fileName, $language = null)
     {
@@ -81,7 +80,7 @@ class Translator
         if (empty($fileName)) {
             return Splash::log()->err("ErrLangFileEmpty");
         }
-        
+
         //====================================================================//
         // Select Language to Load
         if (null == $language) {
@@ -98,17 +97,17 @@ class Translator
         //====================================================================//
         // Log Action
         Splash::log()->deb(
-            get_class($this)."::Load Translations from " . $fileName . " with Language " . $language . "."
+            get_class($this)."::Load Translations from ".$fileName." with Language ".$language."."
         );
 
         //====================================================================//
         // Build Language File Path
         $fullPath = $this->getLangFileName($fileName, $language);
-        
+
         //====================================================================//
         // Load Language File Translations
         $loaded = $this->loadLangFile($fullPath);
-        
+
         //====================================================================//
         // If Default Language Used
         if (null == $isForced) {
@@ -122,7 +121,7 @@ class Translator
             // Mark this file as Loaded (1) or Not Found (2)
             $this->loadedTranslations[$fileName] = $loaded?1:2;
         }
-        
+
         return true;
     }
 
@@ -148,11 +147,11 @@ class Translator
         if (empty($this->trans[$key])) {
             return $key;
         }
-        
+
         //====================================================================//
         // Translation is available
         $str = $this->trans[$key];
-        
+
         //====================================================================//
         // Replace arrays by counts strings.
         $this->normalizeParameters($param1, $param2, $param3, $param4);
@@ -185,27 +184,25 @@ class Translator
      * @param array|ArrayObject|string $param2 chaine de param2
      * @param array|ArrayObject|string $param3 chaine de param3
      * @param array|ArrayObject|string $param4 chaine de param4
-     *
-     * @return void
      */
     public function normalizeParameters(&$param1, &$param2, &$param3, &$param4)
     {
         //====================================================================//
         // Replace arrays by counts strings.
         if (is_array($param1) || ($param1 instanceof ArrayObject)) {
-            $param1 = "x " . count($param1);
+            $param1 = "x ".count($param1);
         }
         if (is_array($param2) || ($param2 instanceof ArrayObject)) {
-            $param2 = "x " . count($param2);
+            $param2 = "x ".count($param2);
         }
         if (is_array($param3) || ($param3 instanceof ArrayObject)) {
-            $param3 = "x " . count($param3);
+            $param3 = "x ".count($param3);
         }
         if (is_array($param4) || ($param4 instanceof ArrayObject)) {
-            $param4 = "x " . count($param4);
+            $param4 = "x ".count($param4);
         }
     }
-    
+
     /**
      * @abstract    Build Translation filename based on specified $file and ISO Language Code.
      *
@@ -222,8 +219,8 @@ class Translator
         //====================================================================//
         // Search for Local Redirection
         //====================================================================//
-        $isLocal    =   '';
-        $regs       =   null;
+        $isLocal = '';
+        $regs = null;
         //====================================================================//
         // Search if a local directory is required into lang file name
         if (preg_match('/^([^@]+)@([^@]+)$/i', $fileName, $regs)) {
@@ -236,17 +233,16 @@ class Translator
         if (!empty($isLocal)) {
             return Splash::getLocalPath()."/Translations/".$language."/".$fileName.".ini";
         }
-        
-        return dirname(dirname(__FILE__)) . "/langs/" . $language . "/" . $fileName . ".ini";
+
+        return dirname(dirname(__FILE__))."/langs/".$language."/".$fileName.".ini";
     }
-    
+
     /**
      * @abstract   Load Speficied file onto static language collection
      *
      * @param string $fullPath Full path to language file to load (.ini file).
      *
      * @return bool
-     *
      */
     private function loadLangFile($fullPath)
     {
@@ -269,12 +265,12 @@ class Translator
         while ($line = fgets($file, 4096)) {
             $this->loadLangLine($line);
         }
-        
+
         //====================================================================//
         // Close File
         fclose($file);
     }
-    
+
     private function loadLangLine($line)
     {
         //====================================================================//
@@ -284,8 +280,8 @@ class Translator
         }
         //====================================================================//
         // Explode Lines
-        $tab=explode('=', $line, 2);
-        $key=trim($tab[0]);
+        $tab = explode('=', $line, 2);
+        $key = trim($tab[0]);
         //====================================================================//
         // Debug Line
         //print "Domain=$file, found a string for $tab[0] with value $tab[1]<br>";
@@ -294,8 +290,8 @@ class Translator
         if (empty($this->trans[$key]) && isset($tab[1])) {
             //====================================================================//
             // Store Line Translation Key
-            $value=trim((string) preg_replace('/\\n/', "\n", $tab[1]));
-            $this->trans[$key]=$value;
+            $value = trim((string) preg_replace('/\\n/', "\n", $tab[1]));
+            $this->trans[$key] = $value;
         }
     }
 }

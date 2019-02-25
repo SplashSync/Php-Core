@@ -15,7 +15,6 @@
 
 namespace Splash\Tests\Tools\Fields;
 
-use ArrayObject;
 use Splash\Client\Splash;
 use Splash\Models\Fields\FieldsManagerTrait;
 

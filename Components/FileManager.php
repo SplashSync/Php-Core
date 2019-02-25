@@ -47,43 +47,43 @@ class FileManager
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        
+
         //====================================================================//
         // PHPUNIT Exception => Look First in Local FileSystem
         //====================================================================//
         if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {
-            $filePath   = dirname(__DIR__) . "/Resources/files/"  . $file;
+            $filePath = dirname(__DIR__)."/Resources/files/".$file;
             if (is_file($filePath)) {
-                $file   =  $this->readFile($filePath, $md5);
+                $file = $this->readFile($filePath, $md5);
 
                 return is_array($file) ? $file : false;
             }
-            $imgPath    = dirname(__DIR__) . "/Resources/img/"  . $file;
+            $imgPath = dirname(__DIR__)."/Resources/img/".$file;
             if (is_file($imgPath)) {
-                $file   =  $this->readFile($imgPath, $md5);
+                $file = $this->readFile($imgPath, $md5);
 
                 return is_array($file) ? $file : false;
             }
         }
-        
+
         //====================================================================//
         // Initiate Tasks parameters array
-        $params             = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $params->file       = $file;
-        $params->md5        = $md5;
+        $params = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $params->file = $file;
+        $params->md5 = $md5;
         //====================================================================//
         // Add Task to Ws Task List
         Splash::ws()->addTask(SPL_F_GETFILE, $params, Splash::trans("MsgSchRemoteReadFile", (string) $file));
-        
+
         //====================================================================//
         // Execute Task
-        $response   =   Splash::ws()->call(SPL_S_FILE);
-        
+        $response = Splash::ws()->call(SPL_S_FILE);
+
         //====================================================================//
         // Return First Task Result
         return Splash::ws()->getNextResult($response);
     }
-    
+
     /**
      *  @abstract   Check whether if a file exists or not
      *
@@ -104,7 +104,6 @@ class FileManager
      *  @remark     For all file access functions, File Checksumm is used to ensure
      *              the server who send request was allowed by local server to read
      *              the specified file.
-     *
      */
     public function isFile($path = null, $md5 = null)
     {
@@ -119,7 +118,7 @@ class FileManager
         if (empty($md5)) {
             return Splash::log()->err("ErrFileMd5Missing", __FUNCTION__);
         }
-        
+
         //====================================================================//
         // Check if folder exists
         if (!is_dir(dirname($path))) {
@@ -135,19 +134,19 @@ class FileManager
         if (md5_file($path) != $md5) {
             return Splash::log()->war("ErrFileNoExists", __FUNCTION__, $path);
         }
-        
+
         //====================================================================//
         // Read file Informations
         Splash::log()->deb("Splash - Get File Infos : File ".$path." exists.");
-        $infos              = array();
-        $owner              = posix_getpwuid((int) fileowner($path));
-        $infos["owner"]     = $owner["name"];
-        $infos["readable"]  = is_readable($path);
-        $infos["writable"]  = is_writable($path);
-        $infos["mtime"]     = filemtime($path);
-        $infos["modified"]  = date("F d Y H:i:s.", (int) $infos["mtime"]);
-        $infos["md5"]       = md5_file($path);
-        $infos["size"]      = filesize($path);
+        $infos = array();
+        $owner = posix_getpwuid((int) fileowner($path));
+        $infos["owner"] = $owner["name"];
+        $infos["readable"] = is_readable($path);
+        $infos["writable"] = is_writable($path);
+        $infos["mtime"] = filemtime($path);
+        $infos["modified"] = date("F d Y H:i:s.", (int) $infos["mtime"]);
+        $infos["md5"] = md5_file($path);
+        $infos["size"] = filesize($path);
 
         return $infos;
     }
@@ -169,7 +168,6 @@ class FileManager
      *  @remark     For all file access functions, File Checksumm is used to ensure
      *              the server who send request was allowed by local server to read
      *              the specified file.
-     *
      */
     public function readFile($path = null, $md5 = null)
     {
@@ -200,22 +198,22 @@ class FileManager
         if (md5_file($path) != $md5) {
             return Splash::log()->war("ErrFileNoExists", __FUNCTION__, $path);
         }
-        
+
         //====================================================================//
         // Open File
         $filehandle = fopen($path, "rb");
         if (false == $filehandle) {
             return Splash::log()->err("ErrFileRead", __FUNCTION__, $path);
         }
-        
+
         //====================================================================//
         // Fill file Informations
         $infos = array();
-        $infos["filename"]  = basename($path);
-        $infos["raw"]       = base64_encode((string) fread($filehandle, (int) filesize($path)));
+        $infos["filename"] = basename($path);
+        $infos["raw"] = base64_encode((string) fread($filehandle, (int) filesize($path)));
         fclose($filehandle);
-        $infos["md5"]       = md5_file($path);
-        $infos["size"]      = filesize($path);
+        $infos["md5"] = md5_file($path);
+        $infos["size"] = filesize($path);
         Splash::log()->deb("MsgFileRead", __FUNCTION__, basename($path));
 
         return $infos;
@@ -250,7 +248,7 @@ class FileManager
         // Read File Contents
         return base64_encode((string) file_get_contents($fileName));
     }
-    
+
     /**
      * @abstract   Write a file on local filesystem
      *
@@ -305,12 +303,12 @@ class FileManager
         if (false == $filehandle) {
             return Splash::log()->war("ErrFileOpen", __FUNCTION__, $fullpath);
         }
-        
+
         //====================================================================//
         // Write file
         fwrite($filehandle, (string)  base64_decode((string) $raw, true));
         fclose($filehandle);
-        
+
         //====================================================================//
         // Verify file checksum
         if ($md5 !== md5_file($fullpath)) {
@@ -319,7 +317,7 @@ class FileManager
 
         return true;
     }
-    
+
     /**
      *  @abstract   Delete a file exists or not
      *
@@ -331,11 +329,10 @@ class FileManager
      *  @remark     For all file access functions, File Checksumm is used to ensure
      *              the server who send request was allowed by local server to read
      *              the specified file.
-     *
      */
     public function deleteFile($path = null, $md5 = null)
     {
-        $fPath   =   (string) $path;
+        $fPath = (string) $path;
         //====================================================================//
         // Safety Checks
         if (empty(dirname($fPath))) {
@@ -364,7 +361,7 @@ class FileManager
 
             return Splash::log()->err("ErrFileDeleted", __FUNCTION__, basename($fPath));
         }
-        
+
         return true;
     }
 

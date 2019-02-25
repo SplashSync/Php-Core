@@ -36,7 +36,6 @@ use ArrayObject;
  * // $data["image"]["md5"]            =>      Image File Md5 Checksum
  * // $data["image"]["size"]           =>      Image File Size
  * //====================================================================//
- *
  */
 class Ooimage implements FieldInterface
 {
@@ -44,8 +43,8 @@ class Ooimage implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    const FORMAT        =   'Image';
-    
+    const FORMAT = 'Image';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -73,7 +72,7 @@ class Ooimage implements FieldInterface
 
         return true;
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -85,13 +84,13 @@ class Ooimage implements FieldInterface
     {
         //====================================================================//
         // Image Faker Parameters
-        $index      = mt_rand(0, count($settings["Images"]) - 1);
-        $dir        = dirname(dirname(dirname(__DIR__))) . "/Resources/img/";
-        $file       = $settings["Images"][$index];
-        $fullPath   = $dir . $file;
+        $index = mt_rand(0, count($settings["Images"]) - 1);
+        $dir = dirname(dirname(dirname(__DIR__)))."/Resources/img/";
+        $file = $settings["Images"][$index];
+        $fullPath = $dir.$file;
 //        $Name       = "Fake Image " . substr(preg_replace('/[^A-Za-z0-9\-]/', '', utf8_encode(mt_rand())), 0, 3);
-        $name       = "Fake Image " . $index;
-        
+        $name = "Fake Image ".$index;
+
         //====================================================================//
         // Build Image Array
         $image = array();
@@ -99,37 +98,37 @@ class Ooimage implements FieldInterface
         // ADD MAIN INFOS
         //====================================================================//
         // Image Name
-        $image["name"]          = $name;
+        $image["name"] = $name;
         //====================================================================//
         // Image Filename
-        $image["filename"]      = $file;
-        $image["file"]          = $file;
+        $image["filename"] = $file;
+        $image["file"] = $file;
         //====================================================================//
         // Image File Identifier (Full Path Here)
-        $image["path"]          = $dir . $file;
+        $image["path"] = $dir.$file;
         //====================================================================//
         // Image Publics Url
-        $image["url"]           = filter_input(INPUT_SERVER, "HTTP_HOST") . $file;
-        
+        $image["url"] = filter_input(INPUT_SERVER, "HTTP_HOST").$file;
+
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
         // Images Informations
         if (file_exists($fullPath)) {
-            $imgDims  = getimagesize($fullPath);
-            $image["width"]         = $imgDims[0];
-            $image["height"]        = $imgDims[1];
+            $imgDims = getimagesize($fullPath);
+            $image["width"] = $imgDims[0];
+            $image["height"] = $imgDims[1];
         }
-        $image["md5"]           = md5_file($fullPath);
-        $image["size"]          = filesize($fullPath);
-        
+        $image["md5"] = md5_file($fullPath);
+        $image["size"] = filesize($fullPath);
+
         return $image;
     }
-    
+
     //==============================================================================
     //      DATA COMPARATOR (OPTIONNAL)
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */
@@ -137,7 +136,7 @@ class Ooimage implements FieldInterface
     {
         return Oofile::compare($source, $target, $settings);
     }
-    
+
     private static function validateContents($image)
     {
         if (!array_key_exists("name", $image)) {
@@ -161,7 +160,7 @@ class Ooimage implements FieldInterface
         if (!array_key_exists("size", $image)) {
             return "Image Field => 'size' is missing.";
         }
-        
+
         return true;
     }
 }

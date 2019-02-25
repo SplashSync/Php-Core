@@ -26,7 +26,7 @@ interface ObjectInterface
     //====================================================================//
     // Object Definition & Data Access Management
     //====================================================================//
-    
+
     /**
      * Get Description Array for requested Object Type
      *
@@ -35,7 +35,7 @@ interface ObjectInterface
      * @return array
      */
     public function description();
-            
+
     /**
      * Return List Of Available Fields for Splash Object
      *
@@ -49,7 +49,7 @@ interface ObjectInterface
      * @return array $data       List of all available fields
      */
     public function fields();
-    
+
     /**
      * Return List Of Objects with required filters
      *
@@ -71,7 +71,7 @@ interface ObjectInterface
      * @return array List of all Object main data
      */
     public function objectsList($filter = null, $params = null);
-    
+
     /**
      * Read Requested Object Data
      *
@@ -131,11 +131,11 @@ interface ObjectInterface
      * @return false|string
      */
     public function getObjectIdentifier();
-    
+
     //====================================================================//
     // Object LOCK Management
     //====================================================================//
-    
+
     /**
      * Set Lock for a specific object
      *
@@ -162,7 +162,7 @@ interface ObjectInterface
      * @return bool
      */
     public function isLocked($objectId = "new");
-    
+
     /**
      * Delete Current active Lock
      *
@@ -177,7 +177,7 @@ interface ObjectInterface
     //====================================================================//
     // Object Metadata Management
     //====================================================================//
-    
+
     /**
      * Return Object Status
      *

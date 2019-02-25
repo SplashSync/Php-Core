@@ -26,7 +26,7 @@ trait ListsTrait
      * @var ListsHelper
      */
     private static $ListsHelper;
-    
+
     /**
      *      @abstract   Get a singleton List Helper Class
      *
@@ -39,7 +39,7 @@ trait ListsTrait
             return self::$ListsHelper;
         }
         // Initialize Class
-        self::$ListsHelper        = new ListsHelper();
+        self::$ListsHelper = new ListsHelper();
         // Return Helper Class
         return self::$ListsHelper;
     }

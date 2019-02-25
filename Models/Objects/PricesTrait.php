@@ -26,7 +26,7 @@ trait PricesTrait
      * @var PricesHelper
      */
     private static $PricesHelper;
-    
+
     /**
      *      @abstract   Get a singleton Prices Helper Class
      *
@@ -39,7 +39,7 @@ trait PricesTrait
             return self::$PricesHelper;
         }
         // Initialize Class
-        self::$PricesHelper        = new PricesHelper();
+        self::$PricesHelper = new PricesHelper();
         // Return Helper Class
         return self::$PricesHelper;
     }

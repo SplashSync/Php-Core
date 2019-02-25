@@ -27,12 +27,12 @@ use Splash\Components\FieldsManager;
 trait ObjectsAssertionsTrait
 {
     /** @var array */
-    protected $fields           = array();
-    
+    protected $fields = array();
+
     //==============================================================================
     //      SPLASH ASSERTIONS FUNCTIONS
     //==============================================================================
-    
+
     /**
      * Verify if Data is present in Array and in right Internal Format
      *
@@ -43,11 +43,11 @@ trait ObjectsAssertionsTrait
      */
     public function assertArrayInternalType($data, $key, $type, $comment)
     {
-        $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
-        $this->assertNotEmpty($data[$key], $comment . " => Key '" . $key . "' is Empty");
-        $this->assertInternalType($type, $data[$key], $comment . " => Key '" . $key . "' is of Expected Internal Type");
+        $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
+        $this->assertNotEmpty($data[$key], $comment." => Key '".$key."' is Empty");
+        $this->assertInternalType($type, $data[$key], $comment." => Key '".$key."' is of Expected Internal Type");
     }
-    
+
     /**
      * Verify if Data is present in Array and in right Internal Format
      *
@@ -58,15 +58,15 @@ trait ObjectsAssertionsTrait
      */
     public function assertArrayInstanceOf($data, $key, $type, $comment)
     {
-        $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
-        $this->assertNotEmpty($data[$key], $comment . " => Key '" . $key . "' is Empty");
+        $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
+        $this->assertNotEmpty($data[$key], $comment." => Key '".$key."' is Empty");
         $this->assertInstanceOf(
             $type,
             $data[$key],
-            $comment . " => Key '" . $key . "' is of Expected Instance of " . $type
+            $comment." => Key '".$key."' is of Expected Instance of ".$type
         );
     }
-    
+
     /**
      * Verify if Data is a valid Splash Data Block Bool Value
      *
@@ -78,7 +78,7 @@ trait ObjectsAssertionsTrait
         $test = is_bool($data) || ("0" === $data) || ("1" === $data);
         $this->assertTrue($test, $comment);
     }
-    
+
     /**
      * Verify if Data is present in Array and is Splash Bool
      *
@@ -88,10 +88,10 @@ trait ObjectsAssertionsTrait
      */
     public function assertArraySplashBool($data, $key, $comment)
     {
-        $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
+        $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertIsSplashBool(
             $data[$key],
-            $comment . " => Key '" . $key . "' is of Expected Bool Type (bool | '0' | '1')"
+            $comment." => Key '".$key."' is of Expected Bool Type (bool | '0' | '1')"
         );
     }
 
@@ -103,10 +103,10 @@ trait ObjectsAssertionsTrait
      */
     public function assertIsSplashArray($data, $comment)
     {
-        $test = is_array($data)  || ($data instanceof ArrayObject) || ("" === $data);
+        $test = is_array($data) || ($data instanceof ArrayObject) || ("" === $data);
         $this->assertTrue($test, $comment);
     }
-    
+
     /**
      * Verify if Data is present in Array and is Splash Bool
      *
@@ -116,13 +116,13 @@ trait ObjectsAssertionsTrait
      */
     public function assertArraySplashArray($data, $key, $comment)
     {
-        $this->assertArrayHasKey($key, $data, $comment . " => Key '" . $key . "' not defined");
+        $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertIsSplashArray(
             $data[$key],
-            $comment . " => Key '" . $key . "' is of Expected Array Type (array | null | '')"
+            $comment." => Key '".$key."' is of Expected Array Type (array | null | '')"
         );
     }
-    
+
     /**
      * Verify if Data is a valid Splash Field Data Value
      *
@@ -135,33 +135,31 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         // Verify Type is Valid
         $className = self::isValidType($type);
-        $this->assertNotEmpty($className, "Field Type '" . $type . "' is not a Valid Splash Field Type." . $comment);
+        $this->assertNotEmpty($className, "Field Type '".$type."' is not a Valid Splash Field Type.".$comment);
         if (false === $className) {
             return false;
         }
-    
+
         //====================================================================//
         // Verify Data is Valid
         $this->assertTrue(
             $className::validate($data),
-            "Data is not a Valid Splash '" . $type . "'. (" . print_r($data, true) . ")" . $comment
+            "Data is not a Valid Splash '".$type."'. (".print_r($data, true).")".$comment
         );
     }
-    
+
     /**
      * Verify Object Field is Defined
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
-     *
-     * @return void
      */
     public function assertFieldIsDefined($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        $field = $this->loadObjectFieldByTag($itemType, $itemProp);
         //====================================================================//
         //   Verify this Field
         $this->assertNotEmpty(
@@ -169,7 +167,7 @@ trait ObjectsAssertionsTrait
             self::buildResult($itemType, $itemProp, " must be defined", $comment)
         );
     }
-    
+
     /**
      * Verify Object Field is in Allowed Formats
      *
@@ -177,14 +175,12 @@ trait ObjectsAssertionsTrait
      * @param string $itemProp Field Microdata Property Name
      * @param array  $formats  Array of Allowed Splash Field Formats
      * @param string $comment
-     *
-     * @return void
      */
     public function assertFieldHasFormat($itemType, $itemProp, $formats, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        $field = $this->loadObjectFieldByTag($itemType, $itemProp);
         if (!$field) {
             return;
         }
@@ -195,7 +191,7 @@ trait ObjectsAssertionsTrait
             self::buildResult(
                 $itemType,
                 $itemProp,
-                " must be a " . implode("|", $formats) . " Current is " . $field->type,
+                " must be a ".implode("|", $formats)." Current is ".$field->type,
                 $comment
             )
         );
@@ -204,21 +200,19 @@ trait ObjectsAssertionsTrait
             "Product Short Description must be readable"
         );
     }
-    
+
     /**
      * Verify Object Field is Readable
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
-     *
-     * @return void
      */
     public function assertFieldIsRead($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        $field = $this->loadObjectFieldByTag($itemType, $itemProp);
         if (!$field) {
             return;
         }
@@ -236,14 +230,12 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
-     *
-     * @return void
      */
     public function assertFieldIsWrite($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        $field = $this->loadObjectFieldByTag($itemType, $itemProp);
         if (!$field) {
             return;
         }
@@ -254,21 +246,19 @@ trait ObjectsAssertionsTrait
             self::buildResult($itemType, $itemProp, " must be writeable.", $comment)
         );
     }
-    
+
     /**
      * Verify Object Field is NOT Writeable
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
-     *
-     * @return void
      */
     public function assertFieldNotWrite($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        $field = $this->loadObjectFieldByTag($itemType, $itemProp);
         if (!$field) {
             return;
         }
@@ -279,21 +269,19 @@ trait ObjectsAssertionsTrait
             self::buildResult($itemType, $itemProp, " must be read-only.", $comment)
         );
     }
-    
+
     /**
      * Verify Object Field is Required
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
-     *
-     * @return void
      */
     public function assertFieldIsRequired($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        $field = $this->loadObjectFieldByTag($itemType, $itemProp);
         if (!$field) {
             return;
         }
@@ -304,21 +292,19 @@ trait ObjectsAssertionsTrait
             self::buildResult($itemType, $itemProp, " must be required.", $comment)
         );
     }
-    
+
     /**
      * Verify Object Field is NOT Required
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
-     *
-     * @return void
      */
     public function assertFieldNotRequired($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        $field = $this->loadObjectFieldByTag($itemType, $itemProp);
         if (!$field) {
             return;
         }
@@ -336,14 +322,12 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
-     *
-     * @return void
      */
     public function assertFieldIsInList($itemType, $itemProp, $comment = null)
     {
         //====================================================================//
         //   Touch this Field
-        $field       =   $this->loadObjectFieldByTag($itemType, $itemProp);
+        $field = $this->loadObjectFieldByTag($itemType, $itemProp);
         if (!$field) {
             return;
         }
@@ -351,10 +335,10 @@ trait ObjectsAssertionsTrait
         //   Verify this Field
         $this->assertTrue(
             $field->inlist,
-            $comment . " " . $itemType . ":" . $itemProp . " must be readable."
+            $comment." ".$itemType.":".$itemProp." must be readable."
         );
     }
-    
+
     /**
      * Verify Last Commit is Valid and Conform to Expected
      *
@@ -378,7 +362,7 @@ trait ObjectsAssertionsTrait
     {
         $this->assertIsCommited($action, $objectType, $objectId, true);
     }
-    
+
     /**
      * Verify First Commit is Valid and Conform to Expected
      *
@@ -395,44 +379,44 @@ trait ObjectsAssertionsTrait
             Splash::$commited,
             "No Object Change Commited by your Module. Please check your triggers."
         );
-        
+
         //====================================================================//
         //   Get First / Last Commited
         $commited = $first ? array_shift(Splash::$commited) : array_pop(Splash::$commited);
-        
+
         //====================================================================//
         //   Check Object Type is OK
         $this->assertEquals(
             $commited->type,
             $objectType,
             "Change Commit => Object Type is wrong. "
-                . "(Expected " . $objectType . " / Given " . $commited->type
+                ."(Expected ".$objectType." / Given ".$commited->type
         );
-        
+
         //====================================================================//
         //   Check Object Action is OK
         $this->assertEquals(
             $commited->action,
             $action,
-            "Change Commit => Change Type is wrong. (Expected " . $action . " / Given " . $commited->action
+            "Change Commit => Change Type is wrong. (Expected ".$action." / Given ".$commited->action
         );
-        
+
         //====================================================================//
         //   Check Object Id value Format
         $this->assertTrue(
             is_scalar($commited->id) || is_array($commited->id) || is_a($commited->id, "ArrayObject"),
             "Change Commit => Object Id Value is in wrong Format. "
-                . "(Expected String or Array of Strings. / Given "
-                . print_r($commited->id, true)
+                ."(Expected String or Array of Strings. / Given "
+                .print_r($commited->id, true)
         );
-        
+
         //====================================================================//
         //   If Commited an Array of Ids
         if (is_array($commited->id) || ($commited->id instanceof ArrayObject)) {
             //====================================================================//
             //   Detect Array Object
             if ($commited->id instanceof ArrayObject) {
-                $commited->id   =   $commited->id->getArrayCopy();
+                $commited->id = $commited->id->getArrayCopy();
             }
             //====================================================================//
             //   Check each Object Ids
@@ -441,8 +425,8 @@ trait ObjectsAssertionsTrait
                     'scalar',
                     $commitedObjectId,
                     "Change Commit => Object Id Array Value is in wrong Format. "
-                        . "(Expected String or Integer. / Given "
-                        . print_r($commitedObjectId, true)
+                        ."(Expected String or Integer. / Given "
+                        .print_r($commitedObjectId, true)
                 );
             }
             //====================================================================//
@@ -453,7 +437,7 @@ trait ObjectsAssertionsTrait
             $this->assertEquals(
                 $firstId,
                 $objectId,
-                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $firstId
+                "Change Commit => Object Id is wrong. (Expected ".$objectId." / Given ".$firstId
             );
         } else {
             //====================================================================//
@@ -461,16 +445,16 @@ trait ObjectsAssertionsTrait
             $this->assertEquals(
                 $commited->id,
                 $objectId,
-                "Change Commit => Object Id is wrong. (Expected " . $objectId . " / Given " . $commited->id
+                "Change Commit => Object Id is wrong. (Expected ".$objectId." / Given ".$commited->id
             );
         }
-        
+
         //====================================================================//
         //   Check Infos are Not Empty
         $this->assertNotEmpty($commited->user, "Change Commit => User Name is Empty");
         $this->assertNotEmpty($commited->comment, "Change Commit => Action Comment is Empty");
     }
-    
+
     /**
      * Load Object Field from List
      *
@@ -488,7 +472,7 @@ trait ObjectsAssertionsTrait
         //   Touch this Field
         return FieldsManager::findFieldByTag($this->fields, $itemType, $itemProp);
     }
-    
+
     /**
      * Build Test Result Comment
      *
@@ -501,6 +485,6 @@ trait ObjectsAssertionsTrait
      */
     private static function buildResult($itemType, $itemProp, $testComment, $comment = null)
     {
-        return $comment . " (" . $itemType . ":" . $itemProp . ") " . $testComment;
+        return $comment." (".$itemType.":".$itemProp.") ".$testComment;
     }
 }

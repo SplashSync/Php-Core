@@ -25,39 +25,39 @@ class ObjectsCase extends AbstractBaseCase
     use \Splash\Models\Fields\FieldsManagerTrait;
     use \Splash\Tests\Tools\Traits\ObjectsDataTrait;
     use \Splash\Tests\Tools\Traits\ObjectsFakerTrait;
-    
+
     /**
      * List of Created & Tested Object used to delete if test failled.
      *
      * @var array
      */
-    private $createdObjects  =   array();
-    
+    private $createdObjects = array();
+
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
         parent::setUp();
-        
+
         //====================================================================//
         // BOOT or REBOOT MODULE
         Splash::reboot();
-        
+
         //====================================================================//
         // FAKE SPLASH SERVER HOST URL
         Splash::configuration()->WsHost = "No.Commit.allowed.not";
-        
+
         //====================================================================//
         // Load Module Local Configuration (In Safe Mode)
         //====================================================================//
         $this->loadLocalTestParameters();
     }
-    
+
     //====================================================================//
     //   Data Provider Functions
     //====================================================================//
-    
+
     /**
      * Data Privider : Objects Types Tests Sequences
      *
@@ -66,17 +66,17 @@ class ObjectsCase extends AbstractBaseCase
     public function objectTypesProvider()
     {
         $result = array();
-        
+
         self::setUp();
 
         //====================================================================//
         // Check if Local Tests Sequences are defined
         if (method_exists(Splash::local(), "TestSequences")) {
-            $testSequences  =   Splash::local()->testSequences("List");
+            $testSequences = Splash::local()->testSequences("List");
         } else {
-            $testSequences  =   array( 1 => "None");
+            $testSequences = array( 1 => "None");
         }
-        
+
         //====================================================================//
         //   For Each Test Sequence
         foreach ($testSequences as $testSequence) {
@@ -96,13 +96,13 @@ class ObjectsCase extends AbstractBaseCase
                 }
                 //====================================================================//
                 //   Add Object Type to List
-                $dataSetName = '[' . $testSequence. "] ". $objectType;
+                $dataSetName = '['.$testSequence."] ".$objectType;
                 $result[$dataSetName] = array($testSequence, $objectType);
             }
         }
-        
+
         self::tearDown();
-        
+
         return $result;
     }
 
@@ -114,17 +114,17 @@ class ObjectsCase extends AbstractBaseCase
     public function objectFieldsProvider()
     {
         $result = array();
-        
+
         self::setUp();
-        
+
         //====================================================================//
         // Check if Local Tests Sequences are defined
         if (method_exists(Splash::local(), "TestSequences")) {
-            $testSequences  =   Splash::local()->testSequences("List");
+            $testSequences = Splash::local()->testSequences("List");
         } else {
-            $testSequences  =   array( 1 => "None");
+            $testSequences = array( 1 => "None");
         }
-        
+
         //====================================================================//
         //   For Each Test Sequence
         foreach ($testSequences as $testSequence) {
@@ -150,14 +150,14 @@ class ObjectsCase extends AbstractBaseCase
                     if (!self::isAllowedObjectField($field->id)) {
                         continue;
                     }
-                    $dataSetName = '[' . $testSequence. "] ". $objectType . "->". $field->id;
+                    $dataSetName = '['.$testSequence."] ".$objectType."->".$field->id;
                     $result[$dataSetName] = array($testSequence, $objectType, $field);
                 }
             }
         }
-        
+
         self::tearDown();
-        
+
         return $result;
     }
 
@@ -169,14 +169,14 @@ class ObjectsCase extends AbstractBaseCase
      */
     protected function setCurrentObject($objectType, $objectId)
     {
-        $this->settings["CurrentType"]  =   $objectType;
-        $this->settings["CurrentId"]    =   $objectId;
+        $this->settings["CurrentType"] = $objectType;
+        $this->settings["CurrentId"] = $objectId;
     }
-    
+
     //==============================================================================
     //      OBJECTS DELETE AT THE END OF TESTS
     //==============================================================================
-    
+
     /**
      * Add Object Id to List of Tested Objects (To delete at the End)
      *
@@ -185,12 +185,12 @@ class ObjectsCase extends AbstractBaseCase
      */
     protected function addTestedObject($objectType, $objectId = null)
     {
-        $this->createdObjects[] =   array(
-            "ObjectType"    =>  $objectType,
-            "ObjectId"      =>  $objectId,
+        $this->createdObjects[] = array(
+            "ObjectType" => $objectType,
+            "ObjectId" => $objectId,
         );
     }
-    
+
     /**
      * Delete all Objects Created for Testing
      */

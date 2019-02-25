@@ -74,7 +74,7 @@ class C01ClassesTest extends TestCase
             Splash::validate(),
             "Splash Validator Class is Not from of Right Instance"
         );
-        
+
         //====================================================================//
         //   Splash Xml Manager
         $this->assertInstanceOf(
@@ -111,7 +111,7 @@ class C01ClassesTest extends TestCase
             "Splash Available Widgets List is Not an Array"
         );
     }
-    
+
     public function testSplashClientClass()
     {
         //====================================================================//
@@ -149,7 +149,7 @@ class C01ClassesTest extends TestCase
             "Splash Communication Interface is Not from of Right Instance"
         );
     }
-    
+
     public function testModuleLocalClass()
     {
         //====================================================================//
@@ -161,10 +161,10 @@ class C01ClassesTest extends TestCase
         $this->assertNotEmpty(
             Splash::local(),
             "Splash Local Class Not found. Check you local class"
-                . " is defined and autoloaded from Namespace Splash\\Local\\Local."
-                . " Or loaded on System init by Splash::setLocalClass function."
+                ." is defined and autoloaded from Namespace Splash\\Local\\Local."
+                ." Or loaded on System init by Splash::setLocalClass function."
         );
-        
+
         //====================================================================//
         //   Verify Local Mandatory Functions Exists
         $this->assertTrue(
@@ -182,9 +182,9 @@ class C01ClassesTest extends TestCase
         $this->assertTrue(
             Splash::validate()->isValidLocalFunction("SelfTest"),
             "Splash Local Class MUST define this function to perform addictionnal"
-                . " local tests to insure module st correctly installed & configured."
+                ." local tests to insure module st correctly installed & configured."
         );
-        
+
         //====================================================================//
         //   Load Local Splash Module
         $this->assertInstanceOf(
@@ -205,25 +205,25 @@ class C01ClassesTest extends TestCase
         $this->assertTrue(
             Splash::validate()->isValidLocalPath(),
             "Splash Local Class MUST define so that Splash can "
-                . "detect & use it's folder as root path for local Module files."
+                ."detect & use it's folder as root path for local Module files."
         );
-        
+
         //====================================================================//
         //   Verify Local Mandatory Paths Exists
-        $objectsPath = Splash::getLocalPath() . "/Objects";
+        $objectsPath = Splash::getLocalPath()."/Objects";
         $this->assertDirectoryExists(
             $objectsPath,
-            "Splash Local Objects folder MUST be define in " . $objectsPath . "."
+            "Splash Local Objects folder MUST be define in ".$objectsPath."."
         );
-        $widgetsPath = Splash::getLocalPath() . "/Widgets";
+        $widgetsPath = Splash::getLocalPath()."/Widgets";
         $this->assertDirectoryExists(
             $widgetsPath,
-            "Splash Local Widgets folder MUST be define in " . $widgetsPath . "."
+            "Splash Local Widgets folder MUST be define in ".$widgetsPath."."
         );
-        $translationsPath = Splash::getLocalPath() . "/Translations";
+        $translationsPath = Splash::getLocalPath()."/Translations";
         $this->assertDirectoryExists(
             $translationsPath,
-            "Splash Local Translations folder MUST be define in " . $translationsPath . "."
+            "Splash Local Translations folder MUST be define in ".$translationsPath."."
         );
     }
 }

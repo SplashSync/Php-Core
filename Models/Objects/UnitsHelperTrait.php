@@ -26,7 +26,7 @@ trait UnitsHelperTrait
      * @var UnitConverter
      */
     private static $unitConverter;
-    
+
     /**
      * Get a singleton Unit Converter Class
      *
@@ -39,7 +39,7 @@ trait UnitsHelperTrait
             return self::$unitConverter;
         }
         // Initialize Class
-        self::$unitConverter        = new UnitConverter();
+        self::$unitConverter = new UnitConverter();
         // Return Helper Class
         return self::$unitConverter;
     }

@@ -28,12 +28,12 @@ class Oolang extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    const FORMAT        =   'Lang';
-    
+    const FORMAT = 'Lang';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */
@@ -42,10 +42,10 @@ class Oolang extends Oovarchar implements FieldInterface
         if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
-        
+
         return true;
     }
-        
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -60,14 +60,14 @@ class Oolang extends Oovarchar implements FieldInterface
         if (!empty($settings["Langs"])) {
             //==============================================================================
             //      Select Random Language
-            $index = rand(0, count($settings["Langs"]) -1);
+            $index = rand(0, count($settings["Langs"]) - 1);
             //==============================================================================
             //      Return Language Code
             return $settings["Langs"][$index];
         }
-        
+
         //==============================================================================
         //      Return Language Code
-        return (mt_rand()%2)?"en_US":"fr_FR";
+        return (mt_rand() % 2)?"en_US":"fr_FR";
     }
 }

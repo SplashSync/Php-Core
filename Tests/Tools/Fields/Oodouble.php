@@ -26,8 +26,8 @@ class Oodouble implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    protected $FORMAT        =   'Double';
-    
+    protected $FORMAT = 'Double';
+
     //==============================================================================
     //      DATA VALIDATION
     //==============================================================================
@@ -55,7 +55,7 @@ class Oodouble implements FieldInterface
 
         return "Field Data is not Double or Float Value.";
     }
-    
+
     //==============================================================================
     //      FAKE DATA GENERATOR
     //==============================================================================
@@ -67,11 +67,11 @@ class Oodouble implements FieldInterface
     {
         return (double) mt_rand(1, 1000) / 10;
     }
-    
+
     //==============================================================================
     //      DATA COMPARATOR (OPTIONNAL)
     //==============================================================================
-    
+
     /**
      * {@inheritdoc}
      */

@@ -15,7 +15,6 @@
 
 namespace Splash\Tests\Tools\Traits;
 
-use ArrayObject;
 use Splash\Client\Splash;
 
 /**
@@ -29,7 +28,7 @@ trait ObjectsMassActionsTrait
      * @var bool
      */
     protected $fromModule = false;
-    
+
     /**
      * Number of Tested Objects Actions
      *
@@ -43,28 +42,28 @@ trait ObjectsMassActionsTrait
      * @var int
      */
     protected $batchSize = 5;
-    
+
     /**
      * Test Objects After Action?
      *
      * @var bool
      */
     protected $verify = true;
-    
+
     /**
      * Storage for Tested Objects Ids
      *
      * @var array
      */
     protected $objectsIds = array();
-    
+
     /**
      * Storage for Tested Objects Set Data
      *
      * @var array
      */
     protected $inputData;
-    
+
     /**
      * Storage for Tested Objects Get Data
      *
@@ -78,21 +77,21 @@ trait ObjectsMassActionsTrait
      * @var array
      */
     protected $customFieldsData = array();
-    
+
     /**
      * Number of Objects Before Actions
      *
      * @var int
      */
     protected $countBefore = 0;
-    
+
     /**
      * Number of Objects After Actions
      *
      * @var int
      */
     protected $countAfter = 0;
-    
+
     //==============================================================================
     //      COMPLETE TESTS EXECUTION FUNCTIONS
     //==============================================================================
@@ -125,7 +124,7 @@ trait ObjectsMassActionsTrait
             $this->coreTestMassDelete($objectType, $verify);
         }
     }
-    
+
     /**
      * Execute a Complete Mass Create/Delete Test From Service
      *
@@ -151,7 +150,7 @@ trait ObjectsMassActionsTrait
             $this->coreTestMassDelete($objectType, $verify);
         }
     }
-    
+
     /**
      * Execute a Complete Mass Create/Delete Test From Service
      *
@@ -178,7 +177,7 @@ trait ObjectsMassActionsTrait
             $this->coreTestMassDelete($type, $verify);
         }
     }
-    
+
     /**
      * Execute a Complete Mass Create/Delete Test From Service
      *
@@ -208,12 +207,12 @@ trait ObjectsMassActionsTrait
             $this->coreTestMassDelete($type, $verify);
         }
     }
-    
+
     //==============================================================================
     //      MASS UNIT TESTS EXECUTION FUNCTIONS
     //      WE SEND MULTIPLE OBJECTS WITH SINGLE REQUESTS
     //==============================================================================
-    
+
     /**
      * Execute Mass Create Test From Service
      *
@@ -227,7 +226,7 @@ trait ObjectsMassActionsTrait
     {
         $this->maxTested = $maxTested;
         $this->verify = $verify;
-        
+
         //====================================================================//
         //   INIT & GENERATE DATA FOR OBJECTS
         //====================================================================//
@@ -238,14 +237,14 @@ trait ObjectsMassActionsTrait
         if (false == $newData) {
             return true;
         }
-        
+
         //====================================================================//
         //   MASS OBJECT CREATE TEST
         //====================================================================//
-        for ($i=1; $i<= $this->maxTested; $i++) {
+        for ($i = 1; $i <= $this->maxTested; $i++) {
             //====================================================================//
             // Setup Empty Object Id
-            $this->objectsIds[$i]   =   false;
+            $this->objectsIds[$i] = false;
             //====================================================================//
             // Lock New Objects To Avoid Action Commit
             Splash::object($objectType)->lock();
@@ -254,11 +253,11 @@ trait ObjectsMassActionsTrait
             if ($this->fromModule) {
                 //====================================================================//
                 //   Create a New Object From Module
-                $this->objectsIds[$i]   =   Splash::object($objectType)->set(null, $this->inputData[$i]);
+                $this->objectsIds[$i] = Splash::object($objectType)->set(null, $this->inputData[$i]);
             } else {
                 //====================================================================//
                 //   Create a New Object From Service
-                $this->objectsIds[$i]   =   $this->genericFastAction(
+                $this->objectsIds[$i] = $this->genericFastAction(
                     SPL_S_OBJECTS,
                     SPL_F_SET,
                     __METHOD__,
@@ -273,11 +272,11 @@ trait ObjectsMassActionsTrait
         //====================================================================//
         // UnLock New Objects To Avoid Action Commit
         Splash::object($objectType)->unLock();
-        
+
         //====================================================================//
         //   VERIFY OBJECTS DATA
         //====================================================================//
-        
+
         $this->verifySetResponse($objectType, $this->objectsIds, $this->inputData, $this->maxTested);
     }
 
@@ -297,7 +296,7 @@ trait ObjectsMassActionsTrait
 
         $this->verify = $verify;
         $this->assertNotEmpty($this->objectsIds, 'Objects Ids List is Empty, Please run Mass Create Test Before');
-        
+
         //====================================================================//
         //   Generate Dummy New Object Data (All RW & Tested Fields Only)
         $this->originData = null;
@@ -305,12 +304,12 @@ trait ObjectsMassActionsTrait
         if (false == $newData) {
             return true;
         }
-        
+
         //====================================================================//
         //   MASS OBJECT UPDATE TEST
         //====================================================================//
-        
-        for ($i=1; $i<= $this->maxTested; $i++) {
+
+        for ($i = 1; $i <= $this->maxTested; $i++) {
             //====================================================================//
             //   Verify Object Id Is Not Empty
             $this->assertNotEmpty($this->objectsIds[$i], 'Mass Update '.$i.': Input Object Id is Empty!!');
@@ -322,11 +321,11 @@ trait ObjectsMassActionsTrait
             if ($this->fromModule) {
                 //====================================================================//
                 //   Update a New Object From Module
-                $response   =   Splash::object($objectType)->set($this->objectsIds[$i], $this->inputData[$i]);
+                $response = Splash::object($objectType)->set($this->objectsIds[$i], $this->inputData[$i]);
             } else {
                 //====================================================================//
                 //   Update a New Object From Service
-                $response   =   $this->genericFastAction(
+                $response = $this->genericFastAction(
                     SPL_S_OBJECTS,
                     SPL_F_SET,
                     __METHOD__,
@@ -342,7 +341,7 @@ trait ObjectsMassActionsTrait
             // UnLock New Objects To Avoid Action Commit
             Splash::object($objectType)->unLock($this->objectsIds[$i]);
         }
-        
+
         //====================================================================//
         // Store Number of Objects After Test
         $this->countAfter = $this->countAvailableObjects($objectType);
@@ -351,14 +350,14 @@ trait ObjectsMassActionsTrait
             $this->countAfter,
             "Number of Objects After tests is Different, did you created Duplicates??"
         );
-        
+
         //====================================================================//
         //   VERIFY OBJECTS DATA
         //====================================================================//
-        
+
         $this->verifySetResponse($objectType, $this->objectsIds, $this->inputData, 0);
     }
-    
+
     /**
      * Execute Mass Delete Test From Service
      *
@@ -372,22 +371,22 @@ trait ObjectsMassActionsTrait
         //====================================================================//
         //   INIT & GENERATE DATA FOR OBJECTS
         //====================================================================//
-        
+
         $this->verify = $verify;
         $this->assertNotEmpty($this->objectsIds, 'Objects Ids List is Empty, Please run Mass Create Test Before');
-        
+
         //====================================================================//
         //   Generate Dummy New Object Data (All RW & Tested Fields Only)
         $newData = $this->prepareForTesting($objectType);
         if (false == $newData) {
             return true;
         }
-        
+
         //====================================================================//
         //   MASS OBJECT DELETE TEST
         //====================================================================//
-        
-        for ($i=1; $i<=$this->maxTested; $i++) {
+
+        for ($i = 1; $i <= $this->maxTested; $i++) {
             //====================================================================//
             // Lock New Objects To Avoid Action Commit
             Splash::object($objectType)->lock($this->objectsIds[$i]);
@@ -399,11 +398,11 @@ trait ObjectsMassActionsTrait
             if ($this->fromModule) {
                 //====================================================================//
                 //   Delete Object From Module
-                $response   =   Splash::object($objectType)->delete($this->objectsIds[$i]);
+                $response = Splash::object($objectType)->delete($this->objectsIds[$i]);
             } else {
                 //====================================================================//
                 //   Delete Object From Service
-                $response   =   $this->genericFastAction(
+                $response = $this->genericFastAction(
                     SPL_S_OBJECTS,
                     SPL_F_DEL,
                     __METHOD__,
@@ -417,11 +416,11 @@ trait ObjectsMassActionsTrait
             // UnLock New Objects To Avoid Action Commit
             Splash::object($objectType)->unLock($this->objectsIds[$i]);
         }
-        
+
         //====================================================================//
         //   VERIFY OBJECTS DATA
         //====================================================================//
-        
+
         $this->verifyDeleteResponse($objectType, $this->objectsIds, -1 * $this->maxTested);
     }
 
@@ -429,7 +428,7 @@ trait ObjectsMassActionsTrait
     //      BATCH UNIT TESTS EXECUTION FUNCTIONS
     //      WE SEND OBJECTS WITH BATCH TASKS REQUESTS
     //==============================================================================
-    
+
     /**
      * Execute Batch Create Test From Service
      *
@@ -459,7 +458,7 @@ trait ObjectsMassActionsTrait
     {
         $this->coreTestBatchAction($objectType, $maxTested, $batch, false, $verify);
     }
-    
+
     /**
      * BAse Execute Batch Action Test From Service
      *
@@ -476,11 +475,11 @@ trait ObjectsMassActionsTrait
         $this->maxTested = $max;
         $this->batchSize = $batch;
         $this->verify = $verify;
-        
+
         //====================================================================//
         //   INIT & GENERATE DATA FOR OBJECTS
         //====================================================================//
-        
+
         if (!$create) {
             $this->assertNotEmpty($this->objectsIds, 'Objects Ids List is Empty, Please run Create Test Before');
         }
@@ -491,23 +490,23 @@ trait ObjectsMassActionsTrait
         if (false == $newData) {
             return true;
         }
-        
+
         //====================================================================//
         //   MASS OBJECT CREATE TEST
         //====================================================================//
         $buffer = array();
-        for ($i=1; $i<= $this->maxTested; $i++) {
+        for ($i = 1; $i <= $this->maxTested; $i++) {
             //====================================================================//
             // Setup Empty Object Id
             if ($create) {
-                $this->objectsIds[$i]   =   false;
+                $this->objectsIds[$i] = false;
             }
             //====================================================================//
             // Add Task Parameters to Buffer
             $buffer[$i] = array(
-                'id'        => $create ? null : $this->objectsIds[$i],
-                'type'      => $objectType,
-                'fields'    => $this->inputData[$i]
+                'id' => $create ? null : $this->objectsIds[$i],
+                'type' => $objectType,
+                'fields' => $this->inputData[$i]
             );
             //====================================================================//
             // Add Task Parameters to Buffer
@@ -519,11 +518,11 @@ trait ObjectsMassActionsTrait
             $this->doBatchAction($objectType, $buffer);
             $buffer = array();
         }
-        
+
         //====================================================================//
         //   VERIFY OBJECTS DATA
         //====================================================================//
-        
+
         $this->verifySetResponse(
             $objectType,
             $this->objectsIds,
@@ -531,7 +530,7 @@ trait ObjectsMassActionsTrait
             $create ? $this->maxTested :0
         );
     }
-    
+
     /**
      * Do Batch Action
      *
@@ -553,7 +552,7 @@ trait ObjectsMassActionsTrait
         //====================================================================//
         //   Parse Batch Respopnse
         foreach (array_keys($buffer) as $key => $index) {
-            $this->objectsIds[$index]   =   $response[$key];
+            $this->objectsIds[$index] = $response[$key];
             //   Verify Object Id Is Not Empty
             $this->assertNotEmpty($this->objectsIds[$index], 'Batch : Resturned Object Id is Empty');
         }
@@ -561,7 +560,7 @@ trait ObjectsMassActionsTrait
         // UnLock New Objects To Avoid Action Commit
         Splash::object($objectType)->unLock();
     }
-    
+
     //==============================================================================
     //      DATA VERIFICATION FUNCTIONS
     //==============================================================================
@@ -586,7 +585,7 @@ trait ObjectsMassActionsTrait
 
         return $objectsList["meta"]["total"];
     }
-    
+
     /**
      * Verify Total Count of Objects.
      *
@@ -603,7 +602,7 @@ trait ObjectsMassActionsTrait
             $this->countAfter,
             "Objects count After|Before tests is wrong. Did you missed something?? Created Duplicates??"
         );
-        
+
         //====================================================================//
         //   Read Objects List
         $objectsList = Splash::object($objectType)->objectsList();
@@ -615,7 +614,7 @@ trait ObjectsMassActionsTrait
 
         return $objectsList["meta"]["total"];
     }
-    
+
     /**
      * Verify Client Object Set Reponse.
      *
@@ -630,8 +629,8 @@ trait ObjectsMassActionsTrait
         if (!$this->verify) {
             return;
         }
-            
-        for ($i=1; $i<= $this->maxTested; $i++) {
+
+        for ($i = 1; $i <= $this->maxTested; $i++) {
             //====================================================================//
             //   Verify Object Id Is Not Empty
             $this->assertNotEmpty($objectIds[$i], 'Returned New Object Id is Empty');
@@ -669,8 +668,8 @@ trait ObjectsMassActionsTrait
         if (!$this->verify) {
             return;
         }
-            
-        for ($i=1; $i<= $this->maxTested; $i++) {
+
+        for ($i = 1; $i <= $this->maxTested; $i++) {
             //====================================================================//
             // Lock New Objects To Avoid Action Commit
             Splash::object($objectType)->lock($objectIds[$i]);
@@ -688,7 +687,7 @@ trait ObjectsMassActionsTrait
             $this->assertFalse($getResponse, 'Object Not Delete, I can still read it!!');
         }
     }
-    
+
     //==============================================================================
     //      TESTS PREPARATION FUNCTIONS
     //==============================================================================
@@ -711,10 +710,10 @@ trait ObjectsMassActionsTrait
         }
         //====================================================================//
         // Generate Objects Data Sets
-        $this->inputData    = array();
-        for ($i=1; $i<= $this->maxTested; $i++) {
+        $this->inputData = array();
+        for ($i = 1; $i <= $this->maxTested; $i++) {
             $this->originData = null;
-            $this->inputData[$i]    = array_replace(
+            $this->inputData[$i] = array_replace(
                 $this->generateObjectData($objectType),
                 $this->customFieldsData
             );
@@ -726,7 +725,7 @@ trait ObjectsMassActionsTrait
         // Return Generated Object Data
         return $this->inputData;
     }
-    
+
     /**
      * Verify if Test is Allowed for This Field
      *
@@ -772,7 +771,7 @@ trait ObjectsMassActionsTrait
         //====================================================================//
         // Generate Required Fields List
         $this->fields = $this->fakeFieldsList($objectType, false, true, false);
-        
+
         //====================================================================//
         // Prepare Fake Object Data
         //====================================================================//
@@ -800,11 +799,11 @@ trait ObjectsMassActionsTrait
             //   Ensure Field Data was modified
             ++$try;
         } while (($this->fieldMd5 === $fakeDataMd5) && ($try < 5));
-        
+
         //====================================================================//
         // Store MD5 of New Generated Field Data
         $this->fieldMd5 = md5(serialize($fakeData));
-        
+
         //====================================================================//
         // Return Generated Object Data
         return $fakeData;

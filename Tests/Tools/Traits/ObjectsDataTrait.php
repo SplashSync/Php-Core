@@ -47,7 +47,7 @@ trait ObjectsDataTrait
         if ($block2 instanceof ArrayObject) {
             $block2 = $block2->getArrayCopy();
         }
-        
+
         //====================================================================//
         // Remove Id Data if Present on Block
         if (is_array($block1)) {
@@ -56,7 +56,7 @@ trait ObjectsDataTrait
         if (is_array($block2)) {
             unset($block2['id']);
         }
-        
+
         //====================================================================//
         // Normalize Data Blocks
         $this->normalize($block1);
@@ -68,11 +68,11 @@ trait ObjectsDataTrait
 
             return true;
         }
-            
+
         //====================================================================//
         // If NO Test Controller Given => Do Raw Array Compare
         //====================================================================//
-        
+
         //====================================================================//
         // Sort Data Blocks
         $this->sort($block1);
@@ -80,10 +80,10 @@ trait ObjectsDataTrait
 
         $serialized1 = serialize($block1);
         $serialized2 = serialize($block2);
-        
+
         return ($serialized1 === $serialized2);
     }
-    
+
     /**
      * Check Two Object Data Blocks using Field's Compare functions
      *
@@ -101,23 +101,23 @@ trait ObjectsDataTrait
         foreach ($fields as $field) {
             //====================================================================//
             // Extract Field Data
-            $data1        =  $this->filterData($block1, array($field->id));
-            $data2        =  $this->filterData($block2, array($field->id));
+            $data1 = $this->filterData($block1, array($field->id));
+            $data2 = $this->filterData($block2, array($field->id));
 
             //====================================================================//
             // Compare List Data
-            $fieldType      =  self::isListField($field->type);
+            $fieldType = self::isListField($field->type);
             if ($fieldType) {
-                $this->assertInternalType('array', $data1, $comment . "->" . $field->id);
-                $this->assertInternalType('array', $data2, $comment . "->" . $field->id);
+                $this->assertInternalType('array', $data1, $comment."->".$field->id);
+                $this->assertInternalType('array', $data2, $comment."->".$field->id);
                 $result = $this->compareListField(
                     $fieldType["fieldname"],
                     $field->id,
                     $data1,
                     $data2,
-                    $comment . "->" . $field->id
+                    $comment."->".$field->id
                 );
-                
+
             //====================================================================//
             // Compare Single Fields
             } else {
@@ -125,20 +125,20 @@ trait ObjectsDataTrait
                     $field->type,
                     $data1[$field->id],
                     $data2[$field->id],
-                    $comment . "->" . $field->id
+                    $comment."->".$field->id
                 );
             }
-                
+
             //====================================================================//
             // If Compare Failled => Return Fail Code
             if (true !== $result) {
                 return $result;
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Check Two Object Data Blocks using Field's Compare functions
      *
@@ -154,46 +154,46 @@ trait ObjectsDataTrait
         //====================================================================//
         // Build Full ClassName
         if (ObjectId::decodeIdField($fieldType)) {
-            $className      = self::isValidType("objectid");
+            $className = self::isValidType("objectid");
         } else {
-            $className      = self::isValidType($fieldType);
+            $className = self::isValidType($fieldType);
         }
         if (false === $className) {
             return false;
         }
-        
+
         //====================================================================//
         // Verify Class has its own Validate & Compare Function*
         $this->assertTrue(
             is_subclass_of($className, FieldInterface::class),
-            "Field of type " . $fieldType . " must Implement " . FieldInterface::class
+            "Field of type ".$fieldType." must Implement ".FieldInterface::class
         );
-        
+
         //====================================================================//
         // Validate Data Using Field Type Validator
         $this->assertTrue(
             $className::validate($block1),
-            $comment . " Source Data is invalid " . $fieldType . " Field Data Block (" . print_r($block1, true) . ")"
+            $comment." Source Data is invalid ".$fieldType." Field Data Block (".print_r($block1, true).")"
         );
         $this->assertTrue(
             $className::validate($block2),
-            $comment . " Target Data is invalid " . $fieldType . " Field Data Block (" . print_r($block2, true) . ")"
+            $comment." Target Data is invalid ".$fieldType." Field Data Block (".print_r($block2, true).")"
         );
-            
+
         //====================================================================//
         // Compare Data Using Field Type Comparator
         if (!$className::compare($block1, $block2, $this->settings)) {
-            echo PHP_EOL . "Source :" . print_r($block1, true);
-            echo PHP_EOL . "Target :" . print_r($block2, true);
+            echo PHP_EOL."Source :".print_r($block1, true);
+            echo PHP_EOL."Target :".print_r($block2, true);
         }
         $this->assertTrue(
             $className::compare($block1, $block2, $this->settings),
-            $comment . " Source and Target Data are not similar " . $fieldType . " Field Data Block"
+            $comment." Source and Target Data are not similar ".$fieldType." Field Data Block"
         );
 
         return true;
     }
-    
+
     /**
      * Check Two List Data Blocks using Field's Compare functions
      *
@@ -209,24 +209,24 @@ trait ObjectsDataTrait
     {
         //====================================================================//
         // Explode List Field Id
-        $fieldIdArray   =   self::isListField($fieldId);
+        $fieldIdArray = self::isListField($fieldId);
         $this->assertNotEmpty($fieldIdArray);
-        $fieldName      =   $fieldIdArray["fieldname"];
-        $listName       =   $fieldIdArray["listname"];
-        
+        $fieldName = $fieldIdArray["fieldname"];
+        $listName = $fieldIdArray["listname"];
+
         //====================================================================//
         // Extract List Data
         $list1 = $block1[$listName];
         $list2 = $block2[$listName];
-        
+
         //====================================================================//
         // Verify Data Count is similar
         $this->assertEquals(
             count(self::toArray($list1)),
             count(self::toArray($list2)),
             "Source and Target List Data have different number of Items "
-                . PHP_EOL . " Source " . print_r($list1, true)
-                . PHP_EOL . " Target " . print_r($list2, true)
+                .PHP_EOL." Source ".print_r($list1, true)
+                .PHP_EOL." Target ".print_r($list2, true)
         );
 
         //====================================================================//
@@ -236,22 +236,22 @@ trait ObjectsDataTrait
         while (!empty($list1)) {
             //====================================================================//
             // Extract Next Item
-            $item1  =   array_shift($list1);
-            $item2  =   array_shift($list2);
+            $item1 = array_shift($list1);
+            $item2 = array_shift($list2);
 
             //====================================================================//
             // Verify List field is Available
             $this->assertArrayHasKey(
                 $fieldName,
                 $item1,
-                "Field " . $fieldType . " not found in Source List Data "
+                "Field ".$fieldType." not found in Source List Data "
             );
             $this->assertArrayHasKey(
                 $fieldName,
                 $item2,
-                "Field " . $fieldType . " not found in Target List Data "
+                "Field ".$fieldType." not found in Target List Data "
             );
-            
+
             //====================================================================//
             // Compare Items
             $result = $this->compareField($fieldType, $item1[$fieldName], $item2[$fieldName], $comment);
@@ -259,7 +259,7 @@ trait ObjectsDataTrait
                 return $result;
             }
         }
-        
+
         return true;
     }
 }

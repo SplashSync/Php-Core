@@ -27,7 +27,7 @@ trait LockTrait
      * @var null|ArrayObject
      */
     private $locks;
-    
+
     /**
      * {@inheritdoc}
      */
@@ -39,27 +39,27 @@ trait LockTrait
                 && (Splash::configuration()->server["forcecommit"])) {
             return true;
         }
-        
+
         //====================================================================//
         // Verify Object Identifier is not Empty
         if (!$objectId) {
             $objectId = "new";
         }
-        
+
         //====================================================================//
         //  Init Lock Structure
         if (is_null($this->locks)) {
             $this->locks = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         }
-        
+
         //====================================================================//
         //  Insert Object to Structure
         $this->locks->offsetSet($objectId, true);
-        
+
         //====================================================================//
         //  Log
         Splash::log()->deb("MsgLockObject", static::$NAME, (string) $objectId);
-        
+
         return true;
     }
 
@@ -69,7 +69,7 @@ trait LockTrait
     public function isLocked($objectId = "new")
     {
         Splash::log()->deb("MsgisLockedStart", static::$NAME, (string)  $objectId);
-        
+
         //====================================================================//
         // Verify Object Identifier is not Empty
         if (!$objectId) {
@@ -91,7 +91,7 @@ trait LockTrait
 
         return true;
     }
-    
+
     /**
      * {@inheritdoc}
      */
