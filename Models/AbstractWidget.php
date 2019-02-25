@@ -136,7 +136,7 @@ abstract class AbstractWidget implements WidgetInterface
      * Get a singleton BlocksFactory Class
      * Acces to Widgets Contents Blocks Functions
      *
-     *      @return     BlocksFactory
+     * @return BlocksFactory
      */
     public static function blocksFactory()
     {
@@ -221,7 +221,7 @@ abstract class AbstractWidget implements WidgetInterface
      * Return Widget Customs Parameters
      * Used to Customize Widget on Splash Dashboard
      *
-     * @return array Array of Field from Fields Factory
+     * @return array|false Array of Field from Fields Factory
      */
     public function getParameters()
     {
