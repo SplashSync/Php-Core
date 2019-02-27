@@ -46,7 +46,7 @@ class Objects
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
         Splash::log()->deb("Object => ".$task->name." (".$task->desc.")");
 
         //====================================================================//

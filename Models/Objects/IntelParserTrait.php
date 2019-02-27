@@ -91,7 +91,7 @@ trait IntelParserTrait
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
 
         foreach ($this->identifyBuildMethods() as $method) {
             $this->{$method}();
@@ -109,7 +109,7 @@ trait IntelParserTrait
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
         //====================================================================//
         // Init Reading
         $this->in = $fieldsList;
@@ -155,7 +155,7 @@ trait IntelParserTrait
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
         //====================================================================//
         // Init Reading
         $newObjectId = null;         // If Object Created, we MUST Return Object Id

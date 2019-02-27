@@ -55,7 +55,7 @@ class Router
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
         //====================================================================//
         // Tasks Counters Initialisation
         $this->count = 0;                  // Input Task Counter

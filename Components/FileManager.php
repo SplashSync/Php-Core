@@ -24,18 +24,14 @@ namespace   Splash\Components;
 use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
-//====================================================================//
-//   INCLUDES
-//====================================================================//
-
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
-
+/**
+ * Splash File Manager
+ * Take care of Reading & Writing Files from Local to Splash Server
+ */
 class FileManager
 {
     /**
-     * @abstract   Read a file from Splash Server
+     * Read a file from Splash Server
      *
      * @param string $file File Identifier (Given by Splash Server)
      * @param string $md5  Local FileName
@@ -46,7 +42,7 @@ class FileManager
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
 
         //====================================================================//
         // PHPUNIT Exception => Look First in Local FileSystem
@@ -85,12 +81,12 @@ class FileManager
     }
 
     /**
-     *  @abstract   Check whether if a file exists or not
+     * Check whether if a file exists or not
      *
-     *  @param      string      $path       Full Path to Local File
-     *  @param      string      $md5        Local File Checksum
+     * @param string $path Full Path to Local File
+     * @param string $md5  Local File Checksum
      *
-     *  @return     array|bool       $infos      0 if not found, else file informations array
+     * @return array|bool $infos      0 if not found, else file informations array
      *
      *              File Information Array Structure
      *              $infos["owner"]     =>  File Owner Name (Human Readable);
@@ -101,7 +97,7 @@ class FileManager
      *              $infos["md5"]       =>  File MD5 Checksum
      *              $infos["size"]      =>  File Size in bytes
      *
-     *  @remark     For all file access functions, File Checksumm is used to ensure
+     * @remark     For all file access functions, File Checksumm is used to ensure
      *              the server who send request was allowed by local server to read
      *              the specified file.
      */
@@ -152,12 +148,12 @@ class FileManager
     }
 
     /**
-     *  @abstract   Read a file from local filesystem
+     * Read a file from local filesystem
      *
-     *  @param      string      $path       Full Path to Local File
-     *  @param      string      $md5        Local File Checksum
+     * @param string $path Full Path to Local File
+     * @param string $md5  Local File Checksum
      *
-     *  @return     array|bool       $file       0 if not found, else file contents array
+     * @return array|bool $file       0 if not found, else file contents array
      *
      *              File Information Array Structure
      *              $infos["filename"]  =>  File Name
@@ -165,7 +161,7 @@ class FileManager
      *              $infos["md5"]       =>  File MD5 Checksum
      *              $infos["size"]      =>  File Size in bytes
      *
-     *  @remark     For all file access functions, File Checksumm is used to ensure
+     * @remark      For all file access functions, File Checksumm is used to ensure
      *              the server who send request was allowed by local server to read
      *              the specified file.
      */
@@ -220,7 +216,7 @@ class FileManager
     }
 
     /**
-     * @abstract   Read a file contents from local filesystem & encode it to base64 format
+     * Read a file contents from local filesystem & encode it to base64 format
      *
      * @param string $fileName Full path local FileName
      *
@@ -250,9 +246,9 @@ class FileManager
     }
 
     /**
-     * @abstract   Write a file on local filesystem
+     * Write a file on local filesystem
      *
-     * @remark     For all function used remotly, all parameters have default predefined values
+     * @remark      For all function used remotly, all parameters have default predefined values
      *              in order to avoid remote execution errors.
      *
      * @param string $dir  Local File Directory
@@ -319,14 +315,14 @@ class FileManager
     }
 
     /**
-     *  @abstract   Delete a file exists or not
+     * Delete a file exists or not
      *
-     *  @param      string      $path       Full Path to Local File
-     *  @param      string      $md5        Local File Checksum
+     * @param string $path Full Path to Local File
+     * @param string $md5  Local File Checksum
      *
-     *  @return     bool
+     * @return bool
      *
-     *  @remark     For all file access functions, File Checksumm is used to ensure
+     * @remark      For all file access functions, File Checksumm is used to ensure
      *              the server who send request was allowed by local server to read
      *              the specified file.
      */
@@ -365,6 +361,16 @@ class FileManager
         return true;
     }
 
+    /**
+     * Verify Write Inputs are Conform to Expected
+     *
+     * @param string $dir
+     * @param string $file
+     * @param string $md5
+     * @param string $raw
+     *
+     * @return boolean
+     */
     private function isWriteValidInputs($dir = null, $file = null, $md5 = null, $raw = null)
     {
         //====================================================================//

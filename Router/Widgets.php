@@ -37,7 +37,7 @@ class Widgets
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
         Splash::log()->deb("Widgets => ".$task->name);
         //====================================================================//
         // Initial Response

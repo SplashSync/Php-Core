@@ -139,7 +139,7 @@ abstract class AbstractObject implements Objects\ObjectInterface
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
 
         //====================================================================//
         // Build & Return Object Description Array

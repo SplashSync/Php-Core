@@ -370,7 +370,7 @@ abstract class AbstractWidget implements WidgetInterface
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
 
         //====================================================================//
         // Build & Return Widget Description Array

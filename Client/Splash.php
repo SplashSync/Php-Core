@@ -19,14 +19,14 @@ use ArrayObject;
 use Splash\Core\SplashCore;
 
 /**
- * @abstract    Main User Client Class for Using Splash Webservice Module
+ * Main User Client Class for Using Splash Webservice Module
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
 class Splash extends SplashCore
 {
     /**
-     * @abstract    list of all Commits done inside this current session
+     * list of all Commits done inside this current session
      *
      * @var array
      */
@@ -39,7 +39,7 @@ class Splash extends SplashCore
     //--------------------------------------------------------------------//
 
     /**
-     * @abstract      Check Connexion with NuSOAP Client
+     * Check Connexion with NuSOAP Client
      *
      * @param bool $silent No message display if non errors
      *
@@ -49,7 +49,7 @@ class Splash extends SplashCore
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
         //====================================================================//
         // Initiate Performance Timer
         $intTimer = microtime(true);
@@ -87,7 +87,7 @@ class Splash extends SplashCore
     //--------------------------------------------------------------------//
 
     /**
-     * @abstract    Check Connexion with NuSOAP Client
+     * Check Connexion with NuSOAP Client
      *
      * @param bool $silent No message display if non errors
      *
@@ -97,7 +97,7 @@ class Splash extends SplashCore
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
         //====================================================================//
         // Initiate Performance Timer
         $initTimer = microtime(true);
@@ -133,7 +133,7 @@ class Splash extends SplashCore
     //--------------------------------------------------------------------//
 
     /**
-     * @abstract     Submit an Update for a Local Object
+     * Submit an Update for a Local Object
      *
      * @param string           $objectType object Type Name
      * @param array|int|string $local      object Local Id or Array of Local Id
@@ -147,7 +147,7 @@ class Splash extends SplashCore
     {
         //====================================================================//
         // Stack Trace
-        self::log()->trace(__CLASS__, __FUNCTION__.' ('.$action.', '.$objectType.')');
+        self::log()->trace();
         //====================================================================//
         // Verify this Object Class is Valid ==> No Action on this Node
         if (false == Splash::object($objectType)) {
@@ -198,7 +198,7 @@ class Splash extends SplashCore
     }
 
     /**
-     * @abstract     Build Call Parameters Array
+     * Build Call Parameters Array
      *
      * @param string           $objectType object Type Name
      * @param array|int|string $local      object Local Id or Array of Local Id
@@ -211,16 +211,16 @@ class Splash extends SplashCore
     private static function getCommitParameters($objectType, $local = null, $action = null, $user = '', $comment = '')
     {
         $params = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $params->type = $objectType;                              // Type of the Object
-        $params->id = $local;                                   // Id of Modified object
-        $params->action = $action;                                  // Action Type On this Object
-        $params->user = $user;                                    // Operation User Name for Historics
-        $params->comment = $comment;                                 // Operation Comment for Historics
+        $params->type = $objectType;        // Type of the Object
+        $params->id = $local;               // Id of Modified object
+        $params->action = $action;          // Action Type On this Object
+        $params->user = $user;              // Operation User Name for Historics
+        $params->comment = $comment;        // Operation Comment for Historics
         return $params;
     }
 
     /**
-     * @abstract     Check if Commit is Allowed Local Object
+     * Check if Commit is Allowed Local Object
      *
      * @param string           $objectType object Type Name
      * @param array|int|string $local      object Local Id or Array of Local Id
@@ -255,7 +255,7 @@ class Splash extends SplashCore
     }
 
     /**
-     * @abstract     Check if Commit we Are in Travis Mode
+     * Check if Commit we Are in Travis Mode
      *
      * @param string                $objectType object Type Name
      * @param null|array|int|string $local      object Local Id or Array of Local Id

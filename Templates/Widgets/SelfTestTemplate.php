@@ -87,7 +87,7 @@ class SelfTestTemplate extends AbstractWidget
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
 
         //====================================================================//
         // Setup Widget Core Informations
