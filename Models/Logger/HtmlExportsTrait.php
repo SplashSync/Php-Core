@@ -15,12 +15,13 @@
 
 namespace Splash\Models\Logger;
 
+use ArrayObject;
 use Countable;
 
 /**
  * Splash Logger - Html Exports Managment
  */
-trait htmlExportsTrait
+trait HtmlExportsTrait
 {
     /**
      * Return All WebServer current Log WebServer in Html format

@@ -32,9 +32,9 @@ use Splash\Core\SplashCore      as Splash;
  */
 class Logger
 {
-    use \Splash\Models\Logger\htmlExportsTrait;
-    use \Splash\Models\Logger\consoleExporterTrait;
-    use \Splash\Models\Logger\fileExporterTrait;
+    use \Splash\Models\Logger\HtmlExportsTrait;
+    use \Splash\Models\Logger\ConsoleExporterTrait;
+    use \Splash\Models\Logger\FileExporterTrait;
 
     const CMD_COLOR_ERR = 31;
     const CMD_COLOR_MSG = 32;

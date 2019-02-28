@@ -15,12 +15,14 @@
 
 namespace Splash\Models\Logger;
 
+use ArrayObject;
+use Countable;
 use Splash\Core\SplashCore      as Splash;
 
 /**
  * Splash Logger - File Exports Managment
  */
-trait fileExporterTrait
+trait FileExporterTrait
 {
     /**
      * Add a message to Log File

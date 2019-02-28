@@ -652,6 +652,7 @@ class FieldsFactory
         // Safety Checks ==> Verify Field Type is Allowed
         if (!in_array($this->new->type, array(SPL_T_VARCHAR, SPL_T_TEXT), true)) {
             Splash::log()->err("ErrFieldsWrongLang");
+            Splash::log()->err("Received: ".$this->new->type);
 
             return $this;
         }

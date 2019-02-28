@@ -15,10 +15,13 @@
 
 namespace Splash\Models\Logger;
 
+use ArrayObject;
+use Countable;
+
 /**
  * Splash Logger - Console Exports Managment
  */
-trait consoleExporterTrait
+trait ConsoleExporterTrait
 {
     /**
      * Return All WebServer current Log WebServer in Console Colored format
