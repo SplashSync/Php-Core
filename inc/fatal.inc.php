@@ -16,7 +16,7 @@
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract   Declare fatal Error Handler => Called in case of Script Exceptions
+ * Declare fatal Error Handler => Called in case of Script Exceptions
  */
 function fatal_handler()
 {
