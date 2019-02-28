@@ -454,6 +454,11 @@ class Logger
         // Clean (erase) the output buffer and turn off output buffering
         ob_end_clean();
         if ($contents) {
+            //====================================================================//
+            //  Load Translation File
+            Splash::translator()->load('main');
+            //====================================================================//
+            //  Push Warning to Log
             $this->war('UnexOutputs', $contents);
             $this->war('UnexOutputsMsg');
         }
