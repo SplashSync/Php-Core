@@ -25,9 +25,6 @@ use Splash\Client\Splash;
  */
 trait ObjectsSetTestsTrait
 {
-    /** @var array */
-    protected $fields = array();
-
     /**
      * @var string Md5 CheckSum of Current Field Data Block
      */
