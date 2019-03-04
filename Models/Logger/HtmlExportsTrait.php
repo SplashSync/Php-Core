@@ -113,7 +113,7 @@ trait HtmlExportsTrait
      *
      * @return string
      */
-    private function getHtml($msgArray, $title = '', $color = '#000000')
+    public function getHtml($msgArray, $title = '', $color = '#000000')
     {
         $html = '<font color="'.$color.'">';
 
