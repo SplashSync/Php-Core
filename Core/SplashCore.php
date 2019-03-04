@@ -24,8 +24,11 @@ use Splash\Components\Translator;
 use Splash\Components\Validator;
 use Splash\Components\Webservice;
 use Splash\Components\XmlManager;
+use Splash\Configurator\JsonConfigurator;
+use Splash\Configurator\NullConfigurator;
 use Splash\Local\Local;
 use Splash\Models\CommunicationInterface;
+use Splash\Models\ConfiguratorInterface;
 use Splash\Models\LocalClassInterface;
 use Splash\Models\Objects\ObjectInterface;
 use Splash\Models\ObjectsProviderInterface;
@@ -41,7 +44,7 @@ use Splash\Models\WidgetsProviderInterface;
 //====================================================================//
 
 /**
- * @abstract    Simple & Core Functions for Splash & Slaves Classes
+ * Simple & Core Functions for Splash & Slaves Classes
  *
  * @author      B. Paquier <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
@@ -50,98 +53,105 @@ use Splash\Models\WidgetsProviderInterface;
 class SplashCore
 {
     /**
-     * @abstract    Static Class Storage
+     * Static Class Storage
      *
      * @var SplashCore
      */
     protected static $instance;
 
     /**
-     * @abstract    Module Configuration
+     * Module Configuration
      *
      * @var null|ArrayObject
      */
     protected $conf;
 
     /**
-     * @abstract    Splash Webservice Componant
+     * Splash Webservice Componant
      *
      * @var Logger
      */
     protected $log;
 
     /**
-     * @abstract    Module Communication Componant
+     * Module Communication Componant
      *
      * @var CommunicationInterface
      */
     protected $com;
 
     /**
-     * @abstract    Module Webservice Componant
+     * Module Webservice Componant
      *
      * @var null|Webservice
      */
     protected $soap;
 
     /**
-     * @abstract    Module Tasks Routing Componant
+     * Module Tasks Routing Componant
      *
      * @var Router
      */
     protected $router;
 
     /**
-     * @abstract    Module Files Manager Componant
+     * Module Files Manager Componant
      *
      * @var FileManager
      */
     protected $file;
 
     /**
-     * @abstract    Validation Componant
+     * Validation Componant
      *
      * @var Validator
      */
     protected $valid;
 
     /**
-     * @abstract    Splash Xml Manager Componant
+     * Splash Xml Manager Componant
      *
      * @var XmlManager
      */
     protected $xml;
 
     /**
-     * @abstract    Splash Text Translator Componant
+     * Splash Text Translator Componant
      *
      * @var Translator
      */
     protected $translator;
 
     /**
-     * @abstract    Splash Local Core Class
+     * Splash Local Core Class
      *
      * @var LocalClassInterface
      */
     protected $localcore;
 
     /**
-     * @abstract    Splash Objects Class Buffer
+     * Splash Objects Class Buffer
      *
      * @var null|array
      */
     protected $objects;
 
     /**
-     * @abstract    Splash Widgets Class Buffer
+     * Splash Widgets Class Buffer
      *
      * @var null|array
      */
     protected $widgets;
 
     /**
-     * @abstract   Class Constructor
+     * Splash Configurator Class Instance
+     *
+     * @var null|ConfiguratorInterface
+     */
+    protected $configurator;
+
+    /**
+     * Class Constructor
      *
      * @param bool $debug Force Debug Flag
      */
@@ -180,10 +190,10 @@ class SplashCore
     //====================================================================//
 
     /**
-     *      @abstract   Get a singleton Core Class
-     *                  Acces to all most commons Module Functions
+     * Get a singleton Core Class
+     * Acces to all most commons Module Functions
      *
-     *      @return     self
+     * @return self
      */
     public static function core()
     {
@@ -197,7 +207,7 @@ class SplashCore
     }
 
     /**
-     * @abstract    Get Configuration Array
+     * Get Configuration Array
      *
      * @return ArrayObject
      */
@@ -215,7 +225,7 @@ class SplashCore
         //====================================================================//
 
         //====================================================================//
-        // Initialize Empty Configuration Array
+        // Initialize Empty Configuration
         self::core()->conf = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         $config = &self::core()->conf;
 
@@ -224,6 +234,7 @@ class SplashCore
         //====================================================================//
         // Translations Parameters
         $config->DefaultLanguage = SPLASH_DF_LANG;
+
         //====================================================================//
         // WebService Core Parameters
         $config->WsMethod = SPLASH_WS_METHOD;
@@ -231,12 +242,17 @@ class SplashCore
         $config->WsCrypt = SPLASH_CRYPT_METHOD;
         $config->WsEncode = SPLASH_ENCODE;
         $config->WsHost = 'www.splashsync.com/ws/soap';
+
         //====================================================================//
         // Activity Logging Parameters
         $config->Logging = SPLASH_LOGGING;
         $config->TraceIn = SPLASH_TRACE_IN;
         $config->TraceOut = SPLASH_TRACE_OUT;
         $config->TraceTasks = SPLASH_TRACE_TASKS;
+
+        //====================================================================//
+        // Custom Parameters Configurator
+        $config->Configurator = JsonConfigurator::class;
 
         //====================================================================//
         // Server Requests Configuration
@@ -256,12 +272,22 @@ class SplashCore
             }
         }
 
+        //====================================================================//
+        // Load Module Local Custom Configuration (from Configurator)
+        //====================================================================//
+        $customConf = self::configurator()->getParameters();
+        //====================================================================//
+        // Import Local Parameters
+        foreach ($customConf as $key => $value) {
+            $config->{$key} = trim($value);
+        }
+
         return self::core()->conf;
     }
 
     /**
-     * @abstract   Get a singleton Log Class
-     *                  Acces to Module Logging Functions
+     * Get a singleton Log Class
+     * Acces to Module Logging Functions
      *
      * @return Logger
      */
@@ -283,7 +309,7 @@ class SplashCore
     }
 
     /**
-     * @abstract   Get a singleton Communication Class
+     * Get a singleton Communication Class
      *
      * @return CommunicationInterface
      */
@@ -311,8 +337,8 @@ class SplashCore
     }
 
     /**
-     * @abstract   Get a singleton WebService Class
-     *             Acces to NuSOAP WebService Communication Functions
+     * Get a singleton WebService Class
+     * Acces to NuSOAP WebService Communication Functions
      *
      * @return Webservice
      * @SuppressWarnings(PHPMD.ShortMethodName)
@@ -339,8 +365,8 @@ class SplashCore
     }
 
     /**
-     * @abstract    Get a singleton Router Class
-     *              Acces to Server Tasking Management Functions
+     * Get a singleton Router Class
+     * Acces to Server Tasking Management Functions
      *
      * @return Router
      */
@@ -358,8 +384,8 @@ class SplashCore
     }
 
     /**
-     * @abstract   Get a singleton File Class
-     *             Acces to File Management Functions
+     * Get a singleton File Class
+     * Acces to File Management Functions
      *
      * @return FileManager
      */
@@ -379,8 +405,8 @@ class SplashCore
     }
 
     /**
-     * @abstract   Get a singleton Validate Class
-     *             Acces to Module Validation Functions
+     * Get a singleton Validate Class
+     * Acces to Module Validation Functions
      *
      * @return Validator
      */
@@ -403,8 +429,8 @@ class SplashCore
     }
 
     /**
-     * @abstract    Get a singleton Xml Parser Class
-     *              Acces to Module Xml Parser Functions
+     * Get a singleton Xml Parser Class
+     * Acces to Module Xml Parser Functions
      *
      * @return XmlManager
      */
@@ -422,8 +448,8 @@ class SplashCore
     }
 
     /**
-     * @abstract    Get a singleton Translator Class
-     *              Acces to Translation Functions
+     * Get a singleton Translator Class
+     * Acces to Translation Functions
      *
      * @return Translator
      */
@@ -439,7 +465,7 @@ class SplashCore
     }
 
     /**
-     * @abstract   Acces Server Local Class
+     * Acces Server Local Class
      *
      * @return LocalClassInterface
      */
@@ -470,7 +496,7 @@ class SplashCore
     }
 
     /**
-     * @abstract   Force Server Local Class
+     * Force Server Local Class
      *
      * @param LocalClassInterface $localClass Name of New Local Class to Use
      */
@@ -482,8 +508,8 @@ class SplashCore
     }
 
     /**
-     * @abstract    Get Specific Object Class
-     *              This function is a router for all local object classes & functions
+     * Get Specific Object Class
+     * This function is a router for all local object classes & functions
      *
      * @param string $objectType Local Object Class Name
      *
@@ -534,8 +560,8 @@ class SplashCore
     }
 
     /**
-     * @abstract    Get Specific Widget Class
-     *              This function is a router for all local widgets classes & functions
+     * Get Specific Widget Class
+     * This function is a router for all local widgets classes & functions
      *
      * @param string $widgetType Local Widget Class Name
      *
@@ -586,7 +612,42 @@ class SplashCore
     }
 
     /**
-     * @abstract   Fully Restart Splash Module
+     * Get Configurator Parser Instance
+     *
+     * @return ConfiguratorInterface
+     */
+    public static function configurator()
+    {
+        //====================================================================//
+        // Configuration Array Already Exists
+        //====================================================================//
+        if (isset(self::core()->configurator)) {
+            return self::core()->configurator;
+        }
+
+        //====================================================================//
+        // Load Configurator Class Name from Configuration
+        $className = self::configuration()->Configurator;
+        //====================================================================//
+        // No Configurator Defined
+        if (!is_string($className) || empty($className)) {
+            return new NullConfigurator();
+        }
+        //====================================================================//
+        // Validate Configurator Class Name
+        if (false == self::validate()->isValidConfigurator($className)) {
+            return new NullConfigurator();
+        }
+
+        //====================================================================//
+        // Initialize Configurator
+        self::core()->configurator = new $className();
+
+        return self::core()->configurator;
+    }
+
+    /**
+     * Fully Restart Splash Module
      */
     public static function reboot()
     {
@@ -616,7 +677,7 @@ class SplashCore
     //====================================================================//
 
     /**
-     * @abstract    Return Name of this library
+     * Return Name of this library
      *
      * @return string
      */
@@ -626,7 +687,7 @@ class SplashCore
     }
 
     /**
-     * @abstract    Return Description of this library
+     * Return Description of this library
      *
      * @return string
      */
@@ -636,7 +697,7 @@ class SplashCore
     }
 
     /**
-     * @abstract    Version of the module ('x.y.z')
+     * Version of the module ('x.y.z')
      *
      * @return string
      */
@@ -646,7 +707,7 @@ class SplashCore
     }
 
     /**
-     * @abstract    Detect Real Path of Current Module Local Class
+     * Detect Real Path of Current Module Local Class
      *
      * @return null|string
      */
@@ -666,7 +727,7 @@ class SplashCore
     }
 
     /**
-     * @abstract   Secured reading of Server SuperGlobals
+     * Secured reading of Server SuperGlobals
      *
      * @param string $name
      * @param int    $type
@@ -695,7 +756,7 @@ class SplashCore
     }
 
     /**
-     * @abstract   Secured counting of Mixed Values
+     * Secured counting of Mixed Values
      *
      * @param mixed $value
      *
@@ -718,16 +779,16 @@ class SplashCore
     //====================================================================//
 
     /**
-     *      @abstract   Return text translated of text received as parameter (and encode it into HTML)
+     * Return text translated of text received as parameter (and encode it into HTML)
      *
-     *      @param  string  $key        Key to translate
-     *      @param  string  $param1     chaine de param1
-     *      @param  string  $param2     chaine de param2
-     *      @param  string  $param3     chaine de param3
-     *      @param  string  $param4     chaine de param4
-     *      @param  int     $maxsize    Max length of text
+     * @param string $key     Key to translate
+     * @param string $param1  chaine de param1
+     * @param string $param2  chaine de param2
+     * @param string $param3  chaine de param3
+     * @param string $param4  chaine de param4
+     * @param int    $maxsize Max length of text
      *
-     *      @return string              Translated string (encoded into HTML entities and UTF8)
+     * @return string Translated string (encoded into HTML entities and UTF8)
      */
     public static function trans(
         $key,
@@ -747,25 +808,28 @@ class SplashCore
     //--------------------------------------------------------------------//
 
     /**
-     *      @abstract      Ask for Server System Informations
+     * Ask for Server System Informations
      *                     Informations may be overwritten by Local Module Class
      *
-     *      @return     ArrayObject             Array including all server informations
+     * @return ArrayObject Array including all server informations
      *
-     **********************************************************************************
+     ***************************************************************************
      *******    General Parameters
-     **********************************************************************************
+     ***************************************************************************
      *
-     *                   $r->Name            =   $this->name;
-     *                   $r->Id              =   $this->id;
+     * $r->Name            =   $this->name;
+     * $r->Id              =   $this->id;
      *
+     ***************************************************************************
      *******         Server Infos
-     *                   $r->php             =   phpversion();
-     *                   $r->Self            =   $_SERVER["PHP_SELF"];
-     *                   $r->Server          =   $_SERVER["SERVER_NAME"];
-     *                   $r->ServerAddress   =   $_SERVER["SERVER_ADDR"];
-     *                   $r->Port            =   $_SERVER["SERVER_PORT"];
-     *                   $r->UserAgent       =   $_SERVER["HTTP_USER_AGENT"];
+     ***************************************************************************
+     *
+     * $r->php             =   phpversion();
+     * $r->Self            =   $_SERVER["PHP_SELF"];
+     * $r->Server          =   $_SERVER["SERVER_NAME"];
+     * $r->ServerAddress   =   $_SERVER["SERVER_ADDR"];
+     * $r->Port            =   $_SERVER["SERVER_PORT"];
+     * $r->UserAgent       =   $_SERVER["HTTP_USER_AGENT"];
      */
     public static function informations()
     {
@@ -826,9 +890,9 @@ class SplashCore
     }
 
     /**
-     *      @abstract   Build list of Available Objects
+     * Build list of Available Objects
      *
-     *      @return     array       $list           list array including all available Objects Type
+     * @return array
      */
     public static function objects()
     {
@@ -874,9 +938,10 @@ class SplashCore
     }
 
     /**
-     * @abstract    Perform Local Module Self Test
+     * Perform Local Module Self Test
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public static function selfTest()
     {
@@ -906,6 +971,12 @@ class SplashCore
             return false;
         }
         //====================================================================//
+        //  Check If a Custom Configuration is Active
+        if (!empty(self::configurator()->getConfiguration())) {
+            self::log()->msg("HasCustomCfg");
+        }
+
+        //====================================================================//
         //  No HTTP Calls on SERVER MODE, nor in TRAVIS tests
         if (!empty(SPLASH_SERVER_MODE) || !empty(self::input('SPLASH_TRAVIS'))) {
             return true;
@@ -916,7 +987,7 @@ class SplashCore
     }
 
     /**
-     * @abstract   Build list of Available Widgets
+     * Build list of Available Widgets
      *
      * @return array
      */

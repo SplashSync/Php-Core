@@ -28,12 +28,12 @@ trait FieldsManagerTrait
     //==============================================================================
 
     /**
-     *   @abstract   Filter a Fields List to keap only given Fields Ids
+     * Filter a Fields List to keap only given Fields Ids
      *
-     *   @param      array      $fieldsList     Object Field List
-     *   @param      array      $filters        Array of Fields Ids
+     * @param array $fieldsList Object Field List
+     * @param array $filters    Array of Fields Ids
      *
-     *   @return     array
+     * @return array
      */
     public static function filterFieldList($fieldsList, $filters = array())
     {
@@ -49,13 +49,13 @@ trait FieldsManagerTrait
     }
 
     /**
-     *  @abstract   Filter a Fields List to keap only given Fields Tags
+     * Filter a Fields List to keap only given Fields Tags
      *
-     *  @param      array       $fieldsList     Object Field List
-     *  @param      string      $itemType       Field Microdata Type Url
-     *  @param      string      $itemProp       Field Microdata Property Name
+     * @param array  $fieldsList Object Field List
+     * @param string $itemType   Field Microdata Type Url
+     * @param string $itemProp   Field Microdata Property Name
      *
-     *  @return     array
+     * @return array
      */
     public static function filterFieldListByTag($fieldsList, $itemType, $itemProp)
     {
@@ -76,12 +76,12 @@ trait FieldsManagerTrait
     }
 
     /**
-     *   @abstract   Find a Field Definition in List by Id
+     * Find a Field Definition in List by Id
      *
-     *   @param      array      $fieldsList     Object Field List
-     *   @param      array      $fieldId        Field Id
+     * @param array $fieldsList Object Field List
+     * @param array $fieldId    Field Id
      *
-     *   @return     null|ArrayObject
+     * @return null|ArrayObject
      */
     public static function findField($fieldsList, $fieldId)
     {
@@ -95,13 +95,13 @@ trait FieldsManagerTrait
     }
 
     /**
-     *  @abstract   Find a Field Definition in List by Id
+     * Find a Field Definition in List by Id
      *
-     *  @param      array      $fieldsList     Object Field List
-     *  @param      string     $itemType       Field Microdata Type Url
-     *  @param      string     $itemProp       Field Microdata Property Name
+     * @param array  $fieldsList Object Field List
+     * @param string $itemType   Field Microdata Type Url
+     * @param string $itemProp   Field Microdata Property Name
      *
-     *  @return     null|ArrayObject
+     * @return null|ArrayObject
      */
     public static function findFieldByTag($fieldsList, $itemType, $itemProp)
     {
@@ -115,13 +115,13 @@ trait FieldsManagerTrait
     }
 
     /**
-     *   @abstract   Redure a Fields List to an Array of Field Ids
+     * Redure a Fields List to an Array of Field Ids
      *
-     *   @param      array      $fieldsList     Object Field List
-     *   @param      bool       $isRead         Filter non Readable Fields
-     *   @param      bool       $isWrite        Filter non Writable Fields
+     * @param array $fieldsList Object Field List
+     * @param bool  $isRead     Filter non Readable Fields
+     * @param bool  $isWrite    Filter non Writable Fields
      *
-     *   @return     string[]
+     * @return string[]
      */
     public static function reduceFieldList($fieldsList, $isRead = false, $isWrite = false)
     {
@@ -149,11 +149,11 @@ trait FieldsManagerTrait
     //==============================================================================
 
     /**
-     *   @abstract   Check if this id is a list identifier
+     * Check if this id is a list identifier
      *
-     *   @param      string  $fieldType        Data Type Name String
+     * @param string $fieldType Data Type Name String
      *
-     *   @return     array|false        Exploded List field Array or False
+     * @return array|false Exploded List field Array or False
      */
     public static function isListField($fieldType)
     {
@@ -175,7 +175,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * @abstract   Retrieve Field Identifier from an List Field String
+     * Retrieve Field Identifier from an List Field String
      *
      * @param string $listFieldName List Field Identifier String
      *
@@ -195,7 +195,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * @abstract   Retrieve List Name from an List Field String
+     * Retrieve List Name from an List Field String
      *
      * @param string $listFieldName List Field Identifier String
      *
@@ -215,7 +215,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * @abstract   Retrieve Base Field Type from Field Type|Id String
+     * Retrieve Base Field Type from Field Type|Id String
      *
      * @param string $fieldId List Field Identifier String
      *
@@ -242,7 +242,7 @@ trait FieldsManagerTrait
     //==============================================================================
 
     /**
-     * @abstract   Identify if field is Object Identifier Data & Decode Field
+     * Identify if field is Object Identifier Data & Decode Field
      *
      * @param string $fieldId ObjectId Field String
      *
@@ -271,7 +271,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * @abstract   Retrieve Object Id Name from an Object Identifier String
+     * Retrieve Object Id Name from an Object Identifier String
      *
      * @param string $fieldId Object Identifier String
      *
@@ -291,7 +291,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * @abstract   Retrieve Object Type Name from an Object Identifier String
+     * Retrieve Object Type Name from an Object Identifier String
      *
      * @param string $fieldId Object Identifier String
      *
@@ -315,12 +315,12 @@ trait FieldsManagerTrait
     //==============================================================================
 
     /**
-     *   @abstract   Extract Raw Field Data from an Object Data Block
+     * Extract Raw Field Data from an Object Data Block
      *
-     *   @param      array      $objectData          Object Data Block
-     *   @param      string      $filter            Single Fields Id
+     * @param array  $objectData Object Data Block
+     * @param string $filter     Single Fields Id
      *
-     *   @return     null|array
+     * @return null|array
      */
     public static function extractRawData($objectData, $filter)
     {
@@ -362,12 +362,12 @@ trait FieldsManagerTrait
     }
 
     /**
-     *   @abstract   Filter a Object Data Block to keap only given Fields
+     * Filter a Object Data Block to keap only given Fields
      *
-     *   @param      array      $objectData      Object Data Block
-     *   @param      array      $filters        Array of Fields Ids
+     * @param array $objectData Object Data Block
+     * @param array $filters    Array of Fields Ids
      *
-     *   @return     null|array
+     * @return null|array
      */
     public static function filterData($objectData, $filters = array())
     {
@@ -414,7 +414,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * @abstract   Filter a Object List Data Block to keap only given Fields
+     * Filter a Object List Data Block to keap only given Fields
      *
      * @param array $objectData Object Data Block
      * @param array $filters    Array of Fields Ids
@@ -488,7 +488,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * @abstract   kSort of An Object Data Block (ie: before Compare)
+     * kSort of An Object Data Block (ie: before Compare)
      *
      * @param array $inputArray Input Array
      *

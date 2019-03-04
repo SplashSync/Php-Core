@@ -89,9 +89,11 @@ abstract class AbstractObject implements Objects\ObjectInterface
      *
      * @return string
      */
-    public static function getType()
+    public function getType()
     {
-        return pathinfo(__FILE__, PATHINFO_FILENAME);
+        $obj = new \ReflectionClass($this);
+
+        return pathinfo((string) $obj->getFileName(), PATHINFO_FILENAME);
     }
 
     /**
@@ -143,14 +145,20 @@ abstract class AbstractObject implements Objects\ObjectInterface
 
         //====================================================================//
         // Build & Return Object Description Array
-        return array(
+        $description = array(
             //====================================================================//
             // General Object definition
-            "type" => $this->getType(),                   // Object Type Name
-            "name" => $this->getName(),                   // Object Display Neme
-            "description" => $this->getDesc(),                   // Object Descritioon
-            "icon" => $this->getIcon(),                   // Object Icon
-            "disabled" => $this->getIsDisabled(),              // Is This Object Enabled or Not?
+            //====================================================================//
+            // Object Type Name
+            "type" => $this->getType(),
+            // Object Display Name
+            "name" => $this->getName(),
+            // Object Descrition
+            "description" => $this->getDesc(),
+            // Object Icon Class (Font Awesome or Glyph. ie "fa fa-user")
+            "icon" => $this->getIcon(),
+            // Is This Object Enabled or Not?
+            "disabled" => $this->getIsDisabled(),
             //====================================================================//
             // Object Limitations
             "allow_push_created" => (bool) static::$ALLOW_PUSH_CREATED,
@@ -165,5 +173,9 @@ abstract class AbstractObject implements Objects\ObjectInterface
             "enable_pull_updated" => (bool) static::$ENABLE_PULL_UPDATED,
             "enable_pull_deleted" => (bool) static::$ENABLE_PULL_DELETED
         );
+
+        //====================================================================//
+        // Apply Overrides & Return Object Description Array
+        return Splash::configurator()->overrideDescription(static::getType(), $description);
     }
 }

@@ -692,9 +692,9 @@ class FieldsFactory
         // Safety Checks
         if (empty($this->fields)) {
             return Splash::log()->err("ErrFieldsNoList");
-            //====================================================================//
-        // Return fields List
         }
+        //====================================================================//
+        // Return fields List
         $buffer = $this->fields;
         $this->fields = array();
 
@@ -729,6 +729,7 @@ class FieldsFactory
 
         return false;
     }
+
     /**
      * Seach for a Field by id
      *

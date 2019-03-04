@@ -18,6 +18,7 @@ namespace   Splash\Components;
 use ArrayObject;
 use Exception;
 use Splash\Core\SplashCore      as Splash;
+use Splash\Models\ConfiguratorInterface;
 use Splash\Models\LocalClassInterface;
 use Splash\Models\Objects\ObjectInterface;
 use Splash\Models\ObjectsProviderInterface;
@@ -25,7 +26,7 @@ use Splash\Models\Widgets\WidgetInterface;
 use Splash\Models\WidgetsProviderInterface;
 
 /**
- * @abstract    Tooling Class for Validation of Splash Php Module Contents
+ * Tooling Class for Validation of Splash Php Module Contents
  *
  * @author      B. Paquier <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
@@ -50,7 +51,7 @@ class Validator
     //====================================================================//
 
     /**
-     * @abstract   Verify Local Core Class Exists & Is Valid
+     * Verify Local Core Class Exists & Is Valid
      *
      * @return bool
      */
@@ -90,7 +91,7 @@ class Validator
     }
 
     /**
-     * @abstract   Verify Local Core Parameters are Valid
+     * Verify Local Core Parameters are Valid
      *
      * @param mixed $input
      *
@@ -119,7 +120,7 @@ class Validator
     }
 
     /**
-     * @abstract   Verify Local Test Parameters are Valid
+     * Verify Local Test Parameters are Valid
      *
      * @param mixed $input
      *
@@ -137,7 +138,7 @@ class Validator
     }
 
     /**
-     * @abstract   Verify Webserver Informations are Valid
+     * Verify Webserver Informations are Valid
      *
      * @return bool
      */
@@ -180,7 +181,7 @@ class Validator
     }
 
     /**
-     * @abstract   Verify Webserver is a LocalHost
+     * Verify Webserver is a LocalHost
      *
      * @param mixed $infos
      */
@@ -204,7 +205,7 @@ class Validator
     //====================================================================//
 
     /**
-     * @abstract   Verify this parameter is a valid object type name
+     * Verify this parameter is a valid object type name
      *
      * @param string $objectType Object Class/Type Name
      *
@@ -246,7 +247,7 @@ class Validator
     }
 
     /**
-     * @abstract   Verify this Object Type is valid in Local Syetem
+     * Verify this Object Type is valid in Local Syetem
      *
      * @param string $objectType Object Type Name String
      *
@@ -266,7 +267,7 @@ class Validator
     //====================================================================//
 
     /**
-     * @abstract   Verify Object Identifier
+     * Verify Object Identifier
      *
      * @param null|string $objectId Object Identifier
      *
@@ -294,7 +295,7 @@ class Validator
     }
 
     /**
-     * @abstract   Verify Object Field List
+     * Verify Object Field List
      *
      * @param null|array|ArrayObject $fieldsList Object Field List
      *
@@ -323,7 +324,7 @@ class Validator
     //====================================================================//
 
     /**
-     * @abstract   Verify this parameter is a valid widget type name
+     * Verify this parameter is a valid widget type name
      *
      * @param string $widgetType Widget Class/Type Name
      *
@@ -370,7 +371,7 @@ class Validator
     //====================================================================//
 
     /**
-     * @abstract   Verify Local Path Exists
+     * Verify Local Path Exists
      *
      * @return bool
      */
@@ -395,7 +396,7 @@ class Validator
     }
 
     /**
-     * @abstract    Verify Availability of a local method/function prior to task execution.
+     * Verify Availability of a local method/function prior to task execution.
      *
      * @param string $method    Function Name
      * @param string $className Optionnal Class Name
@@ -435,7 +436,7 @@ class Validator
     //====================================================================//
 
     /**
-     * @abstract    Verify PHP Version is Compatible.
+     * Verify PHP Version is Compatible.
      *
      * @return bool
      */
@@ -453,7 +454,7 @@ class Validator
     }
 
     /**
-     * @abstract     Verify PHP Required are Installed & Active
+     * Verify PHP Required are Installed & Active
      *
      * @return bool
      */
@@ -474,7 +475,7 @@ class Validator
     }
 
     /**
-     * @abstract     Verify WebService Library is Valid.
+     * Verify WebService Library is Valid.
      *
      * @return bool
      */
@@ -491,8 +492,51 @@ class Validator
         );
     }
 
+    //====================================================================//
+    // *******************************************************************//
+    //  VALIDATE LOCAL CONFIGURATOR CLASS
+    // *******************************************************************//
+    //====================================================================//
+
     /**
-     * @abstract     Verify a Local Object File is Valid.
+     * Verify Given Class Is a Valid Splash Configurator
+     *
+     * @param string $className Configurator Class Name
+     *
+     * @return bool
+     */
+    public function isValidConfigurator($className)
+    {
+        //====================================================================//
+        // Verify Class Exists
+        if (false == class_exists($className)) {
+            return Splash::log()->err('Configurator Class Not Found: '.$className);
+        }
+
+        //====================================================================//
+        // Verify Configurator Class Extends ConfiguratorInterface
+        try {
+            $class = new $className();
+            if (!($class instanceof ConfiguratorInterface)) {
+                return Splash::log()->err(Splash::trans('ErrLocalInterface', $className, ConfiguratorInterface::class));
+            }
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+
+            return Splash::log()->err($exc->getMessage());
+        }
+
+        return true;
+    }
+
+    //====================================================================//
+    // *******************************************************************//
+    //  PRIVATE & CORE FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
+
+    /**
+     * Verify a Local Object File is Valid.
      *
      * @param string $objectType Object Type Name
      *
@@ -520,7 +564,7 @@ class Validator
     }
 
     /**
-     * @abstract     Verify Availability of a Local Object Class.
+     * Verify Availability of a Local Object Class.
      *
      * @param string $objectType Object Type Name
      *
@@ -555,6 +599,9 @@ class Validator
         if ($className::getIsDisabled()) {
             return false;
         }
+        if (Splash::configurator()->isDisabled($objectType)) {
+            return false;
+        }
 
         //====================================================================//
         // Verify Local Object Class Implements ObjectInterface
@@ -562,7 +609,7 @@ class Validator
     }
 
     /**
-     * @abstract     Verify a Local Widget File is Valid.
+     * Verify a Local Widget File is Valid.
      *
      * @param string $widgetType Widget Type Name
      *
@@ -589,7 +636,7 @@ class Validator
     }
 
     /**
-     * @abstract     Verify Availability of a Local Widget Class.
+     * Verify Availability of a Local Widget Class.
      *
      * @param string $widgetType Widget Type Name
      *

@@ -98,8 +98,12 @@ trait IntelParserTrait
         }
 
         //====================================================================//
-        // Publish Fields
-        return $this->fieldsFactory()->publish();
+        // Publish Fields from Factory
+        $fields = $this->fieldsFactory()->publish();
+
+        //====================================================================//
+        // Override Fields from Local Configurator
+        return Splash::configurator()->overrideFields(self::getType(), $fields);
     }
 
     /**
