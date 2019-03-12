@@ -269,7 +269,7 @@ class Validator
     /**
      * Verify Object Identifier
      *
-     * @param null|string $objectId Object Identifier
+     * @param mixed $objectId Object Identifier
      *
      * @return bool
      */

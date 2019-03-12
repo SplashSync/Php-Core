@@ -265,7 +265,7 @@ trait ObjectsSetTestsTrait
      * Verify Client Object Set Reponse.
      *
      * @param string $objectType
-     * @param string $objectId
+     * @param mixed  $objectId
      * @param string $action
      * @param array  $expectedData
      */
@@ -281,10 +281,7 @@ trait ObjectsSetTestsTrait
 
         //====================================================================//
         //   Verify Object Id Is in Right Format
-        $this->assertTrue(
-            is_numeric($objectId) || is_string($objectId),
-            'New Object Id is not an Integer or a Strings'
-        );
+        $this->assertInternalType('string', $objectId, 'New Object Id is not a Strings');
 
         //====================================================================//
         //   Verify Object Change Was Commited

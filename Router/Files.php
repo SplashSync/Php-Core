@@ -19,8 +19,8 @@ use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    Server Request Routiung Class, Execute/Route actions on Objects Service Requests.
- *              This file is included only in case on NuSOAP call to slave server.
+ * Server Request Routiung Class, Execute/Route actions on Objects Service Requests.
+ * This file is included only in case on NuSOAP call to slave server.
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
@@ -96,6 +96,13 @@ class Files
         // Verify Requested Object Type is Available
         if (empty($task->params)) {
             Splash::log()->err('File Router - Missing Task Parameters... ');
+
+            return false;
+        }
+        //====================================================================//
+        // Verify Requested File Path is Available
+        if (!isset($task->params->path) && !isset($task->params->file)) {
+            Splash::log()->err('File Router - Missing File Path... ');
 
             return false;
         }

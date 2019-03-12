@@ -29,7 +29,7 @@ interface FieldInterface
     /**
      * Verify given Raw Data is Valid
      *
-     * @param null|Array|ArrayObject|bool|int|string $data
+     * @param null|Array|ArrayObject|bool|float|int|string $data
      *
      * @return string|true
      */

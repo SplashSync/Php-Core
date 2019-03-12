@@ -46,19 +46,19 @@ define("SPLASH_SERVER_MODE", 1);
 // Detect NuSOAP requests send by Splash Server
 $userAgent = Splash::input("HTTP_USER_AGENT");
 if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
-    Splash::log()->deb("Splash Started In Server Mode");
+    //====================================================================//
+    // Turn on output buffering
+    ob_start();
     //====================================================================//
     //   Declare WebService Available Functions
     require_once(dirname(__FILE__)."/inc/server.inc.php");
+    Splash::log()->deb("Splash Started In Server Mode");
     //====================================================================//
     // Build SOAP Server & Register a method available for clients
     Splash::com()->buildServer();
     //====================================================================//
     // Register shuttdown method available for fatal errors reteival
     register_shutdown_function(__NAMESPACE__.'\fatal_handler');
-    //====================================================================//
-    // Turn on output buffering
-    ob_start();
     //====================================================================//
     // Process methods & Return the results.
     Splash::com()->handle();
