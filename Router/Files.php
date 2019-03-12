@@ -101,6 +101,11 @@ class Files
         }
         //====================================================================//
         // Verify Requested File Path is Available
+        if (!isset($task->params->path) && !isset($task->params->file)) {
+            Splash::log()->err('File Router - Missing File Path... ');
+
+            return false;
+        }
         if (empty($task->params->path) && empty($task->params->file)) {
             Splash::log()->err('File Router - Missing File Path... ');
 
