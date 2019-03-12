@@ -47,7 +47,7 @@ class Ooint implements FieldInterface
         }
         //==============================================================================
         //      Verify Data is an Integer
-        if (!is_string($data) && !is_integer($data)) {
+        if (intval($data) != $data) {
             return "Field Data is not an Integer.";
         }
 
