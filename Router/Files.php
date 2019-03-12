@@ -101,12 +101,8 @@ class Files
         }
         //====================================================================//
         // Verify Requested File Path is Available
-        if (!isset($task->params->path) && !isset($task->params->file)) {
-            Splash::log()->err('File Router - Missing File Path... ');
-
-            return false;
-        }
-        if (empty($task->params->path) && empty($task->params->file)) {
+        $filePath = self::detectFilePath($task->params);
+        if (!$filePath) {
             Splash::log()->err('File Router - Missing File Path... ');
 
             return false;
@@ -126,16 +122,30 @@ class Files
             return false;
         }
         //====================================================================//
-        // Detect File Path
-        $filePath = (empty($task->params->path) && !empty($task->params->file))
-                ? $task->params->file
-                : $task->params->path;
-        //====================================================================//
         // Return Parameters
         return array(
             'path' => $filePath,
             'md5' => $task->params->md5,
         );
+    }
+
+    /**
+     * Detect File Path from Parameters.
+     *
+     * @param ArrayObject $params
+     *
+     * @return false|string
+     */
+    private static function detectFilePath($params)
+    {
+        if (isset($params->path) && !empty($params->path)) {
+            return $params->path;
+        }
+        if (isset($params->file) && !empty($params->file)) {
+            return $params->path;
+        }
+
+        return false;
     }
 
     //====================================================================//
