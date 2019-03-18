@@ -31,8 +31,8 @@ class FieldsFactory
     //==============================================================================
 
     const MODE_BOTH = "both";
-    const MODE_READ = "read";
-    const MODE_WRITE = "write";
+    const MODE_READ = "export";
+    const MODE_WRITE = "import";
 
     //==============================================================================
     //  Meta Data Access MicroDatas
