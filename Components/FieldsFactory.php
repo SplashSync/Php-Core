@@ -376,7 +376,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->mode = self::MODE_READ;
+            $this->new->syncmode = self::MODE_READ;
         }
 
         return $this;
@@ -396,7 +396,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->mode = self::MODE_WRITE;
+            $this->new->syncmode = self::MODE_WRITE;
         }
 
         return $this;
