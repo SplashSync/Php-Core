@@ -33,6 +33,7 @@ class FieldsFactory
     const MODE_BOTH = "both";
     const MODE_READ = "export";
     const MODE_WRITE = "import";
+    const MODE_NONE = "none";
 
     //==============================================================================
     //  Meta Data Access MicroDatas
@@ -397,6 +398,26 @@ class FieldsFactory
             //====================================================================//
             // Update New Field structure
             $this->new->syncmode = self::MODE_WRITE;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Signify Server Current New Field Prefer No Sync Mode
+     *
+     * @return $this
+     */
+    public function setPreferNone()
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {
+            Splash::log()->err("ErrFieldsNoNew");
+        } else {
+            //====================================================================//
+            // Update New Field structure
+            $this->new->syncmode = self::MODE_NONE;
         }
 
         return $this;
