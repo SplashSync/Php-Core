@@ -596,10 +596,7 @@ class Validator
         if (false == $this->isValidLocalFunction('getIsDisabled', $className)) {
             return false;
         }
-        if ($className::getIsDisabled()) {
-            return false;
-        }
-        if (Splash::configurator()->isDisabled($objectType)) {
+        if (Splash::configurator()->isDisabled($objectType, $className::getIsDisabled())) {
             return false;
         }
 
