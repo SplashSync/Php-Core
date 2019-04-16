@@ -16,18 +16,18 @@
 namespace   Splash\Models\Objects;
 
 /**
- * @abstract    Implement Generic Access to Object Simple Fields
+ * Implement Generic Access to Object Simple Fields
  */
 trait SimpleFieldsTrait
 {
     /**
-     *  @abstract     Common Reading of a Single Field
+     * Common Reading of a Single Field
      *
-     *  @param        string    $fieldName              Field Identifier / Name
-     *  @param        string    $objectName             Name of private object to read (Default : "object")
-     *  @param        mixed     $default                Default Value if unset
+     * @param string $fieldName  Field Identifier / Name
+     * @param string $objectName Name of private object to read (Default : "object")
+     * @param mixed  $default    Default Value if unset
      *
-     *  @return       self
+     * @return self
      */
     protected function getSimple($fieldName, $objectName = "object", $default = null)
     {
@@ -41,13 +41,13 @@ trait SimpleFieldsTrait
     }
 
     /**
-     *  @abstract     Common Reading of a Single Bool Field
+     * Common Reading of a Single Bool Field
      *
-     *  @param        string    $fieldName              Field Identifier / Name
-     *  @param        string    $objectName             Name of private object to read (Default : "object")
-     *  @param        mixed     $default                Default Value if unset
+     * @param string $fieldName  Field Identifier / Name
+     * @param string $objectName Name of private object to read (Default : "object")
+     * @param mixed  $default    Default Value if unset
      *
-     *  @return       self
+     * @return self
      */
     protected function getSimpleBool($fieldName, $objectName = "object", $default = false)
     {
@@ -61,13 +61,13 @@ trait SimpleFieldsTrait
     }
 
     /**
-     *  @abstract     Common Reading of a Single Double Field
+     * Common Reading of a Single Double Field
      *
-     *  @param        string    $fieldName              Field Identifier / Name
-     *  @param        string    $objectName             Name of private object to read (Default : "object")
-     *  @param        mixed     $default                Default Value if unset
+     * @param string $fieldName  Field Identifier / Name
+     * @param string $objectName Name of private object to read (Default : "object")
+     * @param mixed  $default    Default Value if unset
      *
-     *  @return       self
+     * @return self
      */
     protected function getSimpleDouble($fieldName, $objectName = "object", $default = 0)
     {
@@ -81,14 +81,14 @@ trait SimpleFieldsTrait
     }
 
     /**
-     *  @abstract     Common Reading of a Single Bit Field
+     * Common Reading of a Single Bit Field
      *
-     *  @param        string    $fieldName              Field Identifier / Name
-     *  @param        int       $position               Bit position (Starting form 0)
-     *  @param        string    $objectName             Name of private object to read (Default : "object")
-     *  @param        mixed     $default                Default Value if unset
+     * @param string $fieldName  Field Identifier / Name
+     * @param int    $position   Bit position (Starting form 0)
+     * @param string $objectName Name of private object to read (Default : "object")
+     * @param mixed  $default    Default Value if unset
      *
-     *  @return       self
+     * @return self
      */
     protected function getSimpleBit($fieldName, $position, $objectName = "object", $default = false)
     {
@@ -102,14 +102,14 @@ trait SimpleFieldsTrait
     }
 
     /**
-     *  @abstract     Common Reading of a Single Field
+     * Common Reading of a Single Field
      *                  => If Field Needs to be Updated, do Object Update & Set $this->update to true
      *
-     *  @param        string    $fieldName              Field Identifier / Name
-     *  @param        mixed     $fieldData              Field Data
-     *  @param        string    $objectName             Name of private object to read (Default : "object")
+     * @param string $fieldName  Field Identifier / Name
+     * @param mixed  $fieldData  Field Data
+     * @param string $objectName Name of private object to read (Default : "object")
      *
-     *  @return       self
+     * @return self
      */
     protected function setSimple($fieldName, $fieldData, $objectName = "object")
     {
@@ -126,13 +126,13 @@ trait SimpleFieldsTrait
     }
 
     /**
-     *  @abstract     Common Writing of a Single Field
+     * Common Writing of a Single Field
      *
-     *  @param        string    $fieldName              Field Identifier / Name
-     *  @param        mixed     $fieldData              Field Data
-     *  @param        string    $objectName             Name of private object to read (Default : "object")
+     * @param string $fieldName  Field Identifier / Name
+     * @param mixed  $fieldData  Field Data
+     * @param string $objectName Name of private object to read (Default : "object")
      *
-     *  @return       self
+     * @return self
      */
     protected function setSimpleFloat($fieldName, $fieldData, $objectName = "object")
     {
@@ -150,14 +150,14 @@ trait SimpleFieldsTrait
     }
 
     /**
-     *  @abstract     Common Writing of a Single Bit Field
+     * Common Writing of a Single Bit Field
      *
-     *  @param        string    $fieldName              Field Identifier / Name
-     *  @param        int       $position               Bit position (Starting form 0)
-     *  @param        mixed     $fieldData              Field Data
-     *  @param        string    $objectName             Name of private object to read (Default : "object")
+     * @param string $fieldName  Field Identifier / Name
+     * @param int    $position   Bit position (Starting form 0)
+     * @param mixed  $fieldData  Field Data
+     * @param string $objectName Name of private object to read (Default : "object")
      *
-     *  @return       self
+     * @return self
      */
     protected function setSimpleBit($fieldName, $position, $fieldData, $objectName = "object")
     {
@@ -178,7 +178,7 @@ trait SimpleFieldsTrait
     }
 
     /**
-     * @abstract    Common reading of a Field using Generic Getters & Setters
+     * Common reading of a Field using Generic Getters & Setters
      *
      * @param string $fieldName  Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
      * @param string $objectName Name of private object to read (Default : "object")
@@ -193,7 +193,7 @@ trait SimpleFieldsTrait
     }
 
     /**
-     * @abstract    Common Writing of a Field using Generic Getters & Setters
+     * Common Writing of a Field using Generic Getters & Setters
      *
      * @param string $fieldName  Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
      * @param mixed  $fieldData  Field Data
@@ -212,6 +212,46 @@ trait SimpleFieldsTrait
         //====================================================================//
         //  Update Field Data
         $this->{$objectName}->{ "set".$fieldName}($fieldData);
+        $this->needUpdate($objectName);
+
+        return $this;
+    }
+
+    /**
+     * Common reading of a Field using Generic Boolean Getters & Setters
+     *
+     * @param string $fieldName  Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
+     * @param string $objectName Name of private object to read (Default : "object")
+     *
+     * @return self
+     */
+    protected function getGenericBool($fieldName, $objectName = "object")
+    {
+        $this->out[$fieldName] = $this->{$objectName}->{ "is".$fieldName}();
+
+        return $this;
+    }
+
+    /**
+     * @abstract    Common Writing of a Field using Generic Getters & Setters
+     *
+     * @param string $fieldName  Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
+     * @param mixed  $fieldData  Field Data
+     * @param string $objectName Name of private object to read (Default : "object")
+     *
+     * @return self
+     */
+    protected function setGenericBool($fieldName, $fieldData, $objectName = "object")
+    {
+        //====================================================================//
+        //  Compare Field Data
+        $current = $this->{$objectName}->{ "is".$fieldName}();
+        if ($current == $fieldData) {
+            return $this;
+        }
+        //====================================================================//
+        //  Update Field Data
+        $this->{$objectName}->{ "set".$fieldName}((bool) $fieldData);
         $this->needUpdate($objectName);
 
         return $this;
