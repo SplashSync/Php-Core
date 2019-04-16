@@ -52,13 +52,12 @@ trait GenericFieldsTrait
      *
      * @param string $fieldName  Field Identifier
      * @param mixed  $fieldData  New Target Object
-     * @param string $objectType Splash Object Type
      * @param string $objectName Name of private object to read (Default : "object")
      * @param bool   $nullable   Can we set Object to Null
      *
      * @return self
      */
-    protected function setGenericObject($fieldName, $fieldData, $objectType, $objectName = "object", $nullable = true)
+    protected function setGenericObject($fieldName, $fieldData, $objectName = "object", $nullable = true)
     {
         //====================================================================//
         // Load New Object Id
