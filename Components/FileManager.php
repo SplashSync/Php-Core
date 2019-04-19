@@ -289,7 +289,7 @@ class FileManager
             }
             //====================================================================//
             // Check if file is writable
-            if (!is_writable((string) $file)) {
+            if (!is_writable((string) $fullpath)) {
                 return Splash::log()->err("ErrFileWriteable", __FUNCTION__, $file);
             }
         }
