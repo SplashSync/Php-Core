@@ -305,7 +305,7 @@ class FileManager
         fwrite($filehandle, (string)  base64_decode((string) $raw, true));
         fclose($filehandle);
         clearstatcache();
-        
+
         //====================================================================//
         // Verify file checksum
         if ($md5 !== md5_file($fullpath)) {
