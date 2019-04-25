@@ -15,7 +15,10 @@
 
 namespace   Splash\Models\Helpers;
 
+use Splash\Client\Splash;
 use Splash\Models\Fields\FieldsManagerTrait;
+use Splash\Models\AbstractObject;
+use Splash\Models\Objects\IntelParserTrait;
 
 /**
  * Helper for Objects Fields Management
@@ -76,4 +79,47 @@ class ObjectsHelper
         // Forward to Fields Manager
         return   self::objectType($objectId);
     }
+    
+    /**
+     * Load a Target Remote Object using Splash Object Field Data
+     *
+     * @param string $fieldData Object Identifier String.
+     *
+     * @return null|AbstractObject
+     */
+    public static function load($fieldData, $objectClass = null)
+    {
+        //====================================================================//
+        // Decode Object Type & Id
+        $objectType = self::objectType($fieldData);
+        $objectId = self::objectId($fieldData);
+        if (!$objectType || !$objectId) {
+            return null;
+        }
+        //====================================================================//
+        // Load Splash Object
+        $splashObject = Splash::object($objectType);
+        if (!$splashObject) {
+            return null;
+        }
+        //====================================================================//
+        // Ensure Splash Object uses InteliParserTrait
+        if(!in_array(IntelParserTrait::class, class_uses($splashObject))){
+            return null;
+        }
+        //====================================================================//
+        // Load Remote Object
+        $remoteObject = $splashObject->load($objectId);
+        if(!$remoteObject){
+            return null;
+        }
+        //====================================================================//
+        // Verify Remote Object
+        if(!empty($objectClass) && !($remoteObject instanceof $objectClass)) {
+            return null;
+        }
+        //====================================================================//
+        // Return Remote Object
+        return   $remoteObject;
+    }    
 }
