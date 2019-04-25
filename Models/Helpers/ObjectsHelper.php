@@ -16,8 +16,8 @@
 namespace   Splash\Models\Helpers;
 
 use Splash\Client\Splash;
-use Splash\Models\Fields\FieldsManagerTrait;
 use Splash\Models\AbstractObject;
+use Splash\Models\Fields\FieldsManagerTrait;
 use Splash\Models\Objects\IntelParserTrait;
 
 /**
@@ -79,11 +79,12 @@ class ObjectsHelper
         // Forward to Fields Manager
         return   self::objectType($objectId);
     }
-    
+
     /**
      * Load a Target Remote Object using Splash Object Field Data
      *
-     * @param string $fieldData Object Identifier String.
+     * @param string     $fieldData   Object Identifier String.
+     * @param null|mixed $objectClass
      *
      * @return null|AbstractObject
      */
@@ -99,27 +100,30 @@ class ObjectsHelper
         //====================================================================//
         // Load Splash Object
         $splashObject = Splash::object($objectType);
-        if (!$splashObject) {
+        if (empty($splashObject)) {
             return null;
         }
         //====================================================================//
         // Ensure Splash Object uses InteliParserTrait
-        if(!in_array(IntelParserTrait::class, class_uses($splashObject))){
+        if (!in_array(IntelParserTrait::class, class_uses($splashObject), true)) {
+            return null;
+        }
+        if (!method_exists($splashObject, 'load')) {
             return null;
         }
         //====================================================================//
         // Load Remote Object
         $remoteObject = $splashObject->load($objectId);
-        if(!$remoteObject){
+        if (!$remoteObject) {
             return null;
         }
         //====================================================================//
         // Verify Remote Object
-        if(!empty($objectClass) && !($remoteObject instanceof $objectClass)) {
+        if (!empty($objectClass) && !($remoteObject instanceof $objectClass)) {
             return null;
         }
         //====================================================================//
         // Return Remote Object
         return   $remoteObject;
-    }    
+    }
 }
