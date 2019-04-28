@@ -216,7 +216,7 @@ trait ObjectsDataTrait
 
         //====================================================================//
         // Extract List Data
-        $list1 = $block1[$listName];
+        $list1 = isset($block1[$listName]) ? $block1[$listName] : array();
         $list2 = $block2[$listName];
 
         //====================================================================//
