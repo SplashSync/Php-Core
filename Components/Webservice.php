@@ -20,7 +20,7 @@ use Splash\Core\SplashCore      as Splash;
 use Splash\Server\SplashServer;
 
 /**
- * @abstract    This Class Manage Low Level NUSOAP WebService Requests
+ * This Class Manage Low Level NUSOAP WebService Requests
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
@@ -66,7 +66,7 @@ class Webservice
     private $rawOut;        // Raw Call Output Buffer
 
     /**
-     *      @abstract     Initialise Class with empty webservice parameters
+     * Initialise Class with empty webservice parameters
      */
     public function __construct()
     {
@@ -84,9 +84,9 @@ class Webservice
     //====================================================================//
 
     /**
-     *      @abstract   Initialise Class with webservice parameters
+     * Initialise Class with webservice parameters
      *
-     *      @return     bool
+     * @return bool
      */
     public function setup()
     {
@@ -125,7 +125,7 @@ class Webservice
     }
 
     /**
-     * @abstract    Prepare Data Packets for transmit.
+     * Prepare Data Packets for transmit.
      *
      * @param array $data        Input Data ArrayObject
      * @param bool  $isUncrypted force no encrypt on message
@@ -173,7 +173,7 @@ class Webservice
     }
 
     /**
-     * @abstract   Unpack received Data Packets.
+     * Unpack received Data Packets.
      *
      * @param string $data        Input Data
      * @param bool   $isUncrypted force no encrypt on message
@@ -240,7 +240,7 @@ class Webservice
     //====================================================================//
 
     /**
-     * @abstract   Perform operation with WebService Client
+     * Perform operation with WebService Client
      *
      * @param string $service     server method to use
      * @param array  $tasks       List of task to perform inside this request.
@@ -293,7 +293,7 @@ class Webservice
     }
 
     /**
-     * @abstract   Simulate operation on Local WebService Client
+     * Simulate operation on Local WebService Client
      *
      * @param string $service     server method to use
      * @param array  $tasks       List of task to perform inside this request.
@@ -335,7 +335,7 @@ class Webservice
     //====================================================================//
 
     /**
-     * @abstract    Add a new task for NuSOAP Call Request
+     * Add a new task for NuSOAP Call Request
      *
      * @param string            $name   Task Identifier Name (Listed in OsWs.inc.php)
      * @param array|ArrayObject $params Task Parameters
@@ -368,7 +368,7 @@ class Webservice
     }
 
     /**
-     * @abstract    Get Next Task Result Available in Response Tasks Buffer
+     * Get Next Task Result Available in Response Tasks Buffer
      *
      * @param ArrayObject|false $response Webservice Call Response
      *
@@ -390,7 +390,7 @@ class Webservice
     }
 
     /**
-     * @abstract    Get Next Task Available in Response Tasks Buffer
+     * Get Next Task Available in Response Tasks Buffer
      *
      * @param ArrayObject|false $response Webservice Call Response
      *
@@ -423,7 +423,7 @@ class Webservice
     //====================================================================//
 
     /**
-     * @abstract     Return Server Informations
+     * Return Server Informations
      *
      * @return ArrayObject $Response
      *
@@ -453,16 +453,7 @@ class Webservice
         // Server Urls
         //====================================================================//
         // CRITICAL - Server Host Name
-        // Check if Overiden by Application Module
-        if (isset(Splash::configuration()->ServerHost)) {
-            $response->ServerHost = Splash::configuration()->ServerHost;
-        // Check if Available with Secured Reading
-        } elseif (!empty(Splash::input('SERVER_NAME'))) {
-            $response->ServerHost = Splash::input('SERVER_NAME');
-        // Fallback to Unsecured Mode (Required for Phpunit)
-        } else {
-            $response->ServerHost = $_SERVER['SERVER_NAME'];
-        }
+        $response->ServerHost = $this->getServerName();
 
         //====================================================================//
         // Server IPv4 Address
@@ -488,7 +479,7 @@ class Webservice
     }
 
     /**
-     * @abstract     Return Server Outputs Buffer
+     * Return Server Outputs Buffer
      *
      * @return array $result
      */
@@ -498,7 +489,35 @@ class Webservice
     }
 
     /**
-     * @abstract   Get Client Server Schema (http or https)
+     * Safe Get Client Server Url
+     *
+     * @return string
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    public function getServerName()
+    {
+        //====================================================================//
+        // Check if Server Name is Overiden by Application Module
+        if (isset(Splash::configuration()->ServerHost)) {
+            return Splash::configuration()->ServerHost;
+        }
+        //====================================================================//
+        // Check if Available with Secured Reading
+        if (!empty(Splash::input('SERVER_NAME'))) {
+            return Splash::input('SERVER_NAME');
+        }
+        //====================================================================//
+        // Fallback to Unsecured Mode (Required for Phpunit)
+        if (isset($_SERVER['SERVER_NAME'])) {
+            return $_SERVER['SERVER_NAME'];
+        }
+
+        return '';
+    }
+
+    /**
+     * Get Client Server Schema (http or https)
      *
      * @return string
      */
@@ -518,7 +537,7 @@ class Webservice
     //====================================================================//
 
     /**
-     * @abstract   Check Reverse Connexion with THIS Client
+     * Check Reverse Connexion with THIS Client
      *
      * @return bool
      */
@@ -557,9 +576,9 @@ class Webservice
     }
 
     /**
-     *     @abstract    Verify Webservice parameters
+     * Verify Webservice parameters
      *
-     *     @return      bool
+     * @return bool
      */
     private function verify()
     {
@@ -600,14 +619,14 @@ class Webservice
     //====================================================================//
 
     /**
-     *  @abstract   Encrypt/Decrypt Serialized Data Object
+     * Encrypt/Decrypt Serialized Data Object
      *
-     *  @param      string      $action         Action to perform on Data (encrypt/decrypt)
-     *  @param      mixed       $data           Input Data
-     *  @param      string      $sharedKey      Encoding Shared Key
-     *  @param      string      $sharedVector   Encoding Shared IV (Initialisation Vector)
+     * @param string $action       Action to perform on Data (encrypt/decrypt)
+     * @param mixed  $data         Input Data
+     * @param string $sharedKey    Encoding Shared Key
+     * @param string $sharedVector Encoding Shared IV (Initialisation Vector)
      *
-     *  @return     false|string
+     * @return false|string
      */
     private function crypt($action, $data, $sharedKey, $sharedVector)
     {
@@ -663,7 +682,7 @@ class Webservice
     }
 
     /**
-     * @abstract    Clean Ws Input Buffer before Call Request
+     * Clean Ws Input Buffer before Call Request
      *
      * @return true
      */
@@ -680,7 +699,7 @@ class Webservice
     }
 
     /**
-     * @abstract   Clean parameters of Ws Call Request
+     * Clean parameters of Ws Call Request
      *
      * @return true
      */
@@ -703,7 +722,7 @@ class Webservice
     }
 
     /**
-     * @abstract    Init WebService Call
+     * Init WebService Call
      *
      * @param string $service server method to use
      *
@@ -736,7 +755,7 @@ class Webservice
     }
 
     /**
-     * @abstract   Add Tasks to WebService Request
+     * Add Tasks to WebService Request
      *
      * @param array $tasks List of task to perform inside this request.
      *                     If NULL, internal task list is used.
@@ -777,7 +796,7 @@ class Webservice
     }
 
     /**
-     * @abstract   Create & Setup WebService Client
+     * Create & Setup WebService Client
      *
      * @return bool
      */
@@ -798,7 +817,7 @@ class Webservice
     }
 
     /**
-     * @abstract   Decode WebService Client Response
+     * Decode WebService Client Response
      *
      * @param bool $isUncrypted Force message not to be crypted (Used for Ping Only)
      *
@@ -831,7 +850,7 @@ class Webservice
     }
 
     /**
-     * @abstract   Build WebService Client Url
+     * Build WebService Client Url
      *
      * @return string
      */
@@ -851,7 +870,7 @@ class Webservice
     }
 
     /**
-     * @abstract   Build WebService Client Debug Html Link
+     * Build WebService Client Debug Html Link
      *
      * @return string
      */
