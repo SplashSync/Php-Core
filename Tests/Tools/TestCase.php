@@ -25,12 +25,7 @@ if (!defined("SPLASH_SERVER_MODE")) {
  * Base PhpUnit Test Class for Splash Modules Tests
  * May be overriden for Using Splash Core Test in Specific Environements
  */
-if (PHP_VERSION_ID > 70100) {
-    abstract class TestCase extends BaseTestCase
-    {
-        use \Splash\Tests\Tools\Traits\SuccessfulTestPHP71;
-    }
-} elseif (PHP_VERSION_ID > 70000) {
+if (PHP_VERSION_ID > 70000) {
     abstract class TestCase extends BaseTestCase
     {
         use \Splash\Tests\Tools\Traits\SuccessfulTestPHP7;
