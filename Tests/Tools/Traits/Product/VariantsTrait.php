@@ -159,7 +159,7 @@ trait VariantsTrait
             $attributesSet[self::lists()->fieldName($name->id)] = self::fakeFieldData(
                 $name->type,
                 null,
-                array_replace_recursive($name->options, array("minLength" => 4, "maxLength" => 7))
+                (array) array_replace_recursive($name->options, array("minLength" => 4, "maxLength" => 7))
             );
         }
         //====================================================================//
@@ -168,7 +168,7 @@ trait VariantsTrait
             $attributesSet[self::lists()->fieldName($value->id)] = self::fakeFieldData(
                 $value->type,
                 null,
-                array_replace_recursive($value->options, array("minLength" => 5, "maxLength" => 10))
+                (array) array_replace_recursive($value->options, array("minLength" => 5, "maxLength" => 10))
             );
         }
 
