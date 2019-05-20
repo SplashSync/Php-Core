@@ -290,8 +290,9 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         //   Read Object Data
         $currentData = Splash::object($objectType)
-            ->get($objectId, $this->reduceFieldList($this->fields));
+            ->get($objectId, $this->reduceFieldList($this->fields, true));
         $this->assertInternalType('array', $currentData);
+
         //====================================================================//
         //   Verify Object Data are Ok
         $this->compareDataBlocks($this->fields, $expectedData, $currentData, $objectType);

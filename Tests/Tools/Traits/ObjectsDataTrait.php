@@ -98,7 +98,14 @@ trait ObjectsDataTrait
     {
         //====================================================================//
         // For Each Object Fields
+        /** @var ArrayObject $field */
         foreach ($fields as $field) {
+            //====================================================================//
+            // If Non Readable Field => Skip Verification
+            if (!$field->read) {
+                continue;
+            }
+
             //====================================================================//
             // Extract Field Data
             $data1 = $this->filterData($block1, array($field->id));
