@@ -195,10 +195,6 @@ trait ObjectsAssertionsTrait
                 $comment
             )
         );
-        $this->assertTrue(
-            $field->read,
-            "Product Short Description must be readable"
-        );
     }
 
     /**

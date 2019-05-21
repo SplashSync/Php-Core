@@ -157,13 +157,11 @@ trait AssertionsTrait
         //====================================================================//
         //   Main Customer Price
         $this->assertFieldHasFormat($itemProp, "price", $formats, "Product Customer Price");
-        $this->assertFieldIsRead($itemProp, "price", "Product Customer Price");
         $this->assertFieldNotRequired($itemProp, "price", "Product Customer Price");
 
         //====================================================================//
         //   Wholesale Price
         $this->assertFieldHasFormat($itemProp, "wholesalePrice", $formats, "Product Wholesale Price");
-        $this->assertFieldIsRead($itemProp, "wholesalePrice", "Product Wholesale Price");
         $this->assertFieldNotRequired($itemProp, "wholesalePrice", "Product Wholesale Price");
     }
 
@@ -180,7 +178,6 @@ trait AssertionsTrait
         $fields = array("width", "depth", "height", "surface", "volume", "weight");
         foreach ($fields as $field) {
             $this->assertFieldHasFormat($itemProp, $field, $formats, "Product ".ucwords($field));
-            $this->assertFieldIsRead($itemProp, $field, "Product ".ucwords($field));
             $this->assertFieldNotRequired($itemProp, $field, "Product ".ucwords($field));
         }
     }
