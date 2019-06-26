@@ -464,6 +464,30 @@ class Logger
         }
     }
 
+    /**
+     * Filter Logs Messages for Smart Notifications
+     *
+     * @param bool $msg Remove all Success Messages
+     * @param bool $war Remove all Warning Messages
+     * @param bool $deb Remove all Debug Messages
+     *
+     * @return bool
+     */
+    public function smartFilter($msg = true, $war = false, $deb = true)
+    {
+        if ($msg && isset($this->msg)) {
+            $this->msg = array();
+        }
+        if ($war && isset($this->war)) {
+            $this->war = array();
+        }
+        if ($deb && isset($this->deb)) {
+            $this->deb = array();
+        }
+
+        return   true;
+    }
+
     //====================================================================//
     //  PRIVATE FUNCTIONS
     //====================================================================//

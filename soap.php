@@ -30,15 +30,16 @@ use Splash\Server\SplashServer;
 // Splash Module & Dependecies Autoloader
 require_once(dirname(dirname(dirname(__FILE__)))."/autoload.php");
 require_once(dirname(__FILE__)."/inc/fatal.inc.php");
-
 //====================================================================//
 // Setup Php Specific Settings
 ini_set('display_errors', 0);
 error_reporting(E_ERROR);
-
 //====================================================================//
 // Notice internal routines we are in server request mode
 define("SPLASH_SERVER_MODE", 1);
+//====================================================================//
+// Turn on output buffering
+ob_start();
 
 //====================================================================//
 //  SERVER MODE - Answer NuSOAP Requests
@@ -47,8 +48,8 @@ define("SPLASH_SERVER_MODE", 1);
 $userAgent = Splash::input("HTTP_USER_AGENT");
 if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     //====================================================================//
-    // Turn on output buffering
-    ob_start();
+    // Clean Output Buffer
+    ob_clean();
     //====================================================================//
     //   Declare WebService Available Functions
     require_once(dirname(__FILE__)."/inc/server.inc.php");
@@ -64,6 +65,9 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     Splash::com()->handle();
 } elseif (Splash::input("node", INPUT_GET) === Splash::configuration()->WsIdentifier) {
     Splash::log()->deb("Splash Started In System Debug Mode");
+    //====================================================================//
+    // Turn on output buffering
+    ob_end_flush();
     //====================================================================//
     // Setup Php Errors Settings
     ini_set('display_errors', 1);

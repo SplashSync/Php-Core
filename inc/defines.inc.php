@@ -49,3 +49,4 @@ define("SPLASH_LOGGING", false);                    // Enable activity logging o
 define("SPLASH_TRACE_IN", false);                   // Log Inputs Messages
 define("SPLASH_TRACE_OUT", false);                  // Log Outputs Messages
 define("SPLASH_TRACE_TASKS", false);                // Log Tasks Execution Events
+define("SPLASH_SMART_NOTIFY", false);               // Smart Notifications => Only Warning & Errors on Commit Events

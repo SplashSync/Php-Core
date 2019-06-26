@@ -193,6 +193,11 @@ class Splash extends SplashCore
         if (!$response || !isset($response->result) || (true != $response->result)) {
             return false;
         }
+        //====================================================================//
+        //  Smart Notifications => Filter Messages, Only Warnings & Errors
+        if (self::configuration()->SmartNotify) {
+            self::log()->smartFilter();
+        }
 
         return true;
     }

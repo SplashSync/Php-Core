@@ -249,6 +249,7 @@ class SplashCore
         $config->TraceIn = SPLASH_TRACE_IN;
         $config->TraceOut = SPLASH_TRACE_OUT;
         $config->TraceTasks = SPLASH_TRACE_TASKS;
+        $config->SmartNotify = SPLASH_SMART_NOTIFY;
 
         //====================================================================//
         // Custom Parameters Configurator
