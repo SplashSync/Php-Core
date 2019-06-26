@@ -194,7 +194,7 @@ class Validator
         }
 
         if ('https' === Splash::input('REQUEST_SCHEME')) {
-            Splash::log()->war(Splash::trans('WarIsHttpsServer'));
+            Splash::log()->msg(Splash::trans('WarIsHttpsServer'));
         }
     }
 
