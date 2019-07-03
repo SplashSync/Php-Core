@@ -86,6 +86,11 @@ class ImagesHelper
         $image["height"] = $dimensions[1];
         $image["md5"] = md5_file($fullPath);
         $image["size"] = filesize($fullPath);
+        //====================================================================//
+        // Safety Check
+        if (empty($image["md5"])) {
+            return Splash::log()->err("Unable to read Remote File Md5");
+        }
 
         return $image;
     }
@@ -140,6 +145,11 @@ class ImagesHelper
         $image["height"] = $dimensions[1];
         $image["md5"] = md5_file($absoluteUrl);
         $image["size"] = self::getRemoteFileSize($absoluteUrl);
+        //====================================================================//
+        // Safety Check
+        if (empty($image["md5"])) {
+            return Splash::log()->err("Unable to read Remote File Md5");
+        }
 
         return $image;
     }
