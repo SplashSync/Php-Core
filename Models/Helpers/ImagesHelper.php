@@ -40,27 +40,16 @@ class ImagesHelper
     {
         //====================================================================//
         // Safety Checks - Validate Inputs
-        if (!is_string($name) || empty($name)) {
-            return Splash::log()->err("ErrImgNoName", __FUNCTION__);
+        $fullPath = self::verifyInputs($name, $fileName, $filePath);
+        if (false == $fullPath) {
+            return false;
         }
-        if (!is_string($fileName) || empty($fileName)) {
-            return Splash::log()->err("ErrImgNoFileName", __FUNCTION__);
-        }
-        if (!is_string($filePath) || empty($filePath)) {
-            return Splash::log()->err("ErrImgNoPath", __FUNCTION__);
-        }
-
-        $fullPath = $filePath.$fileName;
         //====================================================================//
-        // Safety Checks - Validate Image
-        if (!file_exists($fullPath)) {
-            return Splash::log()->err("ErrImgNoPath", __FUNCTION__, $fullPath);
-        }
+        // Safety Checks - Validate is An Image
         $dimensions = getimagesize($fullPath);
         if (empty($dimensions)) {
             return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $fullPath);
         }
-
         //====================================================================//
         // Build Image Array
         $image = array();
@@ -180,6 +169,39 @@ class ImagesHelper
         curl_close($curl);
 
         return (false != $resp);
+    }
+
+    /**
+     * Verif Parameters & Return Fullpath
+     *
+     * @param string $name     Image Name
+     * @param string $fileName Image Filename with Extension
+     * @param string $filePath Image Full path on local system
+     *
+     * @return false|string Image FullPath or False
+     */
+    private static function verifyInputs($name, $fileName, $filePath)
+    {
+        //====================================================================//
+        // Safety Checks - Validate Inputs
+        if (!is_string($name) || empty($name)) {
+            return Splash::log()->err("ErrImgNoName", __FUNCTION__);
+        }
+        if (!is_string($fileName) || empty($fileName)) {
+            return Splash::log()->err("ErrImgNoFileName", __FUNCTION__);
+        }
+        if (!is_string($filePath) || empty($filePath)) {
+            return Splash::log()->err("ErrImgNoPath", __FUNCTION__);
+        }
+
+        $fullPath = $filePath.$fileName;
+        //====================================================================//
+        // Safety Checks - Validate Image
+        if (!file_exists($fullPath)) {
+            return Splash::log()->err("ErrImgNoPath", __FUNCTION__, $fullPath);
+        }
+
+        return $fullPath;
     }
 
     /**
