@@ -104,7 +104,7 @@ class Status
     /**
      * Check if Order Status Code is Validated
      *
-     * @param string    Order Status Code
+     * @param string $status Order Status Code
      *
      * @return bool
      */
@@ -128,7 +128,7 @@ class Status
     /**
      * Check if Order Status Code is Canceled
      *
-     * @param string    Order Status Code
+     * @param string $status Order Status Code
      *
      * @return bool
      */
@@ -152,7 +152,7 @@ class Status
     /**
      * Check if Order Status Code is Draft
      *
-     * @param string    Order Status Code
+     * @param string $status Order Status Code
      *
      * @return bool
      */
@@ -177,7 +177,7 @@ class Status
     /**
      * Check if Order Status Code is Processing
      *
-     * @param string    Order Status Code
+     * @param string $status Order Status Code
      *
      * @return bool
      */
@@ -202,7 +202,7 @@ class Status
     /**
      * Check if Order Status Code is Shipped
      *
-     * @param string    Order Status Code
+     * @param string $status Order Status Code
      *
      * @return bool
      */
@@ -226,7 +226,7 @@ class Status
     /**
      * Check if Order Status Code is Delivered
      *
-     * @param string    Order Status Code
+     * @param string $status Order Status Code
      *
      * @return bool
      */
