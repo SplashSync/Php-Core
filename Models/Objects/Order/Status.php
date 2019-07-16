@@ -34,37 +34,37 @@ class Status
      * @var string Order is Validated but Payment Due
      */
     const PAYMENT_DUE = "OrderPaymentDue";
-    
+
     /**
      * @var string Order is Validated & Being Processed
      */
     const PROCESSING = "OrderProcessing";
-    
+
     /**
      * @var string Order is Validated but Out Of Stock
      */
     const OUT_OF_STOCK = "OrderOutOfStock";
-    
+
     /**
      * @var string Order is In Transit
      */
     const IN_TRANSIT = "OrderInTransit";
-    
+
     /**
      * @var string Order is Delivered to Customer
      */
     const DELIVERED = "OrderDelivered";
-    
+
     /**
      * @var string Order has Delivery Problems
      */
     const PROBLEM = "OrderProblem";
-    
+
     /**
      * @var string Order Status is Unknown
      */
     const UNKNOWN = "";
-    
+
     /**
      * Get a List of All Possible Order Status Codes
      *
@@ -83,7 +83,7 @@ class Status
             self::PROBLEM,
         );
     }
-    
+
     /**
      * Get a List of Validated Order Status Codes
      *
@@ -100,19 +100,19 @@ class Status
             self::PROBLEM,
         );
     }
-    
+
     /**
      * Check if Order Status Code is Validated
      *
      * @param string    Order Status Code
-     * 
+     *
      * @return bool
      */
     public static function isValidated(string $status)
     {
-        return in_array($status, self::getValidated());
+        return in_array($status, self::getValidated(), true);
     }
-    
+
     /**
      * Get a List of Canceled Order Status Codes
      *
@@ -124,19 +124,19 @@ class Status
             self::CANCELED,
         );
     }
-    
+
     /**
      * Check if Order Status Code is Canceled
      *
      * @param string    Order Status Code
-     * 
+     *
      * @return bool
      */
     public static function isCanceled(string $status)
     {
-        return in_array($status, self::getCanceled());
+        return in_array($status, self::getCanceled(), true);
     }
-    
+
     /**
      * Get a List of Draft Order Status Codes
      *
@@ -148,19 +148,19 @@ class Status
             self::DRAFT,
         );
     }
-    
+
     /**
      * Check if Order Status Code is Draft
      *
      * @param string    Order Status Code
-     * 
+     *
      * @return bool
      */
     public static function isDraft(string $status)
     {
-        return in_array($status, self::getDraft());
+        return in_array($status, self::getDraft(), true);
     }
-    
+
     /**
      * Get a List of Processing Order Status Codes
      *
@@ -172,20 +172,20 @@ class Status
             self::PROCESSING,
             self::OUT_OF_STOCK,
         );
-    }    
-    
+    }
+
     /**
      * Check if Order Status Code is Processing
      *
      * @param string    Order Status Code
-     * 
+     *
      * @return bool
      */
     public static function isProcessing(string $status)
     {
-        return in_array($status, self::getProcessing());
+        return in_array($status, self::getProcessing(), true);
     }
-    
+
     /**
      * Get a List of Shipped Order Status Codes
      *
@@ -197,20 +197,20 @@ class Status
             self::IN_TRANSIT,
             self::PROBLEM,
         );
-    }    
-    
+    }
+
     /**
      * Check if Order Status Code is Shipped
      *
      * @param string    Order Status Code
-     * 
+     *
      * @return bool
      */
     public static function isShipped(string $status)
     {
-        return in_array($status, self::getShipped());
+        return in_array($status, self::getShipped(), true);
     }
-    
+
     /**
      * Get a List of Delivered Order Status Codes
      *
@@ -221,18 +221,17 @@ class Status
         return array(
             self::DELIVERED,
         );
-    }    
-    
+    }
+
     /**
      * Check if Order Status Code is Delivered
      *
      * @param string    Order Status Code
-     * 
+     *
      * @return bool
      */
     public static function isDelivered(string $status)
     {
-        return in_array($status, self::getDelivered());
+        return in_array($status, self::getDelivered(), true);
     }
-    
 }
