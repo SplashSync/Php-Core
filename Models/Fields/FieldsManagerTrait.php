@@ -416,14 +416,21 @@ trait FieldsManagerTrait
     /**
      * Filter a Object List Data Block to keap only given Fields
      *
-     * @param array $objectData Object Data Block
-     * @param array $filters    Array of Fields Ids
+     * @param null|array|ArrayObject|string $objectData Object Data Block
+     * @param array                         $filters    Array of Fields Ids
      *
      * @return array
      */
     public static function filterListData($objectData, $filters = array())
     {
         $result = array();
+        //====================================================================//
+        // Safety Check => List Data is not Empty
+        if (!is_array($objectData) && !($objectData instanceof ArrayObject)) {
+            return $result;
+        }
+        //====================================================================//
+        // Walk on List Data Items
         foreach ($objectData as $fieldData) {
             $filteredItems = array();
             //====================================================================//
