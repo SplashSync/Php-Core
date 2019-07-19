@@ -39,6 +39,8 @@ class UnitConverter
     const LENGTH_MILIMETER = 1E3;
     const LENGTH_CM = 1E2;
     const LENGTH_CENTIMETER = 1E2;
+    const LENGTH_DM = 1E2;
+    const LENGTH_DECIMETER = 1E2;
     const LENGTH_M = 1;
     const LENGTH_METER = 1;
     const LENGTH_KM = 1E-3;
@@ -51,6 +53,7 @@ class UnitConverter
     //====================================================================//
     const AREA_MM2 = 1E6;
     const AREA_CM2 = 1E4;
+    const AREA_DM2 = 1E2;
     const AREA_M2 = 1;
     const AREA_KM2 = 1E-6;
     const AREA_FOOT2 = 10.763910417;
@@ -62,11 +65,14 @@ class UnitConverter
     const VOLUME_MM3 = 1E9;
     const VOLUME_MILILITER = 1E6;
     const VOLUME_CM3 = 1E6;
+    const VOLUME_DM3 = 1E3;
     const VOLUME_LITER = 1E4;
     const VOLUME_M3 = 1;
     const VOLUME_KM3 = 1E-9;
     const VOLUME_FOOT3 = 35.314666721;
     const VOLUME_INCH3 = 61023.744094732;
+    const VOLUME_OUNCE3 = 33814.038638;
+    const VOLUME_GALON = 264.17217686;
 
     /**
      * Convert Weight form KiloGram to Target Unit
