@@ -214,7 +214,7 @@ abstract class AbstractBaseCase extends TestCase
             $this->assertTrue(
                 in_array($key, array("err", "msg", "war", "deb"), true),
                 "Received Unexpected Log Messages. ( Data->log->".$key.")"
-                    );
+            );
         }
 
         //====================================================================//

@@ -136,7 +136,7 @@ trait ObjectsFakerTrait
                             self::toArray($field->choices),
                             self::toArray($field->options)
                         )
-                    );
+                );
 
                 continue;
             }
