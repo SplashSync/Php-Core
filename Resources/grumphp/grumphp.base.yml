@@ -26,6 +26,15 @@ parameters:
     #   Testing Mode (core|module)
     mode:           "module"
     level:          7
+
+    # For Building Splash Module
+    mod-enable:     true
+    mod-src:        '/src/Resources/docs'
+    mod-file:       "module"
+    # For Building Splash Documentation
+    doc-enable:     true
+    doc-src:        '/src/Resources/docs'
+    doc-contents:   ["module", "splash"]    
     
     #############################################        
     #   Base Configs 
@@ -107,7 +116,23 @@ parameters:
                 - nusoap.php
                 - fatal.inc.php
                 - server.inc.php
-
+                
+        build-module: 
+            enabled:        "%mod-enable%"
+            source_folder:  "%mod-src%"
+            target_folder:  "/build"
+            build_folder:   ""
+            build_file:     "%mod-file%"
+            
+        build-docs: 
+            enabled:            "%doc-enable%"
+            local_folder:       "%doc-src%"
+            generic_contents:   "%doc-contents%"
+            
+        
+    extensions:
+        - Splash\Console\Extension\Loader
+        
     #############################################        
     #   Testsuites Configs
     #   => Travis   >>  Base Test Suite for All PHP Versions
@@ -133,3 +158,8 @@ parameters:
         phpstan:
             tasks: 
                 - phpstan 
+                
+        splash:
+            tasks:
+                - build-module   
+                - build-docs                

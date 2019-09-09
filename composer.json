@@ -36,10 +36,11 @@
     },
 
     "require": {
-        "php":                              "^5.6|^7.0"
+        "php":                              "^7.1"
     },
     
     "require-dev": {
+        "splash/console":                   "dev-master",        
         "phpunit/phpunit":                  "~5.0|~6.0|~7.0",
         "composer/composer":                "^1.5",
         "j13k/yaml-lint":                   "^1.1",
