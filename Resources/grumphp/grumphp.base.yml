@@ -26,9 +26,8 @@ parameters:
     #   Testing Mode (core|module)
     mode:           "module"
     level:          7
-
     # For Building Splash Module
-    mod-enable:     false
+    mod-enable:     true
     mod-src:        '/src/Resources/docs'
     mod-file:       "module"
     # For Building Splash Documentation
