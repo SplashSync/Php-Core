@@ -28,7 +28,7 @@ parameters:
     level:          7
 
     # For Building Splash Module
-    mod-enable:     true
+    mod-enable:     false
     mod-src:        '/src/Resources/docs'
     mod-file:       "module"
     # For Building Splash Documentation
