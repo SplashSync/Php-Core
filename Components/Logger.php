@@ -317,7 +317,7 @@ class Logger
     {
         //====================================================================//
         // Get Object Class Name
-        $text = get_class($object);
+        $text = is_null($object) ?  "NULL" : get_class($object);
         //====================================================================//
         // Build Warning Trace
         $trace = (new Exception())->getTrace()[1];
