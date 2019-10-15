@@ -34,6 +34,8 @@ parameters:
     doc-enable:     true
     doc-src:        '/src/Resources/docs'
     doc-contents:   ["module", "splash"]    
+    # For Building Splash Manifest
+    yml-enable:     true
     
     #############################################        
     #   Base Configs 
@@ -128,6 +130,8 @@ parameters:
             local_folder:       "%doc-src%"
             generic_contents:   "%doc-contents%"
             
+        build-manifest: 
+            enabled:            "%yml-enable%"   
         
     extensions:
         - Splash\Console\Extension\Loader
@@ -160,5 +164,6 @@ parameters:
                 
         splash:
             tasks:
+                - build-manifest
                 - build-module   
                 - build-docs                
