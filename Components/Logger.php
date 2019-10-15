@@ -329,8 +329,6 @@ class Logger
     /**
      * Log Call Stack as Warning
      *
-     * @param mixed $object Input Object to get Classname
-     *
      * @return true
      */
     public function warStack()
