@@ -849,7 +849,7 @@ class FieldsFactory
         //====================================================================//
         // Verify - Field Name is Not Empty
         if (empty($field->name) || !is_string($field->name)) {
-            return Splash::log()->err("ErrFieldsNoName");
+            return Splash::log()->err("ErrFieldsNoName", $field->id);
         }
         //====================================================================//
         // Verify - Field Desc is Not Empty

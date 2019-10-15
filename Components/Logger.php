@@ -298,12 +298,60 @@ class Logger
     public function warTrace($text)
     {
         //====================================================================//
-        // Build Error Trace
+        // Build Warning Trace
         $trace = (new Exception())->getTrace()[1];
 
         //====================================================================//
         // Push Warning to Log
-        return  self::war("ErrLocalTpl", $trace["class"], $trace["function"], $text);
+        return  self::war("WarLocalTpl", $trace["class"], $trace["function"], $text);
+    }
+
+    /**
+     * Log Given object Class Name as Warning
+     *
+     * @param mixed $object Input Object to get Classname
+     *
+     * @return true
+     */
+    public function warClass($object)
+    {
+        //====================================================================//
+        // Get Object Class Name
+        $text = get_class($object);
+        //====================================================================//
+        // Build Warning Trace
+        $trace = (new Exception())->getTrace()[1];
+        //====================================================================//
+        // Push Warning to Log
+        return  self::war("WarLocalClass", $trace["class"], $trace["function"], $text);
+    }
+
+    /**
+     * Log Call Stack as Warning
+     *
+     * @param mixed $object Input Object to get Classname
+     *
+     * @return true
+     */
+    public function warStack()
+    {
+        //====================================================================//
+        // Build Warning Trace
+        $exc = new Exception();
+        $trace = $exc->getTrace()[1];
+        //====================================================================//
+        // Push Main Warning to Log
+        self::war("WarLocalTrace", $trace["class"], $trace["function"], "");
+        //====================================================================//
+        // Push Full Stack Trace to Log
+        $stack = explode("#", $exc->getTraceAsString());
+        foreach ($stack as $stackLine) {
+            if (!empty($stackLine)) {
+                self::war($stackLine);
+            }
+        }
+
+        return  true;
     }
 
     /**
