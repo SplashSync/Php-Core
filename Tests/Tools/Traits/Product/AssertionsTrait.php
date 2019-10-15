@@ -282,7 +282,7 @@ trait AssertionsTrait
             $this->assertFieldNotRequired($itemProp, $fieldId, "Product ".$fieldName);
             //====================================================================//
             //   Write Verifications
-            if ($variantCode->write) {
+            if ($variantCode->write && ("VariantAttributeName" != $fieldId)) {
                 $this->assertFieldIsWrite($itemProp, $fieldId, "Product ".$fieldName);
             }
         }

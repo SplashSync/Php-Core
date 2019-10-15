@@ -101,6 +101,17 @@ trait VariantsTrait
             return array();
         }
         $result = array();
+        //====================================================================//
+        // IF TESTED SYSTEM DEFINE POSSIBLE VARIATIONS CODES
+        if (!empty($code->choices)) {
+            $attributesCodes = array();
+            foreach ($code->choices as $choice) {
+                $attributesCodes[] = $choice["key"];
+            }
+        }
+        $this->assertNotEmpty($attributesCodes);
+        //====================================================================//
+        // GENERATE VARIATIONS ATTRIBUTES
         foreach ($attributesCodes as $attributesCode) {
             $result[] = $this->getVariantCustomAttribute($attributesCode);
         }
@@ -130,7 +141,7 @@ trait VariantsTrait
         $this->assertNotEmpty($code);
 
         /**
-         * @var ArrayObject[] $value
+         * @var ArrayObject[] $names
          */
         $names = $this->findMultiFields(static::$attrName);
         $this->assertInternalType("array", $names);
@@ -142,6 +153,13 @@ trait VariantsTrait
         $values = $this->findMultiFields(static::$attrValue);
         $this->assertInternalType("array", $values);
         $this->assertNotEmpty($values);
+
+        //====================================================================//
+        // IF TESTED SYSTEM DEFINE POSSIBLE VALUES
+        //====================================================================//
+        // Search for a Field with Same Id as Variation Code
+        $attributeField = self::findField($this->fields, array($attributesCode));
+        $attributeChoices = $attributeField ? array_values(self::toArray($attributeField->choices)) : null;
 
         //====================================================================//
         //   Generate Random Attributes Set
@@ -156,10 +174,20 @@ trait VariantsTrait
         //====================================================================//
         // Setup Attribute Type Names
         foreach ($names as $name) {
+            //====================================================================//
+            // Do Not Write ReadOnly Attributes Names
+            if (false == (bool) $name->write) {
+                continue;
+            }
+            //====================================================================//
+            // Add Custom Attributes Names
             $attributesSet[self::lists()->fieldName($name->id)] = self::fakeFieldData(
                 $name->type,
                 null,
-                (array) array_replace_recursive($name->options, array("minLength" => 4, "maxLength" => 7))
+                (array) array_replace_recursive(
+                    self::toArray($name->options),
+                    array("minLength" => 4, "maxLength" => 7)
+                )
             );
         }
         //====================================================================//
@@ -167,8 +195,11 @@ trait VariantsTrait
         foreach ($values as $value) {
             $attributesSet[self::lists()->fieldName($value->id)] = self::fakeFieldData(
                 $value->type,
-                null,
-                (array) array_replace_recursive($value->options, array("minLength" => 5, "maxLength" => 10))
+                $attributeChoices,
+                (array) array_replace_recursive(
+                    self::toArray($value->options),
+                    array("minLength" => 5, "maxLength" => 10)
+                )
             );
         }
 

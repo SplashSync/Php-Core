@@ -215,7 +215,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            $field->read,
+            (bool) $field->read,
             self::buildResult($itemType, $itemProp, " must be readable.", $comment)
         );
     }
@@ -238,7 +238,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            $field->write,
+            (bool) $field->write,
             self::buildResult($itemType, $itemProp, " must be writeable.", $comment)
         );
     }
@@ -261,7 +261,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertFalse(
-            $field->write,
+            (bool) $field->write,
             self::buildResult($itemType, $itemProp, " must be read-only.", $comment)
         );
     }
@@ -284,7 +284,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            $field->required,
+            (bool) $field->required,
             self::buildResult($itemType, $itemProp, " must be required.", $comment)
         );
     }
@@ -307,7 +307,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertFalse(
-            $field->required,
+            (bool) $field->required,
             self::buildResult($itemType, $itemProp, " must not be Required.", $comment)
         );
     }
@@ -330,7 +330,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            $field->inlist,
+            (bool) $field->inlist,
             $comment." ".$itemType.":".$itemProp." must be readable."
         );
     }

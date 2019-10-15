@@ -304,7 +304,13 @@ class S00ProductTest extends ObjectsCase
             // Variant Attribute Codes
             $this->fields[] = self::findFieldByTag($fields, static::$itemProp, static::$attrCode);
             // Variant Attribute Name
-            $this->fields = array_merge($this->fields, $this->findMultiFields(static::$attrName, $fields));
+            foreach ($this->findMultiFields(static::$attrName, $fields) as $field) {
+                // Only Write Attributes Names
+                if (isset($name->write) && !empty($name->write)) {
+                    $this->fields[] = $field;
+                }
+            }
+
             // Variant Attribute Value
             $this->fields = array_merge($this->fields, $this->findMultiFields(static::$attrValue, $fields));
         }
