@@ -128,15 +128,11 @@ trait ObjectsFakerTrait
             //====================================================================//
             // Generate Single Fields Dummy Data (is Not a List Field)
             if (!self::isListField($field->id)) {
-                $outputs[$field->id] = (
-                    $this->isFieldToPreserve($field) ?
-                        $this->originData[$field->id] :
-                        self::fakeFieldData(
-                            $field->type,
-                            self::toArray($field->choices),
-                            self::toArray($field->options)
-                        )
-                );
+                $choices = self::toArray($field->choices);
+                $options = self::toArray($field->options);
+                $outputs[$field->id] = $this->isFieldToPreserve($field)
+                    ? $this->originData[$field->id]
+                    : self::fakeFieldData($field->type, $choices, $options);
 
                 continue;
             }
