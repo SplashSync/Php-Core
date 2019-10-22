@@ -14,9 +14,7 @@
  */
 
 /**
- * @abstract    Low Level Files Management Class
- *
- * @author      B. Paquier <contact@splashsync.com>
+ * Low Level Files Management Class
  */
 
 namespace   Splash\Components;
@@ -48,15 +46,9 @@ class FileManager
         // PHPUNIT Exception => Look First in Local FileSystem
         //====================================================================//
         if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {
-            $filePath = dirname(__DIR__)."/Resources/files/".$file;
-            if (is_file($filePath)) {
+            $filePath = $this->getDebugFullPath($file);
+            if (null !== $filePath) {
                 $file = $this->readFile($filePath, $md5);
-
-                return is_array($file) ? $file : false;
-            }
-            $imgPath = dirname(__DIR__)."/Resources/img/".$file;
-            if (is_file($imgPath)) {
-                $file = $this->readFile($imgPath, $md5);
 
                 return is_array($file) ? $file : false;
             }
@@ -390,5 +382,41 @@ class FileManager
         }
 
         return true;
+    }
+
+    /**
+     * PHPUNIT - Check if File is Available on Local System for Debug
+     *
+     * @param string $file File Identifier (Given by Splash Server)
+     *
+     * @return null|string False if not found, else file full path
+     */
+    private function getDebugFullPath($file = null)
+    {
+        //====================================================================//
+        // Stack Trace
+        Splash::log()->trace();
+        //====================================================================//
+        // Safety Check => Look First in Local FileSystem
+        //====================================================================//
+        if (!defined('SPLASH_DEBUG') || empty(SPLASH_DEBUG)) {
+            return null;
+        }
+        //====================================================================//
+        // Filter File Path to Remove Dir
+        $filename = pathinfo($file, PATHINFO_BASENAME);
+        //====================================================================//
+        // Look for File in Local FileSystem
+        $locations = array(
+            dirname(__DIR__)."/Resources/files/",
+            dirname(__DIR__)."/Resources/img/",
+        );
+        foreach ($locations as $location) {
+            if (is_file($location.$filename)) {
+                return $location.$filename;
+            }
+        }
+
+        return null;
     }
 }
