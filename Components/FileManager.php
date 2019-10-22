@@ -387,7 +387,7 @@ class FileManager
     /**
      * PHPUNIT - Check if File is Available on Local System for Debug
      *
-     * @param string $file File Identifier (Given by Splash Server)
+     * @param null|string $file File Identifier (Given by Splash Server)
      *
      * @return null|string False if not found, else file full path
      */
@@ -399,7 +399,7 @@ class FileManager
         //====================================================================//
         // Safety Check => Look First in Local FileSystem
         //====================================================================//
-        if (!defined('SPLASH_DEBUG') || empty(SPLASH_DEBUG)) {
+        if (!defined('SPLASH_DEBUG') || empty(SPLASH_DEBUG) || empty($file)) {
             return null;
         }
         //====================================================================//
