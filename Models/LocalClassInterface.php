@@ -18,7 +18,7 @@ namespace Splash\Models;
 use ArrayObject;
 
 /**
- * @abstract    Local System Core Management Class Interface
+ * Local System Core Management Class Interface
  */
 interface LocalClassInterface
 {
@@ -29,58 +29,58 @@ interface LocalClassInterface
     //====================================================================//
 
     /**
-     *  @abstract       Return Local Server Parameters as Array
+     *  Return Local Server Parameters as Array
      *
-     *      THIS FUNCTION IS MANDATORY
+     * THIS FUNCTION IS MANDATORY
      *
-     *      This function called on each initialization of the module
+     * This function called on each initialization of the module
      *
-     *      Result must be an array including mandatory parameters as strings
-     *         ["WsIdentifier"]         =>>  Name of Module Default Language
-     *         ["WsEncryptionKey"]      =>>  Name of Module Default Language
-     *         ["DefaultLanguage"]      =>>  Name of Module Default Language
+     * Result must be an array including mandatory parameters as strings
+     *      ["WsIdentifier"]         =>>  Name of Module Default Language
+     *      ["WsEncryptionKey"]      =>>  Name of Module Default Language
+     *      ["DefaultLanguage"]      =>>  Name of Module Default Language
      *
      * @return array $parameters
      */
     public function parameters();
 
     /**
-     * @abstract       Include Local Includes Files
+     * Include Local Includes Files
      *
-     *      Include here any local files required by local functions.
-     *      This Function is called each time the module is loaded
+     * Include here any local files required by local functions.
+     * This Function is called each time the module is loaded
      *
-     *      There may be differents scenarios depending if module is
-     *      loaded as a library or as a NuSOAP Server.
+     * There may be differents scenarios depending if module is
+     * loaded as a library or as a NuSOAP Server.
      *
-     *      This is triggered by global constant SPLASH_SERVER_MODE.
+     * This is triggered by global constant SPLASH_SERVER_MODE.
      *
      * @return bool
      */
     public function includes();
 
     /**
-     * @abstract       Return Local Server Self Test Result
+     * Return Local Server Self Test Result
      *
-     *      THIS FUNCTION IS MANDATORY
+     * THIS FUNCTION IS MANDATORY
      *
-     *      This function called during Server Validation Process
+     * This function called during Server Validation Process
      *
-     *      We recommand using this function to validate all functions or parameters
-     *      that may be required by Objects, Widgets or any other module specific action.
+     * We recommand using this function to validate all functions or parameters
+     * that may be required by Objects, Widgets or any other module specific action.
      *
-     *      Use Module Logging system & translation tools to return test results Logs
+     * Use Module Logging system & translation tools to return test results Logs
      *
      * @return bool global test result
      */
     public function selfTest();
 
     /**
-     * @abstract    Update Server Informations with local Data
+     * Update Server Informations with local Data
      *
-     *      THIS FUNCTION IS MANDATORY
+     * THIS FUNCTION IS MANDATORY
      *
-     *      This function return Remote Server Informatiosn to display on Server Profile
+     * This function return Remote Server Informatiosn to display on Server Profile
      *
      * @param ArrayObject $informations Informations Inputs
      *
@@ -95,16 +95,16 @@ interface LocalClassInterface
     //====================================================================//
 
     /**
-     * @abstract       Return Local Server Test Sequences as Aarray
+     * Return Local Server Test Sequences as Aarray
      *
-     *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
+     * THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
      *
-     *      This function called on each initialization of module's tests sequences.
-     *      It's aim is to list different configurations for testing on local system.
+     * This function called on each initialization of module's tests sequences.
+     * It's aim is to list different configurations for testing on local system.
      *
-     *      If Name = List, Result must be an array including list of Sequences Names.
+     * If Name = List, Result must be an array including list of Sequences Names.
      *
-     *      If Name = ASequenceName, Function will Setup Sequence on Local System.
+     * If Name = ASequenceName, Function will Setup Sequence on Local System.
      *
      * @param null|mixed $name
      *
@@ -113,18 +113,18 @@ interface LocalClassInterface
     public function testSequences($name = null);
 
     /**
-     *  @abstract       Return Local Server Test Parameters as Array
+     * Return Local Server Test Parameters as Array
      *
-     *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
+     * THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
      *
-     *      This function called on each initialisation of module's tests sequences.
-     *      It's aim is to overide general Tests settings to be adjusted to local system.
+     * This function called on each initialisation of module's tests sequences.
+     * It's aim is to overide general Tests settings to be adjusted to local system.
      *
-     *      Result must be an array including parameters as strings or array.
+     * Result must be an array including parameters as strings or array.
      *
-     *  @see Splash\Tests\Tools\ObjectsCase::settings for objects tests settings
+     * @see Splash\Tests\Tools\ObjectsCase::settings for objects tests settings
      *
-     *  @return         array       $parameters
+     * @return array $parameters
      */
     public function testParameters();
 }
