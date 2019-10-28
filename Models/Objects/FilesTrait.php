@@ -15,34 +15,34 @@
 
 namespace   Splash\Models\Objects;
 
-use Splash\Models\Helpers\ImagesHelper;
+use Splash\Models\Helpers\FilesHelper;
 
 /**
- * This class implements access to Images Fields Helper.
+ * This class implements access to Files Fields Helper.
  */
-trait ImagesTrait
+trait FilesTrait
 {
     /**
      * Static Class Storage
      *
-     * @var ImagesHelper
+     * @var FilesHelper
      */
-    private static $imagesHelper;
+    private static $filesHelper;
 
     /**
      * Get a singleton List Helper Class
      *
-     * @return ImagesHelper
+     * @return FilesHelper
      */
-    public static function images()
+    public static function files()
     {
         // Helper Class Exists
-        if (isset(self::$imagesHelper)) {
-            return self::$imagesHelper;
+        if (isset(self::$filesHelper)) {
+            return self::$filesHelper;
         }
         // Initialize Class
-        self::$imagesHelper = new ImagesHelper();
+        self::$filesHelper = new FilesHelper();
         // Return Helper Class
-        return self::$imagesHelper;
+        return self::$filesHelper;
     }
 }

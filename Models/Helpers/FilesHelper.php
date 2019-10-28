@@ -18,23 +18,23 @@ namespace   Splash\Models\Helpers;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * Helper for Images Fields Management
+ * Helper for Files Fields Management
  */
-class ImagesHelper extends FilesHelper
+class FilesHelper extends ImagesHelper
 {
     //====================================================================//
-    //  IMAGE FIELDS MANAGEMENT
+    //  FILE FIELDS MANAGEMENT
     //====================================================================//
 
     /**
-     * Build a new image field array
+     * Build a new file field array
      *
      * @param string $name      Image Name
      * @param string $fileName  Image Filename with Extension
      * @param string $filePath  Image Full path on local system
-     * @param string $publicUrl Complete Public Url of this image if available
+     * @param string $publicUrl Complete Public Url of this file if available
      *
-     * @return array|false Splash Image Array or False
+     * @return array|false Splash File Array or False
      */
     public static function encode($name, $fileName, $filePath, $publicUrl = null)
     {
@@ -45,13 +45,7 @@ class ImagesHelper extends FilesHelper
             return false;
         }
         //====================================================================//
-        // Safety Checks - Validate is An Image
-        $dimensions = getimagesize($fullPath);
-        if (empty($dimensions)) {
-            return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $fullPath);
-        }
-        //====================================================================//
-        // Build Image Array
+        // Build File Array
         $image = array();
         //====================================================================//
         // ADD MAIN INFOS
@@ -70,9 +64,6 @@ class ImagesHelper extends FilesHelper
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
-        // Images Informations
-        $image["width"] = $dimensions[0];
-        $image["height"] = $dimensions[1];
         $image["md5"] = md5_file($fullPath);
         $image["size"] = filesize($fullPath);
         //====================================================================//
@@ -98,16 +89,10 @@ class ImagesHelper extends FilesHelper
         //====================================================================//
         // Safety Checks - Validate Inputs
         if (!is_string($name) || empty($name)) {
-            return Splash::log()->err("ErrImgNoName", __FUNCTION__);
+            return Splash::log()->err("ErrFileNoName", __FUNCTION__);
         }
         if (!is_string($absoluteUrl) || empty($absoluteUrl)) {
-            return Splash::log()->err("ErrImgNoPath", __FUNCTION__);
-        }
-        //====================================================================//
-        // Safety Checks - Validate Image
-        $dimensions = getimagesize($absoluteUrl);
-        if (empty($dimensions)) {
-            return Splash::log()->err("ErrImgNotAnImage", __FUNCTION__, $absoluteUrl);
+            return Splash::log()->err("ErrFileNoPath", __FUNCTION__);
         }
         //====================================================================//
         // Build Image Array
@@ -129,9 +114,6 @@ class ImagesHelper extends FilesHelper
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
-        // Images Informations
-        $image["width"] = $dimensions[0];
-        $image["height"] = $dimensions[1];
         $image["md5"] = md5_file($absoluteUrl);
         $image["size"] = self::getRemoteFileSize($absoluteUrl);
         //====================================================================//
@@ -141,5 +123,91 @@ class ImagesHelper extends FilesHelper
         }
 
         return $image;
+    }
+
+    /**
+     * Uses CURL to GET Remote File Once
+     *
+     * @param string $fileUrl
+     *
+     * @return bool
+     */
+    public static function touchRemoteFile($fileUrl)
+    {
+        // Get cURL resource
+        $curl = curl_init($fileUrl);
+        if (!$curl) {
+            return false;
+        }
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $fileUrl,
+            CURLOPT_USERAGENT => 'Splash cURL Agent'
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        // Close request to clear up some resources
+        curl_close($curl);
+
+        return (false != $resp);
+    }
+
+    /**
+     * Verif Parameters & Return Fullpath
+     *
+     * @param string $name     File Name
+     * @param string $fileName File Filename with Extension
+     * @param string $filePath File Full path on local system
+     *
+     * @return false|string File FullPath or False
+     */
+    protected static function verifyInputs($name, $fileName, $filePath)
+    {
+        //====================================================================//
+        // Safety Checks - Validate Inputs
+        if (!is_string($name) || empty($name)) {
+            return Splash::log()->err("ErrFileNoName", __FUNCTION__);
+        }
+        if (!is_string($fileName) || empty($fileName)) {
+            return Splash::log()->err("ErrFileNoFileName", __FUNCTION__);
+        }
+        if (!is_string($filePath) || empty($filePath)) {
+            return Splash::log()->err("ErrFileNoPath", __FUNCTION__);
+        }
+
+        $fullPath = $filePath.$fileName;
+        //====================================================================//
+        // Safety Checks - Validate Image
+        if (!file_exists($fullPath)) {
+            return Splash::log()->err("ErrFileNoPath", __FUNCTION__, $fullPath);
+        }
+
+        return $fullPath;
+    }
+
+    /**
+     * Ues CURL to detect Remote File Size
+     *
+     * @param string $fileUrl
+     *
+     * @return int
+     */
+    protected static function getRemoteFileSize($fileUrl)
+    {
+        $result = curl_init($fileUrl);
+        if (!$result) {
+            return 0;
+        }
+
+        curl_setopt($result, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($result, CURLOPT_HEADER, true);
+        curl_setopt($result, CURLOPT_NOBODY, true);
+
+        curl_exec($result);
+        $fileSize = curl_getinfo($result, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+        curl_close($result);
+
+        return (int) $fileSize;
     }
 }
