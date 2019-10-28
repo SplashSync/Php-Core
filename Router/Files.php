@@ -17,6 +17,7 @@ namespace   Splash\Router;
 
 use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
+use Splash\Models\FileProviderInterface;
 
 /**
  * Server Request Routiung Class, Execute/Route actions on Objects Service Requests.
@@ -57,12 +58,34 @@ class Files
             //====================================================================//
             //  READING A FILE INFORMATIONS
             case SPL_F_ISFILE:
+                //====================================================================//
+                //  IF LOCAL SYSTEM PROVIDE FILES
+                $local = Splash::local();
+                if ($local instanceof FileProviderInterface) {
+                    //====================================================================//
+                    //  CHECK IF FILE AVAILABLE ON LOCAL SYSTEM
+                    $response->data = $local->hasFile($inputs['path'], $inputs['md5']);
+                    if ($response->data) {
+                        break;
+                    }
+                }
                 $response->data = Splash::file()->isFile($inputs['path'], $inputs['md5']);
 
                 break;
             //====================================================================//
             //  READING A FILE CONTENTS
             case SPL_F_GETFILE:
+                //====================================================================//
+                //  IF LOCAL SYSTEM PROVIDE FILES
+                $local = Splash::local();
+                if ($local instanceof FileProviderInterface) {
+                    //====================================================================//
+                    //  CHECK IF FILE AVAILABLE ON LOCAL SYSTEM
+                    $response->data = $local->readFile($inputs['path'], $inputs['md5']);
+                    if (is_array($response->data)) {
+                        break;
+                    }
+                }
                 $response->data = Splash::file()->readFile($inputs['path'], $inputs['md5']);
 
                 break;
