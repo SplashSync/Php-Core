@@ -20,7 +20,7 @@ use Splash\Core\SplashCore      as Splash;
 /**
  * Helper for Files Fields Management
  */
-class FilesHelper extends ImagesHelper
+class FilesHelper
 {
     //====================================================================//
     //  FILE FIELDS MANAGEMENT
