@@ -56,6 +56,11 @@ class Status
     const DELIVERED = "OrderDelivered";
 
     /**
+     * @var string Order is Returned to Seller
+     */
+    const RETURNED = "OrderReturned";
+
+    /**
      * @var string Order has Delivery Problems
      */
     const PROBLEM = "OrderProblem";
@@ -80,6 +85,7 @@ class Status
             self::OUT_OF_STOCK,
             self::IN_TRANSIT,
             self::DELIVERED,
+            self::RETURNED,
             self::PROBLEM,
         );
     }
@@ -97,6 +103,7 @@ class Status
             self::OUT_OF_STOCK,
             self::IN_TRANSIT,
             self::DELIVERED,
+            self::RETURNED,
             self::PROBLEM,
         );
     }
@@ -233,5 +240,29 @@ class Status
     public static function isDelivered(string $status)
     {
         return in_array($status, self::getDelivered(), true);
+    }
+
+    /**
+     * Get a List of Returned Order Status Codes
+     *
+     * @return array
+     */
+    public static function getReturned()
+    {
+        return array(
+            self::RETURNED,
+        );
+    }
+
+    /**
+     * Check if Order Status Code is Returned
+     *
+     * @param string $status Order Status Code
+     *
+     * @return bool
+     */
+    public static function isReturned(string $status)
+    {
+        return in_array($status, self::getReturned(), true);
     }
 }
