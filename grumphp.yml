@@ -21,7 +21,13 @@
 parameters:
     core_dir:               "./Resources/grumphp"    
     mode:                   "core"
-            
+    # For Building Splash Module
+    mod-enable:     false 
+    # For Building Splash Documentation
+    doc-enable:     false 
+    # For Building Splash Manifest
+    yml-enable:     false
+    
 #############################################        
 # Import Config. from Php Core Module
 imports:
