@@ -97,7 +97,7 @@ trait ObjectsFakerTrait
             //====================================================================//
             // For Associated Fields
             foreach ($fields as $field) {
-                if (in_array($field->id, $outField->asso, true)) {
+                if (in_array($field->id, self::toArray($outField->asso), true)) {
                     $outputs[$field->id] = $field;
                 }
             }

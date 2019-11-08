@@ -52,35 +52,35 @@ class FieldsFactory
     private static $defaultFields = array(
         //==============================================================================
         //      GENERAL FIELD PROPS
-        "required" => false,                  //  Field is Required to Create a New Object (Bool)
-        "type" => null,                   //  Field Fomat Type Name
-        "id" => null,                   //  Field Object Unique Identifier
-        "name" => null,                   //  Field Humanized Name (String)
-        "desc" => null,                   //  Field Description (String)
-        "group" => null,                   //  Field Section/Group (String)
+        "required" => false,                //  Field is Required to Create a New Object (Bool)
+        "type" => null,                     //  Field Fomat Type Name
+        "id" => null,                       //  Field Object Unique Identifier
+        "name" => null,                     //  Field Humanized Name (String)
+        "desc" => null,                     //  Field Description (String)
+        "group" => null,                    //  Field Section/Group (String)
         //==============================================================================
         //      ACCES PROPS
-        "read" => true,                   //  Field is Readable (Bool)
-        "write" => true,                   //  Field is Writable (Bool)
+        "read" => true,                     //  Field is Readable (Bool)
+        "write" => true,                    //  Field is Writable (Bool)
         "inlist" => false,                  //  Field is Available in Object List Response (Bool)
         //==============================================================================
         //      SYNC MODE
-        "syncmode" => self::MODE_BOTH,        //  Field Favorite Sync Mode (read|write|both)
+        "syncmode" => self::MODE_BOTH,      //  Field Favorite Sync Mode (read|write|both)
         //==============================================================================
         //      SCHEMA.ORG IDENTIFICATION
-        "itemprop" => null,                   //  Field Unique Schema.Org "Like" Property Name
-        "itemtype" => null,                   //  Field Unique Schema.Org Object Url
-        "tag" => null,                   //  Field Unique Linker Tags (Self-Generated)
+        "itemprop" => null,                 //  Field Unique Schema.Org "Like" Property Name
+        "itemtype" => null,                 //  Field Unique Schema.Org Object Url
+        "tag" => null,                      //  Field Unique Linker Tags (Self-Generated)
         //==============================================================================
         //      DATA SPECIFIC FORMATS PROPS
-        "choices" => array(),                //  Possible Values used in Editor & Debugger Only  (Array)
+        "choices" => array(),               //  Possible Values used in Editor & Debugger Only  (Array)
         //==============================================================================
         //      DATA LOGGING PROPS
-        "log" => false,                  //  Field is To Log (Bool)
+        "log" => false,                     //  Field is To Log (Bool)
         //==============================================================================
         //      DEBUGGER PROPS
-        "asso" => array(),                //  Associated Fields. Fields to Generate with this field.
-        "options" => array(),                //  Fields Constraints to Generate Fake Data during Tests
+        "asso" => array(),                  //  Associated Fields. Fields to Generate with this field.
+        "options" => array(),               //  Fields Constraints to Generate Fake Data during Tests
         "notest" => false,                  //  Do No Perform Tests for this Field
     );
 
