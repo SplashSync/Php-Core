@@ -45,7 +45,7 @@ class FileManager
         //====================================================================//
         // PHPUNIT Exception => Look First in Local FileSystem
         //====================================================================//
-        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {
+        if (Splash::isDebugMode()) {
             $filePath = $this->getDebugFullPath($file);
             if (null !== $filePath) {
                 $file = $this->readFile($filePath, $md5);
@@ -399,7 +399,7 @@ class FileManager
         //====================================================================//
         // Safety Check => Look First in Local FileSystem
         //====================================================================//
-        if (!defined('SPLASH_DEBUG') || empty(SPLASH_DEBUG) || empty($file)) {
+        if (!Splash::isDebugMode() || empty($file)) {
             return null;
         }
         //====================================================================//

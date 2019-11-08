@@ -152,7 +152,7 @@ class Validator
             return Splash::log()->err(Splash::trans('ErrInfosNotArrayObject', get_class($infos)));
         }
 
-        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {
+        if (Splash::isDebugMode()) {
             Splash::log()->war('Host : '.$infos['ServerHost']);
             Splash::log()->war('Path : '.$infos['ServerPath']);
         }

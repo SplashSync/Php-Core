@@ -36,12 +36,6 @@ define("SPLASH_ENCODE", "XML");                     // Messages Encoding Format 
 define("SPLASH_CLASS_PREFIX", "\\Splash\\Local");   // Prefix To be Applied to all Local Class
 
 //====================================================================//
-// Show Debug Messages
-if (!defined('SPLASH_DEBUG')) {
-    define("SPLASH_DEBUG", false);                  // Activate Debug Mode or Not
-}
-
-//====================================================================//
 // Defaults Parameters
 define("SPLASH_LOCALPATH", "/..");                  // Relative Address to Local Library Folder
 define("SPLASH_DF_LANG", "en_US");                  // Module Default Translation Language

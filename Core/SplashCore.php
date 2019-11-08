@@ -153,9 +153,9 @@ class SplashCore
     /**
      * Class Constructor
      *
-     * @param bool $debug Force Debug Flag
+     * @param bool $verbose Enable Log of Debug Messages
      */
-    public function __construct($debug = false)
+    public function __construct($verbose = false)
     {
         self::$instance = $this;
 
@@ -176,12 +176,8 @@ class SplashCore
         }
 
         //====================================================================//
-        // Init Logger with Debug Mode
-        if ($debug || (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG))) {
-            //====================================================================//
-            // Initialize Log & Debug
-            self::$instance->log = new Logger($debug);
-        }
+        // Initialize Log & Debug
+        self::$instance->log = new Logger($verbose);
     }
 
     //====================================================================//
@@ -773,6 +769,17 @@ class SplashCore
         }
 
         return count($value);
+    }
+
+    /**
+     * Check if Framework Instanciated in Debug Mode
+     * Used for PhpUnit Tests
+     *
+     * @return bool
+     */
+    public static function isDebugMode()
+    {
+        return (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG));
     }
 
     //====================================================================//

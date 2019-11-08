@@ -59,7 +59,7 @@ class NuSOAPInterface implements CommunicationInterface
         }
         //====================================================================//
         // Setup NuSOAP Debug Level
-        if (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG)) {
+        if (Splash::isDebugMode()) {
             $this->client->setDebugLevel(2);
         }
         //====================================================================//

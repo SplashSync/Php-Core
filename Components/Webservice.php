@@ -749,7 +749,9 @@ class Webservice
         // Remote Service to call
         $this->outputs->service = $service;
         // Share Debug Flag with Server
-        $this->outputs->debug = (int) SPLASH_DEBUG;
+        $this->outputs->debug = (int) Splash::isDebugMode();
+        // Share Verbose Flag with Server
+        $this->outputs->verbose = (int) Splash::log()->isDebugMode();
 
         return true;
     }

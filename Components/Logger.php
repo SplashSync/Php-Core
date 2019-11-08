@@ -87,9 +87,9 @@ class Logger
     /**
      * Class Constructor
      *
-     * @param bool $debug Allow Debug
+     * @param bool $debug Allow Log of Debug Messages
      */
-    public function __construct($debug = SPLASH_DEBUG)
+    public function __construct($debug = false)
     {
         //====================================================================//
         //  Store Debug Parameter
@@ -122,6 +122,16 @@ class Logger
         }
 
         return true;
+    }
+
+    /**
+     * Check Debug Mode is Active
+     *
+     * @return bool
+     */
+    public function isDebugMode()
+    {
+        return $this->debug;
     }
 
     /**
