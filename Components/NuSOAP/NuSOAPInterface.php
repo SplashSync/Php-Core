@@ -21,7 +21,7 @@ use Splash\Core\SplashCore      as Splash;
 use Splash\Models\CommunicationInterface;
 
 /**
- * @abstract    Communication Interface Class for NuSOAP Webservice
+ * Communication Interface Class for NuSOAP Webservice
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
@@ -100,6 +100,12 @@ class NuSOAPInterface implements CommunicationInterface
                 (string) $this->client->faultstring
             );
         }
+        //====================================================================//
+        // Decode & Store NuSOAP Errors if present
+        // if (empty($response)) {
+        //     Splash::log()->err("[NuSOAP] Fault String='".((string) $this->client->error_str));
+        //     Splash::log()->www("[NuSOAP] Raw Response", htmlspecialchars($this->client->response, ENT_QUOTES));
+        // }
 
         return $response;
     }

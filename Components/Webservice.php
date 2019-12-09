@@ -267,7 +267,8 @@ class Webservice
         //====================================================================//
         $this->rawOut = array(
             'id' => $this->id,
-            'data' => $this->pack($this->outputs, $isUncrypted), );
+            'data' => $this->pack($this->outputs, $isUncrypted),
+        );
         //====================================================================//
         // Prepare Webservice Client
         //====================================================================//
