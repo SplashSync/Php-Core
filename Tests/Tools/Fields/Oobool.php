@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Bool Field : Basic Boolean
+ * Bool Field : Basic Boolean
  */
 class Oobool implements FieldInterface
 {
@@ -24,6 +24,7 @@ class Oobool implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Bool';
 
     //==============================================================================

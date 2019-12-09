@@ -113,9 +113,7 @@ parameters:
             level:          "%level%"
             configuration:  "%core_dir%/phpstan.%mode%.neon"              
             ignore_patterns:
-                - NuSOAPInterface.php
                 - nusoap.php
-                - fatal.inc.php
                 - server.inc.php
                 
         build-module: 

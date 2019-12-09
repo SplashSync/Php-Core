@@ -14,8 +14,8 @@
  */
 
 /**
- * @abstract    Server Request Routiung Class, Execute/Route actions on Objects Service Requests.
- *              This file is included only in case on NuSOAP call to slave server.
+ * Server Request Routiung Class, Execute/Route actions on Objects Service Requests.
+ * This file is included only in case on NuSOAP call to slave server.
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
@@ -24,23 +24,23 @@ namespace   Splash\Router;
 
 use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
-
-//====================================================================//
-//   INCLUDES
-//====================================================================//
+use Splash\Models\AbstractObject;
 
 //====================================================================//
 //  CLASS DEFINITION
 //====================================================================//
 
+/**
+ * Splash Server Objects Service Router
+ */
 class Objects
 {
     /**
-     *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
+     * Task execution router. Receive task detail and execute requiered task operations.
      *
-     *      @param      ArrayObject     $task       Full Task Request Array
+     * @param ArrayObject $task Full Task Request Array
      *
-     *      @return     ArrayObject                 Task results, or False if KO
+     * @return ArrayObject Task results, or False if KO
      */
     public static function action($task)
     {
@@ -90,11 +90,11 @@ class Objects
     //====================================================================//
 
     /**
-     *      @abstract     Build an Empty Task Response
+     * Build an Empty Task Response
      *
-     *      @param  ArrayObject     $task       Task To Execute
+     * @param ArrayObject $task Task To Execute
      *
-     *      @return ArrayObject   Task Result ArrayObject
+     * @return ArrayObject Task Result ArrayObject
      */
     private static function getEmptyResponse($task)
     {
@@ -115,6 +115,11 @@ class Objects
         return $response;
     }
 
+    /**
+     * @param ArrayObject $response
+     *
+     * @return ArrayObject
+     */
     private static function checkResponse($response)
     {
         if (false != $response->data) {
@@ -125,7 +130,7 @@ class Objects
     }
 
     /**
-     * @abstract   Verify Received Task
+     * Verify Received Task
      *
      * @param ArrayObject $task Full Task Request Array
      *
@@ -158,6 +163,11 @@ class Objects
         return true;
     }
 
+    /**
+     * @param ArrayObject $task
+     *
+     * @return ArrayObject
+     */
     private static function doAdminActions($task)
     {
         //====================================================================//
@@ -200,6 +210,11 @@ class Objects
         return self::checkResponse($response);
     }
 
+    /**
+     * @param ArrayObject $task
+     *
+     * @return ArrayObject
+     */
     private static function doSyncActions($task)
     {
         //====================================================================//
@@ -248,6 +263,11 @@ class Objects
         return self::checkResponse($response);
     }
 
+    /**
+     * @param ArrayObject $task
+     *
+     * @return ArrayObject
+     */
     private static function doObjects($task)
     {
         //====================================================================//
@@ -263,6 +283,13 @@ class Objects
         return self::checkResponse($response);
     }
 
+    /**
+     * @param AbstractObject $objectClass
+     * @param null|string    $objectId
+     * @param array          $fields
+     *
+     * @return array|false
+     */
     private static function doGet(&$objectClass, $objectId, $fields)
     {
         //====================================================================//
@@ -276,6 +303,13 @@ class Objects
         return  $objectClass->get($objectId, $fields);
     }
 
+    /**
+     * @param AbstractObject $objectClass
+     * @param string         $objectId
+     * @param array          $fields
+     *
+     * @return false|string
+     */
     private static function doSet(&$objectClass, $objectId, $fields)
     {
         //====================================================================//
@@ -295,6 +329,12 @@ class Objects
         return $objectData;
     }
 
+    /**
+     * @param AbstractObject $objectClass
+     * @param null|string    $objectId
+     *
+     * @return bool
+     */
     private static function doDelete(&$objectClass, $objectId)
     {
         //====================================================================//

@@ -18,7 +18,7 @@ namespace   Splash\Models\Helpers;
 use Splash\Models\Fields\FieldsManagerTrait;
 
 /**
- * @abstract    Helper for List Fields Management
+ * Helper for List Fields Management
  */
 class ListsHelper
 {
@@ -29,7 +29,7 @@ class ListsHelper
     //====================================================================//
 
     /**
-     * @abstract   Create a List Field Identifier String
+     * Create a List Field Identifier String
      *
      * @param string $listName  Field List Name.
      * @param string $fieldName Field Identifier
@@ -56,7 +56,7 @@ class ListsHelper
     //====================================================================//
 
     /**
-     * @abstract   Validate & Init List before Adding Data
+     * Validate & Init List before Adding Data
      *
      * @param array  $buffer    Object Data Buffer
      * @param string $listName  List Identifier String
@@ -82,13 +82,15 @@ class ListsHelper
     }
 
     /**
-     * @abstract   Add Item Data in Given  Output List
+     * Add Item Data in Given  Output List
      *
      * @param array      $buffer    Object Data Buffer
      * @param string     $listName  List Identifier String
      * @param string     $fieldName List Field Identifier String
      * @param int|string $key       List Item Index Key
      * @param mixed      $itemData  Item Data
+     *
+     * @return void
      */
     public function insert(&$buffer, $listName, $fieldName, $key, $itemData)
     {

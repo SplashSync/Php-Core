@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Date Field : Date as Text (Format Y-m-d)
+ * Date Field : Date as Text (Format Y-m-d)
  *
  * @example     2016-12-25
  */
@@ -26,6 +26,7 @@ class Oodate extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Date';
 
     //==============================================================================

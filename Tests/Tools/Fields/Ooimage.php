@@ -18,7 +18,7 @@ namespace Splash\Tests\Tools\Fields;
 use ArrayObject;
 
 /**
- * @abstract    Image Field : Define acces to an Image File
+ * Image Field : Define acces to an Image File
  *
  * @example
  *
@@ -43,6 +43,7 @@ class Ooimage implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     const FORMAT = 'Image';
 
     //==============================================================================
@@ -116,8 +117,8 @@ class Ooimage implements FieldInterface
         // Images Informations
         if (file_exists($fullPath)) {
             $imgDims = getimagesize($fullPath);
-            $image["width"] = $imgDims[0];
-            $image["height"] = $imgDims[1];
+            $image["width"] = is_array($imgDims) ? $imgDims[0] : 0;
+            $image["height"] = is_array($imgDims) ? $imgDims[1] : 0;
         }
         $image["md5"] = md5_file($fullPath);
         $image["size"] = filesize($fullPath);
@@ -137,27 +138,32 @@ class Ooimage implements FieldInterface
         return Oofile::compare($source, $target, $settings);
     }
 
+    /**
+     * @param array|ArrayObject $image
+     *
+     * @return string|true
+     */
     private static function validateContents($image)
     {
-        if (!array_key_exists("name", $image)) {
+        if (!isset($image["name"])) {
             return "Image Field => 'name' is missing.";
         }
-        if (!array_key_exists("filename", $image)) {
+        if (!isset($image["filename"])) {
             return "Image Field => 'filename' is missing.";
         }
-        if (!array_key_exists("path", $image) && !array_key_exists("file", $image)) {
+        if (!isset($image["path"]) && !isset($image["file"])) {
             return "Image Field => 'path' is missing.";
         }
-        if (!array_key_exists("width", $image)) {
+        if (!isset($image["width"])) {
             return "Image Field => 'width' is missing.";
         }
-        if (!array_key_exists("height", $image)) {
+        if (!isset($image["height"])) {
             return "Image Field => 'height' is missing.";
         }
-        if (!array_key_exists("md5", $image)) {
+        if (!isset($image["md5"])) {
             return "Image Field => 'md5' is missing.";
         }
-        if (!array_key_exists("size", $image)) {
+        if (!isset($image["size"])) {
             return "Image Field => 'size' is missing.";
         }
 

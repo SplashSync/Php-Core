@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    State Field : ISO State Code
+ * State Field : ISO State Code
  *
  * @example     US-CA : California
  *
@@ -28,6 +28,7 @@ class Oostate extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     const FORMAT = 'State';
 
     //==============================================================================

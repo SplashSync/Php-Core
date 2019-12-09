@@ -13,37 +13,58 @@
  *  file that was distributed with this source code.
  */
 
-/**
- * @abstract    Server Request Routiung Class, Execute/Route actions uppon Splash Server requests.
- *              This file is included only in case on NuSOAP call to slave server.
- *
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace   Splash\Components;
 
 use ArrayObject;
 use Exception;
 use Splash\Core\SplashCore      as Splash;
 
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
-
+/**
+ * Server Request Routiung Class, Execute/Route actions uppon Splash Server requests.
+ * This file is included only in case on NuSOAP call to slave server.
+ *
+ * @author      B. Paquier <contact@splashsync.com>
+ */
 class Router
 {
     //====================================================================//
     // Tasks Counters
-    private $count = 0;              // Input Task Counter
-    private $success = 0;              // Succeeded Task Counter
+    //====================================================================//
+
+    /**
+     * Input Task Counter
+     *
+     * @var int
+     */
+    private $count = 0;
+
+    /**
+     * Succeeded Task Counter
+     *
+     * @var int
+     */
+    private $success = 0;
 
     //====================================================================//
     // Tasks Statistics
-    private $batchTimer;                    // Task Batch Execution Start Timestamp
-    private $taskTimer;                     // Current Task Execution Start Timestamp
+    //====================================================================//
 
     /**
-     * @abstract     Execute Server Requested Tasks
+     * Task Batch Execution Start Timestamp
+     *
+     * @var float
+     */
+    private $batchTimer;
+
+    /**
+     * Current Task Execution Start Timestamp
+     *
+     * @var float
+     */
+    private $taskTimer;
+
+    /**
+     * Execute Server Requested Tasks
      *
      * @param string      $router Name of the router function to use for task execution
      * @param ArrayObject $input  Poiner to Server Input Buffer

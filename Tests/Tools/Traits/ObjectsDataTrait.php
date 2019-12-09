@@ -128,6 +128,8 @@ trait ObjectsDataTrait
             //====================================================================//
             // Compare Single Fields
             } else {
+                $this->assertIsArray($data1);
+                $this->assertIsArray($data2);
                 $result = $this->compareField(
                     $field->type,
                     $data1[$field->id],
@@ -218,6 +220,7 @@ trait ObjectsDataTrait
         // Explode List Field Id
         $fieldIdArray = self::isListField($fieldId);
         $this->assertNotEmpty($fieldIdArray);
+        $this->assertIsArray($fieldIdArray);
         $fieldName = $fieldIdArray["fieldname"];
         $listName = $fieldIdArray["listname"];
 

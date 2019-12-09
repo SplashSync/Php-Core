@@ -390,13 +390,15 @@ class Logger
 
     /**
      * Log a Debug Message With Trace from Stack
+     *
+     * @return bool
      */
     public function trace()
     {
         //====================================================================//
         // Safety Check
         if (!isset($this->debug) || !$this->debug) {
-            return;
+            return true;
         }
         //====================================================================//
         // Build Error Trace
@@ -500,6 +502,8 @@ class Logger
 
     /**
      * Read & Store Outputs Buffer Contents in a warning message
+     *
+     * @return void
      */
     public function flushOuputBuffer()
     {
@@ -553,6 +557,8 @@ class Logger
      *
      * @param string      $type    Message Type
      * @param null|string $message Message String
+     *
+     * @return void
      */
     private function coreAddLog($type, $message)
     {
@@ -579,6 +585,8 @@ class Logger
      *
      * @param string            $logType  Type of Logs to Merge
      * @param array|ArrayObject $logArray Second logging array
+     *
+     * @return void
      */
     private function mergeCore($logType, $logArray)
     {

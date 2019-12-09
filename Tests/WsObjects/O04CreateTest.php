@@ -15,11 +15,12 @@
 
 namespace Splash\Tests\WsObjects;
 
+use ArrayObject;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
- * @abstract    Objects Test Suite - Object create Verification Verifications
+ * Objects Test Suite - Object create Verification Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -30,8 +31,10 @@ class O04CreateTest extends ObjectsCase
      *
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @return void
      */
     public function testFromModule($testSequence, $objectType)
     {
@@ -43,7 +46,7 @@ class O04CreateTest extends ObjectsCase
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
         if (false == $dummyData) {
-            return true;
+            return;
         }
 
         //====================================================================//
@@ -60,8 +63,10 @@ class O04CreateTest extends ObjectsCase
      *
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @return void
      */
     public function testFromService($testSequence, $objectType)
     {
@@ -73,7 +78,7 @@ class O04CreateTest extends ObjectsCase
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
         if (false == $dummyData) {
-            return true;
+            return;
         }
 
         //====================================================================//
@@ -161,15 +166,22 @@ class O04CreateTest extends ObjectsCase
         return $this->fakeObjectData($fields);
     }
 
+    /**
+     * @param string                      $objectType
+     * @param ArrayObject|bool|int|string $objectId
+     *
+     * @return void
+     */
     public function verifyResponse($objectType, $objectId)
     {
         //====================================================================//
         //   Verify Object Id Is Not Empty
         $this->assertNotEmpty($objectId, 'Returned New Object Id is Empty');
+        $this->assertIsScalar($objectId, 'Returned New Object Id is not a Scalar');
 
         //====================================================================//
         //   Add Object Id to Created List
-        $this->addTestedObject($objectType, $objectId);
+        $this->addTestedObject($objectType, (string) $objectId);
 
         //====================================================================//
         //   Verify Object Id Is in Right Format

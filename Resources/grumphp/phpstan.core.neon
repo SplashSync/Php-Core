@@ -1,6 +1,9 @@
 includes:
 	- ../../vendor/phpstan/phpstan-phpunit/extension.neon
 parameters:
-    bootstrap: "./Resources/grumphp/phpstan.php"
+    bootstrap: "./phpstan.php"
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    inferPrivatePropertyTypeFromConstructor: true 
     universalObjectCratesClasses:
             - ArrayObject

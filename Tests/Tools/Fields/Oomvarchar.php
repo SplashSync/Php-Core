@@ -18,7 +18,7 @@ namespace Splash\Tests\Tools\Fields;
 use ArrayObject;
 
 /**
- * @abstract    Multilangual Text Field : Multilangual Short Text Array
+ * Multilangual Text Field : Multilangual Short Text Array
  *
  * //====================================================================//
  * // Sample :
@@ -32,6 +32,7 @@ class Oomvarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'MVarchar';
 
     //==============================================================================
@@ -113,6 +114,12 @@ class Oomvarchar implements FieldInterface
         return true;
     }
 
+    /**
+     * @param mixed $key
+     * @param mixed $value
+     *
+     * @return string|true
+     */
     private static function validateIsMultilangData($key, $value)
     {
         if (empty($key) || !is_string($key)) {

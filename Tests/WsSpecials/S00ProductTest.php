@@ -49,6 +49,8 @@ class S00ProductTest extends ObjectsCase
      *
      * @param string $testSequence
      * @param string $objectType
+     *
+     * @return void
      */
     public function testFieldsDefinition($testSequence, $objectType)
     {
@@ -88,6 +90,8 @@ class S00ProductTest extends ObjectsCase
      * @param string      $testSequence
      * @param string      $objectType
      * @param ArrayObject $field
+     *
+     * @return void
      */
     public function testVariantsFromModule($testSequence, $objectType, $field)
     {
@@ -148,6 +152,8 @@ class S00ProductTest extends ObjectsCase
      * @param string      $testSequence
      * @param string      $objectType
      * @param ArrayObject $field
+     *
+     * @return void
      */
     public function testVariantsFieldFromService($testSequence, $objectType, $field)
     {
@@ -207,6 +213,8 @@ class S00ProductTest extends ObjectsCase
      * @param string $testSequence
      * @param string $objectType
      * @param array  $images
+     *
+     * @return void
      */
     public function testImagesFromModule($testSequence, $objectType, $images)
     {
@@ -221,6 +229,8 @@ class S00ProductTest extends ObjectsCase
      * @param string $testSequence
      * @param string $objectType
      * @param array  $images
+     *
+     * @return void
      */
     public function testVariantImagesFromModule($testSequence, $objectType, $images)
     {

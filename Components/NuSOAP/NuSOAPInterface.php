@@ -73,6 +73,8 @@ class NuSOAPInterface implements CommunicationInterface
         //====================================================================//
         // Define Timeout for client response
         $this->client->response_timeout = Splash::configuration()->WsTimout;
+        
+        return $this;
     }
 
     /**

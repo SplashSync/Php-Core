@@ -19,7 +19,7 @@ use ArrayObject;
 use Splash\Client\Splash;
 
 /**
- * @abstract    Helper for PhpUnit Tests
+ * Helper for PhpUnit Tests
  */
 class TestHelper
 {
@@ -33,7 +33,7 @@ class TestHelper
      * @param string           $user       User Name
      * @param string           $comment    Operation Comment for Historics
      *
-     * @return arrayObject
+     * @return void
      */
     public static function simObjectCommit($objectType, $local, $action, $user = 'PhpUnit', $comment = '')
     {

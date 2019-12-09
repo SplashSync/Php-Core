@@ -20,7 +20,7 @@ use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
- * @abstract    Objects Test Suite - Object Description Verifications
+ * Objects Test Suite - Object Description Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -31,6 +31,8 @@ class O01DescriptionTest extends ObjectsCase
      *
      * @param string $testSequence
      * @param string $objectType
+     *
+     * @return void
      */
     public function testFromModule($testSequence, $objectType)
     {
@@ -53,6 +55,8 @@ class O01DescriptionTest extends ObjectsCase
      *
      * @param string $testSequence
      * @param string $objectType
+     *
+     * @return void
      */
     public function testFromObjectsService($testSequence, $objectType)
     {
@@ -70,6 +74,9 @@ class O01DescriptionTest extends ObjectsCase
         $this->verifyResponse($data);
     }
 
+    /**
+     * @return void
+     */
     public function testFromObjectsServiceErrors()
     {
         //====================================================================//
@@ -77,6 +84,11 @@ class O01DescriptionTest extends ObjectsCase
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_DESC, __METHOD__);
     }
 
+    /**
+     * @param ArrayObject|bool|string $data
+     *
+     * @return void
+     */
     public function verifyResponse($data)
     {
         //====================================================================//

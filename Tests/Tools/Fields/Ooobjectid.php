@@ -19,7 +19,7 @@ use Splash\Client\Splash;
 use Splash\Models\Fields\FieldsManagerTrait;
 
 /**
- * @abstract    Object ID Field : price definition Array
+ * Object ID Field : price definition Array
  */
 class Ooobjectid implements FieldInterface
 {
@@ -29,6 +29,7 @@ class Ooobjectid implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'ObjectId';
 
     //==============================================================================
@@ -65,10 +66,18 @@ class Ooobjectid implements FieldInterface
     //==============================================================================
 
     /**
-     * {@inheritdoc}
+     * @param array  $settings
+     * @param string $objectType Object Type Name
+     *
+     * @return null|string
      */
     public static function fake($settings, $objectType = null)
     {
+        //====================================================================//
+        // Safety Check
+        if (empty($objectType)) {
+            return null;
+        }
         //====================================================================//
         // Get Object List
         $objectsList = Splash::object($objectType)->objectsList();
@@ -125,12 +134,12 @@ class Ooobjectid implements FieldInterface
     //====================================================================//
 
     /**
-     *      @abstract   Encode an Object Identifier Field
+     * Encode an Object Identifier Field
      *
-     *      @param      string       $objectId             Object Id
-     *      @param      string       $objectType           Object Type Name
+     * @param string $objectId   Object Id
+     * @param string $objectType Object Type Name
      *
-     *      @return     null|string
+     * @return null|string
      */
     public static function encodeIdField($objectId, $objectType)
     {
@@ -149,7 +158,7 @@ class Ooobjectid implements FieldInterface
     }
 
     /**
-     * @abstract   Retrieve Id form an Object Identifier Data
+     * Retrieve Id form an Object Identifier Data
      *
      * @deprecated since version 2.0
      *
@@ -164,6 +173,13 @@ class Ooobjectid implements FieldInterface
         return   self::objectId($objectId);
     }
 
+    /**
+     * @param array  $objectsList
+     * @param string $objectType
+     * @param array  $settings
+     *
+     * @return void
+     */
     private static function filterObjectList(&$objectsList, $objectType, $settings)
     {
         //====================================================================//

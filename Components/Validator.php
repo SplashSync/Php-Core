@@ -184,6 +184,8 @@ class Validator
      * Verify Webserver is a LocalHost
      *
      * @param mixed $infos
+     *
+     * @return void
      */
     public function isLocalInstallation($infos)
     {

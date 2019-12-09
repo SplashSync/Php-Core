@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Phone Field : Define a Contact Phone Number
+ * Phone Field : Define a Contact Phone Number
  */
 class Oophone extends Oovarchar implements FieldInterface
 {
@@ -24,6 +24,7 @@ class Oophone extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Phone';
 
     //==============================================================================

@@ -19,7 +19,7 @@ use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
- * @abstract    Objects Test Suite - Fields List Verifications
+ * Objects Test Suite - Fields List Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -28,8 +28,10 @@ class O05DeleteTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @return void
      */
     public function testFromModule($testSequence, $objectType)
     {
@@ -39,7 +41,7 @@ class O05DeleteTest extends ObjectsCase
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
         if (false == $dummyData) {
-            return true;
+            return;
         }
 
         //====================================================================//
@@ -69,8 +71,10 @@ class O05DeleteTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @return void
      */
     public function testFromService($testSequence, $objectType)
     {
@@ -80,7 +84,7 @@ class O05DeleteTest extends ObjectsCase
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
         if (false == $dummyData) {
-            return true;
+            return;
         }
 
         //====================================================================//
@@ -111,8 +115,10 @@ class O05DeleteTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @return void
      */
     public function testFromObjectsServiceErrors($testSequence, $objectType)
     {
@@ -129,6 +135,11 @@ class O05DeleteTest extends ObjectsCase
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, array( "type" => $objectType));
     }
 
+    /**
+     * @param string $objectType
+     *
+     * @return boolean
+     */
     public function verifyTestIsAllowed($objectType)
     {
         $definition = Splash::object($objectType)->description();
@@ -148,6 +159,11 @@ class O05DeleteTest extends ObjectsCase
         return true;
     }
 
+    /**
+     * @param string $objectType
+     *
+     * @return array|false
+     */
     public function prepareForTesting($objectType)
     {
         //====================================================================//
@@ -191,15 +207,22 @@ class O05DeleteTest extends ObjectsCase
         return $this->fakeObjectData($fields);
     }
 
+    /**
+     * @param string           $objectType
+     * @param false|int|string $objectId
+     *
+     * @return void
+     */
     public function verifyCreateResponse($objectType, $objectId)
     {
         //====================================================================//
         //   Verify Object Id Is Not Empty
         $this->assertNotEmpty($objectId, "Returned New Object Id is Empty");
+        $this->assertIsScalar($objectId, "Returned New Object Id is Not a Scalar");
 
         //====================================================================//
         //   Add Object Id to Created List
-        $this->addTestedObject($objectType, $objectId);
+        $this->addTestedObject($objectType, (string) $objectId);
 
         //====================================================================//
         //   Verify Object Id Is in Right Format
@@ -209,6 +232,13 @@ class O05DeleteTest extends ObjectsCase
         );
     }
 
+    /**
+     * @param string       $objectType
+     * @param false|string $objectId
+     * @param mixed        $data
+     *
+     * @return void
+     */
     public function verifyDeleteResponse($objectType, $objectId, $data)
     {
         //====================================================================//
@@ -222,7 +252,7 @@ class O05DeleteTest extends ObjectsCase
 
         //====================================================================//
         //   Verify Repeating Delete as Same Result
-        $repeatedResponse = Splash::object($objectType)->delete($objectId);
+        $repeatedResponse = Splash::object($objectType)->delete((string) $objectId);
         $this->assertTrue(
             $repeatedResponse,
             "Object Repeated Delete, Must return True even if Object Already Deleted."
@@ -231,7 +261,7 @@ class O05DeleteTest extends ObjectsCase
         //====================================================================//
         //   Verify Object not Present anymore
         $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
-        $getResponse = Splash::object($objectType)->get($objectId, $fields);
+        $getResponse = Splash::object($objectType)->get((string) $objectId, $fields);
         $this->assertFalse($getResponse, "Object Not Delete, I can still read it!!");
     }
 }

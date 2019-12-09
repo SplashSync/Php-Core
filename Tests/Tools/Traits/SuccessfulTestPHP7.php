@@ -18,12 +18,19 @@ namespace Splash\Tests\Tools\Traits;
 use Splash\Client\Splash;
 
 /**
- * Description of SuccessfulTestPHP7
+ * Override PhpUnit On Success Result Display to Output Splash Logs
  *
- * @author nanard33
+ * @author SplashSync <contact@splashsync.com>
  */
 trait SuccessfulTestPHP7
 {
+    /**
+     * @param \Throwable $exception
+     *
+     * @throws \Throwable
+     *
+     * @return void
+     */
     public function onNotSuccessfulTest(\Throwable $exception)
     {
         //====================================================================//

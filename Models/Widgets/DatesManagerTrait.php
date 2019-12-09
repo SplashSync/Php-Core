@@ -15,23 +15,36 @@
 
 namespace   Splash\Models\Widgets;
 
+use ArrayObject;
+use DateInterval;
+
 /**
- * @abstract    Date Management for Splash Widgets.
+ * Date Management for Splash Widgets.
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
 trait DatesManagerTrait
 {
+    /** @var string */
     protected $DateStart;
+    /** @var string */
     protected $DateEnd;
+    /** @var DateInterval */
     protected $DateInterval;
+    /** @var string */
     protected $GroupBy;
+    /** @var string */
     protected $LabelFormat;
 
     //====================================================================//
     //  DATES MANAGEMENT
     //====================================================================//
 
+    /**
+     * @param array|ArrayObject $params
+     *
+     * @return void
+     */
     protected function importDates($params)
     {
         //====================================================================//
@@ -57,6 +70,11 @@ trait DatesManagerTrait
         $this->importDatesFormat();
     }
 
+    /**
+     * @param array|ArrayObject $inputs
+     *
+     * @return array
+     */
     protected function parseDatedData($inputs)
     {
         $outputs = array();
@@ -81,6 +99,9 @@ trait DatesManagerTrait
         return $outputs;
     }
 
+    /**
+     * @return void
+     */
     private function importDatesFormat()
     {
         //====================================================================//

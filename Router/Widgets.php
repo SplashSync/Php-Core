@@ -19,19 +19,19 @@ use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    Server Request Routiung Class, Execute/Route actions on Widgets Service Requests.
- *              This file is included only in case on NuSOAP call to slave server.
+ * Server Request Routiung Class, Execute/Route actions on Widgets Service Requests.
+ * This file is included only in case on NuSOAP call to slave server.
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
 class Widgets
 {
     /**
-     *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
+     * Task execution router. Receive task detail and execute requiered task operations.
      *
-     *      @param      ArrayObject     $task       Full Task Request Array
+     * @param ArrayObject $task Full Task Request Array
      *
-     *      @return     ArrayObject                 Task results, or False if KO
+     * @return ArrayObject Task results, or False if KO
      */
     public static function action($task)
     {
@@ -87,11 +87,11 @@ class Widgets
     //====================================================================//
 
     /**
-     *      @abstract     Build an Empty Task Response
+     * Build an Empty Task Response
      *
-     *      @param  ArrayObject     $task       Task To Execute
+     * @param ArrayObject $task Task To Execute
      *
-     *      @return ArrayObject   Task Result ArrayObject
+     * @return ArrayObject Task Result ArrayObject
      */
     private static function getEmptyResponse($task)
     {

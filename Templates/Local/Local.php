@@ -20,7 +20,7 @@ use Splash\Core\SplashCore      as Splash;
 use Splash\Models\LocalClassInterface;
 
 /**
- * @abstract    Local System Core Management Class
+ * Local System Core Management Class
  */
 class Local implements LocalClassInterface
 {
@@ -34,9 +34,9 @@ class Local implements LocalClassInterface
     //====================================================================//
 
     /**
-     *      @abstract       Class Constructor (Used only if localy necessary)
+     * Class Constructor (Used only if localy necessary)
      *
-     *      @return         int                     0 if KO, >0 if OK
+     * @return int 0 if KO, >0 if OK
      */
     public function __construct()
     {
@@ -52,11 +52,11 @@ class Local implements LocalClassInterface
     //====================================================================//
 
     /**
-     *  @abstract       Return Local Server Parameters as Array
+     * Return Local Server Parameters as Array
      *
-     *      THIS FUNCTION IS MANDATORY
+     * THIS FUNCTION IS MANDATORY
      *
-     *      This function called on each initialization of the module
+     * This function called on each initialization of the module
      *
      *      Result must be an array including mandatory parameters as strings
      *         ["WsIdentifier"]         =>>  Name of Module Default Language
@@ -71,15 +71,15 @@ class Local implements LocalClassInterface
     }
 
     /**
-     * @abstract       Include Local Includes Files
+     * Include Local Includes Files
      *
-     *      Include here any local files required by local functions.
-     *      This Function is called each time the module is loaded
+     * Include here any local files required by local functions.
+     * This Function is called each time the module is loaded
      *
-     *      There may be differents scenarios depending if module is
-     *      loaded as a library or as a NuSOAP Server.
+     * There may be differents scenarios depending if module is
+     * loaded as a library or as a NuSOAP Server.
      *
-     *      This is triggered by global constant SPLASH_SERVER_MODE.
+     * This is triggered by global constant SPLASH_SERVER_MODE.
      *
      * @return bool
      */
@@ -104,16 +104,16 @@ class Local implements LocalClassInterface
     }
 
     /**
-     * @abstract       Return Local Server Self Test Result
+     * Return Local Server Self Test Result
      *
-     *      THIS FUNCTION IS MANDATORY
+     * THIS FUNCTION IS MANDATORY
      *
-     *      This function called during Server Validation Process
+     * This function called during Server Validation Process
      *
-     *      We recommand using this function to validate all functions or parameters
-     *      that may be required by Objects, Widgets or any other module specific action.
+     * We recommand using this function to validate all functions or parameters
+     * that may be required by Objects, Widgets or any other module specific action.
      *
-     *      Use Module Logging system & translation tools to return test results Logs
+     * Use Module Logging system & translation tools to return test results Logs
      *
      * @return bool global test result
      */
@@ -123,15 +123,15 @@ class Local implements LocalClassInterface
     }
 
     /**
-     *  @abstract   Update Server Informations with local Data
+     * Update Server Informations with local Data
      *
-     *      THIS FUNCTION IS MANDATORY
+     * THIS FUNCTION IS MANDATORY
      *
-     *      This function return Remote Server Informatiosn to display on Server Profile
+     * This function return Remote Server Informatiosn to display on Server Profile
      *
-     *  @param     ArrayObject  $informations   Informations Inputs
+     * @param ArrayObject $informations Informations Inputs
      *
-     *  @return     ArrayObject
+     * @return ArrayObject
      */
     public function informations($informations)
     {
@@ -176,16 +176,16 @@ class Local implements LocalClassInterface
     //====================================================================//
 
     /**
-     * @abstract       Return Local Server Test Sequences as Aarray
+     * Return Local Server Test Sequences as Aarray
      *
-     *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
+     * THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
      *
-     *      This function called on each initialization of module's tests sequences.
-     *      It's aim is to list different configurations for testing on local system.
+     * This function called on each initialization of module's tests sequences.
+     * It's aim is to list different configurations for testing on local system.
      *
-     *      If Name = List, Result must be an array including list of Sequences Names.
+     * If Name = List, Result must be an array including list of Sequences Names.
      *
-     *      If Name = ASequenceName, Function will Setup Sequence on Local System.
+     * If Name = ASequenceName, Function will Setup Sequence on Local System.
      *
      * @param null|mixed $name
      *
@@ -203,6 +203,8 @@ class Local implements LocalClassInterface
             case "List":
                 return array("Sequence1", "Sequence2" );
         }
+
+        return array();
     }
 
     /**

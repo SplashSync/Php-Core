@@ -18,7 +18,7 @@ namespace Splash\Tests\Tools\Fields;
 use ArrayObject;
 
 /**
- * @abstract    File Field : Define Access to a File
+ * File Field : Define Access to a File
  *
  * @example
  *
@@ -39,6 +39,7 @@ class Oofile implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     const FORMAT = 'File';
 
     //==============================================================================
@@ -142,33 +143,44 @@ class Oofile implements FieldInterface
         return true;
     }
 
+    /**
+     * @param array|ArrayObject $file
+     *
+     * @return string|true
+     */
     private static function validateContents($file)
     {
-        if (!array_key_exists('name', $file)) {
+        if (!isset($file["name"])) {
             return "File Field => 'name' is missing.";
         }
-        if (!array_key_exists('filename', $file)) {
+        if (!isset($file["filename"])) {
             return "File Field => 'filename' is missing.";
         }
-        if (!array_key_exists('path', $file) && !array_key_exists('file', $file)) {
+        if (!isset($file["path"]) && !isset($file["file"])) {
             return "File Field => 'path' is missing.";
         }
-        if (!array_key_exists('md5', $file)) {
+        if (!isset($file["md5"])) {
             return "File Field => 'md5' is missing.";
         }
-        if (!array_key_exists('size', $file)) {
+        if (!isset($file["size"])) {
             return "File Field => 'size' is missing.";
         }
 
         return true;
     }
 
+    /**
+     * @param array|ArrayObject $source
+     * @param array|ArrayObject $target
+     *
+     * @return boolean
+     */
     private static function compareMd5($source, $target)
     {
         //====================================================================//
         // Compare File CheckSum
-        if (!array_key_exists('md5', $source) || !array_key_exists('md5', $target)
-            || !array_key_exists('size', $source) || !array_key_exists('size', $target)
+        if (!isset($source['md5']) || !isset($target['md5'])
+            || !isset($source['size']) || !isset($target['size'])
             ) {
             return false;
         }

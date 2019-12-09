@@ -20,14 +20,14 @@ use Splash\Server\SplashServer;
 use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
- * @abstract    Admin Test Suite - Ping Client Verifications
+ * Admin Test Suite - Ping Client Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
 class A01PingTest extends AbstractBaseCase
 {
     /**
-     * {@inheritdoc}
+     * @return void
      */
     protected function setUp()
     {
@@ -51,6 +51,8 @@ class A01PingTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testPingClientAction($testSequence)
     {
@@ -84,6 +86,8 @@ class A01PingTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testPingServerAction($testSequence)
     {

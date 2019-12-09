@@ -20,14 +20,14 @@ use Splash\Server\SplashServer;
 use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
- * @abstract    Admin Test Suite - Connect Client Verifications
+ * Admin Test Suite - Connect Client Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
 class A02ConnectTest extends AbstractBaseCase
 {
     /**
-     * {@inheritdoc}
+     * @return void
      */
     protected function setUp()
     {
@@ -46,6 +46,8 @@ class A02ConnectTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testConnectClientAction($testSequence)
     {
@@ -77,6 +79,8 @@ class A02ConnectTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testConnectServerAction($testSequence)
     {
@@ -121,6 +125,8 @@ class A02ConnectTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testConnectServerWrongDataAction($testSequence)
     {

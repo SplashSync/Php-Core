@@ -45,7 +45,9 @@ trait ImagesTrait
     private $positionId;
 
     /**
-     * @abstract     Provide Products Images Tests Combinations
+     * Provide Products Images Tests Combinations
+     *
+     * @return array
      */
     public function productImagesProvider()
     {
@@ -78,7 +80,9 @@ trait ImagesTrait
     }
 
     /**
-     * @abstract     Provide Products Images Combinations to Test
+     * Provide Products Images Combinations to Test
+     *
+     * @return ArrayObject
      */
     public function getProductImagesSequences()
     {
@@ -137,11 +141,13 @@ trait ImagesTrait
     //==============================================================================
 
     /**
-     * @abstract    Base Test for Products Images Writing
+     * Base Test for Products Images Writing
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
-     * @param mixed $images
+     * @param null|string $testSequence
+     * @param string      $objectType
+     * @param mixed       $images
+     *
+     * @return void
      */
     protected function coreTestImagesFromModule($testSequence, $objectType, $images)
     {
@@ -167,7 +173,7 @@ trait ImagesTrait
         //   Generate Dummy Object Data (Required Fields Only)
         $newData = $this->prepareForTesting($objectType);
         if (false == $newData) {
-            return true;
+            return;
         }
 
         //====================================================================//
@@ -192,7 +198,7 @@ trait ImagesTrait
     }
 
     /**
-     * @abstract    Identify Image in List by Md5 and Active Flag
+     * Identify Image in List by Md5 and Active Flag
      *
      * @param array  $source  Source Image
      * @param string $imageId Image Field Id
@@ -231,12 +237,14 @@ trait ImagesTrait
     }
 
     /**
-     * @abstract    Generate Image Item
+     * Generate Image Item
      *
      * @param mixed $index
      * @param mixed $setCover
      * @param mixed $setVisible
      * @param mixed $setPosition
+     *
+     * @return array
      */
     private function getFakeImageItem($index, $setCover, $setVisible, $setPosition)
     {
@@ -268,9 +276,11 @@ trait ImagesTrait
     }
 
     /**
-     * @abstract    Generate Fake Images List
+     * Generate Fake Images List
      *
      * @param mixed $combination
+     *
+     * @return array
      */
     private function getFakeImages($combination)
     {
@@ -294,11 +304,13 @@ trait ImagesTrait
     }
 
     /**
-     * @abstract    Verify Images are Correctly Stored
+     * Verify Images are Correctly Stored
      *
      * @param string $objectType
      * @param string $objectId
      * @param array  $source
+     *
+     * @return void
      */
     private function verifyImages($objectType, $objectId, $source)
     {
@@ -321,6 +333,8 @@ trait ImagesTrait
         //====================================================================//
         //   Verify Images Are Here
         $this->assertNotEmpty($source[$this->listId], "Source Product Images List is Empty");
+        $this->assertIsArray($target);
+        $this->assertArrayHasKey((string) $this->listId, $target);
         $this->assertNotEmpty($target[$this->listId], "Target Product Images List is Empty");
         $this->sourceImages = $source[$this->listId];
         $this->targetImages = $target[$this->listId];
@@ -374,9 +388,11 @@ trait ImagesTrait
     }
 
     /**
-     * @abstract    Verify Images are Correctly Stored
+     * Verify Images are Correctly Stored
      *
      * @param string $objectType
+     *
+     * @return void
      */
     private function verifyImagesFields($objectType)
     {
@@ -418,11 +434,13 @@ trait ImagesTrait
     }
 
     /**
-     * @abstract    Verify Visible Image Flag
+     * Verify Visible Image Flag
      *
      * @param array  $source      Source Image
      * @param string $imageId     Image Field Id
      * @param string $isVisibleId is Visible Flag Field Id
+     *
+     * @return void
      */
     private function verifyVisibleImages($source, $imageId, $isVisibleId)
     {
@@ -443,11 +461,13 @@ trait ImagesTrait
     }
 
     /**
-     * @abstract    Verify Cover Image Flag
+     * Verify Cover Image Flag
      *
      * @param array  $source    Source Image
      * @param string $imageId   Image Field Id
      * @param string $isCoverId is Cover Flag Field Id
+     *
+     * @return void
      */
     private function verifyCoverImages($source, $imageId, $isCoverId)
     {
@@ -468,9 +488,11 @@ trait ImagesTrait
     }
 
     /**
-     * @abstract     Check if Product Images Tests is Required
+     * Check if Product Images Tests is Required
      *
      * @param mixed $objectType
+     *
+     * @return bool
      */
     private function isAllowedProductImagesTests($objectType)
     {

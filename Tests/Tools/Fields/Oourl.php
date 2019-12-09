@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Url Field : Full Link, generic URI
+ * Url Field : Full Link, generic URI
  *
  * @see http://www.faqs.org/rfcs/rfc2396.html
  */
@@ -26,6 +26,7 @@ class Oourl extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Url';
 
     //==============================================================================

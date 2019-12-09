@@ -187,7 +187,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      * @param string      $key1 Main Configuration Key
      * @param null|string $key2 Second Configuration Key
      *
-     * return null|bool|string|array
+     * @return null|array|bool|string
      */
     private function getConfigurationValue($key1, $key2 = null)
     {
@@ -218,6 +218,8 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      * Remove Potentially Unsecure Parameters from Configuration
      *
      * @param array $parameters Custom Parameters Array
+     *
+     * @return void
      */
     private static function sercureParameters(&$parameters)
     {
@@ -295,7 +297,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      * @param Array       $values Custom Values to Write
      * @param string      $key    String Values Key
      *
-     * @return ArrayObject
+     * @return void
      */
     private static function updateFieldStrVal(&$field, $values, $key)
     {
@@ -311,7 +313,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      * @param Array       $values Custom Values to Write
      * @param string      $key    String Values Key
      *
-     * @return ArrayObject
+     * @return void
      */
     private static function updateFieldBoolVal(&$field, $values, $key)
     {
@@ -326,7 +328,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      * @param ArrayObject $field  Original Field Definition
      * @param Array       $values Custom Values to Write
      *
-     * @return ArrayObject
+     * @return void
      */
     private static function updateFieldMeta(&$field, $values)
     {

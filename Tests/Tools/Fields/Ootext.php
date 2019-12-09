@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Text Field : Long Text Data Block
+ * Text Field : Long Text Data Block
  */
 class Ootext implements FieldInterface
 {
@@ -24,6 +24,7 @@ class Ootext implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Text';
 
     //==============================================================================

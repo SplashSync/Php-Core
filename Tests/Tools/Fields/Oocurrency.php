@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Currency Field : ISO Currency Code
+ * Currency Field : ISO Currency Code
  *
  * @example     USD, EUR.
  *
@@ -28,8 +28,10 @@ class Oocurrency extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     const FORMAT = 'Currency';
 
+    /** @var array */
     public static $fakeData = array("EUR", "USD", "INR");
 
     //==============================================================================

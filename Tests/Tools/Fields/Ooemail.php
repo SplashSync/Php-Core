@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Email Field : Standard Email Address
+ * Email Field : Standard Email Address
  */
 class Ooemail extends Oovarchar implements FieldInterface
 {
@@ -24,6 +24,7 @@ class Ooemail extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Email';
 
     //==============================================================================

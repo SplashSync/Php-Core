@@ -13,12 +13,6 @@
  *  file that was distributed with this source code.
  */
 
-/**
- * @abstract    Xml Encoding & Decoding Functions Collector Class
- *
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace   Splash\Components;
 
 use ArrayObject;
@@ -27,25 +21,30 @@ use SimpleXMLElement;
 use stdClass;
 use XMLWriter;
 
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
-
+/**
+ * Xml Encoding & Decoding Functions Collector Class
+ *
+ * @author      B. Paquier <contact@splashsync.com>
+ */
 class XmlManager
 {
-    // Fault String
+    /**
+     * Fault String
+     *
+     * @var string
+     */
     public $fault;
 
     /**
-     *      @abstract   XMLWriter Class
+     * XMLWriter Class
      *
-     *      @var        XMLWriter
-     *      @static
+     * @var XMLWriter
+     * @static
      */
     private static $xml;
 
     /**
-     * @abstract      Class Constructor
+     * Class Constructor
      */
     public function __construct()
     {
@@ -62,9 +61,9 @@ class XmlManager
     //====================================================================//
 
     /**
-     * @abstract     Method to convert Object into XML string
+     * Method to convert Object into XML string
      *
-     * @param array $obj
+     * @param array|ArrayObject $obj
      *
      * @return string
      */
@@ -86,7 +85,7 @@ class XmlManager
     }
 
     /**
-     * @abstract     Method to convert XML string into ArrayObject
+     * Method to convert XML string into ArrayObject
      *
      * @param string $xml
      *
@@ -100,7 +99,7 @@ class XmlManager
     }
 
     /**
-     * @abstract     Method to convert XML string into Array
+     * Method to convert XML string into Array
      *
      * @param string $xml
      *
@@ -118,7 +117,7 @@ class XmlManager
     //====================================================================//
 
     /**
-     * @abstract     Method to convert XML string into SimpleXmlElement Object
+     * Method to convert XML string into SimpleXmlElement Object
      *
      * @param string $xml
      *
@@ -140,12 +139,12 @@ class XmlManager
     }
 
     /**
-     * @abstract     Recursive Method to Object  XML string
+     * Recursive Method to Object  XML string
      *
      * @param XMLWriter $xml
      * @param mixed     $object
      *
-     * @return array $result
+     * @return void
      */
     private function objectToXmlCore(XMLWriter $xml, $object)
     {
@@ -166,9 +165,10 @@ class XmlManager
                 $xml->endElement();
 
                 continue;
-                //====================================================================//
-            // Insert Array
             }
+            //====================================================================//
+            // Insert Array
+            //====================================================================//
             if (is_array($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
@@ -185,10 +185,10 @@ class XmlManager
                 $xml->endElement();
 
                 continue;
-                //====================================================================//
+            }
+            //====================================================================//
             // Insert String
             //====================================================================//
-            }
             if (is_string($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
@@ -196,6 +196,7 @@ class XmlManager
 
             //====================================================================//
             // Insert Numeric
+            //====================================================================//
             } elseif (is_numeric($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
@@ -203,6 +204,7 @@ class XmlManager
 
             //====================================================================//
             // Insert Boolean
+            //====================================================================//
             } elseif (is_bool($value)) {
                 //====================================================================//
                 // Rename Numeric Keys
@@ -218,7 +220,7 @@ class XmlManager
     }
 
     /**
-     * @abstract     Filter XML Key to remove single numeric keys by adding a prefix
+     * Filter XML Key to remove single numeric keys by adding a prefix
      *
      * @param string $key
      * @param string $prefix
@@ -239,7 +241,7 @@ class XmlManager
     }
 
     /**
-     * @abstract    Convert a SimpleXML object to an Array
+     * Convert a SimpleXML object to an Array
      *
      * @param false|SimpleXMLElement $element
      *
@@ -296,7 +298,7 @@ class XmlManager
     }
 
     /**
-     * @abstract    Convert a SimpleXML object to an ArrayObject
+     * Convert a SimpleXML object to an ArrayObject
      *
      * @param false|SimpleXMLElement $element
      *

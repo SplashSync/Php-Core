@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Contry Field : ISO Country Code (ISO 3166-1 alpha-2)
+ * Country Field : ISO Country Code (ISO 3166-1 alpha-2)
  *
  * @example     US, FR, DE
  *
@@ -28,6 +28,7 @@ class Oocountry extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Country';
 
     //==============================================================================

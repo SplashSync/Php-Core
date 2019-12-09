@@ -382,15 +382,16 @@ trait FieldsManagerTrait
             $isList = self::isListField($fieldId);
             //====================================================================//
             // Single Field Data Type
-            if ((!$isList) && (array_key_exists($fieldId, $objectData))) {
+            if (!is_array($isList)) {
+                if (!array_key_exists($fieldId, $objectData)) {
+                    continue;
+                }
                 $result[$fieldId] = $objectData[$fieldId];
-            } elseif (!$isList) {
-                continue;
             }
             //====================================================================//
             // List Field Data Type
-            $listName = $isList['listname'];
-            $fieldName = $isList['fieldname'];
+            $listName = is_array($isList) ? $isList['listname'] : null;
+            $fieldName = is_array($isList) ? $isList['fieldname'] : null;
             //====================================================================//
             // Check List Data are Present in Block
             if (!array_key_exists($listName, $objectData)) {

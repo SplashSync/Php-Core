@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    DateTime Field : Date & Time as Text (Format Y-m-d G:i:s)
+ * DateTime Field : Date & Time as Text (Format Y-m-d G:i:s)
  *
  * @example     2016-12-25 12:25:30
  */
@@ -26,6 +26,7 @@ class Oodatetime extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     const FORMAT = 'DateTime';
 
     //==============================================================================

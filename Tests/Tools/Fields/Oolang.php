@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Language Field : ISO Language Code
+ * Language Field : ISO Language Code
  *
  * @example     en_US, fr_FR, fr_BE
  *
@@ -28,6 +28,7 @@ class Oolang extends Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     const FORMAT = 'Lang';
 
     //==============================================================================

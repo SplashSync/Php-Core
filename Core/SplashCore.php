@@ -496,6 +496,8 @@ class SplashCore
      * Force Server Local Class
      *
      * @param LocalClassInterface $localClass Name of New Local Class to Use
+     *
+     * @return void
      */
     public static function setLocalClass(LocalClassInterface $localClass)
     {
@@ -645,6 +647,8 @@ class SplashCore
 
     /**
      * Fully Restart Splash Module
+     *
+     * @return void
      */
     public static function reboot()
     {

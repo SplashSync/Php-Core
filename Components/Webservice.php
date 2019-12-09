@@ -30,40 +30,92 @@ class Webservice
     // WebService Parameters
     //====================================================================//
 
+    /** @var string */
     const       SPLASHHOST = 'www.splashsync.com/ws/soap';
-    //====================================================================//
-    // Webservice Call Url
-    /** @var string */
+
+    /**
+     * Webservice Call Url
+     *
+     * @var string
+     */
     public $url;
-    //====================================================================//
-    // Remote Server Address
-    /** @var string */
+
+    /**
+     * Remote Server Address
+     *
+     * @var string
+     */
     protected $host = self::SPLASHHOST;
-    //====================================================================//
-    // Unik Client Identifier ( 1 to 8 Char)
-    /** @var string */
+
+    /**
+     * Unik Client Identifier ( +8 Char)
+     *
+     * @var string
+     */
     protected $id = '';
-    //====================================================================//
-    // Unik Key for encrypt data transmission with this Server
-    /** @var string */
+
+    /**
+     * Unik Key for encrypt data transmission with this Server
+     *
+     * @var string
+     */
     protected $key = '';
-    //====================================================================//
-    // Http Authentification
-    /** @var bool */
+
+    /**
+     * Enable Http Authentification
+     *
+     * @var bool
+     */
     protected $httpAuth = false;
-    /** @var string */
+
+    /**
+     * Http Authentification User
+     *
+     * @var string
+     */
     protected $httpUser;
-    /** @var string */
+
+    /**
+     * Http Authentification Pwd
+     *
+     * @var string
+     */
     protected $httpPassword;
-    //====================================================================//
-    // Webservice Tasks Buffer
+
+    /**
+     * Webservice Tasks Buffer
+     *
+     * @var ArrayObject
+     */
     private $tasks;
-    //====================================================================//
-    // Webservice buffers
-    private $inputs;        // Input Buffer
-    private $outputs;       // Output Buffer
-    private $rawIn;         // Raw Call Input Buffer
-    private $rawOut;        // Raw Call Output Buffer
+
+    /**
+     * Webservice Input Buffer
+     *
+     * @var ArrayObject
+     */
+    private $inputs;
+
+    /**
+     * Webservice Output Buffer
+     *
+     * @var ArrayObject
+     */
+    private $outputs;
+
+    /**
+     * Raw Call Input Buffer
+     *
+     * @var string
+     */
+    private $rawIn;
+
+    /**
+     * Raw Call Output Buffer
+     *
+     * @var array
+     */
+    private $rawOut;
 
     /**
      * Initialise Class with empty webservice parameters
@@ -127,8 +179,8 @@ class Webservice
     /**
      * Prepare Data Packets for transmit.
      *
-     * @param array $data        Input Data ArrayObject
-     * @param bool  $isUncrypted force no encrypt on message
+     * @param array|ArrayObject $data        Input Data ArrayObject
+     * @param bool              $isUncrypted force no encrypt on message
      *
      * @return false|string $Out            Output Packet Data ( Encrypted or not )
      */
@@ -482,7 +534,7 @@ class Webservice
     /**
      * Return Server Outputs Buffer
      *
-     * @return array $result
+     * @return ArrayObject
      */
     public function getOutputBuffer()
     {
@@ -690,9 +742,6 @@ class Webservice
     private function cleanIn()
     {
         //====================================================================//
-        //  Free current output buffer
-        $this->inputs = null;
-        //====================================================================//
         //  Initiate a new input buffer
         $this->inputs = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
 
@@ -707,14 +756,8 @@ class Webservice
     private function cleanOut()
     {
         //====================================================================//
-        //  Free current tasks list
-        $this->tasks = null;
-        //====================================================================//
         //  Initiate a new tasks list
         $this->tasks = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        //====================================================================//
-        //  Free current output buffer
-        $this->outputs = null;
         //====================================================================//
         //  Initiate a new output buffer
         $this->outputs = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);

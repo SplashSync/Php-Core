@@ -30,6 +30,8 @@ trait VariantsTrait
 {
     /**
      * Override Parent Function to Filter on Products Fields
+     *
+     * @return array
      */
     public function objectFieldsProvider()
     {
@@ -90,6 +92,8 @@ trait VariantsTrait
      * Generate Variations Attributes
      *
      * @param array $attributesCodes
+     *
+     * @return array
      */
     protected function getProductsAttributes($attributesCodes)
     {
@@ -148,7 +152,7 @@ trait VariantsTrait
         $this->assertNotEmpty($names);
 
         /**
-         * @var ArrayObject[] $value
+         * @var ArrayObject[] $values
          */
         $values = $this->findMultiFields(static::$attrValue);
         $this->assertInternalType("array", $values);

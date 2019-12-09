@@ -18,7 +18,7 @@ namespace Splash\Tests\Tools\Traits;
 use Splash\Models\Fields\FieldsManagerTrait;
 
 /**
- * @abstract    Splash Test Tools - Objects Data Validation
+ * Splash Test Tools - Objects Data Validation
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -38,11 +38,11 @@ trait ObjectsValidatorTrait
     //==============================================================================
 
     /**
-     *   @abstract   Verify this parameter is a valid sync data type
+     * Verify this parameter is a valid sync data type
      *
-     *   @param      string      $fieldType     Data Type Name String
+     * @param string $fieldType Data Type Name String
      *
-     *   @return     false|string
+     * @return false|string
      */
     public static function isValidType($fieldType)
     {
@@ -84,7 +84,7 @@ trait ObjectsValidatorTrait
     }
 
     /**
-     * @abstract   Verify Data a valid Raw field data
+     * Verify Data a valid Raw field data
      *
      * @param mixed  $data      Object Field Data
      * @param string $fieldType Object Field Type
@@ -112,7 +112,7 @@ trait ObjectsValidatorTrait
     }
 
     /**
-     * @abstract   Verify Data a valid field data
+     * Verify Data a valid field data
      *
      * @param mixed  $data      Object Field Data
      * @param string $fieldId   Object Field Identifier
@@ -158,7 +158,7 @@ trait ObjectsValidatorTrait
     }
 
     /**
-     * @abstract   Verify Data a valid list field data
+     * Verify Data a valid list field data
      *
      * @param mixed  $data      Object Field Data
      * @param string $fieldId   Object Field Identifier
@@ -176,6 +176,7 @@ trait ObjectsValidatorTrait
 
         //====================================================================//
         // Verify List is in Data Response
+        $this->assertIsArray($listId);
         $this->assertArrayHasKey(
             $listId["listname"],
             $data,
@@ -184,6 +185,7 @@ trait ObjectsValidatorTrait
 
         //====================================================================//
         // Verify Field Type is List Type Identifier
+        $this->assertIsArray($listType);
         $this->assertEquals(
             $listType["listname"],
             SPL_T_LIST,

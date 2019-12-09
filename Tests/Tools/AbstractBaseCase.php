@@ -29,7 +29,7 @@ abstract class AbstractBaseCase extends TestCase
     use \Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     protected function setUp()
     {
@@ -194,6 +194,8 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @param ArrayObject $logs   WebService Log Array
      * @param ArrayObject $config WebService Request Configuration
+     *
+     * @return void
      */
     public function checkResponseLog($logs, $config = null)
     {
@@ -241,6 +243,8 @@ abstract class AbstractBaseCase extends TestCase
      * @param ArrayObject $logs WebService Log Array
      * @param string      $type Log Key
      * @param string      $name Log Type Name
+     *
+     * @return void
      */
     public function checkResponseLogArray($logs, $type, $name)
     {
@@ -260,6 +264,8 @@ abstract class AbstractBaseCase extends TestCase
      * Verify Response Server Infos Are Valid
      *
      * @param ArrayObject $server WebService Server Infos Array
+     *
+     * @return void
      */
     public function checkResponseServer($server)
     {
@@ -284,6 +290,8 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @param ArrayObject $tasks  WebService Server Tasks Results Array
      * @param ArrayObject $config WebService Request Configuration
+     *
+     * @return void
      */
     public function checkResponseTasks($tasks, $config = null)
     {
@@ -359,6 +367,8 @@ abstract class AbstractBaseCase extends TestCase
 
     /**
      * Load or Reload Tests Parameters for Current Test Sequence
+     *
+     * @return void
      */
     protected function loadLocalTestParameters()
     {
@@ -388,6 +398,8 @@ abstract class AbstractBaseCase extends TestCase
      * Configure Environement for this Test Sequence
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     protected function loadLocalTestSequence($testSequence)
     {

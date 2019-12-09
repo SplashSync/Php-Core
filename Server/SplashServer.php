@@ -13,13 +13,6 @@
  *  file that was distributed with this source code.
  */
 
-/**
- * @abstract    Splash Sync Server. Manage Splash Requests & Responses.
- *              This file is included only in case on NuSOAP call to slave server.
- *
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace Splash\Server;
 
 use ArrayObject;
@@ -30,14 +23,19 @@ use Splash\Core\SplashCore  as Splash;
 //====================================================================//
 
 /**
- * Splash Core Server Requests Manager
+ * Splash Sync Server. Manage Splash Requests & Responses.
+ * This file is included only in case on SOAP call to slave server.
+ *
+ * @author      B. Paquier <contact@splashsync.com>
  */
 class SplashServer
 {
     //====================================================================//
     // Webservice I/O Buffers
     //====================================================================//
+    /** @var ArrayObject */
     private static $inputs;         // Input Buffer
+    /** @var ArrayObject */
     private static $outputs;        // Output Buffer
 
     /**
@@ -174,6 +172,35 @@ class SplashServer
         self::$outputs = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
 
         return true;
+    }
+
+    /**
+     * Declare fatal Error Handler => Called in case of Script Exceptions
+     *
+     * @return void
+     */
+    public static function fatalHandler()
+    {
+        //====================================================================//
+        // Read Last Error
+        $error = error_get_last();
+        if (!$error) {
+            return;
+        }
+        //====================================================================//
+        // Fatal Error
+        if (E_ERROR == $error["type"]) {
+            //====================================================================//
+            // Parse Error in Response.
+            Splash::com()->fault($error);
+            //====================================================================//
+            // Process methods & Return the results.
+            Splash::com()->handle();
+        //====================================================================//
+        // Non Fatal Error
+        } else {
+            Splash::log()->war($error["message"]." on File ".$error["file"]." Line ".$error["line"]);
+        }
     }
 
     //====================================================================//

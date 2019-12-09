@@ -18,7 +18,7 @@ namespace Splash\Tests\Tools\Fields;
 use ArrayObject;
 
 /**
- * @abstract    Double Field : Float Value as Text
+ * Double Field : Float Value as Text
  */
 class Oodouble implements FieldInterface
 {
@@ -26,6 +26,7 @@ class Oodouble implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Double';
 
     //==============================================================================

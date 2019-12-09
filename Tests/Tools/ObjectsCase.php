@@ -34,7 +34,7 @@ class ObjectsCase extends AbstractBaseCase
     private $createdObjects = array();
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     protected function setUp()
     {
@@ -166,6 +166,8 @@ class ObjectsCase extends AbstractBaseCase
      *
      * @param string $objectType Expected Object Type
      * @param string $objectId   Expected Object Id
+     *
+     * @return void
      */
     protected function setCurrentObject($objectType, $objectId)
     {
@@ -182,6 +184,8 @@ class ObjectsCase extends AbstractBaseCase
      *
      * @param string     $objectType
      * @param int|string $objectId
+     *
+     * @return void
      */
     protected function addTestedObject($objectType, $objectId = null)
     {
@@ -193,6 +197,8 @@ class ObjectsCase extends AbstractBaseCase
 
     /**
      * Delete all Objects Created for Testing
+     *
+     * @return void
      */
     protected function cleanTestedObjects()
     {

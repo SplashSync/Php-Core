@@ -18,7 +18,7 @@ namespace Splash\Tests\Tools\Fields;
 use ArrayObject;
 
 /**
- * @abstract    Price Field : price definition Array
+ * Price Field : price definition Array
  *
  * //====================================================================//
  * // Price Definition Array
@@ -41,6 +41,7 @@ class Ooprice implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Price';
 
     //==============================================================================
@@ -141,7 +142,7 @@ class Ooprice implements FieldInterface
     //====================================================================//
 
     /**
-     * @abstract    Build a new price field array
+     * Build a new price field array
      *
      * @param double $taxExcl Price Without VAT
      * @param double $vat     VAT percentile
@@ -184,6 +185,11 @@ class Ooprice implements FieldInterface
         return $price;
     }
 
+    /**
+     * @param array|ArrayObject $price
+     *
+     * @return string|true
+     */
     private static function validateContentsAvailablility($price)
     {
         //====================================================================//
@@ -213,23 +219,33 @@ class Ooprice implements FieldInterface
         return true;
     }
 
+    /**
+     * @param array|ArrayObject $price
+     *
+     * @return string|true
+     */
     private static function validateCurrency($price)
     {
         //====================================================================//
         // Check Contents Available
-        if (!array_key_exists("symbol", $price)) {
+        if (!isset($price["symbol"])) {
             return "Price Field => Currency 'symbol' is missing.";
         }
-        if (!array_key_exists("code", $price)) {
+        if (!isset($price["code"])) {
             return "Price Field => Currency 'code' is missing.";
         }
-        if (!array_key_exists("name", $price)) {
+        if (!isset($price["name"])) {
             return "Price Field => Currency 'name' is missing.";
         }
 
         return true;
     }
 
+    /**
+     * @param array|ArrayObject $price
+     *
+     * @return string|true
+     */
     private static function validateContentsTypes($price)
     {
         //====================================================================//
@@ -247,6 +263,13 @@ class Ooprice implements FieldInterface
         return true;
     }
 
+    /**
+     * @param array|ArrayObject $source
+     * @param array|ArrayObject $target
+     * @param array             $settings
+     *
+     * @return bool
+     */
     private static function compareAmounts($source, $target, $settings)
     {
         //====================================================================//
@@ -270,6 +293,12 @@ class Ooprice implements FieldInterface
         return true;
     }
 
+    /**
+     * @param array|ArrayObject $source
+     * @param array|ArrayObject $target
+     *
+     * @return bool
+     */
     private static function compareCurrency($source, $target)
     {
         //====================================================================//
@@ -287,11 +316,20 @@ class Ooprice implements FieldInterface
         return true;
     }
 
+    /**
+     * @param float|string $source
+     * @param float|string $target
+     * @param array        $settings
+     *
+     * @return bool
+     */
     private static function isEqualFloat($source, $target, $settings)
     {
         //====================================================================//
         // Compare Float Values
-        if (abs(round($source, $settings["PricesPrecision"]) - round($target, $settings["PricesPrecision"])) > 1E-6) {
+        $srcFloat = round((float) $source, $settings["PricesPrecision"]);
+        $targetFloat = round((float) $target, $settings["PricesPrecision"]);
+        if (abs($srcFloat - $targetFloat) > 1E-6) {
             return false;
         }
 

@@ -13,12 +13,6 @@
  *  file that was distributed with this source code.
  */
 
-/**
- * @abstract    This class is a base class for all Splash Widgets.
- *
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace   Splash\Models;
 
 use Splash\Components\BlocksFactory;
@@ -27,14 +21,11 @@ use Splash\Core\SplashCore      as Splash;
 use Splash\Models\Widgets\DatesManagerTrait;
 use Splash\Models\Widgets\WidgetInterface;
 
-//====================================================================//
-//********************************************************************//
-//====================================================================//
-//  SPLASH WIDGET BASE CLASS
-//====================================================================//
-//********************************************************************//
-//====================================================================//
-
+/**
+ * This class is a base class for all Splash Widgets.
+ *
+ * @author      B. Paquier <contact@splashsync.com>
+ */
 abstract class AbstractWidget implements WidgetInterface
 {
     use DatesManagerTrait;
@@ -45,18 +36,25 @@ abstract class AbstractWidget implements WidgetInterface
     // *******************************************************************//
     //====================================================================//
 
+    /** @var string */
     const SIZE_XS = "col-sm-6 col-md-4 col-lg-3";
+    /** @var string */
     const SIZE_SM = "col-sm-6 col-md-6 col-lg-4";
+    /** @var string */
     const SIZE_DEFAULT = "col-sm-12 col-md-6 col-lg-6";
+    /** @var string */
     const SIZE_M = "col-sm-12 col-md-6 col-lg-6";
+    /** @var string */
     const SIZE_L = "col-sm-12 col-md-6 col-lg-8";
+    /** @var string */
     const SIZE_XL = "col-sm-12 col-md-12 col-lg-12";
 
     //====================================================================//
     // Define Standard Options for this Widget
     // Override this array to change default options for your widget
-    public static $OPTIONS = array(
-    );
+    //====================================================================//
+    /** @var array */
+    public static $OPTIONS = array();
 
     /**
      * @var FieldsFactory
@@ -69,22 +67,30 @@ abstract class AbstractWidget implements WidgetInterface
     protected static $blocks;
 
     /**
-     *  Widget Disable Flag. Override this flag to disable Widget.
+     * Widget Disable Flag. Override this flag to disable Widget.
+     *
+     * @var bool
      */
     protected static $DISABLED = false;
 
     /**
-     *  Widget Name
+     * Widget Name
+     *
+     * @var string
      */
     protected static $NAME = __CLASS__;
 
     /**
-     *  Widget Description
+     * Widget Description
+     *
+     * @var string
      */
     protected static $DESCRIPTION = __CLASS__;
 
     /**
-     *  Widget Icon (FontAwesome or Glyph ico tag)
+     * Widget Icon (FontAwesome or Glyph ico tag)
+     *
+     * @var string
      */
     protected static $ICO = "fa fa-info";
 
@@ -95,7 +101,7 @@ abstract class AbstractWidget implements WidgetInterface
     /**
      * Get Operations Output Buffer
      *
-     * @abstract This variable is used to store Widget Array during Get Operations
+     * This variable is used to store Widget Array during Get Operations
      *
      * @var array
      */
@@ -108,6 +114,7 @@ abstract class AbstractWidget implements WidgetInterface
 
     /**
      * Get a singleton FieldsFactory Class
+     *
      * Acces to Object Fields Creation Functions
      *
      * @return FieldsFactory

@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Integer Field
+ * Integer Field
  */
 class Ooint implements FieldInterface
 {
@@ -24,6 +24,7 @@ class Ooint implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Int';
 
     //==============================================================================

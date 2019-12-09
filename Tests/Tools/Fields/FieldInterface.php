@@ -18,7 +18,7 @@ namespace Splash\Tests\Tools\Fields;
 use ArrayObject;
 
 /**
- * @abstract    Bool Field : Basic Boolean
+ * Bool Field : Basic Boolean
  */
 interface FieldInterface
 {

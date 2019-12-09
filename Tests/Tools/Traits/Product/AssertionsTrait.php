@@ -46,6 +46,8 @@ trait AssertionsTrait
 
     /**
      * Verify Product Title Fields
+     *
+     * @return void
      */
     public function assertValidTitle()
     {
@@ -82,6 +84,8 @@ trait AssertionsTrait
 
     /**
      * Verify Product Short Description
+     *
+     * @return void
      */
     public function assertValidShortDescription()
     {
@@ -106,6 +110,8 @@ trait AssertionsTrait
 
     /**
      * Verify Product Long Description
+     *
+     * @return void
      */
     public function assertValidLongDescription()
     {
@@ -120,6 +126,8 @@ trait AssertionsTrait
 
     /**
      * Verify Product Main Flags
+     *
+     * @return void
      */
     public function assertValidProductFlags()
     {
@@ -148,6 +156,8 @@ trait AssertionsTrait
 
     /**
      * Verify Product Prices
+     *
+     * @return void
      */
     public function assertValidProductPrices()
     {
@@ -167,6 +177,8 @@ trait AssertionsTrait
 
     /**
      * Verify Product Shipping Infos
+     *
+     * @return void
      */
     public function assertValidProductShipping()
     {
@@ -184,6 +196,8 @@ trait AssertionsTrait
 
     /**
      * Verify Product Images Fields
+     *
+     * @return void
      */
     public function assertValidProductImages()
     {
@@ -233,6 +247,8 @@ trait AssertionsTrait
 
     /**
      * Verify Product Variants Fields
+     *
+     * @return void
      */
     public function assertValidProductVariants()
     {

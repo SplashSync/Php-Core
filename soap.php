@@ -29,7 +29,6 @@ use Splash\Server\SplashServer;
 //====================================================================//
 // Splash Module & Dependecies Autoloader
 require_once(dirname(dirname(dirname(__FILE__)))."/autoload.php");
-require_once(dirname(__FILE__)."/inc/fatal.inc.php");
 //====================================================================//
 // Setup Php Specific Settings
 ini_set('display_errors', 0);
@@ -59,7 +58,7 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     Splash::com()->buildServer();
     //====================================================================//
     // Register shuttdown method available for fatal errors reteival
-    register_shutdown_function(__NAMESPACE__.'\fatal_handler');
+    register_shutdown_function(array(SplashServer::class, 'fatalHandler'));
     //====================================================================//
     // Process methods & Return the results.
     Splash::com()->handle();

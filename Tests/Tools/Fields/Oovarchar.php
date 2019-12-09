@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Varchar Field : Basic text
+ * Varchar Field : Basic text
  */
 class Oovarchar implements FieldInterface
 {
@@ -24,6 +24,7 @@ class Oovarchar implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'Varchar';
 
     //==============================================================================
@@ -84,10 +85,12 @@ class Oovarchar implements FieldInterface
     }
 
     /**
-     * @abstract    Apply Case Constrains
+     * Apply Case Constrains
      *
      * @param array  $settings User Defined Faker Settings
      * @param string $data
+     *
+     * @return void
      */
     public static function applyLengthConstrains($settings, &$data)
     {
@@ -106,10 +109,12 @@ class Oovarchar implements FieldInterface
     }
 
     /**
-     * @abstract    Apply Case Constrains
+     * Apply Case Constrains
      *
      * @param array  $settings User Defined Faker Settings
      * @param string $data
+     *
+     * @return void
      */
     public static function applyCaseConstrains($settings, &$data)
     {

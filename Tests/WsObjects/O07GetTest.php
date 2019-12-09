@@ -20,7 +20,7 @@ use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
- * @abstract    Objects Test Suite - Object Reading Verifications
+ * Objects Test Suite - Object Reading Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -39,9 +39,11 @@ class O07GetTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
-     * @param mixed $field
+     * @param string $testSequence
+     * @param string $objectType
+     * @param mixed  $field
+     *
+     * @return void
      */
     public function testGetSingleFieldFromModule($testSequence, $objectType, $field)
     {
@@ -75,6 +77,8 @@ class O07GetTest extends ObjectsCase
      *
      * @param mixed $testSequence
      * @param mixed $objectType
+     *
+     * @return void
      */
     public function testGetAllFieldsFromModule($testSequence, $objectType)
     {
@@ -108,6 +112,8 @@ class O07GetTest extends ObjectsCase
      *
      * @param mixed $testSequence
      * @param mixed $objectType
+     *
+     * @return void
      */
     public function testFromObjectsService($testSequence, $objectType)
     {
@@ -140,6 +146,8 @@ class O07GetTest extends ObjectsCase
      *
      * @param mixed $testSequence
      * @param mixed $objectType
+     *
+     * @return void
      */
     public function testFromObjectsServiceErrors($testSequence, $objectType)
     {
@@ -172,6 +180,11 @@ class O07GetTest extends ObjectsCase
         );
     }
 
+    /**
+     * @param string $objectType
+     *
+     * @return string
+     */
     public function getNextObjectId($objectType)
     {
         //====================================================================//
@@ -198,8 +211,6 @@ class O07GetTest extends ObjectsCase
         //   Verify Objects List is Not Empty
         if ($this->objectCount[$objectType] <= 0) {
             $this->markTestSkipped('No Objects in Database.');
-
-            return false;
         }
 
         //====================================================================//
@@ -209,6 +220,13 @@ class O07GetTest extends ObjectsCase
         return $nextObject["id"];
     }
 
+    /**
+     * @param mixed        $data
+     * @param array        $fields
+     * @param false|string $objectId
+     *
+     * @return void
+     */
     public function verifyResponse($data, $fields, $objectId)
     {
         //====================================================================//

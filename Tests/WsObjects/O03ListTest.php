@@ -20,7 +20,7 @@ use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
- * @abstract    Objects Test Suite - Objects List Reading Verifications
+ * Objects Test Suite - Objects List Reading Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -29,8 +29,10 @@ class O03ListTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @return void
      */
     public function testFromModule($testSequence, $objectType)
     {
@@ -52,8 +54,10 @@ class O03ListTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @return void
      */
     public function testFromObjectsService($testSequence, $objectType)
     {
@@ -73,6 +77,9 @@ class O03ListTest extends ObjectsCase
         $this->verifyResponse($data, $objectType);
     }
 
+    /**
+     * @return void
+     */
     public function testFromObjectsServiceErrors()
     {
         //====================================================================//
@@ -80,6 +87,12 @@ class O03ListTest extends ObjectsCase
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_LIST, __METHOD__);
     }
 
+    /**
+     * @param ArrayObject|bool|string $data
+     * @param string                  $objectType
+     *
+     * @return void
+     */
     public function verifyResponse($data, $objectType)
     {
         //====================================================================//
@@ -91,6 +104,12 @@ class O03ListTest extends ObjectsCase
         $this->verifyAvailableFields($data, $objectType);
     }
 
+    /**
+     * @param ArrayObject $data
+     * @param string      $objectType
+     *
+     * @return void
+     */
     public function verifyAvailableFields($data, $objectType)
     {
         //====================================================================//
@@ -130,10 +149,14 @@ class O03ListTest extends ObjectsCase
                 }
             }
         }
-
-        return true;
     }
 
+    /**
+     * @param ArrayObject $data
+     * @param string      $objectType
+     *
+     * @return void
+     */
     public function verifyMetaInformations($data, $objectType)
     {
         //====================================================================//

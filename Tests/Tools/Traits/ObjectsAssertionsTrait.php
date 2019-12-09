@@ -40,6 +40,8 @@ trait ObjectsAssertionsTrait
      * @param string $key     Tested Array Key
      * @param string $type    Expected Data Type
      * @param string $comment
+     *
+     * @return void
      */
     public function assertArrayInternalType($data, $key, $type, $comment)
     {
@@ -55,6 +57,8 @@ trait ObjectsAssertionsTrait
      * @param string $key     Tested Array Key
      * @param string $type    Expected Data Type
      * @param string $comment
+     *
+     * @return void
      */
     public function assertArrayInstanceOf($data, $key, $type, $comment)
     {
@@ -72,6 +76,8 @@ trait ObjectsAssertionsTrait
      *
      * @param mixed  $data
      * @param string $comment
+     *
+     * @return void
      */
     public function assertIsSplashBool($data, $comment)
     {
@@ -85,6 +91,8 @@ trait ObjectsAssertionsTrait
      * @param mixed  $data    Tested Array
      * @param string $key     Tested Array Key
      * @param string $comment
+     *
+     * @return void
      */
     public function assertArraySplashBool($data, $key, $comment)
     {
@@ -100,6 +108,8 @@ trait ObjectsAssertionsTrait
      *
      * @param mixed  $data
      * @param string $comment
+     *
+     * @return void
      */
     public function assertIsSplashArray($data, $comment)
     {
@@ -113,6 +123,8 @@ trait ObjectsAssertionsTrait
      * @param mixed  $data    Tested Array
      * @param string $key     Tested Array Key
      * @param string $comment
+     *
+     * @return void
      */
     public function assertArraySplashArray($data, $key, $comment)
     {
@@ -129,6 +141,8 @@ trait ObjectsAssertionsTrait
      * @param mixed  $data
      * @param string $type
      * @param string $comment
+     *
+     * @return void
      */
     public function assertIsValidSplashFieldData($data, $type, $comment)
     {
@@ -137,7 +151,7 @@ trait ObjectsAssertionsTrait
         $className = self::isValidType($type);
         $this->assertNotEmpty($className, "Field Type '".$type."' is not a Valid Splash Field Type.".$comment);
         if (false === $className) {
-            return false;
+            return;
         }
 
         //====================================================================//
@@ -154,6 +168,8 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
+     *
+     * @return void
      */
     public function assertFieldIsDefined($itemType, $itemProp, $comment = null)
     {
@@ -175,6 +191,8 @@ trait ObjectsAssertionsTrait
      * @param string $itemProp Field Microdata Property Name
      * @param array  $formats  Array of Allowed Splash Field Formats
      * @param string $comment
+     *
+     * @return void
      */
     public function assertFieldHasFormat($itemType, $itemProp, $formats, $comment = null)
     {
@@ -203,6 +221,8 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
+     *
+     * @return void
      */
     public function assertFieldIsRead($itemType, $itemProp, $comment = null)
     {
@@ -226,6 +246,8 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
+     *
+     * @return void
      */
     public function assertFieldIsWrite($itemType, $itemProp, $comment = null)
     {
@@ -249,6 +271,8 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
+     *
+     * @return void
      */
     public function assertFieldNotWrite($itemType, $itemProp, $comment = null)
     {
@@ -272,6 +296,8 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
+     *
+     * @return void
      */
     public function assertFieldIsRequired($itemType, $itemProp, $comment = null)
     {
@@ -295,6 +321,8 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
+     *
+     * @return void
      */
     public function assertFieldNotRequired($itemType, $itemProp, $comment = null)
     {
@@ -318,6 +346,8 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      * @param string $comment
+     *
+     * @return void
      */
     public function assertFieldIsInList($itemType, $itemProp, $comment = null)
     {
@@ -341,6 +371,8 @@ trait ObjectsAssertionsTrait
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
      * @param string $objectId   Expected Object Id
+     *
+     * @return void
      */
     public function assertIsLastCommited($action, $objectType, $objectId)
     {
@@ -353,6 +385,8 @@ trait ObjectsAssertionsTrait
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
      * @param string $objectId   Expected Object Id
+     *
+     * @return void
      */
     public function assertIsFirstCommited($action, $objectType, $objectId)
     {
@@ -366,6 +400,8 @@ trait ObjectsAssertionsTrait
      * @param string $objectType Expected Object Type
      * @param string $objectId   Expected Object Id
      * @param bool   $first      Check First or Last Commited
+     *
+     * @return void
      */
     private function assertIsCommited($action, $objectType, $objectId, $first = true)
     {

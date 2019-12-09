@@ -38,6 +38,8 @@ class C00StartupTest extends TestCase
 
     /**
      * Display of Tested Sequences | Objects | Fields
+     *
+     * @return void
      */
     public function testDisplayTestContext()
     {
@@ -72,6 +74,8 @@ class C00StartupTest extends TestCase
 
     /**
      * Display of Tested Objects List
+     *
+     * @return void
      */
     private function displayTestedObjects()
     {
@@ -96,6 +100,8 @@ class C00StartupTest extends TestCase
 
     /**
      * Display of Tested Sequences List
+     *
+     * @return void
      */
     private function displayTestedSequences()
     {
@@ -125,6 +131,8 @@ class C00StartupTest extends TestCase
 
     /**
      * Display of Filter on Objets Fields
+     *
+     * @return void
      */
     private function displayFilteredFields()
     {

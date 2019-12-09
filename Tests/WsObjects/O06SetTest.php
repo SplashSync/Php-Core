@@ -19,7 +19,7 @@ use Splash\Tests\Tools\ObjectsCase;
 use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
 
 /**
- * @abstract    Objects Test Suite - Verify Read/Write of any R/W fields is Ok.
+ * Objects Test Suite - Verify Read/Write of any R/W fields is Ok.
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -30,10 +30,12 @@ class O06SetTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      *
-     * @param mixed      $testSequence
-     * @param mixed      $objectType
+     * @param string     $testSequence
+     * @param string     $objectType
      * @param mixed      $field
      * @param null|mixed $forceObjectId
+     *
+     * @return void
      */
     public function testSetSingleFieldFromModule($testSequence, $objectType, $field, $forceObjectId = null)
     {
@@ -49,10 +51,12 @@ class O06SetTest extends ObjectsCase
     /**
      * @dataProvider objectFieldsProvider
      *
-     * @param mixed      $testSequence
-     * @param mixed      $objectType
+     * @param string     $testSequence
+     * @param string     $objectType
      * @param mixed      $field
      * @param null|mixed $forceObjectId
+     *
+     * @return void
      */
     public function testSetSingleFieldFromService($testSequence, $objectType, $field, $forceObjectId = null)
     {

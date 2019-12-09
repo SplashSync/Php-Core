@@ -20,12 +20,15 @@ use Splash\Core\SplashCore     as Splash;
 use Splash\Tests\Tools\TestCase;
 
 /**
- * @abstract    Core Test Suite - Module's Local Class Basics Verifications
+ * Core Test Suite - Module's Local Class Basics Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
 class C11LocalCoreClassTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testParameterFunction()
     {
         //====================================================================//
@@ -51,6 +54,9 @@ class C11LocalCoreClassTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testIncludesFunction()
     {
         //====================================================================//
@@ -61,6 +67,9 @@ class C11LocalCoreClassTest extends TestCase
         }
     }
 
+    /**
+     * @return void
+     */
     public function testSelfTestFunction()
     {
         //====================================================================//
@@ -71,6 +80,9 @@ class C11LocalCoreClassTest extends TestCase
         }
     }
 
+    /**
+     * @return void
+     */
     public function testInformationsFunction()
     {
         //====================================================================//

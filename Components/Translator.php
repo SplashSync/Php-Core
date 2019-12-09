@@ -13,38 +13,29 @@
  *  file that was distributed with this source code.
  */
 
-/**
- * @abstract    Splash Core Integrated Translation Management Class.
- *
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace   Splash\Components;
 
 use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
-//====================================================================//
-//  CLASS DEFINITION
-//====================================================================//
-
 /**
- *  \class      SplashTranslator
- *  \brief      Text Translations Functions Collector Class
+ * Splash Core Integrated Translation Management Class.
+ *
+ * @author      B. Paquier <contact@splashsync.com>
  */
 class Translator
 {
     /**
-     * @abstract   Translations Storage Array
+     * Translations Storage Array
      *
      * @var Array
      */
     private $trans;
 
     /**
-     * @abstract   Loaded Translation Files array
+     * Loaded Translation Files array
      *
-     * @var Array
+     * @var array
      */
     private $loadedTranslations;
 
@@ -53,10 +44,10 @@ class Translator
     //====================================================================//
 
     /**
-     * @abstract    Load translations from a specified INI file into Static array.
-     *              If data for file already loaded, do nothing.
-     *              All data in translation array are stored in UTF-8 format.
-     *              trans_loaded is completed with $file key.
+     * Load translations from a specified INI file into Static array.
+     * If data for file already loaded, do nothing.
+     * All data in translation array are stored in UTF-8 format.
+     * trans_loaded is completed with $file key.
      *
      * @param string $fileName File name to load (.ini file).
      *                         Must be "file" or "file@local" for local language files:
@@ -126,10 +117,10 @@ class Translator
     }
 
     /**
-     * @abstract   Return text translated of text received as parameter (and encode it into HTML)
-     *                  Si il n'y a pas de correspondance pour ce texte, on cherche dans fichier alternatif
-     *                  et si toujours pas trouve, il est retourne tel quel
-     *                  Les parametres de cette methode peuvent contenir de balises HTML.
+     * Return text translated of text received as parameter (and encode it into HTML)
+     * Si il n'y a pas de correspondance pour ce texte, on cherche dans fichier alternatif
+     * et si toujours pas trouve, il est retourne tel quel
+     * Les parametres de cette methode peuvent contenir de balises HTML.
      *
      * @param string $key     Key to translate
      * @param string $param1  chaine de param1
@@ -178,12 +169,14 @@ class Translator
     }
 
     /**
-     * @abstract   Convert Array Parameters to String
+     * Convert Array Parameters to String
      *
      * @param array|ArrayObject|string $param1 chaine de param1
      * @param array|ArrayObject|string $param2 chaine de param2
      * @param array|ArrayObject|string $param3 chaine de param3
      * @param array|ArrayObject|string $param4 chaine de param4
+     *
+     * @return void
      */
     public function normalizeParameters(&$param1, &$param2, &$param3, &$param4)
     {
@@ -204,7 +197,7 @@ class Translator
     }
 
     /**
-     * @abstract    Build Translation filename based on specified $file and ISO Language Code.
+     * Build Translation filename based on specified $file and ISO Language Code.
      *
      * @param string $fileName File name to load (.ini file).
      *                         Must be "file" or "file@local" for local language files:
@@ -238,7 +231,7 @@ class Translator
     }
 
     /**
-     * @abstract   Load Speficied file onto static language collection
+     * Load Speficied file onto static language collection
      *
      * @param string $fullPath Full path to language file to load (.ini file).
      *
@@ -269,8 +262,15 @@ class Translator
         //====================================================================//
         // Close File
         fclose($file);
+
+        return true;
     }
 
+    /**
+     * @param string $line
+     *
+     * @return void
+     */
     private function loadLangLine($line)
     {
         //====================================================================//

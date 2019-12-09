@@ -20,12 +20,15 @@ use Splash\Models\LocalClassInterface;
 use Splash\Tests\Tools\TestCase;
 
 /**
- * @abstract    Core Test Suite - Raw Folders & Class Structure Verifications
+ * Core Test Suite - Raw Folders & Class Structure Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
 class C01ClassesTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testSplashCoreClass()
     {
         //====================================================================//
@@ -112,6 +115,9 @@ class C01ClassesTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testSplashClientClass()
     {
         //====================================================================//
@@ -127,6 +133,9 @@ class C01ClassesTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testSplashServerClass()
     {
         //====================================================================//
@@ -150,6 +159,9 @@ class C01ClassesTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testModuleLocalClass()
     {
         //====================================================================//
@@ -194,6 +206,9 @@ class C01ClassesTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testModuleLocalPaths()
     {
         //====================================================================//

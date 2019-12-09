@@ -22,7 +22,7 @@ use Splash\Core\SplashCore      as Splash;
 use Splash\Models\CommunicationInterface;
 
 /**
- * @abstract    Communication Interface Class for PHP SOAP Webservice
+ * Communication Interface Class for PHP SOAP Webservice
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
@@ -91,6 +91,8 @@ class SOAPInterface implements CommunicationInterface
         //====================================================================//
         // Build Generic Soap Client
         $this->client = new SoapClient(null, $this->options);
+
+        return $this;
     }
 
     /**

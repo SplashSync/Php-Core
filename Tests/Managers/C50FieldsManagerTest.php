@@ -20,7 +20,7 @@ use Splash\Components\FieldsManager;
 use Splash\Core\SplashCore     as Splash;
 
 /**
- * @abstract    Componants Test Suite - Fields Manager Verifications
+ * Componants Test Suite - Fields Manager Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
@@ -30,6 +30,9 @@ class C50FieldsManagerTest extends TestCase
     use \Splash\Models\Objects\ObjectsTrait;
     use \Splash\Models\Objects\ListsTrait;
 
+    /**
+     * @return void
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -53,12 +56,17 @@ class C50FieldsManagerTest extends TestCase
      *
      * @param mixed $input
      * @param mixed $result
+     *
+     * @return void
      */
     public function testIsListFieldFunction($input, $result)
     {
         $this->assertEquals($result, FieldsManager::isListField($input));
     }
 
+    /**
+     * @return array
+     */
     public function providerIsListFieldFunction()
     {
         return array(
@@ -78,12 +86,17 @@ class C50FieldsManagerTest extends TestCase
      *
      * @param mixed $input
      * @param mixed $result
+     *
+     * @return void
      */
     public function testFieldNameFunction($input, $result)
     {
         $this->assertEquals($result, FieldsManager::fieldName($input));
     }
 
+    /**
+     * @return array
+     */
     public function providerFieldNameFunction()
     {
         return array(
@@ -104,12 +117,17 @@ class C50FieldsManagerTest extends TestCase
      *
      * @param mixed $input
      * @param mixed $result
+     *
+     * @return void
      */
     public function testListNameFunction($input, $result)
     {
         $this->assertEquals($result, FieldsManager::listName($input));
     }
 
+    /**
+     * @return array
+     */
     public function providerListNameFunction()
     {
         return array(
@@ -130,12 +148,17 @@ class C50FieldsManagerTest extends TestCase
      *
      * @param mixed $input
      * @param mixed $result
+     *
+     * @return void
      */
     public function testBaseTypeFunction($input, $result)
     {
         $this->assertEquals($result, FieldsManager::baseType($input));
     }
 
+    /**
+     * @return array
+     */
     public function providerBaseTypeFunction()
     {
         //====================================================================//
@@ -193,12 +216,17 @@ class C50FieldsManagerTest extends TestCase
      *
      * @param mixed $input
      * @param mixed $result
+     *
+     * @return void
      */
     public function testIsIdFieldFunction($input, $result)
     {
         $this->assertEquals($result, FieldsManager::isIdField($input));
     }
 
+    /**
+     * @return array
+     */
     public function providerIsIdFieldFunction()
     {
         return array(
@@ -217,12 +245,17 @@ class C50FieldsManagerTest extends TestCase
      *
      * @param mixed $input
      * @param mixed $result
+     *
+     * @return void
      */
     public function testObjectIdFunction($input, $result)
     {
         $this->assertEquals($result, FieldsManager::objectId($input));
     }
 
+    /**
+     * @return array
+     */
     public function providerObjectIdFunction()
     {
         return array(
@@ -243,12 +276,17 @@ class C50FieldsManagerTest extends TestCase
      *
      * @param mixed $input
      * @param mixed $result
+     *
+     * @return void
      */
     public function testObjectTypeFunction($input, $result)
     {
         $this->assertEquals($result, FieldsManager::objectType($input));
     }
 
+    /**
+     * @return array
+     */
     public function providerObjectTypeFunction()
     {
         return array(

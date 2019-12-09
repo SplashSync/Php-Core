@@ -20,7 +20,7 @@ use Splash\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
- * @abstract    Admin Test Suite - Get Objects List Client Verifications
+ * Admin Test Suite - Get Objects List Client Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -32,6 +32,8 @@ class A03ObjectsTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testObjectsFromClass($testSequence)
     {
@@ -58,6 +60,8 @@ class A03ObjectsTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testObjectsFromAdminService($testSequence)
     {
@@ -78,6 +82,8 @@ class A03ObjectsTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testObjectsFromObjectsService($testSequence)
     {
@@ -96,6 +102,8 @@ class A03ObjectsTest extends AbstractBaseCase
      * Verify Client Response.
      *
      * @param ArrayObject|bool|string $data
+     *
+     * @return void
      */
     private function verifyResponse($data)
     {

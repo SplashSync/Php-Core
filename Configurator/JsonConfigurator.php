@@ -63,7 +63,7 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
     /**
      * Get Json Configuration File Path
      *
-     * return false|string False or Configuration File Path
+     * @return false|string False or Configuration File Path
      */
     private function getConfigPath()
     {
@@ -91,7 +91,7 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
      *
      * @param string $cfgPath Configuration File Path
      *
-     * return false|array False or Configuration Array
+     * @return array|false False or Configuration Array
      */
     private function getConfigArray($cfgPath)
     {

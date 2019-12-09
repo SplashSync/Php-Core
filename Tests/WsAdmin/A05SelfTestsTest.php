@@ -20,7 +20,7 @@ use Splash\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
- * @abstract    Admin Test Suite - SelfTest Client Verifications
+ * Admin Test Suite - SelfTest Client Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -32,6 +32,8 @@ class A05SelfTestsTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testSelfTestFromClass($testSequence)
     {
@@ -53,6 +55,8 @@ class A05SelfTestsTest extends AbstractBaseCase
      * @dataProvider sequencesProvider
      *
      * @param string $testSequence
+     *
+     * @return void
      */
     public function testSelfTestFromAdmin($testSequence)
     {
@@ -72,6 +76,8 @@ class A05SelfTestsTest extends AbstractBaseCase
      * Verify Client Response.
      *
      * @param ArrayObject|bool|string $data
+     *
+     * @return void
      */
     private function verifyResponse($data)
     {

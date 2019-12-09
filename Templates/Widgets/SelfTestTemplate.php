@@ -21,6 +21,7 @@
 
 namespace   Splash\Templates\Widgets;
 
+use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 use Splash\Models\AbstractWidget;
 
@@ -79,8 +80,9 @@ class SelfTestTemplate extends AbstractWidget
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $params
      *
+     * @return array|ArrayObject
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function get($params = array())
@@ -124,6 +126,8 @@ class SelfTestTemplate extends AbstractWidget
 
     /**
      * Block Building - Text Intro
+     *
+     * @return void
      */
     private function buildIntroBlock()
     {
@@ -134,6 +138,8 @@ class SelfTestTemplate extends AbstractWidget
 
     /**
      * Block Building - Notifications Parameters
+     *
+     * @return void
      */
     private function buildNotificationsBlock()
     {

@@ -91,6 +91,8 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         //   Delete Object From Module
         $this->deleteObjectFromModule($objectType, $objectId);
+
+        return true;
     }
 
     /**
@@ -154,6 +156,8 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         //   Delete Object From Module
         $this->deleteObjectFromModule($objectType, $objectId);
+
+        return true;
     }
 
     //==============================================================================
@@ -243,6 +247,8 @@ trait ObjectsSetTestsTrait
      *
      * @param string $objectType Splash Object Type Name
      * @param string $objectId   Object Id
+     *
+     * @return void
      */
     protected function deleteObjectFromModule($objectType, $objectId)
     {
@@ -268,6 +274,8 @@ trait ObjectsSetTestsTrait
      * @param mixed  $objectId
      * @param string $action
      * @param array  $expectedData
+     *
+     * @return void
      */
     protected function verifySetResponse($objectType, $objectId, $action, $expectedData)
     {
@@ -304,6 +312,8 @@ trait ObjectsSetTestsTrait
      * @param string $objectType
      * @param string $objectId
      * @param mixed  $data
+     *
+     * @return void
      */
     protected function verifyDeleteResponse($objectType, $objectId, $data)
     {

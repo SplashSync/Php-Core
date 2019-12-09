@@ -131,7 +131,7 @@ trait ObjectsFakerTrait
                 $choices = self::toArray($field->choices);
                 $options = self::toArray($field->options);
                 $outputs[$field->id] = $this->isFieldToPreserve($field)
-                    ? $this->originData[$field->id]
+                    ? (isset($this->originData) ? $this->originData[$field->id] : null)
                     : self::fakeFieldData($field->type, $choices, $options);
 
                 continue;
@@ -140,6 +140,7 @@ trait ObjectsFakerTrait
             //====================================================================//
             // Generate Dummy List  Data
             $list = self::isListField($field->id);
+            $this->assertIsArray($list);
             $listName = $list["listname"];
             $fieldName = $list["fieldname"];
             $listData = self::fakeListData($field);
@@ -177,6 +178,8 @@ trait ObjectsFakerTrait
         // Parse List Identifiers
         $list = self::isListField($field->id);
         $type = self::isListField($field->type);
+        $this->assertIsArray($list);
+        $this->assertIsArray($type);
 
         //====================================================================//
         // Generate Unik Dummy Fields Data

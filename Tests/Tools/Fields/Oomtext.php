@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * @abstract    Multilangual Text Field : Multilangual Long Text Array
+ * Multilangual Text Field : Multilangual Long Text Array
  *
  * //====================================================================//
  * // Sample :
@@ -30,6 +30,7 @@ class Oomtext implements FieldInterface
     //      Structural Data
     //==============================================================================
 
+    /** @var string */
     protected $FORMAT = 'MText';
 
     //==============================================================================

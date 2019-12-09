@@ -18,10 +18,8 @@ namespace Splash\Tests\WsObjects;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
-//use ArrayObject;
-
 /**
- * @abstract    Objects Test Suite - Object Base Class Verifications
+ * Objects Test Suite - Object Base Class Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  */
@@ -32,6 +30,8 @@ class O00ObjectBaseTest extends ObjectsCase
      *
      * @param mixed $testSequence
      * @param mixed $objectType
+     *
+     * @return void
      */
     public function testLockFeature($testSequence, $objectType)
     {

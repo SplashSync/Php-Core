@@ -33,51 +33,105 @@ abstract class AbstractObject implements Objects\ObjectInterface
     use Objects\ListsTrait;
 
     /**
-     *  Object Disable Flag. Override this flag to disable Object.
+     * Object Disable Flag. Override this flag to disable Object.
+     *
+     * @var bool
      */
     protected static $DISABLED = false;
 
     /**
-     *  Object Name
+     * Object Name
+     *
+     * @var string
      */
     protected static $NAME = __CLASS__;
 
     /**
-     *  Object Description
+     * Object Description
+     *
+     * @var string
      */
     protected static $DESCRIPTION = __CLASS__;
 
     /**
-     *  Object Icon (FontAwesome or Glyph ico tag)
+     * Object Icon (FontAwesome or Glyph ico tag)
+     *
+     * @var string
      */
     protected static $ICO = "fa fa-cubes";
 
-    /**
-     *  Object Synchronization Limitations
-     *
-     *  This Flags are Used by Splash Server to Prevent Unexpected Operations on Remote Server
-     */
-    // Allow Creation Of New Local Objects
-    protected static $ALLOW_PUSH_CREATED = true;
-    // Allow Update Of Existing Local Objects
-    protected static $ALLOW_PUSH_UPDATED = true;
-    // Allow Delete Of Existing Local Objects
-    protected static $ALLOW_PUSH_DELETED = true;
+    //====================================================================//
+    // Object Synchronization Limitations
+    // This Flags are Used by Splash Server to Prevent Unexpected Operations on Remote Server
+    //====================================================================//
 
     /**
-     *  Object Synchronization Recommended Configuration
+     * Allow Creation Of New Local Objects
+     *
+     * @var bool
      */
-    // Enable Creation Of New Local Objects when Not Existing
+    protected static $ALLOW_PUSH_CREATED = true;
+
+    /**
+     * Allow Update Of Existing Local Objects
+     *
+     * @var bool
+     */
+    protected static $ALLOW_PUSH_UPDATED = true;
+
+    /**
+     * Allow Delete Of Existing Local Objects
+     *
+     * @var bool
+     */
+    protected static $ALLOW_PUSH_DELETED = true;
+
+    //====================================================================//
+    // Object Synchronization Recommended Configuration
+    //
+    // This Flags are Used by Splash Server to Setup Default Objects Configuration
+    //====================================================================//
+
+    /**
+     * Enable Creation Of New Local Objects when Not Existing
+     *
+     * @var bool
+     */
     protected static $ENABLE_PUSH_CREATED = true;
-    // Enable Update Of Existing Local Objects when Modified Remotly
+
+    /**
+     * Enable Update Of Existing Local Objects when Modified Remotly
+     *
+     * @var bool
+     */
     protected static $ENABLE_PUSH_UPDATED = true;
-    // Enable Delete Of Existing Local Objects when Deleted Remotly
+
+    /**
+     * Enable Delete Of Existing Local Objects when Deleted Remotly
+     *
+     * @var bool
+     */
     protected static $ENABLE_PUSH_DELETED = true;
-    // Enable Import Of New Local Objects
+
+    /**
+     * Enable Import Of New Local Objects
+     *
+     * @var bool
+     */
     protected static $ENABLE_PULL_CREATED = true;
-    // Enable Import of Updates of Local Objects when Modified Localy
+
+    /**
+     * Enable Import of Updates of Local Objects when Modified Localy
+     *
+     * @var bool
+     */
     protected static $ENABLE_PULL_UPDATED = true;
-    // Enable Delete Of Remotes Objects when Deleted Localy
+
+    /**
+     * Enable Delete Of Remotes Objects when Deleted Localy
+     *
+     * @var bool
+     */
     protected static $ENABLE_PULL_DELETED = true;
 
     //====================================================================//

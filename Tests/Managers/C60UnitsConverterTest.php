@@ -37,6 +37,8 @@ class C60UnitsConverterTest extends TestCase
      * @param float $target
      *
      * @dataProvider massValuesProvider
+     *
+     * @return void
      */
     public function testMassConverter($source, $factor, $target)
     {
@@ -83,6 +85,8 @@ class C60UnitsConverterTest extends TestCase
      * @param float $target
      *
      * @dataProvider lengthValuesProvider
+     *
+     * @return void
      */
     public function testLengthConverter($source, $factor, $target)
     {
@@ -133,6 +137,8 @@ class C60UnitsConverterTest extends TestCase
      * @param float $target
      *
      * @dataProvider surfaceValuesProvider
+     *
+     * @return void
      */
     public function testSurfaceConverter($source, $factor, $target)
     {
@@ -182,6 +188,8 @@ class C60UnitsConverterTest extends TestCase
      * @param float $target
      *
      * @dataProvider volumeValuesProvider
+     *
+     * @return void
      */
     public function testVolumeConverter($source, $factor, $target)
     {
