@@ -1,7 +1,7 @@
 includes:
 	- ../../../../../vendor/phpstan/phpstan-phpunit/extension.neon
 parameters:
-    bootstrap: "./vendor/splash/phpcore/Resources/grumphp/phpstan.php"
+    bootstrap: "%currentWorkingDirectory%/vendor/splash/phpcore/Resources/grumphp/phpstan.php"
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     inferPrivatePropertyTypeFromConstructor: true 
