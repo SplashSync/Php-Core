@@ -82,7 +82,7 @@ class Oofile implements FieldInterface
         //====================================================================//
         // Image Faker Parameters
         $index = mt_rand(0, count($settings['Files']) - 1);
-        $dir = dirname(dirname(__DIR__)).'/Resources/files/';
+        $dir = dirname(dirname(dirname(__DIR__))).'/Resources/files/';
         $file = $settings['Files'][$index];
         $fullPath = $dir.$file;
         $name = 'Fake File '.$index;
