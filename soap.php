@@ -14,7 +14,7 @@
  */
 
 /**
- * @abstract    This is Head include file for Splash PHP Module on WebService Request
+ * This is Head include file for Splash PHP Module on WebService Request
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
@@ -31,7 +31,7 @@ use Splash\Server\SplashServer;
 require_once(dirname(dirname(dirname(__FILE__)))."/autoload.php");
 //====================================================================//
 // Setup Php Specific Settings
-ini_set('display_errors', 0);
+ini_set('display_errors', "0");
 error_reporting(E_ERROR);
 //====================================================================//
 // Notice internal routines we are in server request mode
@@ -69,7 +69,7 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     ob_end_flush();
     //====================================================================//
     // Setup Php Errors Settings
-    ini_set('display_errors', 1);
+    ini_set('display_errors', "1");
     error_reporting(E_ALL);
     //====================================================================//
     // Output Server Analyze & Debug

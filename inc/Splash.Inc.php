@@ -14,8 +14,8 @@
  */
 
 /**
- * @abstract    Global SplashSync Webservice Functions Constants & Definitions
- *              DO NOT EDIT OR CHANGE ANY CONTENTS OF THIS FILE
+ * Global SplashSync Webservice Functions Constants & Definitions
+ * DO NOT EDIT OR CHANGE ANY CONTENTS OF THIS FILE
  *
  * @author      B. Paquier <contact@splashsync.com>
  */
@@ -90,13 +90,13 @@ define('SPL_T_URL', 'url');           // External Url
 // File Structure
 //====================================================================//
 // Sample :
-// $data["file"]["name"]           =>      File Name/Description
-// $data["file"]["file"]           =>      File Identifier to Require File from Server
-// $data["file"]["filename"]       =>      Filename with Extension
-// $data["file"]["path"]           =>      Full File path on client system
-// $data["file"]["url"]            =>      Complete Public Url, Usable for Direct Download
-// $data["file"]["md5"]            =>      File Md5 Checksum
-// $data["file"]["size"]           =>      File Size in Bytes
+// $data["file"]["name"]        =>      File Name/Description
+// $data["file"]["file"]        =>      File Identifier to Require File from Server
+// $data["file"]["filename"]    =>      Filename with Extension
+// $data["file"]["path"]        =>      Full File path on client system
+// $data["file"]["url"]         =>      Complete Public Url, Usable for Direct Download
+// $data["file"]["md5"]         =>      File Md5 Checksum
+// $data["file"]["size"]        =>      File Size in Bytes
 //====================================================================//
 define('SPL_T_FILE', 'file');
 
@@ -104,18 +104,33 @@ define('SPL_T_FILE', 'file');
 // Image Structure
 //====================================================================//
 // Sample :
-// $data["image"]["name"]           =>      Image Name
-// $data["image"]["file"]           =>      Image Identifier to Require File from Server
-// $data["image"]["filename"]       =>      Image Filename with Extension
-// $data["image"]["path"]           =>      Image Full path on local system
-// $data["image"]["url"]            =>      Complete Public Url, Used to display image
-// $data["image"]["t_url"]          =>      Complete Thumb Public Url, Used to display image
-// $data["image"]["width"]          =>      Image Width In Px
-// $data["image"]["height"]         =>      Image Height In Px
-// $data["image"]["md5"]            =>      Image File Md5 Checksum
-// $data["image"]["size"]           =>      Image File Size
+// $data["image"]["name"]       =>      Image Name
+// $data["image"]["file"]       =>      Image Identifier to Require File from Server
+// $data["image"]["filename"]   =>      Image Filename with Extension
+// $data["image"]["path"]       =>      Image Full path on local system
+// $data["image"]["url"]        =>      Complete Public Url, Used to display image
+// $data["image"]["t_url"]      =>      Complete Thumb Public Url, Used to display image
+// $data["image"]["width"]      =>      Image Width In Px
+// $data["image"]["height"]     =>      Image Height In Px
+// $data["image"]["md5"]        =>      Image File Md5 Checksum
+// $data["image"]["size"]       =>      Image File Size
 //====================================================================//
-define('SPL_T_IMG', 'image');       // Image file
+define('SPL_T_IMG', 'image');
+
+//====================================================================//
+// Stream File Structure
+//====================================================================//
+// Sample :
+// $data["file"]["name"]        =>      File Name/Description
+// $data["file"]["file"]        =>      File Identifier to Require File from Server
+// $data["file"]["filename"]    =>      Filename with Extension
+// $data["file"]["path"]        =>      Full File path on client system
+// $data["file"]["url"]         =>      Complete Public Url, Usable for Direct Download
+// $data["file"]["md5"]         =>      File Md5 Checksum
+// $data["file"]["size"]        =>      File Size in Bytes
+// $data["file"]["ttl"]         =>      Time to Live (in Days)
+//====================================================================//
+define('SPL_T_STREAM', 'stream');
 
 //====================================================================//
 // Multilangual Fields, Shared as Single Fields with Iso Language code #tag

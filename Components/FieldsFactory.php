@@ -19,7 +19,7 @@ use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    This Class is a Generator for Objects Fields Definition
+ * This Class is a Generator for Objects Fields Definition
  *
  * @author      B. Paquier <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
@@ -40,9 +40,10 @@ class FieldsFactory
     //==============================================================================
 
     const META_URL = "http://splashync.com/schemas";       // Splash Specific Schemas Url.
-    const META_OBJECTID = "ObjectId";                           // Splash Object Id.
-    const META_DATECREATED = "DateCreated";                        // Splash Object Create Date.
-    const META_ORIGIN_NODE_ID = "SourceNodeId";                       // Object Source Server Identifier
+    const META_OBJECTID = "ObjectId";                      // Splash Object Id.
+    const META_DATECREATED = "DateCreated";                // Splash Object Create Date.
+    const META_ORIGIN_NODE_ID = "SourceNodeId";            // Object Source Server Identifier
+    const META_ORIGIN_NODE_NAME = "SourceNodeName";        // Object Source Server Name
 
     /**
      * Default Field Definition Resolver Array

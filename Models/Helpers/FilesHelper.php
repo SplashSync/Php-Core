@@ -29,9 +29,9 @@ class FilesHelper
     /**
      * Build a new file field array
      *
-     * @param string $name      Image Name
-     * @param string $fileName  Image Filename with Extension
-     * @param string $filePath  Image Full path on local system
+     * @param string $name      File Name
+     * @param string $fileName  Filename with Extension
+     * @param string $filePath  File Full path on local system
      * @param string $publicUrl Complete Public Url of this file if available
      *
      * @return array|false Splash File Array or False
@@ -46,33 +46,54 @@ class FilesHelper
         }
         //====================================================================//
         // Build File Array
-        $image = array();
+        $file = array();
         //====================================================================//
         // ADD MAIN INFOS
         //====================================================================//
         // Image Name
-        $image["name"] = $name;
+        $file["name"] = $name;
         //====================================================================//
         // Image Filename
-        $image["filename"] = $fileName;
+        $file["filename"] = $fileName;
         //====================================================================//
         // Image Full Path
-        $image["path"] = $fullPath;
+        $file["path"] = $fullPath;
         //====================================================================//
         // Image Publics Url
-        $image["url"] = $publicUrl;
+        $file["url"] = $publicUrl;
         //====================================================================//
         // ADD COMPUTED INFOS
         //====================================================================//
-        $image["md5"] = md5_file($fullPath);
-        $image["size"] = filesize($fullPath);
+        $file["md5"] = md5_file($fullPath);
+        $file["size"] = filesize($fullPath);
         //====================================================================//
         // Safety Check
-        if (empty($image["md5"])) {
+        if (empty($file["md5"])) {
             return Splash::log()->err("Unable to read Remote File Md5");
         }
 
-        return $image;
+        return $file;
+    }
+
+    /**
+     * Build a new streamed file field array
+     *
+     * @param string $name      File Name
+     * @param string $fileName  Filename with Extension
+     * @param string $filePath  File Full path on local system
+     * @param int    $fileTtl   Lifetime of File on Sync Server (In Days)
+     * @param string $publicUrl Complete Public Url of this file if available
+     *
+     * @return array|false Splash File Array or False
+     */
+    public static function stream($name, $fileName, $filePath, $fileTtl = 3, $publicUrl = null)
+    {
+        $file = self::encode($name, $fileName, $filePath, $publicUrl);
+        if (is_array($file)) {
+            $file['ttl'] = (int) $fileTtl;
+        }
+
+        return $file;
     }
 
     /**
