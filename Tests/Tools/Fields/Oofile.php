@@ -144,6 +144,28 @@ class Oofile implements FieldInterface
     }
 
     /**
+     * @param array|ArrayObject $source
+     * @param array|ArrayObject $target
+     *
+     * @return boolean
+     */
+    public static function compareMd5($source, $target)
+    {
+        //====================================================================//
+        // Compare File CheckSum
+        if (!isset($source['md5']) || !isset($target['md5'])
+            || !isset($source['size']) || !isset($target['size'])
+            ) {
+            return false;
+        }
+        if ($source['md5'] != $target['md5']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @param array|ArrayObject $file
      *
      * @return string|true
@@ -164,28 +186,6 @@ class Oofile implements FieldInterface
         }
         if (!isset($file["size"])) {
             return "File Field => 'size' is missing.";
-        }
-
-        return true;
-    }
-
-    /**
-     * @param array|ArrayObject $source
-     * @param array|ArrayObject $target
-     *
-     * @return boolean
-     */
-    private static function compareMd5($source, $target)
-    {
-        //====================================================================//
-        // Compare File CheckSum
-        if (!isset($source['md5']) || !isset($target['md5'])
-            || !isset($source['size']) || !isset($target['size'])
-            ) {
-            return false;
-        }
-        if ($source['md5'] != $target['md5']) {
-            return false;
         }
 
         return true;

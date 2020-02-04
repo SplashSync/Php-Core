@@ -135,7 +135,60 @@ class Ooimage implements FieldInterface
      */
     public static function compare($source, $target, $settings)
     {
-        return Oofile::compare($source, $target, $settings);
+        //====================================================================//
+        // Smart Validate Arrays
+        if (!is_array($source) && !is_a($source, 'ArrayObject')) {
+            return false;
+        }
+        if (!is_array($target) && !is_a($target, 'ArrayObject')) {
+            return false;
+        }
+        //====================================================================//
+        // Compare File CheckSum
+        if (!Oofile::compareMd5($source, $target)) {
+            //====================================================================//
+            // Check if Image is Marked as Potentially Resized
+            if (!isset($target['resized']) || empty($target['resized'])) {
+                return Oofile::compareMd5($source, $target);
+            }
+            //====================================================================//
+            // Compare Image Dims
+            return self::compareDims($source, $target);
+        }
+        //====================================================================//
+        // Compare File Size
+        if ($source['size'] != $target['size']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param array|ArrayObject $source
+     * @param array|ArrayObject $target
+     *
+     * @return boolean
+     */
+    protected static function compareDims($source, $target)
+    {
+        //====================================================================//
+        // Safety Checks
+        if (!isset($source['width']) || !isset($target['width'])
+            || !isset($source['height']) || !isset($target['height'])
+            ) {
+            return false;
+        }
+        //====================================================================//
+        // Compare Image Dimensions
+        if ($source['width'] != $target['width']) {
+            return false;
+        }
+        if ($source['height'] != $target['height']) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
