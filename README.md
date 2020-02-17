@@ -1,6 +1,6 @@
-![Splash Sync](https://github.com/SplashSync/Php-Core/raw/master/Resources/img/github.jpg)
+![Splash Sync](https://github.com/SplashSync/Php-Core/raw/master/img/github.jpg)
 
-# SplashSynk Php-Core Module
+# Splash Php-Core Module
 Splash Core Module for PHP Applications.
 This module was coded to be integrated as a library on all PHP Applications Modules.
 It is designed as a complete toolbox for Splash PHP Clients Modules.  
