@@ -1,4 +1,4 @@
-![Splash](http://www.splashsync.com/bundles/theme/img/splash-logo.png)
+![Splash Sync](https://github.com/SplashSync/Php-Core/raw/master/Resources/img/github.jpg)
 
 # SplashSynk Php-Core Module
 Splash Core Module for PHP Applications.
