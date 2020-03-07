@@ -39,8 +39,8 @@ class UnitConverter
     const LENGTH_MILIMETER = 1E3;
     const LENGTH_CM = 1E2;
     const LENGTH_CENTIMETER = 1E2;
-    const LENGTH_DM = 1E2;
-    const LENGTH_DECIMETER = 1E2;
+    const LENGTH_DM = 1E1;
+    const LENGTH_DECIMETER = 1E1;
     const LENGTH_M = 1;
     const LENGTH_METER = 1;
     const LENGTH_KM = 1E-3;

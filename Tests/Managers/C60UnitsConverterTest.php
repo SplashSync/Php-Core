@@ -111,6 +111,7 @@ class C60UnitsConverterTest extends TestCase
         return array(
             array(1,        Unit::LENGTH_MILIMETER, 0.001),
             array(1,        Unit::LENGTH_CENTIMETER, 0.01),
+            array(1,        Unit::LENGTH_DECIMETER, 0.1),
             array(1,        Unit::LENGTH_M, 1),
             array(1,        Unit::LENGTH_KM, 1000),
             array(1,        Unit::LENGTH_FOOT, 0.304800),
@@ -118,6 +119,7 @@ class C60UnitsConverterTest extends TestCase
             array(1,        Unit::LENGTH_YARD, 0.914400),
             array(123456,   Unit::LENGTH_MILIMETER, 123.456),
             array(123456,   Unit::LENGTH_CENTIMETER, 1234.56),
+            array(123456,   Unit::LENGTH_DECIMETER, 12345.6),
             array(123456,   Unit::LENGTH_KM, 123456000),
             array(123456,   Unit::LENGTH_FOOT, 37629.388800),
             array(123456,   Unit::LENGTH_INCH, 3135.782400),
