@@ -66,7 +66,7 @@ class UnitConverter
     const VOLUME_MILILITER = 1E6;
     const VOLUME_CM3 = 1E6;
     const VOLUME_DM3 = 1E3;
-    const VOLUME_LITER = 1E4;
+    const VOLUME_LITER = 1E3;
     const VOLUME_M3 = 1;
     const VOLUME_KM3 = 1E-9;
     const VOLUME_FOOT3 = 35.314666721;

@@ -220,12 +220,14 @@ class C60UnitsConverterTest extends TestCase
             array(1,        Unit::VOLUME_KM3, 1000000000),
             array(1,        Unit::VOLUME_FOOT3, 0.028317),
             array(1,        Unit::VOLUME_INCH3, 0.000016),
+            array(1,        Unit::VOLUME_LITER, 0.001),
             array(123456,   Unit::VOLUME_MM3, 0.000123456),
             array(123456,   Unit::VOLUME_CM3, 0.123456),
             array(123456,   Unit::VOLUME_M3, 123456),
             array(12.3,     Unit::VOLUME_KM3, 12300000000),
             array(123456,   Unit::VOLUME_FOOT3, 3495.884613),
             array(123456,   Unit::VOLUME_INCH3, 2.023081),
+            array(123456,   Unit::VOLUME_LITER, 123.456),
         );
     }
 }
