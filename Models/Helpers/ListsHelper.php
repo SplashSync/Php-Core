@@ -106,7 +106,7 @@ class ListsHelper
         }
         //====================================================================//
         // Store Data in Array
-        $fieldIndex = explode("@", $fieldName);
+        $fieldIndex = explode(LISTSPLIT, $fieldName);
         $buffer[$listName][$key][$fieldIndex[0]] = $itemData;
     }
 }
