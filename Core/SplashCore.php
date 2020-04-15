@@ -821,7 +821,7 @@ class SplashCore
 
     /**
      * Ask for Server System Informations
-     *                     Informations may be overwritten by Local Module Class
+     * Informations may be overwritten by Local Module Class
      *
      * @return ArrayObject Array including all server informations
      *
