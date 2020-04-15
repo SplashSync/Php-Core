@@ -825,16 +825,12 @@ class SplashCore
      *
      * @return ArrayObject Array including all server informations
      *
-     ***************************************************************************
-     *******    General Parameters
-     ***************************************************************************
+     * General Parameters
      *
      * $r->Name            =   $this->name;
      * $r->Id              =   $this->id;
      *
-     ***************************************************************************
-     *******         Server Infos
-     ***************************************************************************
+     * Server Infos
      *
      * $r->php             =   phpversion();
      * $r->Self            =   $_SERVER["PHP_SELF"];
