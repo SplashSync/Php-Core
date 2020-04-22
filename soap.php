@@ -60,6 +60,10 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     // Register shuttdown method available for fatal errors reteival
     register_shutdown_function(array(SplashServer::class, 'fatalHandler'));
     //====================================================================//
+    // Clean Output Buffer
+    ob_get_clean();
+    ob_get_clean();
+    //====================================================================//
     // Process methods & Return the results.
     Splash::com()->handle();
 } elseif (Splash::input("node", INPUT_GET) === Splash::configuration()->WsIdentifier) {
