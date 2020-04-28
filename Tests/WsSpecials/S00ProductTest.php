@@ -316,7 +316,7 @@ class S00ProductTest extends ObjectsCase
             // Variant Attribute Name
             foreach ($this->findMultiFields(static::$attrName, $fields) as $field) {
                 // Only Write Attributes Names
-                if (isset($name->write) && !empty($name->write)) {
+                if (isset($field->write) && !empty($field->write)) {
                     $this->fields[] = $field;
                 }
             }
