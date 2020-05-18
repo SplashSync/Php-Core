@@ -20,13 +20,26 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
+/**
+ * CHANGES LOG
+ *
+ * Version 1.0:
+ *  - Initial & Historical Version
+ *
+ * Version 1.1:
+ *  - Add Stream Fields: Same to File with TTL (Time to Live) on Splash server
+ *
+ * Version 1.2:
+ *  - Add Inline Fields: Short & Simple items list. Designed for Multi-select
+ */
+
 //====================================================================//
 //====================================================================//
 //  CONSTANTS DEFINITION
 //====================================================================//
 //====================================================================//
 
-define('SPL_PROTOCOL', '1.0');
+define('SPL_PROTOCOL', '1.2');
 
 //====================================================================//
 //====================================================================//
@@ -169,6 +182,17 @@ define('SPL_T_PRICE', 'price');        // Price definition array
 //====================================================================//
 define('SPL_T_LIST', 'list');             // Object List
 define('LISTSPLIT', '@');                // Object List Splitter
+
+//====================================================================//
+// Inline Lists
+//====================================================================//
+// Store an Array of Values as a JSON String
+//
+// Example:
+//  - ["value1", "value2", "value3"]
+//
+//====================================================================//
+define('SPL_T_INLINE', 'inline');
 
 //====================================================================//
 // Object Identifier Field

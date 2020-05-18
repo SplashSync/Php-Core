@@ -59,7 +59,14 @@
     
     "conflict": {
         "phpunit/phpunit":                  ">7.5.3|~8.0"
+    },
+    
+    "scripts": {
+        "post-install-cmd": [
+            "php vendor/bin/grumphp git:deinit" 
+        ],
+        "post-update-cmd": [
+            "php vendor/bin/grumphp git:deinit" 
+        ]
     }
-    
-    
 }
