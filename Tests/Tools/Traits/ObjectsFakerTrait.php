@@ -252,6 +252,9 @@ trait ObjectsFakerTrait
         //====================================================================//
         // Take Values From Given Choices
         if (!empty($choices)) {
+            // Ensure Choices have numeric Index
+            $choices = array_values($choices);
+            // Select a Random Index
             $index = mt_rand(0, count($choices) - 1);
             if (isset($choices[$index]["key"]) && (SPL_T_VARCHAR == $type)) {
                 return (string) $choices[$index]["key"];
