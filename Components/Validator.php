@@ -149,7 +149,9 @@ class Validator
         //====================================================================//
         // Verify Array Given
         if (!is_a($infos, 'ArrayObject')) {
-            return Splash::log()->err(Splash::trans('ErrInfosNotArrayObject', get_class($infos)));
+            return Splash::log()->err(
+                Splash::trans('ErrInfosNotArrayObject', (string) get_class($infos))
+            );
         }
 
         if (Splash::isDebugMode()) {
