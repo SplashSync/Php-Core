@@ -92,7 +92,6 @@ define('SPL_T_COUNTRY', 'country');         // Iso country code (FR / US ...)
 define('SPL_T_STATE', 'state');             // Iso state code (CA / FR ...)
 define('SPL_T_CURRENCY', 'currency');       // Iso Currency code (EUR / USD ... )
 define('SPL_T_URL', 'url');                 // External Url
-define('SPL_T_INLINE', 'inline');           // Inline Simple Json List
 
 //====================================================================//
 //====================================================================//
