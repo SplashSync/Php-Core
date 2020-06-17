@@ -76,22 +76,23 @@ define('SPL_A_UNLINK', 'unlink');    // Object Link Deleted
 // Sample :
 // $data["name"] = $value
 //====================================================================//
-define('SPL_T_BOOL', 'bool');          // Boolean, stored as 0 or 1
-define('SPL_T_INT', 'int');           // Signed Integer
-define('SPL_T_DOUBLE', 'double');        // Signed Double, used for all float values
-define('SPL_T_VARCHAR', 'varchar');       // Short texts (Inf 256 char)
-define('SPL_T_TEXT', 'text');          // Long text
-define('SPL_T_EMAIL', 'email');         // Email Address
-define('SPL_T_PHONE', 'phone');         // Phone Number
-define('SPL_T_DATE', 'date');          // Day Timestamps
-define('SPL_T_DATECAST', 'Y-m-d');         // Day Timestamps Format
-define('SPL_T_DATETIME', 'datetime');      // Timestamps
-define('SPL_T_DATETIMECAST', 'Y-m-d H:i:s');   // Timestamps Format
-define('SPL_T_LANG', 'lang');          // Iso Language code (en_US / fr_FR ...)
-define('SPL_T_COUNTRY', 'country');       // Iso country code (FR / US ...)
-define('SPL_T_STATE', 'state');         // Iso state code (CA / FR ...)
-define('SPL_T_CURRENCY', 'currency');      // Iso Currency code (EUR / USD ... )
-define('SPL_T_URL', 'url');           // External Url
+define('SPL_T_BOOL', 'bool');               // Boolean, stored as 0 or 1
+define('SPL_T_INT', 'int');                 // Signed Integer
+define('SPL_T_DOUBLE', 'double');           // Signed Double, used for all float values
+define('SPL_T_VARCHAR', 'varchar');         // Short texts (Inf 256 char)
+define('SPL_T_TEXT', 'text');               // Long text
+define('SPL_T_EMAIL', 'email');             // Email Address
+define('SPL_T_PHONE', 'phone');             // Phone Number
+define('SPL_T_DATE', 'date');               // Day Timestamps
+define('SPL_T_DATECAST', 'Y-m-d');          // Day Timestamps Format
+define('SPL_T_DATETIME', 'datetime');       // Timestamps
+define('SPL_T_DATETIMECAST', 'Y-m-d H:i:s');// Timestamps Format
+define('SPL_T_LANG', 'lang');               // Iso Language code (en_US / fr_FR ...)
+define('SPL_T_COUNTRY', 'country');         // Iso country code (FR / US ...)
+define('SPL_T_STATE', 'state');             // Iso state code (CA / FR ...)
+define('SPL_T_CURRENCY', 'currency');       // Iso Currency code (EUR / USD ... )
+define('SPL_T_URL', 'url');                 // External Url
+define('SPL_T_INLINE', 'inline');           // Inline Simple Json List
 
 //====================================================================//
 //====================================================================//

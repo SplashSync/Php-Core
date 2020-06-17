@@ -82,7 +82,7 @@ class InlineHelper
         }
         //====================================================================//
         // Create & Return Field Data as Json String
-        $decoded = json_decode($data, true, JSON_OBJECT_AS_ARRAY);
+        $decoded = json_decode($data, true);
         if (!is_array($decoded)) {
             return array();
         }
