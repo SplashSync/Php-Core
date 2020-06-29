@@ -221,6 +221,7 @@ class Splash extends SplashCore
         $params->action = $action;          // Action Type On this Object
         $params->user = $user;              // Operation User Name for Historics
         $params->comment = $comment;        // Operation Comment for Historics
+
         return $params;
     }
 
