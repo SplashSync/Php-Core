@@ -318,6 +318,12 @@ class SplashCore
 
         switch (self::configuration()->WsMethod) {
             case 'SOAP':
+                if (!class_exists("SoapClient")) {
+                    self::log()->err('Switched NuSOAP PHP Librarie because Php Soap Ext. is Missing.');
+                    self::core()->com = new \Splash\Components\NuSOAP\NuSOAPInterface();
+
+                    break;
+                }
                 self::log()->deb('Selected SOAP PHP Protocol for Communication');
                 self::core()->com = new \Splash\Components\SOAP\SOAPInterface();
 
