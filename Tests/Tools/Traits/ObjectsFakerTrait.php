@@ -263,6 +263,33 @@ trait ObjectsFakerTrait
     }
 
     /**
+     * Create Fake Field data
+     *
+     * @param string $type    Object Field Type
+     * @param array  $choices Object Field Possible Values
+     *
+     * @return null|array|bool|string
+     */
+    public function fakeFieldDataFromChoices($type, $choices)
+    {
+        // Ensure Choices have numeric Index
+        $choices = array_values($choices);
+        // Select a Random Index
+        $index = mt_rand(0, count($choices) - 1);
+        if (isset($choices[$index]["key"]) && (SPL_T_VARCHAR == $type)) {
+            return (string) $choices[$index]["key"];
+        }
+        if (isset($choices[$index]["key"]) && (SPL_T_INLINE == $type)) {
+            return InlineHelper::fromArray(array($choices[$index]["key"]));
+        }
+        if (isset($choices[$index]["key"])) {
+            return $choices[$index]["key"];
+        }
+
+        return null;
+    }
+
+    /**
      * Check if Field Need to be in List
      *
      * @param ArrayObject $field      Field Definition
@@ -332,32 +359,5 @@ trait ObjectsFakerTrait
         }
 
         return true;
-    }
-
-    /**
-     * Create Fake Field data
-     *
-     * @param string $type    Object Field Type
-     * @param array  $choices Object Field Possible Values
-     *
-     * @return null|array|bool|string
-     */
-    public function fakeFieldDataFromChoices($type, $choices)
-    {
-        // Ensure Choices have numeric Index
-        $choices = array_values($choices);
-        // Select a Random Index
-        $index = mt_rand(0, count($choices) - 1);
-        if (isset($choices[$index]["key"]) && (SPL_T_VARCHAR == $type)) {
-            return (string) $choices[$index]["key"];
-        }
-        if (isset($choices[$index]["key"]) && (SPL_T_INLINE == $type)) {
-            return InlineHelper::fromArray(array($choices[$index]["key"]));
-        }
-        if (isset($choices[$index]["key"])) {
-            return $choices[$index]["key"];
-        }
-
-        return null;
     }
 }
