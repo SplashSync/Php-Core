@@ -17,6 +17,7 @@ namespace Splash\Tests\Tools\Traits;
 
 use ArrayObject;
 use Splash\Client\Splash;
+use Splash\Models\Helpers\InlineHelper;
 
 /**
  * Splash Test Tools - Objects Faker trait
@@ -258,6 +259,9 @@ trait ObjectsFakerTrait
             $index = mt_rand(0, count($choices) - 1);
             if (isset($choices[$index]["key"]) && (SPL_T_VARCHAR == $type)) {
                 return (string) $choices[$index]["key"];
+            }
+            if (isset($choices[$index]["key"]) && (SPL_T_INLINE == $type)) {
+                return InlineHelper::fromArray(array($choices[$index]["key"]));
             }
             if (isset($choices[$index]["key"])) {
                 return $choices[$index]["key"];
