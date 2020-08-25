@@ -19,12 +19,12 @@ use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    Helper for Prices Fields Management
+ * Helper for Prices Fields Management
  */
 class PricesHelper
 {
     /**
-     * @abstract   Build a new price field array
+     * Build a new price field array
      *
      * @param null|double $taxExcl Price Without VAT (Or Null if Price Send with VAT)
      * @param double      $vat     VAT percentile
@@ -78,14 +78,15 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Compare Two Price Array
+     * Compare Two Price Array
      *
-     * @param array $price1 Price field Array
-     * @param array $price2 Price field Array
+     * @param array $price1    Price field Array
+     * @param array $price2    Price field Array
+     * @param int   $precision Number of Decimals to Check
      *
      * @return bool
      */
-    public static function compare($price1, $price2)
+    public static function compare($price1, $price2, $precision = 6)
     {
         //====================================================================//
         // Check Both Prices are valid
@@ -107,33 +108,37 @@ class PricesHelper
         }
         //====================================================================//
         // Compare Price
-        return self::compareAmounts($price1, $price2);
+        return self::compareAmounts($price1, $price2, $precision);
     }
 
     /**
-     * @abstract   Compare Two Price Array without Validation
+     * Compare Two Price Array without Validation
      *
-     * @param array $price1 Price field Array
-     * @param array $price2 Price field Array
+     * @param array $price1    Price field Array
+     * @param array $price2    Price field Array
+     * @param int   $precision Number of Decimals to Check
      *
      * @return bool
      */
-    public static function compareAmounts($price1, $price2)
+    public static function compareAmounts($price1, $price2, $precision = 6)
     {
+        //====================================================================//
+        // Build Compare Delta
+        $delta = (float) ("1E-".$precision);
         //====================================================================//
         // Compare Price
         if ($price1["base"]) {
-            if (abs($price1["ttc"] - $price2["ttc"]) > 1E-6) {
+            if (abs($price1["ttc"] - $price2["ttc"]) > $delta) {
                 return false;
             }
         } else {
-            if (abs($price1["ht"] - $price2["ht"]) > 1E-6) {
+            if (abs($price1["ht"] - $price2["ht"]) > $delta) {
                 return false;
             }
         }
         //====================================================================//
         // Compare VAT
-        if (abs($price1["vat"] - $price2["vat"]) > 1E-6) {
+        if (abs($price1["vat"] - $price2["vat"]) > $delta) {
             return false;
         }
         //====================================================================//
@@ -150,7 +155,7 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Verify Price field array
+     * Verify Price field array
      *
      * @param mixed $price Price field definition Array
      *
@@ -181,7 +186,7 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Extract Data from Price Array
+     * Extract Data from Price Array
      *
      * @param array  $price Price field definition Array
      * @param string $key   Data Key
@@ -202,7 +207,7 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Extract Price without VAT from Price Array
+     * Extract Price without VAT from Price Array
      *
      * @param array $price Price field definition Array
      *
@@ -214,7 +219,7 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Extract Price with VAT from Price Array
+     * Extract Price with VAT from Price Array
      *
      * @param array $price Price field definition Array
      *
@@ -226,7 +231,7 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Extract Price with VAT from Price Array
+     * Extract Price with VAT from Price Array
      *
      * @param array $price Price field definition Array
      *
@@ -238,7 +243,7 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Extract Price VAT Ratio from Price Array
+     * Extract Price VAT Ratio from Price Array
      *
      * @param array $price Price field definition Array
      *
@@ -250,7 +255,7 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Extract Price Tax Amount from Price Array
+     * Extract Price Tax Amount from Price Array
      *
      * @param array $price Price field definition Array
      *
@@ -262,7 +267,7 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Verify Price Array Amount Infos are Available
+     * Verify Price Array Amount Infos are Available
      *
      * @param array|ArrayObject $price Price field definition Array
      *
@@ -286,7 +291,7 @@ class PricesHelper
     }
 
     /**
-     * @abstract   Verify Price Array Currency Infos are Available
+     * Verify Price Array Currency Infos are Available
      *
      * @param array|ArrayObject $price Price field definition Array
      *
