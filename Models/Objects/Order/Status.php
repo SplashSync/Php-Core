@@ -51,6 +51,11 @@ class Status
     const IN_TRANSIT = "OrderInTransit";
 
     /**
+     * @var string Order is Available for PickUp
+     */
+    const PICKUP = "OrderPickupAvailable";
+
+    /**
      * @var string Order is Delivered to Customer
      */
     const DELIVERED = "OrderDelivered";
@@ -84,6 +89,7 @@ class Status
             self::PROCESSING,
             self::OUT_OF_STOCK,
             self::IN_TRANSIT,
+            self::PICKUP,
             self::DELIVERED,
             self::RETURNED,
             self::PROBLEM,
@@ -102,6 +108,7 @@ class Status
             self::PROCESSING,
             self::OUT_OF_STOCK,
             self::IN_TRANSIT,
+            self::PICKUP,
             self::DELIVERED,
             self::RETURNED,
             self::PROBLEM,
@@ -202,6 +209,7 @@ class Status
     {
         return array(
             self::IN_TRANSIT,
+            self::PICKUP,
             self::PROBLEM,
         );
     }

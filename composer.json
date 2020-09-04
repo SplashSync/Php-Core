@@ -68,5 +68,8 @@
         "post-update-cmd": [
             "php vendor/bin/grumphp git:deinit" 
         ]
+    },
+    "archive": {
+        "exclude": ["/docs"]
     }
 }
