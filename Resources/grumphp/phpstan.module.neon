@@ -3,6 +3,7 @@ includes:
 parameters:
     bootstrapFiles:
         - "%currentWorkingDirectory%/vendor/splash/phpcore/Resources/grumphp/phpstan.php"
+        - "%currentWorkingDirectory%/vendor/splash/phpcore/inc/Splash.Inc.php"
         - "%currentWorkingDirectory%/vendor/splash/phpcore/inc/defines.inc.php"
         - "%currentWorkingDirectory%/vendor/splash/phpcore/Components/NuSOAP/nusoap.php"
     checkMissingIterableValueType: false
