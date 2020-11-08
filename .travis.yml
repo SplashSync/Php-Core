@@ -13,29 +13,19 @@ cache:
     - $HOME/.composer/cache
     
 script:
-    # With PHP < 7.3 => Rollback to Composer 1
-#    - if [[ ${TRAVIS_PHP_VERSION:0:3} < "7.3" ]]; then composer self-update --rollback; fi
-
-    # With PHP 7 => Load Phpstan   
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} < "7.1" ]]; then composer remove phpstan/phpstan-shim --no-update --dev; fi
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} < "7.1" ]]; then composer remove phpstan/phpstan-phpunit --no-update --dev; fi
-    
+    # Load Dependencies
     - composer update --no-suggest
+    # Execute Grumphp >> Travis Minimal Tests Suite
     - php ./vendor/bin/grumphp run --testsuite=travis
-
-    # With PHP > 7.0 => Execute CsFixer
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=csfixer; fi    
-    
-    # With PHP > 7.0 => Execute Phpstan 
+    # Execute Grumphp >> CsFixer Tests Suite
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=csfixer; fi
+    # With PHP > 7.0 => Execute Phpstan
     - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=phpstan; fi    
-
-    # Execute Core Tests   
+    # Execute Core Tests
     - php vendor/bin/phpunit
+    # Show Outdated Packages
+    - composer outdated -D
 
-    # Show Outdated Packages   
-    - composer outdated
-
-        
 notifications:
   email:         
     on_success: never # default: change

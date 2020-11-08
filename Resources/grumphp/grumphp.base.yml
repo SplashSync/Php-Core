@@ -93,7 +93,7 @@ grumphp:
             
         phpcs:
             standard:       "PSR2"
-            triggered_by:   [php]
+            triggered_by:   ['php']
             ignore_patterns:
                 - phpstan.php
                 - nusoap.php
@@ -107,7 +107,7 @@ grumphp:
                 - "vendor"
                 
         phpcpd:
-            triggered_by: ['php']
+            triggered_by: []
             exclude:
                 - "Components/NuSOAP"
                 - "vendor"
