@@ -35,7 +35,7 @@ composer require -q --dev --no-update       "sensiolabs/security-checker"       
 # Files Lint Tools
 composer remove -q -n --dev                 "jakub-onderka/php-parallel-lint"
 composer require -q --dev --no-update       "php-parallel-lint/php-parallel-lint"       "^1.0"
-composer require -q --dev --no-update       "sclable/xml-lint"                          "^0.2.4"
+composer require -q --dev --no-update       "sclable/xml-lint"                          "^0.3"
 composer require -q --dev --no-update       "seld/jsonlint"                             "^1.7"
 composer require -q --dev --no-update       "j13k/yaml-lint"                            "^1.1"
 
