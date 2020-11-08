@@ -57,10 +57,6 @@
         "phpstan/phpstan-phpunit":          "^0.12"
     },
     
-    "conflict": {
-        "phpunit/phpunit":                  ">7.5.3|~8.0"
-    },
-    
     "scripts": {
         "post-install-cmd": [
             "php vendor/bin/grumphp git:deinit" 
