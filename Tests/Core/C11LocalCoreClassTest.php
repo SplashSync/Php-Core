@@ -39,7 +39,7 @@ class C11LocalCoreClassTest extends TestCase
 
         //====================================================================//
         //   Verify Parameters
-        $this->assertInternalType("array", $parameters, "Returned Local Parameters are Not inside an Array");
+        $this->assertIsArray($parameters, "Returned Local Parameters are Not inside an Array");
         $this->assertNotEmpty($parameters, "Returned Empty Parameters");
         $this->assertArrayHasKey("WsIdentifier", $parameters, "Local Parameter is Missing");
         $this->assertArrayHasKey("WsEncryptionKey", $parameters, "Local Parameter is Missing");

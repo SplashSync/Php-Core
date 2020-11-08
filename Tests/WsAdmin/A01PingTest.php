@@ -29,7 +29,7 @@ class A01PingTest extends AbstractBaseCase
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         //====================================================================//
         // BOOT or REBOOT MODULE

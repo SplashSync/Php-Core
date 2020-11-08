@@ -103,11 +103,11 @@ class O01DescriptionTest extends ObjectsCase
         //====================================================================//
         // General Object definition
         $this->assertNotEmpty($data["type"], "Object Type is Empty");
-        $this->assertInternalType("string", $data["type"], "Object Type is Not a String.");
+        $this->assertIsString($data["type"], "Object Type is Not a String.");
         $this->assertNotEmpty($data["name"], "Object Name is Empty");
-        $this->assertInternalType("string", $data["name"], "Object Name is Not a String.");
+        $this->assertIsString($data["name"], "Object Name is Not a String.");
         $this->assertNotEmpty($data["description"], "Object Description is Empty");
-        $this->assertInternalType("string", $data["description"], "Object Description is Not a String.");
+        $this->assertIsString($data["description"], "Object Description is Not a String.");
         $this->assertIsSplashBool($data["disabled"], "Object Disabled Flag is Not a Bool.");
 
         //====================================================================//

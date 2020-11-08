@@ -101,15 +101,13 @@ class C01ClassesTest extends TestCase
         );
         //====================================================================//
         //   Splash Module  Object List
-        $this->assertInternalType(
-            "array",
+        $this->assertIsArray(
             Splash::objects(),
             "Splash Available Objects List is Not an Array"
         );
         //====================================================================//
         //   Splash Module  Object List
-        $this->assertInternalType(
-            "array",
+        $this->assertIsArray(
             Splash::widgets(),
             "Splash Available Widgets List is Not an Array"
         );

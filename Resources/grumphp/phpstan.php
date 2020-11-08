@@ -19,7 +19,4 @@
 
 //====================================================================//
 // Include Splash Constants Definitions
-require_once(dirname(dirname(__DIR__))."/inc/Splash.Inc.php");
-require_once(dirname(dirname(__DIR__))."/inc/defines.inc.php");
-require_once(dirname(dirname(__DIR__))."/Components/NuSOAP/nusoap.php");
 define("SPLASH_SERVER_MODE", 0);

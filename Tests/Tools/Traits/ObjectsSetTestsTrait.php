@@ -100,7 +100,7 @@ trait ObjectsSetTestsTrait
      *
      * @param string      $objectType    Splash Object Type Name
      * @param ArrayObject $field         Current Tested Field (ArrayObject)
-     * @param string      $forceObjectId Object Id (Update) or Null (Create)
+     * @param null|string $forceObjectId Object Id (Update) or Null (Create)
      *
      * @return bool
      */
@@ -167,9 +167,9 @@ trait ObjectsSetTestsTrait
     /**
      * Execute Object Create or Update Test with Given Data (From Module)
      *
-     * @param string $objectType    Splash Object Type Name
-     * @param array  $objectData    Splash Data Block
-     * @param string $forceObjectId Object Id (Update) or Null (Create)
+     * @param string      $objectType    Splash Object Type Name
+     * @param array       $objectData    Splash Data Block
+     * @param null|string $forceObjectId Object Id (Update) or Null (Create)
      *
      * @return string
      */
@@ -187,7 +187,7 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         //   Verify Object Id Is Not Empty
         $this->assertNotEmpty($objectId, 'Returned New Object Id is Empty');
-        $this->assertInternalType('string', $objectId, 'Returned New Object Id is Empty');
+        $this->assertIsString($objectId, 'Returned New Object Id is Empty');
         //====================================================================//
         //   Verify Response
         $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $objectData);
@@ -214,7 +214,7 @@ trait ObjectsSetTestsTrait
     protected function setObjectFromService($objectType, $objectData, $forceObjectId = null)
     {
         //====================================================================//
-        // Clean Objects Commited Array
+        // Clean Objects Committed Array
         Splash::$commited = array();
         //====================================================================//
         //   Create a New Object via Service
@@ -227,7 +227,7 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         //   Verify Object Id Is Not Empty
         $this->assertNotEmpty($objectId, 'Returned New Object Id is Empty');
-        $this->assertInternalType('string', $objectId, 'Returned New Object Id is Empty');
+        $this->assertIsString($objectId, 'Returned New Object Id is Empty');
         //====================================================================//
         //   Verify Response
         $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $objectData);
@@ -289,7 +289,7 @@ trait ObjectsSetTestsTrait
 
         //====================================================================//
         //   Verify Object Id Is in Right Format
-        $this->assertInternalType('string', $objectId, 'New Object Id is not a Strings');
+        $this->assertIsString($objectId, 'New Object Id is not a Strings');
 
         //====================================================================//
         //   Verify Object Change Was Commited
@@ -299,7 +299,7 @@ trait ObjectsSetTestsTrait
         //   Read Object Data
         $currentData = Splash::object($objectType)
             ->get($objectId, $this->reduceFieldList($this->fields, true));
-        $this->assertInternalType('array', $currentData);
+        $this->assertIsArray($currentData);
 
         //====================================================================//
         //   Verify Object Data are Ok

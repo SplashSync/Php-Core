@@ -16,6 +16,8 @@
 namespace Splash\Tests\Tools;
 
 use PHPUnit\Framework\TestCase      as BaseTestCase;
+use Splash\Client\Splash;
+use Throwable;
 
 if (!defined("SPLASH_SERVER_MODE")) {
     define("SPLASH_SERVER_MODE", true);
@@ -25,14 +27,31 @@ if (!defined("SPLASH_SERVER_MODE")) {
  * Base PhpUnit Test Class for Splash Modules Tests
  * May be overriden for Using Splash Core Test in Specific Environements
  */
-if (PHP_VERSION_ID > 70000) {
-    abstract class TestCase extends BaseTestCase
+
+abstract class TestCase extends BaseTestCase
+{
+    /**
+     * @param Throwable $exception
+     *
+     * @throws Throwable
+     *
+     * @return void
+     */
+    public function onNotSuccessfulTest(Throwable $exception): void
     {
-        use \Splash\Tests\Tools\Traits\SuccessfulTestPHP7;
-    }
-} else {
-    abstract class TestCase extends BaseTestCase
-    {
-        use \Splash\Tests\Tools\Traits\SuccessfulTestPHP5;
+        //====================================================================//
+        // Do not display log on Skipped Tests
+        if (is_a($exception, "PHPUnit\\Framework\\SkippedTestError")) {
+            throw $exception;
+        }
+        //====================================================================//
+        // Remove Debug From Splash Logs
+        Splash::log()->deb = array();
+        //====================================================================//
+        // OutPut Splash Logs
+        fwrite(STDOUT, Splash::log()->getConsoleLog());
+        //====================================================================//
+        // OutPut Phpunit Exeption
+        throw $exception;
     }
 }

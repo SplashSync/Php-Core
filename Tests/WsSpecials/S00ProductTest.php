@@ -66,7 +66,7 @@ class S00ProductTest extends ObjectsCase
         //   Load Fields
         $this->fields = Splash::object($objectType)->fields();
         $this->assertNotEmpty($this->fields, 'Product Fields List is Empty!');
-        $this->assertInternalType('array', $this->fields, 'Product Fields List is not an Array!');
+        $this->assertIsArray($this->fields, 'Product Fields List is not an Array!');
 
         //====================================================================//
         //   VALIDATE PRODUCTS FIELDS DEFINITIONS
@@ -116,7 +116,7 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   Execute Create First Product Variant
         $newData = $this->prepareForTesting($objectType, $field);
-        $this->assertInternalType("array", $newData);
+        $this->assertIsArray($newData);
         $variantProductId = $this->setObjectFromModule($objectType, $newData);
 
         //====================================================================//
@@ -177,7 +177,7 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //   Execute Create First Product Variant
         $newData = $this->prepareForTesting($objectType, $field);
-        $this->assertInternalType("array", $newData);
+        $this->assertIsArray($newData);
         $variantProductId = $this->setObjectFromService($objectType, $newData);
 
         //====================================================================//
@@ -304,7 +304,7 @@ class S00ProductTest extends ObjectsCase
         //====================================================================//
         //  Generated Object Data
         $fakeData = $this->generateObjectData($objectType, $field, $unik);
-        $this->assertInternalType('array', $fakeData);
+        $this->assertIsArray($fakeData);
 
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications

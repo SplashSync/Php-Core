@@ -160,7 +160,7 @@ class Ooobjectid implements FieldInterface
     /**
      * Retrieve Id form an Object Identifier Data
      *
-     * @deprecated since version 2.0
+     * @deprecated since version 2.0, use objectId instead
      *
      * @param string $objectId osWs Object Identifier
      *

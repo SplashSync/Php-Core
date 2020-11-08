@@ -1,7 +1,10 @@
 includes:
 	- ../../vendor/phpstan/phpstan-phpunit/extension.neon
 parameters:
-    bootstrap: "./phpstan.php"
+    bootstrapFiles:
+        - "./phpstan.php"
+        - "../../inc/defines.inc.php"
+        - "../../Components/NuSOAP/nusoap.php"
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     inferPrivatePropertyTypeFromConstructor: true 

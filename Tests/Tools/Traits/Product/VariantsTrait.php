@@ -148,14 +148,14 @@ trait VariantsTrait
          * @var ArrayObject[] $names
          */
         $names = $this->findMultiFields(static::$attrName);
-        $this->assertInternalType("array", $names);
+        $this->assertIsArray($names);
         $this->assertNotEmpty($names);
 
         /**
          * @var ArrayObject[] $values
          */
         $values = $this->findMultiFields(static::$attrValue);
-        $this->assertInternalType("array", $values);
+        $this->assertIsArray($values);
         $this->assertNotEmpty($values);
 
         //====================================================================//

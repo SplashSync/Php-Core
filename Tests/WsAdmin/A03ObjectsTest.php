@@ -115,8 +115,7 @@ class A03ObjectsTest extends AbstractBaseCase
         // CHECK ITEMS
         foreach ($data as $objectType) {
             $this->assertNotEmpty($objectType, "Objects Type is Empty");
-            $this->assertInternalType(
-                "string",
+            $this->assertIsString(
                 $objectType,
                 "Objects Type is Not an String. (Given".print_r($objectType, true).")"
             );

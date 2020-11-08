@@ -32,8 +32,8 @@ trait ObjectsDataTrait
      *
      * @param array|ArrayObject $block1         Raw Data to Compare
      * @param array|ArrayObject $block2         Raw Data to Compare
-     * @param TestCase          $testController Provide PhpUnit Test Controller Class to Use PhpUnit assertions
-     * @param string            $comment        Comment on this Test
+     * @param null|TestCase     $testController Provide PhpUnit Test Controller Class to Use PhpUnit assertions
+     * @param null|string       $comment        Comment on this Test
      *
      * @return bool
      */
@@ -115,8 +115,8 @@ trait ObjectsDataTrait
             // Compare List Data
             $fieldType = self::isListField($field->type);
             if ($fieldType) {
-                $this->assertInternalType('array', $data1, $comment."->".$field->id);
-                $this->assertInternalType('array', $data2, $comment."->".$field->id);
+                $this->assertIsArray($data1, $comment."->".$field->id);
+                $this->assertIsArray($data2, $comment."->".$field->id);
                 $result = $this->compareListField(
                     $fieldType["fieldname"],
                     $field->id,
@@ -151,10 +151,10 @@ trait ObjectsDataTrait
     /**
      * Check Two Object Data Blocks using Field's Compare functions
      *
-     * @param string $fieldType Field Type Name
-     * @param array  $block1    Raw Data to Compare
-     * @param array  $block2    Raw Data to Compare
-     * @param string $comment   Comment on this Test
+     * @param string      $fieldType Field Type Name
+     * @param array       $block1    Raw Data to Compare
+     * @param array       $block2    Raw Data to Compare
+     * @param null|string $comment   Comment on this Test
      *
      * @return bool
      */
@@ -162,7 +162,7 @@ trait ObjectsDataTrait
     {
         //====================================================================//
         // Build Full ClassName
-        if (ObjectId::decodeIdField($fieldType)) {
+        if (ObjectId::objectId($fieldType)) {
             $className = self::isValidType("objectid");
         } else {
             $className = self::isValidType($fieldType);
@@ -206,11 +206,11 @@ trait ObjectsDataTrait
     /**
      * Check Two List Data Blocks using Field's Compare functions
      *
-     * @param string $fieldType Field Type Name
-     * @param string $fieldId   Field Identifier
-     * @param array  $block1    Raw Data to Compare
-     * @param array  $block2    Raw Data to Compare
-     * @param string $comment   Comment on this Test
+     * @param string      $fieldType Field Type Name
+     * @param string      $fieldId   Field Identifier
+     * @param array       $block1    Raw Data to Compare
+     * @param array       $block2    Raw Data to Compare
+     * @param null|string $comment   Comment on this Test
      *
      * @return bool
      */

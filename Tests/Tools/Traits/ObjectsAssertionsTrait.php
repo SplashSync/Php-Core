@@ -47,7 +47,24 @@ trait ObjectsAssertionsTrait
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertNotEmpty($data[$key], $comment." => Key '".$key."' is Empty");
-        $this->assertInternalType($type, $data[$key], $comment." => Key '".$key."' is of Expected Internal Type");
+        switch ($type) {
+            case "bool":
+                $this->assertIsBool($data[$key], $comment." => Key '".$key."' is of Expected Internal Type");
+
+                break;
+            case "string":
+                $this->assertIsString($data[$key], $comment." => Key '".$key."' is of Expected Internal Type");
+
+                break;
+            case "scalar":
+                $this->assertIsScalar($data[$key], $comment." => Key '".$key."' is of Expected Internal Type");
+
+                break;
+            case "array":
+                $this->assertIsArray($data[$key], $comment." => Key '".$key."' is of Expected Internal Type");
+
+                break;
+        }
     }
 
     /**
@@ -64,6 +81,7 @@ trait ObjectsAssertionsTrait
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertNotEmpty($data[$key], $comment." => Key '".$key."' is Empty");
+        $this->assertTrue(class_exists($type));
         $this->assertInstanceOf(
             $type,
             $data[$key],
@@ -452,13 +470,12 @@ trait ObjectsAssertionsTrait
             }
             //====================================================================//
             //   Check each Object Ids
-            foreach ($commited->id as $commitedObjectId) {
-                $this->assertInternalType(
-                    'scalar',
-                    $commitedObjectId,
+            foreach ($commited->id as $committedObjectId) {
+                $this->assertIsScalar(
+                    $committedObjectId,
                     "Change Commit => Object Id Array Value is in wrong Format. "
                         ."(Expected String or Integer. / Given "
-                        .print_r($commitedObjectId, true)
+                        .print_r($committedObjectId, true)
                 );
             }
             //====================================================================//

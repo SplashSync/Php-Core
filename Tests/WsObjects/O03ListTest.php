@@ -126,8 +126,7 @@ class O03ListTest extends ObjectsCase
                 $item,
                 $objectType." List => Object Identifier (id) is not defined in List."
             );
-            $this->assertInternalType(
-                "scalar",
+            $this->assertIsScalar(
                 $item["id"],
                 $objectType." List => Object Identifier (id) is not String convertible."
             );
@@ -141,8 +140,7 @@ class O03ListTest extends ObjectsCase
                         $item,
                         $objectType." List => Field (".$field["name"].") is marked as 'inlist' but not found."
                     );
-                    $this->assertInternalType(
-                        "scalar",
+                    $this->assertIsScalar(
                         $item["id"],
                         $objectType." List => Field (".$field["name"].") is not String convertible."
                     );

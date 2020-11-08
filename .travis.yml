@@ -2,7 +2,6 @@
 language:   php
 
 php:
-    - 7.1
     - 7.2
     - 7.3
     - 7.4
@@ -15,7 +14,7 @@ cache:
     
 script:
     # With PHP < 7.3 => Rollback to Composer 1
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} < "7.3" ]]; then composer self-update --rollback; fi
+#    - if [[ ${TRAVIS_PHP_VERSION:0:3} < "7.3" ]]; then composer self-update --rollback; fi
 
     # With PHP 7 => Load Phpstan   
     - if [[ ${TRAVIS_PHP_VERSION:0:3} < "7.1" ]]; then composer remove phpstan/phpstan-shim --no-update --dev; fi

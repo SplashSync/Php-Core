@@ -117,8 +117,7 @@ class A04WidgetsTest extends AbstractBaseCase
         // CHECK ITEMS
         foreach ($data as $widgetType) {
             $this->assertNotEmpty($widgetType, "Widgets Type is Empty");
-            $this->assertInternalType(
-                "string",
+            $this->assertIsString(
                 $widgetType,
                 "Widgets Type is Not an String. (Given".print_r($widgetType, true).")"
             );
