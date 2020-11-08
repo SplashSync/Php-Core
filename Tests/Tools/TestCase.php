@@ -51,7 +51,7 @@ abstract class TestCase extends BaseTestCase
         // OutPut Splash Logs
         fwrite(STDOUT, Splash::log()->getConsoleLog());
         //====================================================================//
-        // OutPut Phpunit Exeption
+        // OutPut Phpunit Exception
         throw $exception;
     }
 }
