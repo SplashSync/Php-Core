@@ -1,33 +1,75 @@
-# Travis CI Configuration File
-language:   php
+################################################################################
+#
+# * This file is part of SplashSync Project.
+# *
+# * Copyright (C) Splash Sync <www.splashsync.com>
+# *
+# * This program is distributed in the hope that it will be useful,
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# *
+# * For the full copyright and license information, please view the LICENSE
+# * file that was distributed with this source code.
+# *
+# * @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
 
+################################################################################
+# Define Test Matrix
 php:
     - 7.2
     - 7.3
     - 7.4
     
-fast_finish: true    
-    
+################################################################################
+# TEST SCRIPTS
+################################################################################
+
+################################################################################
+# Install & Configure Environnement
+install:
+    # Setup Travis
+    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/travis/configure.sh  | sh
+    # Composer Build
+    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/travis/composer.sh | sh
+
+################################################################################
+# Run Test Script
+script:
+    # Execute Grump Travis Testsuite
+    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/travis/grumphp.sh | sh
+    # Execute Core Tests
+    - php vendor/bin/phpunit
+
+################################################################################
+# Run After Script
+after_script:
+  - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/travis/after.sh | sh
+
+################################################################################
+# GENERIC CONFIGURATION
+################################################################################
+
+################################################################################
+# Project language
+language:   php
+os:         linux
+dist:       trusty
+################################################################################
+# Cache composer packages so "composer install" is faster
 cache:
   directories:
     - $HOME/.composer/cache
-    
-script:
-    # Load Dependencies
-    - composer update --no-suggest
-    # Execute Grumphp >> Travis Minimal Tests Suite
-    - php ./vendor/bin/grumphp run --testsuite=travis
-    # Execute Grumphp >> CsFixer Tests Suite
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=csfixer; fi
-    # With PHP > 7.0 => Execute Phpstan
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=phpstan; fi    
-    # Execute Core Tests
-    - php vendor/bin/phpunit
-    # Show Outdated Packages
-    - composer outdated -D
-
+################################################################################
+# Define an environment variable
+env:
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=disabled
+################################################################################
+# After a build, send email notification with the build results
 notifications:
-  email:         
+  email:
     on_success: never # default: change
     on_failure: never # default: always
 
