@@ -126,11 +126,23 @@ abstract class AbstractBaseCase extends TestCase
 
         //====================================================================//
         //   Verify ServerPath is  Not Empty
-        $this->assertNotEmpty($infos["ServerPath"], "Splash Core Module was unable to detect your Soap root Server Path. Verify you do not overload 'ServerPath' parameter in your local confirguration.");
+        $this->assertNotEmpty(
+            $infos["ServerPath"],
+            "Splash Core Module was unable to detect your Soap root Server Path. 
+            Verify you do not overload 'ServerPath' parameter in your local configuration."
+        );
         //====================================================================//
         //   Verify ServerPath is  Not Empty
-        $this->assertTrue(isset($_SERVER['SERVER_NAME']), "'SERVER_NAME' not defined in your PhpUnit XML configuration. Please define '<server name=\"SERVER_NAME\" value=\"http://localhost/Path/to/Your/Server\"/>'");
-        $this->assertNotEmpty($_SERVER['SERVER_NAME'], "'SERVER_NAME' not defined in your PhpUnit XML configuration. Please define '<server name=\"SERVER_NAME\" value=\"http://localhost/Path/to/Your/Server\"/>'");
+        $this->assertTrue(
+            isset($_SERVER['SERVER_NAME']),
+            "'SERVER_NAME' not defined in your PhpUnit XML configuration. 
+            Please define '<server name=\"SERVER_NAME\" value=\"http://localhost/Path/to/Your/Server\"/>'"
+        );
+        $this->assertNotEmpty(
+            $_SERVER['SERVER_NAME'],
+            "'SERVER_NAME' not defined in your PhpUnit XML configuration. 
+            Please define '<server name=\"SERVER_NAME\" value=\"http://localhost/Path/to/Your/Server\"/>'"
+        );
 
         //====================================================================//
         // GENERATE FAKE SPLASH SERVER HOST URL
@@ -256,7 +268,10 @@ abstract class AbstractBaseCase extends TestCase
         // SERVER LOG FORMAT
         $this->assertInstanceOf("ArrayObject", $logs->{$type}, "Logger ".$name." List is Not an ArrayObject");
         foreach ($logs->{$type} as $message) {
-            $this->assertTrue((is_scalar($message) || is_null($message)), $name." is Not a string. (".print_r($message, true).")");
+            $this->assertTrue(
+                (is_scalar($message) || is_null($message)),
+                $name." is Not a string. (".print_r($message, true).")"
+            );
         }
     }
 
@@ -313,8 +328,6 @@ abstract class AbstractBaseCase extends TestCase
             $this->assertNotEmpty($task["id"], "Task Results => Task Id is Empty");
             $this->assertNotEmpty($task["name"], "Task Results => Name is Empty");
             $this->assertNotEmpty($task["desc"], "Task Results => Description is Empty");
-//            $this->assertNotEmpty( $Task["result"]             , "Task Results => Task Result is OK, Did this Task Really Failed?");
-//            $this->assertNotEmpty( $Task["data"]               , "Task Results => Data is Empty");
 
             //====================================================================//
             // TASKS Delay Data

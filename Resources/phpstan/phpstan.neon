@@ -1,0 +1,12 @@
+includes:
+	- ../../vendor/phpstan/phpstan-phpunit/extension.neon
+parameters:
+    bootstrapFiles:
+        - "./phpstan.php"
+        - "../../inc/defines.inc.php"
+        - "../../Components/NuSOAP/nusoap.php"
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    inferPrivatePropertyTypeFromConstructor: true 
+    universalObjectCratesClasses:
+            - ArrayObject

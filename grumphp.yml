@@ -19,16 +19,14 @@
 #############################################        
 # Override Config. for Php Core Module
 parameters:
-    core_dir:               "./Resources/grumphp"    
-    mode:                   "core"
-    # For Building Splash Module
-    mod-enable:     false 
-    # For Building Splash Documentation
-    doc-enable:     false 
-    # For Building Splash Manifest
-    yml-enable:     false
-    
-#############################################        
-# Import Config. from Php Core Module
+    mode:               "splashsync"
+    exclude:            ['vendor', "nusoap.php", 'soap.php', 'Components/NuSOAP']
+    # Php Cs Fixer
+    csfixer-config:     "Resources/phpcs/cs.%mode%.php"
+    # Php Stan
+    stan-config:        "./Resources/phpstan/phpstan.neon"
+
+#############################################
+# Import Generic Configs
 imports:
-    - { resource: "./Resources/grumphp/grumphp.base.yml" }
+    - { resource: "./vendor/badpixxel/php-sdk/grumphp/generic.yml" }
