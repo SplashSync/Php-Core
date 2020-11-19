@@ -647,7 +647,7 @@ trait ObjectsMassActionsTrait
             //   Read Object Data
             $currentData = Splash::object($objectType)
                 ->get($objectIds[$i], $this->reduceFieldList($this->fields));
-            $this->assertInternalType('array', $currentData);
+            $this->assertIsArray($currentData);
             //====================================================================//
             //   Verify Object Data are Ok
             $this->compareDataBlocks($this->fields, $expectedData[$i], $currentData, $objectType);
