@@ -1,0 +1,66 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+#  @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
+################################################################
+# Set any variables we need
+variables:
+  COMPOSER_MEMORY_LIMIT:        -1
+  SYMFONY_DEPRECATIONS_HELPER:  disabled
+
+################################################################
+# Defined Pipeline Stages
+stages:
+  - tests
+
+################################################################
+# Functional Tests
+################################################################
+
+.core_tests:    &core_tests
+    stage:      tests
+    tags:
+        - Dedicated
+    services:
+        - name: mysql
+    ################################################################################
+    # Install & Configure Environnement
+    before_script:
+        # Setup Travis
+        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
+        # Composer Build
+        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/travis/composer.sh | sh
+    ################################################################################
+    # Run Test Script
+    script:
+        # Execute Grumphp Testsuite
+        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
+    ################################################################################
+    # Run After Script
+    after_script:
+      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
+
+tests:php-7.4:
+  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+  <<: *core_tests
+
+tests:php-7.3:
+  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
+  <<: *core_tests
+
+tests:php-7.2:
+  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
+  <<: *core_tests

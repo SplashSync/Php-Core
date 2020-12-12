@@ -128,7 +128,7 @@ class FileManager
         Splash::log()->deb("Splash - Get File Infos : File ".$path." exists.");
         $infos = array();
         $owner = posix_getpwuid((int) fileowner($path));
-        $infos["owner"] = $owner["name"];
+        $infos["owner"] = $owner ? $owner["name"] : "Unknown";
         $infos["readable"] = is_readable($path);
         $infos["writable"] = is_writable($path);
         $infos["mtime"] = filemtime($path);

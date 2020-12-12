@@ -526,12 +526,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BadPixxel/Php-Sdk.git",
-                "reference": "7da99bd54b0e0fb725a1d2918f380e01a31418d2"
+                "reference": "8e5e7c744fe8c6d0bd305166bfb57e4313f2fe9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BadPixxel/Php-Sdk/zipball/7da99bd54b0e0fb725a1d2918f380e01a31418d2",
-                "reference": "7da99bd54b0e0fb725a1d2918f380e01a31418d2",
+                "url": "https://api.github.com/repos/BadPixxel/Php-Sdk/zipball/8e5e7c744fe8c6d0bd305166bfb57e4313f2fe9d",
+                "reference": "8e5e7c744fe8c6d0bd305166bfb57e4313f2fe9d",
                 "shasum": ""
             },
             "require": {
@@ -585,7 +585,7 @@
                 "issues": "https://github.com/BadPixxel/Php-Sdk/issues",
                 "source": "https://github.com/BadPixxel/Php-Sdk/tree/main"
             },
-            "time": "2020-11-09T13:28:41+00:00"
+            "time": "2020-11-09T14:00:50+00:00"
         },
         {
             "name": "composer/ca-bundle",
