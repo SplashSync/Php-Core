@@ -30,22 +30,22 @@ php:
 # Install & Configure Environnement
 install:
     # Setup Travis
-    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/travis/configure.sh  | sh
+    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
     # Composer Build
-    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/travis/composer.sh | sh
+    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh | sh
 
 ################################################################################
 # Run Test Script
 script:
     # Execute Grump Travis Testsuite
-    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/travis/grumphp.sh | sh
+    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh | sh
     # Execute Core Tests
     - php vendor/bin/phpunit
 
 ################################################################################
 # Run After Script
 after_script:
-  - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/travis/after.sh | sh
+  - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
 ################################################################################
 # GENERIC CONFIGURATION
