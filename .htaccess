@@ -1,10 +1,25 @@
-############################################
-## By default deny all access
-Order allow,deny
-Deny from all
-###########################################
-## Allow access to soap server file only 
-<Files soap.php>
-    order allow,deny
-    allow from all
-</Files>
+# Apache 2.2
+<IfModule !mod_authz_core.c>
+    ############################################
+    ## By default deny all access
+    Order allow,deny
+    Deny from all
+    ###########################################
+    ## Allow access to soap server file only 
+    <Files soap.php>
+        order allow,deny
+        allow from all
+    </Files>
+</IfModule>
+
+# Apache 2.4
+<IfModule mod_authz_core.c>
+    ############################################
+    ## By default deny all access
+    Require all denied
+    ###########################################
+    ## Allow access to soap server file only 
+    <Files soap.php>
+        Require all granted
+    </Files>
+</IfModule>
