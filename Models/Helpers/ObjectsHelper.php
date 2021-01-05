@@ -104,8 +104,8 @@ class ObjectsHelper
             return null;
         }
         //====================================================================//
-        // Ensure Splash Object uses InteliParserTrait
-        if (!in_array(IntelParserTrait::class, class_uses($splashObject), true)) {
+        // Ensure Splash Object uses IntelParserTrait
+        if (!in_array(IntelParserTrait::class, (array) class_uses($splashObject), true)) {
             return null;
         }
         if (!method_exists($splashObject, 'load')) {
