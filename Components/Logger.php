@@ -18,6 +18,7 @@ namespace   Splash\Components;
 use ArrayObject;
 use Exception;
 use Splash\Core\SplashCore      as Splash;
+use Throwable;
 
 /**
  * Requests Log & Debug Management Class
@@ -352,12 +353,9 @@ class Logger
         self::war("WarLocalTrace", $trace["class"], $trace["function"], "");
         //====================================================================//
         // Push Full Stack Trace to Log
-        $stack = explode("#", $exc->getTraceAsString());
-        foreach ($stack as $stackLine) {
-            if (!empty($stackLine)) {
-                self::war($stackLine);
-            }
-        }
+        self::war(
+            "Full Stack: ".str_replace("#", "<br />#", $exc->getTraceAsString())
+        );
 
         return  true;
     }
@@ -409,6 +407,35 @@ class Logger
         //====================================================================//
         // Push Trace to Log
         return  self::deb("DebTraceMsg", $trace["class"], $trace["function"]);
+    }
+
+    /**
+     * Build Error Report if an Exception was thrown during Request
+     *
+     * @param Throwable $throwable
+     *
+     * @return void
+     */
+    public function report(Throwable $throwable): void
+    {
+        //====================================================================//
+        // Push Error to Log
+        self::err("Fatal Error: ".$throwable->getMessage());
+        //====================================================================//
+        // Push Complement
+        self::err("Location: ".$throwable->getFile()." Line ".$throwable->getLine());
+        //====================================================================//
+        // Push Full Stack Trace
+        self::err(
+            "Full Trace Stack: ".str_replace("#", "<br />#", $throwable->getTraceAsString())
+        );
+        //====================================================================//
+        // Push Stack Details
+        $trace = $throwable->getTrace();
+        $firstTrace = array_shift($trace);
+        if ($firstTrace) {
+            self::err("Details: <PRE>".print_r($firstTrace, true)."</PRE>");
+        }
     }
 
     //====================================================================//

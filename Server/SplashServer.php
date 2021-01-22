@@ -17,6 +17,7 @@ namespace Splash\Server;
 
 use ArrayObject;
 use Splash\Core\SplashCore  as Splash;
+use Throwable;
 
 //====================================================================//
 //  CLASS DEFINITION
@@ -354,7 +355,14 @@ class SplashServer
         //====================================================================//
         // Execute Request
         //====================================================================//
-        $result = Splash::router()->execute($routerName, self::$inputs, self::$outputs);
+        try {
+            $result = Splash::router()->execute($routerName, self::$inputs, self::$outputs);
+        } catch (Throwable $throwable) {
+            Splash::log()->report($throwable);
+
+            return self::transmit(false);
+        }
+
         //====================================================================//
         // Transmit Answers To Master
         //====================================================================//
