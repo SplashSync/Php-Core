@@ -41,6 +41,11 @@ class Status
     const PROCESSING = "OrderProcessing";
 
     /**
+     * @var string Order is Validated & is Prepared
+     */
+    const PROCESSED = "OrderProcessed";
+
+    /**
      * @var string Order is Validated but Out Of Stock
      */
     const OUT_OF_STOCK = "OrderOutOfStock";
@@ -54,6 +59,11 @@ class Status
      * @var string Order is Available for PickUp
      */
     const PICKUP = "OrderPickupAvailable";
+
+    /**
+     * @var string Order is to be Shipped
+     */
+    const TO_SHIP = "OrderToShip";
 
     /**
      * @var string Order is Delivered to Customer
@@ -87,12 +97,57 @@ class Status
             self::DRAFT,
             self::PAYMENT_DUE,
             self::PROCESSING,
+            self::PROCESSED,
             self::OUT_OF_STOCK,
             self::IN_TRANSIT,
             self::PICKUP,
+            self::TO_SHIP,
             self::DELIVERED,
             self::RETURNED,
             self::PROBLEM,
+        );
+    }
+
+    /**
+     * Get a List of All Possible Order Status Codes
+     *
+     * @param bool $showExpended
+     *
+     * @return array
+     */
+    public static function getAllChoices(bool $showExpended = false): array
+    {
+        $choices = array(
+            self::CANCELED => "Canceled",
+            self::DRAFT => "Draft",
+            self::PAYMENT_DUE => "Payment Due",
+            self::PROCESSING => "Processing",
+            self::OUT_OF_STOCK => "Out of Stock",
+            self::IN_TRANSIT => "In Transit",
+            self::PICKUP => "Pickup Available",
+            self::DELIVERED => "Delivered",
+            self::RETURNED => "Returned",
+            self::PROBLEM => "In Error",
+        );
+
+        $expended = array(
+            self::PROCESSED => "Processed",
+            self::TO_SHIP => "To Ship",
+        );
+
+        return $showExpended ? array_merge($choices, $expended) : $choices;
+    }
+
+    /**
+     * Get a List of All Expended Order Status Codes
+     *
+     * @return array
+     */
+    public static function getExpended()
+    {
+        return array(
+            self::PROCESSED,
+            self::TO_SHIP,
         );
     }
 
@@ -106,9 +161,11 @@ class Status
         return array(
             self::PAYMENT_DUE,
             self::PROCESSING,
+            self::PROCESSED,
             self::OUT_OF_STOCK,
             self::IN_TRANSIT,
             self::PICKUP,
+            self::TO_SHIP,
             self::DELIVERED,
             self::RETURNED,
             self::PROBLEM,
@@ -184,6 +241,7 @@ class Status
     {
         return array(
             self::PROCESSING,
+            self::PROCESSED,
             self::OUT_OF_STOCK,
         );
     }
@@ -210,6 +268,7 @@ class Status
         return array(
             self::IN_TRANSIT,
             self::PICKUP,
+            self::TO_SHIP,
             self::PROBLEM,
         );
     }
