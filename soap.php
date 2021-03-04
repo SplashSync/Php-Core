@@ -23,11 +23,11 @@ use Splash\Core\SplashCore      as Splash;
 use Splash\Server\SplashServer;
 
 //====================================================================//
-//   INCLUDES
-//====================================================================//
+// Disable Response Caching
+header("Cache-Control: max-age=0, private, no-cache, no-store, must-revalidate, no-transform");
 
 //====================================================================//
-// Splash Module & Dependecies Autoloader
+// Splash Module & Dependencies Autoloader
 require_once(dirname(dirname(dirname(__FILE__)))."/autoload.php");
 //====================================================================//
 // Setup Php Specific Settings
@@ -57,12 +57,15 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     // Build SOAP Server & Register a method available for clients
     Splash::com()->buildServer();
     //====================================================================//
-    // Register shuttdown method available for fatal errors reteival
+    // Register shutdown method available for fatal errors retrieval
     register_shutdown_function(array(SplashServer::class, 'fatalHandler'));
     //====================================================================//
     // Clean Output Buffer
     ob_get_clean();
     ob_get_clean();
+    //====================================================================//
+    // Force UTF-8 Encoding & Protect against Varnish ESI Transform
+    echo "\xEF\xBB\xBF";
     //====================================================================//
     // Process methods & Return the results.
     Splash::com()->handle();
@@ -75,6 +78,9 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     // Setup Php Errors Settings
     ini_set('display_errors', "1");
     error_reporting(E_ALL);
+    //====================================================================//
+    // Force UTF-8 Encoding & Protect against Varnish ESI Transform
+    echo "\xEF\xBB\xBF";
     //====================================================================//
     // Output Server Analyze & Debug
     echo SplashServer::getStatusInformations();
