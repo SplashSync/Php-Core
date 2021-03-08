@@ -65,7 +65,9 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     ob_get_clean();
     //====================================================================//
     // Force UTF-8 Encoding & Protect against Varnish ESI Transform
-    echo "\xEF\xBB\xBF";
+    if (array_key_exists("X-Varnish", getallheaders())) {
+        echo "\xEF\xBB\xBF";
+    }
     //====================================================================//
     // Process methods & Return the results.
     Splash::com()->handle();
@@ -80,7 +82,9 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     error_reporting(E_ALL);
     //====================================================================//
     // Force UTF-8 Encoding & Protect against Varnish ESI Transform
-    echo "\xEF\xBB\xBF";
+    if (array_key_exists("X-Varnish", getallheaders())) {
+        echo "\xEF\xBB\xBF";
+    }
     //====================================================================//
     // Output Server Analyze & Debug
     echo SplashServer::getStatusInformations();
