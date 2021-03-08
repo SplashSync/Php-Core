@@ -607,6 +607,12 @@ class Webservice
         $testClient->host = $this->getClientUrl();
 
         //====================================================================//
+        // Varnish Detection
+        if (array_key_exists("X-Varnish", getallheaders())) {
+            Splash::log()->war("Varnish detected: if webservice fail, disable ESI mode...");
+        }
+
+        //====================================================================//
         // Run SOAP Call - Reverse Ping
         $ping = $testClient->call(SPL_S_PING, null, true);
         if (empty($ping) || !isset($ping->result) || !$ping->result) {
