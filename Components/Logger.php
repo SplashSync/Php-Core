@@ -414,9 +414,9 @@ class Logger
      *
      * @param Throwable $throwable
      *
-     * @return void
+     * @return false
      */
-    public function report(Throwable $throwable): void
+    public function report(Throwable $throwable): bool
     {
         //====================================================================//
         // Push Error to Log
@@ -436,6 +436,8 @@ class Logger
         if ($firstTrace) {
             self::err("Details: <PRE>".print_r($firstTrace, true)."</PRE>");
         }
+
+        return false;
     }
 
     //====================================================================//
