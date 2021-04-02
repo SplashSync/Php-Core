@@ -26,12 +26,12 @@ class PricesHelper
     /**
      * Build a new price field array
      *
-     * @param null|double $taxExcl Price Without VAT (Or Null if Price Send with VAT)
-     * @param double      $vat     VAT percentile
-     * @param double      $taxIncl Price With VAT
-     * @param string      $code    Price Currency Code
-     * @param string      $symbol  Price Currency Symbol
-     * @param string      $name    Price Currency Name
+     * @param null|float $taxExcl Price Without VAT (Or Null if Price Send with VAT)
+     * @param float      $vat     VAT percentile
+     * @param float      $taxIncl Price With VAT
+     * @param string     $code    Price Currency Code
+     * @param string     $symbol  Price Currency Symbol
+     * @param string     $name    Price Currency Name
      *
      * @return array|string
      */
@@ -39,17 +39,17 @@ class PricesHelper
     {
         //====================================================================//
         // Safety Checks
-        if (!is_double($taxExcl) && !is_double($taxIncl)) {
+        if (!is_float($taxExcl) && !is_float($taxIncl)) {
             Splash::log()->err("ErrPriceInvalid", __FUNCTION__);
 
             return "Error Invalid Price";
         }
-        if (is_double($taxExcl) && is_double($taxIncl)) {
+        if (is_float($taxExcl) && is_float($taxIncl)) {
             Splash::log()->err("ErrPriceBothValues", __FUNCTION__);
 
             return "Error Too Much Input Values";
         }
-        if (!is_double($vat)) {
+        if (!is_float($vat)) {
             Splash::log()->err("ErrPriceNoVATValue", __FUNCTION__);
 
             return "Error Invalid VAT";
@@ -191,7 +191,7 @@ class PricesHelper
      * @param array  $price Price field definition Array
      * @param string $key   Data Key
      *
-     * @return double|false
+     * @return false|float
      */
     public static function extract($price, $key = "ht")
     {
@@ -203,7 +203,7 @@ class PricesHelper
             return false;
         }
         // Return Result
-        return (double) $price[$key];
+        return (float) $price[$key];
     }
 
     /**
@@ -211,7 +211,7 @@ class PricesHelper
      *
      * @param array $price Price field definition Array
      *
-     * @return double|false
+     * @return false|float
      */
     public static function taxExcluded($price)
     {
@@ -223,7 +223,7 @@ class PricesHelper
      *
      * @param array $price Price field definition Array
      *
-     * @return double|false
+     * @return false|float
      */
     public static function taxIncluded($price)
     {
@@ -235,7 +235,7 @@ class PricesHelper
      *
      * @param array $price Price field definition Array
      *
-     * @return double|false
+     * @return false|float
      */
     public static function taxPercent($price)
     {
@@ -247,11 +247,11 @@ class PricesHelper
      *
      * @param array $price Price field definition Array
      *
-     * @return double
+     * @return float
      */
     public static function taxRatio($price)
     {
-        return (double) self::extract($price, 'vat') / 100;
+        return (float) self::extract($price, 'vat') / 100;
     }
 
     /**
@@ -259,7 +259,7 @@ class PricesHelper
      *
      * @param array $price Price field definition Array
      *
-     * @return double|false
+     * @return false|float
      */
     public static function taxAmount($price)
     {
