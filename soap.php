@@ -65,7 +65,7 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     ob_get_clean();
     //====================================================================//
     // Force UTF-8 Encoding & Protect against Varnish ESI Transform
-    if (array_key_exists("X-Varnish", getallheaders())) {
+    if (function_exists('getallheaders') && array_key_exists("X-Varnish", getallheaders())) {
         echo "\xEF\xBB\xBF";
     }
     //====================================================================//
@@ -82,7 +82,7 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     error_reporting(E_ALL);
     //====================================================================//
     // Force UTF-8 Encoding & Protect against Varnish ESI Transform
-    if (array_key_exists("X-Varnish", getallheaders())) {
+    if (function_exists('getallheaders') && array_key_exists("X-Varnish", getallheaders())) {
         echo "\xEF\xBB\xBF";
     }
     //====================================================================//
