@@ -608,7 +608,7 @@ class Webservice
 
         //====================================================================//
         // Varnish Detection
-        if (array_key_exists("X-Varnish", getallheaders())) {
+        if (function_exists('getallheaders') && array_key_exists("X-Varnish", getallheaders())) {
             Splash::log()->war("Varnish detected: if webservice fail, disable ESI mode...");
         }
 
