@@ -252,7 +252,7 @@ class SplashServer
     }
 
     /**
-     * Treat Received Data and Initialize Server before request exectution
+     * Treat Received Data and Initialize Server before request execution
      *
      * @param string $data Received Raw Data
      *
@@ -292,7 +292,7 @@ class SplashServer
     }
 
     /**
-     * Treat Computed Data and return packaged data buffer for tranmit to master
+     * Treat Computed Data and return packaged data buffer for transmit to master
      *
      * @param bool $result Global Operation Result (0 if KO, 1 if OK)
      *
@@ -328,8 +328,8 @@ class SplashServer
     }
 
     /**
-     * All-In-One SOAP Server Messages Reception & Dispaching
-     *              Unpack all pending tasks and send order to local task routers for execution.
+     * All-In-One SOAP Server Messages Reception & Dispatching
+     * Unpack all pending tasks and send order to local task routers for execution.
      *
      * @param string $serverId   WebService Node Identifier
      * @param string $data       WebService Packaged Data Inputs
