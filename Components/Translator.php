@@ -135,7 +135,7 @@ class Translator
     {
         //====================================================================//
         // Translation is not available
-        if (empty($this->trans[$key])) {
+        if (!isset($this->trans[$key]) || empty($this->trans[$key])) {
             return $key;
         }
 

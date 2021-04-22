@@ -429,13 +429,6 @@ class Logger
         self::err(
             "Full Trace Stack: ".str_replace("#", "<br />#", $throwable->getTraceAsString())
         );
-        //====================================================================//
-        // Push Stack Details
-        $trace = $throwable->getTrace();
-        $firstTrace = array_shift($trace);
-        if ($firstTrace) {
-            self::err("Details: <PRE>".print_r($firstTrace, true)."</PRE>");
-        }
 
         return false;
     }
