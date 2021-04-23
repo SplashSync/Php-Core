@@ -15,7 +15,7 @@
 
 namespace Splash\Client;
 
-use ArrayObject;
+use Splash\Components\CommitsManager;
 use Splash\Core\SplashCore;
 
 /**
@@ -25,13 +25,6 @@ use Splash\Core\SplashCore;
  */
 class Splash extends SplashCore
 {
-    /**
-     * list of all Commits done inside this current session
-     *
-     * @var array
-     */
-    public static $commited = array();
-
     //--------------------------------------------------------------------//
     //--------------------------------------------------------------------//
     //----  PING WEBSERVICE FUNCTIONS                                 ----//
@@ -45,7 +38,7 @@ class Splash extends SplashCore
      *
      * @return bool
      */
-    public static function ping($silent = false)
+    public static function ping($silent = false): bool
     {
         //====================================================================//
         // Stack Trace
@@ -93,7 +86,7 @@ class Splash extends SplashCore
      *
      * @return bool
      */
-    public static function connect($silent = false)
+    public static function connect($silent = false): bool
     {
         //====================================================================//
         // Stack Trace
@@ -135,150 +128,23 @@ class Splash extends SplashCore
     /**
      * Submit an Update for a Local Object
      *
-     * @param string           $objectType object Type Name
-     * @param array|int|string $local      object Local Id or Array of Local Id
+     * @param string           $objectType Object Type Name
+     * @param array|int|string $local      Local Object Ids or Array of Local Id
      * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      * @param string           $user       User Name
-     * @param string           $comment    Operation Comment for Historics
+     * @param string           $comment    Operation Comment for Logs
      *
      * @return bool
      */
-    public static function commit($objectType, $local = null, $action = null, $user = '', $comment = '')
-    {
+    public static function commit(
+        string $objectType,
+        $local,
+        string $action,
+        string $user = '',
+        string $comment = ''
+    ): bool {
         //====================================================================//
-        // Stack Trace
-        self::log()->trace();
-        //====================================================================//
-        // Verify this Object Class is Valid ==> No Action on this Node
-        if (false == Splash::object($objectType)) {
-            return true;
-        }
-        //====================================================================//
-        // Initiate Tasks parameters array
-        $params = self::getCommitParameters($objectType, $local, $action, $user, $comment);
-        //====================================================================//
-        // Add This Commit to Session Logs
-        static::$commited[] = $params;
-        //====================================================================//
-        // Verify this Object is Locked ==> No Action on this Node
-        if (!self::isCommitAllowed($objectType, $local, $action)) {
-            return true;
-        }
-        //====================================================================//
-        // Add Task to Ws Task List
-        Splash::ws()->addTask(
-            SPL_F_COMMIT,
-            $params,
-            Splash::trans('MsgSchRemoteCommit', (string) $action, $objectType, (string) Splash::count($local))
-        );
-        //====================================================================//
-        // Execute Task
-        $response = self::ws()->call(SPL_S_OBJECTS);
-        //====================================================================//
-        // Analyze NuSOAP results
-        return self::isCommitSuccess($response);
-    }
-
-    /**
-     * @abstract     Check if Commit Call was Successful
-     *
-     * @param ArrayObject|false $response Splash Server Response
-     *
-     * @return bool
-     */
-    public static function isCommitSuccess($response)
-    {
-        //====================================================================//
-        // Analyze NuSOAP results
-        if (!$response || !isset($response->result) || (true != $response->result)) {
-            return false;
-        }
-        //====================================================================//
-        //  Smart Notifications => Filter Messages, Only Warnings & Errors
-        if (self::configuration()->SmartNotify) {
-            self::log()->smartFilter();
-        }
-
-        return true;
-    }
-
-    /**
-     * Build Call Parameters Array
-     *
-     * @param string           $objectType object Type Name
-     * @param array|int|string $local      object Local Id or Array of Local Id
-     * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     * @param string           $user       User Name
-     * @param string           $comment    Operation Comment for Historics
-     *
-     * @return arrayObject
-     */
-    private static function getCommitParameters($objectType, $local = null, $action = null, $user = '', $comment = '')
-    {
-        $params = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $params->type = $objectType;        // Type of the Object
-        $params->id = $local;               // Id of Modified object
-        $params->action = $action;          // Action Type On this Object
-        $params->user = $user;              // Operation User Name for Historics
-        $params->comment = $comment;        // Operation Comment for Historics
-
-        return $params;
-    }
-
-    /**
-     * Check if Commit is Allowed Local Object
-     *
-     * @param string           $objectType object Type Name
-     * @param array|int|string $local      object Local Id or Array of Local Id
-     * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     *
-     * @return bool
-     */
-    private static function isCommitAllowed($objectType, $local = null, $action = null)
-    {
-        //====================================================================//
-        // Verify this Object is Locked ==> No Action on this Node
-        //====================================================================//
-        if (is_array($local)) {
-            foreach ($local as $value) {
-                if (Splash::object($objectType)->isLocked($value)) {
-                    return false;
-                }
-            }
-        } else {
-            if (Splash::object($objectType)->isLocked($local)) {
-                return false;
-            }
-        }
-        //====================================================================//
-        // Verify Create Object is Locked ==> No Action on this Node
-        if ((SPL_A_CREATE === $action) && Splash::object($objectType)->isLocked()) {
-            return false;
-        }
-        //====================================================================//
-        // Verify if Travis Mode (PhpUnit) ==> No Commit Allowed
-        return !self::isTravisMode($objectType, $local, $action);
-    }
-
-    /**
-     * Check if Commit we Are in Travis Mode
-     *
-     * @param string                $objectType object Type Name
-     * @param null|array|int|string $local      object Local Id or Array of Local Id
-     * @param string                $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     *
-     * @return bool
-     */
-    private static function isTravisMode($objectType, $local, $action = null)
-    {
-        //====================================================================//
-        // Detect Travis from SERVER CONSTANTS
-        if (empty(Splash::input('SPLASH_TRAVIS'))) {
-            return false;
-        }
-        $objectIds = is_array($local) ? implode('|', $local) : $local;
-        self::log()->war('Module Commit Skipped ('.$objectType.', '.$action.', '.$objectIds.')');
-
-        return true;
+        // Forward to Commit Manager
+        return CommitsManager::commit($objectType, $local, $action, $user, $comment);
     }
 }

@@ -17,6 +17,7 @@ namespace Splash\Tests\WsObjects;
 
 use ArrayObject;
 use Splash\Client\Splash;
+use Splash\Components\CommitsManager;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
@@ -160,8 +161,8 @@ class O04CreateTest extends ObjectsCase
         Splash::object($objectType)->lock();
 
         //====================================================================//
-        // Clean Objects Commited Array
-        Splash::$commited = array();
+        // Clean Objects Committed Array
+        CommitsManager::resetSessionCommitted();
 
         return $this->fakeObjectData($fields);
     }

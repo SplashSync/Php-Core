@@ -19,7 +19,9 @@ use ArrayObject;
 use Exception;
 use Splash\Components\FileManager;
 use Splash\Components\Logger;
+use Splash\Components\NuSOAP\NuSOAPInterface;
 use Splash\Components\Router;
+use Splash\Components\SOAP\SOAPInterface;
 use Splash\Components\Translator;
 use Splash\Components\Validator;
 use Splash\Components\Webservice;
@@ -238,6 +240,7 @@ class SplashCore
         $config->WsCrypt = SPLASH_CRYPT_METHOD;
         $config->WsEncode = SPLASH_ENCODE;
         $config->WsHost = 'www.splashsync.com/ws/soap';
+        $config->WsPostCommit = false;
 
         //====================================================================//
         // Activity Logging Parameters
@@ -319,19 +322,19 @@ class SplashCore
         switch (self::configuration()->WsMethod) {
             case 'SOAP':
                 if (!class_exists("SoapClient")) {
-                    self::log()->err('Switched NuSOAP PHP Librarie because Php Soap Ext. is Missing.');
-                    self::core()->com = new \Splash\Components\NuSOAP\NuSOAPInterface();
+                    self::log()->err('Switched NuSOAP PHP Library because Php Soap Ext. is Missing.');
+                    self::core()->com = new NuSOAPInterface();
 
                     break;
                 }
                 self::log()->deb('Selected SOAP PHP Protocol for Communication');
-                self::core()->com = new \Splash\Components\SOAP\SOAPInterface();
+                self::core()->com = new SOAPInterface();
 
                 break;
             case 'NuSOAP':
             default:
-                self::log()->deb('Selected NuSOAP PHP Librarie for Communication');
-                self::core()->com = new \Splash\Components\NuSOAP\NuSOAPInterface();
+                self::log()->deb('Selected NuSOAP PHP Library for Communication');
+                self::core()->com = new NuSOAPInterface();
 
                 break;
         }

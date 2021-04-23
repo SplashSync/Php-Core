@@ -17,6 +17,7 @@ namespace Splash\Tests\Tools\Traits;
 
 use ArrayObject;
 use Splash\Client\Splash;
+use Splash\Components\CommitsManager;
 
 /**
  * Splash Test Tools - Objects Fields Management
@@ -179,8 +180,8 @@ trait ObjectsSetTestsTrait
         // Lock New Objects To Avoid Action Commit
         Splash::object($objectType)->lock($forceObjectId);
         //====================================================================//
-        // Clean Objects Commited Array
-        Splash::$commited = array();
+        // Clean Objects Committed Array
+        CommitsManager::resetSessionCommitted();
         //====================================================================//
         //   Update Object on Module
         $objectId = Splash::object($objectType)->set($forceObjectId, $objectData);
@@ -215,7 +216,7 @@ trait ObjectsSetTestsTrait
     {
         //====================================================================//
         // Clean Objects Committed Array
-        Splash::$commited = array();
+        CommitsManager::resetSessionCommitted();
         //====================================================================//
         //   Create a New Object via Service
         $objectId = $this->genericAction(

@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Traits;
 
 use ArrayObject;
-use Splash\Client\Splash;
+use Splash\Components\CommitsManager;
 use Splash\Components\FieldsManager;
 
 /**
@@ -394,7 +394,7 @@ trait ObjectsAssertionsTrait
      */
     public function assertIsLastCommited($action, $objectType, $objectId)
     {
-        $this->assertIsCommited($action, $objectType, $objectId, false);
+        $this->assertIsCommitted($action, $objectType, $objectId, false);
     }
 
     /**
@@ -408,7 +408,7 @@ trait ObjectsAssertionsTrait
      */
     public function assertIsFirstCommited($action, $objectType, $objectId)
     {
-        $this->assertIsCommited($action, $objectType, $objectId, true);
+        $this->assertIsCommitted($action, $objectType, $objectId, true);
     }
 
     /**
@@ -421,56 +421,60 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    private function assertIsCommited($action, $objectType, $objectId, $first = true)
+    private function assertIsCommitted(string $action, string $objectType, string $objectId, bool $first = true)
     {
+        $sessionCommits = CommitsManager::getSessionCommitted();
         //====================================================================//
-        //   Verify Object Change Was Commited
+        //   Verify Object Change Was Committed
         $this->assertNotEmpty(
-            Splash::$commited,
-            "No Object Change Commited by your Module. Please check your triggers."
+            $sessionCommits,
+            "No Object Change Committed by your Module. Please check your triggers."
         );
 
         //====================================================================//
-        //   Get First / Last Commited
-        $commited = $first ? array_shift(Splash::$commited) : array_pop(Splash::$commited);
+        //   Get First / Last Committed
+        $committed = $first
+            ? array_shift($sessionCommits)
+            : array_pop($sessionCommits)
+        ;
 
         //====================================================================//
         //   Check Object Type is OK
         $this->assertEquals(
-            $commited->type,
+            $committed->type,
             $objectType,
             "Change Commit => Object Type is wrong. "
-                ."(Expected ".$objectType." / Given ".$commited->type
+                ."(Expected ".$objectType." / Given ".$committed->type
         );
 
         //====================================================================//
         //   Check Object Action is OK
         $this->assertEquals(
-            $commited->action,
+            $committed->action,
             $action,
-            "Change Commit => Change Type is wrong. (Expected ".$action." / Given ".$commited->action
+            "Change Commit => Change Type is wrong. (Expected ".$action." / Given ".$committed->action
         );
 
         //====================================================================//
         //   Check Object Id value Format
         $this->assertTrue(
-            is_scalar($commited->id) || is_array($commited->id) || is_a($commited->id, "ArrayObject"),
+            is_scalar($committed->id) || is_array($committed->id) || is_a($committed->id, "ArrayObject"),
             "Change Commit => Object Id Value is in wrong Format. "
                 ."(Expected String or Array of Strings. / Given "
-                .print_r($commited->id, true)
+                .print_r($committed->id, true)
         );
 
         //====================================================================//
-        //   If Commited an Array of Ids
-        if (is_array($commited->id) || ($commited->id instanceof ArrayObject)) {
+        //   If Committed an Array of Ids
+        if (is_array($committed->id) || ($committed->id instanceof ArrayObject)) {
             //====================================================================//
             //   Detect Array Object
-            if ($commited->id instanceof ArrayObject) {
-                $commited->id = $commited->id->getArrayCopy();
+            if ($committed->id instanceof ArrayObject) {
+                $committed->id = $committed->id->getArrayCopy();
             }
             //====================================================================//
             //   Check each Object Ids
-            foreach ($commited->id as $committedObjectId) {
+            foreach ($committed->id as $committedObjectId) {
                 $this->assertIsScalar(
                     $committedObjectId,
                     "Change Commit => Object Id Array Value is in wrong Format. "
@@ -480,7 +484,7 @@ trait ObjectsAssertionsTrait
             }
             //====================================================================//
             //   Extract First Object Id
-            $firstId = array_shift($commited->id);
+            $firstId = array_shift($committed->id);
             //====================================================================//
             //   Verify First Object Id is OK
             $this->assertEquals(
@@ -492,16 +496,16 @@ trait ObjectsAssertionsTrait
             //====================================================================//
             //   Check Object Id is OK
             $this->assertEquals(
-                $commited->id,
+                $committed->id,
                 $objectId,
-                "Change Commit => Object Id is wrong. (Expected ".$objectId." / Given ".$commited->id
+                "Change Commit => Object Id is wrong. (Expected ".$objectId." / Given ".$committed->id
             );
         }
 
         //====================================================================//
         //   Check Infos are Not Empty
-        $this->assertNotEmpty($commited->user, "Change Commit => User Name is Empty");
-        $this->assertNotEmpty($commited->comment, "Change Commit => Action Comment is Empty");
+        $this->assertNotEmpty($committed->user, "Change Commit => User Name is Empty");
+        $this->assertNotEmpty($committed->comment, "Change Commit => Action Comment is Empty");
     }
 
     /**

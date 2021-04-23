@@ -16,6 +16,7 @@
 namespace Splash\Tests\WsObjects;
 
 use Splash\Client\Splash;
+use Splash\Components\CommitsManager;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
@@ -53,8 +54,8 @@ class O05DeleteTest extends ObjectsCase
         $this->verifyCreateResponse($objectType, $objectId);
 
         //====================================================================//
-        // Clean Objects Commited Array
-        Splash::$commited = array();
+        // Clean Objects Committed Array
+        CommitsManager::resetSessionCommitted();
         //====================================================================//
         // Lock New Objects To Avoid Action Commit
         Splash::object($objectType)->lock((string) $objectId);
@@ -96,8 +97,8 @@ class O05DeleteTest extends ObjectsCase
         $this->verifyCreateResponse($objectType, $objectId);
 
         //====================================================================//
-        // Clean Objects Commited Array
-        Splash::$commited = array();
+        // Clean Objects Committed Array
+        CommitsManager::resetSessionCommitted();
         //====================================================================//
         //   Execute Action Directly on Module
         $data = $this->genericAction(
@@ -201,8 +202,8 @@ class O05DeleteTest extends ObjectsCase
         Splash::object($objectType)->lock();
 
         //====================================================================//
-        // Clean Objects Commited Array
-        Splash::$commited = array();
+        // Clean Objects Committed Array
+        CommitsManager::resetSessionCommitted();
 
         return $this->fakeObjectData($fields);
     }

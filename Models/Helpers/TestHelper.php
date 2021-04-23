@@ -15,8 +15,8 @@
 
 namespace   Splash\Models\Helpers;
 
-use ArrayObject;
-use Splash\Client\Splash;
+use Exception;
+use Splash\Components\CommitsManager;
 
 /**
  * Helper for PhpUnit Tests
@@ -31,22 +31,19 @@ class TestHelper
      * @param array|int|string $local      object Local Id or Array of Local Id
      * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      * @param string           $user       User Name
-     * @param string           $comment    Operation Comment for Historics
+     * @param null|string      $comment    Operation Comment for Logs
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public static function simObjectCommit($objectType, $local, $action, $user = 'PhpUnit', $comment = '')
-    {
-        if (empty($comment)) {
-            $comment = 'Commit Simulated';
-        }
-        $params = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        $params->type = $objectType;            // Type of the Object
-        $params->id = $local;                   // Id of Modified object
-        $params->action = $action;              // Action Type On this Object
-        $params->user = $user;                  // Operation User Name for Historics
-        $params->comment = $comment;            // Operation Comment for Historics
-
-        Splash::$commited[] = $params;
+    public static function simObjectCommit(
+        string $objectType,
+        $local,
+        string $action,
+        string $user = 'PhpUnit',
+        string $comment = null
+    ): void {
+        CommitsManager::simSessionCommit($objectType, $local, $action, $user, $comment);
     }
 }
