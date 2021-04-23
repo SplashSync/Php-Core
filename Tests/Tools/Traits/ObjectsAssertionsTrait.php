@@ -439,73 +439,61 @@ trait ObjectsAssertionsTrait
         ;
 
         //====================================================================//
+        // Check Committed Infos
+        $this->assertIsArray($committed, CommitsManager::class."::committed format is wrong");
+        $this->assertArrayHasKey("type", $committed, CommitsManager::class."::committed");
+        $this->assertIsString($committed['type'], CommitsManager::class."::committed");
+        $this->assertArrayHasKey("action", $committed, CommitsManager::class."::committed");
+        $this->assertIsString($committed['action'], CommitsManager::class."::committed");
+        $this->assertArrayHasKey("id", $committed, CommitsManager::class."::committed");
+        $this->assertIsArray($committed['id'], CommitsManager::class."::committed");
+        $this->assertArrayHasKey("user", $committed);
+        $this->assertArrayHasKey("comment", $committed);
+
+        //====================================================================//
         //   Check Object Type is OK
         $this->assertEquals(
-            $committed->type,
             $objectType,
-            "Change Commit => Object Type is wrong. "
-                ."(Expected ".$objectType." / Given ".$committed->type
+            $committed['type'],
+            "Change Commit => Object Type is wrong."
         );
 
         //====================================================================//
         //   Check Object Action is OK
         $this->assertEquals(
-            $committed->action,
             $action,
-            "Change Commit => Change Type is wrong. (Expected ".$action." / Given ".$committed->action
+            $committed['action'],
+            "Change Commit => Change Type is wrong."
         );
 
         //====================================================================//
         //   Check Object Id value Format
-        $this->assertTrue(
-            is_scalar($committed->id) || is_array($committed->id) || is_a($committed->id, "ArrayObject"),
-            "Change Commit => Object Id Value is in wrong Format. "
-                ."(Expected String or Array of Strings. / Given "
-                .print_r($committed->id, true)
+        $committedObjectIds = $committed['id'];
+        //====================================================================//
+        //   Check each Object Ids
+        foreach ($committedObjectIds as $committedObjectId) {
+            $this->assertIsScalar(
+                $committedObjectId,
+                "Change Commit => Object Id Array Value is in wrong Format. "
+                    ."(Expected String or Integer. / Given "
+                    .print_r($committedObjectId, true)
+            );
+        }
+        //====================================================================//
+        //   Extract First Object Id
+        $firstId = array_shift($committedObjectIds);
+        //====================================================================//
+        //   Verify First Object Id is OK
+        $this->assertEquals(
+            $firstId,
+            $objectId,
+            "Change Commit => Object Id is wrong. (Expected ".$objectId." / Given ".$firstId
         );
 
         //====================================================================//
-        //   If Committed an Array of Ids
-        if (is_array($committed->id) || ($committed->id instanceof ArrayObject)) {
-            //====================================================================//
-            //   Detect Array Object
-            if ($committed->id instanceof ArrayObject) {
-                $committed->id = $committed->id->getArrayCopy();
-            }
-            //====================================================================//
-            //   Check each Object Ids
-            foreach ($committed->id as $committedObjectId) {
-                $this->assertIsScalar(
-                    $committedObjectId,
-                    "Change Commit => Object Id Array Value is in wrong Format. "
-                        ."(Expected String or Integer. / Given "
-                        .print_r($committedObjectId, true)
-                );
-            }
-            //====================================================================//
-            //   Extract First Object Id
-            $firstId = array_shift($committed->id);
-            //====================================================================//
-            //   Verify First Object Id is OK
-            $this->assertEquals(
-                $firstId,
-                $objectId,
-                "Change Commit => Object Id is wrong. (Expected ".$objectId." / Given ".$firstId
-            );
-        } else {
-            //====================================================================//
-            //   Check Object Id is OK
-            $this->assertEquals(
-                $committed->id,
-                $objectId,
-                "Change Commit => Object Id is wrong. (Expected ".$objectId." / Given ".$committed->id
-            );
-        }
-
-        //====================================================================//
         //   Check Infos are Not Empty
-        $this->assertNotEmpty($committed->user, "Change Commit => User Name is Empty");
-        $this->assertNotEmpty($committed->comment, "Change Commit => Action Comment is Empty");
+        $this->assertNotEmpty($committed['user'], "Change Commit => User Name is Empty");
+        $this->assertNotEmpty($committed['comment'], "Change Commit => Action Comment is Empty");
     }
 
     /**
@@ -516,7 +504,7 @@ trait ObjectsAssertionsTrait
      *
      * @return null|ArrayObject
      */
-    private function loadObjectFieldByTag($itemType, $itemProp)
+    private function loadObjectFieldByTag(string $itemType, string $itemProp): ?ArrayObject
     {
         //====================================================================//
         //   Ensure Fields List is Loaded
