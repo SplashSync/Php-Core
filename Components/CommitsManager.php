@@ -139,8 +139,6 @@ class CommitsManager
      * @param string           $user       User Name
      * @param null|string      $comment    Operation Comment for logs
      *
-     * @throws Exception
-     *
      * @return void
      */
     public static function simSessionCommit(
@@ -151,7 +149,7 @@ class CommitsManager
         string $comment = null
     ): void {
         if (!Splash::isDebugMode()) {
-            throw new Exception("You cannot Simulate Commit without Debug Mode");
+            return;
         }
 
         self::$committed[] = self::getCommitParameters(
