@@ -658,7 +658,7 @@ class FieldsFactory
      */
     public function has(string $fieldId): bool
     {
-        return isset($this->new[$fieldId]);
+        return isset($this->fields[$fieldId]);
     }
 
     /**
