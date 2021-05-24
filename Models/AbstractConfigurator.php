@@ -51,17 +51,17 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         //====================================================================//
         // Load Parameters from Configurator
         $customParameters = $this->getConfigurationValue("parameters");
         //====================================================================//
-        // Custom Parameters wher Found
+        // Custom Parameters where Found
         if (is_array($customParameters) && !empty($customParameters)) {
             //====================================================================//
             // Remove Unsecure Parameters
-            self::sercureParameters($customParameters);
+            self::secureParameters($customParameters);
             //====================================================================//
             // Return Custom Parameters
             return $customParameters;
@@ -79,7 +79,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function isDisabled($objectType, $isDisabled = false)
+    public function isDisabled(string $objectType, bool $isDisabled = false): bool
     {
         Splash::log()->trace();
         //====================================================================//
@@ -103,7 +103,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function overrideDescription($objectType, $description)
+    public function overrideDescription(string $objectType, array $description): array
     {
         Splash::log()->trace();
         //====================================================================//
@@ -145,7 +145,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function overrideFields($objectType, $fields)
+    public function overrideFields(string $objectType, array $fields): array
     {
         Splash::log()->trace();
         //====================================================================//
@@ -169,9 +169,17 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
             if (!isset($overrides[$field->id])) {
                 continue;
             }
+            $fieldOverrides = $overrides[$field->id];
+            //====================================================================//
+            // Check if Field Shall be Excluded
+            if (!empty($fieldOverrides["excluded"] ?? false)) {
+                unset($fields[$index]);
+
+                continue;
+            }
             //====================================================================//
             // Update Field Definition
-            $fields[$index] = self::updateField($field, $overrides[$field->id]);
+            $fields[$index] = self::updateField($field, $fieldOverrides);
         }
 
         return $fields;
@@ -189,7 +197,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      *
      * @return null|array|bool|string
      */
-    private function getConfigurationValue($key1, $key2 = null)
+    private function getConfigurationValue(string $key1, string $key2 = null)
     {
         //====================================================================//
         // Load Configuration from Configurator
@@ -211,7 +219,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         }
         //====================================================================//
         // Check Second Configuration Key Exists
-        return isset($config[$key1][$key2]) ? $config[$key1][$key2] : null;
+        return $config[$key1][$key2] ?? null;
     }
 
     /**
@@ -221,7 +229,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      *
      * @return void
      */
-    private static function sercureParameters(&$parameters)
+    private static function secureParameters(array &$parameters): void
     {
         //====================================================================//
         // Detect Travis from SERVER CONSTANTS => Allow Unsecure for Testing
@@ -243,11 +251,11 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      * Override a Field Definition
      *
      * @param ArrayObject $field  Original Field Definition
-     * @param Array       $values Custom Values to Write
+     * @param array       $values Custom Values to Write
      *
      * @return ArrayObject
      */
-    private static function updateField($field, $values)
+    private static function updateField($field, array $values)
     {
         Splash::log()->trace();
         //====================================================================//

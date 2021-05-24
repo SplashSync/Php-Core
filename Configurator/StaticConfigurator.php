@@ -54,7 +54,7 @@ class StaticConfigurator extends AbstractConfigurator implements ConfiguratorInt
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         return static::$configuration;
     }

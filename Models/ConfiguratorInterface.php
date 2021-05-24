@@ -32,7 +32,7 @@ interface ConfiguratorInterface
      *
      * @return array
      */
-    public function getConfiguration();
+    public function getConfiguration(): array;
 
     //====================================================================//
     // CONFIGURE LOCAL SERVER
@@ -44,7 +44,7 @@ interface ConfiguratorInterface
      *
      * @return array
      */
-    public function getParameters();
+    public function getParameters(): array;
 
     //====================================================================//
     // CONFIGURE LOCAL OBJECTS
@@ -59,7 +59,7 @@ interface ConfiguratorInterface
      *
      * @return bool
      */
-    public function isDisabled($objectType, $isDisabled = false);
+    public function isDisabled(string $objectType, bool $isDisabled = false): bool;
 
     /**
      * Override Object is Description Array
@@ -70,7 +70,7 @@ interface ConfiguratorInterface
      *
      * @return array
      */
-    public function overrideDescription($objectType, $description);
+    public function overrideDescription(string $objectType, array $description): array;
 
     /**
      * Override Object Fields Array using Field Factory
@@ -81,5 +81,5 @@ interface ConfiguratorInterface
      *
      * @return array
      */
-    public function overrideFields($objectType, $fields);
+    public function overrideFields(string $objectType, array $fields): array;
 }

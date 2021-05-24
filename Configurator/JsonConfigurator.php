@@ -38,7 +38,7 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         if (!isset(static::$configuration)) {
             //====================================================================//
@@ -93,7 +93,7 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
      *
      * @return array|false False or Configuration Array
      */
-    private function getConfigArray($cfgPath)
+    private function getConfigArray(string $cfgPath)
     {
         //====================================================================//
         //  Check if Custom Configuration File Exists

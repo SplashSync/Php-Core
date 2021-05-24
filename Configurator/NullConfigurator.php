@@ -29,7 +29,7 @@ class NullConfigurator implements ConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         return array();
     }
@@ -41,7 +41,7 @@ class NullConfigurator implements ConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return array();
     }
@@ -55,7 +55,7 @@ class NullConfigurator implements ConfiguratorInterface
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function isDisabled($objectType, $isDisabled = false)
+    public function isDisabled(string $objectType, bool $isDisabled = false): bool
     {
         return $isDisabled;
     }
@@ -65,7 +65,7 @@ class NullConfigurator implements ConfiguratorInterface
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function overrideDescription($objectType, $description)
+    public function overrideDescription(string $objectType, array $description): array
     {
         return $description;
     }
@@ -75,7 +75,7 @@ class NullConfigurator implements ConfiguratorInterface
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function overrideFields($objectType, $fields)
+    public function overrideFields(string $objectType, array $fields): array
     {
         return $fields;
     }
