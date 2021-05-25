@@ -88,13 +88,14 @@ trait ObjectsDataTrait
     /**
      * Check Two Object Data Blocks using Field's Compare functions
      *
-     * @param array[] $fields Array of OpenObject Fields Definitions
-     * @param mixed $block1 Raw Data to Compare
-     * @param mixed $block2 Raw Data to Compare
+     * @param array[]     $fields  Array of OpenObject Fields Definitions
+     * @param mixed       $block1  Raw Data to Compare
+     * @param mixed       $block2  Raw Data to Compare
      * @param null|string $comment Comment on this Test
      *
-     * @return bool
      * @throws Exception
+     *
+     * @return bool
      */
     public function compareDataBlocks(array $fields, $block1, $block2, string $comment = null): bool
     {
