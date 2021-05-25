@@ -15,6 +15,7 @@
 
 namespace Splash\Tests\WsObjects;
 
+use Exception;
 use Splash\Client\Splash;
 use Splash\Components\CommitsManager;
 use Splash\Tests\Tools\ObjectsCase;
@@ -32,9 +33,11 @@ class O05DeleteTest extends ObjectsCase
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFromModule($testSequence, $objectType)
+    public function testFromModule(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
 
@@ -75,9 +78,11 @@ class O05DeleteTest extends ObjectsCase
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFromService($testSequence, $objectType)
+    public function testFromService(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
 
@@ -119,9 +124,11 @@ class O05DeleteTest extends ObjectsCase
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFromObjectsServiceErrors($testSequence, $objectType)
+    public function testFromObjectsServiceErrors(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
 
@@ -139,9 +146,11 @@ class O05DeleteTest extends ObjectsCase
     /**
      * @param string $objectType
      *
-     * @return boolean
+     * @throws Exception
+     *
+     * @return bool
      */
-    public function verifyTestIsAllowed($objectType)
+    public function verifyTestIsAllowed(string $objectType): bool
     {
         $definition = Splash::object($objectType)->description();
 
@@ -163,14 +172,16 @@ class O05DeleteTest extends ObjectsCase
     /**
      * @param string $objectType
      *
-     * @return array|false
+     * @throws Exception
+     *
+     * @return null|array
      */
-    public function prepareForTesting($objectType)
+    public function prepareForTesting(string $objectType): ?array
     {
         //====================================================================//
         //   Verify Test is Required
         if (!$this->verifyTestIsAllowed($objectType)) {
-            return false;
+            return null;
         }
 
         //====================================================================//
@@ -181,12 +192,12 @@ class O05DeleteTest extends ObjectsCase
         foreach ($fields as $key => $field) {
             //====================================================================//
             // Skip Non Required Fields
-            if (!$field->required) {
+            if (!$field["required"]) {
                 unset($fields[$key]);
             }
             //====================================================================//
             // Check if Write Fields
-            if ($field->write) {
+            if ($field["write"]) {
                 $write = true;
             }
         }
@@ -194,7 +205,7 @@ class O05DeleteTest extends ObjectsCase
         //====================================================================//
         // If No Writable Fields
         if (!$write) {
-            return false;
+            return null;
         }
 
         //====================================================================//
@@ -214,7 +225,7 @@ class O05DeleteTest extends ObjectsCase
      *
      * @return void
      */
-    public function verifyCreateResponse($objectType, $objectId)
+    public function verifyCreateResponse(string $objectType, $objectId): void
     {
         //====================================================================//
         //   Verify Object Id Is Not Empty
@@ -240,7 +251,7 @@ class O05DeleteTest extends ObjectsCase
      *
      * @return void
      */
-    public function verifyDeleteResponse($objectType, $objectId, $data)
+    public function verifyDeleteResponse(string $objectType, $objectId, $data): void
     {
         //====================================================================//
         //   Verify Response
@@ -248,8 +259,8 @@ class O05DeleteTest extends ObjectsCase
         $this->assertNotEmpty($data, "Object Delete Response is Not True");
 
         //====================================================================//
-        //   Verify Object Change Was Commited
-        $this->assertIsLastCommited(SPL_A_DELETE, $objectType, (string) $objectId);
+        //   Verify Object Change Was Committed
+        $this->assertIsLastCommitted(SPL_A_DELETE, $objectType, (string) $objectId);
 
         //====================================================================//
         //   Verify Repeating Delete as Same Result

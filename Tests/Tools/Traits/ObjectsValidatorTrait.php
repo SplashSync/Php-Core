@@ -42,14 +42,14 @@ trait ObjectsValidatorTrait
      *
      * @param string $fieldType Data Type Name String
      *
-     * @return false|string
+     * @return null|class-string
      */
-    public static function isValidType($fieldType)
+    public static function isValidType(string $fieldType): ?string
     {
         //====================================================================//
         // Safety Check
         if (empty($fieldType)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Detects Lists Fields
@@ -80,7 +80,7 @@ trait ObjectsValidatorTrait
             return  $className;
         }
 
-        return false;
+        return null;
     }
 
     /**

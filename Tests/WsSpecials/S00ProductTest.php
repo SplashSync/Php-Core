@@ -15,10 +15,12 @@
 
 namespace Splash\Tests\WsSpecials;
 
-use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
+use Splash\Models\Objects\ListsTrait;
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
+use Splash\Tests\Tools\Traits\Product as Traits;
 
 /**
  * Product Special Test Suite - Products Fields Verifications
@@ -29,11 +31,11 @@ class S00ProductTest extends ObjectsCase
 {
     use ObjectsSetTestsTrait;
 
-    use \Splash\Tests\Tools\Traits\Product\AssertionsTrait;
-    use \Splash\Tests\Tools\Traits\Product\DefinitionsTrait;
-    use \Splash\Tests\Tools\Traits\Product\VariantsTrait;
-    use \Splash\Tests\Tools\Traits\Product\ImagesTrait;
-    use \Splash\Models\Objects\ListsTrait;
+    use Traits\AssertionsTrait;
+    use Traits\DefinitionsTrait;
+    use Traits\VariantsTrait;
+    use Traits\ImagesTrait;
+    use ListsTrait;
 
     /** @var array */
     const ATTRIBUTES = array('VariantA','VariantB');
@@ -50,9 +52,11 @@ class S00ProductTest extends ObjectsCase
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFieldsDefinition($testSequence, $objectType)
+    public function testFieldsDefinition(string $testSequence, string $objectType): void
     {
         //====================================================================//
         //   TEST INIT
@@ -87,13 +91,15 @@ class S00ProductTest extends ObjectsCase
      *
      * @dataProvider objectFieldsProvider
      *
-     * @param string      $testSequence
-     * @param string      $objectType
-     * @param ArrayObject $field
+     * @param string $testSequence
+     * @param string $objectType
+     * @param array  $field
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testVariantsFromModule($testSequence, $objectType, $field)
+    public function testVariantsFromModule(string $testSequence, string $objectType, array $field): void
     {
         //====================================================================//
         //   TEST INIT
@@ -149,13 +155,15 @@ class S00ProductTest extends ObjectsCase
      *
      * @dataProvider objectFieldsProvider
      *
-     * @param string      $testSequence
-     * @param string      $objectType
-     * @param ArrayObject $field
+     * @param string $testSequence
+     * @param string $objectType
+     * @param array  $field
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testVariantsFieldFromService($testSequence, $objectType, $field)
+    public function testVariantsFieldFromService(string $testSequence, string $objectType, array $field): void
     {
         //====================================================================//
         //   TEST INIT
@@ -216,7 +224,7 @@ class S00ProductTest extends ObjectsCase
      *
      * @return void
      */
-    public function testImagesFromModule($testSequence, $objectType, $images)
+    public function testImagesFromModule(string $testSequence, string $objectType, array $images)
     {
         $this->coreTestImagesFromModule($testSequence, $objectType, $images);
     }
@@ -230,9 +238,11 @@ class S00ProductTest extends ObjectsCase
      * @param string $objectType
      * @param array  $images
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testVariantImagesFromModule($testSequence, $objectType, $images)
+    public function testVariantImagesFromModule(string $testSequence, string $objectType, array $images): void
     {
         //====================================================================//
         //   TEST INIT
@@ -270,18 +280,23 @@ class S00ProductTest extends ObjectsCase
      *  -> This Function uses Preloaded Fields
      *  -> If Md5 provided, check Current Field was Modified
      *
-     * @param string      $objectType Current Object Type
-     * @param ArrayObject $field      Current Tested Field (ArrayObject)
-     * @param bool        $unik       Ask for Unik Field Data
+     * @param string     $objectType Current Object Type
+     * @param null|array $field      Current Tested Field
+     * @param bool       $unique     Ask for Unique Field Data
      *
-     * @return array|false Generated Data Block or False if not Allowed
+     * @throws Exception
+     *
+     * @return null|array Generated Data Block or False if not Allowed
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function prepareForTesting($objectType, $field = null, $unik = true)
+    public function prepareForTesting(string $objectType, array $field = null, bool $unique = true): ?array
     {
         //====================================================================//
         //   Verify Test is Required
         if (!$this->verifyTestIsAllowed($objectType, $field)) {
-            return false;
+            return null;
         }
 
         //====================================================================//
@@ -299,20 +314,26 @@ class S00ProductTest extends ObjectsCase
         }
         $this->assertNotEmpty($field);
         if (is_null($field)) {
-            return false;
+            return null;
         }
         //====================================================================//
         //  Generated Object Data
-        $fakeData = $this->generateObjectData($objectType, $field, $unik);
+        $fakeData = $this->generateObjectData($objectType, $field, $unique);
         $this->assertIsArray($fakeData);
 
         //====================================================================//
         //   Add Attributes Fields To Fields List for Verifications
         if (!empty($this->currentVariation)) {
             // List of Product Variants
-            $this->fields[] = self::findFieldByTag($fields, static::$itemProp, 'Variants');
+            $variants = self::findFieldByTag($fields, static::$itemProp, 'Variants');
+            if ($variants) {
+                $this->fields[] = $variants;
+            }
             // Variant Attribute Codes
-            $this->fields[] = self::findFieldByTag($fields, static::$itemProp, static::$attrCode);
+            $attrField = self::findFieldByTag($fields, static::$itemProp, static::$attrCode);
+            if ($attrField) {
+                $this->fields[] = $attrField;
+            }
             // Variant Attribute Name
             foreach ($this->findMultiFields(static::$attrName, $fields) as $field) {
                 // Only Write Attributes Names

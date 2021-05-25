@@ -185,7 +185,7 @@ trait ImagesTrait
         //====================================================================//
 
         //====================================================================//
-        //   Verify Visivble Images
+        //   Verify Visible Images
         $this->verifyImages($objectType, $objectId, $newData);
 
         //====================================================================//
@@ -260,16 +260,16 @@ trait ImagesTrait
 
         //====================================================================//
         //   Generate Random Attributes Set
-        $spashImage = Image::fake(array("Images" => array( "fake-image".$index.".jpg")));
+        $splashImage = Image::fake(array("Images" => array( "fake-image".$index.".jpg")));
         $item = array(
-            self::lists()->fieldName($image->id) => $spashImage,
-            self::lists()->fieldName($isCover->id) => $setCover,
+            self::lists()->fieldName($image['id']) => $splashImage,
+            self::lists()->fieldName($isCover['id']) => $setCover,
         );
-        if ($isVisible->write) {
-            $item[self::lists()->fieldName($isVisible->id)] = $setVisible;
+        if ($isVisible['write']) {
+            $item[self::lists()->fieldName($isVisible['id'])] = $setVisible;
         }
-        if ($position->write) {
-            $item[self::lists()->fieldName($position->id)] = $setPosition;
+        if ($position['write']) {
+            $item[self::lists()->fieldName($position['id'])] = $setPosition;
         }
 
         return $item;
@@ -282,7 +282,7 @@ trait ImagesTrait
      *
      * @return array
      */
-    private function getFakeImages($combination)
+    private function getFakeImages($combination): array
     {
         //====================================================================//
         //   Load Required Fields
@@ -300,7 +300,7 @@ trait ImagesTrait
             $images[] = $this->getFakeImageItem($item[0], $item[1], $item[2], $item[3]);
         }
 
-        return array(self::lists()->listName($image->id) => $images);
+        return array(self::lists()->listName($image['id']) => $images);
     }
 
     /**
@@ -417,14 +417,14 @@ trait ImagesTrait
         $this->assertNotEmpty($position, "Product Images Position Field not Found");
         //====================================================================//
         //   Extract Fields Ids
-        $this->listId = self::lists()->listName($image->id);
-        $this->imageId = self::lists()->fieldName($image->id);
-        $this->isCoverId = self::lists()->fieldName($isCover->id);
-        $this->isVisibleId = self::lists()->fieldName($isVisible->id);
-        $this->positionId = self::lists()->fieldName($position->id);
+        $this->listId = self::lists()->listName($image['id']);
+        $this->imageId = self::lists()->fieldName($image['id']);
+        $this->isCoverId = self::lists()->fieldName($isCover['id']);
+        $this->isVisibleId = self::lists()->fieldName($isVisible['id']);
+        $this->positionId = self::lists()->fieldName($position['id']);
         //====================================================================//
         //   Build To Read Fields Ids
-        $this->targetFields = array($image->id, $isCover->id, $isVisible->id, $position->id);
+        $this->targetFields = array($image['id'], $isCover['id'], $isVisible['id'], $position['id']);
         //====================================================================//
         //   Check Required Fields
         $this->assertNotEmpty($this->imageId);
@@ -508,7 +508,7 @@ trait ImagesTrait
         //====================================================================//
         //   Verify Product has Writable Images List
         $imgList = self::findFieldByTag($this->fields, "http://schema.org/Product", "image");
-        if (!$imgList || !$imgList->write) {
+        if (!$imgList || !$imgList['write']) {
             return false;
         }
 

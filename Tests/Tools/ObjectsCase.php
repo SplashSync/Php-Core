@@ -15,25 +15,29 @@
 
 namespace Splash\Tests\Tools;
 
+use Exception;
 use Splash\Client\Splash;
+use Splash\Models\Fields\FieldsManagerTrait;
 
 /**
  * Splash Test Tools - Objects Test Case Base Class
  */
 class ObjectsCase extends AbstractBaseCase
 {
-    use \Splash\Models\Fields\FieldsManagerTrait;
-    use \Splash\Tests\Tools\Traits\ObjectsDataTrait;
-    use \Splash\Tests\Tools\Traits\ObjectsFakerTrait;
+    use FieldsManagerTrait;
+    use Traits\ObjectsDataTrait;
+    use Traits\ObjectsFakerTrait;
 
     /**
-     * List of Created & Tested Object used to delete if test failled.
+     * List of Created & Tested Object used to delete if test failed.
      *
      * @var array
      */
     private $createdObjects = array();
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     protected function setUp(): void
@@ -59,11 +63,13 @@ class ObjectsCase extends AbstractBaseCase
     //====================================================================//
 
     /**
-     * Data Privider : Objects Types Tests Sequences
+     * Data Provider : Objects Types Tests Sequences
+     *
+     * @throws Exception
      *
      * @return array
      */
-    public function objectTypesProvider()
+    public function objectTypesProvider(): array
     {
         $result = array();
 
@@ -107,11 +113,13 @@ class ObjectsCase extends AbstractBaseCase
     }
 
     /**
-     * Data Privider : Objects Types x Fields Tests Sequences
+     * Data Provider : Objects Types x Fields Tests Sequences
+     *
+     * @throws Exception
      *
      * @return array
      */
-    public function objectFieldsProvider()
+    public function objectFieldsProvider(): array
     {
         $result = array();
 
@@ -147,10 +155,10 @@ class ObjectsCase extends AbstractBaseCase
                 foreach (Splash::object($objectType)->fields() as $field) {
                     //====================================================================//
                     //   Filter Tested Object Fields  =>> Skip
-                    if (!self::isAllowedObjectField($field->id)) {
+                    if (!self::isAllowedObjectField($field['id'])) {
                         continue;
                     }
-                    $dataSetName = '['.$testSequence."] ".$objectType."->".$field->id;
+                    $dataSetName = '['.$testSequence."] ".$objectType."->".$field['id'];
                     $result[$dataSetName] = array($testSequence, $objectType, $field);
                 }
             }
@@ -169,7 +177,7 @@ class ObjectsCase extends AbstractBaseCase
      *
      * @return void
      */
-    protected function setCurrentObject($objectType, $objectId)
+    protected function setCurrentObject(string $objectType, string $objectId): void
     {
         $this->settings["CurrentType"] = $objectType;
         $this->settings["CurrentId"] = $objectId;
@@ -182,12 +190,12 @@ class ObjectsCase extends AbstractBaseCase
     /**
      * Add Object Id to List of Tested Objects (To delete at the End)
      *
-     * @param string     $objectType
-     * @param int|string $objectId
+     * @param string      $objectType
+     * @param null|string $objectId
      *
      * @return void
      */
-    protected function addTestedObject($objectType, $objectId = null)
+    protected function addTestedObject(string $objectType, string $objectId = null)
     {
         $this->createdObjects[] = array(
             "ObjectType" => $objectType,
@@ -198,9 +206,11 @@ class ObjectsCase extends AbstractBaseCase
     /**
      * Delete all Objects Created for Testing
      *
+     * @throws Exception
+     *
      * @return void
      */
-    protected function cleanTestedObjects()
+    protected function cleanTestedObjects(): void
     {
         foreach ($this->createdObjects as $object) {
             if (empty($object["ObjectId"])) {

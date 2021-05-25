@@ -238,7 +238,7 @@ trait AssertionsTrait
 
         //====================================================================//
         //   Write Verifications
-        if ($image->write) {
+        if ($image['write']) {
             $this->assertFieldIsWrite($itemProp, "image", $comment);
             $this->assertFieldIsWrite($itemProp, "isCover", $coverComment);
             $this->assertFieldIsWrite($itemProp, "isVisibleImage", $enComment);
@@ -298,7 +298,7 @@ trait AssertionsTrait
             $this->assertFieldNotRequired($itemProp, $fieldId, "Product ".$fieldName);
             //====================================================================//
             //   Write Verifications
-            if ($variantCode->write && ("VariantAttributeName" != $fieldId)) {
+            if ($variantCode['write'] && ("VariantAttributeName" != $fieldId)) {
                 $this->assertFieldIsWrite($itemProp, $fieldId, "Product ".$fieldName);
             }
         }

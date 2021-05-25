@@ -28,19 +28,19 @@ trait FieldsManagerTrait
     //==============================================================================
 
     /**
-     * Filter a Fields List to keap only given Fields Ids
+     * Filter a Fields List to keep only given Fields Ids
      *
-     * @param array $fieldsList Object Field List
-     * @param array $filters    Array of Fields Ids
+     * @param array[] $fieldsList Object Field List
+     * @param array   $filters    Array of Fields Ids
      *
      * @return array
      */
-    public static function filterFieldList($fieldsList, $filters = array())
+    public static function filterFieldList($fieldsList, $filters = array()): array
     {
         $result = array();
 
         foreach ($fieldsList as $field) {
-            if (in_array($field->id, $filters, true)) {
+            if (in_array($field["id"], $filters, true)) {
                 $result[] = $field;
             }
         }
@@ -49,7 +49,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * Filter a Fields List to keap only given Fields Tags
+     * Filter a Fields List to keep only given Fields Tags
      *
      * @param array  $fieldsList Object Field List
      * @param string $itemType   Field Microdata Type Url
@@ -57,16 +57,16 @@ trait FieldsManagerTrait
      *
      * @return array
      */
-    public static function filterFieldListByTag($fieldsList, $itemType, $itemProp)
+    public static function filterFieldListByTag($fieldsList, $itemType, $itemProp): array
     {
         $result = array();
         $tag = md5($itemProp.IDSPLIT.$itemType);
 
         foreach ($fieldsList as $field) {
-            if ($field->tag !== $tag) {
+            if ($field["tag"] !== $tag) {
                 continue;
             }
-            if (($field->itemtype !== $itemType) || ($field->itemprop !== $itemProp)) {
+            if (($field["itemtype"] !== $itemType) || ($field["itemprop"] !== $itemProp)) {
                 continue;
             }
             $result[] = $field;
@@ -81,9 +81,9 @@ trait FieldsManagerTrait
      * @param array $fieldsList Object Field List
      * @param array $fieldId    Field Id
      *
-     * @return null|ArrayObject
+     * @return null|array
      */
-    public static function findField($fieldsList, $fieldId)
+    public static function findField($fieldsList, $fieldId): ?array
     {
         $fields = self::filterFieldList($fieldsList, $fieldId);
 
@@ -101,9 +101,9 @@ trait FieldsManagerTrait
      * @param string $itemType   Field Microdata Type Url
      * @param string $itemProp   Field Microdata Property Name
      *
-     * @return null|ArrayObject
+     * @return null|array
      */
-    public static function findFieldByTag($fieldsList, $itemType, $itemProp)
+    public static function findFieldByTag($fieldsList, $itemType, $itemProp): ?array
     {
         $fields = self::filterFieldListByTag($fieldsList, $itemType, $itemProp);
 
@@ -115,7 +115,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * Redure a Fields List to an Array of Field Ids
+     * Reduce a Fields List to an Array of Field Ids
      *
      * @param array $fieldsList Object Field List
      * @param bool  $isRead     Filter non Readable Fields
@@ -123,22 +123,22 @@ trait FieldsManagerTrait
      *
      * @return string[]
      */
-    public static function reduceFieldList($fieldsList, $isRead = false, $isWrite = false)
+    public static function reduceFieldList($fieldsList, $isRead = false, $isWrite = false): array
     {
         $result = array();
 
         foreach ($fieldsList as $field) {
             //==============================================================================
             //      Filter Non-Readable Fields
-            if ($isRead && !$field->read) {
+            if ($isRead && !$field["read"]) {
                 continue;
             }
             //==============================================================================
             //      Filter Non-Writable Fields
-            if ($isWrite && !$field->write) {
+            if ($isWrite && !$field["write"]) {
                 continue;
             }
-            $result[] = $field->id;
+            $result[] = $field["id"];
         }
 
         return $result;
@@ -369,7 +369,7 @@ trait FieldsManagerTrait
      *
      * @return null|array
      */
-    public static function filterData($objectData, $filters = array())
+    public static function filterData(array $objectData, array $filters = array()): ?array
     {
         $result = array();
         $listFilters = array();
@@ -422,7 +422,7 @@ trait FieldsManagerTrait
      *
      * @return array
      */
-    public static function filterListData($objectData, $filters = array())
+    public static function filterListData($objectData, array $filters = array()): array
     {
         $result = array();
         //====================================================================//

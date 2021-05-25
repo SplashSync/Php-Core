@@ -24,9 +24,9 @@ use Splash\Client\Splash;
  */
 abstract class AbstractBaseCase extends TestCase
 {
-    use \Splash\Tests\Tools\Traits\SettingsTrait;
-    use \Splash\Tests\Tools\Traits\ObjectsValidatorTrait;
-    use \Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
+    use Traits\SettingsTrait;
+    use Traits\ObjectsValidatorTrait;
+    use Traits\ObjectsAssertionsTrait;
 
     /**
      * @return void
@@ -65,9 +65,11 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @param string $objectType Object Type Name
      *
+     * @throws Exception
+     *
      * @return bool
      */
-    public static function isAllowedObjectType($objectType)
+    public static function isAllowedObjectType(string $objectType): bool
     {
         //====================================================================//
         //   Filter Tested Object Types  =>> Skip
@@ -92,7 +94,7 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @return bool
      */
-    public static function isAllowedObjectField($identifier)
+    public static function isAllowedObjectField(string $identifier): bool
     {
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
@@ -114,10 +116,10 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function getLocalServerSoapUrl()
+    public function getLocalServerSoapUrl(): string
     {
         //====================================================================//
-        // Get ServerInfos from WebService Componant
+        // Get ServerInfos from WebService Component
         $infos = Splash::ws()->getServerInfos();
 
         //====================================================================//
@@ -146,20 +148,18 @@ abstract class AbstractBaseCase extends TestCase
 
         //====================================================================//
         // GENERATE FAKE SPLASH SERVER HOST URL
-        $soapUrl = $_SERVER['SERVER_NAME'].$infos["ServerPath"];
-
-        return  $soapUrl;
+        return $_SERVER['SERVER_NAME'].$infos["ServerPath"];
     }
 
     /**
      * Verify Response Is Valid
      *
-     * @param string      $response WebService Raw Response Block
-     * @param ArrayObject $config   WebService Request Configuration
+     * @param string           $response WebService Raw Response Block
+     * @param null|ArrayObject $config   WebService Request Configuration
      *
      * @return ArrayObject
      */
-    public function checkResponse($response, $config = null)
+    public function checkResponse(string $response, ArrayObject $config = null): ArrayObject
     {
         //====================================================================//
         // RESPONSE BLOCK IS NOT EMPTY
@@ -204,12 +204,12 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Verify Response Log Is Valid
      *
-     * @param ArrayObject $logs   WebService Log Array
-     * @param ArrayObject $config WebService Request Configuration
+     * @param ArrayObject      $logs   WebService Log Array
+     * @param null|ArrayObject $config WebService Request Configuration
      *
      * @return void
      */
-    public function checkResponseLog($logs, $config = null)
+    public function checkResponseLog(ArrayObject $logs, ArrayObject $config = null): void
     {
         //====================================================================//
         // SERVER LOG ARRAY FORMAT
@@ -249,6 +249,7 @@ abstract class AbstractBaseCase extends TestCase
         //   Extract Logs From Response
         Splash::log()->merge($logs);
     }
+
     /**
      * Verify Response Log Is Valid
      *
@@ -258,7 +259,7 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @return void
      */
-    public function checkResponseLogArray($logs, $type, $name)
+    public function checkResponseLogArray(ArrayObject $logs, string $type, string $name)
     {
         if (!isset($logs->{$type}) || empty($logs->{$type})) {
             return;
@@ -282,7 +283,7 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @return void
      */
-    public function checkResponseServer($server)
+    public function checkResponseServer(ArrayObject $server)
     {
         //====================================================================//
         // SERVER Informations  => Available
@@ -303,12 +304,12 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Verify Response Tasks Results are Valid
      *
-     * @param ArrayObject $tasks  WebService Server Tasks Results Array
-     * @param ArrayObject $config WebService Request Configuration
+     * @param ArrayObject      $tasks  WebService Server Tasks Results Array
+     * @param null|ArrayObject $config WebService Request Configuration
      *
      * @return void
      */
-    public function checkResponseTasks($tasks, $config = null)
+    public function checkResponseTasks(ArrayObject $tasks, ArrayObject $config = null)
     {
         //====================================================================//
         // TASKS RESULTS ARRAY FORMAT
@@ -345,11 +346,13 @@ abstract class AbstractBaseCase extends TestCase
     //====================================================================//
 
     /**
-     * Data Privider : Simple Tests Sequences
+     * Data Provider : Simple Tests Sequences
+     *
+     * @throws Exception
      *
      * @return array
      */
-    public function sequencesProvider()
+    public function sequencesProvider(): array
     {
         $result = array();
         $testSequences = array("None");
@@ -381,9 +384,11 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Load or Reload Tests Parameters for Current Test Sequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    protected function loadLocalTestParameters()
+    protected function loadLocalTestParameters(): void
     {
         //====================================================================//
         // Safety Check
@@ -408,13 +413,15 @@ abstract class AbstractBaseCase extends TestCase
     }
 
     /**
-     * Configure Environement for this Test Sequence
+     * Configure Environment for this Test Sequence
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    protected function loadLocalTestSequence($testSequence)
+    protected function loadLocalTestSequence(string $testSequence): void
     {
         //====================================================================//
         // Check if Local Tests Sequences are defined
@@ -440,8 +447,12 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @return ArrayObject|bool|string
      */
-    protected function genericAction($service, $action, $description, array $parameters = array(true))
-    {
+    protected function genericAction(
+        string $service,
+        string $action,
+        string $description,
+        array $parameters = array(true)
+    ) {
         //====================================================================//
         //   Prepare Request Data
         Splash::ws()->addTask($action, $parameters, $description);
@@ -475,8 +486,12 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @return array
      */
-    protected function multipleAction($service, $action, $description, array $tasksParameters = array())
-    {
+    protected function multipleAction(
+        string $service,
+        string $action,
+        string $description,
+        array $tasksParameters = array()
+    ): array {
         //====================================================================//
         //   Prepare Request Data
         foreach ($tasksParameters as $parameters) {
@@ -516,8 +531,12 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @return ArrayObject
      */
-    protected function genericErrorAction($service, $action, $description, array $parameters = array(true))
-    {
+    protected function genericErrorAction(
+        string $service,
+        string $action,
+        string $description,
+        array $parameters = array(true)
+    ): ArrayObject {
         //====================================================================//
         //   Prepare Request Data
         Splash::ws()->addTask($action, $parameters, $description);
@@ -561,8 +580,12 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @return ArrayObject|bool|string
      */
-    protected function genericFastAction($service, $action, $description, array $parameters = array(true))
-    {
+    protected function genericFastAction(
+        string $service,
+        string $action,
+        string $description,
+        array $parameters = array(true)
+    ) {
         //====================================================================//
         //   Prepare Request Data
         Splash::ws()->addTask($action, $parameters, $description);
@@ -597,7 +620,7 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @return array
      */
-    protected static function toArray($data)
+    protected static function toArray($data): array
     {
         if (($data instanceof ArrayObject)) {
             return $data->getArrayCopy();

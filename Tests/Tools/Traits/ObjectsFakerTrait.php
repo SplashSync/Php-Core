@@ -15,7 +15,7 @@
 
 namespace Splash\Tests\Tools\Traits;
 
-use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Models\Helpers\InlineHelper;
 
@@ -41,15 +41,21 @@ trait ObjectsFakerTrait
     /**
      * Generate Fake Object Fields List
      *
-     * @param string      $objectType Object Type Name
-     * @param array|false $fieldsList Object Field Ids List
-     * @param bool        $associate  Include Associated Fields
-     * @param bool        $nonTested  Include Non Tested Fields
+     * @param string     $objectType Object Type Name
+     * @param null|array $fieldsList Object Field Ids List
+     * @param bool       $associate  Include Associated Fields
+     * @param bool       $nonTested  Include Non Tested Fields
      *
-     * @return array $Out            Array of Fields
+     * @throws Exception
+     *
+     * @return array[] Array of Fields
      */
-    public function fakeFieldsList($objectType, $fieldsList = false, $associate = false, $nonTested = true)
-    {
+    public function fakeFieldsList(
+        string $objectType,
+        array $fieldsList = null,
+        bool $associate = false,
+        bool $nonTested = true
+    ): array {
         //====================================================================//
         // Safety Check => $ObjectType is a valid
         $this->assertTrue(
@@ -78,7 +84,7 @@ trait ObjectsFakerTrait
             }
             //====================================================================//
             // Add Fields to List
-            $outputs[$field->id] = $field;
+            $outputs[$field['id']] = $field;
         }
 
         //====================================================================//
@@ -98,8 +104,8 @@ trait ObjectsFakerTrait
             //====================================================================//
             // For Associated Fields
             foreach ($fields as $field) {
-                if (in_array($field->id, self::toArray($outField->asso), true)) {
-                    $outputs[$field->id] = $field;
+                if (in_array($field['id'], self::toArray($outField->asso), true)) {
+                    $outputs[$field['id']] = $field;
                 }
             }
         }
@@ -110,11 +116,13 @@ trait ObjectsFakerTrait
     /**
      * Create Fake/Dummy Object Data
      *
-     * @param array $fieldsList Object Field List
+     * @param array[] $fieldsList Object Field List
      *
-     * @return array
+     * @throws Exception
+     *
+     * @return array[]
      */
-    public function fakeObjectData($fieldsList)
+    public function fakeObjectData(array $fieldsList): array
     {
         //====================================================================//
         // Create Dummy Data Array
@@ -128,19 +136,19 @@ trait ObjectsFakerTrait
         foreach ($fieldsList as $field) {
             //====================================================================//
             // Generate Single Fields Dummy Data (is Not a List Field)
-            if (!self::isListField($field->id)) {
-                $choices = self::toArray($field->choices);
-                $options = self::toArray($field->options);
-                $outputs[$field->id] = $this->isFieldToPreserve($field)
-                    ? (isset($this->originData) ? $this->originData[$field->id] : null)
-                    : self::fakeFieldData($field->type, $choices, $options);
+            if (!self::isListField($field['id'])) {
+                $choices = self::toArray($field['choices']);
+                $options = self::toArray($field['options']);
+                $outputs[$field['id']] = $this->isFieldToPreserve($field)
+                    ? (isset($this->originData) ? $this->originData[$field['id']] : null)
+                    : self::fakeFieldData($field['type'], $choices, $options);
 
                 continue;
             }
 
             //====================================================================//
             // Generate Dummy List  Data
-            $list = self::isListField($field->id);
+            $list = self::isListField($field['id']);
             $this->assertIsArray($list);
             $listName = $list["listname"];
             $fieldName = $list["fieldname"];
@@ -166,24 +174,26 @@ trait ObjectsFakerTrait
     /**
      * Create Fake/Dummy Object List Data
      *
-     * @param ArrayObject $field Object Field Definition
+     * @param array $field Object Field Definition
+     *
+     * @throws Exception
      *
      * @return array
      */
-    public function fakeListData($field)
+    public function fakeListData(array $field): array
     {
         //====================================================================//
         // Read Number of Items to Put in Lists
-        $nbItems = $this->settings["ListItems"]?$this->settings["ListItems"]:2;
+        $nbItems = $this->settings["ListItems"]?:2;
         //====================================================================//
         // Parse List Identifiers
-        $list = self::isListField($field->id);
-        $type = self::isListField($field->type);
+        $list = self::isListField($field['id']);
+        $type = self::isListField($field['type']);
         $this->assertIsArray($list);
         $this->assertIsArray($type);
 
         //====================================================================//
-        // Generate Unik Dummy Fields Data
+        // Generate Unique Dummy Fields Data
         $listData = array();
         $nbTry = 0;
         while (count($listData) < $nbItems) {
@@ -191,20 +201,20 @@ trait ObjectsFakerTrait
             // Generate Dummy Fields Data
             $data = self::fakeFieldData(
                 $type["fieldname"],
-                self::toArray($field->choices),
-                self::toArray($field->options)
+                self::toArray($field['choices']),
+                self::toArray($field['options'])
             );
             //====================================================================//
             // Compute Md5
-            // or Use Try Count In Case we were not able to generate Unik Data
+            // or Use Try Count In Case we were not able to generate Unique Data
             $md5 = ($nbTry < 10) ? md5(serialize($data)) : $nbTry;
             $listData[$md5] = $data;
             $nbTry++;
         }
         //====================================================================//
-        // Data Set is Not Unik => Add A Warning
+        // Data Set is Not Unique => Add A Warning
         if ($nbTry >= 10) {
-            print_r("Unable to Generate Unik List Dataset from Field: ".$field->id.PHP_EOL);
+            print_r("Unable to Generate Unique List Dataset from Field: ".$field['id'].PHP_EOL);
             print_r("Generated List may Contain Duplicated Values".PHP_EOL);
             print_r("Possible Fix: Ensure Pointed Object List is NOT Empty".PHP_EOL);
         }
@@ -225,13 +235,13 @@ trait ObjectsFakerTrait
     /**
      * Create Fake Field data
      *
-     * @param string $type    Object Field Type
-     * @param array  $choices Object Field Possible Values
-     * @param array  $options Object Field Values Options
+     * @param string     $type    Object Field Type
+     * @param null|array $choices Object Field Possible Values
+     * @param array      $options Object Field Values Options
      *
      * @return array|bool|string
      */
-    public function fakeFieldData($type, $choices = null, $options = array())
+    public function fakeFieldData(string $type, array $choices = null, array $options = array())
     {
         //====================================================================//
         // Safety Check
@@ -270,7 +280,7 @@ trait ObjectsFakerTrait
      *
      * @return null|array|bool|string
      */
-    public function fakeFieldDataFromChoices($type, $choices)
+    public function fakeFieldDataFromChoices(string $type, array $choices)
     {
         // Ensure Choices have numeric Index
         $choices = array_values($choices);
@@ -292,17 +302,17 @@ trait ObjectsFakerTrait
     /**
      * Check if Field Need to be in List
      *
-     * @param ArrayObject $field      Field Definition
-     * @param array|false $fieldsList Object Field Ids List
-     * @param bool        $nonTested  Include Non Tested Fields
+     * @param array      $field      Field Definition
+     * @param null|array $fieldsList Object Field Ids List
+     * @param bool       $nonTested  Include Non Tested Fields
      *
      * @return bool
      */
-    private function isFieldNeeded($field, $fieldsList = false, $nonTested = true)
+    private function isFieldNeeded(array $field, array $fieldsList = null, bool $nonTested = true): bool
     {
         //====================================================================//
         // Check if Fields is Writable
-        if (!$field->write) {
+        if (!$field['write']) {
             return false;
         }
         //====================================================================//
@@ -311,12 +321,12 @@ trait ObjectsFakerTrait
 
         //====================================================================//
         // Required Field
-        if ($field->required) {
+        if ($field['required']) {
             return true;
         }
         //====================================================================//
         // Non Tested Field
-        if ((true == $field->notest) && (false == $nonTested)) {
+        if ((true == $field['notest']) && (false == $nonTested)) {
             return false;
         }
         //====================================================================//
@@ -326,7 +336,7 @@ trait ObjectsFakerTrait
         }
         //====================================================================//
         // Field is in Requested List
-        if (!in_array($field->id, $fieldsList, true)) {
+        if (!in_array($field['id'], $fieldsList, true)) {
             return false;
         }
 
@@ -336,11 +346,11 @@ trait ObjectsFakerTrait
     /**
      * Check if Field Need to e in List
      *
-     * @param ArrayObject $field Field Definition
+     * @param array $field Field Definition
      *
      * @return bool
      */
-    private function isFieldToPreserve($field)
+    private function isFieldToPreserve(array $field): bool
     {
         //====================================================================//
         // Check if Origin Data Exists
@@ -349,12 +359,12 @@ trait ObjectsFakerTrait
         }
         //====================================================================//
         // Check if Origin Data Exists
-        if (!isset($this->originData[$field->id]) || empty($this->originData[$field->id])) {
+        if (!isset($this->originData[$field['id']]) || empty($this->originData[$field['id']])) {
             return false;
         }
         //====================================================================//
         // Check if Fields Should be Tested or Not
-        if (!$field->notest) {
+        if (!$field['notest']) {
             return false;
         }
 

@@ -25,7 +25,7 @@ if (!defined("SPLASH_SERVER_MODE")) {
 
 /**
  * Base PhpUnit Test Class for Splash Modules Tests
- * May be overriden for Using Splash Core Test in Specific Environements
+ * May be overridden for Using Splash Core Test in Specific Environments
  */
 
 abstract class TestCase extends BaseTestCase

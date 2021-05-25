@@ -16,6 +16,7 @@
 namespace Splash\Tests\Tools\Traits;
 
 use ArrayObject;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Splash\Tests\Tools\Fields\FieldInterface;
 use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
@@ -37,7 +38,7 @@ trait ObjectsDataTrait
      *
      * @return bool
      */
-    public function compareRawData($block1, $block2, $testController = null, $comment = null)
+    public function compareRawData($block1, $block2, $testController = null, string $comment = null): bool
     {
         //====================================================================//
         // Filter ArrayObjects
@@ -87,42 +88,42 @@ trait ObjectsDataTrait
     /**
      * Check Two Object Data Blocks using Field's Compare functions
      *
-     * @param array  $fields  Array of OpenObject Fields Definitions
-     * @param array  $block1  Raw Data to Compare
-     * @param array  $block2  Raw Data to Compare
-     * @param string $comment Comment on this Test
+     * @param array[] $fields Array of OpenObject Fields Definitions
+     * @param mixed $block1 Raw Data to Compare
+     * @param mixed $block2 Raw Data to Compare
+     * @param null|string $comment Comment on this Test
      *
      * @return bool
+     * @throws Exception
      */
-    public function compareDataBlocks($fields, $block1, $block2, $comment = null)
+    public function compareDataBlocks(array $fields, $block1, $block2, string $comment = null): bool
     {
         //====================================================================//
         // For Each Object Fields
-        /** @var ArrayObject $field */
         foreach ($fields as $field) {
             //====================================================================//
             // If Non Readable Field => Skip Verification
-            if (!$field->read) {
+            if (!$field['read']) {
                 continue;
             }
 
             //====================================================================//
             // Extract Field Data
-            $data1 = $this->filterData($block1, array($field->id));
-            $data2 = $this->filterData($block2, array($field->id));
+            $data1 = $this->filterData($block1, array($field['id']));
+            $data2 = $this->filterData($block2, array($field['id']));
 
             //====================================================================//
             // Compare List Data
-            $fieldType = self::isListField($field->type);
+            $fieldType = self::isListField($field['type']);
             if ($fieldType) {
-                $this->assertIsArray($data1, $comment."->".$field->id);
-                $this->assertIsArray($data2, $comment."->".$field->id);
+                $this->assertIsArray($data1, $comment."->".$field['id']);
+                $this->assertIsArray($data2, $comment."->".$field['id']);
                 $result = $this->compareListField(
                     $fieldType["fieldname"],
-                    $field->id,
+                    $field['id'],
                     $data1,
                     $data2,
-                    $comment."->".$field->id
+                    $comment."->".$field['id']
                 );
 
             //====================================================================//
@@ -131,17 +132,17 @@ trait ObjectsDataTrait
                 $this->assertIsArray($data1);
                 $this->assertIsArray($data2);
                 $result = $this->compareField(
-                    $field->type,
-                    $data1[$field->id],
-                    $data2[$field->id],
-                    $comment."->".$field->id
+                    $field['type'],
+                    $data1[$field['id']],
+                    $data2[$field['id']],
+                    $comment."->".$field['id']
                 );
             }
 
             //====================================================================//
-            // If Compare Failled => Return Fail Code
+            // If Compare Failed => Return Fail Code
             if (true !== $result) {
-                return $result;
+                return false;
             }
         }
 
@@ -152,13 +153,13 @@ trait ObjectsDataTrait
      * Check Two Object Data Blocks using Field's Compare functions
      *
      * @param string      $fieldType Field Type Name
-     * @param array       $block1    Raw Data to Compare
-     * @param array       $block2    Raw Data to Compare
+     * @param mixed       $block1    Raw Data to Compare
+     * @param mixed       $block2    Raw Data to Compare
      * @param null|string $comment   Comment on this Test
      *
      * @return bool
      */
-    private function compareField($fieldType, $block1, $block2, $comment = null)
+    private function compareField(string $fieldType, $block1, $block2, string $comment = null): bool
     {
         //====================================================================//
         // Build Full ClassName
@@ -167,7 +168,7 @@ trait ObjectsDataTrait
         } else {
             $className = self::isValidType($fieldType);
         }
-        if (false === $className) {
+        if (!$className) {
             return false;
         }
 
@@ -212,10 +213,17 @@ trait ObjectsDataTrait
      * @param array       $block2    Raw Data to Compare
      * @param null|string $comment   Comment on this Test
      *
+     * @throws Exception
+     *
      * @return bool
      */
-    private function compareListField($fieldType, $fieldId, $block1, $block2, $comment = null)
-    {
+    private function compareListField(
+        string $fieldType,
+        string $fieldId,
+        array $block1,
+        array $block2,
+        string $comment = null
+    ): bool {
         //====================================================================//
         // Explode List Field Id
         $fieldIdArray = self::isListField($fieldId);
@@ -226,7 +234,7 @@ trait ObjectsDataTrait
 
         //====================================================================//
         // Extract List Data
-        $list1 = isset($block1[$listName]) ? $block1[$listName] : array();
+        $list1 = $block1[$listName] ?? array();
         $list2 = $block2[$listName];
 
         //====================================================================//
@@ -266,7 +274,7 @@ trait ObjectsDataTrait
             // Compare Items
             $result = $this->compareField($fieldType, $item1[$fieldName], $item2[$fieldName], $comment);
             if (true !== $result) {
-                return $result;
+                return false;
             }
         }
 

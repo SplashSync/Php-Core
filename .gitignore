@@ -24,3 +24,4 @@ save-commands.json
 nbproject/
 .idea
 /.gh-pages/
+/.php-cs-fixer.cache

@@ -46,7 +46,7 @@ interface ObjectInterface
      * @see If you uses the InteliParser, this Function not Required
      * @since 1.0.0
      *
-     * @return array $data       List of all available fields
+     * @return array[] $data       List of all available fields
      */
     public function fields();
 

@@ -26,7 +26,7 @@ use Splash\Components\FieldsManager;
  */
 trait ObjectsAssertionsTrait
 {
-    /** @var array */
+    /** @var array[] */
     protected $fields = array();
 
     //==============================================================================
@@ -43,7 +43,7 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    public function assertArrayInternalType($data, $key, $type, $comment)
+    public function assertArrayInternalType($data, string $key, string $type, string $comment): void
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertNotEmpty($data[$key], $comment." => Key '".$key."' is Empty");
@@ -77,7 +77,7 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    public function assertArrayInstanceOf($data, $key, $type, $comment)
+    public function assertArrayInstanceOf($data, string $key, string $type, string $comment): void
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertNotEmpty($data[$key], $comment." => Key '".$key."' is Empty");
@@ -97,7 +97,7 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    public function assertIsSplashBool($data, $comment)
+    public function assertIsSplashBool($data, string $comment): void
     {
         $test = is_bool($data) || ("0" === $data) || ("1" === $data);
         $this->assertTrue($test, $comment);
@@ -112,7 +112,7 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    public function assertArraySplashBool($data, $key, $comment)
+    public function assertArraySplashBool($data, string $key, string $comment): void
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertIsSplashBool(
@@ -129,7 +129,7 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    public function assertIsSplashArray($data, $comment)
+    public function assertIsSplashArray($data, string $comment): void
     {
         $test = is_array($data) || ($data instanceof ArrayObject) || ("" === $data);
         $this->assertTrue($test, $comment);
@@ -144,7 +144,7 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    public function assertArraySplashArray($data, $key, $comment)
+    public function assertArraySplashArray($data, string $key, string $comment): void
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertIsSplashArray(
@@ -162,13 +162,13 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    public function assertIsValidSplashFieldData($data, $type, $comment)
+    public function assertIsValidSplashFieldData($data, string $type, string $comment): void
     {
         //====================================================================//
         // Verify Type is Valid
         $className = self::isValidType($type);
         $this->assertNotEmpty($className, "Field Type '".$type."' is not a Valid Splash Field Type.".$comment);
-        if (false === $className) {
+        if (!$className) {
             return;
         }
 
@@ -183,13 +183,13 @@ trait ObjectsAssertionsTrait
     /**
      * Verify Object Field is Defined
      *
-     * @param string $itemType Field Microdata Type Url
-     * @param string $itemProp Field Microdata Property Name
-     * @param string $comment
+     * @param string      $itemType Field Microdata Type Url
+     * @param string      $itemProp Field Microdata Property Name
+     * @param null|string $comment
      *
      * @return void
      */
-    public function assertFieldIsDefined($itemType, $itemProp, $comment = null)
+    public function assertFieldIsDefined(string $itemType, string $itemProp, string $comment = null): void
     {
         //====================================================================//
         //   Touch this Field
@@ -205,15 +205,19 @@ trait ObjectsAssertionsTrait
     /**
      * Verify Object Field is in Allowed Formats
      *
-     * @param string $itemType Field Microdata Type Url
-     * @param string $itemProp Field Microdata Property Name
-     * @param array  $formats  Array of Allowed Splash Field Formats
-     * @param string $comment
+     * @param string      $itemType Field Microdata Type Url
+     * @param string      $itemProp Field Microdata Property Name
+     * @param array       $formats  Array of Allowed Splash Field Formats
+     * @param null|string $comment
      *
      * @return void
      */
-    public function assertFieldHasFormat($itemType, $itemProp, $formats, $comment = null)
-    {
+    public function assertFieldHasFormat(
+        string $itemType,
+        string $itemProp,
+        array $formats,
+        string $comment = null
+    ): void {
         //====================================================================//
         //   Touch this Field
         $field = $this->loadObjectFieldByTag($itemType, $itemProp);
@@ -223,11 +227,11 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            in_array($field->type, $formats, true),
+            in_array($field['type'], $formats, true),
             self::buildResult(
                 $itemType,
                 $itemProp,
-                " must be a ".implode("|", $formats)." Current is ".$field->type,
+                " must be a ".implode("|", $formats)." Current is ".$field['type'],
                 $comment
             )
         );
@@ -236,13 +240,13 @@ trait ObjectsAssertionsTrait
     /**
      * Verify Object Field is Readable
      *
-     * @param string $itemType Field Microdata Type Url
-     * @param string $itemProp Field Microdata Property Name
-     * @param string $comment
+     * @param string      $itemType Field Microdata Type Url
+     * @param string      $itemProp Field Microdata Property Name
+     * @param null|string $comment
      *
      * @return void
      */
-    public function assertFieldIsRead($itemType, $itemProp, $comment = null)
+    public function assertFieldIsRead(string $itemType, string $itemProp, string $comment = null): void
     {
         //====================================================================//
         //   Touch this Field
@@ -253,7 +257,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            (bool) $field->read,
+            (bool) $field['read'],
             self::buildResult($itemType, $itemProp, " must be readable.", $comment)
         );
     }
@@ -261,13 +265,13 @@ trait ObjectsAssertionsTrait
     /**
      * Verify Object Field is Writeable
      *
-     * @param string $itemType Field Microdata Type Url
-     * @param string $itemProp Field Microdata Property Name
-     * @param string $comment
+     * @param string      $itemType Field Microdata Type Url
+     * @param string      $itemProp Field Microdata Property Name
+     * @param null|string $comment
      *
      * @return void
      */
-    public function assertFieldIsWrite($itemType, $itemProp, $comment = null)
+    public function assertFieldIsWrite(string $itemType, string $itemProp, string $comment = null): void
     {
         //====================================================================//
         //   Touch this Field
@@ -278,7 +282,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            (bool) $field->write,
+            (bool) $field['write'],
             self::buildResult($itemType, $itemProp, " must be writeable.", $comment)
         );
     }
@@ -286,13 +290,13 @@ trait ObjectsAssertionsTrait
     /**
      * Verify Object Field is NOT Writeable
      *
-     * @param string $itemType Field Microdata Type Url
-     * @param string $itemProp Field Microdata Property Name
-     * @param string $comment
+     * @param string      $itemType Field Microdata Type Url
+     * @param string      $itemProp Field Microdata Property Name
+     * @param null|string $comment
      *
      * @return void
      */
-    public function assertFieldNotWrite($itemType, $itemProp, $comment = null)
+    public function assertFieldNotWrite(string $itemType, string $itemProp, string $comment = null): void
     {
         //====================================================================//
         //   Touch this Field
@@ -303,7 +307,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertFalse(
-            (bool) $field->write,
+            (bool) $field['write'],
             self::buildResult($itemType, $itemProp, " must be read-only.", $comment)
         );
     }
@@ -311,13 +315,13 @@ trait ObjectsAssertionsTrait
     /**
      * Verify Object Field is Required
      *
-     * @param string $itemType Field Microdata Type Url
-     * @param string $itemProp Field Microdata Property Name
-     * @param string $comment
+     * @param string      $itemType Field Microdata Type Url
+     * @param string      $itemProp Field Microdata Property Name
+     * @param null|string $comment
      *
      * @return void
      */
-    public function assertFieldIsRequired($itemType, $itemProp, $comment = null)
+    public function assertFieldIsRequired(string $itemType, string $itemProp, string $comment = null): void
     {
         //====================================================================//
         //   Touch this Field
@@ -328,7 +332,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            (bool) $field->required,
+            (bool) $field['required'],
             self::buildResult($itemType, $itemProp, " must be required.", $comment)
         );
     }
@@ -336,13 +340,13 @@ trait ObjectsAssertionsTrait
     /**
      * Verify Object Field is NOT Required
      *
-     * @param string $itemType Field Microdata Type Url
-     * @param string $itemProp Field Microdata Property Name
-     * @param string $comment
+     * @param string      $itemType Field Microdata Type Url
+     * @param string      $itemProp Field Microdata Property Name
+     * @param null|string $comment
      *
      * @return void
      */
-    public function assertFieldNotRequired($itemType, $itemProp, $comment = null)
+    public function assertFieldNotRequired(string $itemType, string $itemProp, string $comment = null): void
     {
         //====================================================================//
         //   Touch this Field
@@ -353,7 +357,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertFalse(
-            (bool) $field->required,
+            (bool) $field['required'],
             self::buildResult($itemType, $itemProp, " must not be Required.", $comment)
         );
     }
@@ -361,13 +365,13 @@ trait ObjectsAssertionsTrait
     /**
      * Verify Object Field is In List
      *
-     * @param string $itemType Field Microdata Type Url
-     * @param string $itemProp Field Microdata Property Name
-     * @param string $comment
+     * @param string      $itemType Field Microdata Type Url
+     * @param string      $itemProp Field Microdata Property Name
+     * @param null|string $comment
      *
      * @return void
      */
-    public function assertFieldIsInList($itemType, $itemProp, $comment = null)
+    public function assertFieldIsInList(string $itemType, string $itemProp, string $comment = null): void
     {
         //====================================================================//
         //   Touch this Field
@@ -378,7 +382,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Verify this Field
         $this->assertTrue(
-            (bool) $field->inlist,
+            (bool) $field['inList'],
             $comment." ".$itemType.":".$itemProp." must be readable."
         );
     }
@@ -392,7 +396,7 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    public function assertIsLastCommited($action, $objectType, $objectId)
+    public function assertIsLastCommitted(string $action, string $objectType, string $objectId): void
     {
         $this->assertIsCommitted($action, $objectType, $objectId, false);
     }
@@ -406,7 +410,7 @@ trait ObjectsAssertionsTrait
      *
      * @return void
      */
-    public function assertIsFirstCommited($action, $objectType, $objectId)
+    public function assertIsFirstCommitted(string $action, string $objectType, string $objectId): void
     {
         $this->assertIsCommitted($action, $objectType, $objectId, true);
     }
@@ -417,11 +421,11 @@ trait ObjectsAssertionsTrait
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
      * @param string $objectId   Expected Object Id
-     * @param bool   $first      Check First or Last Commited
+     * @param bool   $first      Check First or Last Committed
      *
      * @return void
      */
-    private function assertIsCommitted(string $action, string $objectType, string $objectId, bool $first = true)
+    private function assertIsCommitted(string $action, string $objectType, string $objectId, bool $first = true): void
     {
         $sessionCommits = CommitsManager::getSessionCommitted();
         //====================================================================//
@@ -502,9 +506,9 @@ trait ObjectsAssertionsTrait
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
      *
-     * @return null|ArrayObject
+     * @return null|array
      */
-    private function loadObjectFieldByTag(string $itemType, string $itemProp): ?ArrayObject
+    private function loadObjectFieldByTag(string $itemType, string $itemProp): ?array
     {
         //====================================================================//
         //   Ensure Fields List is Loaded
@@ -517,15 +521,19 @@ trait ObjectsAssertionsTrait
     /**
      * Build Test Result Comment
      *
-     * @param string $itemType    Field Microdata Type Url
-     * @param string $itemProp    Field Microdata Property Name
-     * @param string $testComment
-     * @param string $comment
+     * @param string      $itemType    Field Microdata Type Url
+     * @param string      $itemProp    Field Microdata Property Name
+     * @param string      $testComment
+     * @param null|string $comment
      *
      * @return string
      */
-    private static function buildResult($itemType, $itemProp, $testComment, $comment = null)
-    {
+    private static function buildResult(
+        string $itemType,
+        string $itemProp,
+        string $testComment,
+        string $comment = null
+    ): string {
         return $comment." (".$itemType.":".$itemProp.") ".$testComment;
     }
 }

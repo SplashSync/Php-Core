@@ -16,6 +16,7 @@
 namespace Splash\Tests\WsObjects;
 
 use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
@@ -34,9 +35,11 @@ class O02FieldsTest extends ObjectsCase
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFieldsFromModule($testSequence, $objectType)
+    public function testFieldsFromModule(string $testSequence, string $objectType): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -63,9 +66,11 @@ class O02FieldsTest extends ObjectsCase
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFieldsFromObjectsService($testSequence, $objectType)
+    public function testFieldsFromObjectsService(string $testSequence, string $objectType): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -92,9 +97,11 @@ class O02FieldsTest extends ObjectsCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFieldsFromObjectsServiceErrors($testSequence)
+    public function testFieldsFromObjectsServiceErrors(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -112,7 +119,7 @@ class O02FieldsTest extends ObjectsCase
      *
      * @return void
      */
-    public function verifyResponse($data)
+    public function verifyResponse($data): void
     {
         //====================================================================//
         //   Verify Response
@@ -126,18 +133,18 @@ class O02FieldsTest extends ObjectsCase
             $this->verifyFieldRequired($fieldData);
             $this->verifyFieldMetaData($fieldData);
             $this->verifyFieldOptional($fieldData);
-            $this->verifyFieldAssociations($fieldData, $data);
+            $this->verifyFieldAssociations($fieldData, $data->getArrayCopy());
         }
     }
 
     /**
-     * @abstract    Verify Main Field Informations are in right format
+     * Verify Main Field Informations are in right format
      *
      * @param array $field
      *
      * @return void
      */
-    public function verifyFieldRequired($field)
+    public function verifyFieldRequired(array $field)
     {
         //====================================================================//
         // Verify Field Type Name Exists
@@ -183,11 +190,11 @@ class O02FieldsTest extends ObjectsCase
     }
 
     /**
-     * @param ArrayObject $field
+     * @param array $field
      *
      * @return void
      */
-    public function verifyFieldMetaData($field)
+    public function verifyFieldMetaData(array $field): void
     {
         //====================================================================//
         // Field MicroData Infos
@@ -211,11 +218,11 @@ class O02FieldsTest extends ObjectsCase
     }
 
     /**
-     * @param ArrayObject $field
+     * @param array $field
      *
      * @return void
      */
-    public function verifyFieldOptional($field)
+    public function verifyFieldOptional(array $field): void
     {
         //====================================================================//
         // Field Format
@@ -230,12 +237,12 @@ class O02FieldsTest extends ObjectsCase
     }
 
     /**
-     * @param ArrayObject $field
-     * @param ArrayObject $fields
+     * @param array   $field
+     * @param array[] $fields
      *
      * @return void
      */
-    public function verifyFieldAssociations($field, $fields)
+    public function verifyFieldAssociations(array $field, array $fields)
     {
         if (!isset($field["asso"]) || empty($field["asso"])) {
             return;

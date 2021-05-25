@@ -267,15 +267,21 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         //====================================================================//
         // Field Type
         self::updateFieldStrVal($field, $values, "type");
+        //====================================================================//
         // Field Name
         self::updateFieldStrVal($field, $values, "name");
+        //====================================================================//
         // Field Description
         self::updateFieldStrVal($field, $values, "desc");
+        //====================================================================//
         // Field Group
         self::updateFieldStrVal($field, $values, "group");
+        //====================================================================//
         // Field MetaData
         self::updateFieldMeta($field, $values);
-
+        //====================================================================//
+        // Field Choices
+        self::updateFieldChoices($field, $values);
         //====================================================================//
         // Field Favorite Sync Mode
         self::updateFieldStrVal($field, $values, "syncmode");
@@ -349,6 +355,28 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
             if (is_string($field->itemprop) && is_string($field->itemtype)) {
                 $field->tag = md5($field->itemprop.IDSPLIT.$field->itemtype);
             }
+        }
+    }
+
+    /**
+     * Override a Field Meta Definition
+     *
+     * @param ArrayObject $field  Original Field Definition
+     * @param Array       $values Custom Values to Write
+     *
+     * @return void
+     */
+    private static function updateFieldChoices(&$field, $values): void
+    {
+        if (!isset($values["choices"]) || !is_iterable($values["choices"])) {
+            return;
+        }
+        $field["choices"] = array();
+        foreach ($values["choices"] as $description => $value) {
+            $field["choices"][] = array(
+                "key" => $value,
+                "value" => $description
+            );
         }
     }
 }

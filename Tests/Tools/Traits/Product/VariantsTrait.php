@@ -15,7 +15,7 @@
 
 namespace Splash\Tests\Tools\Traits\Product;
 
-use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Models\Helpers\ListsHelper;
 use Splash\Models\Helpers\ObjectsHelper;
@@ -31,9 +31,11 @@ trait VariantsTrait
     /**
      * Override Parent Function to Filter on Products Fields
      *
+     * @throws Exception
+     *
      * @return array
      */
-    public function objectFieldsProvider()
+    public function objectFieldsProvider(): array
     {
         $fields = array();
         foreach (parent::objectFieldsProvider() as $index => $field) {
@@ -44,7 +46,7 @@ trait VariantsTrait
             }
 //            //====================================================================//
 //            // DEBUG => Focus on a Specific Fields
-//            if ($field[2]->id != "image@images") {
+//            if ($field[2]['id'] != "image@images") {
 //                continue;
 //            }
             $fields[$index] = $field;
@@ -63,11 +65,11 @@ trait VariantsTrait
     /**
      * Generate Product Variants Fields Data
      *
-     * @param string $variantProductId Existing Variant Product Id
+     * @param null|string $variantProductId Existing Variant Product Id
      *
      * @return array
      */
-    protected function getProductsVariant($variantProductId = null)
+    protected function getProductsVariant(string $variantProductId = null): array
     {
         //====================================================================//
         //   Verify Product Base Name
@@ -79,12 +81,12 @@ trait VariantsTrait
         //====================================================================//
         //   Generate Product Splash Object Id
         if (is_null($variantProductId)) {
-            return array(ListsHelper::listName($field->id) => array());
+            return array(ListsHelper::listName($field['id']) => array());
         }
         //====================================================================//
         //   Return Field Value
-        return array(ListsHelper::listName($field->id) => array(array(
-            ListsHelper::fieldName($field->id) => ObjectsHelper::encode("Product", $variantProductId)
+        return array(ListsHelper::listName($field['id']) => array(array(
+            ListsHelper::fieldName($field['id']) => ObjectsHelper::encode("Product", $variantProductId)
         )));
     }
 
@@ -95,7 +97,7 @@ trait VariantsTrait
      *
      * @return array
      */
-    protected function getProductsAttributes($attributesCodes)
+    protected function getProductsAttributes(array $attributesCodes): array
     {
         //====================================================================//
         //   Load Required Fields
@@ -107,9 +109,9 @@ trait VariantsTrait
         $result = array();
         //====================================================================//
         // IF TESTED SYSTEM DEFINE POSSIBLE VARIATIONS CODES
-        if (!empty($code->choices)) {
+        if (!empty($code['choices'])) {
             $attributesCodes = array();
-            foreach ($code->choices as $choice) {
+            foreach ($code['choices'] as $choice) {
                 $attributesCodes[] = $choice["key"];
             }
         }
@@ -121,7 +123,7 @@ trait VariantsTrait
         }
 
         return array(
-            self::lists()->listName($code->id) => $result
+            self::lists()->listName($code['id']) => $result
         );
     }
 
@@ -130,29 +132,31 @@ trait VariantsTrait
      *
      * @param string $attributesCode
      *
+     * @throws Exception
+     *
      * @return array
      */
-    protected function getVariantCustomAttribute($attributesCode)
+    protected function getVariantCustomAttribute(string $attributesCode): array
     {
         //====================================================================//
         //   Load Required Fields
         //====================================================================//
 
         /**
-         * @var ArrayObject $code
+         * @var array $code
          */
         $code = self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
         $this->assertNotEmpty($code);
 
         /**
-         * @var ArrayObject[] $names
+         * @var array[] $names
          */
         $names = $this->findMultiFields(static::$attrName);
         $this->assertIsArray($names);
         $this->assertNotEmpty($names);
 
         /**
-         * @var ArrayObject[] $values
+         * @var array[] $values
          */
         $values = $this->findMultiFields(static::$attrValue);
         $this->assertIsArray($values);
@@ -163,7 +167,7 @@ trait VariantsTrait
         //====================================================================//
         // Search for a Field with Same Id as Variation Code
         $attributeField = self::findField($this->fields, array($attributesCode));
-        $attributeChoices = $attributeField ? array_values(self::toArray($attributeField->choices)) : null;
+        $attributeChoices = $attributeField ? array_values(self::toArray($attributeField['choices'])) : null;
 
         //====================================================================//
         //   Generate Random Attributes Set
@@ -172,24 +176,24 @@ trait VariantsTrait
         $attributesSet = array();
         //====================================================================//
         // Setup Attribute Type Code
-        Oovarchar::applyCaseConstrains($code->options, $attributesCode);
-        $attributesSet[self::lists()->fieldName($code->id)] = $attributesCode;
+        Oovarchar::applyCaseConstrains($code['options'], $attributesCode);
+        $attributesSet[self::lists()->fieldName($code['id'])] = $attributesCode;
 
         //====================================================================//
         // Setup Attribute Type Names
         foreach ($names as $name) {
             //====================================================================//
             // Do Not Write ReadOnly Attributes Names
-            if (false == (bool) $name->write) {
+            if (false == (bool) $name['write']) {
                 continue;
             }
             //====================================================================//
             // Add Custom Attributes Names
-            $attributesSet[self::lists()->fieldName($name->id)] = self::fakeFieldData(
-                $name->type,
+            $attributesSet[self::lists()->fieldName($name['id'])] = self::fakeFieldData(
+                $name['type'],
                 null,
                 (array) array_replace_recursive(
-                    self::toArray($name->options),
+                    self::toArray($name['options']),
                     array("minLength" => 4, "maxLength" => 7)
                 )
             );
@@ -197,11 +201,11 @@ trait VariantsTrait
         //====================================================================//
         // Setup Attribute Value Names
         foreach ($values as $value) {
-            $attributesSet[self::lists()->fieldName($value->id)] = self::fakeFieldData(
-                $value->type,
+            $attributesSet[self::lists()->fieldName($value['id'])] = self::fakeFieldData(
+                $value['type'],
                 $attributeChoices,
                 (array) array_replace_recursive(
-                    self::toArray($value->options),
+                    self::toArray($value['options']),
                     array("minLength" => 5, "maxLength" => 10)
                 )
             );
@@ -213,13 +217,15 @@ trait VariantsTrait
     /**
      * Prepare Test of Products Variants
      *
-     * @param string      $testSequence
-     * @param string      $objectType
-     * @param ArrayObject $field
+     * @param string $testSequence
+     * @param string $objectType
+     * @param array  $field
+     *
+     * @throws Exception
      *
      * @return bool
      */
-    protected function initVariantsTest($testSequence, $objectType, $field)
+    protected function initVariantsTest(string $testSequence, string $objectType, array $field): bool
     {
         //====================================================================//
         //   TEST INIT
@@ -248,14 +254,14 @@ trait VariantsTrait
     }
 
     /**
-     * Identify All Multilangual Fields for an Attribute
+     * Identify All Multi-lang Fields for an Attribute
      *
-     * @param string             $itemtype   Item Prop Type
-     * @param null|ArrayObject[] $fieldsList Object Fields List
+     * @param string       $itemtype   Item Prop Type
+     * @param null|array[] $fieldsList Object Fields List
      *
-     * @return ArrayObject[]
+     * @return array[]
      */
-    protected function findMultiFields($itemtype, $fieldsList = null)
+    protected function findMultiFields(string $itemtype, array $fieldsList = null)
     {
         $response = array();
         $fields = is_null($fieldsList) ? $this->fields : $fieldsList;
@@ -270,8 +276,8 @@ trait VariantsTrait
                         : self::findFieldByTag($fields, self::$itemProp."/".$isoCode, $itemtype);
                 //====================================================================//
                 //   Field Not Found
-                if ($field instanceof ArrayObject) {
-                    $response[$field->id] = $field;
+                if ($field) {
+                    $response[$field['id']] = $field;
                 }
             }
         }
