@@ -105,7 +105,7 @@ class XmlManager
      *
      * @return array|false|string
      */
-    protected function xmlToArray($xml)
+    public function xmlToArray($xml)
     {
         //====================================================================//
         // SimpleXMLElement Object to Array

@@ -16,6 +16,7 @@
 namespace Splash\Tests\WsAdmin;
 
 use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
@@ -33,9 +34,11 @@ class A06InfosTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testInformationsFromClass($testSequence)
+    public function testInformationsFromClass(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -55,9 +58,11 @@ class A06InfosTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testInformationsFromAdmin($testSequence)
+    public function testInformationsFromAdmin(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

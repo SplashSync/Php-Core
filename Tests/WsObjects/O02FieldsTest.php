@@ -48,11 +48,7 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         //   Execute Action Directly on Module
         $data = Splash::object($objectType)->fields();
-        //====================================================================//
-        //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($data)) {
-            $data = new ArrayObject($data);
-        }
+
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
@@ -86,6 +82,15 @@ class O02FieldsTest extends ObjectsCase
         );
 
         //====================================================================//
+        //   Service May Return an ArrayObject (ArrayObject created by WebService)
+        $this->assertInstanceOf("ArrayObject", $data, "Service Fields List is Not an ArrayObject");
+        $data = $data->getArrayCopy();
+        foreach ($data as $key => $field) {
+            $this->assertInstanceOf("ArrayObject", $field, "Service Field is Not an ArrayObject");
+            $data[$key] = $field->getArrayCopy();
+        }
+
+        //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
     }
@@ -101,7 +106,7 @@ class O02FieldsTest extends ObjectsCase
      *
      * @return void
      */
-    public function testFieldsFromObjectsServiceErrors(string $testSequence)
+    public function testFieldsFromObjectsServiceErrors(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -115,7 +120,7 @@ class O02FieldsTest extends ObjectsCase
     /**
      * Verify Client Response.
      *
-     * @param ArrayObject|bool|string $data
+     * @param array[]|bool|string $data
      *
      * @return void
      */
@@ -124,7 +129,7 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         //   Verify Response
         $this->assertNotEmpty($data, "Object Fields List is Empty");
-        $this->assertInstanceOf("ArrayObject", $data, "Object Fields List is Not an ArrayObject");
+        $this->assertIsArray($data, "Object Fields List is Not an Array");
 
         //====================================================================//
         // All Fields Definitions are is right format
@@ -133,7 +138,7 @@ class O02FieldsTest extends ObjectsCase
             $this->verifyFieldRequired($fieldData);
             $this->verifyFieldMetaData($fieldData);
             $this->verifyFieldOptional($fieldData);
-            $this->verifyFieldAssociations($fieldData, $data->getArrayCopy());
+            $this->verifyFieldAssociations($fieldData, $data);
         }
     }
 
@@ -144,7 +149,7 @@ class O02FieldsTest extends ObjectsCase
      *
      * @return void
      */
-    public function verifyFieldRequired(array $field)
+    public function verifyFieldRequired(array $field): void
     {
         //====================================================================//
         // Verify Field Type Name Exists
@@ -242,7 +247,7 @@ class O02FieldsTest extends ObjectsCase
      *
      * @return void
      */
-    public function verifyFieldAssociations(array $field, array $fields)
+    public function verifyFieldAssociations(array $field, array $fields): void
     {
         if (!isset($field["asso"]) || empty($field["asso"])) {
             return;

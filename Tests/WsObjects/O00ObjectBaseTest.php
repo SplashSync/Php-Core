@@ -15,6 +15,7 @@
 
 namespace Splash\Tests\WsObjects;
 
+use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
@@ -26,14 +27,18 @@ use Splash\Tests\Tools\ObjectsCase;
 class O00ObjectBaseTest extends ObjectsCase
 {
     /**
+     * Test of Objects Lock Feature
+     *
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testLockFeature($testSequence, $objectType)
+    public function testLockFeature(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
 

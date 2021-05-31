@@ -16,6 +16,7 @@
 namespace Splash\Tests\WsObjects;
 
 use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
@@ -27,14 +28,18 @@ use Splash\Tests\Tools\ObjectsCase;
 class O03ListTest extends ObjectsCase
 {
     /**
+     * Verify Loading Objects List from Module
+     *
      * @dataProvider objectTypesProvider
      *
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFromModule($testSequence, $objectType)
+    public function testFromModule(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
 
@@ -52,14 +57,18 @@ class O03ListTest extends ObjectsCase
     }
 
     /**
+     * Verify Loading Objects List from Service
+     *
      * @dataProvider objectTypesProvider
      *
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFromObjectsService($testSequence, $objectType)
+    public function testFromObjectsService(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
 
@@ -78,9 +87,11 @@ class O03ListTest extends ObjectsCase
     }
 
     /**
+     * Verify Loading Objects List with Wrong Object Type
+     *
      * @return void
      */
-    public function testFromObjectsServiceErrors()
+    public function testFromObjectsServiceErrors(): void
     {
         //====================================================================//
         //      Request definition without Sending ObjectType
@@ -88,12 +99,16 @@ class O03ListTest extends ObjectsCase
     }
 
     /**
+     * Verify Objects List Response
+     *
      * @param ArrayObject|bool|string $data
      * @param string                  $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function verifyResponse($data, $objectType)
+    public function verifyResponse($data, string $objectType): void
     {
         //====================================================================//
         //   Verify Response
@@ -105,12 +120,16 @@ class O03ListTest extends ObjectsCase
     }
 
     /**
+     * Verify Listed Fields are Available
+     *
      * @param ArrayObject $data
      * @param string      $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function verifyAvailableFields($data, $objectType)
+    public function verifyAvailableFields(ArrayObject $data, string $objectType): void
     {
         //====================================================================//
         // Verify Fields are Available
@@ -150,12 +169,14 @@ class O03ListTest extends ObjectsCase
     }
 
     /**
+     * Verify Metadata are Available
+     *
      * @param ArrayObject $data
      * @param string      $objectType
      *
      * @return void
      */
-    public function verifyMetaInformations($data, $objectType)
+    public function verifyMetaInformations(ArrayObject $data, string $objectType): void
     {
         //====================================================================//
         // Verify List Meta Are Available

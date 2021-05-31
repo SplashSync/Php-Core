@@ -255,7 +255,7 @@ class Webservice
         // Convert Data Buffer To XML
         if ('XML' == Splash::configuration()->WsEncode) {
             if ($decode && false !== strpos($decode, '<SPLASH>')) {
-                $out = Splash::xml()->XmlToArrayObject($decode);
+                $out = Splash::xml()->xmlToArrayObject($decode);
             }
             //====================================================================//
         // Unserialize Data buffer

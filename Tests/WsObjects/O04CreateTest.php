@@ -177,6 +177,8 @@ class O04CreateTest extends ObjectsCase
     }
 
     /**
+     * Verify Create Object Response
+     *
      * @param string                      $objectType
      * @param ArrayObject|bool|int|string $objectId
      *

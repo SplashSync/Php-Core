@@ -15,6 +15,7 @@
 
 namespace Splash\Tests\WsAdmin;
 
+use Exception;
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
 use Splash\Tests\Tools\AbstractBaseCase;
@@ -52,9 +53,11 @@ class A01PingTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testPingClientAction($testSequence)
+    public function testPingClientAction(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -87,9 +90,11 @@ class A01PingTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testPingServerAction($testSequence)
+    public function testPingServerAction(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

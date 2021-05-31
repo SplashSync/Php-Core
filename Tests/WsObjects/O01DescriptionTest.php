@@ -16,6 +16,7 @@
 namespace Splash\Tests\WsObjects;
 
 use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
@@ -27,14 +28,18 @@ use Splash\Tests\Tools\ObjectsCase;
 class O01DescriptionTest extends ObjectsCase
 {
     /**
+     * Test Loading Object Description from Module
+     *
      * @dataProvider objectTypesProvider
      *
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFromModule($testSequence, $objectType)
+    public function testFromModule(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
         //====================================================================//
@@ -51,14 +56,18 @@ class O01DescriptionTest extends ObjectsCase
     }
 
     /**
+     * Test Loading Object Description from Service
+     *
      * @dataProvider objectTypesProvider
      *
      * @param string $testSequence
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testFromObjectsService($testSequence, $objectType)
+    public function testFromObjectsService(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
         //====================================================================//
@@ -75,9 +84,11 @@ class O01DescriptionTest extends ObjectsCase
     }
 
     /**
+     * Test Loading Object Description without ObjectType
+     *
      * @return void
      */
-    public function testFromObjectsServiceErrors()
+    public function testFromObjectsServiceErrors(): void
     {
         //====================================================================//
         //      Request definition without Sending ObjectType
@@ -85,11 +96,13 @@ class O01DescriptionTest extends ObjectsCase
     }
 
     /**
+     * Verify Module Response
+     *
      * @param ArrayObject|bool|string $data
      *
      * @return void
      */
-    public function verifyResponse($data)
+    public function verifyResponse($data): void
     {
         //====================================================================//
         //   Verify Response

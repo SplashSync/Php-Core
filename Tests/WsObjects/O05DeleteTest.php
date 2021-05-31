@@ -28,6 +28,8 @@ use Splash\Tests\Tools\ObjectsCase;
 class O05DeleteTest extends ObjectsCase
 {
     /**
+     * Test Delete Object from Module
+     *
      * @dataProvider objectTypesProvider
      *
      * @param string $testSequence
@@ -73,6 +75,8 @@ class O05DeleteTest extends ObjectsCase
     }
 
     /**
+     * Test Delete Object from Service
+     *
      * @dataProvider objectTypesProvider
      *
      * @param string $testSequence
@@ -119,6 +123,8 @@ class O05DeleteTest extends ObjectsCase
     }
 
     /**
+     * Test Delete Object with Inputs Errors
+     *
      * @dataProvider objectTypesProvider
      *
      * @param string $testSequence
@@ -245,9 +251,13 @@ class O05DeleteTest extends ObjectsCase
     }
 
     /**
+     * Verify Delete Object Response
+     *
      * @param string       $objectType
      * @param false|string $objectId
      * @param mixed        $data
+     *
+     * @throws Exception
      *
      * @return void
      */

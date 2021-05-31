@@ -529,14 +529,14 @@ abstract class AbstractBaseCase extends TestCase
      * @param string $description Task Description
      * @param array  $parameters  Task Parameters
      *
-     * @return ArrayObject
+     * @return ArrayObject|bool|string
      */
     protected function genericErrorAction(
         string $service,
         string $action,
         string $description,
         array $parameters = array(true)
-    ): ArrayObject {
+    ) {
         //====================================================================//
         //   Prepare Request Data
         Splash::ws()->addTask($action, $parameters, $description);

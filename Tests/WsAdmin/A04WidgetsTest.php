@@ -16,6 +16,7 @@
 namespace Splash\Tests\WsAdmin;
 
 use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
@@ -33,9 +34,11 @@ class A04WidgetsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testWidgetsFromClass($testSequence)
+    public function testWidgetsFromClass(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -61,9 +64,11 @@ class A04WidgetsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testWidgetsActionFromAdmin($testSequence)
+    public function testWidgetsActionFromAdmin(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -84,9 +89,11 @@ class A04WidgetsTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testWidgetsActionFromWidgets($testSequence)
+    public function testWidgetsActionFromWidgets(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

@@ -15,6 +15,7 @@
 
 namespace Splash\Tests\WsObjects;
 
+use Exception;
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
 
@@ -28,17 +29,25 @@ class O06SetTest extends ObjectsCase
     use ObjectsSetTestsTrait;
 
     /**
+     * Test Set Object Single Field from Module
+     *
      * @dataProvider objectFieldsProvider
      *
-     * @param string     $testSequence
-     * @param string     $objectType
-     * @param mixed      $field
-     * @param null|mixed $forceObjectId
+     * @param string      $testSequence
+     * @param string      $objectType
+     * @param array       $field
+     * @param null|string $forceObjectId
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testSetSingleFieldFromModule($testSequence, $objectType, $field, $forceObjectId = null)
-    {
+    public function testSetSingleFieldFromModule(
+        string $testSequence,
+        string $objectType,
+        array $field,
+        ?string $forceObjectId = null
+    ): void {
         //====================================================================//
         //   Load Test Sequence
         $this->loadLocalTestSequence($testSequence);
@@ -49,17 +58,25 @@ class O06SetTest extends ObjectsCase
     }
 
     /**
+     * Test Set Object Single Field from Service
+     *
      * @dataProvider objectFieldsProvider
      *
-     * @param string     $testSequence
-     * @param string     $objectType
-     * @param mixed      $field
-     * @param null|mixed $forceObjectId
+     * @param string      $testSequence
+     * @param string      $objectType
+     * @param array       $field
+     * @param null|string $forceObjectId
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testSetSingleFieldFromService($testSequence, $objectType, $field, $forceObjectId = null)
-    {
+    public function testSetSingleFieldFromService(
+        string $testSequence,
+        string $objectType,
+        array $field,
+        ?string $forceObjectId = null
+    ): void {
         //====================================================================//
         //   Load Test Sequence
         $this->loadLocalTestSequence($testSequence);

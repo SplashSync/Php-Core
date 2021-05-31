@@ -15,6 +15,7 @@
 
 namespace Splash\Tests\WsAdmin;
 
+use Exception;
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
 use Splash\Tests\Tools\AbstractBaseCase;
@@ -47,9 +48,11 @@ class A02ConnectTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testConnectClientAction($testSequence)
+    public function testConnectClientAction(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -80,9 +83,11 @@ class A02ConnectTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testConnectServerAction($testSequence)
+    public function testConnectServerAction(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -126,9 +131,11 @@ class A02ConnectTest extends AbstractBaseCase
      *
      * @param string $testSequence
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testConnectServerWrongDataAction($testSequence)
+    public function testConnectServerWrongDataAction(string $testSequence)
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

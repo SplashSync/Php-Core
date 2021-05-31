@@ -16,6 +16,7 @@
 namespace Splash\Tests\WsObjects;
 
 use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
@@ -37,15 +38,19 @@ class O07GetTest extends ObjectsCase
     private $objectCount = array();
 
     /**
+     * Test reading a Single Object Field from Module
+     *
      * @dataProvider objectFieldsProvider
      *
      * @param string $testSequence
      * @param string $objectType
-     * @param mixed  $field
+     * @param array  $field
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testGetSingleFieldFromModule($testSequence, $objectType, $field)
+    public function testGetSingleFieldFromModule(string $testSequence, string $objectType, array $field): void
     {
         $this->loadLocalTestSequence($testSequence);
 
@@ -73,14 +78,18 @@ class O07GetTest extends ObjectsCase
     }
 
     /**
+     * Test reading a Single Object Field from Module
+     *
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testGetAllFieldsFromModule($testSequence, $objectType)
+    public function testGetAllFieldsFromModule(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
 
@@ -110,12 +119,14 @@ class O07GetTest extends ObjectsCase
     /**
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testFromObjectsService($testSequence, $objectType)
+    public function testFromObjectsService(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
 
@@ -142,14 +153,18 @@ class O07GetTest extends ObjectsCase
     }
 
     /**
+     * Test Reading Object from Service with Errors
+     *
      * @dataProvider objectTypesProvider
      *
-     * @param mixed $testSequence
-     * @param mixed $objectType
+     * @param string $testSequence
+     * @param string $objectType
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testFromObjectsServiceErrors($testSequence, $objectType)
+    public function testFromObjectsServiceErrors(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
 
@@ -185,7 +200,7 @@ class O07GetTest extends ObjectsCase
      *
      * @return string
      */
-    public function getNextObjectId($objectType)
+    public function getNextObjectId(string $objectType): string
     {
         //====================================================================//
         //   If Object List Not Loaded
@@ -199,7 +214,7 @@ class O07GetTest extends ObjectsCase
             $this->objectCount[$objectType] = $list["meta"]["current"];
 
             //====================================================================//
-            //   Remove Meta Datats form Objects List
+            //   Remove Meta Data form Objects List
             unset($list["meta"]);
 
             //====================================================================//
@@ -221,13 +236,15 @@ class O07GetTest extends ObjectsCase
     }
 
     /**
+     * Verify Object Get Response
+     *
      * @param mixed        $data
      * @param array        $fields
      * @param false|string $objectId
      *
      * @return void
      */
-    public function verifyResponse($data, $fields, $objectId)
+    public function verifyResponse($data, array $fields, $objectId): void
     {
         //====================================================================//
         //   Verify Response Block
@@ -244,12 +261,12 @@ class O07GetTest extends ObjectsCase
         foreach ($fields as $field) {
             //==============================================================================
             //      Filter Non-Readable Fields
-            if (!$field->read) {
+            if (!$field['read']) {
                 continue;
             }
             //==============================================================================
             //      Validate Field Data
-            $this->isValidFieldData($data, $field->id, $field->type);
+            $this->isValidFieldData($data, $field['id'], $field['type']);
         }
     }
 }
