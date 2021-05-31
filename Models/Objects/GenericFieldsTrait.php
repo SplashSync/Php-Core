@@ -16,6 +16,7 @@
 namespace Splash\Models\Objects;
 
 use DateTime;
+use Exception;
 
 /**
  * Generic Doctrine Objects Fields Read & Write Helper
@@ -33,7 +34,7 @@ trait GenericFieldsTrait
      *
      * @return self
      */
-    protected function getGenericObject($fieldName, $objectType, $objectName = "object")
+    protected function getGenericObject(string $fieldName, string $objectType, string $objectName = "object"): self
     {
         //====================================================================//
         // Load Pointed Object Id
@@ -57,8 +58,12 @@ trait GenericFieldsTrait
      *
      * @return self
      */
-    protected function setGenericObject($fieldName, $fieldData, $objectName = "object", $nullable = true)
-    {
+    protected function setGenericObject(
+        string $fieldName,
+        $fieldData,
+        string $objectName = "object",
+        bool $nullable = true
+    ): self {
         //====================================================================//
         // Load New Object Id
         $newId = null;
@@ -79,7 +84,7 @@ trait GenericFieldsTrait
             if ($nullable) {
                 //====================================================================//
                 // Set Pointed Object to Null
-                $this->{$objectName}->{ "set".$fieldName}(null);
+                $this->{$objectName}->{ "set".self::toMethod($fieldName) }(null);
                 $this->needUpdate();
             }
 
@@ -87,7 +92,7 @@ trait GenericFieldsTrait
         }
         //====================================================================//
         // Update Pointed Object to New Value
-        $this->{$objectName}->{ "set".$fieldName}($fieldData);
+        $this->{$objectName}->{ "set".self::toMethod($fieldName)}($fieldData);
         $this->needUpdate();
 
         return $this;
@@ -101,9 +106,9 @@ trait GenericFieldsTrait
      *
      * @return self
      */
-    protected function getGeneric($fieldName, $objectName = "object")
+    protected function getGeneric(string $fieldName, string $objectName = "object"): self
     {
-        $this->out[$fieldName] = $this->{$objectName}->{ "get".$fieldName}();
+        $this->out[$fieldName] = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
 
         return $this;
     }
@@ -117,17 +122,17 @@ trait GenericFieldsTrait
      *
      * @return self
      */
-    protected function setGeneric($fieldName, $fieldData, $objectName = "object")
+    protected function setGeneric(string $fieldName, $fieldData, string $objectName = "object"): self
     {
         //====================================================================//
         //  Compare Field Data
-        $current = $this->{$objectName}->{ "get".$fieldName}();
+        $current = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
         if ($current == $fieldData) {
             return $this;
         }
         //====================================================================//
         //  Update Field Data
-        $this->{$objectName}->{ "set".$fieldName}($fieldData);
+        $this->{$objectName}->{ "set".self::toMethod($fieldName)}($fieldData);
         $this->needUpdate($objectName);
 
         return $this;
@@ -141,9 +146,9 @@ trait GenericFieldsTrait
      *
      * @return self
      */
-    protected function getGenericBool($fieldName, $objectName = "object")
+    protected function getGenericBool(string $fieldName, string $objectName = "object"): self
     {
-        $this->out[$fieldName] = $this->{$objectName}->{ "is".$fieldName}();
+        $this->out[$fieldName] = $this->{$objectName}->{ "is".self::toMethod($fieldName)}();
 
         return $this;
     }
@@ -157,17 +162,17 @@ trait GenericFieldsTrait
      *
      * @return self
      */
-    protected function setGenericBool($fieldName, $fieldData, $objectName = "object")
+    protected function setGenericBool(string $fieldName, $fieldData, string $objectName = "object"): self
     {
         //====================================================================//
         //  Compare Field Data
-        $current = $this->{$objectName}->{ "is".$fieldName}();
+        $current = $this->{$objectName}->{ "is".self::toMethod($fieldName)}();
         if ($current == $fieldData) {
             return $this;
         }
         //====================================================================//
         //  Update Field Data
-        $this->{$objectName}->{ "set".$fieldName}((bool) $fieldData);
+        $this->{$objectName}->{ "set".self::toMethod($fieldName)}((bool) $fieldData);
         $this->needUpdate($objectName);
 
         return $this;
@@ -181,9 +186,9 @@ trait GenericFieldsTrait
      *
      * @return self
      */
-    protected function getGenericDate($fieldName, $objectName = "object")
+    protected function getGenericDate(string $fieldName, string $objectName = "object"): self
     {
-        $date = $this->{$objectName}->{ "get".$fieldName}();
+        $date = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
         $this->out[$fieldName] = $date ? $date->format(SPL_T_DATECAST) : "";
 
         return $this;
@@ -196,19 +201,21 @@ trait GenericFieldsTrait
      * @param mixed  $fieldData  Field Data
      * @param string $objectName Name of private object to read (Default : "object")
      *
+     * @throws Exception
+     *
      * @return self
      */
-    protected function setGenericDate($fieldName, $fieldData, $objectName = "object")
+    protected function setGenericDate(string $fieldName, $fieldData, string $objectName = "object"): self
     {
         //====================================================================//
         //  Compare Field Data
-        $current = $this->{$objectName}->{ "get".$fieldName}();
+        $current = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
         if (($current instanceof DateTime) && ($current->format(SPL_T_DATECAST) == $fieldData)) {
             return $this;
         }
         //====================================================================//
         //  Update Field Data
-        $this->{$objectName}->{ "set".$fieldName}($fieldData ? new DateTime($fieldData) : null);
+        $this->{$objectName}->{ "set".self::toMethod($fieldName)}($fieldData ? new DateTime($fieldData) : null);
         $this->needUpdate($objectName);
 
         return $this;
@@ -222,9 +229,9 @@ trait GenericFieldsTrait
      *
      * @return self
      */
-    protected function getGenericDateTime($fieldName, $objectName = "object")
+    protected function getGenericDateTime(string $fieldName, string $objectName = "object"): self
     {
-        $date = $this->{$objectName}->{ "get".$fieldName}();
+        $date = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
         $this->out[$fieldName] = $date ? $date->format(SPL_T_DATETIMECAST) : "";
 
         return $this;
@@ -239,17 +246,17 @@ trait GenericFieldsTrait
      *
      * @return self
      */
-    protected function setGenericDateTime($fieldName, $fieldData, $objectName = "object")
+    protected function setGenericDateTime(string $fieldName, $fieldData, string $objectName = "object"): self
     {
         //====================================================================//
         //  Compare Field Data
-        $current = $this->{$objectName}->{ "get".$fieldName}();
+        $current = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
         if (($current instanceof DateTime) && ($current->format(SPL_T_DATETIMECAST) == $fieldData)) {
             return $this;
         }
         //====================================================================//
         //  Update Field Data
-        $this->{$objectName}->{ "set".$fieldName}($fieldData ? new DateTime($fieldData) : null);
+        $this->{$objectName}->{ "set".self::toMethod($fieldName)}($fieldData ? new DateTime($fieldData) : null);
         $this->needUpdate($objectName);
 
         return $this;
@@ -263,11 +270,11 @@ trait GenericFieldsTrait
      *
      * @return null|string
      */
-    private function getObjectId($fieldName, $objectName = "object")
+    private function getObjectId(string $fieldName, string $objectName = "object"): ?string
     {
         //====================================================================//
         // Load Pointed Object
-        $object = $this->{$objectName}->{ "get".$fieldName}();
+        $object = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
         //====================================================================//
         // Check Pointed Object Exists & Has an Id
         if (!$object || !method_exists($object, "getId") || !$object->getId()) {
@@ -276,5 +283,17 @@ trait GenericFieldsTrait
         //====================================================================//
         // Return Object Id
         return (string) $object->getId();
+    }
+
+    /**
+     * Convert FieldName to Generic Method Name
+     *
+     * @param string $fieldName Suffix for Getter & Setter (ie: Product => getProduct() & setProduct())
+     *
+     * @return string
+     */
+    private static function toMethod(string $fieldName): string
+    {
+        return ucwords(str_replace("_", "", $fieldName));
     }
 }

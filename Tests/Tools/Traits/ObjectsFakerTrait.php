@@ -98,13 +98,13 @@ trait ObjectsFakerTrait
         foreach ($outputs as $outField) {
             //====================================================================//
             // No Associated Field
-            if (empty($outField->asso)) {
+            if (empty($outField['asso'])) {
                 continue;
             }
             //====================================================================//
             // For Associated Fields
             foreach ($fields as $field) {
-                if (in_array($field['id'], self::toArray($outField->asso), true)) {
+                if (in_array($field['id'], self::toArray($outField['asso']), true)) {
                     $outputs[$field['id']] = $field;
                 }
             }
