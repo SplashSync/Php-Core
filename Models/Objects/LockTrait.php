@@ -35,7 +35,7 @@ trait LockTrait
     {
         //====================================================================//
         // Search for Forced Commit Flag in Configuration
-        if (array_key_exists("forcecommit", Splash::configuration()->server)
+        if (isset(Splash::configuration()->server["forcecommit"])
                 && (Splash::configuration()->server["forcecommit"])) {
             return true;
         }
