@@ -20,7 +20,7 @@ use Splash\Core\SplashCore as Splash;
 
 /**
  * Abstract Configurator
- * Base Functionnal Class for Configuration Managers
+ * Base Functional Class for Configuration Managers
  */
 abstract class AbstractConfigurator implements ConfiguratorInterface
 {
@@ -142,8 +142,6 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function overrideFields(string $objectType, array $fields): array
     {
@@ -166,10 +164,10 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         foreach ($fields as $index => $field) {
             //====================================================================//
             // Check if Configuration Key Exists
-            if (!isset($overrides[$field->id])) {
+            if (!isset($overrides[$field["id"]])) {
                 continue;
             }
-            $fieldOverrides = $overrides[$field->id];
+            $fieldOverrides = $overrides[$field["id"]];
             //====================================================================//
             // Check if Field Shall be Excluded
             if (!empty($fieldOverrides["excluded"] ?? false)) {
@@ -250,10 +248,10 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     /**
      * Override a Field Definition
      *
-     * @param ArrayObject $field  Original Field Definition
-     * @param array       $values Custom Values to Write
+     * @param array|ArrayObject $field  Original Field Definition
+     * @param array             $values Custom Values to Write
      *
-     * @return ArrayObject
+     * @return array|ArrayObject
      */
     private static function updateField($field, array $values)
     {
@@ -307,44 +305,44 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     /**
      * Override a Field String Definition
      *
-     * @param ArrayObject $field  Original Field Definition
-     * @param Array       $values Custom Values to Write
-     * @param string      $key    String Values Key
+     * @param array|ArrayObject $field  Original Field Definition
+     * @param array             $values Custom Values to Write
+     * @param string            $key    String Values Key
      *
      * @return void
      */
-    private static function updateFieldStrVal(&$field, $values, $key)
+    private static function updateFieldStrVal(&$field, array $values, string $key): void
     {
         if (isset($values[$key]) && is_string($values[$key])) {
-            $field->{$key} = $values[$key];
+            $field[$key] = $values[$key];
         }
     }
 
     /**
      * Override a Field Bool Definition
      *
-     * @param ArrayObject $field  Original Field Definition
-     * @param Array       $values Custom Values to Write
-     * @param string      $key    String Values Key
+     * @param array|ArrayObject $field  Original Field Definition
+     * @param array             $values Custom Values to Write
+     * @param string            $key    String Values Key
      *
      * @return void
      */
-    private static function updateFieldBoolVal(&$field, $values, $key)
+    private static function updateFieldBoolVal(&$field, array $values, string $key): void
     {
         if (isset($values[$key]) && is_scalar($values[$key])) {
-            $field->{$key} = (bool) $values[$key];
+            $field[$key] = (bool) $values[$key];
         }
     }
 
     /**
      * Override a Field Meta Definition
      *
-     * @param ArrayObject $field  Original Field Definition
-     * @param Array       $values Custom Values to Write
+     * @param array|ArrayObject $field  Original Field Definition
+     * @param array             $values Custom Values to Write
      *
      * @return void
      */
-    private static function updateFieldMeta(&$field, $values)
+    private static function updateFieldMeta(&$field, array $values): void
     {
         // Update Field Meta ItemType
         self::updateFieldStrVal($field, $values, "itemtype");
@@ -352,8 +350,8 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         self::updateFieldStrVal($field, $values, "itemprop");
         // Update Field Meta Tag
         if (isset($values["itemprop"]) || isset($values["itemtype"])) {
-            if (is_string($field->itemprop) && is_string($field->itemtype)) {
-                $field->tag = md5($field->itemprop.IDSPLIT.$field->itemtype);
+            if (is_string($field["itemprop"]) && is_string($field["itemtype"])) {
+                $field["tag"] = md5($field["itemprop"].IDSPLIT.$field["itemtype"]);
             }
         }
     }
@@ -361,12 +359,12 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     /**
      * Override a Field Meta Definition
      *
-     * @param ArrayObject $field  Original Field Definition
-     * @param Array       $values Custom Values to Write
+     * @param array|ArrayObject $field  Original Field Definition
+     * @param array             $values Custom Values to Write
      *
      * @return void
      */
-    private static function updateFieldChoices(&$field, $values): void
+    private static function updateFieldChoices(&$field, array $values): void
     {
         if (!isset($values["choices"]) || !is_iterable($values["choices"])) {
             return;

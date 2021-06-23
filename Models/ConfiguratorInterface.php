@@ -15,6 +15,8 @@
 
 namespace Splash\Models;
 
+use ArrayObject;
+
 /**
  * Splash Module Configurator Interface
  * Define Required Implementation for Splash Module Configurator Classes
@@ -76,8 +78,8 @@ interface ConfiguratorInterface
      * Override Object Fields Array using Field Factory
      * This Event is Triggered by Object Class during Field Publish Action
      *
-     * @param string $objectType Local Object Type Name
-     * @param array  $fields     Current Object Fields List
+     * @param string                $objectType Local Object Type Name
+     * @param array[]|ArrayObject[] $fields     Current Object Fields List
      *
      * @return array
      */
