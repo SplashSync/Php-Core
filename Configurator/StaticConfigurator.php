@@ -28,7 +28,7 @@ class StaticConfigurator extends AbstractConfigurator implements ConfiguratorInt
      *
      * @var array
      */
-    private static $configuration = array();
+    protected static $configuration = array();
 
     //====================================================================//
     // SETUP CONFIGURATION FOR AN OBJECT
