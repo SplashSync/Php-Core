@@ -75,6 +75,16 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     //====================================================================//
 
     /**
+     * Get Configurator Name
+     *
+     * @return string
+     */
+    public static function getName(): string
+    {
+        return basename(static::class);
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -184,7 +194,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     }
 
     //====================================================================//
-    // PRIVATE FUNCTIONS
+    // PROTECTED FUNCTIONS
     //====================================================================//
 
     /**
@@ -195,7 +205,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      *
      * @return null|array|bool|string
      */
-    private function getConfigurationValue(string $key1, string $key2 = null)
+    protected function getConfigurationValue(string $key1, string $key2 = null)
     {
         //====================================================================//
         // Load Configuration from Configurator
@@ -221,31 +231,6 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * Remove Potentially Unsecure Parameters from Configuration
-     *
-     * @param array $parameters Custom Parameters Array
-     *
-     * @return void
-     */
-    private static function secureParameters(array &$parameters): void
-    {
-        //====================================================================//
-        // Detect Travis from SERVER CONSTANTS => Allow Unsecure for Testing
-        if (!empty(Splash::input('SPLASH_TRAVIS'))) {
-            return;
-        }
-        //====================================================================//
-        // Walk on Unsecure Parameter Keys
-        foreach (self::UNSECURED_PARAMETERS as $index) {
-            //====================================================================//
-            // Check Parameter Exists
-            if (isset($parameters[$index])) {
-                unset($parameters[$index]);
-            }
-        }
-    }
-
-    /**
      * Override a Field Definition
      *
      * @param array|ArrayObject $field  Original Field Definition
@@ -253,7 +238,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      *
      * @return array|ArrayObject
      */
-    private static function updateField($field, array $values)
+    protected static function updateField($field, array $values)
     {
         Splash::log()->trace();
         //====================================================================//
@@ -300,6 +285,35 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         self::updateFieldBoolVal($field, $values, "log");
 
         return $field;
+    }
+
+    //====================================================================//
+    // PRIVATE FUNCTIONS
+    //====================================================================//
+
+    /**
+     * Remove Potentially Unsecure Parameters from Configuration
+     *
+     * @param array $parameters Custom Parameters Array
+     *
+     * @return void
+     */
+    private static function secureParameters(array &$parameters): void
+    {
+        //====================================================================//
+        // Detect Travis from SERVER CONSTANTS => Allow Unsecure for Testing
+        if (!empty(Splash::input('SPLASH_TRAVIS'))) {
+            return;
+        }
+        //====================================================================//
+        // Walk on Unsecure Parameter Keys
+        foreach (self::UNSECURED_PARAMETERS as $index) {
+            //====================================================================//
+            // Check Parameter Exists
+            if (isset($parameters[$index])) {
+                unset($parameters[$index]);
+            }
+        }
     }
 
     /**
