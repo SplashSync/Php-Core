@@ -635,4 +635,23 @@ abstract class AbstractBaseCase extends TestCase
 
         return $data;
     }
+
+    /**
+     * Normalize Array or ArrayObject to Array
+     *
+     * @param null|array|ArrayObject|string $data
+     *
+     * @throws Exception
+     *
+     * @return array
+     */
+    protected static function toArrayRecursive($data): array
+    {
+        $data = self::toArray($data);
+        foreach ($data as &$item) {
+            $item = ($item instanceof ArrayObject) ? self::toArray($item) : $item;
+        }
+
+        return $data;
+    }
 }
