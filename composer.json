@@ -1,6 +1,6 @@
 {
     "name":                 "splash/phpcore",
-    "description":          "Splash Fundation Module for All Php Applications",
+    "description":          "Splash Foundation Module for All Php Applications",
 
     "type":                 "package",    
     "minimum-stability":    "dev",
