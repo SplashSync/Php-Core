@@ -289,7 +289,7 @@ trait GenericFieldsTrait
      *
      * @return void
      */
-    protected static function getGenericMethodsFormat(string $format): void
+    protected static function setGenericMethodsFormat(string $format): void
     {
         //====================================================================//
         // Safety Check
