@@ -26,6 +26,22 @@ trait GenericFieldsTrait
     use ObjectsTrait;
 
     /**
+     * Field name to method Parsing Format
+     *
+     * @var string
+     */
+    private static $methodFormat = "camelCase";
+
+    /**
+     * Available Parsing methods
+     *
+     * @var array
+     */
+    private static $allowedFormats = array(
+        "camelCase", "PascalCase", "snake_case"
+    );
+
+    /**
      * Convert Local Object to Splash ObjectId String
      *
      * @param string $fieldName  Field Identifier
@@ -244,6 +260,8 @@ trait GenericFieldsTrait
      * @param mixed  $fieldData  Field Data
      * @param string $objectName Name of private object to read (Default : "object")
      *
+     * @throws Exception
+     *
      * @return self
      */
     protected function setGenericDateTime(string $fieldName, $fieldData, string $objectName = "object"): self
@@ -260,6 +278,25 @@ trait GenericFieldsTrait
         $this->needUpdate($objectName);
 
         return $this;
+    }
+
+    /**
+     * Select Method Name Building Format
+     *
+     * @param string $format Method Name Format
+     *
+     * @throws Exception
+     *
+     * @return void
+     */
+    protected static function getGenericMethodsFormat(string $format): void
+    {
+        //====================================================================//
+        // Safety Check
+        if (!in_array($format, self::$allowedFormats, true)) {
+            throw new Exception(sprintf("Method Name Building Format is invalid: %s", $format));
+        }
+        self::$methodFormat = $format;
     }
 
     /**
@@ -294,6 +331,13 @@ trait GenericFieldsTrait
      */
     private static function toMethod(string $fieldName): string
     {
-        return ucwords(str_replace("_", "", $fieldName));
+        switch (self::$methodFormat) {
+            case "snake_case":
+                return $fieldName;
+            default:
+            case "camelCase":
+            case "PascalCase":
+                return ucwords(str_replace("_", "", $fieldName));
+        }
     }
 }
