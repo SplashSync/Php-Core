@@ -13,6 +13,8 @@
  *  file that was distributed with this source code.
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration
+
 namespace Splash\Tests\Tools;
 
 use PHPUnit\Framework\TestCase      as BaseTestCase;
@@ -28,30 +30,36 @@ if (!defined("SPLASH_SERVER_MODE")) {
  * May be overridden for Using Splash Core Test in Specific Environments
  */
 
-abstract class TestCase extends BaseTestCase
-{
-    /**
-     * @param Throwable $exception
-     *
-     * @throws Throwable
-     *
-     * @return void
-     */
-    public function onNotSuccessfulTest(Throwable $exception): void
+if (class_exists("PHPUnit\\Framework\\TestCase")) {
+    abstract class TestCase extends BaseTestCase
     {
-        //====================================================================//
-        // Do not display log on Skipped Tests
-        if (is_a($exception, "PHPUnit\\Framework\\SkippedTestError")) {
+        /**
+         * @param Throwable $exception
+         *
+         * @throws Throwable
+         *
+         * @return void
+         */
+        public function onNotSuccessfulTest(Throwable $exception): void
+        {
+            //====================================================================//
+            // Do not display log on Skipped Tests
+            if (is_a($exception, "PHPUnit\\Framework\\SkippedTestError")) {
+                throw $exception;
+            }
+            //====================================================================//
+            // Remove Debug From Splash Logs
+            Splash::log()->deb = array();
+            //====================================================================//
+            // OutPut Splash Logs
+            fwrite(STDOUT, Splash::log()->getConsoleLog());
+            //====================================================================//
+            // OutPut Phpunit Exception
             throw $exception;
         }
-        //====================================================================//
-        // Remove Debug From Splash Logs
-        Splash::log()->deb = array();
-        //====================================================================//
-        // OutPut Splash Logs
-        fwrite(STDOUT, Splash::log()->getConsoleLog());
-        //====================================================================//
-        // OutPut Phpunit Exception
-        throw $exception;
+    }
+} else {
+    abstract class TestCase extends BaseTestCase
+    {
     }
 }
