@@ -162,13 +162,13 @@ class Validator
         //====================================================================//
         // Required Parameters are Available
         //====================================================================//
-        if (!isset($infos['ServerHost']) || empty($infos['ServerHost'])) {
+        if (empty($infos['ServerHost'])) {
             Splash::log()->err(Splash::trans('ErrEmptyServerHost'));
 
             return Splash::log()->err(Splash::trans('ErrEmptyServerHostDesc'));
         }
 
-        if (!isset($infos['ServerPath']) || empty($infos['ServerPath'])) {
+        if (empty($infos['ServerPath'])) {
             Splash::log()->err(Splash::trans('ErrEmptyServerPath'));
 
             return Splash::log()->err(Splash::trans('ErrEmptyServerPathDesc'));
