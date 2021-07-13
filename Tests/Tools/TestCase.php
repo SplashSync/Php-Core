@@ -59,7 +59,7 @@ if (class_exists("PHPUnit\\Framework\\TestCase")) {
         }
     }
 } else {
-    abstract class TestCase extends BaseTestCase
+    abstract class TestCase
     {
     }
 }
