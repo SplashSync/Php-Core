@@ -56,7 +56,7 @@ class Oobool implements FieldInterface
             }
         }
         if (is_int($data)) {
-            if ((0 === $data) || (1 === $data)) {
+            if ((0 == $data) || (1 === $data)) {
                 return true;
             }
         }
