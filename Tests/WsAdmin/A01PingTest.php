@@ -110,7 +110,7 @@ class A01PingTest extends AbstractBaseCase
         $this->assertNotEmpty($response, "Ping Response Block is Empty");
         $this->assertNotEmpty($data, "Ping Response Data is Empty");
         $this->assertInstanceOf("ArrayObject", $data, "Ping Response Data is Not an ArrayObject");
-        $this->assertArrayHasKey("result", $data, "Ping Result is Missing");
+        $this->assertArrayHasKey("result", $data->getArrayCopy(), "Ping Result is Missing");
         $this->assertNotEmpty($data->result, "Ping Result is not True");
     }
 }

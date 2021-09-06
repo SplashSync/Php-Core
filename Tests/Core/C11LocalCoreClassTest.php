@@ -100,6 +100,7 @@ class C11LocalCoreClassTest extends TestCase
         //====================================================================//
         //   Verify Informations
         $this->assertInstanceOf("ArrayObject", $output, "Returned Local Informations are Not inside an ArrayObject");
+        $output = $output->getArrayCopy();
         $this->assertArrayHasKey("company", $output, "Local Informations is Missing");
         $this->assertArrayHasKey("address", $output, "Local Informations is Missing");
         $this->assertArrayHasKey("zip", $output, "Local Informations is Missing");

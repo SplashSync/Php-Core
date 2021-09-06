@@ -253,7 +253,11 @@ class O07GetTest extends ObjectsCase
 
         //====================================================================//
         //   Verify Object Id is Present
-        $this->assertArrayHasKey("id", $data, "Object Identifier ['id'] is not defined in returned Data Block.");
+        $this->assertArrayHasKey(
+            "id",
+            $data->getArrayCopy(),
+            "Object Identifier ['id'] is not defined in returned Data Block."
+        );
         $this->assertEquals($data["id"], $objectId, "Object Identifier ['id'] is different in returned Data Block.");
 
         //====================================================================//

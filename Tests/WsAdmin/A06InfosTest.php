@@ -52,7 +52,7 @@ class A06InfosTest extends AbstractBaseCase
     }
 
     /**
-     * Test Reading Server Informations from Admin Service.
+     * Test Reading Server Information from Admin Service.
      *
      * @dataProvider sequencesProvider
      *
@@ -89,8 +89,8 @@ class A06InfosTest extends AbstractBaseCase
 
         //====================================================================//
         //   Verify Main Informations
-        $this->assertArrayHasKey('shortdesc', $data, 'Server Short Description is Missing');
-        $this->assertArrayHasKey('longdesc', $data, 'Server Long Description is Missing');
+        $this->assertArrayHasKey('shortdesc', $data->getArrayCopy(), 'Server Short Description is Missing');
+        $this->assertArrayHasKey('longdesc', $data->getArrayCopy(), 'Server Long Description is Missing');
 
         //====================================================================//
         //   Verify Main Informations

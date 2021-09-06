@@ -180,7 +180,11 @@ class O03ListTest extends ObjectsCase
     {
         //====================================================================//
         // Verify List Meta Are Available
-        $this->assertArrayHasKey("meta", $data, $objectType." List => Meta Informations are not defined");
+        $this->assertArrayHasKey(
+            "meta",
+            $data->getArrayCopy(),
+            $objectType." List => Meta Informations are not defined"
+        );
         $meta = $data["meta"];
         $this->assertArrayHasKey("current", $meta, $objectType." List => Meta current value not defined");
         $this->assertArrayHasKey("total", $meta, $objectType." List => Meta total value are not defined");

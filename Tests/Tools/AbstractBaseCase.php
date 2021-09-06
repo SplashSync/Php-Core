@@ -171,7 +171,7 @@ abstract class AbstractBaseCase extends TestCase
         // CHECK RESPONSE DATA
         $this->assertNotEmpty($data, "Response Data is Empty or Malformed");
         $this->assertInstanceOf("ArrayObject", $data, "Response Data is Not an ArrayObject");
-        $this->assertArrayHasKey("result", $data, "Request Result is Missing");
+        $this->assertArrayHasKey("result", $data->getArrayCopy(), "Request Result is Missing");
 
         //====================================================================//
         // CHECK RESPONSE LOG
@@ -287,6 +287,7 @@ abstract class AbstractBaseCase extends TestCase
     {
         //====================================================================//
         // SERVER Informations  => Available
+        $server = $server->getArrayCopy();
         $this->assertArrayHasKey("ServerHost", $server, "Server Info (ServerHost) is Missing");
         $this->assertArrayHasKey("ServerPath", $server, "Server Info (ServerPath) is Missing");
         $this->assertArrayHasKey("ServerType", $server, "Server Info (ServerType) is Missing");
@@ -553,7 +554,7 @@ abstract class AbstractBaseCase extends TestCase
         // CHECK RESPONSE DATA
         $this->assertNotEmpty($data, "Response Data is Empty or Malformed");
         $this->assertInstanceOf("ArrayObject", $data, "Response Data is Not an ArrayObject");
-        $this->assertArrayHasKey("result", $data, "Request Result is Missing");
+        $this->assertArrayHasKey("result", $data->getArrayCopy(), "Request Result is Missing");
         $this->assertEmpty($data->result, "Expect Errors but Request Result is True, Why??");
 
         //====================================================================//
