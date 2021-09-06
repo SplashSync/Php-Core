@@ -516,7 +516,7 @@ class Webservice
         // Server WebService Path
         if (isset(Splash::configuration()->ServerPath)) {
             $response->ServerPath = Splash::configuration()->ServerPath;
-        } else {
+        } elseif (!empty($response->ServerRoot)) {
             $fullPath = dirname(__DIR__);
             $relPath = explode((string) $response->ServerRoot, $fullPath);
             if (is_array($relPath) && isset($relPath[1])) {
@@ -524,6 +524,8 @@ class Webservice
             } else {
                 $response->ServerPath = null;
             }
+        } else {
+            $response->ServerPath = null;
         }
 
         $response->setFlags(ArrayObject::STD_PROP_LIST);
