@@ -30,12 +30,12 @@ trait FieldsManagerTrait
     /**
      * Filter a Fields List to keep only given Fields Ids
      *
-     * @param array[] $fieldsList Object Field List
-     * @param array   $filters    Array of Fields Ids
+     * @param array[]  $fieldsList Object Field List
+     * @param string[] $filters    Array of Fields Ids
      *
-     * @return array
+     * @return array[]
      */
-    public static function filterFieldList($fieldsList, $filters = array()): array
+    public static function filterFieldList(array $fieldsList, array $filters = array()): array
     {
         $result = array();
 
@@ -51,13 +51,13 @@ trait FieldsManagerTrait
     /**
      * Filter a Fields List to keep only given Fields Tags
      *
-     * @param array  $fieldsList Object Field List
-     * @param string $itemType   Field Microdata Type Url
-     * @param string $itemProp   Field Microdata Property Name
+     * @param array[] $fieldsList Object Field List
+     * @param string  $itemType   Field Microdata Type Url
+     * @param string  $itemProp   Field Microdata Property Name
      *
-     * @return array
+     * @return array[]
      */
-    public static function filterFieldListByTag($fieldsList, $itemType, $itemProp): array
+    public static function filterFieldListByTag(array $fieldsList, string $itemType, string $itemProp): array
     {
         $result = array();
         $tag = md5($itemProp.IDSPLIT.$itemType);
@@ -78,12 +78,12 @@ trait FieldsManagerTrait
     /**
      * Find a Field Definition in List by Id
      *
-     * @param array $fieldsList Object Field List
-     * @param array $fieldId    Field Id
+     * @param array[]  $fieldsList Object Field List
+     * @param string[] $fieldId    Field Id
      *
      * @return null|array
      */
-    public static function findField($fieldsList, $fieldId): ?array
+    public static function findField(array $fieldsList, array $fieldId): ?array
     {
         $fields = self::filterFieldList($fieldsList, $fieldId);
 
@@ -97,13 +97,13 @@ trait FieldsManagerTrait
     /**
      * Find a Field Definition in List by Id
      *
-     * @param array  $fieldsList Object Field List
-     * @param string $itemType   Field Microdata Type Url
-     * @param string $itemProp   Field Microdata Property Name
+     * @param array[] $fieldsList Object Field List
+     * @param string  $itemType   Field Microdata Type Url
+     * @param string  $itemProp   Field Microdata Property Name
      *
      * @return null|array
      */
-    public static function findFieldByTag($fieldsList, $itemType, $itemProp): ?array
+    public static function findFieldByTag(array $fieldsList, string $itemType, string $itemProp): ?array
     {
         $fields = self::filterFieldListByTag($fieldsList, $itemType, $itemProp);
 
@@ -117,13 +117,13 @@ trait FieldsManagerTrait
     /**
      * Reduce a Fields List to an Array of Field Ids
      *
-     * @param array $fieldsList Object Field List
-     * @param bool  $isRead     Filter non Readable Fields
-     * @param bool  $isWrite    Filter non Writable Fields
+     * @param array[] $fieldsList Object Field List
+     * @param bool    $isRead     Filter non Readable Fields
+     * @param bool    $isWrite    Filter non Writable Fields
      *
      * @return string[]
      */
-    public static function reduceFieldList($fieldsList, $isRead = false, $isWrite = false): array
+    public static function reduceFieldList(array $fieldsList, bool $isRead = false, bool $isWrite = false): array
     {
         $result = array();
 
@@ -155,7 +155,7 @@ trait FieldsManagerTrait
      *
      * @return array|false Exploded List field Array or False
      */
-    public static function isListField($fieldType)
+    public static function isListField(string $fieldType)
     {
         //====================================================================//
         // Safety Check
@@ -175,13 +175,13 @@ trait FieldsManagerTrait
     }
 
     /**
-     * Retrieve Field Identifier from an List Field String
+     * Retrieve Field Identifier from a List Field String
      *
      * @param string $listFieldName List Field Identifier String
      *
      * @return false|string
      */
-    public static function fieldName($listFieldName)
+    public static function fieldName(string $listFieldName)
     {
         //====================================================================//
         // Decode
@@ -191,7 +191,7 @@ trait FieldsManagerTrait
         }
         //====================================================================//
         // Return Field Identifier
-        return   $result['fieldname'];
+        return $result['fieldname'];
     }
 
     /**
@@ -201,7 +201,7 @@ trait FieldsManagerTrait
      *
      * @return false|string
      */
-    public static function listName($listFieldName)
+    public static function listName(string $listFieldName)
     {
         //====================================================================//
         // Decode
@@ -211,7 +211,7 @@ trait FieldsManagerTrait
         }
         //====================================================================//
         // Return List Name
-        return   $result['listname'];
+        return $result['listname'];
     }
 
     /**
@@ -221,7 +221,7 @@ trait FieldsManagerTrait
      *
      * @return false|string
      */
-    public static function baseType($fieldId)
+    public static function baseType(string $fieldId)
     {
         //====================================================================//
         // Detect List Id Fields
@@ -248,7 +248,7 @@ trait FieldsManagerTrait
      *
      * @return array|false
      */
-    public static function isIdField($fieldId)
+    public static function isIdField(string $fieldId)
     {
         //====================================================================//
         // Safety Check
@@ -277,7 +277,7 @@ trait FieldsManagerTrait
      *
      * @return false|string
      */
-    public static function objectId($fieldId)
+    public static function objectId(string $fieldId)
     {
         //====================================================================//
         // decode
@@ -287,7 +287,7 @@ trait FieldsManagerTrait
         }
         //====================================================================//
         // Return List Name
-        return   $result['ObjectId'];
+        return $result['ObjectId'];
     }
 
     /**
@@ -297,7 +297,7 @@ trait FieldsManagerTrait
      *
      * @return false|string
      */
-    public static function objectType($fieldId)
+    public static function objectType(string $fieldId)
     {
         //====================================================================//
         // decode
@@ -307,7 +307,7 @@ trait FieldsManagerTrait
         }
         //====================================================================//
         // Return Field Identifier
-        return   $result['ObjectType'];
+        return $result['ObjectType'];
     }
 
     //==============================================================================
@@ -322,7 +322,7 @@ trait FieldsManagerTrait
      *
      * @return null|array
      */
-    public static function extractRawData($objectData, $filter)
+    public static function extractRawData(array $objectData, string $filter)
     {
         $filteredData = self::filterData($objectData, array($filter));
 
@@ -362,10 +362,10 @@ trait FieldsManagerTrait
     }
 
     /**
-     * Filter a Object Data Block to keap only given Fields
+     * Filter an Object Data Block to keep only given Fields
      *
-     * @param array $objectData Object Data Block
-     * @param array $filters    Array of Fields Ids
+     * @param array    $objectData Object Data Block
+     * @param string[] $filters    Array of Fields Ids
      *
      * @return null|array
      */
@@ -407,15 +407,15 @@ trait FieldsManagerTrait
 
         //====================================================================//
         // Process All List Fields Ids Filters
-        foreach ($listFilters as $listName => $listFilters) {
-            $result[$listName] = self::filterListData($objectData[$listName], $listFilters);
+        foreach ($listFilters as $listName => $listFilter) {
+            $result[$listName] = self::filterListData($objectData[$listName], $listFilter);
         }
 
         return $result;
     }
 
     /**
-     * Filter a Object List Data Block to keap only given Fields
+     * Filter an Object List Data Block to keep only given Fields
      *
      * @param null|array|ArrayObject|string $objectData Object Data Block
      * @param array                         $filters    Array of Fields Ids
