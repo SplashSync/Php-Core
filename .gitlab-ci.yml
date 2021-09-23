@@ -36,6 +36,10 @@ stages:
         - Dedicated
     services:
         - name: mysql
+    artifacts:
+        when: always
+        reports:
+            junit: phpunit-report.xml
     ################################################################################
     # Install & Configure Environnement
     before_script:
@@ -48,7 +52,7 @@ stages:
     script:
         # Execute Grumphp Testsuite
         - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-        - vendor/bin/phpunit
+        - vendor/bin/phpunit --log-junit phpunit-report.xml
     ################################################################################
     # Run After Script
     after_script:

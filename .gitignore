@@ -26,3 +26,4 @@ nbproject/
 /.gh-pages/
 /.php-cs-fixer.cache
 /.phpunit.result.cache
+/report.xml
