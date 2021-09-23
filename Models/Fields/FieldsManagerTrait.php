@@ -151,11 +151,11 @@ trait FieldsManagerTrait
     /**
      * Check if this id is a list identifier
      *
-     * @param string $fieldType Data Type Name String
+     * @param null|string $fieldType Data Type Name String
      *
      * @return array|false Exploded List field Array or False
      */
-    public static function isListField(string $fieldType)
+    public static function isListField(?string $fieldType)
     {
         //====================================================================//
         // Safety Check
@@ -177,11 +177,11 @@ trait FieldsManagerTrait
     /**
      * Retrieve Field Identifier from a List Field String
      *
-     * @param string $listFieldName List Field Identifier String
+     * @param null|string $listFieldName List Field Identifier String
      *
      * @return false|string
      */
-    public static function fieldName(string $listFieldName)
+    public static function fieldName(?string $listFieldName)
     {
         //====================================================================//
         // Decode
@@ -197,11 +197,11 @@ trait FieldsManagerTrait
     /**
      * Retrieve List Name from an List Field String
      *
-     * @param string $listFieldName List Field Identifier String
+     * @param null|string $listFieldName List Field Identifier String
      *
      * @return false|string
      */
-    public static function listName(string $listFieldName)
+    public static function listName(?string $listFieldName)
     {
         //====================================================================//
         // Decode
@@ -217,11 +217,11 @@ trait FieldsManagerTrait
     /**
      * Retrieve Base Field Type from Field Type|Id String
      *
-     * @param string $fieldId List Field Identifier String
+     * @param null|string $fieldId List Field Identifier String
      *
      * @return false|string
      */
-    public static function baseType(string $fieldId)
+    public static function baseType(?string $fieldId)
     {
         //====================================================================//
         // Detect List Id Fields
@@ -234,7 +234,7 @@ trait FieldsManagerTrait
             $fieldId = self::objectType((string) $fieldId);
         }
 
-        return $fieldId;
+        return $fieldId ?: false;
     }
 
     //==============================================================================
@@ -244,11 +244,11 @@ trait FieldsManagerTrait
     /**
      * Identify if field is Object Identifier Data & Decode Field
      *
-     * @param string $fieldId ObjectId Field String
+     * @param null|string $fieldId ObjectId Field String
      *
      * @return array|false
      */
-    public static function isIdField(string $fieldId)
+    public static function isIdField(?string $fieldId)
     {
         //====================================================================//
         // Safety Check
@@ -273,11 +273,11 @@ trait FieldsManagerTrait
     /**
      * Retrieve Object Id Name from an Object Identifier String
      *
-     * @param string $fieldId Object Identifier String
+     * @param null|string $fieldId Object Identifier String
      *
      * @return false|string
      */
-    public static function objectId(string $fieldId)
+    public static function objectId(?string $fieldId)
     {
         //====================================================================//
         // decode
@@ -293,11 +293,11 @@ trait FieldsManagerTrait
     /**
      * Retrieve Object Type Name from an Object Identifier String
      *
-     * @param string $fieldId Object Identifier String
+     * @param null|string $fieldId Object Identifier String
      *
      * @return false|string
      */
-    public static function objectType(string $fieldId)
+    public static function objectType(?string $fieldId)
     {
         //====================================================================//
         // decode
@@ -317,13 +317,19 @@ trait FieldsManagerTrait
     /**
      * Extract Raw Field Data from an Object Data Block
      *
-     * @param array  $objectData Object Data Block
-     * @param string $filter     Single Fields Id
+     * @param array       $objectData Object Data Block
+     * @param null|string $filter     Single Fields Id
      *
      * @return null|array
      */
-    public static function extractRawData(array $objectData, string $filter)
+    public static function extractRawData(array $objectData, ?string $filter): ?array
     {
+        //====================================================================//
+        // Explode List Field Id
+        if (empty($filter)) {
+            return null;
+        }
+
         $filteredData = self::filterData($objectData, array($filter));
 
         //====================================================================//

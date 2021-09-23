@@ -25,3 +25,4 @@ nbproject/
 .idea
 /.gh-pages/
 /.php-cs-fixer.cache
+/.phpunit.result.cache
