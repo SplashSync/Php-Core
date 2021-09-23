@@ -21,6 +21,10 @@
         </testsuite>
     </testsuites>
 
+    <logging>
+        <junit outputFile="phpunit-report.xml"/>
+    </logging>
+
     <php>
         <env    name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
     </php>
