@@ -320,9 +320,9 @@ trait FieldsManagerTrait
      * @param array       $objectData Object Data Block
      * @param null|string $filter     Single Fields Id
      *
-     * @return null|array
+     * @return null|array|string
      */
-    public static function extractRawData(array $objectData, ?string $filter): ?array
+    public static function extractRawData(array $objectData, ?string $filter)
     {
         //====================================================================//
         // Explode List Field Id
