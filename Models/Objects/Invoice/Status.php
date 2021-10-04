@@ -67,6 +67,22 @@ class Status
     }
 
     /**
+     * Get a List of All Possible Invoice Status Codes
+     *
+     * @return array
+     */
+    public static function getAllChoices(): array
+    {
+        return array(
+            self::CANCELED => "Canceled",
+            self::DRAFT => "Draft",
+            self::PAYMENT_DUE => "Payment Due",
+            self::COMPLETE => "Completed",
+            self::DECLINED => "Declined",
+        );
+    }
+
+    /**
      * Get a List of Validated Invoice Status Codes
      *
      * @return array
