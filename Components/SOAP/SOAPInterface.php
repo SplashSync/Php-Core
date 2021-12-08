@@ -15,8 +15,8 @@
 
 namespace Splash\Components\SOAP;
 
+use Exception;
 use SoapClient;
-use SoapFault;
 use SoapServer;
 use Splash\Core\SplashCore      as Splash;
 use Splash\Models\CommunicationInterface;
@@ -69,8 +69,7 @@ class SOAPInterface implements CommunicationInterface
         //====================================================================//
         // Store Client Url
         $this->uri = Splash::input('SERVER_NAME')
-                ? Splash::input('SERVER_NAME')
-                : Splash::configuration()->WsHost;
+                ?: Splash::configuration()->WsHost;
 
         //====================================================================//
         // Build Options Array
@@ -105,15 +104,19 @@ class SOAPInterface implements CommunicationInterface
         Splash::log()->deb("[SOAP] Call Url= '".$this->location."' Service='".$service."'");
         //====================================================================//
         // Execute Php SOAP Call
-        $response = $this->client->__soapCall($service, $data);
+        try {
+            $response = $this->client->__soapCall($service, $data);
+        } catch (Exception $exception) {
+            $response = $exception;
+        }
         //====================================================================//
         // Decode & Store Generic SOAP Errors if present
-        if ($response instanceof SoapFault) {
+        if ($response instanceof Exception) {
             //====================================================================//
             //  Debug Informations
             Splash::log()->deb('[SOAP] Fault Details= '.$response->getTraceAsString());
             //====================================================================//
-            //  Errro Message
+            //  Error Message
             return Splash::log()->err('ErrWsNuSOAPFault', $response->getCode(), $response->getMessage());
         }
 
