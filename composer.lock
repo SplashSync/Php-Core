@@ -556,12 +556,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BadPixxel/Php-Sdk.git",
-                "reference": "9c4ef5165fb89c062334e2e0388d3d7264b48688"
+                "reference": "16f74ca69b0a8f6ccf5b38ed1650b379d9368577"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BadPixxel/Php-Sdk/zipball/9c4ef5165fb89c062334e2e0388d3d7264b48688",
-                "reference": "9c4ef5165fb89c062334e2e0388d3d7264b48688",
+                "url": "https://api.github.com/repos/BadPixxel/Php-Sdk/zipball/16f74ca69b0a8f6ccf5b38ed1650b379d9368577",
+                "reference": "16f74ca69b0a8f6ccf5b38ed1650b379d9368577",
                 "shasum": ""
             },
             "require": {
@@ -616,7 +616,7 @@
                 "issues": "https://github.com/BadPixxel/Php-Sdk/issues",
                 "source": "https://github.com/BadPixxel/Php-Sdk/tree/main"
             },
-            "time": "2021-12-01T00:54:08+00:00"
+            "time": "2021-12-08T13:21:05+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -2706,16 +2706,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.14.0",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "d86dfc2e2a3cd366cee475e52c6bb3bbc371aa0e"
+                "reference": "bbcd7380b0ebf3961ee21409db7b38bc31d69a13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/d86dfc2e2a3cd366cee475e52c6bb3bbc371aa0e",
-                "reference": "d86dfc2e2a3cd366cee475e52c6bb3bbc371aa0e",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/bbcd7380b0ebf3961ee21409db7b38bc31d69a13",
+                "reference": "bbcd7380b0ebf3961ee21409db7b38bc31d69a13",
                 "shasum": ""
             },
             "require": {
@@ -2767,9 +2767,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpspec/prophecy/issues",
-                "source": "https://github.com/phpspec/prophecy/tree/1.14.0"
+                "source": "https://github.com/phpspec/prophecy/tree/v1.15.0"
             },
-            "time": "2021-09-10T09:02:12+00:00"
+            "time": "2021-12-08T12:19:24+00:00"
         },
         {
             "name": "phpstan/phpstan",
@@ -6639,5 +6639,5 @@
         "php": "^7.2|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
