@@ -180,7 +180,7 @@ class CommitsManager
      *
      * @return bool
      */
-    private static function isValidObjectType(string $objectType): bool
+    protected static function isValidObjectType(string $objectType): bool
     {
         try {
             return !empty(Splash::object($objectType));
@@ -196,11 +196,11 @@ class CommitsManager
     /**
      * Parse Object Ids
      *
-     * @param array|int|string $objectIds object Local Id or Array of Local Id
+     * @param array|int|string $objectIds object Local ID or Array of Local ID
      *
      * @return array
      */
-    private static function toObjectIds($objectIds): array
+    protected static function toObjectIds($objectIds): array
     {
         //====================================================================//
         // Ensure we have an array
@@ -225,7 +225,7 @@ class CommitsManager
      *
      * @return array
      */
-    private static function getCommitParameters(
+    protected static function getCommitParameters(
         string $objectType,
         array $objectIds,
         string $action,
@@ -250,7 +250,7 @@ class CommitsManager
      *
      * @return bool
      */
-    private static function isCommitAllowed(string $objectType, array $objectIds, string $action): bool
+    protected static function isCommitAllowed(string $objectType, array $objectIds, string $action): bool
     {
         try {
             $splashObject = Splash::object($objectType);
@@ -272,7 +272,7 @@ class CommitsManager
         }
         //====================================================================//
         // Verify if Travis Mode (PhpUnit) ==> No Commit Allowed
-        return !self::isTravisMode($objectType, $objectIds, $action);
+        return !static::isTravisMode($objectType, $objectIds, $action);
     }
 
     /**
@@ -284,7 +284,7 @@ class CommitsManager
      *
      * @return bool
      */
-    private static function isTravisMode(string $objectType, array $local, string $action): bool
+    protected static function isTravisMode(string $objectType, array $local, string $action): bool
     {
         //====================================================================//
         // Detect Travis from SERVER CONSTANTS
@@ -354,13 +354,15 @@ class CommitsManager
     /**
      * Check If Post Commit Mode is Active
      *
+     * @param bool $checkIsCli Ensure we are NOT on PHP Cli
+     *
      * @return bool
      */
-    private static function isPostCommitMode(): bool
+    private static function isPostCommitMode(bool $checkIsCli = true): bool
     {
         //====================================================================//
         //  Safety Check = > Never do this on CLI
-        if ("cli" == PHP_SAPI) {
+        if ($checkIsCli && ("cli" == PHP_SAPI)) {
             return false;
         }
         //====================================================================//

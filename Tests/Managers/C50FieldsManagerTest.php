@@ -20,7 +20,7 @@ use Splash\Components\FieldsManager;
 use Splash\Core\SplashCore     as Splash;
 
 /**
- * Componants Test Suite - Fields Manager Verifications
+ * Components Test Suite - Fields Manager Verifications
  *
  * @author SplashSync <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
@@ -67,7 +67,7 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @return array
      */
-    public function providerIsListFieldFunction()
+    public function providerIsListFieldFunction(): array
     {
         return array(
             array(null,                 false),
@@ -97,7 +97,7 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @return array
      */
-    public function providerFieldNameFunction()
+    public function providerFieldNameFunction(): array
     {
         return array(
             array(null,                 false),
@@ -128,7 +128,7 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @return array
      */
-    public function providerListNameFunction()
+    public function providerListNameFunction(): array
     {
         return array(
             array(null,                 false),
@@ -159,7 +159,7 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @return array
      */
-    public function providerBaseTypeFunction()
+    public function providerBaseTypeFunction(): array
     {
         //====================================================================//
         // BOOT MODULE
@@ -227,7 +227,7 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @return array
      */
-    public function providerIsIdFieldFunction()
+    public function providerIsIdFieldFunction(): array
     {
         return array(
             array(null,                 false),
@@ -256,7 +256,7 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @return array
      */
-    public function providerObjectIdFunction()
+    public function providerObjectIdFunction(): array
     {
         return array(
             array(null,                 false),
@@ -287,7 +287,7 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @return array
      */
-    public function providerObjectTypeFunction()
+    public function providerObjectTypeFunction(): array
     {
         return array(
             array(null,                 false),
