@@ -821,7 +821,7 @@ class Webservice
     {
         //====================================================================//
         // No tasks to Add
-        if (is_null($tasks) && count($this->tasks)) {
+        if (is_null($tasks) && (0 == count($this->tasks))) {
             return true;
         }
 
@@ -831,7 +831,7 @@ class Webservice
 
         //====================================================================//
         // Add Internal Tasks to buffer
-        if (!count($this->tasks)) {
+        if (count($this->tasks)) {
             $this->outputs->tasks = $this->tasks;
             $this->outputs->taskscount = count($this->outputs->tasks);
             Splash::log()->deb('[WS] Call Loaded '.$this->outputs->tasks->count().' Internal tasks');
