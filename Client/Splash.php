@@ -38,7 +38,7 @@ class Splash extends SplashCore
      *
      * @return bool
      */
-    public static function ping($silent = false): bool
+    public static function ping(bool $silent = false): bool
     {
         //====================================================================//
         // Stack Trace
@@ -86,7 +86,7 @@ class Splash extends SplashCore
      *
      * @return bool
      */
-    public static function connect($silent = false): bool
+    public static function connect(bool $silent = false): bool
     {
         //====================================================================//
         // Stack Trace

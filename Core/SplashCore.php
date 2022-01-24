@@ -17,6 +17,8 @@ namespace   Splash\Core;
 
 use ArrayObject;
 use Exception;
+use ReflectionClass;
+use Splash\Components\CommitsManager;
 use Splash\Components\FileManager;
 use Splash\Components\Logger;
 use Splash\Components\NuSOAP\NuSOAPInterface;
@@ -49,7 +51,9 @@ use Splash\Models\WidgetsProviderInterface;
  * Simple & Core Functions for Splash & Slaves Classes
  *
  * @author      B. Paquier <contact@splashsync.com>
+ *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class SplashCore
@@ -57,7 +61,7 @@ class SplashCore
     /**
      * Static Class Storage
      *
-     * @var SplashCore
+     * @var null|SplashCore
      */
     protected static $instance;
 
@@ -69,56 +73,56 @@ class SplashCore
     protected $conf;
 
     /**
-     * Splash Webservice Componant
+     * Splash Webservice Component
      *
      * @var Logger
      */
     protected $log;
 
     /**
-     * Module Communication Componant
+     * Module Communication Component
      *
      * @var CommunicationInterface
      */
     protected $com;
 
     /**
-     * Module Webservice Componant
+     * Module Webservice Component
      *
      * @var null|Webservice
      */
     protected $soap;
 
     /**
-     * Module Tasks Routing Componant
+     * Module Tasks Routing Component
      *
      * @var Router
      */
     protected $router;
 
     /**
-     * Module Files Manager Componant
+     * Module Files Manager Component
      *
      * @var FileManager
      */
     protected $file;
 
     /**
-     * Validation Componant
+     * Validation Component
      *
      * @var Validator
      */
     protected $valid;
 
     /**
-     * Splash Xml Manager Componant
+     * Splash Xml Manager Component
      *
      * @var XmlManager
      */
     protected $xml;
 
     /**
-     * Splash Text Translator Componant
+     * Splash Text Translator Component
      *
      * @var Translator
      */
@@ -134,16 +138,16 @@ class SplashCore
     /**
      * Splash Objects Class Buffer
      *
-     * @var null|array
+     * @var array<string, ObjectInterface>
      */
-    protected $objects;
+    protected $objects = array();
 
     /**
      * Splash Widgets Class Buffer
      *
-     * @var null|array
+     * @var array<string, WidgetInterface>
      */
-    protected $widgets;
+    protected $widgets = array();
 
     /**
      * Splash Configurator Class Instance
@@ -157,18 +161,18 @@ class SplashCore
      *
      * @param bool $verbose Enable Log of Debug Messages
      */
-    public function __construct($verbose = false)
+    public function __construct(bool $verbose = false)
     {
         self::$instance = $this;
 
         //====================================================================//
         // Include Splash Constants Definitions
-        require_once dirname(dirname(__FILE__)).'/inc/defines.inc.php';
+        require_once dirname(__FILE__, 2).'/inc/defines.inc.php';
 
         //====================================================================//
         // Include Splash Constants Definitions
         if (!defined('SPL_PROTOCOL')) {
-            require_once dirname(dirname(__FILE__)).'/inc/Splash.Inc.php';
+            require_once dirname(__FILE__, 2).'/inc/Splash.Inc.php';
         }
 
         //====================================================================//
@@ -184,16 +188,17 @@ class SplashCore
 
     //====================================================================//
     //  STATIC CLASS ACCESS
-    //  Creation & Acces to all subclasses Instances
+    //  Creation & Access to all subclasses Instances
     //====================================================================//
 
     /**
      * Get a singleton Core Class
-     * Acces to all most commons Module Functions
+     *
+     * Access to all most commons Module Functions
      *
      * @return self
      */
-    public static function core()
+    public static function core(): self
     {
         if (!isset(self::$instance)) {
             //====================================================================//
@@ -209,7 +214,7 @@ class SplashCore
      *
      * @return ArrayObject
      */
-    public static function configuration()
+    public static function configuration(): ArrayObject
     {
         //====================================================================//
         // Configuration Array Already Exists
@@ -240,7 +245,7 @@ class SplashCore
         $config->WsCrypt = SPLASH_CRYPT_METHOD;
         $config->WsEncode = SPLASH_ENCODE;
         $config->WsHost = 'www.splashsync.com/ws/soap';
-        $config->WsPostCommit = false;
+        $config->WsPostCommit = true;
 
         //====================================================================//
         // Activity Logging Parameters
@@ -261,7 +266,11 @@ class SplashCore
         //====================================================================//
         // Load Module Local Configuration (In Safe Mode)
         //====================================================================//
-        $localConf = self::local()->Parameters();
+        try {
+            $localConf = self::local()->Parameters();
+        } catch (Exception $e) {
+            $localConf = array();
+        }
         //====================================================================//
         // Validate Local Parameters
         if (self::validate()->isValidLocalParameterArray($localConf)) {
@@ -287,11 +296,12 @@ class SplashCore
 
     /**
      * Get a singleton Log Class
-     * Acces to Module Logging Functions
+     *
+     * Access to Module Logging Functions
      *
      * @return Logger
      */
-    public static function log()
+    public static function log(): Logger
     {
         if (!isset(self::core()->log)) {
             //====================================================================//
@@ -299,7 +309,7 @@ class SplashCore
             self::core()->log = new Logger();
 
             //====================================================================//
-            //  Define Standard Messages Prefix if Not Overiden
+            //  Define Standard Messages Prefix if No Override
             if (isset(self::configuration()->localname)) {
                 self::core()->log->setPrefix(self::configuration()->localname);
             }
@@ -313,7 +323,7 @@ class SplashCore
      *
      * @return CommunicationInterface
      */
-    public static function com()
+    public static function com(): CommunicationInterface
     {
         if (isset(self::core()->com)) {
             return self::core()->com;
@@ -344,12 +354,13 @@ class SplashCore
 
     /**
      * Get a singleton WebService Class
-     * Acces to NuSOAP WebService Communication Functions
+     *
+     * Access to NuSOAP WebService Communication Functions
      *
      * @return Webservice
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
-    public static function ws()
+    public static function ws(): Webservice
     {
         if (!isset(self::core()->soap)) {
             //====================================================================//
@@ -372,11 +383,12 @@ class SplashCore
 
     /**
      * Get a singleton Router Class
-     * Acces to Server Tasking Management Functions
+     *
+     * Access to Server Tasking Management Functions
      *
      * @return Router
      */
-    public static function router()
+    public static function router(): Router
     {
         if (isset(self::core()->router)) {
             return self::core()->router;
@@ -391,11 +403,12 @@ class SplashCore
 
     /**
      * Get a singleton File Class
-     * Acces to File Management Functions
+     *
+     * Access to File Management Functions
      *
      * @return FileManager
      */
-    public static function file()
+    public static function file(): FileManager
     {
         if (!isset(self::core()->file)) {
             //====================================================================//
@@ -412,11 +425,12 @@ class SplashCore
 
     /**
      * Get a singleton Validate Class
-     * Acces to Module Validation Functions
+     *
+     * Access to Module Validation Functions
      *
      * @return Validator
      */
-    public static function validate()
+    public static function validate(): Validator
     {
         if (isset(self::core()->valid)) {
             return self::core()->valid;
@@ -436,11 +450,12 @@ class SplashCore
 
     /**
      * Get a singleton Xml Parser Class
-     * Acces to Module Xml Parser Functions
+     *
+     * Access to Module Xml Parser Functions
      *
      * @return XmlManager
      */
-    public static function xml()
+    public static function xml(): XmlManager
     {
         if (isset(self::core()->xml)) {
             return self::core()->xml;
@@ -455,11 +470,12 @@ class SplashCore
 
     /**
      * Get a singleton Translator Class
-     * Acces to Translation Functions
+     *
+     * Access to Translation Functions
      *
      * @return Translator
      */
-    public static function translator()
+    public static function translator(): Translator
     {
         if (!isset(self::core()->translator)) {
             //====================================================================//
@@ -471,7 +487,9 @@ class SplashCore
     }
 
     /**
-     * Acces Server Local Class
+     * Access Server Local Class
+     *
+     * @throws Exception
      *
      * @return LocalClassInterface
      */
@@ -525,22 +543,13 @@ class SplashCore
      *
      * @return ObjectInterface
      */
-    public static function object($objectType)
+    public static function object(string $objectType): ObjectInterface
     {
-        //====================================================================//
-        // First Access to Local Objects
-        if (!isset(self::core()->objects)) {
-            //====================================================================//
-            // Initialize Local Objects Class Array
-            self::core()->objects = array();
-        }
-
         //====================================================================//
         // Check in Cache
         if (array_key_exists($objectType, self::core()->objects)) {
             return self::core()->objects[$objectType];
         }
-
         //====================================================================//
         // Verify if Object Class is Valid
         if (!self::validate()->isValidObject($objectType)) {
@@ -548,7 +557,7 @@ class SplashCore
         }
 
         //====================================================================//
-        // Check if Object Manager is Overriden
+        // Check if Object Manager has Override
         if (self::local() instanceof ObjectsProviderInterface) {
             //====================================================================//
             // Initialize Local Object Manager
@@ -577,16 +586,8 @@ class SplashCore
      *
      * @return WidgetInterface
      */
-    public static function widget($widgetType)
+    public static function widget(string $widgetType): WidgetInterface
     {
-        //====================================================================//
-        // First Access to Local Objects
-        if (!isset(self::core()->widgets)) {
-            //====================================================================//
-            // Initialize Local Widget Class Array
-            self::core()->widgets = array();
-        }
-
         //====================================================================//
         // Check in Cache
         if (array_key_exists($widgetType, self::core()->widgets)) {
@@ -600,7 +601,7 @@ class SplashCore
         }
 
         //====================================================================//
-        // Check if Widget Manager is Overriden
+        // Check if Widget Manager is Override
         if (self::local() instanceof WidgetsProviderInterface) {
             //====================================================================//
             // Initialize Local Widget Manager
@@ -659,7 +660,7 @@ class SplashCore
      *
      * @return void
      */
-    public static function reboot()
+    public static function reboot(): void
     {
         //====================================================================//
         // Clear Module Configuration Array
@@ -674,8 +675,11 @@ class SplashCore
         //====================================================================//
         // Clear Module Local Objects Classes
         if (isset(self::core()->objects)) {
-            self::core()->objects = null;
+            self::core()->objects = array();
         }
+        //====================================================================//
+        // Reset Commits Manager
+        CommitsManager::reset();
         //====================================================================//
         // Clear Module Log
         self::log()->cleanLog();
@@ -691,7 +695,7 @@ class SplashCore
      *
      * @return string
      */
-    public static function getName()
+    public static function getName(): string
     {
         return SPLASH_NAME;
     }
@@ -701,7 +705,7 @@ class SplashCore
      *
      * @return string
      */
-    public static function getDesc()
+    public static function getDesc(): string
     {
         return SPLASH_DESC;
     }
@@ -711,7 +715,7 @@ class SplashCore
      *
      * @return string
      */
-    public static function getVersion()
+    public static function getVersion(): string
     {
         return SPLASH_VERSION;
     }
@@ -719,9 +723,11 @@ class SplashCore
     /**
      * Detect Real Path of Current Module Local Class
      *
+     * @throws Exception
+     *
      * @return null|string
      */
-    public static function getLocalPath()
+    public static function getLocalPath(): ?string
     {
         //====================================================================//
         // Safety Check => Verify Local Class is Valid
@@ -730,7 +736,7 @@ class SplashCore
         }
         //====================================================================//
         // Create A Reflection Class of Local Class
-        $reflector = new \ReflectionClass(get_class(self::local()));
+        $reflector = new ReflectionClass(get_class(self::local()));
         //====================================================================//
         // Return Class Local Path
         return dirname((string) $reflector->getFileName());
@@ -745,7 +751,7 @@ class SplashCore
      * @return null|string
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public static function input($name, $type = INPUT_SERVER)
+    public static function input(string $name, int $type = INPUT_SERVER): ?string
     {
         //====================================================================//
         // Standard Safe Reading
@@ -772,7 +778,7 @@ class SplashCore
      *
      * @return int
      */
-    public static function count($value)
+    public static function count($value): int
     {
         if (is_null($value)) {
             return 0;
@@ -785,12 +791,12 @@ class SplashCore
     }
 
     /**
-     * Check if Framework Instanciated in Debug Mode
+     * Check if Framework Instanced in Debug Mode
      * Used for PhpUnit Tests
      *
      * @return bool
      */
-    public static function isDebugMode()
+    public static function isDebugMode(): bool
     {
         return (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG));
     }
@@ -812,13 +818,13 @@ class SplashCore
      * @return string Translated string (encoded into HTML entities and UTF8)
      */
     public static function trans(
-        $key,
-        $param1 = '',
-        $param2 = '',
-        $param3 = '',
-        $param4 = '',
-        $maxsize = 0
-    ) {
+        string $key,
+        string $param1 = '',
+        string $param2 = '',
+        string $param3 = '',
+        string $param4 = '',
+        int $maxsize = 0
+    ): string {
         return self::translator()->translate($key, $param1, $param2, $param3, $param4, $maxsize);
     }
 
@@ -832,7 +838,9 @@ class SplashCore
      * Ask for Server System Informations
      * Informations may be overwritten by Local Module Class
      *
-     * @return ArrayObject Array including all server informations
+     * @throws Exception
+     *
+     * @return ArrayObject Array including all server information
      *
      * General Parameters
      *
@@ -848,7 +856,7 @@ class SplashCore
      * $r->Port            =   $_SERVER["SERVER_PORT"];
      * $r->UserAgent       =   $_SERVER["HTTP_USER_AGENT"];
      */
-    public static function informations()
+    public static function informations(): ArrayObject
     {
         //====================================================================//
         // Init Response Object
@@ -873,11 +881,11 @@ class SplashCore
         //====================================================================//
         // Server Logo & Ico
         $response->icoraw = self::file()->readFileContents(
-            dirname(dirname(__FILE__)).'/img/Splash-ico.png'
+            dirname(__FILE__, 2).'/img/Splash-ico.png'
         );
         $response->logourl = null;
         $response->logoraw = self::file()->readFileContents(
-            dirname(dirname(__FILE__)).'/img/Splash-ico.jpg'
+            dirname(__FILE__, 2).'/img/Splash-ico.jpg'
         );
 
         //====================================================================//
@@ -909,12 +917,14 @@ class SplashCore
     /**
      * Build list of Available Objects
      *
-     * @return array
+     * @throws Exception
+     *
+     * @return string[]
      */
-    public static function objects()
+    public static function objects(): array
     {
         //====================================================================//
-        // Check if Object Manager is Overriden
+        // Check if Object Manager has Overrides
         if (self::local() instanceof ObjectsProviderInterface) {
             return self::local()->objects();
         }
@@ -957,10 +967,11 @@ class SplashCore
     /**
      * Perform Local Module Self Test
      *
+     * @throws Exception
+     *
      * @return bool
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public static function selfTest()
+    public static function selfTest(): bool
     {
         //====================================================================//
         //  Perform Local Core Class Test
@@ -969,12 +980,9 @@ class SplashCore
         }
         //====================================================================//
         //  Read Local Objects List
-        $objectTypes = self::objects();
-        if (is_array($objectTypes)) {
-            foreach ($objectTypes as $objectType) {
-                if (!self::validate()->isValidObject($objectType)) {
-                    return false;
-                }
+        foreach (self::objects() as $objectType) {
+            if (!self::validate()->isValidObject($objectType)) {
+                return false;
             }
         }
         //====================================================================//
@@ -992,7 +1000,9 @@ class SplashCore
         if (!empty(self::configurator()->getConfiguration())) {
             self::log()->msg("HasCustomCfg");
         }
-
+        //====================================================================//
+        //  Commits Manager Self-Tests
+        CommitsManager::selfTest();
         //====================================================================//
         //  No HTTP Calls on SERVER MODE, nor in TRAVIS tests
         if (!empty(SPLASH_SERVER_MODE) || !empty(self::input('SPLASH_TRAVIS'))) {
@@ -1006,12 +1016,14 @@ class SplashCore
     /**
      * Build list of Available Widgets
      *
-     * @return array
+     * @throws Exception
+     *
+     * @return string[]
      */
-    public static function widgets()
+    public static function widgets(): array
     {
         //====================================================================//
-        // Check if Widget Manager is Overriden
+        // Check if Widget Manager has Overrides
         if (self::local() instanceof WidgetsProviderInterface) {
             return self::local()->widgets();
         }

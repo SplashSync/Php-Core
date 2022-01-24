@@ -15,14 +15,27 @@
 
 namespace Splash\Tests\Tools\Components;
 
+use Splash\Client\CommitEvent;
 use Splash\Components\CommitsManager;
 
 class TestCommitsManager extends CommitsManager
 {
     /**
+     * Force Intelligent Commits Mode
+     *
+     * @param bool $intelMode
+     *
+     * @return bool
+     */
+    public static function forceIntelMode(bool $intelMode): bool
+    {
+        return self::$intelCommitMode = $intelMode;
+    }
+
+    /**
      * {@inheritDoc}
      */
-    protected static function isTravisMode(string $objectType, array $local, string $action): bool
+    protected static function isTravisMode(CommitEvent $commitEvent): bool
     {
         return false;
     }

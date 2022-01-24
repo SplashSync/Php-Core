@@ -171,7 +171,7 @@ class O04CreateTest extends ObjectsCase
 
         //====================================================================//
         // Clean Objects Committed Array
-        CommitsManager::resetSessionCommitted();
+        CommitsManager::reset();
 
         return $this->fakeObjectData($fields);
     }

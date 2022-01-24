@@ -67,10 +67,10 @@ class XmlManager
      *
      * @return string
      */
-    public function objectToXml($obj)
+    public function objectToXml($obj): string
     {
         //====================================================================//
-        // Create Transmition Object
+        // Create Transmission Object
         $tmp = new stdClass();
         $tmp->SPLASH = $obj;
         //====================================================================//
@@ -91,7 +91,7 @@ class XmlManager
      *
      * @return ArrayObject|false|string
      */
-    public function xmlToArrayObject($xml)
+    public function xmlToArrayObject(string $xml)
     {
         //====================================================================//
         // SimpleXMLElement Object to Array
@@ -105,7 +105,7 @@ class XmlManager
      *
      * @return array|false|string
      */
-    public function xmlToArray($xml)
+    public function xmlToArray(string $xml)
     {
         //====================================================================//
         // SimpleXMLElement Object to Array
@@ -123,7 +123,7 @@ class XmlManager
      *
      * @return false|SimpleXMLElement
      */
-    private function xmlToElements($xml)
+    private function xmlToElements(string $xml)
     {
         //====================================================================//
         // Convert XML to Object Recursively
@@ -149,7 +149,7 @@ class XmlManager
     private function objectToXmlCore(XMLWriter $xml, $object)
     {
         //====================================================================//
-        // Read each entitie of an object
+        // Read each entities of an object
         foreach ($object as $key => $value) {
             //====================================================================//
             // Insert Object
@@ -159,7 +159,7 @@ class XmlManager
                 // Rename Numeric Keys
                 $key = self::keysFilter($key, 'object-');
                 //====================================================================//
-                // Recurcive Add Of This Object
+                // Recursive Add Of This Object
                 $xml->startElement($key);
                 $this->objectToXmlCore($xml, $value);
                 $xml->endElement();
@@ -180,7 +180,7 @@ class XmlManager
                             .": ".print_r($key, true)." Value : ".print_r($value, true);
                 }
                 //====================================================================//
-                // Recurcive Add Of This Array
+                // Recursive Add Of This Array
                 $this->objectToXmlCore($xml, $value);
                 $xml->endElement();
 
@@ -227,16 +227,15 @@ class XmlManager
      *
      * @return string $result
      */
-    private static function keysFilter($key, $prefix)
+    private static function keysFilter(string $key, string $prefix): string
     {
         //====================================================================//
         // Convert Numeric Keys with Prefix
         if (is_numeric($key)) {
             return $prefix.$key;
-            //====================================================================//
-        // Keap Scalar Keys
         }
-
+        //====================================================================//
+        // Keep Scalar Keys
         return $key;
     }
 
@@ -258,11 +257,11 @@ class XmlManager
         // Init Result
         $result = array();
         //====================================================================//
-        // Get First Level Childrens
+        // Get First Level Children
         $children = $element->children();
         $isArrayElement = false;
         //====================================================================//
-        // For All Childrens
+        // For All Children
         foreach ($children as $elementName => $node) {
             //====================================================================//
             // This Element is an ArrayElement
@@ -270,7 +269,6 @@ class XmlManager
             //====================================================================//
             // If Element Doesn't Already Exists => Store as Single Element
             if (!isset($result[$elementName])) {
-                $result[$elementName] = array();
                 $result[$elementName] = self::simpleXmlToArray($node);
 
                 continue;
@@ -315,11 +313,11 @@ class XmlManager
         // Init Result
         $result = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
         //====================================================================//
-        // Get First Level Childrens
+        // Get First Level Children
         $children = $element->children();
         $isArrayElement = false;
         //====================================================================//
-        // For All Childrens
+        // For All Children
         foreach ($children as $elementName => $node) {
             //====================================================================//
             // This Element is an ArrayElement
@@ -327,7 +325,6 @@ class XmlManager
             //====================================================================//
             // If Element Doesn't Already Exists => Store as Single Element
             if (!isset($result[$elementName])) {
-                $result[$elementName] = array();
                 $result[$elementName] = self::simpleXmlToArrayObject($node);
 
                 continue;

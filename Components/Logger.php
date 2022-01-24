@@ -379,11 +379,23 @@ class Logger
      * @param string $txt Any text to display before dump
      * @param mixed  $var Any Object to dump
      *
-     * @return bool
+     * @return true
      */
-    public function www($txt, $var)
+    public function www(string $txt, $var): bool
     {
         return $this->war($txt.'<PRE>'.print_r($var, true).'</PRE>');
+    }
+
+    /**
+     * Read & Returns print_r() of a variable in a warning message
+     *
+     * @param mixed $var Any Object to dump
+     *
+     * @return true
+     */
+    public function dump($var): bool
+    {
+        return $this->www('Dump', $var);
     }
 
     /**

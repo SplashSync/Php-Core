@@ -148,7 +148,7 @@ class Webservice
         $this->key = Splash::configuration()->WsEncryptionKey;
 
         //====================================================================//
-        // If Another Host is Defined => Allow Overide of Server Host Address
+        // If Another Host is Defined => Allow Override of Server Host Address
         if (!empty(Splash::configuration()->WsHost)) {
             $this->host = Splash::configuration()->WsHost;
         } else {
@@ -330,6 +330,7 @@ class Webservice
         //====================================================================//
         // Call Execution
         $this->rawIn = Splash::com()->call($this->outputs->service, $this->rawOut);
+
         //====================================================================//
         // Analyze & Decode Response
         //====================================================================//
@@ -476,7 +477,7 @@ class Webservice
     //====================================================================//
 
     /**
-     * Return Server Informations
+     * Return Server Information
      *
      * @return ArrayObject $Response
      *
@@ -820,7 +821,7 @@ class Webservice
     {
         //====================================================================//
         // No tasks to Add
-        if (is_null($tasks) && empty($this->tasks)) {
+        if (is_null($tasks) && count($this->tasks)) {
             return true;
         }
 
@@ -830,7 +831,7 @@ class Webservice
 
         //====================================================================//
         // Add Internal Tasks to buffer
-        if (!empty($this->tasks)) {
+        if (!count($this->tasks)) {
             $this->outputs->tasks = $this->tasks;
             $this->outputs->taskscount = count($this->outputs->tasks);
             Splash::log()->deb('[WS] Call Loaded '.$this->outputs->tasks->count().' Internal tasks');

@@ -43,4 +43,26 @@ trait MethodInvokerTrait
             return null;
         }
     }
+
+    /**
+     * Call protected/private method of a class.
+     *
+     * @param class-string $class      Class that we will run method on.
+     * @param string       $methodName Method to call
+     * @param array        $parameters Array of parameters to pass into method.
+     *
+     * @return mixed Method return.
+     */
+    public function invokeMethodStatic(string $class, string $methodName, array $parameters = array())
+    {
+        try {
+            $reflection = new \ReflectionClass($class);
+            $method = $reflection->getMethod($methodName);
+            $method->setAccessible(true);
+
+            return $method->invokeArgs(null, $parameters);
+        } catch (ReflectionException $e) {
+            return null;
+        }
+    }
 }

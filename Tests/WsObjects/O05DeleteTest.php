@@ -60,7 +60,7 @@ class O05DeleteTest extends ObjectsCase
 
         //====================================================================//
         // Clean Objects Committed Array
-        CommitsManager::resetSessionCommitted();
+        CommitsManager::reset();
         //====================================================================//
         // Lock New Objects To Avoid Action Commit
         Splash::object($objectType)->lock((string) $objectId);
@@ -107,7 +107,7 @@ class O05DeleteTest extends ObjectsCase
 
         //====================================================================//
         // Clean Objects Committed Array
-        CommitsManager::resetSessionCommitted();
+        CommitsManager::reset();
         //====================================================================//
         //   Execute Action Directly on Module
         $data = $this->genericAction(
@@ -220,7 +220,7 @@ class O05DeleteTest extends ObjectsCase
 
         //====================================================================//
         // Clean Objects Committed Array
-        CommitsManager::resetSessionCommitted();
+        CommitsManager::reset();
 
         return $this->fakeObjectData($fields);
     }

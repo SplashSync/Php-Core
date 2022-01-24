@@ -28,7 +28,7 @@ class TestHelper
      * Only PhpUnit Tests are Impacted by This Action
      *
      * @param string           $objectType object Type Name
-     * @param array|int|string $local      object Local Id or Array of Local Id
+     * @param array|int|string $local      object Local ID or Array of Local ID
      * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      * @param string           $user       User Name
      * @param null|string      $comment    Operation Comment for Logs
@@ -44,6 +44,6 @@ class TestHelper
         string $user = 'PhpUnit',
         string $comment = null
     ): void {
-        CommitsManager::simSessionCommit($objectType, $local, $action, $user, $comment);
+        CommitsManager::simSessionCommit($objectType, $local, $action, $user, (string) $comment);
     }
 }

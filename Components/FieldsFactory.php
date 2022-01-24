@@ -99,9 +99,6 @@ class FieldsFactory
             $this->commit();
         }
         //====================================================================//
-        // Unset Current
-        $this->new = null;
-        //====================================================================//
         // Create new empty field
         $this->new = new ObjectField($fieldType);
         //====================================================================//
@@ -447,7 +444,7 @@ class FieldsFactory
     //==============================================================================
 
     /**
-     * Update Current New Field set its meta informations for auto-mapping
+     * Update Current New Field set its meta information for auto-mapping
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
@@ -735,7 +732,7 @@ class FieldsFactory
      *
      * @return bool
      */
-    private function commit()
+    private function commit(): bool
     {
         //====================================================================//
         // Safety Checks

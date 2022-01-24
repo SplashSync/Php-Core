@@ -17,6 +17,7 @@ namespace Splash\Components;
 
 use ArrayObject;
 use Exception;
+use Splash\Client\CommitEvent;
 use Splash\Client\Splash;
 
 /**
@@ -24,6 +25,15 @@ use Splash\Client\Splash;
  */
 class CommitsManager
 {
+    const CACHE_TTL = (7 * 3600);
+
+    /**
+     * Is Intelligent Shutdown Commit Mode Enabled Flag
+     *
+     * @var null|bool
+     */
+    protected static $intelCommitMode;
+
     /**
      * List of all Commits done inside this current session
      *
@@ -32,27 +42,20 @@ class CommitsManager
     private static $committed = array();
 
     /**
-     * Is Shutdown Commit Mode Enabled
+     * List of Commit Events for Shutdown Commits
      *
-     * @var bool
+     * @var null|array<string, CommitEvent>
      */
-    private static $postCommit;
-
-    /**
-     * List of Actions for Shutdown Commit Mode
-     *
-     * @var array()
-     */
-    private static $postCommitObjects = array();
+    private static $waitingEvents;
 
     /**
      * Submit an Update for a Local Object
      *
-     * @param string           $objectType Object Type Name
-     * @param array|int|string $local      Local Object Id or Array of Local Ids
-     * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     * @param string           $user       User Name
-     * @param string           $comment    Operation Comment for Historic
+     * @param string                    $objectType Object Type Name
+     * @param int|int[]|string|string[] $local      Local Object IDs or Array of Local Ids
+     * @param string                    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string                    $user       User Name
+     * @param string                    $comment    Operation Comment for Historic
      *
      * @return bool
      */
@@ -72,52 +75,141 @@ class CommitsManager
             return true;
         }
         //====================================================================//
-        // Parse Objects Ids
-        $objectIds = self::toObjectIds($local);
+        // Create Commit Event
+        $commitEvent = new CommitEvent($objectType, $local, $action, $user, $comment);
         //====================================================================//
         // Initiate Tasks parameters array
-        static::$committed[] = $params = self::getCommitParameters($objectType, $objectIds, $action, $user, $comment);
+        static::$committed[] = $commitEvent->toArray();
         //====================================================================//
         // Verify this Object is Locked ==> No Action on this Node
-        if (!self::isCommitAllowed($objectType, $objectIds, $action)) {
+        if (!$commitEvent->isAllowed() || static::isTravisMode($commitEvent)) {
             return true;
         }
         //====================================================================//
-        // Post Commits Mode ==> No Action Now
-        if (self::isPostCommitMode()) {
-            self::$postCommitObjects[] = $params;
-            Splash::log()->msg(Splash::trans("MsgWsPostCommit"));
+        // Intel Commits Mode ==> Push Event to Waiting Queue
+        if (self::isIntelCommitsMode()) {
+            self::addWaitingEvent($commitEvent);
+            Splash::log()->msg(Splash::trans("MsgWsIntelCommit"));
 
             return true;
         }
         //====================================================================//
         // Execute Server Commit
-        return self::executeCommit($params);
+        return self::executeCommit($commitEvent);
     }
 
     /**
-     * Execute Post Commits
+     * Perform Manager Self Test
      *
      * @return bool
      */
-    public static function postCommit(): bool
+    public static function selfTest(): bool
     {
-        $success = true;
+        Splash::translator()->load('objects');
         //====================================================================//
-        //  Walk on Post Commits Parameters
-        foreach (self::$postCommitObjects as $index => $postCommitObject) {
+        //  Check If a Intel Commit is Active
+        if (!self::isIntelCommitsMode()) {
             //====================================================================//
-            // Execute Commits
-            if (self::executeCommit($postCommitObject)) {
-                unset(self::$postCommitObjects[$index]);
-
-                continue;
+            //  Check If Apcu is Active
+            if (!empty(Splash::configuration()->WsPostCommit) && !self::hasApcuFeature()) {
+                Splash::log()->war("NoWsIntelCommitApcu");
             }
-            $success = false;
+
+            return true;
+        }
+        //====================================================================//
+        //  Intel Commit is Active
+        Splash::log()->msg("HasWsIntelCommit");
+        //====================================================================//
+        //  Check Waiting List
+        $waitingCount = count(self::getWaitingEvents());
+        if ($waitingCount) {
+            Splash::log()->war("HasWsIntelCommitWip", (string) $waitingCount);
         }
 
-        return $success;
+        return true;
     }
+
+    //====================================================================//
+    // Functional
+    //====================================================================//
+
+    /**
+     * Check If Intel Commit Mode is Active
+     *
+     * @return bool
+     */
+    public static function isIntelCommitsMode(): bool
+    {
+        //====================================================================//
+        //  Init Already Done
+        if (isset(self::$intelCommitMode)) {
+            return self::$intelCommitMode;
+        }
+        //====================================================================//
+        //  Check if Post Commit Mode is Active
+        if (empty(Splash::configuration()->WsPostCommit)) {
+            return self::$intelCommitMode = false;
+        }
+        //====================================================================//
+        //  Check if Apcu Extension is Active
+        if (!\function_exists('apcu_fetch')
+            || !filter_var(ini_get('apc.enabled'), \FILTER_VALIDATE_BOOLEAN)) {
+            return self::$intelCommitMode = false;
+        }
+        //====================================================================//
+        //  Safety Check = > Apcu is Active
+        if (!self::hasApcuFeature()) {
+            return self::$intelCommitMode = false;
+        }
+        //====================================================================//
+        //  Register Post Commit Function
+        $callBack = array(self::class,"executePostCommit");
+        if (!is_callable($callBack)) {
+            return self::$intelCommitMode = false;
+        }
+        register_shutdown_function($callBack);
+
+        return self::$intelCommitMode = true;
+    }
+
+    /**
+     * Check If Apcu Feature is Active
+     *
+     * @return bool
+     */
+    public static function hasApcuFeature(): bool
+    {
+        //====================================================================//
+        //  Check if Apcu Extension is Active
+        if (!\function_exists('apcu_fetch')
+            || !filter_var(ini_get('apc.enabled'), \FILTER_VALIDATE_BOOLEAN)) {
+            return false;
+        }
+        //====================================================================//
+        //  if We are on CLI
+        if ("cli" == \PHP_SAPI) {
+            return filter_var(ini_get('apc.enable_cli'), \FILTER_VALIDATE_BOOLEAN);
+        }
+
+        return true;
+    }
+
+    /**
+     * Reset List of Session Committed Objects
+     *
+     * @return void
+     */
+    public static function reset(): void
+    {
+        self::$committed = array();
+        self::$intelCommitMode = null;
+        self::$waitingEvents = null;
+    }
+
+    //====================================================================//
+    // Commits Events Queue Management
+    //====================================================================//
 
     /**
      * Get List of Session Committed Objects
@@ -130,14 +222,90 @@ class CommitsManager
     }
 
     /**
+     * Add a Commit Event for Post Treatment
+     *
+     * @param CommitEvent $commitEvent
+     *
+     * @return int Number of Waiting Events
+     */
+    public static function addWaitingEvent(CommitEvent $commitEvent): int
+    {
+        $md5 = $commitEvent->getMd5();
+        //====================================================================//
+        // Load Events from APCU Cache
+        self::$waitingEvents = self::getWaitingEvents();
+        //====================================================================//
+        // Push Event on Waiting List
+        self::$waitingEvents[$md5] = $commitEvent;
+        //====================================================================//
+        // Save Events to APCU Cache
+        apcu_store(self::getApcuCacheKey(), self::$waitingEvents, self::CACHE_TTL);
+
+        return count(self::$waitingEvents);
+    }
+
+    /**
+     * Get List of Waiting Events
+     *
+     * @return CommitEvent[]
+     */
+    public static function getWaitingEvents(): array
+    {
+        //====================================================================//
+        // Load Events from APCU Cache
+        if (!isset(self::$waitingEvents)) {
+            self::$waitingEvents = apcu_fetch(self::getApcuCacheKey()) ?: array();
+        }
+        //====================================================================//
+        // Return Events
+        return self::$waitingEvents;
+    }
+
+    /**
+     * Execute Post Commit Actions
+     *
+     * @return void
+     */
+    public static function executePostCommit(): void
+    {
+        $failCount = 0;
+        //====================================================================//
+        //  Walk on Waiting Events
+        foreach (self::getWaitingEvents() as $commitEvent) {
+            //====================================================================//
+            // Check if Event is to be Send
+            if (!$commitEvent->isReady()) {
+                continue;
+            }
+            //====================================================================//
+            // Execute Commit
+            if (self::executeCommit($commitEvent)) {
+                self::setCommitEventSuccess($commitEvent);
+
+                continue;
+            }
+            self::setCommitEventFail($commitEvent);
+            //====================================================================//
+            // Limit number of Failures
+            if ($failCount++ >= 10) {
+                return;
+            }
+        }
+    }
+
+    //====================================================================//
+    // PupUnit Tests Methods
+    //====================================================================//
+
+    /**
      * Simulate Commit For PhpUnits Tests (USE WITH CARE)
      * Only PhpUnit Tests are Impacted by This Action
      *
-     * @param string           $objectType Object Type Name
-     * @param array|int|string $local      Object Local Id or Array of Local Id
-     * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     * @param string           $user       User Name
-     * @param null|string      $comment    Operation Comment for logs
+     * @param string                    $objectType Object Type Name
+     * @param int|int[]|string|string[] $local      Object Local ID or Array of Local IDs
+     * @param string                    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string                    $user       User Name
+     * @param string                    $comment    Operation Comment for logs
      *
      * @throws Exception
      *
@@ -148,30 +316,24 @@ class CommitsManager
         $local,
         string $action,
         string $user = 'PhpUnit',
-        string $comment = null
+        string $comment = 'No Comment'
     ): void {
+        //====================================================================//
+        // Safety Check
         if (!Splash::isDebugMode()) {
             throw new Exception("You cannot Simulate Commit without Debug Mode");
         }
-
-        self::$committed[] = self::getCommitParameters(
-            $objectType,
-            self::toObjectIds($local),
-            $action,
-            $user,
-            $comment ?? 'Simulated Commit'
-        );
+        //====================================================================//
+        // Create Commit Event
+        $commitEvent = new CommitEvent($objectType, $local, $action, $user, $comment);
+        //====================================================================//
+        // Store as Committed
+        self::$committed[] = $commitEvent->toArray();
     }
 
-    /**
-     * Reset List of Session Committed Objects
-     *
-     * @return void
-     */
-    public static function resetSessionCommitted(): void
-    {
-        self::$committed = array();
-    }
+    //====================================================================//
+    // Protected Methods
+    //====================================================================//
 
     /**
      * Validate Object Type
@@ -194,137 +356,55 @@ class CommitsManager
     }
 
     /**
-     * Parse Object Ids
-     *
-     * @param array|int|string $objectIds object Local ID or Array of Local ID
-     *
-     * @return array
-     */
-    protected static function toObjectIds($objectIds): array
-    {
-        //====================================================================//
-        // Ensure we have an array
-        $objectIds = is_array($objectIds) ? $objectIds : array((string) $objectIds);
-        //====================================================================//
-        // Ensure Objects Ids as String
-        array_map(function ($objectId) {
-            return (string) $objectId;
-        }, $objectIds);
-
-        return $objectIds;
-    }
-
-    /**
-     * Build Call Parameters Array
-     *
-     * @param string   $objectType Object Type Name
-     * @param string[] $objectIds  Local Objects Ids
-     * @param string   $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     * @param string   $user       User Name
-     * @param string   $comment    Operation Comment for Logs
-     *
-     * @return array
-     */
-    protected static function getCommitParameters(
-        string $objectType,
-        array $objectIds,
-        string $action,
-        string $user,
-        string $comment
-    ): array {
-        return array(
-            "type" => $objectType,        // Type of the Object
-            "id" => $objectIds,           // Id of Modified object
-            "action" => $action,          // Action Type On this Object
-            "user" => $user,              // Operation User Name for Logs
-            "comment" => $comment,        // Operation Comment for Logs
-        );
-    }
-
-    /**
-     * Check if Commit is Allowed Local Object
-     *
-     * @param string   $objectType Object Type Name
-     * @param string[] $objectIds  List Object Local Ids
-     * @param string   $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     *
-     * @return bool
-     */
-    protected static function isCommitAllowed(string $objectType, array $objectIds, string $action): bool
-    {
-        try {
-            $splashObject = Splash::object($objectType);
-        } catch (Exception $exception) {
-            return false;
-        }
-        //====================================================================//
-        // Verify this Object is Locked ==> No Action on this Node
-        //====================================================================//
-        foreach ($objectIds as $value) {
-            if ($splashObject->isLocked($value)) {
-                return false;
-            }
-        }
-        //====================================================================//
-        // Verify Create Object is Locked ==> No Action on this Node
-        if ((SPL_A_CREATE === $action) && $splashObject->isLocked()) {
-            return false;
-        }
-        //====================================================================//
-        // Verify if Travis Mode (PhpUnit) ==> No Commit Allowed
-        return !static::isTravisMode($objectType, $objectIds, $action);
-    }
-
-    /**
      * Check if Commit we Are in Travis Mode
      *
-     * @param string   $objectType Object Type Name
-     * @param string[] $local      List Object Local Ids
-     * @param string   $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param CommitEvent $commitEvent
      *
      * @return bool
      */
-    protected static function isTravisMode(string $objectType, array $local, string $action): bool
+    protected static function isTravisMode(CommitEvent $commitEvent): bool
     {
         //====================================================================//
         // Detect Travis from SERVER CONSTANTS
         if (empty(Splash::input('SPLASH_TRAVIS'))) {
             return false;
         }
-        $objectIds = implode('|', $local);
-        Splash::log()->war('Module Commit Skipped ('.$objectType.', '.$action.', '.$objectIds.')');
+        //====================================================================//
+        // Push a Warning for User Infos
+        Splash::log()->war(sprintf(
+            "Module Commit Skipped (%s, %s, %s)",
+            $commitEvent->getObjectType(),
+            $commitEvent->getAction(),
+            implode('|', $commitEvent->getObjectIds())
+        ));
 
         return true;
     }
 
+    //====================================================================//
+    // Commits Execution
+    //====================================================================//
+
     /**
      * Execute Real Server Commit
      *
-     * @param array $parameters Commit Parameters
+     * @param CommitEvent $commitEvent
      *
      * @return bool
      */
-    private static function executeCommit(array $parameters): bool
+    private static function executeCommit(CommitEvent $commitEvent): bool
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace();
         //====================================================================//
-        // Build Task Description
-        $description = Splash::trans(
-            'MsgSchRemoteCommit',
-            $parameters["action"],
-            $parameters["type"],
-            (string) Splash::count($parameters["id"])
-        );
-        //====================================================================//
         // Add Task to Ws Task List
-        Splash::ws()->addTask(SPL_F_COMMIT, $parameters, $description);
+        Splash::ws()->addTask(SPL_F_COMMIT, $commitEvent->toArray(), $commitEvent->getDescription());
         //====================================================================//
         // Execute Task
         $response = Splash::ws()->call(SPL_S_OBJECTS);
         //====================================================================//
-        // Analyze NuSOAP results
+        // Analyze results
         return self::isCommitSuccess($response);
     }
 
@@ -338,8 +418,8 @@ class CommitsManager
     private static function isCommitSuccess($response): bool
     {
         //====================================================================//
-        // Analyze NuSOAP results
-        if (!$response || !isset($response->result) || (true != $response->result)) {
+        // Commit is Considered as Fail only if Splash Server did not respond.
+        if (!$response || !isset($response['result'])) {
             return false;
         }
         //====================================================================//
@@ -352,35 +432,61 @@ class CommitsManager
     }
 
     /**
-     * Check If Post Commit Mode is Active
+     * When Commit Event is Successful
      *
-     * @param bool $checkIsCli Ensure we are NOT on PHP Cli
+     * @param CommitEvent $commitEvent
      *
-     * @return bool
+     * @return void
      */
-    private static function isPostCommitMode(bool $checkIsCli = true): bool
+    private static function setCommitEventSuccess(CommitEvent $commitEvent): void
     {
         //====================================================================//
-        //  Safety Check = > Never do this on CLI
-        if ($checkIsCli && ("cli" == PHP_SAPI)) {
-            return false;
-        }
+        // Remove from List
+        unset(self::$waitingEvents[$commitEvent->getMd5()]);
         //====================================================================//
-        //  Check if Post Commit Mode is Active
-        if (empty(Splash::configuration()->WsPostCommit)) {
-            return false;
-        }
-        //====================================================================//
-        //  Ensure Post Commit Function is Registered
-        if (!isset(self::$postCommit)) {
-            $callBack = array(self::class,"postCommit");
-            if (!is_callable($callBack)) {
-                return false;
-            }
-            register_shutdown_function($callBack);
-            self::$postCommit = true;
-        }
+        // Save Events to APCU Cache
+        apcu_store(self::getApcuCacheKey(), self::$waitingEvents, self::CACHE_TTL);
+    }
 
-        return true;
+    /**
+     * When Commit Event Fail
+     *
+     * @param CommitEvent $commitEvent
+     *
+     * @return void
+     */
+    private static function setCommitEventFail(CommitEvent $commitEvent): void
+    {
+        //====================================================================//
+        // Increment Fail Counter
+        $commitEvent->setFail();
+        //====================================================================//
+        // If Obsolete
+        if ($commitEvent->isObsolete()) {
+            //====================================================================//
+            // Remove from List
+            unset(self::$waitingEvents[$commitEvent->getMd5()]);
+        } else {
+            //====================================================================//
+            // Update on List
+            self::$waitingEvents[$commitEvent->getMd5()] = $commitEvent;
+        }
+        //====================================================================//
+        // Save Events to APCU Cache
+        apcu_store(self::getApcuCacheKey(), self::$waitingEvents, self::CACHE_TTL);
+    }
+
+    //====================================================================//
+    // Other Private Methods
+    //====================================================================//
+
+    /**
+     * Get Cache Key for Apcu Storage
+     *
+     * @return string
+     */
+    private static function getApcuCacheKey(): string
+    {
+        return md5(static::class.Splash::configuration()->WsIdentifier);
     }
 }

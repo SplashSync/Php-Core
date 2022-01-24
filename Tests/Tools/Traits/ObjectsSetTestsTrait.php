@@ -191,7 +191,7 @@ trait ObjectsSetTestsTrait
         Splash::object($objectType)->lock($forceObjectId);
         //====================================================================//
         // Clean Objects Committed Array
-        CommitsManager::resetSessionCommitted();
+        CommitsManager::reset();
         //====================================================================//
         //   Update Object on Module
         $objectId = Splash::object($objectType)->set($forceObjectId, $objectData);
@@ -228,7 +228,7 @@ trait ObjectsSetTestsTrait
     {
         //====================================================================//
         // Clean Objects Committed Array
-        CommitsManager::resetSessionCommitted();
+        CommitsManager::reset();
         //====================================================================//
         //   Create a New Object via Service
         $objectId = $this->genericAction(
