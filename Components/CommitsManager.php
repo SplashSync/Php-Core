@@ -152,17 +152,6 @@ class CommitsManager
             return self::$intelCommitMode = false;
         }
         //====================================================================//
-        //  Check if Apcu Extension is Active
-        if (!\function_exists('apcu_fetch')
-            || !filter_var(ini_get('apc.enabled'), \FILTER_VALIDATE_BOOLEAN)) {
-            return self::$intelCommitMode = false;
-        }
-        //====================================================================//
-        //  Safety Check = > Apcu is Active
-        if (!self::hasApcuFeature()) {
-            return self::$intelCommitMode = false;
-        }
-        //====================================================================//
         //  Register Post Commit Function
         $callBack = array(self::class,"executePostCommit");
         if (!is_callable($callBack)) {
@@ -171,28 +160,6 @@ class CommitsManager
         register_shutdown_function($callBack);
 
         return self::$intelCommitMode = true;
-    }
-
-    /**
-     * Check If Apcu Feature is Active
-     *
-     * @return bool
-     */
-    public static function hasApcuFeature(): bool
-    {
-        //====================================================================//
-        //  Check if Apcu Extension is Active
-        if (!\function_exists('apcu_fetch')
-            || !filter_var(ini_get('apc.enabled'), \FILTER_VALIDATE_BOOLEAN)) {
-            return false;
-        }
-        //====================================================================//
-        //  if We are on CLI
-        if ("cli" == \PHP_SAPI) {
-            return filter_var(ini_get('apc.enable_cli'), \FILTER_VALIDATE_BOOLEAN);
-        }
-
-        return true;
     }
 
     /**
@@ -238,8 +205,8 @@ class CommitsManager
         // Push Event on Waiting List
         self::$waitingEvents[$md5] = $commitEvent;
         //====================================================================//
-        // Save Events to APCU Cache
-        apcu_store(self::getApcuCacheKey(), self::$waitingEvents, self::CACHE_TTL);
+        // Save Events
+        self::saveCache();
 
         return count(self::$waitingEvents);
     }
@@ -254,7 +221,7 @@ class CommitsManager
         //====================================================================//
         // Load Events from APCU Cache
         if (!isset(self::$waitingEvents)) {
-            self::$waitingEvents = apcu_fetch(self::getApcuCacheKey()) ?: array();
+            self::$waitingEvents = self::getCache();
         }
         //====================================================================//
         // Return Events
@@ -381,6 +348,28 @@ class CommitsManager
         return true;
     }
 
+    /**
+     * Check If Apcu Feature is Active
+     *
+     * @return bool
+     */
+    protected static function hasApcuFeature(): bool
+    {
+        //====================================================================//
+        //  Check if Apcu Extension is Active
+        if (!\function_exists('apcu_fetch')
+            || !filter_var(ini_get('apc.enabled'), \FILTER_VALIDATE_BOOLEAN)) {
+            return false;
+        }
+        //====================================================================//
+        //  if We are on CLI
+        if ("cli" == \PHP_SAPI) {
+            return filter_var(ini_get('apc.enable_cli'), \FILTER_VALIDATE_BOOLEAN);
+        }
+
+        return true;
+    }
+
     //====================================================================//
     // Commits Execution
     //====================================================================//
@@ -444,8 +433,8 @@ class CommitsManager
         // Remove from List
         unset(self::$waitingEvents[$commitEvent->getMd5()]);
         //====================================================================//
-        // Save Events to APCU Cache
-        apcu_store(self::getApcuCacheKey(), self::$waitingEvents, self::CACHE_TTL);
+        // Save Events
+        self::saveCache();
     }
 
     /**
@@ -472,8 +461,8 @@ class CommitsManager
             self::$waitingEvents[$commitEvent->getMd5()] = $commitEvent;
         }
         //====================================================================//
-        // Save Events to APCU Cache
-        apcu_store(self::getApcuCacheKey(), self::$waitingEvents, self::CACHE_TTL);
+        // Save Events
+        self::saveCache();
     }
 
     //====================================================================//
@@ -481,12 +470,85 @@ class CommitsManager
     //====================================================================//
 
     /**
-     * Get Cache Key for Apcu Storage
+     * Get Cache Key for Apcu or Files Storage
      *
      * @return string
      */
-    private static function getApcuCacheKey(): string
+    private static function getCacheKey(): string
     {
         return md5(static::class.Splash::configuration()->WsIdentifier);
+    }
+
+    /**
+     * Save Waiting Events on Apcu Cache or Temp File
+     *
+     * @return void
+     */
+    private static function saveCache(): void
+    {
+        //====================================================================//
+        //  Apcu is Active
+        if (self::hasApcuFeature()) {
+            //====================================================================//
+            // Save Events to APCU Cache
+            apcu_store(self::getCacheKey(), self::$waitingEvents, self::CACHE_TTL);
+
+            return;
+        }
+        //====================================================================//
+        // Serialize Events
+        $fileContents = null;
+        foreach (self::$waitingEvents ?? array() as $waitingEvent) {
+            $fileContents .= serialize($waitingEvent).PHP_EOL;
+        }
+        $dir = \sys_get_temp_dir()."/splash";
+        //====================================================================//
+        // Ensure Storage Dir Exists
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+        //====================================================================//
+        // Save Events to Temp File
+        file_put_contents(
+            $dir."/".self::getCacheKey(),
+            $fileContents
+        );
+    }
+
+    /**
+     * Load Waiting Events from Apcu Cache or Temp File
+     *
+     * @return CommitEvent[]
+     */
+    private static function getCache(): array
+    {
+        //====================================================================//
+        //  Apcu is Active
+        if (self::hasApcuFeature()) {
+            //====================================================================//
+            // Load Events from APCU Cache
+            return apcu_fetch(self::getCacheKey()) ?: array();
+        }
+        $path = \sys_get_temp_dir()."/splash/".self::getCacheKey();
+        //====================================================================//
+        // Safety Check
+        if (!is_file($path) || !is_readable($path)) {
+            return array();
+        }
+        //====================================================================//
+        // Walk on Lines
+        $commitEvents = array();
+        $serialisedEvents = file($path);
+        $options = array("allowed_classes" => array(CommitEvent::class));
+        if (is_array($serialisedEvents)) {
+            foreach ($serialisedEvents as $serialisedEvent) {
+                $event = unserialize($serialisedEvent, $options);
+                if ($event instanceof CommitEvent) {
+                    $commitEvents[$event->getMd5()] = $event;
+                }
+            }
+        }
+
+        return $commitEvents;
     }
 }

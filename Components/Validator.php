@@ -481,16 +481,22 @@ class Validator
      */
     public function isValidPHPExtensions(): bool
     {
-        $extensions = array('xml', 'soap', 'curl');
+        static $isValid;
+
+        if (isset($isValid)) {
+            return $isValid;
+        }
+
+        $extensions = array('xml', 'soap', 'curl', 'json');
         foreach ($extensions as $extension) {
             if (!extension_loaded($extension)) {
-                return Splash::log()->err(
+                return $isValid = Splash::log()->err(
                     'PHP :'.$extension.' PHP Extension is required to use Splash PHP Module.'
                 );
             }
         }
 
-        return Splash::log()->msg(
+        return $isValid = Splash::log()->msg(
             'PHP : Required PHP Extension are installed ('.implode(', ', $extensions).')'
         );
     }

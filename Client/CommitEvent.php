@@ -255,8 +255,12 @@ class CommitEvent
      */
     public function setFail(): void
     {
+        if ($this->failCount) {
+            $this->setRetryAt(new \DateTime("+1 hour"));
+        } else {
+            $this->setRetryAt(new \DateTime("+10 seconds"));
+        }
         $this->failCount++;
-        $this->setRetryAt(new \DateTime("+1 hour"));
     }
 
     /**

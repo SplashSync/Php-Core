@@ -374,11 +374,6 @@ class C71CommitsManagerTest extends ObjectsCase
     public function dummyCommitsProvider(): array
     {
         //====================================================================//
-        // Safety Check
-        if (!CommitsManager::hasApcuFeature()) {
-            $this->markTestSkipped("Apcu Extension must be enabled. Also on CLI");
-        }
-        //====================================================================//
         // BOOT MODULE
         Splash::core();
         //====================================================================//
