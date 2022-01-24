@@ -174,6 +174,24 @@ class CommitsManager
         self::$waitingEvents = null;
     }
 
+    /**
+     * Update All Commit Events to be restarted immediately
+     *
+     * @return void
+     */
+    public static function restartAll(): void
+    {
+        //====================================================================//
+        // Force Events for Retry
+        self::$waitingEvents = self::getWaitingEvents();
+        foreach (self::$waitingEvents as $commitEvent) {
+            $commitEvent->setRetryAt(new \DateTime("-1 second"));
+        }
+        //==============================================================================
+        // Save Cache
+        self::saveCache();
+    }
+
     //====================================================================//
     // Commits Events Queue Management
     //====================================================================//
@@ -539,7 +557,7 @@ class CommitsManager
         // Walk on Lines
         $commitEvents = array();
         $serialisedEvents = file($path);
-        $options = array("allowed_classes" => array(CommitEvent::class));
+        $options = array("allowed_classes" => array(CommitEvent::class, \DateTime::class));
         if (is_array($serialisedEvents)) {
             foreach ($serialisedEvents as $serialisedEvent) {
                 $event = unserialize($serialisedEvent, $options);

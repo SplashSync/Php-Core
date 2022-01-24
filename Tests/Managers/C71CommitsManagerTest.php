@@ -454,16 +454,18 @@ class C71CommitsManagerTest extends ObjectsCase
     {
         //====================================================================//
         // Force Events for Retry
+        CommitsManager::restartAll();
+        //==============================================================================
+        // Reboot Commit Manager
+        CommitsManager::reset();
+        //====================================================================//
+        // Force Events for Retry
         $waitingEvents = CommitsManager::getWaitingEvents();
         foreach ($waitingEvents as &$commitEvent) {
-            $commitEvent->setRetryAt(new \DateTime("-1 second"));
             $this->assertTrue($commitEvent->isReady());
         }
-        apcu_store(
-            md5(CommitsManager::class.Splash::configuration()->WsIdentifier),
-            $waitingEvents,
-            12
-        );
+        //==============================================================================
+        // Reboot Commit Manager
         CommitsManager::reset();
     }
 
