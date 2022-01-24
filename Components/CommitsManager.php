@@ -79,7 +79,7 @@ class CommitsManager
         $commitEvent = new CommitEvent($objectType, $local, $action, $user, $comment);
         //====================================================================//
         // Initiate Tasks parameters array
-        static::$committed[] = $commitEvent->toArray();
+        self::$committed[] = $commitEvent->toArray();
         //====================================================================//
         // Verify this Object is Locked ==> No Action on this Node
         if (!$commitEvent->isAllowed() || static::isTravisMode($commitEvent)) {
