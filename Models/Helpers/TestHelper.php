@@ -27,10 +27,10 @@ class TestHelper
      * Simulate Commit For PhpUnits Tests (USE WITH CARE)
      * Only PhpUnit Tests are Impacted by This Action
      *
-     * @param string           $objectType object Type Name
-     * @param array|int|string $local      object Local ID or Array of Local ID
+     * @param string           $objectType Object Type Name
+     * @param array|int|string $local      Object Local ID or Array of Local ID
      * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     * @param string           $user       User Name
+     * @param null|string      $user       User Name
      * @param null|string      $comment    Operation Comment for Logs
      *
      * @throws Exception
@@ -41,9 +41,9 @@ class TestHelper
         string $objectType,
         $local,
         string $action,
-        string $user = 'PhpUnit',
-        string $comment = null
+        ?string $user = null,
+        ?string $comment = null
     ): void {
-        CommitsManager::simSessionCommit($objectType, $local, $action, $user, (string) $comment);
+        CommitsManager::simSessionCommit($objectType, $local, $action, $user, $comment);
     }
 }

@@ -289,8 +289,8 @@ class CommitsManager
      * @param string                    $objectType Object Type Name
      * @param int|int[]|string|string[] $local      Object Local ID or Array of Local IDs
      * @param string                    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
-     * @param string                    $user       User Name
-     * @param string                    $comment    Operation Comment for logs
+     * @param null|string               $user       User Name
+     * @param null|string               $comment    Operation Comment for logs
      *
      * @throws Exception
      *
@@ -300,8 +300,8 @@ class CommitsManager
         string $objectType,
         $local,
         string $action,
-        string $user = 'PhpUnit',
-        string $comment = 'No Comment'
+        ?string $user = null,
+        ?string $comment = null
     ): void {
         //====================================================================//
         // Safety Check
@@ -310,7 +310,13 @@ class CommitsManager
         }
         //====================================================================//
         // Create Commit Event
-        $commitEvent = new CommitEvent($objectType, $local, $action, $user, $comment);
+        $commitEvent = new CommitEvent(
+            $objectType,
+            $local,
+            $action,
+            $user ?: 'PhpUnit',
+            $comment ?: 'No Comment'
+        );
         //====================================================================//
         // Store as Committed
         self::$committed[] = $commitEvent->toArray();
