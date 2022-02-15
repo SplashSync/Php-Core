@@ -39,6 +39,11 @@ trait SettingsTrait
         "Currency" => "EUR",          // Default Currency
 
         //==============================================================================
+        //  Phone Fields
+        "PhoneISO" => true,             // Use ISO Formatted Phone Numbers
+        "PhoneDigits" => 8,             // Number of Digits for Phone Numbers
+
+        //==============================================================================
         //  Price Fields
         "VAT" => 20,              // Default Vat Rate
         "PriceBase" => "HT",            // Default Price base

@@ -66,6 +66,18 @@ class Oophone extends Oovarchar implements FieldInterface
      */
     public static function fake($settings)
     {
-        return (string) preg_replace('/^[+0-9. ()-]*$/', '', (string) mt_rand(12345678, 123456789));
+        $phoneNumber = "";
+        //==============================================================================
+        // Build ISO Prefix
+        if ($settings["PhoneISO"] ?? true) {
+            $phoneNumber .= "+00".rand(10, 99);
+        }
+        //==============================================================================
+        // Generate Random Phone Number
+        for ($i = 0; $i < ($settings["PhoneDigits"] ?? 8); ++$i) {
+            $phoneNumber .= rand(0, 9);
+        }
+
+        return $phoneNumber;
     }
 }
