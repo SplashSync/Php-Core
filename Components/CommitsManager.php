@@ -90,6 +90,11 @@ class CommitsManager
         if (self::isIntelCommitsMode()) {
             self::addWaitingEvent($commitEvent);
             Splash::log()->msg(Splash::trans("MsgWsIntelCommit"));
+            //====================================================================//
+            //  Smart Notifications => Filter Messages, Only Warnings & Errors
+            if (Splash::configuration()->SmartNotify) {
+                Splash::log()->smartFilter();
+            }
 
             return true;
         }
