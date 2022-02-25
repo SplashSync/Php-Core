@@ -26,7 +26,18 @@ parameters:
     # Php Stan
     stan-config:        "./Resources/phpstan/phpstan.neon"
 
+    # For Building Splash Documentation
+    doc-src:            '/Resources/docs'
+    doc-target:         '/public'
+    doc-contents:       ["splash-faq"]
+
+    # For Building Splash Module
+    mod-enable:         false
+    # For Building Splash Manifest
+    yml-enable:         false
+
 #############################################
 # Import Generic Configs
 imports:
     - { resource: "./vendor/badpixxel/php-sdk/grumphp/generic.yml" }
+    - { resource: "./vendor/badpixxel/php-sdk/grumphp/extras.yml" }

@@ -28,3 +28,5 @@ nbproject/
 /.phpunit.result.cache
 /report.xml
 /phpunit-report.xml
+/public/
+/reboot.sh
