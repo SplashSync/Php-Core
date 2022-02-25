@@ -224,7 +224,11 @@ class Validator
         }
 
         $this->ValidLocalObject[$objectType] = false;
-
+        //====================================================================//
+        // Check if Object Manager is Extension Object
+        if (in_array($objectType, array_keys(ExtensionsManager::getObjects()), true)) {
+            return $this->ValidLocalObject[$objectType] = true;
+        }
         //====================================================================//
         // Verify Local Core Class Exist & Is Valid
         if (!$this->isValidLocalClass()) {

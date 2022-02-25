@@ -17,6 +17,8 @@ namespace Splash\Client;
 
 use DateTime;
 use Exception;
+use Splash\Components\ExtensionsManager;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Storage for Splash Module Objects Commits Events
@@ -231,7 +233,14 @@ class CommitEvent
         // Verify this Object is Locked ==> No Action on this Node
         //====================================================================//
         foreach ($this->id as $value) {
+            //====================================================================//
+            // Check if Object is Locked
             if ($splashObject->isLocked($value)) {
+                return false;
+            }
+            //====================================================================//
+            // Check if Object is Filtered
+            if (ExtensionsManager::isFiltered($this->type, $value)) {
                 return false;
             }
         }

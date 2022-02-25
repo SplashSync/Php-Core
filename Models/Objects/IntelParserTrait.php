@@ -16,6 +16,7 @@
 namespace   Splash\Models\Objects;
 
 use ArrayObject;
+use Splash\Components\ExtensionsManager;
 use Splash\Core\SplashCore      as Splash;
 
 /**
@@ -25,6 +26,7 @@ trait IntelParserTrait
 {
     use FieldsFactoryTrait;
     use UpdateFlagTrait;
+    use ExtensionFieldsTrait;
 
     //====================================================================//
     // General Class Variables
@@ -92,15 +94,14 @@ trait IntelParserTrait
         //====================================================================//
         // Stack Trace
         Splash::log()->trace();
-
+        //====================================================================//
+        // Walk on Fields Building Methods
         foreach ($this->identifyBuildMethods() as $method) {
             $this->{$method}();
         }
-
         //====================================================================//
         // Publish Fields from Factory
         $fields = $this->fieldsFactory()->publish();
-
         //====================================================================//
         // Override Fields from Local Configurator
         return Splash::configurator()->overrideFields(self::getType(), $fields);
@@ -122,6 +123,11 @@ trait IntelParserTrait
         $this->object = $this->load($objectId);
         if (!is_object($this->object)) {
             return false;
+        }
+        //====================================================================//
+        // Check if Object is Filtered
+        if (ExtensionsManager::isFiltered(self::getType(), $objectId, $this->object)) {
+            return Splash::log()->err("IsFilteredByExt");
         }
         //====================================================================//
         // Init Response Array
@@ -180,7 +186,6 @@ trait IntelParserTrait
         if (!$objectId) {
             $newObjectId = $this->getObjectIdentifier();
         }
-
         //====================================================================//
         // Execute Write Operations on Object
         //====================================================================//

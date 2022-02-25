@@ -19,7 +19,9 @@ use ArrayObject;
 use Exception;
 use ReflectionClass;
 use Splash\Components\CommitsManager;
+use Splash\Components\ExtensionsManager;
 use Splash\Components\FileManager;
+use Splash\Components\FilesLoader;
 use Splash\Components\Logger;
 use Splash\Components\NuSOAP\NuSOAPInterface;
 use Splash\Components\Router;
@@ -254,6 +256,10 @@ class SplashCore
         $config->TraceOut = SPLASH_TRACE_OUT;
         $config->TraceTasks = SPLASH_TRACE_TASKS;
         $config->SmartNotify = SPLASH_SMART_NOTIFY;
+
+        //====================================================================//
+        // Custom Objects Extensions
+        $config->ExtensionsPath = null;
 
         //====================================================================//
         // Custom Parameters Configurator
@@ -930,29 +936,9 @@ class SplashCore
         }
         $objectsList = array();
         //====================================================================//
-        // Safety Check => Verify Objects Folder Exists
-        $path = self::getLocalPath().'/Objects';
-        if (!is_dir($path)) {
-            return $objectsList;
-        }
-        //====================================================================//
-        // Scan Local Objects Folder
-        $scan = scandir($path, 1);
-        if (false == $scan) {
-            return $objectsList;
-        }
-        //====================================================================//
-        // Scan Each File in Folder
-        $files = array_diff($scan, array('..', '.', 'index.php', 'index.html'));
-        foreach ($files as $filename) {
-            //====================================================================//
-            // Verify Filename is a File (Not a Directory)
-            if (!is_file($path.'/'.$filename)) {
-                continue;
-            }
-            //====================================================================//
-            // Extract Class Name
-            $className = pathinfo($path.'/'.$filename, PATHINFO_FILENAME);
+        // Load Objects from Local Objects Path
+        $files = FilesLoader::load(self::getLocalPath().'/Objects', 'php', 0);
+        foreach (array_keys($files) as $className) {
             //====================================================================//
             // Verify ClassName is a Valid Object File
             if (false == self::validate()->isValidObject($className)) {
@@ -961,7 +947,7 @@ class SplashCore
             $objectsList[] = $className;
         }
 
-        return $objectsList;
+        return array_merge($objectsList, array_keys(ExtensionsManager::getObjects()));
     }
 
     /**
@@ -1000,6 +986,9 @@ class SplashCore
         if (!empty(self::configurator()->getConfiguration())) {
             self::log()->msg("HasCustomCfg");
         }
+        //====================================================================//
+        //  Commits Manager Self-Tests
+        ExtensionsManager::selfTest();
         //====================================================================//
         //  Commits Manager Self-Tests
         CommitsManager::selfTest();

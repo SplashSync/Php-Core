@@ -20,7 +20,7 @@
 # Override Config. for Php Core Module
 parameters:
     mode:               "splashsync"
-    exclude:            ['vendor', "nusoap.php", 'soap.php', 'Components/NuSOAP']
+    exclude:            ['vendor', "nusoap.php", 'soap.php', 'Components/NuSOAP', 'Templates/Local/Objects/Dummy']
     # Php Cs Fixer
     csfixer-config:     "Resources/phpcs/cs.%mode%.php"
     # Php Stan
