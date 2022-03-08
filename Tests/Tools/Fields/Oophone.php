@@ -70,7 +70,7 @@ class Oophone extends Oovarchar implements FieldInterface
         //==============================================================================
         // Build ISO Prefix
         if ($settings["PhoneISO"] ?? true) {
-            $phoneNumber .= "+00".rand(10, 99);
+            $phoneNumber .= "+".rand(10, 999);
         }
         //==============================================================================
         // Generate Random Phone Number
