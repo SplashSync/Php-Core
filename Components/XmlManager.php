@@ -231,12 +231,10 @@ class XmlManager
     {
         //====================================================================//
         // Convert Numeric Keys with Prefix
-        if (is_numeric($key)) {
-            return $prefix.$key;
-        }
+        $key = is_numeric($key) ? $prefix.$key : $key;
         //====================================================================//
         // Keep Scalar Keys
-        return $key;
+        return (string) preg_replace('/[^a-zA-Z0-9]/', '_', $key);
     }
 
     /**
