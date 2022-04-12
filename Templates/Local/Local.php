@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,9 +34,7 @@ class Local implements LocalClassInterface
     //====================================================================//
 
     /**
-     * Class Constructor (Used only if localy necessary)
-     *
-     * @return int 0 if KO, >0 if OK
+     * Class Constructor (Used only if locally necessary)
      */
     public function __construct()
     {
@@ -52,43 +50,23 @@ class Local implements LocalClassInterface
     //====================================================================//
 
     /**
-     * Return Local Server Parameters as Array
-     *
-     * THIS FUNCTION IS MANDATORY
-     *
-     * This function called on each initialization of the module
-     *
-     *      Result must be an array including mandatory parameters as strings
-     *         ["WsIdentifier"]         =>>  Name of Module Default Language
-     *         ["WsEncryptionKey"]      =>>  Name of Module Default Language
-     *         ["DefaultLanguage"]      =>>  Name of Module Default Language
-     *
-     * @return array $parameters
+     * {@inheritDoc}
      */
-    public function parameters()
+    public function parameters(): array
     {
         return array();
     }
 
     /**
-     * Include Local Includes Files
-     *
-     * Include here any local files required by local functions.
-     * This Function is called each time the module is loaded
-     *
-     * There may be differents scenarios depending if module is
-     * loaded as a library or as a NuSOAP Server.
-     *
-     * This is triggered by global constant SPLASH_SERVER_MODE.
-     *
-     * @return bool
+     * {@inheritDoc}
      */
-    public function includes()
+    public function includes(): bool
     {
         //====================================================================//
         // When Library is called in server mode ONLY
         //====================================================================//
-        if (defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE)) {
+        /** @phpstan-ignore-next-line */
+        if (defined('SPLASH_SERVER_MODE') && SPLASH_SERVER_MODE) {
             // NOTHING TO DO
         //====================================================================//
         // When Library is called in client mode ONLY
@@ -104,36 +82,17 @@ class Local implements LocalClassInterface
     }
 
     /**
-     * Return Local Server Self Test Result
-     *
-     * THIS FUNCTION IS MANDATORY
-     *
-     * This function called during Server Validation Process
-     *
-     * We recommand using this function to validate all functions or parameters
-     * that may be required by Objects, Widgets or any other module specific action.
-     *
-     * Use Module Logging system & translation tools to return test results Logs
-     *
-     * @return bool global test result
+     * {@inheritDoc}
      */
-    public function selfTest()
+    public function selfTest(): bool
     {
         return true;
     }
 
     /**
-     * Update Server Informations with local Data
-     *
-     * THIS FUNCTION IS MANDATORY
-     *
-     * This function return Remote Server Informatiosn to display on Server Profile
-     *
-     * @param ArrayObject $informations Informations Inputs
-     *
-     * @return ArrayObject
+     * {@inheritDoc}
      */
-    public function informations($informations)
+    public function informations(ArrayObject $informations): ArrayObject
     {
         //====================================================================//
         // Init Response Object
@@ -171,33 +130,17 @@ class Local implements LocalClassInterface
 
     //====================================================================//
     // *******************************************************************//
-    //  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
+    //  OPTIONAl CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
 
     /**
-     * Return Local Server Test Sequences as Aarray
-     *
-     * THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
-     *
-     * This function called on each initialization of module's tests sequences.
-     * It's aim is to list different configurations for testing on local system.
-     *
-     * If Name = List, Result must be an array including list of Sequences Names.
-     *
-     * If Name = ASequenceName, Function will Setup Sequence on Local System.
-     *
-     * @param null|mixed $name
-     *
-     * @return array $Sequences
+     * {@inheritDoc}
      */
-    public function testSequences($name = null)
+    public function testSequences(string $name = null): array
     {
         switch ($name) {
             case "Sequence1":
-                // DO SEQUENCE SETUP
-                return array();
-            case "Sequence2":
                 // DO SEQUENCE SETUP
                 return array();
             case "List":
@@ -208,30 +151,13 @@ class Local implements LocalClassInterface
     }
 
     /**
-     *  @abstract       Return Local Server Test Parameters as Array
-     *
-     *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
-     *
-     *      This function called on each initialisation of module's tests sequences.
-     *      It's aim is to overide general Tests settings to be adjusted to local system.
-     *
-     *      Result must be an array including parameters as strings or array.
-     *
-     *  @see Splash\Tests\Tools\ObjectsCase::settings for objects tests settings
-     *
-     *  @return         array       $parameters
+     * {@inheritDoc}
      */
-    public function testParameters()
+    public function testParameters(): array
     {
         //====================================================================//
         // Init Parameters Array
         return array();
         // CHANGE SOMETHING
     }
-
-    //====================================================================//
-// *******************************************************************//
-// Place Here Any SPECIFIC or COMMON Local Functions
-// *******************************************************************//
-//====================================================================//
 }

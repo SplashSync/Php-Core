@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,105 +15,63 @@
 
 namespace   Splash\Router;
 
-use ArrayObject;
+use Splash\Components\Router;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    Server Request Routiung Class, Execute/Route actions on Admin Service Requests.
- *              This file is included only in case on NuSOAP call to slave server.
- *
- * @author      B. Paquier <contact@splashsync.com>
+ * Server Request Routing Class, Execute/Route actions on Admin Service Requests.
+ * This file is included only in case on NuSOAP call to slave server.
  */
-class Admin
+class Admin implements RouterInterface
 {
     /**
-     *      @abstract   Task execution router. Receive task detail and execute requiered task operations.
-     *
-     *      @param      ArrayObject     $task       Full Task Request Array
-     *
-     *      @return     ArrayObject                 Task results, or False if KO
+     * {@inheritDoc}
      */
-    public static function action($task)
+    public static function action(array $task): ?array
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace();
-        Splash::log()->deb("Admin => ".$task->name." (".$task->desc.")");
+        Splash::log()->deb("Admin => ".$task['name']." (".$task['desc'].")");
 
         //====================================================================//
         // Initial Response
-        $response = self::getEmptyResponse($task);
+        $response = Router::getEmptyResponse($task);
 
-        switch ($task->name) {
+        switch ($task['name']) {
             //====================================================================//
             //  READING OF SERVER OBJECT LIST
             case SPL_F_GET_OBJECTS:
-                $response->data = Splash::objects();
-                if (false != $response->data) {
-                    $response->result = true;
-                }
+                $response['data'] = Splash::objects();
+                $response['result'] = !empty($response['data']);
 
                 break;
             //====================================================================//
             //  READING OF SERVER WIDGETS LIST
             case SPL_F_GET_WIDGETS:
-                $response->data = Splash::widgets();
-                if (false != $response->data) {
-                    $response->result = true;
-                }
+                $response['data'] = Splash::widgets();
+                $response['result'] = !empty($response['data']);
 
                 break;
             //====================================================================//
-            //  READING OF SERVER SELFTEST RESULTS
+            //  READING OF SERVER SELF-TEST RESULTS
             case SPL_F_GET_SELFTEST:
-                $response->result = Splash::selfTest();
-                $response->data = $response->result;
+                $response['result'] = Splash::selfTest();
+                $response['data'] = $response['result'];
 
                 break;
             //====================================================================//
             //  READING OF SERVER INFORMATIONS
             case SPL_F_GET_INFOS:
-                $response->data = Splash::informations();
-                if (false != $response->data) {
-                    $response->result = true;
-                }
+                $response['data'] = Splash::informations();
+                $response['result'] = !empty($response['data']);
 
                 break;
             default:
-                Splash::log()->err("Admin - Requested task not found => ".$task->name);
+                Splash::log()->err("Admin - Requested task not found => ".$task['name']);
 
                 break;
         }
-
-        return $response;
-    }
-
-    //====================================================================//
-    //  LOW LEVEL FUNCTIONS
-    //====================================================================//
-
-    /**
-     *      @abstract     Build an Empty Task Response
-     *
-     *      @param  ArrayObject     $task       Task To Execute
-     *
-     *      @return ArrayObject   Task Result ArrayObject
-     */
-    private static function getEmptyResponse($task)
-    {
-        //====================================================================//
-        // Initial Tasks results ArrayObject
-        $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-
-        //====================================================================//
-        // Set Default Result to False
-        $response->result = false;
-        $response->data = null;
-
-        //====================================================================//
-        // Insert Task Description Informations
-        $response->name = $task->name;
-        $response->desc = $task->desc;
 
         return $response;
     }

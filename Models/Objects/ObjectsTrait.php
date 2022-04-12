@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,29 +18,29 @@ namespace   Splash\Models\Objects;
 use Splash\Models\Helpers\ObjectsHelper;
 
 /**
- * @abstract    This class implements access to Objects Links Fields Helper.
+ * This class implements access to Object Links Fields Helper.
  */
 trait ObjectsTrait
 {
     /**
-     * @var ObjectsHelper
+     * @var null|ObjectsHelper
      */
-    private static $ObjectsHelper;
+    private static ?ObjectsHelper $objectsHelper;
 
     /**
-     *      @abstract   Get a singleton Objects Helper Class
+     * Get a singleton Objects Helper Class
      *
-     *      @return     ObjectsHelper
+     * @return ObjectsHelper
      */
-    public static function objects()
+    public static function objects(): ObjectsHelper
     {
-        // Helper Class Exists
-        if (isset(self::$ObjectsHelper)) {
-            return self::$ObjectsHelper;
-        }
+        //====================================================================//
         // Initialize Class
-        self::$ObjectsHelper = new ObjectsHelper();
+        if (!isset(self::$objectsHelper)) {
+            self::$objectsHelper = new ObjectsHelper();
+        }
+        //====================================================================//
         // Return Helper Class
-        return self::$ObjectsHelper;
+        return self::$objectsHelper;
     }
 }

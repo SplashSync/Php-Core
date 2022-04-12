@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,16 +16,20 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * Integer Field
+ * DateTime Field : Date & Time as Text (Format Y-m-d G:i:s)
+ *
+ * @example     2016-12-25 12:25:30
  */
-class Ooint implements FieldInterface
+class OoDatetime extends OoVarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'Int';
+    /**
+     * @var string
+     */
+    const FORMAT = 'DateTime';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -34,25 +38,25 @@ class Ooint implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //==============================================================================
-        //      Verify Data is Not Empty
-        if (is_null($data) || "" === $data || ("0" !== $data)) {
-            return true;
+        //      Verify Data is not Empty
+        if (empty($data)) {
+            return null;
         }
         //==============================================================================
-        //      Verify Data is Numeric
-        if (!is_numeric($data)) {
-            return "Field Data is not a Number.";
+        //      Verify Data is a Scalar
+        if (!is_scalar($data)) {
+            return "Field Data is not a DateTime with right Format (".SPL_T_DATETIMECAST.").";
         }
         //==============================================================================
-        //      Verify Data is an Integer
-        if (intval($data) != $data) {
-            return "Field Data is not an Integer.";
+        //      Verify Data is a DateTime Type
+        if (false !== \DateTime::createFromFormat(SPL_T_DATETIMECAST, (string) $data)) {
+            return null;
         }
 
-        return true;
+        return "Field Data is not a DateTime with right Format (".SPL_T_DATETIMECAST.").";
     }
 
     //==============================================================================
@@ -62,26 +66,16 @@ class Ooint implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
-        return mt_rand(1, 1000);
-    }
-
-    //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
-    //==============================================================================
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function compare($source, $target, $settings)
-    {
-        //====================================================================//
-        // Compare Float Values
-        if ((int) $source !== (int) $target) {
-            return false;
-        }
-
-        return true;
+        //==============================================================================
+        //      Generate a random DateTime
+        $date = new \DateTime("now");
+        $date->modify('-'.mt_rand(1, 10).' months');
+        $date->modify('-'.mt_rand(1, 60).' minutes');
+        $date->modify('-'.mt_rand(1, 60).' seconds');
+        //==============================================================================
+        //      Return DateTime is Right Format
+        return $date->format(SPL_T_DATETIMECAST);
     }
 }

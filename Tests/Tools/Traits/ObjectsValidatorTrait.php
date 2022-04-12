@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,11 +16,10 @@
 namespace Splash\Tests\Tools\Traits;
 
 use Splash\Models\Fields\FieldsManagerTrait;
+use Splash\Tests\Tools\Fields\FieldInterface;
 
 /**
  * Splash Test Tools - Objects Data Validation
- *
- * @author SplashSync <contact@splashsync.com>
  */
 trait ObjectsValidatorTrait
 {
@@ -31,7 +30,7 @@ trait ObjectsValidatorTrait
      *
      * @var string
      */
-    protected static $CLASS_PREFIX = 'Splash\Tests\Tools\Fields\Oo';
+    protected static string $classPrefix = 'Splash\Tests\Tools\Fields\Oo';
 
     //==============================================================================
     //      VALIDATION FUNCTIONS
@@ -72,7 +71,7 @@ trait ObjectsValidatorTrait
 
         //====================================================================//
         // Build Class Full Name
-        $className = self::$CLASS_PREFIX.$fieldType;
+        $className = self::$classPrefix.$fieldType;
 
         //====================================================================//
         // Build New Entity
@@ -89,38 +88,41 @@ trait ObjectsValidatorTrait
      * @param mixed  $data      Object Field Data
      * @param string $fieldType Object Field Type
      *
-     * @return bool
+     * @return null|string Valid or Field Error
      */
-    public static function isValidData($data, $fieldType)
+    public static function isValidData($data, string $fieldType): ?string
     {
         //====================================================================//
         // Verify Field Type is Valid
         $className = self::isValidType($fieldType);
-        if (false == $className) {
-            return false;
+        if ((false == $className) || (!is_subclass_of($className, FieldInterface::class))) {
+            return "Invalid Field Type ".$fieldType;
         }
-
         //====================================================================//
         // Verify Single Field Data Type is not Null
         if (is_null($data)) {
-            return true;
+            return null;
         }
-
+        //====================================================================//
+        // Verify Single Field Data is Array or Scalar
+        if (!is_array($data) && !is_scalar($data)) {
+            return "Field is not Array or Scalar...";
+        }
         //====================================================================//
         // Verify Single Field Data Type is Valid
         return $className::validate($data);
     }
 
     /**
-     * Verify Data a valid field data
+     * Verify Data has Valid Field Data
      *
-     * @param mixed  $data      Object Field Data
-     * @param string $fieldId   Object Field Identifier
-     * @param string $fieldType Object Field Type
+     * @param null|array|scalar $data      Object Field Data
+     * @param string            $fieldId   Object Field Identifier
+     * @param string            $fieldType Object Field Type
      *
      * @return bool
      */
-    public function isValidFieldData($data, $fieldId, $fieldType)
+    public function isValidFieldData($data, string $fieldId, string $fieldType): bool
     {
         //====================================================================//
         // Safety Check
@@ -134,11 +136,14 @@ trait ObjectsValidatorTrait
         if ($isList) {
             //====================================================================//
             // Verify List Field Data
+            $this->assertIsArray($data, "List Data Block is not an Array");
+
             return $this->isValidListFieldData($data, $fieldId, $fieldType);
         }
 
         //====================================================================//
         // Verify Field is in Data Response
+        $this->assertIsArray($data, "Field/Data Block is not an Array");
         $this->assertArrayHasKey($fieldId, $data, "Field '".$fieldId."' is not defined in returned Data Block.");
 
         //====================================================================//
@@ -160,13 +165,13 @@ trait ObjectsValidatorTrait
     /**
      * Verify Data a valid list field data
      *
-     * @param mixed  $data      Object Field Data
-     * @param string $fieldId   Object Field Identifier
-     * @param string $fieldType Object Field Type
+     * @param array<string, null|array|scalar> $data      Object Field List Data
+     * @param string                           $fieldId   Object Field Identifier
+     * @param string                           $fieldType Object Field Type
      *
      * @return bool
      */
-    public function isValidListFieldData($data, $fieldId, $fieldType)
+    public function isValidListFieldData(array $data, string $fieldId, string $fieldType): bool
     {
         $listId = self::isListField($fieldId);
         $listType = self::isListField($fieldType);
@@ -193,7 +198,7 @@ trait ObjectsValidatorTrait
         );
 
         //====================================================================//
-        // Verify Field Type is Valid Splahs Field type
+        // Verify Field Type is Valid Splash Field type
         $this->assertNotEmpty(
             self::isValidType($listType["fieldname"]),
             "List Field Type is not a valid Splash Field Type. (Given ".print_r($listType["fieldname"], true).")"
@@ -208,9 +213,10 @@ trait ObjectsValidatorTrait
 
         //====================================================================//
         // Verify if Field Data is an Array
-        $this->assertTrue(
-            is_array($listData) || is_a($listData, "ArrayObject"),
-            "List Field '".$listId["listname"]."' is not of Array Type. (Given ".print_r($listData, true).")"
+        $this->assertIsArray(
+            $listData,
+            "List Field '".$listId["listname"]."' is not of Array Type. (Given "
+            .print_r($listData, true).")"
         );
 
         //====================================================================//

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +15,6 @@
 
 namespace Splash\Models;
 
-use ArrayObject;
 use Splash\Core\SplashCore as Splash;
 
 /**
@@ -86,8 +85,6 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function isDisabled(string $objectType, bool $isDisabled = false): bool
     {
@@ -110,8 +107,6 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function overrideDescription(string $objectType, array $description): array
     {
@@ -212,7 +207,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         $config = $this->getConfiguration();
         //====================================================================//
         // Check Configuration is Valid
-        if (!is_array($config) || empty($config)) {
+        if (empty($config)) {
             return null;
         }
         //====================================================================//
@@ -233,20 +228,14 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     /**
      * Override a Field Definition
      *
-     * @param array|ArrayObject $field  Original Field Definition
-     * @param array             $values Custom Values to Write
+     * @param array $field  Original Field Definition
+     * @param array $values Custom Values to Write
      *
-     * @return array|ArrayObject
+     * @return array
      */
-    protected static function updateField($field, array $values)
+    protected static function updateField(array $field, array $values): array
     {
         Splash::log()->trace();
-        //====================================================================//
-        // Check New Configuration is an Array
-        if (!is_array($values)) {
-            return $field;
-        }
-
         //====================================================================//
         // Field Type
         self::updateFieldStrVal($field, $values, "type");
@@ -319,13 +308,13 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     /**
      * Override a Field String Definition
      *
-     * @param array|ArrayObject $field  Original Field Definition
-     * @param array             $values Custom Values to Write
-     * @param string            $key    String Values Key
+     * @param array  $field  Original Field Definition
+     * @param array  $values Custom Values to Write
+     * @param string $key    String Values Key
      *
      * @return void
      */
-    private static function updateFieldStrVal(&$field, array $values, string $key): void
+    private static function updateFieldStrVal(array &$field, array $values, string $key): void
     {
         if (isset($values[$key]) && is_string($values[$key])) {
             $field[$key] = $values[$key];
@@ -335,13 +324,13 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     /**
      * Override a Field Bool Definition
      *
-     * @param array|ArrayObject $field  Original Field Definition
-     * @param array             $values Custom Values to Write
-     * @param string            $key    String Values Key
+     * @param array  $field  Original Field Definition
+     * @param array  $values Custom Values to Write
+     * @param string $key    String Values Key
      *
      * @return void
      */
-    private static function updateFieldBoolVal(&$field, array $values, string $key): void
+    private static function updateFieldBoolVal(array &$field, array $values, string $key): void
     {
         if (isset($values[$key]) && is_scalar($values[$key])) {
             $field[$key] = (bool) $values[$key];
@@ -351,12 +340,12 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     /**
      * Override a Field Meta Definition
      *
-     * @param array|ArrayObject $field  Original Field Definition
-     * @param array             $values Custom Values to Write
+     * @param array $field  Original Field Definition
+     * @param array $values Custom Values to Write
      *
      * @return void
      */
-    private static function updateFieldMeta(&$field, array $values): void
+    private static function updateFieldMeta(array &$field, array $values): void
     {
         // Update Field Meta ItemType
         self::updateFieldStrVal($field, $values, "itemtype");
@@ -373,12 +362,12 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     /**
      * Override a Field Meta Definition
      *
-     * @param array|ArrayObject $field  Original Field Definition
-     * @param array             $values Custom Values to Write
+     * @param array $field  Original Field Definition
+     * @param array $values Custom Values to Write
      *
      * @return void
      */
-    private static function updateFieldChoices(&$field, array $values): void
+    private static function updateFieldChoices(array &$field, array $values): void
     {
         if (!isset($values["choices"]) || !is_iterable($values["choices"])) {
             return;

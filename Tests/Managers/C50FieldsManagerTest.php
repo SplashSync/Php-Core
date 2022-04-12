@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,7 +22,6 @@ use Splash\Core\SplashCore     as Splash;
 /**
  * Components Test Suite - Fields Manager Verifications
  *
- * @author SplashSync <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class C50FieldsManagerTest extends TestCase
@@ -42,24 +41,18 @@ class C50FieldsManagerTest extends TestCase
     }
 
     //==============================================================================
-    //      FIELDS LIST FUNCTIONS
-    //==============================================================================
-
-    // TODO
-
-    //==============================================================================
     //      LISTS FIELDS MANAGEMENT
     //==============================================================================
 
     /**
      * @dataProvider providerIsListFieldFunction
      *
-     * @param mixed $input
-     * @param mixed $result
+     * @param null|string $input
+     * @param null|array  $result
      *
      * @return void
      */
-    public function testIsListFieldFunction($input, $result)
+    public function testIsListFieldFunction(?string $input, ?array $result): void
     {
         $this->assertEquals($result, FieldsManager::isListField($input));
     }
@@ -70,10 +63,10 @@ class C50FieldsManagerTest extends TestCase
     public function providerIsListFieldFunction(): array
     {
         return array(
-            array(null,                 false),
-            array('',                   false),
-            array('Whatever',           false),
-            array('object::id',         false),
+            array(null,                 null),
+            array('',                   null),
+            array('Whatever',           null),
+            array('object::id',         null),
             array('object@list',        array('fieldname' => 'object',       'listname' => 'list')),
             array('list@object',        array('fieldname' => 'list',         'listname' => 'object')),
             array('object::id@list',    array('fieldname' => 'object::id',   'listname' => 'list')),
@@ -84,12 +77,12 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerFieldNameFunction
      *
-     * @param mixed $input
-     * @param mixed $result
+     * @param null|string $input
+     * @param null|string $result
      *
      * @return void
      */
-    public function testFieldNameFunction($input, $result)
+    public function testFieldNameFunction(?string $input, ?string $result): void
     {
         $this->assertEquals($result, FieldsManager::fieldName($input));
     }
@@ -100,10 +93,10 @@ class C50FieldsManagerTest extends TestCase
     public function providerFieldNameFunction(): array
     {
         return array(
-            array(null,                 false),
-            array('',                   false),
-            array('Whatever',           false),
-            array('object::id',         false),
+            array(null,                 null),
+            array('',                   null),
+            array('Whatever',           null),
+            array('object::id',         null),
             array('object@list',        'object'),
             array('list@object',        'list'),
             array('object::id@list',    'object::id'),
@@ -115,12 +108,12 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerListNameFunction
      *
-     * @param mixed $input
-     * @param mixed $result
+     * @param null|string $input
+     * @param null|string $result
      *
      * @return void
      */
-    public function testListNameFunction($input, $result)
+    public function testListNameFunction(?string $input, ?string $result): void
     {
         $this->assertEquals($result, FieldsManager::listName($input));
     }
@@ -131,10 +124,10 @@ class C50FieldsManagerTest extends TestCase
     public function providerListNameFunction(): array
     {
         return array(
-            array(null,                 false),
-            array('',                   false),
-            array('Whatever',           false),
-            array('object::id',         false),
+            array(null,                 null),
+            array('',                   null),
+            array('Whatever',           null),
+            array('object::id',         null),
             array('object@list',        'list'),
             array('list@object',        'object'),
             array('object::id@list',    'list'),
@@ -146,12 +139,12 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerBaseTypeFunction
      *
-     * @param mixed $input
-     * @param mixed $result
+     * @param null|string $input
+     * @param null|string $result
      *
      * @return void
      */
-    public function testBaseTypeFunction($input, $result)
+    public function testBaseTypeFunction(?string $input, ?string $result): void
     {
         $this->assertEquals($result, FieldsManager::baseType($input));
     }
@@ -166,7 +159,7 @@ class C50FieldsManagerTest extends TestCase
         Splash::core();
 
         return array(
-            array(null,                 false),
+            array(null,                 null),
             array('',                   ''),
             array('Whatever',           'Whatever'),
             array('object::id',         'id'),
@@ -214,12 +207,12 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerIsIdFieldFunction
      *
-     * @param mixed $input
-     * @param mixed $result
+     * @param null|string $input
+     * @param null|array  $result
      *
      * @return void
      */
-    public function testIsIdFieldFunction($input, $result)
+    public function testIsIdFieldFunction(?string $input, ?array $result): void
     {
         $this->assertEquals($result, FieldsManager::isIdField($input));
     }
@@ -230,9 +223,9 @@ class C50FieldsManagerTest extends TestCase
     public function providerIsIdFieldFunction(): array
     {
         return array(
-            array(null,                 false),
-            array('',                   false),
-            array('Whatever',           false),
+            array(null,                 null),
+            array('',                   null),
+            array('Whatever',           null),
             array('id::type',           array('ObjectType' => 'type',        'ObjectId' => 'id')),
             array('id::type@list',      array('ObjectType' => 'type@list',   'ObjectId' => 'id')),
             array('id@list::type',      array('ObjectType' => 'type',        'ObjectId' => 'id@list')),
@@ -243,12 +236,12 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerObjectIdFunction
      *
-     * @param mixed $input
-     * @param mixed $result
+     * @param null|string $input
+     * @param null|string $result
      *
      * @return void
      */
-    public function testObjectIdFunction($input, $result)
+    public function testObjectIdFunction(?string $input, ?string $result): void
     {
         $this->assertEquals($result, FieldsManager::objectId($input));
     }
@@ -259,13 +252,13 @@ class C50FieldsManagerTest extends TestCase
     public function providerObjectIdFunction(): array
     {
         return array(
-            array(null,                 false),
-            array('',                   false),
-            array('Whatever',           false),
+            array(null,                 null),
+            array('',                   null),
+            array('Whatever',           null),
             array('id::object',         'id'),
             array('object::id',         'object'),
-            array('object@list',        false),
-            array('list@object',        false),
+            array('object@list',        null),
+            array('list@object',        null),
             array('id::object@list',    'id'),
             array('object@list::id',    'object@list'),
         );
@@ -274,12 +267,12 @@ class C50FieldsManagerTest extends TestCase
     /**
      * @dataProvider providerObjectTypeFunction
      *
-     * @param mixed $input
-     * @param mixed $result
+     * @param null|string $input
+     * @param null|string $result
      *
      * @return void
      */
-    public function testObjectTypeFunction($input, $result)
+    public function testObjectTypeFunction(?string $input, ?string $result): void
     {
         $this->assertEquals($result, FieldsManager::objectType($input));
     }
@@ -290,21 +283,15 @@ class C50FieldsManagerTest extends TestCase
     public function providerObjectTypeFunction(): array
     {
         return array(
-            array(null,                 false),
-            array('',                   false),
-            array('Whatever',           false),
+            array(null,                 null),
+            array('',                   null),
+            array('Whatever',           null),
             array('id::object',         'object'),
             array('object::id',         'id'),
-            array('object@list',        false),
-            array('list@object',        false),
+            array('object@list',        null),
+            array('list@object',        null),
             array('id::object@list',    'object@list'),
             array('object@list::id',    'id'),
         );
     }
-
-    //==============================================================================
-    //      OBJECTS DATA BLOCKS FUNCTIONS
-    //==============================================================================
-
-    // TODO
 }

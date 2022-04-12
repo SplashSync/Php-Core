@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -28,21 +28,44 @@ use Splash\Models\WidgetsProviderInterface;
 /**
  * Tooling Class for Validation of Splash Php Module Contents
  *
- * @author      B. Paquier <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Validator
 {
-    /** @var array */
-    private $ValidLocalClass;
-    /** @var array */
-    private $ValidLocalObject;
-    /** @var array */
-    private $ValidLocalWidget;
-    /** @var bool */
-    private $ValidLocalPath;
-    /** @var array */
-    private $ValidLocalFunctions;
+    /**
+     * List of Validated Local Class
+     *
+     * @var array
+     */
+    private array $validLocalClass = array();
+
+    /**
+     * List of Validated Local Objects
+     *
+     * @var array
+     */
+    private array $validLocalObject = array();
+
+    /**
+     * List of Validated Local Widgets
+     *
+     * @var array
+     */
+    private array $validLocalWidget = array();
+
+    /**
+     * Is Local Path Validated ?
+     *
+     * @var null|bool
+     */
+    private ?bool $validLocalPath = null;
+
+    /**
+     * List of Validated Local Functions
+     *
+     * @var array
+     */
+    private array $validLocalFunctions = array();
 
     //====================================================================//
     // *******************************************************************//
@@ -60,11 +83,11 @@ class Validator
         $className = SPLASH_CLASS_PREFIX.'\\Local';
         //====================================================================//
         // Verify Results in Cache
-        if (isset($this->ValidLocalClass[$className])) {
-            return $this->ValidLocalClass[$className];
+        if (isset($this->validLocalClass[$className])) {
+            return $this->validLocalClass[$className];
         }
 
-        $this->ValidLocalClass[$className] = false;
+        $this->validLocalClass[$className] = false;
 
         //====================================================================//
         // Verify Splash Local Core Class Exists
@@ -85,26 +108,20 @@ class Validator
             return Splash::log()->err($exc->getMessage());
         }
 
-        $this->ValidLocalClass[$className] = true;
+        $this->validLocalClass[$className] = true;
 
-        return $this->ValidLocalClass[$className];
+        return $this->validLocalClass[$className];
     }
 
     /**
      * Verify Local Core Parameters are Valid
      *
-     * @param mixed $input
+     * @param array $input
      *
      * @return bool
      */
-    public function isValidLocalParameterArray($input): bool
+    public function isValidLocalParameterArray(array $input): bool
     {
-        //====================================================================//
-        // Verify Array Given
-        if (!is_array($input)) {
-            return Splash::log()->err(Splash::trans('ErrorCfgNotAnArray', get_class($input)));
-        }
-
         //====================================================================//
         // Required Parameters are Available
         //====================================================================//
@@ -120,45 +137,21 @@ class Validator
     }
 
     /**
-     * Verify Local Test Parameters are Valid
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValidLocalTestParameterArray($input): bool
-    {
-        //====================================================================//
-        // Verify Array Given
-        if (!is_array($input)) {
-            return Splash::log()->err(Splash::trans('ErrorCfgNotAnArray', get_class($input)));
-        }
-
-        return true;
-    }
-
-    /**
      * Verify Webserver Informations are Valid
      *
      * @return bool
      */
     public function isValidServerInfos(): bool
     {
-        $infos = Splash::ws()->getServerInfos();
-
         //====================================================================//
-        // Verify Array Given
-        if (!is_a($infos, 'ArrayObject')) {
-            return Splash::log()->err(
-                Splash::trans('ErrInfosNotArrayObject', (string) get_class($infos))
-            );
-        }
-
+        // Collect Server Infos
+        $infos = Splash::ws()->getServerInfos();
+        //====================================================================//
+        // Show Debug Infos
         if (Splash::isDebugMode()) {
             Splash::log()->war('Host : '.$infos['ServerHost']);
             Splash::log()->war('Path : '.$infos['ServerPath']);
         }
-
         //====================================================================//
         // Required Parameters are Available
         //====================================================================//
@@ -167,7 +160,6 @@ class Validator
 
             return Splash::log()->err(Splash::trans('ErrEmptyServerHostDesc'));
         }
-
         if (empty($infos['ServerPath'])) {
             Splash::log()->err(Splash::trans('ErrEmptyServerPath'));
 
@@ -185,11 +177,11 @@ class Validator
     /**
      * Verify Webserver is a LocalHost
      *
-     * @param mixed $infos
+     * @param array $infos
      *
      * @return void
      */
-    public function isLocalInstallation($infos)
+    public function isLocalInstallation(array $infos): void
     {
         if (false !== strpos($infos['ServerHost'], 'localhost')) {
             Splash::log()->war(Splash::trans('WarIsLocalhostServer'));
@@ -219,15 +211,15 @@ class Validator
     {
         //====================================================================//
         // Verify Result in Cache
-        if (isset($this->ValidLocalObject[$objectType])) {
-            return $this->ValidLocalObject[$objectType];
+        if (isset($this->validLocalObject[$objectType])) {
+            return $this->validLocalObject[$objectType];
         }
 
-        $this->ValidLocalObject[$objectType] = false;
+        $this->validLocalObject[$objectType] = false;
         //====================================================================//
         // Check if Object Manager is Extension Object
         if (in_array($objectType, array_keys(ExtensionsManager::getObjects()), true)) {
-            return $this->ValidLocalObject[$objectType] = true;
+            return $this->validLocalObject[$objectType] = true;
         }
         //====================================================================//
         // Verify Local Core Class Exist & Is Valid
@@ -253,7 +245,7 @@ class Validator
             return false;
         }
 
-        $this->ValidLocalObject[$objectType] = true;
+        $this->validLocalObject[$objectType] = true;
 
         return true;
     }
@@ -348,10 +340,10 @@ class Validator
     {
         //====================================================================//
         // Verify Result in Cache
-        if (isset($this->ValidLocalWidget[$widgetType])) {
-            return $this->ValidLocalWidget[$widgetType];
+        if (isset($this->validLocalWidget[$widgetType])) {
+            return $this->validLocalWidget[$widgetType];
         }
-        $this->ValidLocalWidget[$widgetType] = false;
+        $this->validLocalWidget[$widgetType] = false;
 
         //====================================================================//
         // Verify Local Core Class Exist & Is Valid
@@ -377,7 +369,7 @@ class Validator
         if (!$this->isValidWidgetClass($widgetType)) {
             return false;
         }
-        $this->ValidLocalWidget[$widgetType] = true;
+        $this->validLocalWidget[$widgetType] = true;
 
         return true;
     }
@@ -397,7 +389,7 @@ class Validator
     {
         //====================================================================//
         // Verify no result in Cache
-        if (!isset($this->ValidLocalPath)) {
+        if (!isset($this->validLocalPath)) {
             try {
                 $path = Splash::getLocalPath();
             } catch (Exception $e) {
@@ -406,15 +398,15 @@ class Validator
             //====================================================================//
             // Verify Local Path Exist
             if (is_null($path) || !is_dir($path)) {
-                $this->ValidLocalPath = false;
+                $this->validLocalPath = false;
 
                 return Splash::log()->err(Splash::trans('ErrLocalPath', (string) $path));
             }
 
-            $this->ValidLocalPath = true;
+            $this->validLocalPath = true;
         }
 
-        return $this->ValidLocalPath;
+        return $this->validLocalPath;
     }
 
     /**
@@ -435,23 +427,23 @@ class Validator
         }
         //====================================================================//
         // Verify Result in Cache
-        if (isset($this->ValidLocalFunctions[$className][$method])) {
-            return $this->ValidLocalFunctions[$className][$method];
+        if (isset($this->validLocalFunctions[$className][$method])) {
+            return $this->validLocalFunctions[$className][$method];
         }
 
         //====================================================================//
         // Verify Class Method Exists
         if (false == method_exists($className, $method)) {
-            $this->ValidLocalFunctions[$className][$method] = false;
+            $this->validLocalFunctions[$className][$method] = false;
             if ($required) {
                 Splash::log()->err(Splash::trans('ErrLocalFunction', $className, $method));
             }
 
             return false;
         }
-        $this->ValidLocalFunctions[$className][$method] = true;
+        $this->validLocalFunctions[$className][$method] = true;
 
-        return $this->ValidLocalFunctions[$className][$method];
+        return $this->validLocalFunctions[$className][$method];
     }
 
     //====================================================================//
@@ -717,12 +709,12 @@ class Validator
         //====================================================================//
         // Read Object Disable Flag
         if (false == $this->isValidLocalFunction('getIsDisabled', $className)) {
-            $this->ValidLocalWidget[$widgetType] = false;
+            $this->validLocalWidget[$widgetType] = false;
 
             return false;
         }
         if ($className::getIsDisabled()) {
-            $this->ValidLocalWidget[$widgetType] = false;
+            $this->validLocalWidget[$widgetType] = false;
 
             return false;
         }

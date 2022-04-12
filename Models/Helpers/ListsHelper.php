@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,17 +34,17 @@ class ListsHelper
      * @param string $listName  Field List Name.
      * @param string $fieldName Field Identifier
      *
-     * @return false|string
+     * @return null|string
      */
-    public function encode($listName, $fieldName)
+    public function encode(string $listName, string $fieldName): ?string
     {
         //====================================================================//
         // Safety Checks
         if (empty($listName)) {
-            return false;
+            return null;
         }
         if (empty($fieldName)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Create & Return List Field Id Data String
@@ -62,14 +62,14 @@ class ListsHelper
      * @param string $listName  List Identifier String
      * @param string $fieldName List Field Identifier String
      *
-     * @return false|string
+     * @return null|string
      */
-    public function initOutput(&$buffer, $listName, $fieldName)
+    public function initOutput(array &$buffer, string $listName, string $fieldName): ?string
     {
         //====================================================================//
         // Check List Name
         if ($this->listName($fieldName) !== $listName) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Create List Array If Needed
@@ -92,7 +92,7 @@ class ListsHelper
      *
      * @return void
      */
-    public function insert(&$buffer, $listName, $fieldName, $key, $itemData)
+    public function insert(array &$buffer, string $listName, string $fieldName, $key, $itemData): void
     {
         //====================================================================//
         // Create List Array If Needed

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,8 +14,6 @@
  */
 
 namespace Splash\Tests\Tools\Fields;
-
-use ArrayObject;
 
 /**
  * Bool Field : Basic Boolean
@@ -29,11 +27,11 @@ interface FieldInterface
     /**
      * Verify given Raw Data is Valid
      *
-     * @param null|Array|ArrayObject|bool|float|int|string $data
+     * @param null|array|scalar $data
      *
-     * @return string|true
+     * @return null|string
      */
-    public static function validate($data);
+    public static function validate($data): ?string;
 
     //==============================================================================
     //      FAKE DATA GENERATOR
@@ -44,9 +42,9 @@ interface FieldInterface
      *
      * @param array $settings User Defined Faker Settings
      *
-     * @return mixed
+     * @return array|scalar
      */
-    public static function fake($settings);
+    public static function fake(array $settings);
 
     /**
      * Compare Two Data Block to See if similar (Update Required)
@@ -59,5 +57,5 @@ interface FieldInterface
      *
      * @return bool
      */
-    public static function compare($source, $target, $settings);
+    public static function compare($source, $target, array $settings): bool;
 }

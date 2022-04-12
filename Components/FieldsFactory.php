@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,7 +22,6 @@ use Splash\Models\Fields\ObjectField;
 /**
  * This Class is a Generator for Objects Fields Definition
  *
- * @author      B. Paquier <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class FieldsFactory
@@ -55,28 +54,28 @@ class FieldsFactory
      *
      * @var null|ObjectField
      */
-    private $new;
+    private ?ObjectField $new;
 
     /**
      * Object Fields List Storage
      *
      * @var ObjectField[]
      */
-    private $fields = array();
+    private array $fields = array();
 
     /**
      * Fields Default Language
      *
      * @var null|string
      */
-    private $dfLanguage;
+    private ?string $dfLanguage;
 
     /**
      * Fields Configurators
      *
      * @var array
      */
-    private $configurators = array();
+    private array $configurators = array();
 
     //====================================================================//
     //  FIELDS :: DATA TYPES DEFINITION
@@ -673,9 +672,30 @@ class FieldsFactory
     /**
      * Save Current New Field in list & Clean current new field
      *
-     * @return array|false
+     * @return null|array<int, array>
+     *
+     * @phpstan-return  null|array<int, array{
+     *      type: string,
+     *      id: string,
+     *      name: string,
+     *      desc: string,
+     *      group: string,
+     *      required: null|bool|string,
+     *      read: null|bool|string,
+     *      write: null|bool|string,
+     *      inlist: null|bool|string,
+     *      log: null|bool|string,
+     *      notest: null|bool|string,
+     *      syncmode: string,
+     *      itemprop: null|string,
+     *      itemtype: null|string,
+     *      tag: null|string,
+     *      choices: null|array{ key: string, value: scalar},
+     *      asso: null|string[],
+     *      options: array<string, scalar>
+     * }>
      */
-    public function publish()
+    public function publish(): ?array
     {
         //====================================================================//
         // Commit Last Created if not already done
@@ -683,11 +703,9 @@ class FieldsFactory
         //====================================================================//
         // Safety Checks
         if (empty($this->fields)) {
-            return Splash::log()->err("ErrFieldsNoList");
+            return Splash::log()->errNull("ErrFieldsNoList");
         }
-        //====================================================================//
-        // Execute Configurators on Fields
-        $this->executeConfigurators();
+
         //====================================================================//
         // Convert Fields To Array
         $buffer = array();
@@ -698,7 +716,9 @@ class FieldsFactory
         // Reset Fields Factory
         $this->reset();
 
-        return $buffer;
+        //====================================================================//
+        // Execute Configurators on Fields
+        return $this->executeConfigurators($buffer);
     }
 
     //====================================================================//
@@ -730,28 +750,26 @@ class FieldsFactory
     /**
      * Save Current New Field in list & Clean current new field
      *
-     * @return bool
+     * @return void
      */
-    private function commit(): bool
+    private function commit(): void
     {
         //====================================================================//
         // Safety Checks
         if (!$this->new) {
-            return true;
+            return;
         }
         //====================================================================//
         // Validate Current New Field
         if (!$this->new->validate()) {
             $this->new = null;
 
-            return false;
+            return;
         }
         //====================================================================//
         // Insert Field List if Valid
         $this->fields[$this->new->getIdentifier()] = $this->new;
         $this->new = null;
-
-        return true;
     }
 
     /**
@@ -768,16 +786,39 @@ class FieldsFactory
     /**
      * Register a Configurator for Fields Override
      *
-     * @return self
+     * @param array $fields
+     *
+     * @return array
+     *
+     * @phpstan-return  array<int, array{
+     *      type: string,
+     *      id: string,
+     *      name: string,
+     *      desc: string,
+     *      group: string,
+     *      required: null|bool|string,
+     *      read: null|bool|string,
+     *      write: null|bool|string,
+     *      inlist: null|bool|string,
+     *      log: null|bool|string,
+     *      notest: null|bool|string,
+     *      syncmode: string,
+     *      itemprop: null|string,
+     *      itemtype: null|string,
+     *      tag: null|string,
+     *      choices: null|array{ key: string, value: scalar},
+     *      asso: null|string[],
+     *      options: array<string, scalar>
+     * }>
      */
-    private function executeConfigurators(): self
+    private function executeConfigurators(array $fields): array
     {
         foreach ($this->configurators as $sequence) {
             if (($sequence['configurator'] instanceof AbstractConfigurator) && is_string($sequence['objectType'])) {
-                $this->fields = $sequence['configurator']->overrideFields($sequence['objectType'], $this->fields);
+                $fields = $sequence['configurator']->overrideFields($sequence['objectType'], $fields);
             }
         }
 
-        return $this;
+        return $fields;
     }
 }

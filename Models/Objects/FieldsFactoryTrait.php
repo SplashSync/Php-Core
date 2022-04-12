@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,9 +24,9 @@ use Splash\Core\SplashCore      as Splash;
 trait FieldsFactoryTrait
 {
     /**
-     * @var FieldsFactory
+     * @var null|FieldsFactory
      */
-    private static $fields;
+    private static ?FieldsFactory $fieldsFactory;
 
     /**
      * Get a singleton FieldsFactory Class
@@ -34,22 +34,20 @@ trait FieldsFactoryTrait
      *
      * @return FieldsFactory
      */
-    public static function fieldsFactory()
+    public static function fieldsFactory(): FieldsFactory
     {
         //====================================================================//
         // Initialize Field Factory Class
-        if (isset(self::$fields)) {
-            return self::$fields;
+        if (isset(self::$fieldsFactory)) {
+            return self::$fieldsFactory;
         }
-
         //====================================================================//
         // Initialize Class
-        self::$fields = new FieldsFactory();
-
+        self::$fieldsFactory = new FieldsFactory();
         //====================================================================//
         //  Load Translation File
         Splash::translator()->load("objects");
 
-        return self::$fields;
+        return self::$fieldsFactory;
     }
 }

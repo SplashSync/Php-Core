@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +15,6 @@
 
 namespace   Splash\Models\Objects;
 
-use ArrayObject;
 use Splash\Components\ExtensionsManager;
 use Splash\Core\SplashCore      as Splash;
 
@@ -39,48 +38,48 @@ trait IntelParserTrait
      * Each time a field is imported, unset it from this buffer
      * to control all fields were imported at the end of Set Operation
      *
-     * @var ArrayObject
+     * @var array<string, null|array<string, null|array|scalar>|scalar>
      */
-    protected $in;
+    protected array $in;
 
     /**
      * Get Operations Output Buffer
      *
      * This variable is used to store Object Array during Get Operations
      *
-     * @var ArrayObject
+     * @var array<string, null|array<string, null|array|scalar>|scalar>
      */
-    protected $out;
+    protected array $out;
 
     /**
      * Work Object Class
      *
      * This variable is used to store current working Object during Set & Get Operations
      *
-     * @var mixed
+     * @var object
      */
-    protected $object;
+    protected object $object;
 
     /**
      * Buffer for All Available Class Fields Building Methods
      *
-     * @var array
+     * @var null|string[]
      */
-    protected static $classBuildMethods;
+    protected static ?array $classBuildMethods;
 
     /**
      * Buffer for All Available Class Getter Methods
      *
-     * @var array
+     * @var null|string[]
      */
-    protected static $classGetMethods;
+    protected static ?array $classGetMethods;
 
     /**
      * Buffer for All Available Class Setter Methods
      *
-     * @var array
+     * @var null|string[]
      */
-    protected static $classSetMethods;
+    protected static ?array $classSetMethods;
 
     //====================================================================//
     // Class Main Functions
@@ -89,7 +88,7 @@ trait IntelParserTrait
     /**
      * {@inheritdoc}
      */
-    public function fields()
+    public function fields(): array
     {
         //====================================================================//
         // Stack Trace
@@ -110,7 +109,7 @@ trait IntelParserTrait
     /**
      * {@inheritdoc}
      */
-    public function get($objectId = null, $fieldsList = null)
+    public function get(string $objectId, array $fieldsList): ?array
     {
         //====================================================================//
         // Stack Trace
@@ -122,12 +121,12 @@ trait IntelParserTrait
         // Load Object
         $this->object = $this->load($objectId);
         if (!is_object($this->object)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Check if Object is Filtered
         if (ExtensionsManager::isFiltered(self::getType(), $objectId, $this->object)) {
-            return Splash::log()->err("IsFilteredByExt");
+            return Splash::log()->errNull("IsFilteredByExt");
         }
         //====================================================================//
         // Init Response Array
@@ -150,7 +149,7 @@ trait IntelParserTrait
                 Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $fieldName);
             }
 
-            return false;
+            return null;
         }
         //====================================================================//
         // Return Data
@@ -161,7 +160,7 @@ trait IntelParserTrait
     /**
      * {@inheritdoc}
      */
-    public function set($objectId = null, $list = null)
+    public function set(?string $objectId, array $list): ?string
     {
         //====================================================================//
         // Stack Trace
@@ -179,7 +178,7 @@ trait IntelParserTrait
         //====================================================================//
         // Safety Check => Object Now Loaded
         if (!is_object($this->object)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // New Object Created => Store new Object Identifier
@@ -190,7 +189,7 @@ trait IntelParserTrait
         // Execute Write Operations on Object
         //====================================================================//
         if (false == $this->setObjectData()) {
-            return $newObjectId ? $newObjectId : false;
+            return $newObjectId ?: null;
         }
 
         //====================================================================//
@@ -203,7 +202,7 @@ trait IntelParserTrait
             //====================================================================//
             // If New Object => Return Object Identifier
             // Existing Object => Return False
-            return $newObjectId ? $newObjectId : false;
+            return $newObjectId ?: null;
         }
 
         return $update;
@@ -218,7 +217,7 @@ trait IntelParserTrait
      *
      * @return bool
      */
-    public function verifyRequiredFields()
+    public function verifyRequiredFields(): bool
     {
         foreach ($this->Fields() as $field) {
             //====================================================================//
@@ -250,12 +249,12 @@ trait IntelParserTrait
      *
      * @return bool
      */
-    private function setObjectData()
+    private function setObjectData(): bool
     {
         //====================================================================//
         // Walk on All Requested Fields
         //====================================================================//
-        $fields = is_a($this->in, "ArrayObject") ? $this->in->getArrayCopy() : $this->in;
+        $fields = $this->in;
         foreach ($fields as $fieldName => $fieldData) {
             //====================================================================//
             // Write Requested Fields
@@ -265,7 +264,7 @@ trait IntelParserTrait
         }
 
         //====================================================================//
-        // Verify Requested Fields List is now Empty => All Fields Writen Successfully
+        // Verify Requested Fields List is now Empty => All Fields Written Successfully
         //====================================================================//
         if (count($this->in)) {
             foreach ($this->in as $fieldName => $fieldData) {
@@ -283,7 +282,7 @@ trait IntelParserTrait
      *
      * @return array
      */
-    private function identifyBuildMethods()
+    private function identifyBuildMethods(): array
     {
         //====================================================================//
         // Load Methods From Cache
@@ -299,7 +298,7 @@ trait IntelParserTrait
      *
      * @return array
      */
-    private function identifyGetMethods()
+    private function identifyGetMethods(): array
     {
         //====================================================================//
         // Load Methods From Cache
@@ -315,7 +314,7 @@ trait IntelParserTrait
      *
      * @return array
      */
-    private function identifySetMethods()
+    private function identifySetMethods(): array
     {
         //====================================================================//
         // Load Methods From Cache
@@ -333,7 +332,7 @@ trait IntelParserTrait
      *
      * @return array
      */
-    private static function identifyMethods($prefix)
+    private static function identifyMethods($prefix): array
     {
         //====================================================================//
         // Prepare List of Available Methods
@@ -358,7 +357,7 @@ trait IntelParserTrait
      *
      * @return bool
      */
-    private function verifyRequiredFieldIsAvailable($fieldId)
+    private function verifyRequiredFieldIsAvailable(string $fieldId): bool
     {
         //====================================================================//
         // Detect List Field Names
@@ -373,8 +372,8 @@ trait IntelParserTrait
         }
         //====================================================================//
         // List Field is required
-        $listName = self::lists()->ListName($fieldId);
-        $fieldName = self::lists()->FieldName($fieldId);
+        $listName = self::lists()->listName($fieldId);
+        $fieldName = self::lists()->fieldName($fieldId);
         //====================================================================//
         // Check List is available
         if (empty($this->in[$listName])) {

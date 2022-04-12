@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,8 +22,6 @@ use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
  * Admin Test Suite - Ping Client Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class A01PingTest extends AbstractBaseCase
 {
@@ -57,7 +55,7 @@ class A01PingTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testPingClientAction(string $testSequence)
+    public function testPingClientAction(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -94,7 +92,7 @@ class A01PingTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testPingServerAction(string $testSequence)
+    public function testPingServerAction(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -103,14 +101,14 @@ class A01PingTest extends AbstractBaseCase
         //====================================================================//
         //   Execute Ping From Splash Server to Module
         $response = SplashServer::ping();
-        $data = Splash::ws()->unPack($response, true);
+        $data = Splash::ws()->unPack((string) $response, true);
 
         //====================================================================//
         //   Verify Response
         $this->assertNotEmpty($response, "Ping Response Block is Empty");
         $this->assertNotEmpty($data, "Ping Response Data is Empty");
-        $this->assertInstanceOf("ArrayObject", $data, "Ping Response Data is Not an ArrayObject");
-        $this->assertArrayHasKey("result", $data->getArrayCopy(), "Ping Result is Missing");
-        $this->assertNotEmpty($data->result, "Ping Result is not True");
+        $this->assertIsArray($data, "Ping Response Data is Not an Array");
+        $this->assertArrayHasKey("result", $data, "Ping Result is Missing");
+        $this->assertNotEmpty($data["result"], "Ping Result is not True");
     }
 }

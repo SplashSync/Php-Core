@@ -22,8 +22,6 @@ use Splash\Models\CommunicationInterface;
 
 /**
  * Communication Interface Class for NuSOAP Webservice
- *
- * @author      B. Paquier <contact@splashsync.com>
  */
 class NuSOAPInterface implements CommunicationInterface
 {
@@ -44,7 +42,7 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function buildClient($targetUrl, $httpUser = null, $httpPwd = null)
+    public function buildClient(string $targetUrl, ?string $httpUser = null, ?string $httpPwd = null): self
     {
         //====================================================================//
         // Include NuSOAP Classes
@@ -80,7 +78,7 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function call($service, $data)
+    public function call(string $service, array $data): ?string
     {
         //====================================================================//
         // Log Call Informations in debug buffer
@@ -119,7 +117,7 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function buildServer()
+    public function buildServer(): void
     {
         //====================================================================//
         // Include NuSOAP Classes
@@ -140,7 +138,7 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function handle()
+    public function handle(): void
     {
         if (isset($this->server)) {
             $this->server->service((string) file_get_contents('php://input'));
@@ -150,7 +148,7 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function fault($error)
+    public function fault(array $error): void
     {
         //====================================================================//
         // Detect If Any Response Message Exists.

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -49,21 +49,21 @@ class Dummy extends AbstractObject
      *
      * {@inheritdoc}
      */
-    protected static $NAME = "Dummy";
+    protected static string $name = "Dummy";
 
     /**
      * Object Description (Translated by Module)
      *
      * {@inheritdoc}
      */
-    protected static $DESCRIPTION = "Dolibarr Dummy Object";
+    protected static string $description = "Dolibarr Dummy Object";
 
     /**
      * Object Icon (FontAwesome or Glyph ico tag)
      *
      * {@inheritdoc}
      */
-    protected static $ICO = "fa fa-magic";
+    protected static $ico = "fa fa-magic";
 
     //====================================================================//
     // Object CRUD Methods
@@ -104,13 +104,11 @@ class Dummy extends AbstractObject
      *
      * @return false|string Object ID
      */
-    public function update(bool $needed)
+    public function update(bool $needed): ?string
     {
         if ($needed) {
             //====================================================================//
             // Update Object in Database
-            // $this->object->update();
-
             return $this->getObjectIdentifier();
         }
 
@@ -132,10 +130,10 @@ class Dummy extends AbstractObject
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentifier()
+    public function getObjectIdentifier(): ?string
     {
         if (!isset($this->object->id)) {
-            return false;
+            return null;
         }
 
         return (string) $this->object->id;
@@ -144,7 +142,7 @@ class Dummy extends AbstractObject
     /**
      * {@inheritdoc}
      */
-    public function objectsList($filter = null, $params = null)
+    public function objectsList(?string $filter = null, array $params = array()): array
     {
         return array(
             "meta" => array("total" => 0, "current" => 0)

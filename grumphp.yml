@@ -25,6 +25,7 @@ parameters:
     csfixer-config:     "Resources/phpcs/cs.%mode%.php"
     # Php Stan
     stan-config:        "./Resources/phpstan/phpstan.neon"
+#     stan-level:        8
 
     # For Building Splash Documentation
     doc-src:            '/Resources/docs'

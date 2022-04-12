@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,6 +15,7 @@
 
 namespace Splash\Models;
 
+use Exception;
 use Splash\Models\Widgets\WidgetInterface;
 
 /**
@@ -24,19 +25,21 @@ use Splash\Models\Widgets\WidgetInterface;
 interface WidgetsProviderInterface
 {
     /**
-     * @abstract   Build list of Available Widgets
+     * Build list of Available Widgets
      *
      * @return string[]
      */
-    public function widgets();
+    public function widgets(): array;
 
     /**
-     * @abstract   Get Specific Widgets Class
-     *             This function is a router for all local Widgets classes & functions
+     * Get Splash Widgets Class
+     * This function is a router for all local Widgets classes & functions
      *
-     * @params     string $WidgetType       Specify Widgets Type Name
+     * @param string $widgetType Specify Widgets Type Name
+     *
+     * @throws Exception
      *
      * @return WidgetInterface
      */
-    public function widget(string $widgetType);
+    public function widget(string $widgetType): WidgetInterface;
 }

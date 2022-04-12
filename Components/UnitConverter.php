@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -82,26 +82,26 @@ class UnitConverter
      *
      * @return float Weight Value in Target unit
      */
-    public static function convertWeight($weight, $toFactor)
+    public static function convertWeight(float $weight, float $toFactor): float
     {
         return self::convert($weight, self::MASS_KG, $toFactor);
     }
 
     /**
-     * Convert Weight form All Units to KiloGram
+     * Convert Weight from All Units to KiloGram
      *
      * @param float $weight     Weight Raw Value
      * @param float $fromFactor Source Unit Factor
      *
      * @return float Weight Value in Kilogram
      */
-    public static function normalizeWeight($weight, $fromFactor)
+    public static function normalizeWeight(float $weight, float $fromFactor): float
     {
         return self::convert($weight, $fromFactor, self::MASS_KG);
     }
 
     //====================================================================//
-    // LENGTH UNITS CONVERTION
+    // LENGTH UNITS CONVERSION
     //====================================================================//
 
     /**
@@ -112,7 +112,7 @@ class UnitConverter
      *
      * @return float Length Value in Target unit
      */
-    public static function convertLength($length, $toFactor)
+    public static function convertLength(float $length, float $toFactor): float
     {
         return self::convert($length, self::LENGTH_M, $toFactor);
     }
@@ -125,54 +125,54 @@ class UnitConverter
      *
      * @return float Length Value in Meter
      */
-    public static function normalizeLength($length, $fromFactor)
+    public static function normalizeLength(float $length, float $fromFactor): float
     {
         return self::convert($length, $fromFactor, self::LENGTH_M);
     }
 
     //====================================================================//
-    // SURFACE UNITS CONVERTION
+    // SURFACE UNITS CONVERSION
     //====================================================================//
 
     /**
-     * Convert Surface form Square Meter to Target Unit
+     * Convert Surface from Square Meter to Target Unit
      *
      * @param float $surface  Surface Value
      * @param float $toFactor Target Unit Factor
      *
      * @return float Surface Value in Target unit
      */
-    public static function convertSurface($surface, $toFactor)
+    public static function convertSurface(float $surface, float $toFactor): float
     {
         return self::convert($surface, self::AREA_M2, $toFactor);
     }
 
     /**
-     * Convert Surface form All Units to Square Meter
+     * Convert Surface from All Units to Square Meter
      *
      * @param float $surface    Surface Raw Value
      * @param float $fromFactor Source Unit Factor
      *
      * @return float Surface Value in Square Meter
      */
-    public static function normalizeSurface($surface, $fromFactor)
+    public static function normalizeSurface(float $surface, float $fromFactor): float
     {
         return self::convert($surface, $fromFactor, self::AREA_M2);
     }
 
     //====================================================================//
-    // VOLUME UNITS CONVERTION
+    // VOLUME UNITS CONVERSION
     //====================================================================//
 
     /**
-     * Convert Volume form Cube Meter to Target Unit
+     * Convert Volume from Cube Meter to Target Unit
      *
      * @param float $volume   Volume Value
      * @param float $toFactor Target Unit Factor
      *
      * @return float Volume Value in Target unit
      */
-    public static function convertVolume($volume, $toFactor)
+    public static function convertVolume(float $volume, float $toFactor): float
     {
         return self::convert($volume, self::VOLUME_M3, $toFactor);
     }
@@ -185,7 +185,7 @@ class UnitConverter
      *
      * @return float Volume Value in Cube Meter
      */
-    public static function normalizeVolume($volume, $fromFactor)
+    public static function normalizeVolume(float $volume, float $fromFactor): float
     {
         return self::convert($volume, $fromFactor, self::VOLUME_M3);
     }
@@ -203,7 +203,7 @@ class UnitConverter
      *
      * @return float
      */
-    private static function convert($value, $fromFactor, $toFactor)
+    private static function convert(float $value, float $fromFactor, float $toFactor): float
     {
         //====================================================================//
         // Convert Source to Base Unit then Apply Target Factor

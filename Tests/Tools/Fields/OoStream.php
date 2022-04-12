@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,8 +14,6 @@
  */
 
 namespace Splash\Tests\Tools\Fields;
-
-use ArrayObject;
 
 /**
  * File Field : Define Access to a Stream File
@@ -34,13 +32,15 @@ use ArrayObject;
  * // $data["file"]["ttl"]          =>      Time to Live (in Days)
  * //====================================================================//
  */
-class Oostream extends Oofile
+class OoStream extends OoFile
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
+    /**
+     * @var string
+     */
     const FORMAT = 'Stream';
 
     //==============================================================================
@@ -50,10 +50,11 @@ class Oostream extends Oofile
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         //====================================================================//
         // Create a Fake File
+        /** @var array $fakeFile */
         $fakeFile = parent::fake($settings);
         //====================================================================//
         // ADD TTL INFOS
@@ -63,16 +64,16 @@ class Oostream extends Oofile
     }
 
     /**
-     * @param array|ArrayObject $file
+     * @param array $file
      *
-     * @return string|true
+     * @return null|string
      */
-    protected static function validateContents($file)
+    protected static function validateContents(array $file): ?string
     {
         //====================================================================//
         // Execute Validation for File
         $result = parent::validateContents($file);
-        if (true !== $result) {
+        if (!$result) {
             return $result;
         }
         //====================================================================//
@@ -81,6 +82,6 @@ class Oostream extends Oofile
             return "Stream Field => 'ttl' is missing.";
         }
 
-        return true;
+        return null;
     }
 }

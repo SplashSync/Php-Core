@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,14 +18,16 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * Varchar Field : Basic text
  */
-class Oovarchar implements FieldInterface
+class OoVarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'Varchar';
+    /**
+     * @var string
+     */
+    const FORMAT = 'Varchar';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -34,13 +36,13 @@ class Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         if (!empty($data) && !is_string($data)) {
             return "Field Data is not a String.";
         }
 
-        return true;
+        return null;
     }
 
     //==============================================================================
@@ -50,7 +52,7 @@ class Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         //==============================================================================
         //      generate Random String
@@ -66,22 +68,27 @@ class Oovarchar implements FieldInterface
     }
 
     //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
+    //      DATA COMPARATOR (OPTIONAL)
     //==============================================================================
 
     /**
      * {@inheritdoc}
      */
-    public static function compare($source, $target, $settings)
+    public static function compare($source, $target, array $settings): bool
     {
         //====================================================================//
-        //  Both Texts Are Empty
+        //  Both Are Empty
         if (empty($source) && empty($target)) {
             return true;
         }
         //====================================================================//
+        //  Both Are Scalar
+        if (!is_scalar($source) || !is_scalar($target)) {
+            return false;
+        }
+        //====================================================================//
         //  Raw text Compare
-        return ($source === $target)?true:false;
+        return $source === $target;
     }
 
     /**

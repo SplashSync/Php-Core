@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,13 +18,10 @@ namespace   Splash\Components;
 use ArrayObject;
 use Exception;
 use SimpleXMLElement;
-use stdClass;
 use XMLWriter;
 
 /**
  * Xml Encoding & Decoding Functions Collector Class
- *
- * @author      B. Paquier <contact@splashsync.com>
  */
 class XmlManager
 {
@@ -33,7 +30,7 @@ class XmlManager
      *
      * @var string
      */
-    public $fault;
+    public string $fault;
 
     /**
      * XMLWriter Class
@@ -41,7 +38,7 @@ class XmlManager
      * @var XMLWriter
      * @static
      */
-    private static $xml;
+    private static XMLWriter $xml;
 
     /**
      * Class Constructor
@@ -63,19 +60,35 @@ class XmlManager
     /**
      * Method to convert Object into XML string
      *
-     * @param array|ArrayObject $obj
+     * @param ArrayObject $obj
      *
      * @return string
      */
-    public function objectToXml($obj): string
+    public function objectToXml(ArrayObject $obj): string
     {
         //====================================================================//
-        // Create Transmission Object
-        $tmp = new stdClass();
-        $tmp->SPLASH = $obj;
+        // Convert Object to XML Recursively
+        $this->objectToXmlCore(self::$xml, array("SPLASH" => $obj));
+        //====================================================================//
+        // Put End Element on Xml
+        self::$xml->endElement();
+        //====================================================================//
+        // Output Result
+        return self::$xml->outputMemory(true);
+    }
+
+    /**
+     * Method to convert Array into XML string
+     *
+     * @param array $input
+     *
+     * @return string
+     */
+    public function arrayToXml(array $input): string
+    {
         //====================================================================//
         // Convert Object to XML Recursively
-        $this->objectToXmlCore(self::$xml, $tmp);
+        $this->objectToXmlCore(self::$xml, array("SPLASH" => $input));
         //====================================================================//
         // Put End Element on Xml
         self::$xml->endElement();
@@ -89,13 +102,15 @@ class XmlManager
      *
      * @param string $xml
      *
-     * @return ArrayObject|false|string
+     * @return null|ArrayObject<string, ArrayObject|string>
      */
-    public function xmlToArrayObject(string $xml)
+    public function xmlToArrayObject(string $xml): ?ArrayObject
     {
         //====================================================================//
         // SimpleXMLElement Object to Array
-        return  self::simpleXmlToArrayObject($this->xmlToElements($xml));
+        $data = self::simpleXmlToArrayObject($this->xmlToElements($xml));
+
+        return ($data instanceof ArrayObject) ? $data : null;
     }
 
     /**
@@ -103,13 +118,15 @@ class XmlManager
      *
      * @param string $xml
      *
-     * @return array|false|string
+     * @return null|array<string, array|string>
      */
-    public function xmlToArray(string $xml)
+    public function xmlToArray(string $xml): ?array
     {
         //====================================================================//
         // SimpleXMLElement Object to Array
-        return self::simpleXmlToArray($this->xmlToElements($xml));
+        $data = self::simpleXmlToArray($this->xmlToElements($xml));
+
+        return is_array($data) ? $data : null;
     }
 
     //====================================================================//
@@ -121,9 +138,9 @@ class XmlManager
      *
      * @param string $xml
      *
-     * @return false|SimpleXMLElement
+     * @return null|SimpleXMLElement
      */
-    private function xmlToElements(string $xml)
+    private function xmlToElements(string $xml): ?SimpleXMLElement
     {
         //====================================================================//
         // Convert XML to Object Recursively
@@ -132,40 +149,25 @@ class XmlManager
         } catch (Exception $ex) {
             $this->fault = $ex->getMessage();
 
-            return false;
+            return null;
         }
 
-        return $result;
+        return $result ?: null;
     }
 
     /**
      * Recursive Method to Object  XML string
      *
      * @param XMLWriter $xml
-     * @param mixed     $object
+     * @param iterable  $object
      *
      * @return void
      */
-    private function objectToXmlCore(XMLWriter $xml, $object)
+    private function objectToXmlCore(XMLWriter $xml, iterable $object): void
     {
         //====================================================================//
         // Read each entities of an object
         foreach ($object as $key => $value) {
-            //====================================================================//
-            // Insert Object
-            //====================================================================//
-            if (is_object($value)) {
-                //====================================================================//
-                // Rename Numeric Keys
-                $key = self::keysFilter($key, 'object-');
-                //====================================================================//
-                // Recursive Add Of This Object
-                $xml->startElement($key);
-                $this->objectToXmlCore($xml, $value);
-                $xml->endElement();
-
-                continue;
-            }
             //====================================================================//
             // Insert Array
             //====================================================================//
@@ -177,10 +179,25 @@ class XmlManager
                 // Safety Check
                 if (true != $xml->startElement($key)) {
                     $this->fault = "Xml Parser - Wrong StartElement Key "
-                            .": ".print_r($key, true)." Value : ".print_r($value, true);
+                        .": ".print_r($key, true)." Value : ".print_r($value, true);
                 }
                 //====================================================================//
                 // Recursive Add Of This Array
+                $this->objectToXmlCore($xml, $value);
+                $xml->endElement();
+
+                continue;
+            }
+            //====================================================================//
+            // Insert Iterable Object
+            //====================================================================//
+            if (is_iterable($value)) {
+                //====================================================================//
+                // Rename Numeric Keys
+                $key = self::keysFilter($key, 'object-');
+                //====================================================================//
+                // Recursive Add Of This Object
+                $xml->startElement($key);
                 $this->objectToXmlCore($xml, $value);
                 $xml->endElement();
 
@@ -225,7 +242,7 @@ class XmlManager
      * @param string $key
      * @param string $prefix
      *
-     * @return string $result
+     * @return string
      */
     private static function keysFilter(string $key, string $prefix): string
     {
@@ -240,16 +257,16 @@ class XmlManager
     /**
      * Convert a SimpleXML object to an Array
      *
-     * @param false|SimpleXMLElement $element
+     * @param null|SimpleXMLElement $element
      *
-     * @return array|false|string
+     * @return null|array<string, array|string>|string
      */
-    private static function simpleXmlToArray($element)
+    private static function simpleXmlToArray(?SimpleXMLElement $element)
     {
         //====================================================================//
         // Safety Check
-        if (false === $element) {
-            return false;
+        if (null === $element) {
+            return null;
         }
         //====================================================================//
         // Init Result
@@ -276,9 +293,9 @@ class XmlManager
             //====================================================================//
             // Convert Single Element to Array Element
             if (!is_array($result[$elementName])) {
-                $singleElement = $result[$elementName];       // Store Firts Element
-                $result[$elementName] = array();                    // Create New Array
-                $result[$elementName][] = $singleElement;             // Append To Array
+                $singleElement = $result[$elementName];         // Store First Element
+                $result[$elementName] = array();                // Create New Array
+                $result[$elementName][] = $singleElement;       // Append To Array
             }
             //====================================================================//
             // Append Array Element
@@ -287,7 +304,7 @@ class XmlManager
         //====================================================================//
         // Return Single Element
         if (!$isArrayElement && '' == $children->getName()) {
-            $result = base64_decode((string) $element, true);
+            $result = (string) base64_decode((string) $element, true);
         }
 
         return $result;
@@ -296,16 +313,16 @@ class XmlManager
     /**
      * Convert a SimpleXML object to an ArrayObject
      *
-     * @param false|SimpleXMLElement $element
+     * @param null|SimpleXMLElement $element
      *
-     * @return ArrayObject|false|string
+     * @return null|ArrayObject<string, ArrayObject|string>|string
      */
-    private static function simpleXmlToArrayObject($element)
+    private static function simpleXmlToArrayObject(?SimpleXMLElement $element)
     {
         //====================================================================//
         // Safety Check
-        if (false === $element) {
-            return false;
+        if (null === $element) {
+            return null;
         }
         //====================================================================//
         // Init Result
@@ -323,7 +340,7 @@ class XmlManager
             //====================================================================//
             // If Element Doesn't Already Exists => Store as Single Element
             if (!isset($result[$elementName])) {
-                $result[$elementName] = self::simpleXmlToArrayObject($node);
+                $result->{$elementName} = self::simpleXmlToArrayObject($node);
 
                 continue;
             }
@@ -333,8 +350,8 @@ class XmlManager
             // Convert Single Element to Array Element
             if (!is_array($result[$elementName])) {
                 $singleElement = $result[$elementName];       // Store First Element
-                $result[$elementName] = array();                    // Create New Array
-                $result[$elementName][] = $singleElement;             // Append To Array
+                $result[$elementName] = array();              // Create New Array
+                $result[$elementName][] = $singleElement;     // Append To Array
             }
             //====================================================================//
             // Append Array Element
@@ -343,7 +360,7 @@ class XmlManager
         //====================================================================//
         // Return Single Element
         if (!$isArrayElement && '' == $children->getName()) {
-            $result = base64_decode((string) $element, true);
+            $result = (string) base64_decode((string) $element, true);
         }
 
         return $result;

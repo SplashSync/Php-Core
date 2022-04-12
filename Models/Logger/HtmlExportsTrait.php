@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,6 @@
  */
 
 namespace Splash\Models\Logger;
-
-use ArrayObject;
-use Countable;
 
 /**
  * Splash Logger - Html Exports Managment
@@ -30,7 +27,7 @@ trait HtmlExportsTrait
      *
      * @return string
      */
-    public function getHtmlLog($clean = false)
+    public function getHtmlLog(bool $clean = false): string
     {
         $html = null;
         //====================================================================//
@@ -40,7 +37,7 @@ trait HtmlExportsTrait
         $html .= $this->getHtml($this->msg, 'Messages', '#006600');
         $html .= $this->getHtml($this->deb, 'Debug', '#003399');
         //====================================================================//
-        // Clear Log Buffer If Requiered
+        // Clear Log Buffer If Required
         if ($clean) {
             $this->cleanLog();
         }
@@ -51,12 +48,12 @@ trait HtmlExportsTrait
     /**
      * Return WebServer Log Item in Html Checklist format
      *
-     * @param string $message Log message
-     * @param string $type    Message Type
+     * @param string      $message Log message
+     * @param null|string $type    Message Type
      *
      * @return string
      */
-    public function getHtmlListItem($message, $type = null)
+    public function getHtmlListItem(string $message, string $type = null): string
     {
         switch ($type) {
             case 'Error':
@@ -86,7 +83,7 @@ trait HtmlExportsTrait
      *
      * @return string
      */
-    public function getHtmlLogList($clean = false)
+    public function getHtmlLogList(bool $clean = false): string
     {
         $html = null;
         //====================================================================//
@@ -96,7 +93,7 @@ trait HtmlExportsTrait
         $html .= $this->getHtmlList($this->msg, 'Message');
         $html .= $this->getHtmlList($this->deb, 'Debug');
         //====================================================================//
-        // Clear Log Buffer If Requiered
+        // Clear Log Buffer If Required
         if ($clean) {
             $this->cleanLog();
         }
@@ -107,17 +104,17 @@ trait HtmlExportsTrait
     /**
      * Return All WebServer current Log WebServer in Html format
      *
-     * @param null|array|ArrayObject $msgArray
-     * @param string                 $title
-     * @param string                 $color
+     * @param null|array $msgArray
+     * @param string     $title
+     * @param string     $color
      *
      * @return string
      */
-    public function getHtml($msgArray, $title = '', $color = '#000000')
+    public function getHtml(?array $msgArray, string $title = '', string $color = '#000000'): string
     {
         $html = '<font color="'.$color.'">';
 
-        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
+        if (!empty($msgArray)) {
             //====================================================================//
             // Prepare Title as Bold
             if ($title) {
@@ -136,15 +133,15 @@ trait HtmlExportsTrait
     /**
      * Return All WebServer current Log WebServer in Html Checklist format
      *
-     * @param null|array|ArrayObject $msgArray
-     * @param string                 $type
+     * @param null|array $msgArray
+     * @param string     $type
      *
      * @return null|string
      */
-    private function getHtmlList($msgArray, $type)
+    private function getHtmlList(?array $msgArray, string $type): ?string
     {
         $html = null;
-        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
+        if (!empty($msgArray)) {
             //====================================================================//
             // Add Messages
             foreach ($msgArray as $message) {

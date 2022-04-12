@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,21 +15,23 @@
 
 namespace Splash\Tests\Tools\Fields;
 
-use Splash\Models\Helpers\InlineHelper;
-
 /**
- * Inline Field : Inline Simple Json List
+ * Country Field : ISO Country Code (ISO 3166-1 alpha-2)
  *
- * @example     ["tag1", "tag2", "tag3"]
+ * @example     US, FR, DE
+ *
+ * @see         ISO 3166 : http://www.iso.org/iso/home/standards/country_codes.htm
  */
-class Ooinline extends Oovarchar implements FieldInterface
+class OoCountry extends OoVarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'Inline';
+    /**
+     * @var string
+     */
+    const FORMAT = 'Country';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -38,13 +40,13 @@ class Ooinline extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
 
-        return true;
+        return null;
     }
 
     //==============================================================================
@@ -54,14 +56,8 @@ class Ooinline extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
-        $fakeData = array();
-        $max = (int) rand(2, 6);
-        for ($i = 0; $i < $max; $i++) {
-            $fakeData[] = Oovarchar::fake($settings);
-        }
-
-        return InlineHelper::fromArray($fakeData);
+        return (mt_rand() % 2)?"FR":"US";
     }
 }

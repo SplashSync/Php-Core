@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,17 +33,17 @@ class ObjectsHelper
      * @param string $objectType Object Type Name.
      * @param string $objectId   Object Identifier
      *
-     * @return false|string
+     * @return null|string
      */
-    public static function encode($objectType, $objectId)
+    public static function encode(string $objectType, string $objectId): ?string
     {
         //====================================================================//
         // Safety Checks
         if (empty($objectType)) {
-            return false;
+            return null;
         }
         if (empty($objectId)) {
-            return false;
+            return null;
         }
 
         //====================================================================//
@@ -56,14 +56,15 @@ class ObjectsHelper
      *
      * @param string $objectId Object Identifier String.
      *
-     * @return false|string
+     * @return null|string
+     *
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
-    public static function id($objectId)
+    public static function id(string $objectId): ?string
     {
         //====================================================================//
         // Forward to Fields Manager
-        return   self::objectId($objectId);
+        return self::objectId($objectId);
     }
 
     /**
@@ -71,9 +72,9 @@ class ObjectsHelper
      *
      * @param string $objectId Object Identifier String.
      *
-     * @return false|string
+     * @return null|string
      */
-    public static function type($objectId)
+    public static function type(string $objectId): ?string
     {
         //====================================================================//
         // Forward to Fields Manager
@@ -83,12 +84,12 @@ class ObjectsHelper
     /**
      * Load a Target Remote Object using Splash Object Field Data
      *
-     * @param string     $fieldData   Object Identifier String.
-     * @param null|mixed $objectClass
+     * @param string            $fieldData   Object Identifier String.
+     * @param null|class-string $objectClass
      *
      * @return null|AbstractObject
      */
-    public static function load($fieldData, $objectClass = null)
+    public static function load(string $fieldData, string $objectClass = null): ?AbstractObject
     {
         //====================================================================//
         // Decode Object Type & Id
@@ -99,8 +100,9 @@ class ObjectsHelper
         }
         //====================================================================//
         // Load Splash Object
-        $splashObject = Splash::object($objectType);
-        if (empty($splashObject)) {
+        try {
+            $splashObject = Splash::object($objectType);
+        } catch (\Exception $e) {
             return null;
         }
         //====================================================================//

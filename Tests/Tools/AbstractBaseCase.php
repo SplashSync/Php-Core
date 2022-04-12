@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -47,17 +47,21 @@ abstract class AbstractBaseCase extends TestCase
      *
      * @return bool
      */
-    public static function isAllowedSequence($sequenceName)
+    public static function isAllowedSequence(string $sequenceName): bool
     {
+        static $allowed;
+
         //====================================================================//
         //   Filter Tested Sequence Name  =>> Skip
-        if (defined("SPLASH_SEQUENCE") && is_string(SPLASH_SEQUENCE) && !empty(explode(",", SPLASH_SEQUENCE))) {
-            if (!in_array($sequenceName, explode(",", SPLASH_SEQUENCE), true)) {
-                return false;
+        if (!isset($allowed)) {
+            if (defined("SPLASH_SEQUENCE") && is_string(SPLASH_SEQUENCE)) {
+                $allowed = (array) explode(",", SPLASH_SEQUENCE);
+            } else {
+                $allowed = array();
             }
         }
 
-        return true;
+        return (count($allowed) && !in_array($sequenceName, $allowed, true));
     }
 
     /**
@@ -73,14 +77,15 @@ abstract class AbstractBaseCase extends TestCase
     {
         //====================================================================//
         //   Filter Tested Object Types  =>> Skip
-        if (defined("SPLASH_TYPES") && is_string(SPLASH_TYPES) && !empty(explode(",", SPLASH_TYPES))) {
-            if (!in_array($objectType, explode(",", SPLASH_TYPES), true)) {
+        if (defined("SPLASH_TYPES") && is_string(SPLASH_TYPES)) {
+            $allowed = (array) explode(",", SPLASH_TYPES);
+            if (count($allowed) && !in_array($objectType, $allowed, true)) {
                 return false;
             }
         }
         //====================================================================//
         //   If Object Type Is Disabled Type  =>> Skip
-        if (Splash::object($objectType)->getIsDisabled()) {
+        if (Splash::object($objectType)->isDisabled()) {
             return false;
         }
 
@@ -96,15 +101,19 @@ abstract class AbstractBaseCase extends TestCase
      */
     public static function isAllowedObjectField(string $identifier): bool
     {
+        static $allowed;
+
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
-        if (defined("SPLASH_FIELDS") && is_string(SPLASH_FIELDS) && !empty(explode(",", SPLASH_FIELDS))) {
-            if (!in_array($identifier, explode(",", SPLASH_FIELDS), true)) {
-                return false;
+        if (!isset($allowed)) {
+            if (defined("SPLASH_FIELDS") && is_string(SPLASH_FIELDS)) {
+                $allowed = (array) explode(",", SPLASH_FIELDS);
+            } else {
+                $allowed = array();
             }
         }
 
-        return true;
+        return (count($allowed) && !in_array($identifier, $allowed, true));
     }
 
     /**
@@ -154,49 +163,50 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Verify Response Is Valid
      *
-     * @param string           $response WebService Raw Response Block
-     * @param null|ArrayObject $config   WebService Request Configuration
+     * @param null|string $response WebService Raw Response Block
+     * @param null|array  $config   WebService Request Configuration
      *
-     * @return ArrayObject
+     * @return array
      */
-    public function checkResponse(string $response, ArrayObject $config = null): ArrayObject
+    public function checkResponse(?string $response, array $config = null): array
     {
         //====================================================================//
         // RESPONSE BLOCK IS NOT EMPTY
         $this->assertNotEmpty($response, "Response Block is Empty");
+        $this->assertIsString($response, "Response Block is Null");
         //====================================================================//
         // DECODE BLOCK
         $data = Splash::ws()->unPack($response);
         //====================================================================//
         // CHECK RESPONSE DATA
         $this->assertNotEmpty($data, "Response Data is Empty or Malformed");
-        $this->assertInstanceOf("ArrayObject", $data, "Response Data is Not an ArrayObject");
-        $this->assertArrayHasKey("result", $data->getArrayCopy(), "Request Result is Missing");
+        $this->assertIsArray($data, "Response Data is Not an Array");
+        $this->assertArrayHasKey("result", $data, "Request Result is Missing");
 
         //====================================================================//
         // CHECK RESPONSE LOG
-        if (isset($data->log)) {
-            $this->checkResponseLog($data->log, $config);
+        if (isset($data['log'])) {
+            $this->checkResponseLog($data['log'], $config);
         }
 
         //====================================================================//
         // CHECK RESPONSE SERVER INFOS
-        if (isset($data->server)) {
-            $this->checkResponseServer($data->server);
+        if (isset($data['server'])) {
+            $this->checkResponseServer($data['server']);
         }
 
         //====================================================================//
         // CHECK RESPONSE TASKS RESULTS
-        if (isset($data->tasks)) {
-            $this->checkResponseTasks($data->tasks, $config);
+        if (isset($data['tasks'])) {
+            $this->checkResponseTasks($data['tasks'], $config);
         }
 
         //====================================================================//
         // CHECK RESPONSE RESULT
-        if (empty($data->result)) {
+        if (empty($data['result'])) {
             print_r($data);
         }
-        $this->assertNotEmpty($data->result, "Request Result is not True, Why??");
+        $this->assertNotEmpty($data['result'], "Request Result is not True, Why??");
 
         return $data;
     }
@@ -204,16 +214,16 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Verify Response Log Is Valid
      *
-     * @param ArrayObject      $logs   WebService Log Array
-     * @param null|ArrayObject $config WebService Request Configuration
+     * @param array      $logs   WebService Log Array
+     * @param null|array $config WebService Request Configuration
      *
      * @return void
      */
-    public function checkResponseLog(ArrayObject $logs, ArrayObject $config = null): void
+    public function checkResponseLog(array $logs, array $config = null): void
     {
         //====================================================================//
         // SERVER LOG ARRAY FORMAT
-        $this->assertInstanceOf("ArrayObject", $logs, "Response Log is Not an ArrayObject");
+        $this->assertIsArray($logs, "Response Log is Not an Array");
 
         //====================================================================//
         // SERVER LOGS MESSAGES FORMAT
@@ -224,7 +234,7 @@ abstract class AbstractBaseCase extends TestCase
 
         //====================================================================//
         // UNEXPECTED SERVER LOG ITEMS
-        foreach (array_keys($logs->getArrayCopy()) as $key) {
+        foreach (array_keys($logs) as $key) {
             $this->assertTrue(
                 in_array($key, array("err", "msg", "war", "deb"), true),
                 "Received Unexpected Log Messages. ( Data->log->".$key.")"
@@ -233,16 +243,16 @@ abstract class AbstractBaseCase extends TestCase
 
         //====================================================================//
         // SERVER LOG With Silent Option Activated
-        if (($config instanceof ArrayObject) && isset($config->silent)) {
-            $this->assertEmpty($logs->war, "Requested Silent operation but Received Warnings, Why??");
-            $this->assertEmpty($logs->msg, "Requested Silent operation but Received Messages, Why??");
-            $this->assertEmpty($logs->deb, "Requested Silent operation but Received Debug Traces, Why??");
+        if ($config && isset($config['silent'])) {
+            $this->assertEmpty($logs['war'], "Requested Silent operation but Received Warnings, Why??");
+            $this->assertEmpty($logs['msg'], "Requested Silent operation but Received Messages, Why??");
+            $this->assertEmpty($logs['deb'], "Requested Silent operation but Received Debug Traces, Why??");
         }
 
         //====================================================================//
         // SERVER LOG Without Debug Option Activated
-        if (($config instanceof ArrayObject) && !isset($config->debug)) {
-            $this->assertEmpty($logs->deb, "Requested Non Debug operation but Received Debug Traces, Why??");
+        if ($config && !isset($config['debug'])) {
+            $this->assertEmpty($logs['deb'], "Requested Non Debug operation but Received Debug Traces, Why??");
         }
 
         //====================================================================//
@@ -253,22 +263,19 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Verify Response Log Is Valid
      *
-     * @param ArrayObject $logs WebService Log Array
-     * @param string      $type Log Key
-     * @param string      $name Log Type Name
+     * @param array  $logs WebService Log Array
+     * @param string $type Log Key
+     * @param string $name Log Type Name
      *
      * @return void
      */
-    public function checkResponseLogArray(ArrayObject $logs, string $type, string $name)
+    public function checkResponseLogArray(array $logs, string $type, string $name)
     {
-        if (!isset($logs->{$type}) || empty($logs->{$type})) {
+        if (!isset($logs[$type])) {
             return;
         }
-
-        //====================================================================//
-        // SERVER LOG FORMAT
-        $this->assertInstanceOf("ArrayObject", $logs->{$type}, "Logger ".$name." List is Not an ArrayObject");
-        foreach ($logs->{$type} as $message) {
+        $this->assertIsArray($logs[$type], "Logger ".$name." List is Not an Array");
+        foreach ($logs[$type] as $message) {
             $this->assertTrue(
                 (is_scalar($message) || is_null($message)),
                 $name." is Not a string. (".print_r($message, true).")"
@@ -279,15 +286,14 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Verify Response Server Infos Are Valid
      *
-     * @param ArrayObject $server WebService Server Infos Array
+     * @param array $server WebService Server Infos Array
      *
      * @return void
      */
-    public function checkResponseServer(ArrayObject $server)
+    public function checkResponseServer(array $server)
     {
         //====================================================================//
         // SERVER Informations  => Available
-        $server = $server->getArrayCopy();
         $this->assertArrayHasKey("ServerHost", $server, "Server Info (ServerHost) is Missing");
         $this->assertArrayHasKey("ServerPath", $server, "Server Info (ServerPath) is Missing");
         $this->assertArrayHasKey("ServerType", $server, "Server Info (ServerType) is Missing");
@@ -305,16 +311,16 @@ abstract class AbstractBaseCase extends TestCase
     /**
      * Verify Response Tasks Results are Valid
      *
-     * @param ArrayObject      $tasks  WebService Server Tasks Results Array
-     * @param null|ArrayObject $config WebService Request Configuration
+     * @param array      $tasks  WebService Server Tasks Results Array
+     * @param null|array $config WebService Request Configuration
      *
      * @return void
      */
-    public function checkResponseTasks(ArrayObject $tasks, ArrayObject $config = null)
+    public function checkResponseTasks(array $tasks, array $config = null)
     {
         //====================================================================//
         // TASKS RESULTS ARRAY FORMAT
-        $this->assertInstanceOf("ArrayObject", $tasks, "Response Tasks Result is Not an ArrayObject");
+        $this->assertIsArray($tasks, "Response Tasks Result is Not an Array");
 
         foreach ($tasks as $task) {
             //====================================================================//
@@ -333,7 +339,7 @@ abstract class AbstractBaseCase extends TestCase
 
             //====================================================================//
             // TASKS Delay Data
-            if (($config instanceof ArrayObject) && !isset($config->trace)) {
+            if ($config && !isset($config['trace'])) {
                 $this->assertArrayHasKey("delayms", $task, "Task Results => Trace requested but DelayMs is Missing");
                 $this->assertArrayHasKey("delaystr", $task, "Task Results => Trace requested but DelayStr is Missing");
                 $this->assertNotEmpty($task["delayms"], "Task Results => Trace requested but DelayMs is Empty");
@@ -401,12 +407,6 @@ abstract class AbstractBaseCase extends TestCase
         $localTestSettings = Splash::local()->testParameters();
 
         //====================================================================//
-        // Validate Local Parameters
-        if (!Splash::validate()->isValidLocalTestParameterArray($localTestSettings)) {
-            return;
-        }
-
-        //====================================================================//
         // Import Local Parameters
         foreach ($localTestSettings as $key => $value) {
             $this->settings[$key] = $value;
@@ -446,14 +446,14 @@ abstract class AbstractBaseCase extends TestCase
      * @param string $description Task Description
      * @param array  $parameters  Task Parameters
      *
-     * @return ArrayObject|bool|string
+     * @return array<string, null|array<string, null|array|scalar>|scalar>
      */
     protected function genericAction(
         string $service,
         string $action,
         string $description,
         array $parameters = array(true)
-    ) {
+    ): array {
         //====================================================================//
         //   Prepare Request Data
         Splash::ws()->addTask($action, $parameters, $description);
@@ -465,16 +465,51 @@ abstract class AbstractBaseCase extends TestCase
         $data = $this->checkResponse((string) $response);
         //====================================================================//
         //   Extract Task Result
-        if (is_a($data->tasks, "ArrayObject")) {
-            $data->tasks = $data->tasks->getArrayCopy();
-        }
-        $task = array_shift($data->tasks);
-
+        $task = array_shift($data['tasks']);
+        $this->assertArrayHasKey("data", $task);
+        $this->assertIsArray($task["data"]);
         //====================================================================//
         //   Turn On Output Buffering Again
         ob_start();
 
         return $task["data"];
+    }
+
+    /**
+     * Perform Generic Server Side Action
+     *
+     * @param string $service     Webservice Service Name
+     * @param string $action      Webservice Action Name
+     * @param string $description Task Description
+     * @param array  $parameters  Task Parameters
+     *
+     * @return string
+     */
+    protected function genericStringAction(
+        string $service,
+        string $action,
+        string $description,
+        array $parameters = array(true)
+    ): string {
+        //====================================================================//
+        //   Prepare Request Data
+        Splash::ws()->addTask($action, $parameters, $description);
+        //====================================================================//
+        //   Execute Action From Splash Server to Module
+        $response = Splash::ws()->simulate($service);
+        //====================================================================//
+        //   Check Response
+        $data = $this->checkResponse((string) $response);
+        //====================================================================//
+        //   Extract Task Result
+        $task = array_shift($data['tasks']);
+        $this->assertArrayHasKey("data", $task);
+        $this->assertIsScalar($task["data"]);
+        //====================================================================//
+        //   Turn On Output Buffering Again
+        ob_start();
+
+        return (string) $task["data"];
     }
 
     /**
@@ -512,7 +547,7 @@ abstract class AbstractBaseCase extends TestCase
             if (!$task) {
                 continue;
             }
-            $results[] = ($task instanceof ArrayObject) ? $task->getArrayCopy() : $task;
+            $results[] = $task;
         } while (!empty($task));
 
         //====================================================================//
@@ -530,14 +565,14 @@ abstract class AbstractBaseCase extends TestCase
      * @param string $description Task Description
      * @param array  $parameters  Task Parameters
      *
-     * @return ArrayObject|bool|string
+     * @return null|array
      */
     protected function genericErrorAction(
         string $service,
         string $action,
         string $description,
         array $parameters = array(true)
-    ) {
+    ): ?array {
         //====================================================================//
         //   Prepare Request Data
         Splash::ws()->addTask($action, $parameters, $description);
@@ -553,17 +588,12 @@ abstract class AbstractBaseCase extends TestCase
         //====================================================================//
         // CHECK RESPONSE DATA
         $this->assertNotEmpty($data, "Response Data is Empty or Malformed");
-        $this->assertInstanceOf("ArrayObject", $data, "Response Data is Not an ArrayObject");
-        $this->assertArrayHasKey("result", $data->getArrayCopy(), "Request Result is Missing");
-        $this->assertEmpty($data->result, "Expect Errors but Request Result is True, Why??");
-
+        $this->assertIsArray($data, "Response Data is Not an Array");
+        $this->assertArrayHasKey("result", $data, "Request Result is Missing");
+        $this->assertEmpty($data['result'], "Expect Errors but Request Result is True, Why??");
         //====================================================================//
         //   Extract Task Result
-        if (is_a($data->tasks, "ArrayObject")) {
-            $data->tasks = $data->tasks->getArrayCopy();
-        }
-        $task = array_shift($data->tasks);
-
+        $task = array_shift($data['tasks']);
         //====================================================================//
         //   Turn On Output Buffering Again
         ob_start();
@@ -579,32 +609,35 @@ abstract class AbstractBaseCase extends TestCase
      * @param string $description Task Description
      * @param array  $parameters  Task Parameters
      *
-     * @return ArrayObject|bool|string
+     * @return null|array
      */
     protected function genericFastAction(
         string $service,
         string $action,
         string $description,
         array $parameters = array(true)
-    ) {
+    ): ?array {
         //====================================================================//
         //   Prepare Request Data
         Splash::ws()->addTask($action, $parameters, $description);
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $response = Splash::ws()->simulate($service);
-        if (false === $response) {
-            return false;
+        if (null === $response) {
+            return null;
         }
         //====================================================================//
         // DECODE BLOCK
         $data = Splash::ws()->unPack($response);
         //====================================================================//
+        // CHECK RESPONSE DATA
+        $this->assertNotEmpty($data, "Response Data is Empty or Malformed");
+        $this->assertIsArray($data, "Response Data is Not an Array");
+        $this->assertArrayHasKey("result", $data, "Request Result is Missing");
+        $this->assertEmpty($data['result'], "Expect Errors but Request Result is True, Why??");
+        //====================================================================//
         //   Extract Task Result
-        if (is_a($data->tasks, "ArrayObject")) {
-            $data->tasks = $data->tasks->getArrayCopy();
-        }
-        $task = array_shift($data->tasks);
+        $task = array_shift($data['tasks']);
         //====================================================================//
         //   Turn On Output Buffering Again
         ob_start();

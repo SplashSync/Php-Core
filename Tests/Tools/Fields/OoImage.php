@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +18,7 @@ namespace Splash\Tests\Tools\Fields;
 use ArrayObject;
 
 /**
- * Image Field : Define acces to an Image File
+ * Image Field : Define access to an Image File
  *
  * @example
  *
@@ -37,13 +37,15 @@ use ArrayObject;
  * // $data["image"]["size"]           =>      Image File Size
  * //====================================================================//
  */
-class Ooimage implements FieldInterface
+class OoImage implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
+    /**
+     * @var string
+     */
     const FORMAT = 'Image';
 
     //==============================================================================
@@ -53,16 +55,16 @@ class Ooimage implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //====================================================================//
         //      Verify Data is NOT Empty
         if (empty($data)) {
-            return true;
+            return null;
         }
         //====================================================================//
         //      Verify Data is an Array
-        if (!is_array($data) && !($data instanceof ArrayObject)) {
+        if (!is_array($data)) {
             return "Field Data is not an Array.";
         }
         //====================================================================//
@@ -71,7 +73,7 @@ class Ooimage implements FieldInterface
             return self::validateContents($data);
         }
 
-        return true;
+        return null;
     }
 
     //==============================================================================
@@ -81,7 +83,7 @@ class Ooimage implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         //====================================================================//
         // Image Faker Parameters
@@ -127,29 +129,26 @@ class Ooimage implements FieldInterface
     }
 
     //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
+    //      DATA COMPARATOR (OPTIONAL)
     //==============================================================================
 
     /**
      * {@inheritdoc}
      */
-    public static function compare($source, $target, $settings)
+    public static function compare($source, $target, array $settings): bool
     {
         //====================================================================//
         // Smart Validate Arrays
-        if (!is_array($source) && !is_a($source, 'ArrayObject')) {
-            return false;
-        }
-        if (!is_array($target) && !is_a($target, 'ArrayObject')) {
+        if (!is_array($source) || !is_array($target)) {
             return false;
         }
         //====================================================================//
         // Compare File CheckSum
-        if (!Oofile::compareMd5($source, $target)) {
+        if (!OoFile::compareMd5($source, $target)) {
             //====================================================================//
             // Check if Image is Marked as Potentially Resized
-            if (!isset($target['resized']) || empty($target['resized'])) {
-                return Oofile::compareMd5($source, $target);
+            if (empty($target['resized'])) {
+                return OoFile::compareMd5($source, $target);
             }
             //====================================================================//
             // Compare Image Dims
@@ -192,11 +191,11 @@ class Ooimage implements FieldInterface
     }
 
     /**
-     * @param array|ArrayObject $image
+     * @param array $image
      *
-     * @return string|true
+     * @return null|string
      */
-    private static function validateContents($image)
+    private static function validateContents(array $image): ?string
     {
         if (!isset($image["name"])) {
             return "Image Field => 'name' is missing.";
@@ -220,6 +219,6 @@ class Ooimage implements FieldInterface
             return "Image Field => 'size' is missing.";
         }
 
-        return true;
+        return null;
     }
 }

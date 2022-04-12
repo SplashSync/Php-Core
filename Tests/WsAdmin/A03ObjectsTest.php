@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,15 +15,12 @@
 
 namespace Splash\Tests\WsAdmin;
 
-use ArrayObject;
 use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
  * Admin Test Suite - Get Objects List Client Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class A03ObjectsTest extends AbstractBaseCase
 {
@@ -38,20 +35,14 @@ class A03ObjectsTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testObjectsFromClass(string $testSequence)
+    public function testObjectsFromClass(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Execute Action From Module
         $data = Splash::objects();
-        //====================================================================//
-        //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($data)) {
-            $data = new \ArrayObject($data);
-        }
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
@@ -68,7 +59,7 @@ class A03ObjectsTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testObjectsFromAdminService(string $testSequence)
+    public function testObjectsFromAdminService(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -92,7 +83,7 @@ class A03ObjectsTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testObjectsFromObjectsService(string $testSequence)
+    public function testObjectsFromObjectsService(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -108,16 +99,16 @@ class A03ObjectsTest extends AbstractBaseCase
     /**
      * Verify Client Response.
      *
-     * @param ArrayObject|bool|string $data
+     * @param array $data
      *
      * @return void
      */
-    private function verifyResponse($data)
+    private function verifyResponse(array $data): void
     {
         //====================================================================//
         //   Verify Response
         $this->assertNotEmpty($data, "Objects List is Empty");
-        $this->assertInstanceOf("ArrayObject", $data, "Objects List is Not an ArrayObject");
+        $this->assertIsArray($data, "Objects List is Not an Array");
         //====================================================================//
         // CHECK ITEMS
         foreach ($data as $objectType) {

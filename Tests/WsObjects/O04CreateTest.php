@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +15,6 @@
 
 namespace Splash\Tests\WsObjects;
 
-use ArrayObject;
 use Exception;
 use Splash\Client\Splash;
 use Splash\Components\CommitsManager;
@@ -23,8 +22,6 @@ use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * Objects Test Suite - Object create Verification Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class O04CreateTest extends ObjectsCase
 {
@@ -49,7 +46,7 @@ class O04CreateTest extends ObjectsCase
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
-        if (false == $dummyData) {
+        if (!$dummyData) {
             return;
         }
 
@@ -179,8 +176,8 @@ class O04CreateTest extends ObjectsCase
     /**
      * Verify Create Object Response
      *
-     * @param string                      $objectType
-     * @param ArrayObject|bool|int|string $objectId
+     * @param string $objectType
+     * @param mixed  $objectId
      *
      * @return void
      */
@@ -189,19 +186,10 @@ class O04CreateTest extends ObjectsCase
         //====================================================================//
         //   Verify Object Id Is Not Empty
         $this->assertNotEmpty($objectId, 'Returned New Object Id is Empty');
-        $this->assertIsScalar($objectId, 'Returned New Object Id is not a Scalar');
-
+        $this->assertIsString($objectId, 'Returned New Object Id is not a String');
         //====================================================================//
         //   Add Object Id to Created List
         $this->addTestedObject($objectType, (string) $objectId);
-
-        //====================================================================//
-        //   Verify Object Id Is in Right Format
-        $this->assertTrue(
-            is_integer($objectId) || is_string($objectId),
-            'New Object Id is not an Integer or a Strings'
-        );
-
         //====================================================================//
         //   Verify Object Change Was Committed
         $this->assertIsLastCommitted(SPL_A_CREATE, $objectType, (string) $objectId);

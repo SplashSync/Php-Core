@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,27 +15,26 @@
 
 namespace   Splash\Components;
 
-use ArrayObject;
 use Exception;
 use Splash\Core\SplashCore      as Splash;
+use Splash\Models\Logger as Traits;
 use Throwable;
 
 /**
  * Requests Log & Debug Management Class
  *
- * This is the Core Logger Conponent for all Splash Modules.
+ * This is the Core Logger Component for all Splash Modules.
  * It aims to store any kind of logs during normal & server request operations.
  *
- * This is the only & generic way for Splash to retreive Modules Logs
+ * This is the only & generic way for Splash to retrieve Modules Logs
  *
- * @author      SplashSync <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Logger
 {
-    use \Splash\Models\Logger\HtmlExportsTrait;
-    use \Splash\Models\Logger\ConsoleExporterTrait;
-    use \Splash\Models\Logger\FileExporterTrait;
+    use Traits\HtmlExportsTrait;
+    use Traits\ConsoleExporterTrait;
+    use Traits\FileExporterTrait;
 
     const CMD_COLOR_ERR = 31;
     const CMD_COLOR_MSG = 32;
@@ -48,56 +47,53 @@ class Logger
      *
      * @var array
      */
-    public $msg = array();
+    public array $msg = array();
 
     /**
      * Warning Messages
      *
      * @var array
      */
-    public $war = array();
+    public array $war = array();
 
     /**
      * Error Messages
      *
      * @var array
      */
-    public $err = array();
+    public array $err = array();
 
     /**
      * Debug Messages
      *
      * @var array
      */
-    public $deb = array();
+    public array $deb = array();
 
     /**
      * Store Show Debug Messages
      *
      * @var bool
      */
-    private $debug;
+    private bool $debug;
 
     /**
-     * Store Show Debug Messages
+     * Standard Messages Prefix if Not Overridden
      *
      * @var string
      */
-    private $prefix;
+    private string $prefix = 'Splash Client';
 
     /**
      * Class Constructor
      *
      * @param bool $debug Allow Log of Debug Messages
      */
-    public function __construct($debug = false)
+    public function __construct(bool $debug = false)
     {
         //====================================================================//
         //  Store Debug Parameter
         $this->debug = $debug;
-        //====================================================================//
-        //  Define Standard Messages Prefix if Not Overiden
-        $this->prefix = 'Splash Client';
     }
 
     //====================================================================//
@@ -109,20 +105,20 @@ class Logger
      *
      * @param bool $debug Use debug??
      *
-     * @return true
+     * @return self
      */
-    public function setDebug($debug)
+    public function setDebug(bool $debug): self
     {
         //====================================================================//
         // Change Parameter State
         $this->debug = $debug;
         //====================================================================//
         // Delete Existing Debug Messages
-        if ((0 == $debug) && isset($this->debug)) {
+        if (!$debug && !empty($this->debug)) {
             $this->deb = array();
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -130,7 +126,7 @@ class Logger
      *
      * @return bool
      */
-    public function isDebugMode()
+    public function isDebugMode(): bool
     {
         return $this->debug;
     }
@@ -140,13 +136,13 @@ class Logger
      *
      * @param string $prefix Prefix for all Splash Messages
      *
-     * @return true
+     * @return self
      */
-    public function setPrefix($prefix)
+    public function setPrefix(string $prefix): self
     {
         $this->prefix = $prefix;
 
-        return true;
+        return $this;
     }
 
     //====================================================================//
@@ -156,24 +152,29 @@ class Logger
     /**
      * Log WebServer Error Messages
      *
-     * @param null|string $text   Input String / Key to translate
-     * @param null|string $param1 Translation Parameter 1
-     * @param null|string $param2 Translation Parameter 2
-     * @param null|string $param3 Translation Parameter 3
-     * @param null|string $param4 Translation Parameter 4
+     * @param string      $text Input String / Key to translate
+     * @param null|string $arg1 Translation Parameter 1
+     * @param null|string $arg2 Translation Parameter 2
+     * @param null|string $arg3 Translation Parameter 3
+     * @param null|string $arg4 Translation Parameter 4
      *
      * @return false
      */
-    public function err($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
-    {
+    public function err(
+        string $text,
+        ?string $arg1 = null,
+        ?string $arg2 = null,
+        ?string $arg3 = null,
+        ?string $arg4 = null
+    ): bool {
         //====================================================================//
         // Safety Check
-        if (is_null($text)) {
+        if (empty($text)) {
             return false;
         }
         //====================================================================//
         // Translate Message
-        $message = Splash::trans($text, (string) $param1, (string) $param2, (string) $param3, (string) $param4);
+        $message = Splash::trans($text, (string) $arg1, (string) $arg2, (string) $arg3, (string) $arg4);
         //====================================================================//
         // Add Message to Buffer
         $this->coreAddLog('err', $message);
@@ -181,30 +182,35 @@ class Logger
         // Add Message To Log File
         self::addLogToFile($message, 'ERROR');
 
-        return   false;
+        return false;
     }
 
     /**
      * Log WebServer Warning Messages
      *
-     * @param null|string $text   Input String / Key to translate
-     * @param null|string $param1 Translation Parameter 1
-     * @param null|string $param2 Translation Parameter 2
-     * @param null|string $param3 Translation Parameter 3
-     * @param null|string $param4 Translation Parameter 4
+     * @param string      $text Input String / Key to translate
+     * @param null|string $arg1 Translation Parameter 1
+     * @param null|string $arg2 Translation Parameter 2
+     * @param null|string $arg3 Translation Parameter 3
+     * @param null|string $arg4 Translation Parameter 4
      *
      * @return true
      */
-    public function war($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
-    {
+    public function war(
+        string $text,
+        ?string $arg1 = null,
+        ?string $arg2 = null,
+        ?string $arg3 = null,
+        ?string $arg4 = null
+    ): bool {
         //====================================================================//
         // Safety Check
-        if (is_null($text)) {
+        if (empty($text)) {
             return true;
         }
         //====================================================================//
         // Translate Message
-        $message = Splash::trans($text, (string) $param1, (string) $param2, (string) $param3, (string) $param4);
+        $message = Splash::trans($text, (string) $arg1, (string) $arg2, (string) $arg3, (string) $arg4);
         //====================================================================//
         // Add Message to Buffer
         $this->coreAddLog('war', $message);
@@ -218,24 +224,29 @@ class Logger
     /**
      * Log WebServer Commons Messages
      *
-     * @param null|string $text   Input String / Key to translate
-     * @param null|string $param1 Translation Parameter 1
-     * @param null|string $param2 Translation Parameter 2
-     * @param null|string $param3 Translation Parameter 3
-     * @param null|string $param4 Translation Parameter 4
+     * @param string      $text Input String / Key to translate
+     * @param null|string $arg1 Translation Parameter 1
+     * @param null|string $arg2 Translation Parameter 2
+     * @param null|string $arg3 Translation Parameter 3
+     * @param null|string $arg4 Translation Parameter 4
      *
      * @return true
      */
-    public function msg($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
-    {
+    public function msg(
+        string $text,
+        ?string $arg1 = null,
+        ?string $arg2 = null,
+        ?string $arg3 = null,
+        ?string $arg4 = null
+    ): bool {
         //====================================================================//
         // Safety Check
-        if (is_null($text)) {
+        if (empty($text)) {
             return true;
         }
         //====================================================================//
         // Translate Message
-        $message = Splash::trans($text, (string) $param1, (string) $param2, (string) $param3, (string) $param4);
+        $message = Splash::trans($text, (string) $arg1, (string) $arg2, (string) $arg3, (string) $arg4);
         //====================================================================//
         // Add Message to Buffer
         $this->coreAddLog('msg', $message);
@@ -249,24 +260,29 @@ class Logger
     /**
      * Log WebServer Debug Messages
      *
-     * @param null|string $text   Input String / Key to translate
-     * @param null|string $param1 Translation Parameter 1
-     * @param null|string $param2 Translation Parameter 2
-     * @param null|string $param3 Translation Parameter 3
-     * @param null|string $param4 Translation Parameter 4
+     * @param string      $text Input String / Key to translate
+     * @param null|string $arg1 Translation Parameter 1
+     * @param null|string $arg2 Translation Parameter 2
+     * @param null|string $arg3 Translation Parameter 3
+     * @param null|string $arg4 Translation Parameter 4
      *
      * @return true
      */
-    public function deb($text = null, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
-    {
+    public function deb(
+        string $text,
+        ?string $arg1 = null,
+        ?string $arg2 = null,
+        ?string $arg3 = null,
+        ?string $arg4 = null
+    ): bool {
         //====================================================================//
         // Safety Check
-        if (is_null($text) || !isset($this->debug) || !$this->debug) {
+        if (empty($text) || !$this->isDebugMode()) {
             return   true;
         }
         //====================================================================//
         // Translate Message
-        $message = Splash::trans($text, (string) $param1, (string) $param2, (string) $param3, (string) $param4);
+        $message = Splash::trans($text, (string) $arg1, (string) $arg2, (string) $arg3, (string) $arg4);
         //====================================================================//
         // Add Message to Buffer
         $this->coreAddLog('deb', $message);
@@ -274,7 +290,7 @@ class Logger
         // Add Message To Log File
         self::addLogToFile($message, 'DEBUG');
 
-        return   true;
+        return true;
     }
 
     //====================================================================//
@@ -282,59 +298,77 @@ class Logger
     //====================================================================//
 
     /**
-     * Log Tracable WebServer Error Message (with Class & Function)
+     * Log WebServer Error Messages
+     *
+     * @param string      $text Input String / Key to translate
+     * @param null|string $arg1 Translation Parameter 1
+     * @param null|string $arg2 Translation Parameter 2
+     * @param null|string $arg3 Translation Parameter 3
+     * @param null|string $arg4 Translation Parameter 4
+     *
+     * @return null
+     */
+    public function errNull(
+        string $text,
+        ?string $arg1 = null,
+        ?string $arg2 = null,
+        ?string $arg3 = null,
+        ?string $arg4 = null
+    ) {
+        $this->err($text, $arg1, $arg2, $arg3, $arg4);
+
+        return null;
+    }
+
+    /**
+     * Log Traceable WebServer Error Message (with Class & Function)
      *
      * @param string $text Input String / Key to translate
      *
      * @return false
      */
-    public function errTrace($text)
+    public function errTrace(string $text): bool
     {
         //====================================================================//
         // Build Error Trace
         $trace = (new Exception())->getTrace()[1];
-
         //====================================================================//
         // Push Error to Log
-        return  self::err("ErrLocalTpl", $trace["class"], $trace["function"], $text);
+        return  self::err("ErrLocalTpl", $trace["class"] ?? '', $trace["function"], $text);
     }
 
     /**
-     * Log Tracable WebServer Warning Message (with Class & Function)
+     * Log Traceable WebServer Warning Message (with Class & Function)
      *
      * @param string $text Input String / Key to translate
      *
      * @return true
      */
-    public function warTrace($text)
+    public function warTrace(string $text): bool
     {
         //====================================================================//
         // Build Warning Trace
         $trace = (new Exception())->getTrace()[1];
-
         //====================================================================//
         // Push Warning to Log
-        return  self::war("WarLocalTpl", $trace["class"], $trace["function"], $text);
+        return  self::war("WarLocalTpl", $trace["class"] ?? '', $trace["function"], $text);
     }
 
     /**
      * Log Given object Class Name as Warning
      *
-     * @param mixed $object Input Object to get Classname
+     * @param object $object Input Object to get Classname
      *
      * @return true
      */
-    public function warClass($object)
+    public function warClass(object $object): bool
     {
-        //====================================================================//
-        // Get Object Class Name
-        $text = is_null($object) ?  "NULL" : get_class($object);
         //====================================================================//
         // Build Warning Trace
         $trace = (new Exception())->getTrace()[1];
         //====================================================================//
         // Push Warning to Log
-        return  self::war("WarLocalClass", $trace["class"], $trace["function"], $text);
+        return  self::war("WarLocalClass", $trace["class"] ?? '', $trace["function"], get_class($object));
     }
 
     /**
@@ -342,7 +376,7 @@ class Logger
      *
      * @return true
      */
-    public function warStack()
+    public function warStack(): bool
     {
         //====================================================================//
         // Build Warning Trace
@@ -350,7 +384,7 @@ class Logger
         $trace = $exc->getTrace()[1];
         //====================================================================//
         // Push Main Warning to Log
-        self::war("WarLocalTrace", $trace["class"], $trace["function"], "");
+        self::war("WarLocalTrace", $trace["class"] ?? '', $trace["function"], "");
         //====================================================================//
         // Push Full Stack Trace to Log
         self::war(
@@ -368,7 +402,7 @@ class Logger
      *
      * @return bool
      */
-    public function ddd($txt, $var)
+    public function ddd(string $txt, $var): bool
     {
         return $this->deb($txt.$this->getVarDump($var));
     }
@@ -403,11 +437,11 @@ class Logger
      *
      * @return bool
      */
-    public function trace()
+    public function trace(): bool
     {
         //====================================================================//
         // Safety Check
-        if (!isset($this->debug) || !$this->debug) {
+        if (!$this->isDebugMode()) {
             return true;
         }
         //====================================================================//
@@ -418,7 +452,7 @@ class Logger
         Splash::translator()->load('main');
         //====================================================================//
         // Push Trace to Log
-        return  self::deb("DebTraceMsg", $trace["class"], $trace["function"]);
+        return  $this->deb("DebTraceMsg", $trace["class"] ?? '', $trace["function"]);
     }
 
     /**
@@ -432,13 +466,13 @@ class Logger
     {
         //====================================================================//
         // Push Error to Log
-        self::err("Fatal Error: ".$throwable->getMessage());
+        $this->err("Fatal Error: ".$throwable->getMessage());
         //====================================================================//
         // Push Complement
-        self::err("Location: ".$throwable->getFile()." Line ".$throwable->getLine());
+        $this->err("Location: ".$throwable->getFile()." Line ".$throwable->getLine());
         //====================================================================//
         // Push Full Stack Trace
-        self::err(
+        $this->err(
             "Full Trace Stack: ".str_replace("#", "<br />#", $throwable->getTraceAsString())
         );
 
@@ -452,49 +486,35 @@ class Logger
     /**
      * Clean WebServer Class Logs Messages
      *
-     * @return bool
+     * @return true
      */
-    public function cleanLog()
+    public function cleanLog(): bool
     {
-        if (isset($this->err)) {
-            $this->err = array();
-        }
-        if (isset($this->war)) {
-            $this->war = array();
-        }
-        if (isset($this->msg)) {
-            $this->msg = array();
-        }
-        if (isset($this->deb)) {
-            $this->deb = array();
-        }
+        $this->err = array();
+        $this->war = array();
+        $this->msg = array();
+        $this->deb = array();
+
         $this->deb('Log Messages Buffer Cleaned');
 
-        return   true;
+        return true;
     }
 
     /**
-     * Return All WebServer current Log WebServer in an arrayobject variable
+     * Return All WebServer current Log WebServer in an array variable
      *
      * @param bool $clean True if messages needs to be cleaned after reading
      *
-     * @return ArrayObject
+     * @return array
      */
-    public function getRawLog($clean = false)
+    public function getRawLog(bool $clean = false): array
     {
-        $raw = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        if ($this->err) {
-            $raw->err = $this->err;
-        }
-        if ($this->war) {
-            $raw->war = $this->war;
-        }
-        if ($this->msg) {
-            $raw->msg = $this->msg;
-        }
-        if ($this->deb) {
-            $raw->deb = $this->deb;
-        }
+        $raw = array(
+            "err" => $this->err,
+            "war" => $this->war,
+            "msg" => $this->msg,
+            "deb" => $this->deb,
+        );
         if ($clean) {
             $this->cleanLog();
         }
@@ -505,30 +525,30 @@ class Logger
     /**
      * Merge All Messages from a second class with current class
      *
-     * @param array|ArrayObject $logs Second logging array
+     * @param array $logs Second logging array
      *
      * @return bool
      */
-    public function merge($logs)
+    public function merge(array $logs): bool
     {
-        if (!empty($logs->msg)) {
-            $this->mergeCore('msg', $logs->msg);
-            $this->addLogBlockToFile($logs->msg, 'MESSAGE');
+        if (!empty($logs["msg"])) {
+            $this->mergeCore('msg', $logs["msg"]);
+            $this->addLogBlockToFile($logs["msg"], 'MESSAGE');
         }
 
-        if (!empty($logs->err)) {
-            $this->mergeCore('err', $logs->err);
-            $this->addLogBlockToFile($logs->err, 'ERROR');
+        if (!empty($logs["err"])) {
+            $this->mergeCore('err', $logs["err"]);
+            $this->addLogBlockToFile($logs["err"], 'ERROR');
         }
 
-        if (!empty($logs->war)) {
-            $this->mergeCore('war', $logs->war);
-            $this->addLogBlockToFile($logs->war, 'WARNING');
+        if (!empty($logs["war"])) {
+            $this->mergeCore('war', $logs["war"]);
+            $this->addLogBlockToFile($logs["war"], 'WARNING');
         }
 
-        if (!empty($logs->deb)) {
-            $this->mergeCore('deb', $logs->deb);
-            $this->addLogBlockToFile($logs->deb, 'DEBUG');
+        if (!empty($logs["deb"])) {
+            $this->mergeCore('deb', $logs["deb"]);
+            $this->addLogBlockToFile($logs["deb"], 'DEBUG');
         }
 
         return true;
@@ -539,7 +559,7 @@ class Logger
      *
      * @return void
      */
-    public function flushOuputBuffer()
+    public function flushOutputBuffer()
     {
         //====================================================================//
         // Read the contents of the output buffer
@@ -565,21 +585,21 @@ class Logger
      * @param bool $war Remove all Warning Messages
      * @param bool $deb Remove all Debug Messages
      *
-     * @return bool
+     * @return true
      */
-    public function smartFilter($msg = true, $war = false, $deb = true)
+    public function smartFilter(bool $msg = true, bool $war = false, bool $deb = true): bool
     {
-        if ($msg && isset($this->msg)) {
+        if ($msg && !empty($this->msg)) {
             $this->msg = array();
         }
-        if ($war && isset($this->war)) {
+        if ($war && !empty($this->war)) {
             $this->war = array();
         }
-        if ($deb && isset($this->deb)) {
+        if ($deb && !empty($this->deb)) {
             $this->deb = array();
         }
 
-        return   true;
+        return true;
     }
 
     //====================================================================//
@@ -594,11 +614,11 @@ class Logger
      *
      * @return void
      */
-    private function coreAddLog($type, $message)
+    private function coreAddLog(string $type, ?string $message): void
     {
         //====================================================================//
         // Safety Check
-        if (is_null($message)) {
+        if (empty($message)) {
             return;
         }
         //====================================================================//
@@ -611,28 +631,23 @@ class Logger
         $prefix = empty($this->prefix) ? '' : '['.$this->prefix.'] ';
         //====================================================================//
         // Add text message to buffer
-        array_push($this->{$type}, $prefix.$message);
+        $this->{$type}[] = $prefix.$message;
     }
 
     /**
      * Merge Messages from a second class with current class
      *
-     * @param string            $logType  Type of Logs to Merge
-     * @param array|ArrayObject $logArray Second logging array
+     * @param string $logType  Type of Logs to Merge
+     * @param array  $logArray Second logging array
      *
      * @return void
      */
-    private function mergeCore($logType, $logArray)
+    private function mergeCore(string $logType, array $logArray): void
     {
         //====================================================================//
         // Fast Line
         if (empty($logArray)) {
             return;
-        }
-        //====================================================================//
-        // Detect ArrayObjects
-        if ($logArray instanceof ArrayObject) {
-            $logArray = $logArray->getArrayCopy();
         }
         //====================================================================//
         // If Current Log is Empty
@@ -642,7 +657,7 @@ class Logger
         // Really merge Logs
         } else {
             foreach ($logArray as $message) {
-                array_push($this->{$logType}, $message);
+                $this->{$logType}[] = $message;
             }
         }
     }
@@ -654,21 +669,19 @@ class Logger
      *
      * @return string HTML display string of this object
      */
-    private function getVarDump($var)
+    private function getVarDump($var): string
     {
         //====================================================================//
         // Safety Check
         if (empty($var)) {
             return 'Empty Object';
         }
-
         //====================================================================//
         // Var Dump reading
         ob_start();                     // Turn on output buffering
         var_dump($var);                 // Dumps information about a variable
-        $html = ob_get_contents();         // Read the contents of the output buffer
+        $html = ob_get_contents();      // Read the contents of the output buffer
         ob_end_clean();                 // Clean (erase) the output buffer and turn off output buffering
-
         //====================================================================//
         // Return Contents
         return '<PRE>'.$html.'</PRE>';

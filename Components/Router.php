@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,12 +18,11 @@ namespace   Splash\Components;
 use ArrayObject;
 use Exception;
 use Splash\Core\SplashCore      as Splash;
+use Splash\Router\RouterInterface;
 
 /**
- * Server Request Routiung Class, Execute/Route actions uppon Splash Server requests.
- * This file is included only in case on NuSOAP call to slave server.
- *
- * @author      B. Paquier <contact@splashsync.com>
+ * Server Request Routing Class, Execute/Route actions on Splash Server requests.
+ * This file is included only in case on SOAP call to slave server.
  */
 class Router
 {
@@ -36,14 +35,14 @@ class Router
      *
      * @var int
      */
-    private $count = 0;
+    private int $count = 0;
 
     /**
      * Succeeded Task Counter
      *
      * @var int
      */
-    private $success = 0;
+    private int $success = 0;
 
     //====================================================================//
     // Tasks Statistics
@@ -54,73 +53,78 @@ class Router
      *
      * @var float
      */
-    private $batchTimer;
+    private float $batchTimer;
 
     /**
      * Current Task Execution Start Timestamp
      *
      * @var float
      */
-    private $taskTimer;
+    private float $taskTimer;
+
+    //====================================================================//
+    //  PUBLIC METHODS
+    //====================================================================//
 
     /**
      * Execute Server Requested Tasks
      *
-     * @param string      $router Name of the router function to use for task execution
-     * @param ArrayObject $input  Poiner to Server Input Buffer
-     * @param ArrayObject $output Poiner to Server Output Buffer
+     * @param string $router Name of the router function to use for task execution
+     * @param array  $input  Pointer to Server Input Buffer
+     * @param array  $output Pointer to Server Output Buffer
      *
-     * @return bool Global tesks Result
+     * @return bool Global tasks Result
      */
-    public function execute($router, $input, $output)
+    public function execute(string $router, array $input, array &$output): bool
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace();
         //====================================================================//
         // Tasks Counters Initialisation
-        $this->count = 0;                  // Input Task Counter
-        $this->success = 0;                  // Succeeded Task Counter
+        $this->count = 0;           // Input Task Counter
+        $this->success = 0;         // Succeeded Task Counter
         //====================================================================//
-        // Task Batch Initialisation
-        $this->batchTimer = microtime(true);     // Initiate Performance Timer
+        // Initiate Performance Timer
+        $this->batchTimer = microtime(true);
         //====================================================================//
         // Safety Checks - Validate Request
-        if (!$this->validate($router, $input, $output)) {
+        $routerClass = $this->validate($router, $input);
+        if (!$routerClass) {
             return false;
         }
         //====================================================================//
         // Init output task results
-        $output->tasks = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        $output['tasks'] = array();
         //====================================================================//
         // Step by Step Execute Tasks
-        foreach ($input->tasks as $index => $task) {
+        foreach ($input['tasks'] as $index => $task) {
             //====================================================================//
             // Tasks Execution
-            $output->tasks[$index] = $this->executeTask('\\Splash\\Router\\'.$router, $task);
+            $output['tasks'][$index] = $this->executeTask($routerClass, $task);
         }
         //====================================================================//
         // Build Complete Task Batch Information Array
-        $output->tasksinfos = $this->getBatchInfos();
+        $output['tasksinfos'] = $this->getBatchInfos();
         //====================================================================//
         // Return Global Batch Result
-        return ($this->count == $this->success) ? true : false;
+        return $this->count == $this->success;
     }
 
     /**
-     * @abstract     Execute a Single Tasks
+     * Execute a Single Tasks
      *
-     * @param string      $router Name of the router function to use for task execution
-     * @param ArrayObject $task   Task To Execute
+     * @param class-string $router Name of the router function to use for task execution
+     * @param array        $task   Task To Execute
      *
-     * @return ArrayObject|false
+     * @return null|array
      */
-    public function executeTask($router, $task)
+    public function executeTask(string $router, array $task): ?array
     {
         //====================================================================//
         // Safety Check
-        if (empty($task)) {
-            return false;
+        if (empty($task) || !is_subclass_of($router, RouterInterface::class)) {
+            return null;
         }
         //====================================================================//
         // Init Tasks Timer
@@ -131,7 +135,7 @@ class Router
         //====================================================================//
         // Tasks Execution
         try {
-            $result = $router::Action($task);
+            $result = $router::action($task);
         } catch (Exception $exc) {
             $result = $this->getEmptyResponse($task);
             Splash::log()->err($exc->getMessage().' on File '.$exc->getFile().' Line '.$exc->getLine());
@@ -139,24 +143,45 @@ class Router
         }
         //====================================================================//
         // Store Task Results
-        if (is_a($result, 'ArrayObject')) {
+        if ($result) {
             //====================================================================//
             // Insert Task Main Informations
-            $result->id = $task['id'];
+            $result['id'] = $task['id'];
             //====================================================================//
             // Insert Task Performance Informations
-            $result->delayms = $this->getDelayTaskStarted();
-            $result->delaystr = sprintf('%.2f %s', $this->getDelayTaskStarted(), ' ms');
+            $result['delayms'] = $this->getDelayTaskStarted();
+            $result['delaystr'] = sprintf('%.2f %s', $this->getDelayTaskStarted(), ' ms');
             //====================================================================//
             // Increment Success Tasks Counter
-            if ($result->result) {
+            if ($result['result']) {
                 ++$this->success;
             }
 
             return $result;
         }
 
-        return false;
+        return null;
+    }
+
+    /**
+     * Build an Empty Task Response
+     *
+     * @param array $task Task To Execute
+     *
+     * @return array Task Result ArrayObject
+     */
+    public static function getEmptyResponse(array $task): array
+    {
+        return array(
+            //====================================================================//
+            // Set Default Result to False
+            'result' => false,
+            'data' => null,
+            //====================================================================//
+            // Insert Task Description Informations
+            'name' => $task['name'],
+            'desc' => $task['desc'],
+        );
     }
 
     //====================================================================//
@@ -164,46 +189,49 @@ class Router
     //====================================================================//
 
     /**
-     * @abstract     Validate Received Server Request
+     * Validate Received Server Request
      *
-     * @param string      $router Name of the router function to use for task execution
-     * @param ArrayObject $input  Poiner to Server Input Buffer
-     * @param ArrayObject $output Poiner to Server Output Buffer
+     * @param string $router Name of the router function to use for task execution
+     * @param array  $input  Pointer to Server Input Buffer
      *
-     * @return bool
+     * @return null|class-string
      */
-    private function validate($router, $input, $output)
+    private function validate(string $router, array $input): ?string
     {
         //====================================================================//
-        // Safety Checks - Verify Inputs & Outputs are Valid
-        if (!is_a($input, 'ArrayObject') || !is_a($output, 'ArrayObject')) {
-            return Splash::log()->err('Unable to perform requested action. I/O Buffer not ArrayObject Type.');
-        }
-        //====================================================================//
         // Safety Checks - Verify tasks array exists
-        if (!isset($input->tasks) || !count($input->tasks)) {
-            return Splash::log()->war('Unable to perform requested action, task list is empty.');
+        if (empty($input['tasks'])) {
+            return Splash::log()->errNull('Unable to perform requested action, task list is empty.');
         }
-        Splash::log()->deb('Found '.count($input->tasks).' tasks in request.');
+        Splash::log()->deb('Found '.count($input['tasks']).' tasks in request.');
         //====================================================================//
         // Safety Checks - Verify Each Tasks is an ArrayObject
-        foreach ($input->tasks as $index => $task) {
-            if (!is_a($task, 'ArrayObject')) {
-                return Splash::log()->err(
-                    'Unable to perform requested action. Task '.$index.' is not ArrayObject Type.'
+        foreach ($input['tasks'] as $index => $task) {
+            if (!is_array($task)) {
+                return Splash::log()->errNull(
+                    'Unable to perform requested action. Task '.$index.' is not an Array.'
                 );
             }
         }
         //====================================================================//
         // Safety Check - Verify Router Exists
-        if (!class_exists('\\Splash\\Router\\'.ucwords($router))) {
-            return Splash::log()->err(
-                "Unable to perform requested tasks, given router doesn't exist(".ucwords($router).'). '
-                .'Check your server configuration & methods'
+        $routerClass = '\\Splash\\Router\\'.ucwords($router);
+        if (!class_exists($routerClass)) {
+            return Splash::log()->errNull(
+                "Unable to perform requested tasks,"
+                ." given router doesn't exist(".ucwords($router).'). '
+                ."Check your server configuration & methods"
+            );
+        }
+        if (!is_subclass_of($routerClass, RouterInterface::class)) {
+            return Splash::log()->errNull(
+                "Unable to perform requested tasks,"
+                ." router (".ucwords($router).") must implement ".RouterInterface::class
+                ." Check your server configuration & methods"
             );
         }
 
-        return true;
+        return $routerClass;
     }
 
     //====================================================================//
@@ -211,35 +239,11 @@ class Router
     //====================================================================//
 
     /**
-     * @abstract    Build an Empty Task Response
-     *
-     * @param ArrayObject $task Task To Execute
-     *
-     * @return ArrayObject Task Result ArrayObject
-     */
-    private function getEmptyResponse($task)
-    {
-        //====================================================================//
-        // Initial Tasks results ArrayObject
-        $response = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        //====================================================================//
-        // Set Default Result to False
-        $response->result = false;
-        $response->data = null;
-        //====================================================================//
-        // Insert Task Description Informations
-        $response->name = $task->name;
-        $response->desc = $task->desc;
-
-        return $response;
-    }
-
-    /**
-     * @abstract    Build Complete Task Batch Information Array
+     * Build Complete Task Batch Information Array
      *
      * @return array
      */
-    private function getBatchInfos()
+    private function getBatchInfos(): array
     {
         return array(
             'DelayMs' => $this->getDelayStarted(),
@@ -250,21 +254,21 @@ class Router
     }
 
     /**
-     * @abstract    Delay in MilliSecond Since Router Started
+     * Delay in MilliSecond Since Router Started
      *
      * @return float
      */
-    private function getDelayStarted()
+    private function getDelayStarted(): float
     {
         return 1000 * (microtime(true) - $this->batchTimer);
     }
 
     /**
-     * @abstract    Delay in MilliSecond Since Task Started
+     * Delay in MilliSecond Since Task Started
      *
      * @return float
      */
-    private function getDelayTaskStarted()
+    private function getDelayTaskStarted(): float
     {
         return 1000 * (microtime(true) - $this->taskTimer);
     }

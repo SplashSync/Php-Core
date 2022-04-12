@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,29 +15,27 @@
 
 namespace   Splash\Components;
 
-use ArrayObject;
+use Exception;
 use Splash\Core\SplashCore      as Splash;
 
 /**
  * Splash Core Integrated Translation Management Class.
- *
- * @author      B. Paquier <contact@splashsync.com>
  */
 class Translator
 {
     /**
      * Translations Storage Array
      *
-     * @var Array
+     * @var array
      */
-    private $trans;
+    private array $trans = array();
 
     /**
      * Loaded Translation Files array
      *
      * @var array
      */
-    private $loadedTranslations;
+    private array $loadedTranslations = array();
 
     //====================================================================//
     //  TRANSLATIONS MANAGEMENT
@@ -49,20 +47,20 @@ class Translator
      * All data in translation array are stored in UTF-8 format.
      * trans_loaded is completed with $file key.
      *
-     * @param string $fileName File name to load (.ini file).
-     *                         Must be "file" or "file@local" for local language files:
-     *                         If $FileName is "file@local" instead of "file" then we look for local lang file
-     *                         in localpath/langs/code_CODE/file.lang
-     * @param string $language Force Loading of a specific ISO Language Code (Example en_US or fr_FR or es_ES)
+     * @param string      $fileName File name to load (.ini file).
+     *                              Must be "file" or "file@local" for local language files:
+     *                              If $FileName is "file@local" instead of "file" then we look for local lang file
+     *                              in local path/langs/code_CODE/file.lang
+     * @param null|string $language Force Loading of a specific ISO Language Code (Example en_US or fr_FR or es_ES)
      *
      * @return bool
      */
-    public function load($fileName, $language = null)
+    public function load(string $fileName, string $language = null): bool
     {
         //====================================================================//
         // Check if File is Already in Cache
         //====================================================================//
-        if (! empty($this->loadedTranslations[$fileName])) {
+        if (!empty($this->loadedTranslations[$fileName])) {
             return true;
         }
 
@@ -120,7 +118,7 @@ class Translator
      * Return text translated of text received as parameter (and encode it into HTML)
      * Si il n'y a pas de correspondance pour ce texte, on cherche dans fichier alternatif
      * et si toujours pas trouve, il est retourne tel quel
-     * Les parametres de cette methode peuvent contenir de balises HTML.
+     * Les parameters de cette methode peuvent contenir de balises HTML.
      *
      * @param string $key     Key to translate
      * @param string $param1  chaine de param1
@@ -131,22 +129,22 @@ class Translator
      *
      * @return string Translated string (encoded into HTML entities and UTF8)
      */
-    public function translate($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $maxsize = 0)
-    {
+    public function translate(
+        string $key,
+        string $param1 = '',
+        string $param2 = '',
+        string $param3 = '',
+        string $param4 = '',
+        int $maxsize = 0
+    ): string {
         //====================================================================//
         // Translation is not available
         if (!isset($this->trans[$key]) || empty($this->trans[$key])) {
             return $key;
         }
-
         //====================================================================//
         // Translation is available
         $str = $this->trans[$key];
-
-        //====================================================================//
-        // Replace arrays by counts strings.
-        $this->normalizeParameters($param1, $param2, $param3, $param4);
-
         //====================================================================//
         // Replace %s and %d except for FormatXXX strings.
         if (!preg_match('/^Format/', $key)) {
@@ -158,7 +156,7 @@ class Translator
             $str = substr($str, 0, $maxsize);
         }
         //====================================================================//
-        // We replace some HTML tags by __xx__ to avoid having them encoded by htmlentities
+        // We replace some HTML tags by __xx__ to avoid having them encoded by html entities
         $str = str_replace(array('<','>','"',), array('__lt__','__gt__','__quot__'), $str);
         //====================================================================//
         // Crypt string into HTML
@@ -169,45 +167,17 @@ class Translator
     }
 
     /**
-     * Convert Array Parameters to String
-     *
-     * @param array|ArrayObject|string $param1 chaine de param1
-     * @param array|ArrayObject|string $param2 chaine de param2
-     * @param array|ArrayObject|string $param3 chaine de param3
-     * @param array|ArrayObject|string $param4 chaine de param4
-     *
-     * @return void
-     */
-    public function normalizeParameters(&$param1, &$param2, &$param3, &$param4)
-    {
-        //====================================================================//
-        // Replace arrays by counts strings.
-        if (is_array($param1) || ($param1 instanceof ArrayObject)) {
-            $param1 = "x ".count($param1);
-        }
-        if (is_array($param2) || ($param2 instanceof ArrayObject)) {
-            $param2 = "x ".count($param2);
-        }
-        if (is_array($param3) || ($param3 instanceof ArrayObject)) {
-            $param3 = "x ".count($param3);
-        }
-        if (is_array($param4) || ($param4 instanceof ArrayObject)) {
-            $param4 = "x ".count($param4);
-        }
-    }
-
-    /**
      * Build Translation filename based on specified $file and ISO Language Code.
      *
      * @param string $fileName File name to load (.ini file).
      *                         Must be "file" or "file@local" for local language files:
      *                         If $FileName is "file@local" instead of "file" then we look for local lang file
-     *                         in localpath/langs/code_CODE/file.lang
+     *                         in local path/langs/code_CODE/file.lang
      * @param string $language ISO Language Code (Example en_US or fr_FR or es_ES)
      *
      * @return string
      */
-    private function getLangFileName($fileName, $language)
+    private function getLangFileName(string $fileName, string $language): string
     {
         //====================================================================//
         // Search for Local Redirection
@@ -224,41 +194,41 @@ class Translator
         //====================================================================//
         // Directory of translation files
         if (!empty($isLocal)) {
-            return Splash::getLocalPath()."/Translations/".$language."/".$fileName.".ini";
+            try {
+                return Splash::getLocalPath()."/Translations/".$language."/".$fileName.".ini";
+            } catch (Exception $ex) {
+                return dirname(__FILE__, 2)."/langs/".$language."/".$fileName.".ini";
+            }
         }
 
-        return dirname(dirname(__FILE__))."/langs/".$language."/".$fileName.".ini";
+        return dirname(__FILE__, 2)."/langs/".$language."/".$fileName.".ini";
     }
 
     /**
-     * Load Speficied file onto static language collection
+     * Load Specified file onto static language collection
      *
      * @param string $fullPath Full path to language file to load (.ini file).
      *
      * @return bool
      */
-    private function loadLangFile($fullPath)
+    private function loadLangFile(string $fullPath): bool
     {
         //====================================================================//
         // Check if File Exists
         if (!is_file($fullPath)) {
             return false;
         }
-
         //====================================================================//
         // Open File
         $file = @fopen($fullPath, "rt");
         if (!$file) {
             return false;
         }
-
         //====================================================================//
         // Import All New Translation Keys
-        // Ex: Need 225ms for all fgets on all lang file for Third party page. Same speed than file_get_contents
         while ($line = fgets($file, 4096)) {
             $this->loadLangLine($line);
         }
-
         //====================================================================//
         // Close File
         fclose($file);
@@ -271,7 +241,7 @@ class Translator
      *
      * @return void
      */
-    private function loadLangLine($line)
+    private function loadLangLine(string $line): void
     {
         //====================================================================//
         // Filter empty lines

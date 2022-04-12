@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,16 +16,18 @@
 namespace Splash\Tests\Tools\Fields;
 
 /**
- * Text Field : Long Text Data Block
+ * Bool Field : Basic Boolean
  */
-class Ootext implements FieldInterface
+class OoBool implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'Text';
+    /**
+     * @var string
+     */
+    const FORMAT = 'Bool';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -34,13 +36,25 @@ class Ootext implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
-        if (!empty($data) && !is_string($data)) {
-            return "Field  Data is not a String.";
+        //==============================================================================
+        //      Verify Data is not Empty
+        if (empty($data)) {
+            return null;
+        }
+        //==============================================================================
+        //      Verify Data is a Bool Type
+        if (is_bool($data)) {
+            return null;
+        }
+        //==============================================================================
+        //      Verify Data is an Int as Bool
+        if (("1" === $data) || (1 === $data)) {
+            return null;
         }
 
-        return true;
+        return "Field Data is not a Boolean.";
     }
 
     //==============================================================================
@@ -50,27 +64,23 @@ class Ootext implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
-        return Oovarchar::fake($settings);
+        return (bool)((mt_rand() % 2));
     }
-
-    //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
-    //==============================================================================
 
     /**
      * {@inheritdoc}
      */
-    public static function compare($source, $target, $settings)
+    public static function compare($source, $target, array $settings): bool
     {
         //====================================================================//
-        //  Both Texts Are Empty
-        if (empty($source) && empty($target)) {
-            return true;
+        //  Both Are Scalar
+        if (!is_scalar($source) || !is_scalar($target)) {
+            return false;
         }
         //====================================================================//
         //  Raw text Compare
-        return ($source === $target)?true:false;
+        return $source == $target;
     }
 }

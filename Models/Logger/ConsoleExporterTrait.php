@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,9 +14,6 @@
  */
 
 namespace Splash\Models\Logger;
-
-use ArrayObject;
-use Countable;
 
 /**
  * Splash Logger - Console Exports Managment
@@ -30,7 +27,7 @@ trait ConsoleExporterTrait
      *
      * @return string
      */
-    public function getConsoleLog($clean = false)
+    public function getConsoleLog(bool $clean = false): string
     {
         $result = null;
         //====================================================================//
@@ -58,7 +55,7 @@ trait ConsoleExporterTrait
      *
      * @return string
      */
-    public static function getConsoleLine($text, $title = '', $color = 0)
+    public static function getConsoleLine(string $text, string $title = '', int $color = 0): string
     {
         return PHP_EOL."\e[".$color.'m'.$title.html_entity_decode($text)."\e[0m";
     }
@@ -66,16 +63,16 @@ trait ConsoleExporterTrait
     /**
      * Return All WebServer current Log WebServer Console Colored format
      *
-     * @param null|array|ArrayObject $msgArray
-     * @param string                 $title
-     * @param int                    $color
+     * @param null|array $msgArray
+     * @param string     $title
+     * @param int        $color
      *
      * @return string
      */
-    private function getConsole($msgArray, $title = '', $color = 0)
+    private function getConsole(?array $msgArray, string $title = '', int $color = 0): string
     {
         $result = '';
-        if ((is_array($msgArray) || $msgArray instanceof Countable) && count($msgArray)) {
+        if (!empty($msgArray)) {
             //====================================================================//
             // Add Messages
             foreach ($msgArray as $txt) {

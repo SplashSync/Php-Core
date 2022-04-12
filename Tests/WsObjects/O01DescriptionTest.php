@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,15 +15,12 @@
 
 namespace Splash\Tests\WsObjects;
 
-use ArrayObject;
 use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * Objects Test Suite - Object Description Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class O01DescriptionTest extends ObjectsCase
 {
@@ -45,11 +42,6 @@ class O01DescriptionTest extends ObjectsCase
         //====================================================================//
         //   Execute Action Directly on Module
         $data = Splash::object($objectType)->description();
-        //====================================================================//
-        //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($data)) {
-            $data = new ArrayObject($data);
-        }
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
@@ -98,16 +90,16 @@ class O01DescriptionTest extends ObjectsCase
     /**
      * Verify Module Response
      *
-     * @param ArrayObject|bool|string $data
+     * @param array $data
      *
      * @return void
      */
-    public function verifyResponse($data): void
+    public function verifyResponse(array $data): void
     {
         //====================================================================//
         //   Verify Response
         $this->assertNotEmpty($data, "Object Description is Empty");
-        $this->assertInstanceOf("ArrayObject", $data, "Object Description is Not an ArrayObject");
+        $this->assertIsArray($data, "Object Description is Not an Array");
 
         //====================================================================//
         // All Informations are Available and is right format

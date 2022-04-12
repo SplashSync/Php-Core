@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -35,59 +35,59 @@ class CommitEvent
      *
      * @var string
      */
-    private $type;
+    private string $type;
 
     /**
      * Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      *
      * @var string
      */
-    private $action;
+    private string $action;
 
     /**
      * Local Objects Ids
      *
      * @var string[]
      */
-    private $id;
+    private array $id;
 
     /**
      * User Name
      *
      * @var string
      */
-    private $user;
+    private string $user;
 
     /**
      * Operation Comment for Logs
      *
      * @var string
      */
-    private $comment;
+    private string $comment;
 
     /**
      * Server Ws Identifier
      *
      * @var string
      */
-    private $wsIdentifier;
+    private string $wsIdentifier;
 
     /**
      * Web Service Task Description
      *
      * @var string
      */
-    private $description;
+    private string $description;
 
     /**
      * @var int
      */
-    private $failCount = 0;
+    private int $failCount = 0;
 
     /**
      * @var null|DateTime
      */
-    private $retryAt;
+    private ?DateTime $retryAt;
 
     /**
      * Build Commit Event
@@ -265,9 +265,9 @@ class CommitEvent
     public function setFail(): void
     {
         if ($this->failCount) {
-            $this->setRetryAt(new \DateTime("+1 hour"));
+            $this->setRetryAt(new DateTime("+1 hour"));
         } else {
-            $this->setRetryAt(new \DateTime("+10 seconds"));
+            $this->setRetryAt(new DateTime("+10 seconds"));
         }
         $this->failCount++;
     }
@@ -279,7 +279,7 @@ class CommitEvent
      */
     public function isReady(): bool
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         return empty($this->failCount) || ($this->retryAt < $now);
     }
