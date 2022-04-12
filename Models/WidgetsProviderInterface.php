@@ -19,8 +19,8 @@ use Exception;
 use Splash\Models\Widgets\WidgetInterface;
 
 /**
- * @abstract    Local Objects Provider Interface.
- *              Used to Override Core Objects Mapper (by Files)
+ * Local Objects Provider Interface.
+ * Used to Override Core Objects Mapper (by Files)
  */
 interface WidgetsProviderInterface
 {

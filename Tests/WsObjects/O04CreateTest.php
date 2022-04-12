@@ -42,18 +42,15 @@ class O04CreateTest extends ObjectsCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
         if (!$dummyData) {
             return;
         }
-
         //====================================================================//
         //   Execute Action Directly on Module
         $objectId = Splash::object($objectType)->set(null, $dummyData);
-
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($objectType, $objectId);
@@ -76,23 +73,20 @@ class O04CreateTest extends ObjectsCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
         if (false == $dummyData) {
             return;
         }
-
         //====================================================================//
         //   Execute Action Directly on Module
-        $objectId = $this->genericAction(
+        $objectId = $this->genericStringAction(
             SPL_S_OBJECTS,
             SPL_F_SET,
             __METHOD__,
             array('id' => null, 'type' => $objectType, 'fields' => $dummyData)
         );
-
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($objectType, $objectId);

@@ -23,8 +23,6 @@ use Splash\Tests\Tools\TestCase;
 
 /**
  * Core Test Suite - Raw Folders & Class Structure Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class C00StartupTest extends TestCase
 {

@@ -87,7 +87,7 @@ class CommitEvent
     /**
      * @var null|DateTime
      */
-    private ?DateTime $retryAt;
+    private ?DateTime $retryAt = null;
 
     /**
      * Build Commit Event

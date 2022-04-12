@@ -40,33 +40,27 @@ class O05DeleteTest extends ObjectsCase
     public function testFromModule(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
         if (false == $dummyData) {
             return;
         }
-
         //====================================================================//
         //   Create a New Object on Module
         $objectId = Splash::object($objectType)->set(null, $dummyData);
-
         //====================================================================//
         //   Verify Response
         $this->verifyCreateResponse($objectType, $objectId);
-
         //====================================================================//
         // Clean Objects Committed Array
         CommitsManager::reset();
         //====================================================================//
         // Lock New Objects To Avoid Action Commit
         Splash::object($objectType)->lock((string) $objectId);
-
         //====================================================================//
         //   Delete Object on Module
         $data = Splash::object($objectType)->delete((string) $objectId);
-
         //====================================================================//
         //   Verify Response
         $this->verifyDeleteResponse($objectType, $objectId, $data);
@@ -87,34 +81,29 @@ class O05DeleteTest extends ObjectsCase
     public function testFromService(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Generate Dummy Object Data (Required Fields Only)
         $dummyData = $this->prepareForTesting($objectType);
         if (false == $dummyData) {
             return;
         }
-
         //====================================================================//
         //   Create a New Object on Module
         $objectId = Splash::object($objectType)->set(null, $dummyData);
-
         //====================================================================//
         //   Verify Response
         $this->verifyCreateResponse($objectType, $objectId);
-
         //====================================================================//
         // Clean Objects Committed Array
         CommitsManager::reset();
         //====================================================================//
         //   Execute Action Directly on Module
-        $data = $this->genericAction(
+        $data = $this->genericStringAction(
             SPL_S_OBJECTS,
             SPL_F_DEL,
             __METHOD__,
             array( "id" => $objectId, "type" => $objectType)
         );
-
         //====================================================================//
         //   Verify Response
         $this->verifyDeleteResponse($objectType, $objectId, $data);
@@ -269,8 +258,8 @@ class O05DeleteTest extends ObjectsCase
         );
         //====================================================================//
         //   Verify Object not Present anymore
-        $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
+        $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true);
         $getResponse = Splash::object($objectType)->get((string) $objectId, $fields);
-        $this->assertFalse($getResponse, "Object Not Delete, I can still read it!!");
+        $this->assertNull($getResponse, "Object Not Delete, I can still read it!!");
     }
 }

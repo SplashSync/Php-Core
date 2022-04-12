@@ -72,11 +72,11 @@ class Dummy extends AbstractObject
     /**
      * Load Request Object
      *
-     * @param string $objectId Object id
+     * @param string $objectId Object ID
      *
-     * @return false|object
+     * @return null|object
      */
-    public function load(string $objectId)
+    public function load(string $objectId): ?object
     {
         $object = new stdClass();
         $object->id = $objectId;
@@ -87,9 +87,9 @@ class Dummy extends AbstractObject
     /**
      * Create Request Object
      *
-     * @return false|object
+     * @return null|object
      */
-    public function create()
+    public function create(): ?object
     {
         $object = new stdClass();
         $object->id = rand(100, 1000);

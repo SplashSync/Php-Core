@@ -119,10 +119,11 @@ trait IntelParserTrait
         $this->in = $fieldsList;
         //====================================================================//
         // Load Object
-        $this->object = $this->load($objectId);
-        if (!is_object($this->object)) {
+        $object = $this->load($objectId);
+        if (!is_object($object)) {
             return null;
         }
+        $this->object = $object;
         //====================================================================//
         // Check if Object is Filtered
         if (ExtensionsManager::isFiltered(self::getType(), $objectId, $this->object)) {
@@ -174,12 +175,13 @@ trait IntelParserTrait
         //====================================================================//
         // Load or Create Requested Object
         //====================================================================//
-        $this->object = $objectId ? $this->load($objectId) : $this->create();
+        $object = $objectId ? $this->load($objectId) : $this->create();
         //====================================================================//
         // Safety Check => Object Now Loaded
-        if (!is_object($this->object)) {
+        if (!is_object($object)) {
             return null;
         }
+        $this->object = $object;
         //====================================================================//
         // New Object Created => Store new Object Identifier
         if (!$objectId) {

@@ -123,7 +123,6 @@ class O03ListTest extends ObjectsCase
         //====================================================================//
         // Verify Fields are Available
         $fields = Splash::object($objectType)->fields();
-
         //====================================================================//
         // Verify List Data Items
         foreach ($data as $item) {
@@ -167,7 +166,7 @@ class O03ListTest extends ObjectsCase
      *
      * @return void
      */
-    public function verifyMetaInformations(array $data, string $objectType): void
+    public function verifyMetaInformations(array &$data, string $objectType): void
     {
         //====================================================================//
         // Verify List Meta Are Available

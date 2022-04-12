@@ -13,11 +13,6 @@
  *  file that was distributed with this source code.
  */
 
-/**
- * Server Request Routing Class, Execute/Route actions on Objects Service Requests.
- * This file is included only in case on NuSOAP call to slave server.
- */
-
 namespace   Splash\Router;
 
 use Exception;
@@ -26,7 +21,8 @@ use Splash\Core\SplashCore      as Splash;
 use Splash\Models\Objects\ObjectInterface;
 
 /**
- * Splash Server Objects Service Router
+ * Server Request Routing Class, Execute/Route actions on Objects Service Requests.
+ * This file is included only in case on NuSOAP call to slave server.
  */
 class Objects implements RouterInterface
 {
@@ -66,7 +62,7 @@ class Objects implements RouterInterface
         if (in_array($task['name'], array( SPL_F_GET , SPL_F_SET , SPL_F_DEL ), true)) {
             return self::doSyncActions($task);
         }
-        if (in_array($task['name'], array( SPL_F_COMMIT ), true)) {
+        if (SPL_F_COMMIT === $task['name']) {
             Splash::log()->war("Objects - Requested task not found => ".$task['name']);
 
             return Router::getEmptyResponse($task);
@@ -142,11 +138,9 @@ class Objects implements RouterInterface
         //====================================================================//
         // Initial Response
         $response = Router::getEmptyResponse($task);
-
         //====================================================================//
         // Load Parameters
         $objectClass = Splash::object($task['params']['type']);
-
         //====================================================================//
         // Execute Requested Task
         //====================================================================//
@@ -170,8 +164,8 @@ class Objects implements RouterInterface
             //====================================================================//
             case SPL_F_LIST:
                 $filters = $task['params']['filters'] ?? null;
-                $params = $task['params']['params'] ?? null;
-                $response['data'] = $objectClass->objectsList($filters, $params);
+                $params = $task['params']['params'] ?? array();
+                $response['data'] = $objectClass->objectsList($filters, $params ?: array());
 
                 break;
         }
@@ -267,7 +261,7 @@ class Objects implements RouterInterface
      *
      * @return null|array
      */
-    private static function doGet(ObjectInterface &$objectClass, ?string $objectId, array $fields): ?array
+    private static function doGet(ObjectInterface $objectClass, ?string $objectId, array $fields): ?array
     {
         //====================================================================//
         // Verify Object Field List
@@ -289,7 +283,7 @@ class Objects implements RouterInterface
      *
      * @return null|string
      */
-    private static function doSet(ObjectInterface &$objectClass, string $objectId, array $fields): ?string
+    private static function doSet(ObjectInterface $objectClass, string $objectId, array $fields): ?string
     {
         //====================================================================//
         // Take Lock for this object => No Commit Allowed for this Object
@@ -313,7 +307,7 @@ class Objects implements RouterInterface
      *
      * @return bool
      */
-    private static function doDelete(ObjectInterface &$objectClass, ?string $objectId): bool
+    private static function doDelete(ObjectInterface $objectClass, ?string $objectId): bool
     {
         //====================================================================//
         // Safety Check

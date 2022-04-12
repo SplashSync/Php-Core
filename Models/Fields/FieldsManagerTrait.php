@@ -470,12 +470,12 @@ trait FieldsManagerTrait
      *
      * @param mixed $input Input Array
      *
-     * @return array Sorted Array
+     * @return mixed Sorted Array
      */
-    public static function normalize(&$input): array
+    public static function normalize(&$input)
     {
         //==============================================================================
-        //      Convert ArrayObjects To Simple Array
+        // Convert ArrayObjects To Simple Array
         if ($input instanceof ArrayObject) {
             $input = $input->getArrayCopy();
             //==============================================================================

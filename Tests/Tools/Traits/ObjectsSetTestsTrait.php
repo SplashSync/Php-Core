@@ -361,7 +361,7 @@ trait ObjectsSetTestsTrait
         //   Verify Object not Present anymore
         $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true);
         $getResponse = Splash::object($objectType)->get($objectId, $fields);
-        $this->assertFalse($getResponse, 'Object Not Delete, I can still read it!!');
+        $this->assertNull($getResponse, 'Object Not Delete, I can still read it!!');
     }
 
     //==============================================================================

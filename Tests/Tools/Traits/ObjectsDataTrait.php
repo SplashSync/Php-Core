@@ -94,12 +94,10 @@ trait ObjectsDataTrait
             if (!$field['read']) {
                 continue;
             }
-
             //====================================================================//
             // Extract Field Data
             $data1 = $this->filterData($block1, array($field['id']));
             $data2 = $this->filterData($block2, array($field['id']));
-
             //====================================================================//
             // Compare List Data
             $fieldType = self::isListField($field['type']);
@@ -159,7 +157,6 @@ trait ObjectsDataTrait
         if (!$className) {
             return false;
         }
-
         //====================================================================//
         // Verify Class has its own Validate & Compare Function*
         $this->assertTrue(
@@ -183,13 +180,19 @@ trait ObjectsDataTrait
         );
         //====================================================================//
         // Validate Data Using Field Type Validator
-        $this->assertTrue(
-            $className::validate($block1),
-            $comment." Source Data is invalid ".$fieldType." Field Data Block (".$block1Dump.")"
+        $block1Validation = $className::validate($block1);
+        $this->assertNull(
+            $block1Validation,
+            $comment." Source Data is invalid "
+            .$fieldType." => ".$block1Dump
+            ." (".$block1Validation.")"
         );
-        $this->assertTrue(
-            $className::validate($block2),
-            $comment." Target Data is invalid ".$fieldType." Field Data Block (".$block2Dump.")"
+        $block2Validation = $className::validate($block2);
+        $this->assertNull(
+            $block2Validation,
+            $comment." Target Data is invalid "
+            .$fieldType." => ".$block2Dump
+            ." (".$block2Validation.")"
         );
         //====================================================================//
         // Compare Data Using Field Type Comparator

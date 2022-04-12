@@ -61,7 +61,7 @@ abstract class AbstractBaseCase extends TestCase
             }
         }
 
-        return (count($allowed) && !in_array($sequenceName, $allowed, true));
+        return (empty($allowed) || !in_array($sequenceName, $allowed, true));
     }
 
     /**
@@ -79,7 +79,7 @@ abstract class AbstractBaseCase extends TestCase
         //   Filter Tested Object Types  =>> Skip
         if (defined("SPLASH_TYPES") && is_string(SPLASH_TYPES)) {
             $allowed = (array) explode(",", SPLASH_TYPES);
-            if (count($allowed) && !in_array($objectType, $allowed, true)) {
+            if (!empty($allowed) && !in_array($objectType, $allowed, true)) {
                 return false;
             }
         }
@@ -113,7 +113,7 @@ abstract class AbstractBaseCase extends TestCase
             }
         }
 
-        return (count($allowed) && !in_array($identifier, $allowed, true));
+        return (empty($allowed) || !in_array($identifier, $allowed, true));
     }
 
     /**
@@ -271,7 +271,7 @@ abstract class AbstractBaseCase extends TestCase
      */
     public function checkResponseLogArray(array $logs, string $type, string $name)
     {
-        if (!isset($logs[$type])) {
+        if (empty($logs[$type])) {
             return;
         }
         $this->assertIsArray($logs[$type], "Logger ".$name." List is Not an Array");
@@ -565,14 +565,14 @@ abstract class AbstractBaseCase extends TestCase
      * @param string $description Task Description
      * @param array  $parameters  Task Parameters
      *
-     * @return null|array
+     * @return void
      */
     protected function genericErrorAction(
         string $service,
         string $action,
         string $description,
         array $parameters = array(true)
-    ): ?array {
+    ): void {
         //====================================================================//
         //   Prepare Request Data
         Splash::ws()->addTask($action, $parameters, $description);
@@ -592,13 +592,8 @@ abstract class AbstractBaseCase extends TestCase
         $this->assertArrayHasKey("result", $data, "Request Result is Missing");
         $this->assertEmpty($data['result'], "Expect Errors but Request Result is True, Why??");
         //====================================================================//
-        //   Extract Task Result
-        $task = array_shift($data['tasks']);
-        //====================================================================//
         //   Turn On Output Buffering Again
         ob_start();
-
-        return $task["data"];
     }
 
     /**

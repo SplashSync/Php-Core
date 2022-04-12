@@ -630,10 +630,10 @@ class Validator
 
         //====================================================================//
         // Read Object Disable Flag
-        if (false == $this->isValidLocalFunction('getIsDisabled', $className)) {
+        if (false == $this->isValidLocalFunction('isDisabled', $className)) {
             return false;
         }
-        if (Splash::configurator()->isDisabled($objectType, $className::getIsDisabled())) {
+        if (Splash::configurator()->isDisabled($objectType, $className::isDisabled())) {
             return false;
         }
 
@@ -708,12 +708,12 @@ class Validator
 
         //====================================================================//
         // Read Object Disable Flag
-        if (false == $this->isValidLocalFunction('getIsDisabled', $className)) {
+        if (false == $this->isValidLocalFunction('isDisabled', $className)) {
             $this->validLocalWidget[$widgetType] = false;
 
             return false;
         }
-        if ($className::getIsDisabled()) {
+        if ($className::isDisabled()) {
             $this->validLocalWidget[$widgetType] = false;
 
             return false;

@@ -398,7 +398,7 @@ trait ObjectsAssertionsTrait
      *
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
-     * @param string $objectId   Expected Object Id
+     * @param string $objectId   Expected Object ID
      *
      * @return void
      */
@@ -440,14 +440,12 @@ trait ObjectsAssertionsTrait
             $sessionCommits,
             "No Object Change Committed by your Module. Please check your triggers."
         );
-
         //====================================================================//
         //   Get First / Last Committed
         $committed = $first
             ? array_shift($sessionCommits)
             : array_pop($sessionCommits)
         ;
-
         //====================================================================//
         // Check Committed Infos
         $this->assertIsArray($committed, CommitsManager::class."::committed format is wrong");

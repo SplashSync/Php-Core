@@ -71,7 +71,7 @@ trait ObjectsValidatorTrait
 
         //====================================================================//
         // Build Class Full Name
-        $className = self::$classPrefix.$fieldType;
+        $className = self::$classPrefix.ucfirst($fieldType);
 
         //====================================================================//
         // Build New Entity
@@ -129,7 +129,6 @@ trait ObjectsValidatorTrait
         $this->assertNotEmpty($data, "Field Data Block is Empty");
         $this->assertNotEmpty($fieldId, "Field Id is Empty");
         $this->assertNotEmpty($fieldType, "Field Type Name is Empty");
-
         //====================================================================//
         // Detects Lists Fields
         $isList = self::isListField($fieldId);
@@ -140,23 +139,23 @@ trait ObjectsValidatorTrait
 
             return $this->isValidListFieldData($data, $fieldId, $fieldType);
         }
-
         //====================================================================//
         // Verify Field is in Data Response
         $this->assertIsArray($data, "Field/Data Block is not an Array");
         $this->assertArrayHasKey($fieldId, $data, "Field '".$fieldId."' is not defined in returned Data Block.");
-
         //====================================================================//
         // Verify Single Field Data Type is not Null
         if (is_null($data[$fieldId])) {
             return false;
         }
-
         //====================================================================//
         // Verify Raw Field Data
-        $this->assertTrue(
-            self::isValidData($data[$fieldId], $fieldType),
-            $fieldId." => Field Raw Data is not a valid ".$fieldType.". (".print_r($data[$fieldId], true).")"
+        $validation = self::isValidData($data[$fieldId], $fieldType);
+        $this->assertNull(
+            $validation,
+            $fieldId." => Field Raw Data is not a valid "
+            .$fieldType.". (".print_r($data[$fieldId], true).")"
+            ." ".$validation
         );
 
         return true;

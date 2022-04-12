@@ -30,7 +30,7 @@ trait ObjectsFakerTrait
      *
      * @var null|array
      */
-    protected ?array $originData;
+    protected ?array $originData = null;
 
     //==============================================================================
     //      FAKE DATA GENERATORS
