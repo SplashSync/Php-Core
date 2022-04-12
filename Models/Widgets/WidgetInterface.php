@@ -32,9 +32,9 @@ interface WidgetInterface
      *
      * @param array $parameters List of Parameters
      *
-     * @return array Widget Data
+     * @return null|array Widget Data
      */
-    public function get(array $parameters = array()): array;
+    public function get(array $parameters = array()): ?array;
 
     /**
      * Return Widget Status
