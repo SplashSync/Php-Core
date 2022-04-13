@@ -27,7 +27,7 @@ class Oodate extends Oovarchar implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Date';
+    const FORMAT = 'Date';
 
     //==============================================================================
     //      DATA VALIDATION

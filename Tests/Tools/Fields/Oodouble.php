@@ -27,7 +27,7 @@ class Oodouble implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Double';
+    const FORMAT = 'Double';
 
     //==============================================================================
     //      DATA VALIDATION

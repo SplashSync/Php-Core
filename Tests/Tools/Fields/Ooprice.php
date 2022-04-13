@@ -42,7 +42,7 @@ class Ooprice implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Price';
+    const FORMAT = 'Price';
 
     //==============================================================================
     //      DATA VALIDATION

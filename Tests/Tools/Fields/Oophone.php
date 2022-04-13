@@ -25,7 +25,7 @@ class Oophone extends Oovarchar implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Phone';
+    const FORMAT = 'Phone';
 
     //==============================================================================
     //      DATA VALIDATION

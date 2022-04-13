@@ -30,6 +30,7 @@ use Splash\Models\WidgetsProviderInterface;
  *
  * @author      B. Paquier <contact@splashsync.com>
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Validator
 {

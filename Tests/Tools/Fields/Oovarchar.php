@@ -25,7 +25,7 @@ class Oovarchar implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Varchar';
+    const FORMAT = 'Varchar';
 
     //==============================================================================
     //      DATA VALIDATION

@@ -29,7 +29,7 @@ class Ooinline extends Oovarchar implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Inline';
+    const FORMAT = 'Inline';
 
     //==============================================================================
     //      DATA VALIDATION

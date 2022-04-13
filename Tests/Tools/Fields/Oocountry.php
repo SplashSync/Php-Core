@@ -29,7 +29,7 @@ class Oocountry extends Oovarchar implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Country';
+    const FORMAT = 'Country';
 
     //==============================================================================
     //      DATA VALIDATION

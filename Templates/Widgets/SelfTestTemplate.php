@@ -29,6 +29,8 @@ use Splash\Models\AbstractWidget;
  * SelfTest Template Widget for Splash Modules
  *
  * @author B. Paquier <contact@splashsync.com>
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class SelfTestTemplate extends AbstractWidget
 {

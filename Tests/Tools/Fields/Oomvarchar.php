@@ -33,7 +33,7 @@ class Oomvarchar implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'MVarchar';
+    const FORMAT = 'MVarchar';
 
     //==============================================================================
     //      DATA VALIDATION

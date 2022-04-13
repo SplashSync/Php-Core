@@ -27,7 +27,7 @@ class Oourl extends Oovarchar implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Url';
+    const FORMAT = 'Url';
 
     //==============================================================================
     //      DATA VALIDATION

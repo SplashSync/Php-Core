@@ -25,7 +25,7 @@ class Ooint implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Int';
+    const FORMAT = 'Int';
 
     //==============================================================================
     //      DATA VALIDATION

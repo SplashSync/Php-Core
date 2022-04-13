@@ -25,7 +25,7 @@ class Ooemail extends Oovarchar implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Email';
+    const FORMAT = 'Email';
 
     //==============================================================================
     //      DATA VALIDATION

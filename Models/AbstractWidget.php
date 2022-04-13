@@ -25,6 +25,8 @@ use Splash\Models\Widgets\WidgetInterface;
  * This class is a base class for all Splash Widgets.
  *
  * @author      B. Paquier <contact@splashsync.com>
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 abstract class AbstractWidget implements WidgetInterface
 {

@@ -25,7 +25,7 @@ class Oobool implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Bool';
+    const FORMAT = 'Bool';
 
     //==============================================================================
     //      DATA VALIDATION

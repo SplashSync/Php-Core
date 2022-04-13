@@ -25,7 +25,7 @@ class Ootext implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'Text';
+    const FORMAT = 'Text';
 
     //==============================================================================
     //      DATA VALIDATION

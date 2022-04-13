@@ -31,7 +31,7 @@ class Oomtext implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'MText';
+    const FORMAT = 'MText';
 
     //==============================================================================
     //      DATA VALIDATION

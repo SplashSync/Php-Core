@@ -30,7 +30,7 @@ class Ooobjectid implements FieldInterface
     //==============================================================================
 
     /** @var string */
-    protected $FORMAT = 'ObjectId';
+    const FORMAT = 'ObjectId';
 
     //==============================================================================
     //      DATA VALIDATION

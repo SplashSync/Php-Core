@@ -45,7 +45,7 @@
         "ext-curl":                         "*",
         "ext-apcu":                         "*",
         "splash/console":                   "dev-master",
-        "badpixxel/php-sdk":                "dev-main"
+        "badpixxel/php-sdk":                "~1.0"
     },
     
     "archive": {
