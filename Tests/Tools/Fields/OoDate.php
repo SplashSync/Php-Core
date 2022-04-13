@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,19 +15,23 @@
 
 namespace Splash\Tests\Tools\Fields;
 
+use DateTime;
+
 /**
- * DateTime Field : Date & Time as Text (Format Y-m-d G:i:s)
+ * Date Field : Date as Text (Format Y-m-d)
  *
- * @example     2016-12-25 12:25:30
+ * @example     2016-12-25
  */
-class Oodatetime extends Oovarchar implements FieldInterface
+class OoDate extends OoVarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    const FORMAT = 'DateTime';
+    /**
+     * @var string
+     */
+    const FORMAT = 'Date';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -36,25 +40,25 @@ class Oodatetime extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //==============================================================================
         //      Verify Data is not Empty
         if (empty($data)) {
-            return true;
+            return null;
         }
         //==============================================================================
         //      Verify Data is a Scalar
         if (!is_scalar($data)) {
-            return "Field Data is not a DateTime with right Format (".SPL_T_DATETIMECAST.").";
+            return "Field Data is not a Date with right Format (".SPL_T_DATECAST.").";
         }
         //==============================================================================
         //      Verify Data is a DateTime Type
-        if (false !== \DateTime::createFromFormat(SPL_T_DATETIMECAST, (string) $data)) {
-            return true;
+        if (false !== DateTime::createFromFormat(SPL_T_DATECAST, (string) $data)) {
+            return null;
         }
 
-        return "Field Data is not a DateTime with right Format (".SPL_T_DATETIMECAST.").";
+        return "Field Data is not a Date with right Format (".SPL_T_DATECAST.").";
     }
 
     //==============================================================================
@@ -64,16 +68,15 @@ class Oodatetime extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         //==============================================================================
         //      Generate a random DateTime
-        $date = new \DateTime("now");
-        $date->modify('-'.mt_rand(1, 10).' months');
-        $date->modify('-'.mt_rand(1, 60).' minutes');
-        $date->modify('-'.mt_rand(1, 60).' seconds');
+        $date = new DateTime("now");
+        $date->modify('-'.mt_rand(1, 24).' months');
+        $date->modify('-'.mt_rand(1, 30).' days');
         //==============================================================================
         //      Return DateTime is Right Format
-        return $date->format(SPL_T_DATETIMECAST);
+        return $date->format(SPL_T_DATECAST);
     }
 }

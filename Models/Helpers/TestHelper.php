@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,6 +17,7 @@ namespace   Splash\Models\Helpers;
 
 use Exception;
 use Splash\Components\CommitsManager;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Helper for PhpUnit Tests
@@ -33,8 +34,6 @@ class TestHelper
      * @param null|string      $user       User Name
      * @param null|string      $comment    Operation Comment for Logs
      *
-     * @throws Exception
-     *
      * @return void
      */
     public static function simObjectCommit(
@@ -44,6 +43,10 @@ class TestHelper
         ?string $user = null,
         ?string $comment = null
     ): void {
-        CommitsManager::simSessionCommit($objectType, $local, $action, $user, $comment);
+        try {
+            CommitsManager::simSessionCommit($objectType, $local, $action, $user, $comment);
+        } catch (Exception $e) {
+            Splash::log()->report($e);
+        }
     }
 }

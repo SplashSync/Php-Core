@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -264,10 +264,30 @@ class ObjectField extends ArrayObject
     /**
      * Convert Field Definition to Array
      *
-     * @return array
+     * @return  array{
+     *          type: string,
+     *          id: string,
+     *          name: string,
+     *          desc: string,
+     *          group: string,
+     *          required: null|bool|string,
+     *          read: null|bool|string,
+     *          write: null|bool|string,
+     *          inlist: null|bool|string,
+     *          log: null|bool|string,
+     *          notest: null|bool|string,
+     *          syncmode: string,
+     *          itemprop: null|string,
+     *          itemtype: null|string,
+     *          tag: null|string,
+     *          choices: null|array{ key: string, value: scalar},
+     *          asso: null|string[],
+     *          options: array<string, scalar>
+     *          }
      */
     public function toArray(): array
     {
+        /** @phpstan-ignore-next-line */
         return $this->getArrayCopy();
     }
 

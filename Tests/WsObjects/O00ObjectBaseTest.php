@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,8 +21,6 @@ use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * Objects Test Suite - Object Base Class Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class O00ObjectBaseTest extends ObjectsCase
 {
@@ -58,7 +56,7 @@ class O00ObjectBaseTest extends ObjectsCase
 
         //====================================================================//
         //  Integer IDs
-        $intObjectId = rand((int) 1E3, (int) 1E4);
+        $intObjectId = (string) rand((int) 1E3, (int) 1E4);
         Splash::object($objectType)->unLock($intObjectId);
         $this->assertFalse(Splash::object($objectType)->isLocked($intObjectId));
         Splash::object($objectType)->lock($intObjectId);

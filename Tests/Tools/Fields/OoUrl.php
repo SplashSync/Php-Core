@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,14 +20,16 @@ namespace Splash\Tests\Tools\Fields;
  *
  * @see http://www.faqs.org/rfcs/rfc2396.html
  */
-class Oourl extends Oovarchar implements FieldInterface
+class OoUrl extends OoVarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'Url';
+    /**
+     * @var string
+     */
+    const FORMAT = 'Url';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -36,17 +38,17 @@ class Oourl extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //==============================================================================
         //      Verify Data is not Empty
         if (empty($data)) {
-            return true;
+            return null;
         }
 
         //==============================================================================
         //      Verify Data is a String
-        if (!empty($data) && !is_string($data)) {
+        if (!is_string($data)) {
             return "Field  Data is not a String.";
         }
 
@@ -56,7 +58,7 @@ class Oourl extends Oovarchar implements FieldInterface
 //            return "Field Data is not a Valid Url";
 //        }
 
-        return true;
+        return null;
     }
 
     //==============================================================================
@@ -66,7 +68,7 @@ class Oourl extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         $domain = preg_replace('/[^A-Za-z\-]/', '', strtolower(base64_encode((string) mt_rand(100, 1000))));
         $prefix = !empty($settings["Url_Prefix"]) ? $settings["Url_Prefix"] : null;

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,28 +18,28 @@ namespace   Splash\Models\Objects;
 use Splash\Components\UnitConverter;
 
 /**
- * Helper for Units Convertion
+ * Helper for Units Conversion
  */
 trait UnitsHelperTrait
 {
     /**
-     * @var UnitConverter
+     * @var null|UnitConverter
      */
-    private static $unitConverter;
+    private static ?UnitConverter $unitConverter;
 
     /**
      * Get a singleton Unit Converter Class
      *
      * @return UnitConverter
      */
-    public static function units()
+    public static function units(): UnitConverter
     {
-        // Helper Class Exists
-        if (isset(self::$unitConverter)) {
-            return self::$unitConverter;
-        }
+        //====================================================================//
         // Initialize Class
-        self::$unitConverter = new UnitConverter();
+        if (!isset(self::$unitConverter)) {
+            self::$unitConverter = new UnitConverter();
+        }
+        //====================================================================//
         // Return Helper Class
         return self::$unitConverter;
     }

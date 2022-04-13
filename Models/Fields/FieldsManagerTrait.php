@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -76,7 +76,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * Find a Field Definition in List by Id
+     * Find a Field Definition in List by ID
      *
      * @param array[]  $fieldsList Object Field List
      * @param string[] $fieldId    Field Id
@@ -95,7 +95,7 @@ trait FieldsManagerTrait
     }
 
     /**
-     * Find a Field Definition in List by Id
+     * Find a Field Definition in List by ID
      *
      * @param array[] $fieldsList Object Field List
      * @param string  $itemType   Field Microdata Type Url
@@ -153,14 +153,14 @@ trait FieldsManagerTrait
      *
      * @param null|string $fieldType Data Type Name String
      *
-     * @return array|false Exploded List field Array or False
+     * @return null|array<string, string> Exploded List field Array or False
      */
-    public static function isListField(?string $fieldType)
+    public static function isListField(?string $fieldType): ?array
     {
         //====================================================================//
         // Safety Check
         if (empty($fieldType)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Detects Lists
@@ -171,7 +171,7 @@ trait FieldsManagerTrait
             return array('fieldname' => $list[0], 'listname' => $list[1]);
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -179,15 +179,15 @@ trait FieldsManagerTrait
      *
      * @param null|string $listFieldName List Field Identifier String
      *
-     * @return false|string
+     * @return null|string
      */
-    public static function fieldName(?string $listFieldName)
+    public static function fieldName(?string $listFieldName): ?string
     {
         //====================================================================//
         // Decode
         $result = self::isListField($listFieldName);
         if (empty($result)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Return Field Identifier
@@ -199,15 +199,15 @@ trait FieldsManagerTrait
      *
      * @param null|string $listFieldName List Field Identifier String
      *
-     * @return false|string
+     * @return null|string
      */
-    public static function listName(?string $listFieldName)
+    public static function listName(?string $listFieldName): ?string
     {
         //====================================================================//
         // Decode
         $result = self::isListField($listFieldName);
         if (empty($result)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Return List Name
@@ -219,9 +219,9 @@ trait FieldsManagerTrait
      *
      * @param null|string $fieldId List Field Identifier String
      *
-     * @return false|string
+     * @return null|string
      */
-    public static function baseType(?string $fieldId)
+    public static function baseType(?string $fieldId): ?string
     {
         //====================================================================//
         // Detect List Id Fields
@@ -234,7 +234,7 @@ trait FieldsManagerTrait
             $fieldId = self::objectType((string) $fieldId);
         }
 
-        return $fieldId ?: false;
+        return $fieldId ?: null;
     }
 
     //==============================================================================
@@ -246,14 +246,14 @@ trait FieldsManagerTrait
      *
      * @param null|string $fieldId ObjectId Field String
      *
-     * @return array|false
+     * @return null|array
      */
-    public static function isIdField(?string $fieldId)
+    public static function isIdField(?string $fieldId): ?array
     {
         //====================================================================//
         // Safety Check
         if (empty($fieldId)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Detects ObjectId
@@ -267,23 +267,23 @@ trait FieldsManagerTrait
             return $result;
         }
 
-        return false;
+        return null;
     }
 
     /**
-     * Retrieve Object Id Name from an Object Identifier String
+     * Retrieve Object ID Name from an Object Identifier String
      *
      * @param null|string $fieldId Object Identifier String
      *
-     * @return false|string
+     * @return null|string
      */
-    public static function objectId(?string $fieldId)
+    public static function objectId(?string $fieldId): ?string
     {
         //====================================================================//
         // decode
         $result = self::isIdField($fieldId);
         if (empty($result)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Return List Name
@@ -295,15 +295,15 @@ trait FieldsManagerTrait
      *
      * @param null|string $fieldId Object Identifier String
      *
-     * @return false|string
+     * @return null|string
      */
-    public static function objectType(?string $fieldId)
+    public static function objectType(?string $fieldId): ?string
     {
         //====================================================================//
         // decode
         $result = self::isIdField($fieldId);
         if (empty($result)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Return Field Identifier
@@ -320,7 +320,7 @@ trait FieldsManagerTrait
      * @param array       $objectData Object Data Block
      * @param null|string $filter     Single Fields Id
      *
-     * @return null|array|string
+     * @return null|array|scalar
      */
     public static function extractRawData(array $objectData, ?string $filter)
     {
@@ -374,6 +374,8 @@ trait FieldsManagerTrait
      * @param string[] $filters    Array of Fields Ids
      *
      * @return null|array
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public static function filterData(array $objectData, array $filters = array()): ?array
     {
@@ -400,7 +402,7 @@ trait FieldsManagerTrait
             $fieldName = is_array($isList) ? $isList['fieldname'] : null;
             //====================================================================//
             // Check List Data are Present in Block
-            if (!array_key_exists($listName, $objectData)) {
+            if (!$listName || !array_key_exists($listName, $objectData)) {
                 continue;
             }
             //====================================================================//
@@ -423,17 +425,17 @@ trait FieldsManagerTrait
     /**
      * Filter an Object List Data Block to keep only given Fields
      *
-     * @param null|array|ArrayObject|string $objectData Object Data Block
-     * @param array                         $filters    Array of Fields Ids
+     * @param null|array $objectData Object Data Block
+     * @param array      $filters    Array of Fields Ids
      *
      * @return array
      */
-    public static function filterListData($objectData, array $filters = array()): array
+    public static function filterListData(?array $objectData, array $filters = array()): array
     {
         $result = array();
         //====================================================================//
         // Safety Check => List Data is not Empty
-        if (!is_array($objectData) && !($objectData instanceof ArrayObject)) {
+        if (!is_array($objectData)) {
             return $result;
         }
         //====================================================================//
@@ -468,12 +470,12 @@ trait FieldsManagerTrait
      *
      * @param mixed $input Input Array
      *
-     * @return array Sorted Array
+     * @return mixed Sorted Array
      */
     public static function normalize(&$input)
     {
         //==============================================================================
-        //      Convert ArrayObjects To Simple Array
+        // Convert ArrayObjects To Simple Array
         if ($input instanceof ArrayObject) {
             $input = $input->getArrayCopy();
             //==============================================================================
@@ -508,11 +510,8 @@ trait FieldsManagerTrait
      *
      * @return array Sorted Array
      */
-    public static function sort(&$inputArray)
+    public static function sort(array &$inputArray): array
     {
-        if (!is_array($inputArray)) {
-            return $inputArray;
-        }
         //==============================================================================
         // Sort All Sub-Contents
         foreach ($inputArray as &$value) {

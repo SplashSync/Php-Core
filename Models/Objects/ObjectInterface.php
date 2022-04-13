@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,9 +32,9 @@ interface ObjectInterface
      *
      * @since 1.0.0
      *
-     * @return array
+     * @return string[]
      */
-    public function description();
+    public function description(): array;
 
     /**
      * Return List Of Available Fields for Splash Object
@@ -43,50 +43,73 @@ interface ObjectInterface
      * Use $this->fieldsFactory()->Create() to create all fields instances
      * Use $this->fieldsFactory()->Publish() to generate resulting array
      *
-     * @see If you uses the InteliParser, this Function not Required
+     * @remark  If you use the IntelliParser, this Function not Required
+     *
      * @since 1.0.0
      *
-     * @return array[] $data       List of all available fields
+     * @return22 array<string, array<string, scalar|array<string, scalar>>> List of all available fields
+     *
+     * @return  array<array{
+     *          type: string,
+     *          id: string,
+     *          name: string,
+     *          desc: string,
+     *          group: string,
+     *          required: null|bool|string,
+     *          read: null|bool|string,
+     *          write: null|bool|string,
+     *          inlist: null|bool|string,
+     *          log: null|bool|string,
+     *          notest: null|bool|string,
+     *          syncmode: string,
+     *          itemprop: null|string,
+     *          itemtype: null|string,
+     *          tag: null|string,
+     *          choices: null|array{ key: string, value: scalar},
+     *          asso: null|string[],
+     *          options: array<string, scalar>
+     *          }>
      */
-    public function fields();
+    public function fields(): array;
 
     /**
      * Return List Of Objects with required filters
      *
-     * Data That May be Send on Parameters Array
+     * Data That May be sent on Parameters Array
      *  =>  $params["max"]              Maximum Number of results
      *  =>  $params["offset"]           List Start Offset
      *  =>  $params["sortfield"]        Field name for sort list (Available fields listed below)
      *  =>  $params["sortorder"]        List Order Constrain (Default = ASC)
      *
-     * Metra Data That Must be Included On Result Array
+     * Metadata That Must be Included On Result Array
      *  =>  $response["meta"]["total"]     Total Number of results
      *  =>  $response["meta"]["current"]   Total Number of results
      *
-     * @param string $filter Filters for Object List.
-     * @param array  $params Search parameters for result List.
-     *
-     * @since 1.0.0
+     * @param null|string $filter Filters for Object List.
+     * @param array       $params Search parameters for result List.
      *
      * @return array List of all Object main data
+     *
+     * @since 1.0.0
      */
-    public function objectsList($filter = null, $params = null);
+    public function objectsList(string $filter = null, array $params = array()): array;
 
     /**
      * Read Requested Object Data
      *
      * Splash will send a list of Fields Ids to Read.
-     * Objects Class will Retun Data Array Indexed with those Fields Ids
+     * Objects Class will Return Data Array Indexed with those Fields Ids
      *
-     * @see If you uses the InteliParser, this Function not Required
+     * @param string   $objectId Object ID.
+     * @param string[] $fields   List of requested fields
+     *
+     * @return null|array<string, null|array<string, null|array|scalar>|scalar>
+     *
+     * @remark  If you use the IntelliParser, this Function not Required
+     *
      * @since 1.0.0
-     *
-     * @param string $objectId Object Id.
-     * @param array  $fields   List of requested fields
-     *
-     * @return array|false
      */
-    public function get($objectId = null, $fields = array());
+    public function get(string $objectId, array $fields): ?array;
 
     /**
      * Update or Create requested Object Data
@@ -96,26 +119,27 @@ interface ObjectInterface
      *
      * If Given ObjectId is null, Object is to Be Created
      *
-     * @see If you uses the InteliParser, this Function not Required
+     * @param null|string                                                 $objectId
+     * @param array<string, null|array<string, null|array|scalar>|scalar> $objectData
+     *
+     * @return null|string Object ID or Null if Object wasn't created.
+     *
+     * @remark  If you use the IntelliParser, this Function not Required
+     *
      * @since 1.0.0
-     *
-     * @param string $objectId   Object Id.  If NULL, Object needs to be created.
-     * @param array  $objectData List of requested fields
-     *
-     * @return false|string Object Id.  If False, Object wasn't created.
      */
-    public function set($objectId = null, $objectData = null);
+    public function set(?string $objectId, array $objectData): ?string;
 
     /**
      * Delete requested Object
      *
-     * @param string $objectId Object Id
+     * @param string $objectId Object ID
      *
      * @since 1.0.0
      *
      * @return bool
      */
-    public function delete($objectId = null);
+    public function delete(string $objectId): bool;
 
     /**
      * Return the Identifier of Currently Written Object
@@ -124,13 +148,14 @@ interface ObjectInterface
      * Object. It may be called aty any time by Splash Module as soon as
      * Load or Create Operation was done.
      *
-     * @see If you uses the InteliParser, This behavior will prevent creation
-     *      of Duplicate Objects whenever Update fail.
-     * @since 2.0.0
+     * @return null|string
      *
-     * @return false|string
+     * @remark  If you use the IntelliParser, This behavior will prevent creation
+     *          of Duplicate Objects whenever Update fail.
+     *
+     * @since 1.6.0
      */
-    public function getObjectIdentifier();
+    public function getObjectIdentifier(): ?string;
 
     //====================================================================//
     // Object LOCK Management
@@ -143,36 +168,37 @@ interface ObjectInterface
      * on currently edited objects. Node name & Type are
      * single, but Ids have to be stored as list
      *
-     * @see Use LockTrait to simply Implement this Feature
-     * @since 1.0.0
-     *
-     * @param null|int|string $objectId Local Object Identifier or Empty if New Object
+     * @param null|string $objectId Local Object Identifier or NULL if New Object
      *
      * @return bool
+     *
+     * @remark Use LockTrait to simply Implement this Feature
+     *
+     * @since 1.0.0
      */
-    public function lock($objectId = "new");
+    public function lock(?string $objectId = null): bool;
 
     /**
      * Get Lock Status for a specific object
      *
-     * @param null|int|string $objectId Local Object Identifier or Empty if New Object
+     * @param null|string $objectId Local Object Identifier or Empty if New Object
      *
      * @since 1.0.0
      *
      * @return bool
      */
-    public function isLocked($objectId = "new");
+    public function isLocked(?string $objectId = null): bool;
 
     /**
      * Delete Current active Lock
      *
-     * @param null|int|string $objectId Local Object Identifier or Empty if New Object
+     * @param null|string $objectId Local Object Identifier or NULL if New Object
      *
      * @since 1.0.0
      *
      * @return bool
      */
-    public function unLock($objectId = "new");
+    public function unLock(?string $objectId = null): bool;
 
     //====================================================================//
     // Object Metadata Management
@@ -181,7 +207,7 @@ interface ObjectInterface
     /**
      * Return Object Status
      *
-     * This function may be Overidden by Objects to Enable/Disbale
+     * This function may be Override by Objects to Enable/Disable
      * access to an Object from Application
      *
      * Default behavior is Reading static::$DISABLED Flag (Default = false)
@@ -190,7 +216,7 @@ interface ObjectInterface
      *
      * @since 1.0.0
      *
-     * @return null|bool
+     * @return bool
      */
-    public static function getIsDisabled();
+    public static function isDisabled(): bool;
 }

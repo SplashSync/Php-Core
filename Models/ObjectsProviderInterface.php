@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,30 +15,31 @@
 
 namespace Splash\Models;
 
+use Exception;
 use Splash\Models\Objects\ObjectInterface;
 
 /**
- * @abstract    Local Objects Provider Interface.
- *              Used to Override Core Objects Mapper (by Files)
+ * Local Objects Provider Interface.
+ * Used to Override Core Objects Mapper (by Files)
  */
 interface ObjectsProviderInterface
 {
     /**
-     * @abstract   Build list of Available Objects
+     * Build list of Available Objects
      *
      * @return string[]
      */
-    public function objects();
+    public function objects(): array;
 
     /**
-     * @abstract   Get Specific Object Class
-     *             This function is a router for all local object classes & functions
+     * Get Splash Specific Object Class
+     * This function is a router for all local object classes & functions
      *
-     * @params     string   $type       Specify Object Class Name
+     * @param string $objectType Specify Object Class Name
      *
-     * @param null|mixed $objectType
+     * @throws Exception
      *
      * @return ObjectInterface
      */
-    public function object($objectType = null);
+    public function object(string $objectType): ObjectInterface;
 }

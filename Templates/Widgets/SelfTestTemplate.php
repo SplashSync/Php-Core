@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,79 +13,51 @@
  *  file that was distributed with this source code.
  */
 
-//====================================================================//
-// *******************************************************************//
-//                     SPLASH FOR PHP APPLICATIONS                    //
-// *******************************************************************//
-//====================================================================//
-
 namespace   Splash\Templates\Widgets;
 
-use ArrayObject;
+use Exception;
 use Splash\Core\SplashCore      as Splash;
 use Splash\Models\AbstractWidget;
 
 /**
  * SelfTest Template Widget for Splash Modules
- *
- * @author B. Paquier <contact@splashsync.com>
  */
 class SelfTestTemplate extends AbstractWidget
 {
     /**
-     * Define Standard Options for this Widget
-     * Override this array to change default options for your widget
-     *
-     * @var array
+     * {@inheritdoc}
      */
-    public static $OPTIONS = array(
+    public static array $options = array(
         "Width" => self::SIZE_DEFAULT,
         'UseCache' => true,
         'CacheLifeTime' => 1,
     );
 
     /**
-     * Widget Name
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    protected static $NAME = "Server SelfTest";
+    protected static string $name = "Server SelfTest";
 
     /**
-     * Widget Description
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    protected static $DESCRIPTION = "Results of your Server SelfTests";
+    protected static string $description = "Results of your Server SelfTests";
 
     /**
-     * Widget Icon (FontAwesome or Glyph ico tag)
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    protected static $ICO = "fa fa-info-circle";
+    protected static string $ico = "fa fa-info-circle";
 
     //====================================================================//
     // Class Main Functions
     //====================================================================//
 
     /**
-     * Return Widget Customs Options
+     * {@inheritdoc}
      *
-     * @return array
-     */
-    public function options()
-    {
-        return self::$OPTIONS;
-    }
-
-    /**
-     * @param array $params
-     *
-     * @return array|ArrayObject
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function get($params = array())
+    public function get(array $parameters = array()): ?array
     {
         //====================================================================//
         // Stack Trace
@@ -139,12 +111,14 @@ class SelfTestTemplate extends AbstractWidget
     /**
      * Block Building - Notifications Parameters
      *
+     * @throws Exception
+     *
      * @return void
      */
     private function buildNotificationsBlock()
     {
         //====================================================================//
-        // Execute Loacl SelfTest Function
+        // Execute Local SelfTest Function
         Splash::selfTest();
         //====================================================================//
         // Get Log

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,10 +15,8 @@
 
 namespace Splash\Tests\Tools\Fields;
 
-use ArrayObject;
-
 /**
- * Multilangual Text Field : Multilangual Short Text Array
+ * Multi-langual Text Field : Multi-langual Short Text Array
  *
  * //====================================================================//
  * // Sample :
@@ -26,14 +24,16 @@ use ArrayObject;
  * // Where name is field name and code is a valid SPL_T_LANG Iso Language Code
  * //====================================================================//
  */
-class Oomvarchar implements FieldInterface
+class OoMvarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'MVarchar';
+    /**
+     * @var string
+     */
+    const FORMAT = 'MVarchar';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -42,28 +42,28 @@ class Oomvarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //==============================================================================
         //      Verify Data is Not Empty
-        if (is_null($data) || (is_scalar($data) && ("" === $data))) {
-            return true;
+        if (is_null($data) || ("" === $data)) {
+            return null;
         }
         //==============================================================================
         //      Verify Data is an Array
-        if (!is_array($data) && !($data instanceof ArrayObject)) {
+        if (!is_array($data)) {
             return "Field Data is not an Array.";
         }
 
         //==============================================================================
         //      Verify each Ligne is a String
         foreach ($data as $key => $value) {
-            if (!self::validateIsMultilangData($key, $value)) {
-                return self::validateIsMultilangData($key, $value);
+            if (!self::validateIsMultiLangData($key, $value)) {
+                return self::validateIsMultiLangData($key, $value);
             }
         }
 
-        return true;
+        return null;
     }
 
     //==============================================================================
@@ -73,30 +73,34 @@ class Oomvarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         $fake = array();
         foreach ($settings["Langs"] as $lang) {
-            $fake[$lang] = Oovarchar::fake($settings);
+            $fake[$lang] = OoVarchar::fake($settings);
         }
 
         return $fake;
     }
 
     //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
+    //      DATA COMPARATOR (OPTIONAL)
     //==============================================================================
 
     /**
      * {@inheritdoc}
      */
-    public static function compare($source, $target, $settings)
+    public static function compare($source, $target, array $settings): bool
     {
         //====================================================================//
         //  If Raw Text received, Not Array ==> Raw text Compare
-        if (!is_array($source) && !is_a($target, "ArrayObject")
-                && !is_array($target) && !is_a($target, "ArrayObject")) {
-            return ($source === $target)?true:false;
+        if (!is_array($source) && !is_array($target)) {
+            return $source === $target;
+        }
+        //====================================================================//
+        //  Mixed Types received ==> Different
+        if (!is_array($source) || !is_array($target)) {
+            return false;
         }
         //====================================================================//
         //  Verify Available Languages Count
@@ -118,9 +122,9 @@ class Oomvarchar implements FieldInterface
      * @param mixed $key
      * @param mixed $value
      *
-     * @return string|true
+     * @return null|string
      */
-    private static function validateIsMultilangData($key, $value)
+    private static function validateIsMultiLangData($key, $value): ?string
     {
         if (empty($key) || !is_string($key)) {
             return "Multi-Language Key must be a non empty String.";
@@ -129,6 +133,6 @@ class Oomvarchar implements FieldInterface
             return "Multi-Language Data is not a String.";
         }
 
-        return true;
+        return null;
     }
 }

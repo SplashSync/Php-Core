@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,48 +15,35 @@
 
 namespace Splash\Tests\Tools\Traits;
 
-use ArrayObject;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Splash\Tests\Tools\Fields\FieldInterface;
-use Splash\Tests\Tools\Fields\Ooobjectid as ObjectId;
+use Splash\Tests\Tools\Fields\OoObjectid as ObjectId;
 
 /**
  * Splash Test Tools - Objects Data Management
- *
- * @author SplashSync <contact@splashsync.com>
  */
 trait ObjectsDataTrait
 {
     /**
      * Check Two Data Blocks Have Similar Data
      *
-     * @param array|ArrayObject $block1         Raw Data to Compare
-     * @param array|ArrayObject $block2         Raw Data to Compare
-     * @param null|TestCase     $testController Provide PhpUnit Test Controller Class to Use PhpUnit assertions
-     * @param null|string       $comment        Comment on this Test
+     * @param array[]       $block1         Raw Data to Compare
+     * @param array[]       $block2         Raw Data to Compare
+     * @param null|TestCase $testController Provide PhpUnit Test Controller Class to Use PhpUnit assertions
+     * @param null|string   $comment        Comment on this Test
      *
      * @return bool
      */
-    public function compareRawData($block1, $block2, $testController = null, string $comment = null): bool
-    {
-        //====================================================================//
-        // Filter ArrayObjects
-        if ($block1 instanceof ArrayObject) {
-            $block1 = $block1->getArrayCopy();
-        }
-        if ($block2 instanceof ArrayObject) {
-            $block2 = $block2->getArrayCopy();
-        }
-
+    public function compareRawData(
+        array $block1,
+        array $block2,
+        TestCase $testController = null,
+        string $comment = null
+    ): bool {
         //====================================================================//
         // Remove Id Data if Present on Block
-        if (is_array($block1)) {
-            unset($block1['id']);
-        }
-        if (is_array($block2)) {
-            unset($block2['id']);
-        }
+        unset($block1['id'], $block2['id']);
 
         //====================================================================//
         // Normalize Data Blocks
@@ -64,7 +51,7 @@ trait ObjectsDataTrait
         $this->normalize($block2);
         //====================================================================//
         // If Test Controller Given
-        if ($testController && ($testController instanceof TestCase)) {
+        if (($testController instanceof TestCase)) {
             $testController->assertEquals($block1, $block2, (string) $comment);
 
             return true;
@@ -89,15 +76,15 @@ trait ObjectsDataTrait
      * Check Two Object Data Blocks using Field's Compare functions
      *
      * @param array[]     $fields  Array of OpenObject Fields Definitions
-     * @param mixed       $block1  Raw Data to Compare
-     * @param mixed       $block2  Raw Data to Compare
+     * @param array       $block1  Raw Data to Compare
+     * @param array       $block2  Raw Data to Compare
      * @param null|string $comment Comment on this Test
      *
-     * @throws Exception
+     *@throws Exception
      *
      * @return bool
      */
-    public function compareDataBlocks(array $fields, $block1, $block2, string $comment = null): bool
+    public function compareDataBlocks(array $fields, array $block1, array $block2, string $comment = null): bool
     {
         //====================================================================//
         // For Each Object Fields
@@ -107,12 +94,10 @@ trait ObjectsDataTrait
             if (!$field['read']) {
                 continue;
             }
-
             //====================================================================//
             // Extract Field Data
             $data1 = $this->filterData($block1, array($field['id']));
             $data2 = $this->filterData($block2, array($field['id']));
-
             //====================================================================//
             // Compare List Data
             $fieldType = self::isListField($field['type']);
@@ -172,29 +157,47 @@ trait ObjectsDataTrait
         if (!$className) {
             return false;
         }
-
         //====================================================================//
         // Verify Class has its own Validate & Compare Function*
         $this->assertTrue(
             is_subclass_of($className, FieldInterface::class),
             "Field of type ".$fieldType." must Implement ".FieldInterface::class
         );
-
+        /** @var FieldInterface $className */
+        //====================================================================//
+        // Prepare Blocks Dumps
+        $block1Dump = print_r($block1, true);
+        $block2Dump = print_r($block2, true);
+        //====================================================================//
+        // Validate Data Types
+        $this->assertTrue(
+            is_array($block1) || is_scalar($block1),
+            $comment." Source Data is invalid ".$fieldType." Field Data Block (".$block1Dump.")"
+        );
+        $this->assertTrue(
+            is_array($block2) || is_scalar($block2),
+            $comment." Target Data is invalid ".$fieldType." Field Data Block (".$block2Dump.")"
+        );
         //====================================================================//
         // Validate Data Using Field Type Validator
-        $this->assertTrue(
-            $className::validate($block1),
-            $comment." Source Data is invalid ".$fieldType." Field Data Block (".print_r($block1, true).")"
+        $block1Validation = $className::validate($block1);
+        $this->assertNull(
+            $block1Validation,
+            $comment." Source Data is invalid "
+            .$fieldType." => ".$block1Dump
+            ." (".$block1Validation.")"
         );
-        $this->assertTrue(
-            $className::validate($block2),
-            $comment." Target Data is invalid ".$fieldType." Field Data Block (".print_r($block2, true).")"
+        $block2Validation = $className::validate($block2);
+        $this->assertNull(
+            $block2Validation,
+            $comment." Target Data is invalid "
+            .$fieldType." => ".$block2Dump
+            ." (".$block2Validation.")"
         );
-
         //====================================================================//
         // Compare Data Using Field Type Comparator
         if (!$className::compare($block1, $block2, $this->settings)) {
-            echo PHP_EOL."Source :".print_r($block1, true);
+            echo PHP_EOL."Source :".$block1Dump;
             echo PHP_EOL."Target :".print_r($block2, true);
         }
         $this->assertTrue(

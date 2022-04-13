@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -40,11 +40,15 @@ class S00ProductTest extends ObjectsCase
     /** @var array */
     const ATTRIBUTES = array('VariantA','VariantB');
 
-    /** @var array */
-    protected $currentVariation = array();
+    /**
+     * @var array
+     */
+    protected array $currentVariation = array();
 
-    /** @var array */
-    protected $currentImages = array();
+    /**
+     * @var array
+     */
+    protected array $currentImages = array();
 
     /**
      * @dataProvider objectTypesProvider
@@ -222,6 +226,8 @@ class S00ProductTest extends ObjectsCase
      * @param string $objectType
      * @param array  $images
      *
+     * @throws Exception
+     *
      * @return void
      */
     public function testImagesFromModule(string $testSequence, string $objectType, array $images)
@@ -310,7 +316,7 @@ class S00ProductTest extends ObjectsCase
         if (is_null($field)) {
             $name = self::findFieldByTag($fields, static::$itemProp, 'name');
             $altName = self::findFieldByTag($fields, static::$itemProp, 'alternateName');
-            $field = $altName ? $altName : $name;
+            $field = $altName ?: $name;
         }
         $this->assertNotEmpty($field);
         if (is_null($field)) {

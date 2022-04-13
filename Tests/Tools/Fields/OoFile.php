@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,13 +33,15 @@ use ArrayObject;
  * // $data["file"]["size"]           =>      File Size
  * //====================================================================//
  */
-class Oofile implements FieldInterface
+class OoFile implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
+    /**
+     * @var string
+     */
     const FORMAT = 'File';
 
     //==============================================================================
@@ -49,16 +51,16 @@ class Oofile implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //====================================================================//
         //      Verify Data is NOT Empty
         if (empty($data)) {
-            return true;
+            return null;
         }
         //==============================================================================
         //      Verify Data is an Array
-        if (!is_array($data) && !($data instanceof ArrayObject)) {
+        if (!is_array($data)) {
             return 'Field Data is not an Array.';
         }
         //====================================================================//
@@ -67,7 +69,7 @@ class Oofile implements FieldInterface
             return self::validateContents($data);
         }
 
-        return true;
+        return null;
     }
 
     //==============================================================================
@@ -77,7 +79,7 @@ class Oofile implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         //====================================================================//
         // Image Faker Parameters
@@ -113,20 +115,17 @@ class Oofile implements FieldInterface
     }
 
     //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
+    //      DATA COMPARATOR (OPTIONAL)
     //==============================================================================
 
     /**
      * {@inheritdoc}
      */
-    public static function compare($source, $target, $settings)
+    public static function compare($source, $target, array $settings): bool
     {
         //====================================================================//
         // Smart Validate Arrays
-        if (!is_array($source) && !is_a($source, 'ArrayObject')) {
-            return false;
-        }
-        if (!is_array($target) && !is_a($target, 'ArrayObject')) {
+        if (!is_array($source) || !is_array($target)) {
             return false;
         }
         //====================================================================//
@@ -149,7 +148,7 @@ class Oofile implements FieldInterface
      *
      * @return boolean
      */
-    public static function compareMd5($source, $target)
+    public static function compareMd5($source, $target): bool
     {
         //====================================================================//
         // Compare File CheckSum
@@ -166,11 +165,11 @@ class Oofile implements FieldInterface
     }
 
     /**
-     * @param array|ArrayObject $file
+     * @param array $file
      *
-     * @return string|true
+     * @return null|string
      */
-    protected static function validateContents($file)
+    protected static function validateContents(array $file): ?string
     {
         if (!isset($file["name"])) {
             return "File Field => 'name' is missing.";
@@ -188,6 +187,6 @@ class Oofile implements FieldInterface
             return "File Field => 'size' is missing.";
         }
 
-        return true;
+        return null;
     }
 }

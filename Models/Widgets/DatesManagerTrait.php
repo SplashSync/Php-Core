@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,8 +15,9 @@
 
 namespace   Splash\Models\Widgets;
 
-use ArrayObject;
 use DateInterval;
+use DateTime;
+use Exception;
 
 /**
  * Date Management for Splash Widgets.
@@ -25,44 +26,58 @@ use DateInterval;
  */
 trait DatesManagerTrait
 {
-    /** @var string */
-    protected $DateStart;
-    /** @var string */
-    protected $DateEnd;
-    /** @var DateInterval */
-    protected $DateInterval;
-    /** @var string */
-    protected $GroupBy;
-    /** @var string */
-    protected $LabelFormat;
+    /**
+     * @var null|string
+     */
+    protected ?string $dateStart = null;
+
+    /**
+     * @var null|string
+     */
+    protected ?string $dateEnd = null;
+
+    /**
+     * @var DateInterval
+     */
+    protected DateInterval $dateInterval;
+
+    /**
+     * @var string
+     */
+    protected string $groupBy;
+
+    /**
+     * @var string
+     */
+    protected string $labelFormat;
 
     //====================================================================//
     //  DATES MANAGEMENT
     //====================================================================//
 
     /**
-     * @param array|ArrayObject $params
+     * @param array $params
      *
      * @return void
      */
-    protected function importDates($params)
+    protected function importDates(array $params)
     {
         //====================================================================//
         //  Import Dates Parameters
         if (isset($params["DateStart"]) && !empty($params["DateStart"])) {
-            $this->DateStart = $params["DateStart"];
+            $this->dateStart = $params["DateStart"];
         } else {
-            $this->DateStart = (new \DateTime("first day of this month"))->format(SPL_T_DATECAST);
+            $this->dateStart = (new DateTime("first day of this month"))->format(SPL_T_DATECAST);
         }
         if (isset($params["DateEnd"]) && !empty($params["DateEnd"])) {
-            $this->DateEnd = $params["DateEnd"];
+            $this->dateEnd = $params["DateEnd"];
         } else {
-            $this->DateEnd = (new \DateTime("last day of this month"))->format(SPL_T_DATECAST);
+            $this->dateEnd = (new DateTime("last day of this month"))->format(SPL_T_DATECAST);
         }
         if (isset($params["GroupBy"]) && !empty($params["GroupBy"])) {
-            $this->GroupBy = $params["GroupBy"];
+            $this->groupBy = $params["GroupBy"];
         } else {
-            $this->GroupBy = "d";
+            $this->groupBy = "d";
         }
 
         //====================================================================//
@@ -71,29 +86,31 @@ trait DatesManagerTrait
     }
 
     /**
-     * @param array|ArrayObject $inputs
+     * @param array $inputs
+     *
+     * @throws Exception
      *
      * @return array
      */
-    protected function parseDatedData($inputs)
+    protected function parseDatedData(array $inputs): array
     {
         $outputs = array();
-        if (!isset($this->DateStart) || !isset($this->DateEnd)) {
+        if (!isset($this->dateStart) || !isset($this->dateEnd)) {
             return $outputs;
         }
 
-        $start = $current = new \DateTime($this->DateStart);
-        $end = new \DateTime($this->DateEnd);
+        $start = $current = new DateTime($this->dateStart);
+        $end = new DateTime($this->dateEnd);
 
         while ($current < $end) {
-            $key = $current->format($this->GroupBy);
+            $key = $current->format($this->groupBy);
 
             $outputs[] = array(
-                "label" => $current->format($this->LabelFormat),
+                "label" => $current->format($this->labelFormat),
                 "value" => (isset($inputs[$key]) ? $inputs[$key] : 0),
             );
 
-            $current = $start->add($this->DateInterval);
+            $current = $start->add($this->dateInterval);
         }
 
         return $outputs;
@@ -106,25 +123,21 @@ trait DatesManagerTrait
     {
         //====================================================================//
         //  Generate Dates Formater String
-        switch ($this->GroupBy) {
+        switch ($this->groupBy) {
             case "m":
-                $this->LabelFormat = "Y-m";
-                $this->DateInterval = new \DateInterval("P1M");
+            default:
+                $this->labelFormat = "Y-m";
+                $this->dateInterval = new \DateInterval("P1M");
 
                 break;
             case "d":
-                $this->LabelFormat = "Y-m-d";
-                $this->DateInterval = new \DateInterval("P1D");
+                $this->labelFormat = "Y-m-d";
+                $this->dateInterval = new \DateInterval("P1D");
 
                 break;
             case "h":
-                $this->LabelFormat = "Y-m-d H:00";
-                $this->DateInterval = new \DateInterval("PT1H");
-
-                break;
-            default:
-                $this->LabelFormat = "Y-m";
-                $this->DateInterval = new \DateInterval("P1M");
+                $this->labelFormat = "Y-m-d H:00";
+                $this->dateInterval = new \DateInterval("PT1H");
 
                 break;
         }

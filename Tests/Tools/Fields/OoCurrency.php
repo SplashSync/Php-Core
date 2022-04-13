@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,17 +22,21 @@ namespace Splash\Tests\Tools\Fields;
  *
  * @see ISO 4217 : http://www.iso.org/iso/home/standards/currency_codes.htm
  */
-class Oocurrency extends Oovarchar implements FieldInterface
+class OoCurrency extends OoVarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
+    /**
+     * @var string
+     */
     const FORMAT = 'Currency';
 
-    /** @var array */
-    public static $fakeData = array("EUR", "USD", "INR");
+    /**
+     * @var array
+     */
+    public static array $fakeData = array("EUR", "USD", "INR");
 
     //==============================================================================
     //      DATA VALIDATION
@@ -41,13 +45,13 @@ class Oocurrency extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         if (!empty($data) && !is_string($data)) {
             return "Field  Data is not a String.";
         }
 
-        return true;
+        return null;
     }
 
     //==============================================================================
@@ -57,7 +61,7 @@ class Oocurrency extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         return static::$fakeData[ (mt_rand(0, count(static::$fakeData) - 1)) ];
     }

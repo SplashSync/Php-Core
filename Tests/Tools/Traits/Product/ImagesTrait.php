@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,41 +15,58 @@
 
 namespace Splash\Tests\Tools\Traits\Product;
 
-use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
-use Splash\Tests\Tools\Fields\Ooimage as Image;
+use Splash\Tests\Tools\Fields\OoImage as Image;
 
 /**
- * @abstract    Splash Test Tools - Products Images PhpUnit Specific Features
- *
- * @author SplashSync <contact@splashsync.com>
+ * Splash Test Tools - Products Images PhpUnit Specific Features
  */
 trait ImagesTrait
 {
-    /** @var array */
-    private $sourceImages;
-    /** @var array */
-    private $targetFields;
-    /** @var array */
-    private $targetImages;
+    /**
+     * @var array
+     */
+    private array $targetFields;
 
-    /** @var false|string */
-    private $listId;
-    /** @var false|string */
-    private $imageId;
-    /** @var false|string */
-    private $isCoverId;
-    /** @var false|string */
-    private $isVisibleId;
-    /** @var false|string */
-    private $positionId;
+    /**
+     * @var array
+     */
+    private array $targetImages;
+
+    /**
+     * @var null|string
+     */
+    private ?string $listId;
+
+    /**
+     * @var null|string
+     */
+    private ?string $imageId;
+
+    /**
+     * @var null|string
+     */
+    private ?string $isCoverId;
+
+    /**
+     * @var null|string
+     */
+    private ?string $isVisibleId;
+
+    /**
+     * @var null|string
+     */
+    private ?string $positionId;
 
     /**
      * Provide Products Images Tests Combinations
      *
+     * @throws Exception
+     *
      * @return array
      */
-    public function productImagesProvider()
+    public function productImagesProvider(): array
     {
         $result = array();
         //====================================================================//
@@ -70,7 +87,6 @@ trait ImagesTrait
                 $dataSet[3] = $this->getFakeImages($imgSequence);
                 $result[] = $dataSet;
             }
-//            $Result[]   =   $DataSet;
         }
         if (empty($result)) {
             $this->markTestSkipped('No Product Images Combination Found.');
@@ -82,9 +98,9 @@ trait ImagesTrait
     /**
      * Provide Products Images Combinations to Test
      *
-     * @return ArrayObject
+     * @return array[]
      */
-    public function getProductImagesSequences()
+    public function getProductImagesSequences(): array
     {
         $combinations = array();
 
@@ -133,7 +149,7 @@ trait ImagesTrait
             array(4,true,false,3),
         );
 
-        return new ArrayObject($combinations, ArrayObject::ARRAY_AS_PROPS);
+        return $combinations;
     }
 
     //==============================================================================
@@ -145,11 +161,13 @@ trait ImagesTrait
      *
      * @param null|string $testSequence
      * @param string      $objectType
-     * @param mixed       $images
+     * @param array[]     $images
+     *
+     * @throws Exception
      *
      * @return void
      */
-    protected function coreTestImagesFromModule($testSequence, $objectType, $images)
+    protected function coreTestImagesFromModule(?string $testSequence, string $objectType, array $images): void
     {
         //====================================================================//
         //   TEST INIT
@@ -206,7 +224,7 @@ trait ImagesTrait
      *
      * @return null|array
      */
-    protected function findImageByMd5AndFlag($source, $imageId, $flagId)
+    protected function findImageByMd5AndFlag(array $source, string $imageId, string $flagId): ?array
     {
         //====================================================================//
         //   Check if Image Md5 is Set
@@ -225,7 +243,7 @@ trait ImagesTrait
             }
             //====================================================================//
             //   Compare Images Flags
-            if (!isset($image[$flagId]) || empty($image[$flagId])) {
+            if (empty($image[$flagId])) {
                 continue;
             }
 
@@ -239,14 +257,14 @@ trait ImagesTrait
     /**
      * Generate Image Item
      *
-     * @param mixed $index
-     * @param mixed $setCover
-     * @param mixed $setVisible
-     * @param mixed $setPosition
+     * @param string $index
+     * @param bool   $setCover
+     * @param bool   $setVisible
+     * @param int    $setPosition
      *
      * @return array
      */
-    private function getFakeImageItem($index, $setCover, $setVisible, $setPosition)
+    private function getFakeImageItem(string $index, bool $setCover, bool $setVisible, int $setPosition): array
     {
         //====================================================================//
         //   Load Required Fields
@@ -278,11 +296,11 @@ trait ImagesTrait
     /**
      * Generate Fake Images List
      *
-     * @param mixed $combination
+     * @param array[] $combination
      *
      * @return array
      */
-    private function getFakeImages($combination): array
+    private function getFakeImages(array $combination): array
     {
         //====================================================================//
         //   Load Required Fields
@@ -310,9 +328,11 @@ trait ImagesTrait
      * @param string $objectId
      * @param array  $source
      *
+     * @throws Exception
+     *
      * @return void
      */
-    private function verifyImages($objectType, $objectId, $source)
+    private function verifyImages(string $objectType, string $objectId, array $source): void
     {
         //====================================================================//
         //   Verify Images Fields are Valid
@@ -336,7 +356,8 @@ trait ImagesTrait
         $this->assertIsArray($target);
         $this->assertArrayHasKey((string) $this->listId, $target);
         $this->assertNotEmpty($target[$this->listId], "Target Product Images List is Empty");
-        $this->sourceImages = $source[$this->listId];
+        $this->assertIsArray($target[$this->listId], "Target Product Images List is NOT an Array");
+        $sourceImages = $source[$this->listId];
         $this->targetImages = $target[$this->listId];
 
         //====================================================================//
@@ -375,7 +396,7 @@ trait ImagesTrait
 
         //====================================================================//
         //   Walk on Source Images List
-        foreach ($this->sourceImages as $srcImage) {
+        foreach ($sourceImages as $srcImage) {
             //====================================================================//
             //   Verify Visible Flag
             $this->verifyVisibleImages($srcImage, (string) $this->imageId, (string) $this->isVisibleId);
@@ -392,9 +413,11 @@ trait ImagesTrait
      *
      * @param string $objectType
      *
+     * @throws Exception
+     *
      * @return void
      */
-    private function verifyImagesFields($objectType)
+    private function verifyImagesFields(string $objectType): void
     {
         //====================================================================//
         //   Load Fields
@@ -442,7 +465,7 @@ trait ImagesTrait
      *
      * @return void
      */
-    private function verifyVisibleImages($source, $imageId, $isVisibleId)
+    private function verifyVisibleImages(array $source, string $imageId, string $isVisibleId): void
     {
         //====================================================================//
         //   Check if Image Visible Flag is Set
@@ -465,11 +488,11 @@ trait ImagesTrait
      *
      * @param array  $source    Source Image
      * @param string $imageId   Image Field Id
-     * @param string $isCoverId is Cover Flag Field Id
+     * @param string $isCoverId is Cover Flag Field ID
      *
      * @return void
      */
-    private function verifyCoverImages($source, $imageId, $isCoverId)
+    private function verifyCoverImages(array $source, string $imageId, string $isCoverId): void
     {
         //====================================================================//
         //   Check if Image Cover Flag is Set
@@ -490,11 +513,13 @@ trait ImagesTrait
     /**
      * Check if Product Images Tests is Required
      *
-     * @param mixed $objectType
+     * @param string $objectType
+     *
+     * @throws Exception
      *
      * @return bool
      */
-    private function isAllowedProductImagesTests($objectType)
+    private function isAllowedProductImagesTests(string $objectType): bool
     {
         //====================================================================//
         //   Check Object Type

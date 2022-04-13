@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,19 +15,19 @@
 
 namespace Splash\Tests\Tools\Fields;
 
-use ArrayObject;
-
 /**
  * Double Field : Float Value as Text
  */
-class Oodouble implements FieldInterface
+class OoDouble implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'Double';
+    /**
+     * @var string
+     */
+    const FORMAT = 'Double';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -36,22 +36,22 @@ class Oodouble implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //==============================================================================
-        //      Verify Data is an Array
-        if (is_array($data) || ($data instanceof ArrayObject)) {
+        // Verify Data is an Array
+        if (is_array($data)) {
             return "Field Data is not Double or Float Value.";
         }
         //==============================================================================
         //      Verify Data is a Double or Zero
         if (is_double($data) || (0 == $data)) {
-            return true;
+            return null;
         }
         //==============================================================================
         //      Verify Data is a Double as String
         if (is_string($data) && (is_double(floatval($data)))) {
-            return true;
+            return null;
         }
 
         return "Field Data is not Double or Float Value.";
@@ -64,23 +64,29 @@ class Oodouble implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         return (double) mt_rand(1, 1000) / 10;
     }
 
     //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
+    //      DATA COMPARATOR (OPTIONAL)
     //==============================================================================
 
     /**
      * {@inheritdoc}
      */
-    public static function compare($source, $target, $settings)
+    public static function compare($source, $target, array $settings): bool
     {
         //====================================================================//
+        //  Both Are Scalar
+        if (!is_scalar($source) || !is_scalar($target)) {
+            return false;
+        }
+        //====================================================================//
         // Compare Float Values
-        if (abs(round($source, $settings["DoublesPrecision"]) - round($target, $settings["DoublesPrecision"])) > 1E-6) {
+        if (abs(round((float) $source, $settings["DoublesPrecision"])
+                - round((float) $target, $settings["DoublesPrecision"])) > 1E-6) {
             return false;
         }
 

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,8 +15,8 @@
 
 namespace Splash\Tests\Managers;
 
-use ArrayObject;
 use Exception;
+use ReflectionClass;
 use Splash\Client\CommitEvent;
 use Splash\Client\Splash;
 use Splash\Components\Webservice;
@@ -83,14 +83,14 @@ class C71CommitsManagerTest extends ObjectsCase
         //==============================================================================
         // Test Success Commits.
         $okResponses = array(
-            new ArrayObject(array("result" => false)),
-            new ArrayObject(array("result" => true)),
-            new ArrayObject(array("result" => "0")),
-            new ArrayObject(array("result" => "1")),
-            new ArrayObject(array("result" => false), ArrayObject::ARRAY_AS_PROPS),
-            new ArrayObject(array("result" => true), ArrayObject::ARRAY_AS_PROPS),
-            new ArrayObject(array("result" => "0"), ArrayObject::ARRAY_AS_PROPS),
-            new ArrayObject(array("result" => "1"), ArrayObject::ARRAY_AS_PROPS),
+            array("result" => false),
+            array("result" => true),
+            array("result" => "0"),
+            array("result" => "1"),
+            array("result" => false),
+            array("result" => true),
+            array("result" => "0"),
+            array("result" => "1"),
         );
         foreach ($okResponses as $response) {
             //==============================================================================
@@ -113,9 +113,9 @@ class C71CommitsManagerTest extends ObjectsCase
         //==============================================================================
         // Test Success Commits.
         $koResponses = array(
-            false,
-            new ArrayObject(array()),
-            new ArrayObject(array("result" => null)),
+            null,
+            array(),
+            array("result" => null),
         );
         foreach ($koResponses as $response) {
             //==============================================================================
@@ -336,7 +336,7 @@ class C71CommitsManagerTest extends ObjectsCase
         // Setup Mock WebService TO FAIL
         $webserviceMock = $this->assertMockWebserviceSetup();
         if (method_exists($webserviceMock, "method")) {
-            $webserviceMock->method('call')->willReturn(false);
+            $webserviceMock->method('call')->willReturn(null);
         }
         //==============================================================================
         // Reset Commit Manager
@@ -433,7 +433,7 @@ class C71CommitsManagerTest extends ObjectsCase
     {
         //==============================================================================
         // Setup Mock WebService
-        $reflection = new \ReflectionClass(Splash::class);
+        $reflection = new ReflectionClass(Splash::class);
         $method = $reflection->getProperty("soap");
         $method->setAccessible(true);
         $method->setValue(
@@ -461,7 +461,7 @@ class C71CommitsManagerTest extends ObjectsCase
         //====================================================================//
         // Force Events for Retry
         $waitingEvents = CommitsManager::getWaitingEvents();
-        foreach ($waitingEvents as &$commitEvent) {
+        foreach ($waitingEvents as $commitEvent) {
             $this->assertTrue($commitEvent->isReady());
         }
         //==============================================================================

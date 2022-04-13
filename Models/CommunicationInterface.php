@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,8 +17,6 @@ namespace Splash\Models;
 
 /**
  * Communication Interface Class for Webservice Low Level Implementation
- *
- * @author      B. Paquier <contact@splashsync.com>
  */
 interface CommunicationInterface
 {
@@ -35,7 +33,7 @@ interface CommunicationInterface
      *
      * @return self
      */
-    public function buildClient($targetUrl, $httpUser = null, $httpPwd = null);
+    public function buildClient(string $targetUrl, ?string $httpUser = null, ?string $httpPwd = null): self;
 
     /**
      * Execute WebService Client Request
@@ -43,9 +41,9 @@ interface CommunicationInterface
      * @param string $service Target Service
      * @param array  $data    Request Raw Data
      *
-     * @return mixed Raw Response
+     * @return null|string Raw Response
      */
-    public function call($service, $data);
+    public function call(string $service, array $data): ?string;
 
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
@@ -56,21 +54,21 @@ interface CommunicationInterface
      *
      * @return void
      */
-    public function buildServer();
+    public function buildServer(): void;
 
     /**
      * Responds to WebService Requests
      *
      * @return void
      */
-    public function handle();
+    public function handle(): void;
 
     /**
      * Log Errors if Server fail during a request
      *
-     * @param mixed $error
+     * @param array $error
      *
      * @return void
      */
-    public function fault($error);
+    public function fault(array $error): void;
 }

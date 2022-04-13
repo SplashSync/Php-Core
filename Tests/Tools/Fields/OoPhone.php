@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,14 +18,16 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * Phone Field : Define a Contact Phone Number
  */
-class Oophone extends Oovarchar implements FieldInterface
+class OoPhone extends OoVarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'Phone';
+    /**
+     * @var string
+     */
+    const FORMAT = 'Phone';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -34,12 +36,12 @@ class Oophone extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //==============================================================================
         //      Verify Data is not Empty
         if (empty($data)) {
-            return true;
+            return null;
         }
 
         //==============================================================================
@@ -51,7 +53,7 @@ class Oophone extends Oovarchar implements FieldInterface
         //==============================================================================
         //      Verify Data is a Phone Number
         if (preg_match('/^[+0-9. ()-]*$/', $data)) {
-            return true;
+            return null;
         }
 
         return "Field Data is not a Phone Number.";
@@ -64,7 +66,7 @@ class Oophone extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         $phoneNumber = "";
         //==============================================================================

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +15,7 @@
 
 namespace Splash\Components;
 
-use ArrayObject;
+use DateTime;
 use Exception;
 use Splash\Client\CommitEvent;
 use Splash\Client\Splash;
@@ -32,21 +32,21 @@ class CommitsManager
      *
      * @var null|bool
      */
-    protected static $intelCommitMode;
+    protected static ?bool $intelCommitMode;
 
     /**
      * List of all Commits done inside this current session
      *
      * @var array
      */
-    private static $committed = array();
+    private static array $committed = array();
 
     /**
      * List of Commit Events for Shutdown Commits
      *
      * @var null|array<string, CommitEvent>
      */
-    private static $waitingEvents;
+    private static ?array $waitingEvents;
 
     /**
      * Submit an Update for a Local Object
@@ -190,7 +190,7 @@ class CommitsManager
         // Force Events for Retry
         self::$waitingEvents = self::getWaitingEvents();
         foreach (self::$waitingEvents as $commitEvent) {
-            $commitEvent->setRetryAt(new \DateTime("-1 second"));
+            $commitEvent->setRetryAt(new DateTime("-1 second"));
         }
         //==============================================================================
         // Save Cache
@@ -341,7 +341,9 @@ class CommitsManager
     protected static function isValidObjectType(string $objectType): bool
     {
         try {
-            return !empty(Splash::object($objectType));
+            Splash::object($objectType);
+
+            return true;
         } catch (Exception $exception) {
             Splash::log()->war(
                 sprintf('Module Commit Skipped: %s ', $exception->getMessage())
@@ -429,11 +431,11 @@ class CommitsManager
     /**
      * Check if Commit Call was Successful
      *
-     * @param ArrayObject|false $response Splash Server Response
+     * @param null|array $response Splash Server Response
      *
      * @return bool
      */
-    private static function isCommitSuccess($response): bool
+    private static function isCommitSuccess(?array $response): bool
     {
         //====================================================================//
         // Commit is Considered as Fail only if Splash Server did not respond.
@@ -556,6 +558,7 @@ class CommitsManager
         if (self::hasApcuFeature()) {
             //====================================================================//
             // Load Events from APCU Cache
+            /** @phpstan-ignore-next-line */
             return apcu_fetch(self::getCacheKey()) ?: array();
         }
         $path = \sys_get_temp_dir()."/splash/".self::getCacheKey();
@@ -568,7 +571,7 @@ class CommitsManager
         // Walk on Lines
         $commitEvents = array();
         $serialisedEvents = file($path);
-        $options = array("allowed_classes" => array(CommitEvent::class, \DateTime::class));
+        $options = array("allowed_classes" => array(CommitEvent::class, DateTime::class));
         if (is_array($serialisedEvents)) {
             foreach ($serialisedEvents as $serialisedEvent) {
                 $event = unserialize($serialisedEvent, $options);

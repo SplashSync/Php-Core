@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,19 +15,19 @@
 
 namespace Splash\Tests\Tools\Traits;
 
-use ArrayObject;
 use Splash\Components\CommitsManager;
 use Splash\Components\FieldsManager;
+use Splash\Tests\Tools\Fields\FieldInterface;
 
 /**
  * Splash Test Tools - Objects PhpUnit Specific Assertions
- *
- * @author SplashSync <contact@splashsync.com>
  */
 trait ObjectsAssertionsTrait
 {
-    /** @var array[] */
-    protected $fields = array();
+    /**
+     * @var array<int|string, array>
+     */
+    protected array $fields = array();
 
     //==============================================================================
     //      SPLASH ASSERTIONS FUNCTIONS
@@ -36,14 +36,14 @@ trait ObjectsAssertionsTrait
     /**
      * Verify if Data is present in Array and in right Internal Format
      *
-     * @param mixed  $data    Tested Array
-     * @param string $key     Tested Array Key
-     * @param string $type    Expected Data Type
-     * @param string $comment
+     * @param array<string, array|scalar> $data    Tested Array
+     * @param string                      $key     Tested Array Key
+     * @param string                      $type    Expected Data Type
+     * @param string                      $comment
      *
      * @return void
      */
-    public function assertArrayInternalType($data, string $key, string $type, string $comment): void
+    public function assertArrayInternalType(array $data, string $key, string $type, string $comment): void
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertNotEmpty($data[$key], $comment." => Key '".$key."' is Empty");
@@ -70,14 +70,14 @@ trait ObjectsAssertionsTrait
     /**
      * Verify if Data is present in Array and in right Internal Format
      *
-     * @param mixed  $data    Tested Array
-     * @param string $key     Tested Array Key
-     * @param string $type    Expected Data Type
-     * @param string $comment
+     * @param array<string, array|scalar> $data    Tested Array
+     * @param string                      $key     Tested Array Key
+     * @param string                      $type    Expected Data Type
+     * @param string                      $comment
      *
      * @return void
      */
-    public function assertArrayInstanceOf($data, string $key, string $type, string $comment): void
+    public function assertArrayInstanceOf(array $data, string $key, string $type, string $comment): void
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertNotEmpty($data[$key], $comment." => Key '".$key."' is Empty");
@@ -92,8 +92,8 @@ trait ObjectsAssertionsTrait
     /**
      * Verify if Data is a valid Splash Data Block Bool Value
      *
-     * @param mixed  $data
-     * @param string $comment
+     * @param array|scalar $data
+     * @param string       $comment
      *
      * @return void
      */
@@ -106,13 +106,13 @@ trait ObjectsAssertionsTrait
     /**
      * Verify if Data is present in Array and is Splash Bool
      *
-     * @param mixed  $data    Tested Array
-     * @param string $key     Tested Array Key
-     * @param string $comment
+     * @param array<string, array|scalar> $data    Tested Array
+     * @param string                      $key     Tested Array Key
+     * @param string                      $comment
      *
      * @return void
      */
-    public function assertArraySplashBool($data, string $key, string $comment): void
+    public function assertArraySplashBool(array $data, string $key, string $comment): void
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertIsSplashBool(
@@ -124,27 +124,27 @@ trait ObjectsAssertionsTrait
     /**
      * Verify if Data is a valid Splash Data Block Array Value
      *
-     * @param mixed  $data
-     * @param string $comment
+     * @param array|scalar $data
+     * @param string       $comment
      *
      * @return void
      */
     public function assertIsSplashArray($data, string $comment): void
     {
-        $test = is_array($data) || ($data instanceof ArrayObject) || ("" === $data);
+        $test = is_array($data) || ("" === $data);
         $this->assertTrue($test, $comment);
     }
 
     /**
      * Verify if Data is present in Array and is Splash Bool
      *
-     * @param mixed  $data    Tested Array
-     * @param string $key     Tested Array Key
-     * @param string $comment
+     * @param array<string, array|scalar> $data    Tested Array
+     * @param string                      $key     Tested Array Key
+     * @param string                      $comment
      *
      * @return void
      */
-    public function assertArraySplashArray($data, string $key, string $comment): void
+    public function assertArraySplashArray(array $data, string $key, string $comment): void
     {
         $this->assertArrayHasKey($key, $data, $comment." => Key '".$key."' not defined");
         $this->assertIsSplashArray(
@@ -171,9 +171,15 @@ trait ObjectsAssertionsTrait
         if (!$className) {
             return;
         }
-
         //====================================================================//
         // Verify Data is Valid
+        /** @var FieldInterface $className */
+        //====================================================================//
+        // Validate Data Types
+        $this->assertTrue(
+            is_array($data) || is_scalar($data),
+            "Data is not a Scalar or Array (".print_r($data, true).")".$comment
+        );
         $this->assertTrue(
             $className::validate($data),
             "Data is not a Valid Splash '".$type."'. (".print_r($data, true).")".$comment
@@ -392,7 +398,7 @@ trait ObjectsAssertionsTrait
      *
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
-     * @param string $objectId   Expected Object Id
+     * @param string $objectId   Expected Object ID
      *
      * @return void
      */
@@ -406,13 +412,13 @@ trait ObjectsAssertionsTrait
      *
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
-     * @param string $objectId   Expected Object Id
+     * @param string $objectId   Expected Object ID
      *
      * @return void
      */
     public function assertIsFirstCommitted(string $action, string $objectType, string $objectId): void
     {
-        $this->assertIsCommitted($action, $objectType, $objectId, true);
+        $this->assertIsCommitted($action, $objectType, $objectId);
     }
 
     /**
@@ -420,7 +426,7 @@ trait ObjectsAssertionsTrait
      *
      * @param string $action     Expected Action
      * @param string $objectType Expected Object Type
-     * @param string $objectId   Expected Object Id
+     * @param string $objectId   Expected Object ID
      * @param bool   $first      Check First or Last Committed
      *
      * @return void
@@ -434,14 +440,12 @@ trait ObjectsAssertionsTrait
             $sessionCommits,
             "No Object Change Committed by your Module. Please check your triggers."
         );
-
         //====================================================================//
         //   Get First / Last Committed
         $committed = $first
             ? array_shift($sessionCommits)
             : array_pop($sessionCommits)
         ;
-
         //====================================================================//
         // Check Committed Infos
         $this->assertIsArray($committed, CommitsManager::class."::committed format is wrong");

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,7 +21,7 @@ use Splash\Models\Fields\FieldsManagerTrait;
 /**
  * Object ID Field : price definition Array
  */
-class Ooobjectid implements FieldInterface
+class OoObjectid implements FieldInterface
 {
     use FieldsManagerTrait;
 
@@ -29,8 +29,10 @@ class Ooobjectid implements FieldInterface
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'ObjectId';
+    /**
+     * @var string
+     */
+    const FORMAT = 'ObjectId';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -39,12 +41,12 @@ class Ooobjectid implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //==============================================================================
         //      Verify Data is Not Empty
-        if (is_null($data) || empty($data) || ('0' === $data)) {
-            return true;
+        if (empty($data) || ('0' === $data)) {
+            return null;
         }
         //==============================================================================
         //      Verify Data is a string
@@ -55,7 +57,7 @@ class Ooobjectid implements FieldInterface
         //      Verify Data is an Id Field
         $list = explode(IDSPLIT, $data);
         if (is_array($list) && (2 == count($list))) {
-            return true;
+            return null;
         }
 
         return 'Field Data is not an Object Id String.';
@@ -66,12 +68,11 @@ class Ooobjectid implements FieldInterface
     //==============================================================================
 
     /**
-     * @param array  $settings
-     * @param string $objectType Object Type Name
+     * @param array $settings
      *
      * @return null|string
      */
-    public static function fake($settings, $objectType = null)
+    public static function fake(array $settings, string $objectType = null)
     {
         //====================================================================//
         // Safety Check
@@ -80,7 +81,11 @@ class Ooobjectid implements FieldInterface
         }
         //====================================================================//
         // Get Object List
-        $objectsList = Splash::object($objectType)->objectsList();
+        try {
+            $objectsList = Splash::object($objectType)->objectsList();
+        } catch (\Exception $e) {
+            $objectsList = array();
+        }
         //====================================================================//
         // Unset MetaData from Objects List
         if (isset($objectsList['meta'])) {
@@ -105,20 +110,23 @@ class Ooobjectid implements FieldInterface
     }
 
     //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
+    //      DATA COMPARATOR (OPTIONAL)
     //==============================================================================
 
     /**
      * {@inheritdoc}
      */
-    public static function compare($source, $target, $settings)
+    public static function compare($source, $target, array $settings): bool
     {
-        //dump($Source);
-        //dump($Target);
         //====================================================================//
         // Both Objects Ids Are Empty
         if (empty($source) && empty($target)) {
             return true;
+        }
+        //====================================================================//
+        //  Both Are Scalar
+        if (!is_scalar($source) || !is_scalar($target)) {
+            return false;
         }
         //====================================================================//
         // Both Objects Ids Are Similar
@@ -130,18 +138,18 @@ class Ooobjectid implements FieldInterface
     }
 
     //====================================================================//
-    //  OBJECTID FIELDS MANAGEMENT
+    //  OBJECT ID FIELDS MANAGEMENT
     //====================================================================//
 
     /**
      * Encode an Object Identifier Field
      *
-     * @param string $objectId   Object Id
+     * @param string $objectId   Object ID
      * @param string $objectType Object Type Name
      *
      * @return null|string
      */
-    public static function encodeIdField($objectId, $objectType)
+    public static function encodeIdField(string $objectId, string $objectType): ?string
     {
         //====================================================================//
         // Safety Checks
@@ -158,19 +166,19 @@ class Ooobjectid implements FieldInterface
     }
 
     /**
-     * Retrieve Id form an Object Identifier Data
-     *
-     * @deprecated since version 2.0, use objectId instead
+     * Retrieve ID form an Object Identifier Data
      *
      * @param string $objectId osWs Object Identifier
      *
-     * @return false|string
+     * @return null|string
+     *
+     * @deprecated since version 2.0, use objectId instead
      */
-    public static function decodeIdField($objectId)
+    public static function decodeIdField(string $objectId): ?string
     {
         //====================================================================//
         // Forward to Fields Manager
-        return   self::objectId($objectId);
+        return self::objectId($objectId);
     }
 
     /**
@@ -180,7 +188,7 @@ class Ooobjectid implements FieldInterface
      *
      * @return void
      */
-    private static function filterObjectList(&$objectsList, $objectType, $settings)
+    private static function filterObjectList(array &$objectsList, string $objectType, array $settings): void
     {
         //====================================================================//
         // Filter Objects List to Remove Current Tested

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,13 +15,9 @@
 
 namespace Splash\Models;
 
-use ArrayObject;
-
 /**
  * Splash Module Configurator Interface
  * Define Required Implementation for Splash Module Configurator Classes
- *
- * @author      B. Paquier <contact@splashsync.com>
  */
 interface ConfiguratorInterface
 {
@@ -65,7 +61,7 @@ interface ConfiguratorInterface
 
     /**
      * Override Object is Description Array
-     * This Event is Triggered by Abstract Object during Descritpion Reading
+     * This Event is Triggered by Abstract Object during Description Reading
      *
      * @param string $objectType  Local Object Type Name
      * @param array  $description Current Object Description Array
@@ -78,8 +74,8 @@ interface ConfiguratorInterface
      * Override Object Fields Array using Field Factory
      * This Event is Triggered by Object Class during Field Publish Action
      *
-     * @param string                $objectType Local Object Type Name
-     * @param array[]|ArrayObject[] $fields     Current Object Fields List
+     * @param string  $objectType Local Object Type Name
+     * @param array[] $fields     Current Object Fields List
      *
      * @return array
      */

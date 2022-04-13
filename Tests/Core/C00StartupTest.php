@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,6 +15,7 @@
 
 namespace Splash\Tests\Core;
 
+use Exception;
 use Splash\Components\Logger;
 use Splash\Core\SplashCore     as Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
@@ -22,8 +23,6 @@ use Splash\Tests\Tools\TestCase;
 
 /**
  * Core Test Suite - Raw Folders & Class Structure Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class C00StartupTest extends TestCase
 {
@@ -39,9 +38,11 @@ class C00StartupTest extends TestCase
     /**
      * Display of Tested Sequences | Objects | Fields
      *
+     * @throws Exception
+     *
      * @return void
      */
-    public function testDisplayTestContext()
+    public function testDisplayTestContext(): void
     {
         //====================================================================//
         //   SPLASH SCREEN
@@ -75,19 +76,16 @@ class C00StartupTest extends TestCase
     /**
      * Display of Tested Objects List
      *
+     * @throws Exception
+     *
      * @return void
      */
-    private function displayTestedObjects()
+    private function displayTestedObjects(): void
     {
         //====================================================================//
         //   TESTED OBJECTS
         //====================================================================//
         $objectTypes = Splash::objects();
-        if (!is_array($objectTypes)) {
-            echo Logger::getConsoleLine(" !! Invalid Objects List !! ", " - Tested Objects ", Logger::CMD_COLOR_DEB);
-
-            return;
-        }
         foreach ($objectTypes as $key => $objectType) {
             //====================================================================//
             //   Filter Tested Object Types  =>> Skip
@@ -101,9 +99,11 @@ class C00StartupTest extends TestCase
     /**
      * Display of Tested Sequences List
      *
+     * @throws Exception
+     *
      * @return void
      */
-    private function displayTestedSequences()
+    private function displayTestedSequences(): void
     {
         //====================================================================//
         //   TESTED SEQUENCES
@@ -142,9 +142,13 @@ class C00StartupTest extends TestCase
 
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
-        if (defined("SPLASH_FIELDS") && is_scalar(SPLASH_FIELDS) && !empty(explode(",", (string) SPLASH_FIELDS))) {
-            echo Logger::getConsoleLine((string) SPLASH_FIELDS, "- Fields Filter: ", Logger::CMD_COLOR_DEB);
-            echo Logger::getConsoleLine("!! TEST WILL FOCUS ON SPECIFIC FIELDS !!", "", Logger::CMD_COLOR_DEB);
+        if (defined("SPLASH_FIELDS") && SPLASH_FIELDS) {
+            /** @var array|false $fields */
+            $fields = explode(",", (string) SPLASH_FIELDS);
+            if (!empty($fields)) {
+                echo Logger::getConsoleLine((string) SPLASH_FIELDS, "- Fields Filter: ", Logger::CMD_COLOR_DEB);
+                echo Logger::getConsoleLine("!! TEST WILL FOCUS ON SPECIFIC FIELDS !!", "", Logger::CMD_COLOR_DEB);
+            }
         }
     }
 }

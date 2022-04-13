@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,15 +15,12 @@
 
 namespace Splash\Tests\WsAdmin;
 
-use ArrayObject;
 use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
  * Admin Test Suite - SelfTest Client Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class A05SelfTestsTest extends AbstractBaseCase
 {
@@ -38,18 +35,17 @@ class A05SelfTestsTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testSelfTestFromClass(string $testSequence)
+    public function testSelfTestFromClass(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Execute Action From Module
         $data = Splash::local()->selfTest();
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($data);
+        $this->verifyResponse((string) $data);
     }
 
     /**
@@ -63,7 +59,7 @@ class A05SelfTestsTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testSelfTestFromAdmin(string $testSequence)
+    public function testSelfTestFromAdmin(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -71,7 +67,7 @@ class A05SelfTestsTest extends AbstractBaseCase
 
         //====================================================================//
         //   Execute Action From Splash Server to Module
-        $data = $this->genericAction(SPL_S_ADMIN, SPL_F_GET_SELFTEST, __METHOD__);
+        $data = $this->genericStringAction(SPL_S_ADMIN, SPL_F_GET_SELFTEST, __METHOD__);
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
@@ -80,11 +76,11 @@ class A05SelfTestsTest extends AbstractBaseCase
     /**
      * Verify Client Response.
      *
-     * @param ArrayObject|bool|string $data
+     * @param string $data
      *
      * @return void
      */
-    private function verifyResponse($data)
+    private function verifyResponse(string $data): void
     {
         //====================================================================//
         //   Render Logs if Fails*

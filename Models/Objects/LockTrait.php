@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,23 +15,22 @@
 
 namespace   Splash\Models\Objects;
 
-use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    Object Lock Management (Used to prevent unexpected Commit during remote actions)
+ * Object Lock Management (Used to prevent unexpected Commit during remote actions)
  */
 trait LockTrait
 {
     /**
-     * @var null|ArrayObject
+     * @var array<string, null|true>
      */
-    private $locks;
+    private array $locks = array();
 
     /**
      * {@inheritdoc}
      */
-    public function lock($objectId = "new")
+    public function lock(?string $objectId = null): bool
     {
         //====================================================================//
         // Search for Forced Commit Flag in Configuration
@@ -39,26 +38,12 @@ trait LockTrait
                 && (Splash::configuration()->server["forcecommit"])) {
             return true;
         }
-
-        //====================================================================//
-        // Verify Object Identifier is not Empty
-        if (!$objectId) {
-            $objectId = "new";
-        }
-
-        //====================================================================//
-        //  Init Lock Structure
-        if (is_null($this->locks)) {
-            $this->locks = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-        }
-
         //====================================================================//
         //  Insert Object to Structure
-        $this->locks->offsetSet($objectId, true);
-
+        $this->locks[$objectId ?: "new"] = true;
         //====================================================================//
         //  Log
-        Splash::log()->deb("MsgLockObject", static::$NAME, (string) $objectId);
+        Splash::log()->deb("MsgLockObject", static::$name, (string) $objectId);
 
         return true;
     }
@@ -66,28 +51,16 @@ trait LockTrait
     /**
      * {@inheritdoc}
      */
-    public function isLocked($objectId = "new")
+    public function isLocked(?string $objectId = null): bool
     {
-        Splash::log()->deb("MsgisLockedStart", static::$NAME, (string)  $objectId);
-
         //====================================================================//
-        // Verify Object Identifier is not Empty
-        if (!$objectId) {
-            $objectId = "new";
-        }
-        //====================================================================//
-        //  Verify Lock Structure Exits
-        if (is_null($this->locks)) {
-            return false;
-        }
-        //====================================================================//
-        //  Verify Object Exits
-        if (!$this->locks->offsetExists($objectId)) {
+        //  Verify Object Lock
+        if (!isset($this->locks[$objectId ?: "new"])) {
             return false;
         }
         //====================================================================//
         //  Log
-        Splash::log()->deb("MsgisLocked", static::$NAME, (string)  $objectId);
+        Splash::log()->deb("MsgIsLocked", static::$name, (string)  $objectId);
 
         return true;
     }
@@ -95,29 +68,19 @@ trait LockTrait
     /**
      * {@inheritdoc}
      */
-    public function unLock($objectId = "new")
+    public function unLock(?string $objectId = null): bool
     {
         //====================================================================//
-        // Verify Object Identifier is not Empty
-        if (!$objectId) {
-            $objectId = "new";
-        }
-        //====================================================================//
-        //  Verify Lock Structure Exits
-        if (is_null($this->locks)) {
-            return true;
-        }
-        //====================================================================//
-        //  Verify Object Already Locked
-        if (!$this->isLocked($objectId)) {
+        //  Verify Object Lock
+        if (!isset($this->locks[$objectId ?: "new"])) {
             return true;
         }
         //====================================================================//
         //  Remove Object Lock
-        $this->locks->offsetUnset($objectId);
+        unset($this->locks[$objectId ?: "new"]);
         //====================================================================//
         //  Log
-        Splash::log()->deb("MsgUnlockSuccess", static::$NAME, (string)  $objectId);
+        Splash::log()->deb("MsgUnlockSuccess", static::$name, (string)  $objectId);
 
         return true;
     }

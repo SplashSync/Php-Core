@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,7 +27,7 @@ trait ObjectsSetTestsTrait
     /**
      * @var string Md5 CheckSum of Current Field Data Block
      */
-    protected $fieldMd5;
+    protected string $fieldMd5;
 
     //==============================================================================
     //      COMPLETE TESTS EXECUTION FUNCTIONS
@@ -231,7 +231,7 @@ trait ObjectsSetTestsTrait
         CommitsManager::reset();
         //====================================================================//
         //   Create a New Object via Service
-        $objectId = $this->genericAction(
+        $objectId = $this->genericStringAction(
             SPL_S_OBJECTS,
             SPL_F_SET,
             __METHOD__,
@@ -259,7 +259,7 @@ trait ObjectsSetTestsTrait
      * Execute Object Delete Test (From Module)
      *
      * @param string $objectType Splash Object Type Name
-     * @param string $objectId   Object Id
+     * @param string $objectId   Object ID
      *
      * @throws Exception
      *
@@ -283,19 +283,23 @@ trait ObjectsSetTestsTrait
     //==============================================================================
 
     /**
-     * Verify Client Object Set Reponse.
+     * Verify Client Object Set Response.
      *
-     * @param string $objectType
-     * @param mixed  $objectId
-     * @param string $action
-     * @param array  $expectedData
+     * @param string  $objectType
+     * @param ?string $objectId
+     * @param string  $action
+     * @param array   $expectedData
      *
      * @throws Exception
      *
      * @return void
      */
-    protected function verifySetResponse(string $objectType, $objectId, string $action, array $expectedData): void
-    {
+    protected function verifySetResponse(
+        string $objectType,
+        ?string $objectId,
+        string $action,
+        array $expectedData
+    ): void {
         //====================================================================//
         //   Verify Object Id Is Not Empty
         $this->assertNotEmpty($objectId, 'Returned New Object Id is Empty');
@@ -326,9 +330,9 @@ trait ObjectsSetTestsTrait
     /**
      * Verify Client Object Delete Response.
      *
-     * @param string $objectType
-     * @param string $objectId
-     * @param mixed  $data
+     * @param string       $objectType
+     * @param string       $objectId
+     * @param array|scalar $data
      *
      * @throws Exception
      *
@@ -355,9 +359,9 @@ trait ObjectsSetTestsTrait
 
         //====================================================================//
         //   Verify Object not Present anymore
-        $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
+        $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true);
         $getResponse = Splash::object($objectType)->get($objectId, $fields);
-        $this->assertFalse($getResponse, 'Object Not Delete, I can still read it!!');
+        $this->assertNull($getResponse, 'Object Not Delete, I can still read it!!');
     }
 
     //==============================================================================
@@ -436,6 +440,8 @@ trait ObjectsSetTestsTrait
      * @param string $objectType Current Object Type
      * @param array  $field      Current Tested Field (ArrayObject)
      * @param bool   $unique     Ask for Unique Field Data
+     *
+     * @throws Exception
      *
      * @return null|array Generated Data Block or False if not Allowed
      */

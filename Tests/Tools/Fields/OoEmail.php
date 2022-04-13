@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,14 +18,16 @@ namespace Splash\Tests\Tools\Fields;
 /**
  * Email Field : Standard Email Address
  */
-class Ooemail extends Oovarchar implements FieldInterface
+class OoEmail extends OoVarchar implements FieldInterface
 {
     //==============================================================================
     //      Structural Data
     //==============================================================================
 
-    /** @var string */
-    protected $FORMAT = 'Email';
+    /**
+     * @var string
+     */
+    const FORMAT = 'Email';
 
     //==============================================================================
     //      DATA VALIDATION
@@ -34,17 +36,17 @@ class Ooemail extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function validate($data)
+    public static function validate($data): ?string
     {
         //==============================================================================
         //      Verify Data is not Empty
         if (empty($data)) {
-            return true;
+            return null;
         }
 
         //==============================================================================
         //      Verify Data is a String
-        if (!empty($data) && !is_string($data)) {
+        if (!is_string($data)) {
             return "Field  Data is not a String.";
         }
 
@@ -54,7 +56,7 @@ class Ooemail extends Oovarchar implements FieldInterface
             return "Field Data is not an Email Address";
         }
 
-        return true;
+        return null;
     }
 
     //==============================================================================
@@ -64,7 +66,7 @@ class Ooemail extends Oovarchar implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public static function fake($settings)
+    public static function fake(array $settings)
     {
         $name = preg_replace('/[^A-Za-z\-]/', '', base64_encode((string) mt_rand()));
         //==============================================================================
@@ -87,13 +89,13 @@ class Ooemail extends Oovarchar implements FieldInterface
     }
 
     //==============================================================================
-    //      DATA COMPARATOR (OPTIONNAL)
+    //      DATA COMPARATOR (OPTIONAL)
     //==============================================================================
 
     /**
      * {@inheritdoc}
      */
-    public static function compare($source, $target, $settings)
+    public static function compare($source, $target, array $settings): bool
     {
         //====================================================================//
         //  Both Texts Are Empty
@@ -101,7 +103,12 @@ class Ooemail extends Oovarchar implements FieldInterface
             return true;
         }
         //====================================================================//
+        //  Both Are Scalar
+        if (!is_scalar($source) || !is_scalar($target)) {
+            return false;
+        }
+        //====================================================================//
         //  Raw text Compare
-        return (strtolower($source) === strtolower($target))?true:false;
+        return strtolower((string) $source) === strtolower((string) $target);
     }
 }

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,6 +15,7 @@
 
 namespace Splash\Configurator;
 
+use Exception;
 use Splash\Core\SplashCore as Splash;
 use Splash\Models\AbstractConfigurator;
 use Splash\Models\ConfiguratorInterface;
@@ -29,7 +30,7 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
      *
      * @var array
      */
-    private static $configuration;
+    private static array $configuration;
 
     //====================================================================//
     // ACCESS TO LOCAL CONFIGURATION
@@ -40,39 +41,43 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
      */
     public function getConfiguration(): array
     {
-        if (!isset(static::$configuration)) {
+        if (!isset(self::$configuration)) {
             //====================================================================//
             //  Check if Custom Configuration Path is Defined
             $cfgPath = $this->getConfigPath();
-            if (false == $cfgPath) {
-                return static::$configuration = array();
+            if (!$cfgPath) {
+                return self::$configuration = array();
             }
             //====================================================================//
             //  Check if Custom Configuration is Empty
             $config = $this->getConfigArray($cfgPath);
             if (!is_array($config) || empty($config)) {
-                return static::$configuration = array();
+                return self::$configuration = array();
             }
 
-            static::$configuration = $config;
+            self::$configuration = $config;
         }
 
-        return static::$configuration;
+        return self::$configuration;
     }
 
     /**
      * Get Json Configuration File Path
      *
-     * @return false|string False or Configuration File Path
+     * @return null|string
      */
-    private function getConfigPath()
+    private function getConfigPath(): ?string
     {
         //====================================================================//
         //  Load Module Configuration
         $cfg = Splash::configuration();
         //====================================================================//
         //  Check if Custom Configuration Path is Defined
-        $cfgPath = Splash::getLocalPath()."/configuration.json";
+        try {
+            $cfgPath = Splash::getLocalPath()."/configuration.json";
+        } catch (Exception $e) {
+            return null;
+        }
         if (isset($cfg->ConfiguratorPath) && is_string($cfg->ConfiguratorPath)) {
             $cfgPath = $cfg->ConfiguratorPath;
         }
@@ -80,7 +85,7 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
         //  Check if Custom Configuration File Exists
         Splash::log()->deb("Try Loading Custom Configuration From: ".$cfgPath);
         if (!is_file($cfgPath)) {
-            return false;
+            return null;
         }
 
         return $cfgPath;
@@ -91,20 +96,20 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
      *
      * @param string $cfgPath Configuration File Path
      *
-     * @return array|false False or Configuration Array
+     * @return null|array
      */
-    private function getConfigArray(string $cfgPath)
+    private function getConfigArray(string $cfgPath): ?array
     {
         //====================================================================//
         //  Check if Custom Configuration File Exists
         if (!is_file($cfgPath)) {
-            return false;
+            return null;
         }
         //====================================================================//
         //  Load File Contents
         $rawJson = file_get_contents($cfgPath);
         if (!is_string($rawJson)) {
-            return false;
+            return null;
         }
         //====================================================================//
         //  Decode Json Contents
@@ -112,7 +117,7 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
         if (!is_array($json)) {
             Splash::log()->war("Invalid Json Configuration. Overrides Skipped!");
 
-            return false;
+            return null;
         }
         Splash::log()->deb("Loaded Custom Configuration From: ".$cfgPath);
 

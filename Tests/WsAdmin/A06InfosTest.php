@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,13 +22,11 @@ use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
  * Admin Test Suite - Server Infos Client Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class A06InfosTest extends AbstractBaseCase
 {
     /**
-     * Test Reading Server Informations from Local Class.
+     * Test Reading Server Information from Local Class.
      *
      * @dataProvider sequencesProvider
      *
@@ -48,7 +46,8 @@ class A06InfosTest extends AbstractBaseCase
         $data = Splash::informations();
         //====================================================================//
         //   Verify Response
-        $this->verifyResponse($data);
+        $this->assertInstanceOf(ArrayObject::class, $data);
+        $this->verifyResponse($data->getArrayCopy());
     }
 
     /**
@@ -78,19 +77,19 @@ class A06InfosTest extends AbstractBaseCase
     /**
      * Verify Client Response.
      *
-     * @param ArrayObject|bool|string $data
+     * @param array $data
      *
      * @return void
      */
-    private function verifyResponse($data)
+    private function verifyResponse(array $data)
     {
         $this->assertNotEmpty($data, 'Server Informations Array is Empty');
-        $this->assertInstanceOf(ArrayObject::class, $data, 'Server Informations is not an Array');
+        $this->assertIsArray($data, 'Server Informations is not an Array');
 
         //====================================================================//
         //   Verify Main Informations
-        $this->assertArrayHasKey('shortdesc', $data->getArrayCopy(), 'Server Short Description is Missing');
-        $this->assertArrayHasKey('longdesc', $data->getArrayCopy(), 'Server Long Description is Missing');
+        $this->assertArrayHasKey('shortdesc', $data, 'Server Short Description is Missing');
+        $this->assertArrayHasKey('longdesc', $data, 'Server Long Description is Missing');
 
         //====================================================================//
         //   Verify Main Informations

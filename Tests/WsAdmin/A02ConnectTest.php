@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,8 +22,6 @@ use Splash\Tests\Tools\AbstractBaseCase;
 
 /**
  * Admin Test Suite - Connect Client Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class A02ConnectTest extends AbstractBaseCase
 {
@@ -52,12 +50,11 @@ class A02ConnectTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testConnectClientAction(string $testSequence)
+    public function testConnectClientAction(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Check Test Mode Allow Server Ping
         if (!empty(Splash::input("SPLASH_TRAVIS"))) {
@@ -87,7 +84,7 @@ class A02ConnectTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testConnectServerAction(string $testSequence)
+    public function testConnectServerAction(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -103,7 +100,7 @@ class A02ConnectTest extends AbstractBaseCase
         $data = $this->checkResponse($response);
         //====================================================================//
         //   Verify Response
-        $this->assertNotEmpty($data->result, "Connect Result is not True");
+        $this->assertNotEmpty($data["result"], "Connect Result is not True");
 
         //====================================================================//
         //   SAFETY CHECK
@@ -135,7 +132,7 @@ class A02ConnectTest extends AbstractBaseCase
      *
      * @return void
      */
-    public function testConnectServerWrongDataAction(string $testSequence)
+    public function testConnectServerWrongDataAction(string $testSequence): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence

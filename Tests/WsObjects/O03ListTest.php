@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,15 +15,12 @@
 
 namespace Splash\Tests\WsObjects;
 
-use ArrayObject;
 use Exception;
 use Splash\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * Objects Test Suite - Objects List Reading Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class O03ListTest extends ObjectsCase
 {
@@ -42,15 +39,9 @@ class O03ListTest extends ObjectsCase
     public function testFromModule(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Execute Action Directly on Module
         $data = Splash::object($objectType)->objectsList();
-        //====================================================================//
-        //   Module May Return an Array (ArrayObject created by WebService)
-        if (is_array($data)) {
-            $data = new ArrayObject($data);
-        }
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data, $objectType);
@@ -71,7 +62,6 @@ class O03ListTest extends ObjectsCase
     public function testFromObjectsService(string $testSequence, string $objectType): void
     {
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(
@@ -80,7 +70,6 @@ class O03ListTest extends ObjectsCase
             __METHOD__,
             array( "id" => null, "type" => $objectType)
         );
-
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data, $objectType);
@@ -101,19 +90,19 @@ class O03ListTest extends ObjectsCase
     /**
      * Verify Objects List Response
      *
-     * @param ArrayObject|bool|string $data
-     * @param string                  $objectType
+     * @param null|array $data
+     * @param string     $objectType
      *
      * @throws Exception
      *
      * @return void
      */
-    public function verifyResponse($data, string $objectType): void
+    public function verifyResponse(?array $data, string $objectType): void
     {
         //====================================================================//
         //   Verify Response
         $this->assertNotEmpty($data, "Objects List is Empty");
-        $this->assertInstanceOf("ArrayObject", $data, "Objects List is Not an ArrayObject");
+        $this->assertIsArray($data, "Objects List is Not an Array");
 
         $this->verifyMetaInformations($data, $objectType);
         $this->verifyAvailableFields($data, $objectType);
@@ -122,19 +111,18 @@ class O03ListTest extends ObjectsCase
     /**
      * Verify Listed Fields are Available
      *
-     * @param ArrayObject $data
-     * @param string      $objectType
+     * @param array  $data
+     * @param string $objectType
      *
      * @throws Exception
      *
      * @return void
      */
-    public function verifyAvailableFields(ArrayObject $data, string $objectType): void
+    public function verifyAvailableFields(array $data, string $objectType): void
     {
         //====================================================================//
         // Verify Fields are Available
         $fields = Splash::object($objectType)->fields();
-
         //====================================================================//
         // Verify List Data Items
         foreach ($data as $item) {
@@ -154,6 +142,8 @@ class O03ListTest extends ObjectsCase
             // Verify all "inlist" fields are available
             foreach ($fields as $field) {
                 if (isset($field['inlist']) && !empty($field['inlist'])) {
+                    $this->assertIsString($field["id"]);
+                    $this->assertIsString($field["name"]);
                     $this->assertArrayHasKey(
                         $field["id"],
                         $item,
@@ -171,20 +161,16 @@ class O03ListTest extends ObjectsCase
     /**
      * Verify Metadata are Available
      *
-     * @param ArrayObject $data
-     * @param string      $objectType
+     * @param array  $data
+     * @param string $objectType
      *
      * @return void
      */
-    public function verifyMetaInformations(ArrayObject $data, string $objectType): void
+    public function verifyMetaInformations(array &$data, string $objectType): void
     {
         //====================================================================//
         // Verify List Meta Are Available
-        $this->assertArrayHasKey(
-            "meta",
-            $data->getArrayCopy(),
-            $objectType." List => Meta Informations are not defined"
-        );
+        $this->assertArrayHasKey("meta", $data, $objectType." List => Meta Informations are not defined");
         $meta = $data["meta"];
         $this->assertArrayHasKey("current", $meta, $objectType." List => Meta current value not defined");
         $this->assertArrayHasKey("total", $meta, $objectType." List => Meta total value are not defined");

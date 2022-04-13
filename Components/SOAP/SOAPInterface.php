@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -23,35 +23,33 @@ use Splash\Models\CommunicationInterface;
 
 /**
  * Communication Interface Class for PHP SOAP Webservice
- *
- * @author      B. Paquier <contact@splashsync.com>
  */
 class SOAPInterface implements CommunicationInterface
 {
     /**
      * @var string
      */
-    protected $location;
+    protected string $location;
 
     /**
      * @var string
      */
-    protected $uri;
+    protected string $uri;
 
     /**
      * @var array
      */
-    protected $options;
+    protected array $options;
 
     /**
      * @var SoapClient
      */
-    protected $client;
+    protected SoapClient $client;
 
     /**
      * @var SoapServer
      */
-    protected $server;
+    protected SoapServer $server;
 
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
@@ -60,7 +58,7 @@ class SOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function buildClient($targetUrl, $httpUser = null, $httpPwd = null)
+    public function buildClient(string $targetUrl, ?string $httpUser = null, ?string $httpPwd = null): self
     {
         //====================================================================//
         // Store Target Url
@@ -97,7 +95,7 @@ class SOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function call($service, $data)
+    public function call(string $service, array $data): ?string
     {
         //====================================================================//
         // Log Call Informations in debug buffer
@@ -117,10 +115,10 @@ class SOAPInterface implements CommunicationInterface
             Splash::log()->deb('[SOAP] Fault Details= '.$response->getTraceAsString());
             //====================================================================//
             //  Error Message
-            return Splash::log()->err('ErrWsNuSOAPFault', $response->getCode(), $response->getMessage());
+            return Splash::log()->errNull('ErrWsNuSOAPFault', $response->getCode(), $response->getMessage());
         }
 
-        return $response;
+        return is_scalar($response) ? (string) $response : null;
     }
 
     //====================================================================//
@@ -130,7 +128,7 @@ class SOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function buildServer()
+    public function buildServer(): void
     {
         //====================================================================//
         // Initialize Php SOAP Server Class
@@ -150,7 +148,7 @@ class SOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function handle()
+    public function handle(): void
     {
         if (isset($this->server)) {
             $this->server->handle((string) file_get_contents('php://input'));
@@ -160,7 +158,7 @@ class SOAPInterface implements CommunicationInterface
     /**
      * {@inheritdoc}
      */
-    public function fault($error)
+    public function fault(array $error): void
     {
         //====================================================================//
         // Prepare Fault Message.

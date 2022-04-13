@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,8 +22,6 @@ use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * Objects Test Suite - Fields List Verifications
- *
- * @author SplashSync <contact@splashsync.com>
  */
 class O02FieldsTest extends ObjectsCase
 {
@@ -44,11 +42,9 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Execute Action Directly on Module
         $data = Splash::object($objectType)->fields();
-
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
@@ -71,7 +67,6 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->genericAction(
@@ -80,16 +75,11 @@ class O02FieldsTest extends ObjectsCase
             __METHOD__,
             array( "id" => null, "type" => $objectType)
         );
-
         //====================================================================//
         //   Service May Return an ArrayObject (ArrayObject created by WebService)
-        $this->assertInstanceOf("ArrayObject", $data, "Service Fields List is Not an ArrayObject");
-        $data = $data->getArrayCopy();
-        foreach ($data as $key => $field) {
-            $this->assertInstanceOf("ArrayObject", $field, "Service Field is Not an ArrayObject");
-            $data[$key] = $field->getArrayCopy();
+        foreach ($data as $field) {
+            $this->assertIsArray($field, "Service Field is Not an Array");
         }
-
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($data);
@@ -111,7 +101,6 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-
         //====================================================================//
         //      Request definition without Sending ObjectType
         $this->genericErrorAction(SPL_S_OBJECTS, SPL_F_FIELDS, __METHOD__);
@@ -120,11 +109,13 @@ class O02FieldsTest extends ObjectsCase
     /**
      * Verify Client Response.
      *
-     * @param array[]|bool|string $data
+     * @param array $data
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function verifyResponse($data): void
+    public function verifyResponse(array $data): void
     {
         //====================================================================//
         //   Verify Response
@@ -143,9 +134,11 @@ class O02FieldsTest extends ObjectsCase
     }
 
     /**
-     * Verify Main Field Informations are in right format
+     * Verify Main Field Information are in right format
      *
      * @param array $field
+     *
+     * @throws Exception
      *
      * @return void
      */
@@ -249,7 +242,7 @@ class O02FieldsTest extends ObjectsCase
      */
     public function verifyFieldAssociations(array $field, array $fields): void
     {
-        if (!isset($field["asso"]) || empty($field["asso"])) {
+        if (empty($field["asso"])) {
             return;
         }
         //====================================================================//

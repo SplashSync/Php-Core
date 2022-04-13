@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,12 +15,11 @@
 
 namespace   Splash\Models;
 
+use ReflectionClass;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * Base Class for class for Splash Objects.
- *
- * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ * Base Class for Splash Objects.
  */
 abstract class AbstractObject implements Objects\ObjectInterface
 {
@@ -37,28 +36,28 @@ abstract class AbstractObject implements Objects\ObjectInterface
      *
      * @var bool
      */
-    protected static $DISABLED = false;
+    protected static bool $disabled = false;
 
     /**
      * Object Name
      *
      * @var string
      */
-    protected static $NAME = __CLASS__;
+    protected static string $name = __CLASS__;
 
     /**
      * Object Description
      *
      * @var string
      */
-    protected static $DESCRIPTION = __CLASS__;
+    protected static string $description = __CLASS__;
 
     /**
      * Object Icon (FontAwesome or Glyph ico tag)
      *
      * @var string
      */
-    protected static $ICO = "fa fa-cubes";
+    protected static string $ico = "fa fa-cubes";
 
     //====================================================================//
     // Object Synchronization Limitations
@@ -70,21 +69,21 @@ abstract class AbstractObject implements Objects\ObjectInterface
      *
      * @var bool
      */
-    protected static $ALLOW_PUSH_CREATED = true;
+    protected static bool $allowPushCreated = true;
 
     /**
      * Allow Update Of Existing Local Objects
      *
      * @var bool
      */
-    protected static $ALLOW_PUSH_UPDATED = true;
+    protected static bool $allowPushUpdated = true;
 
     /**
-     * Allow Delete Of Existing Local Objects
+     * Allow To Delete an Existing Local Objects
      *
      * @var bool
      */
-    protected static $ALLOW_PUSH_DELETED = true;
+    protected static bool $allowPushDeleted = true;
 
     //====================================================================//
     // Object Synchronization Recommended Configuration
@@ -97,42 +96,42 @@ abstract class AbstractObject implements Objects\ObjectInterface
      *
      * @var bool
      */
-    protected static $ENABLE_PUSH_CREATED = true;
+    protected static bool $enablePushCreated = true;
 
     /**
-     * Enable Update Of Existing Local Objects when Modified Remotly
+     * Enable Update Of Existing Local Objects when Modified Remotely
      *
      * @var bool
      */
-    protected static $ENABLE_PUSH_UPDATED = true;
+    protected static bool $enablePushUpdated = true;
 
     /**
-     * Enable Delete Of Existing Local Objects when Deleted Remotly
+     * Enable Delete Of Existing Local Objects when Deleted Remotely
      *
      * @var bool
      */
-    protected static $ENABLE_PUSH_DELETED = true;
+    protected static bool $enablePushDeleted = true;
 
     /**
      * Enable Import Of New Local Objects
      *
      * @var bool
      */
-    protected static $ENABLE_PULL_CREATED = true;
+    protected static bool $enablePullCreated = true;
 
     /**
-     * Enable Import of Updates of Local Objects when Modified Localy
+     * Enable Import of Updates of Local Objects when Modified Locally
      *
      * @var bool
      */
-    protected static $ENABLE_PULL_UPDATED = true;
+    protected static bool $enablePullUpdated = true;
 
     /**
-     * Enable Delete Of Remotes Objects when Deleted Localy
+     * Enable Delete Of Remotes Objects when Deleted Locally
      *
      * @var bool
      */
-    protected static $ENABLE_PULL_DELETED = true;
+    protected static bool $enablePullDeleted = true;
 
     //====================================================================//
     //  COMMON CLASS INFORMATIONS
@@ -143,9 +142,9 @@ abstract class AbstractObject implements Objects\ObjectInterface
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
-        $obj = new \ReflectionClass($this);
+        $obj = new ReflectionClass($this);
 
         return pathinfo((string) $obj->getFileName(), PATHINFO_FILENAME);
     }
@@ -155,9 +154,9 @@ abstract class AbstractObject implements Objects\ObjectInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
-        return self::trans(static::$NAME);
+        return self::trans(static::$name);
     }
 
     /**
@@ -165,17 +164,17 @@ abstract class AbstractObject implements Objects\ObjectInterface
      *
      * @return string
      */
-    public function getDesc()
+    public function getDesc(): string
     {
-        return self::trans(static::$DESCRIPTION);
+        return self::trans(static::$description);
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getIsDisabled()
+    public static function isDisabled(): bool
     {
-        return static::$DISABLED;
+        return static::$disabled;
     }
 
     /**
@@ -183,15 +182,15 @@ abstract class AbstractObject implements Objects\ObjectInterface
      *
      * @return string
      */
-    public static function getIcon()
+    public static function getIcon(): string
     {
-        return static::$ICO;
+        return static::$ico;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function description()
+    public function description(): array
     {
         //====================================================================//
         // Stack Trace
@@ -207,25 +206,25 @@ abstract class AbstractObject implements Objects\ObjectInterface
             "type" => $this->getType(),
             // Object Display Name
             "name" => $this->getName(),
-            // Object Descrition
+            // Object Description
             "description" => $this->getDesc(),
             // Object Icon Class (Font Awesome or Glyph. ie "fa fa-user")
             "icon" => $this->getIcon(),
             // Is This Object Enabled or Not?
-            "disabled" => $this->getIsDisabled(),
+            "disabled" => $this->isDisabled(),
             //====================================================================//
             // Object Limitations
-            "allow_push_created" => (bool) static::$ALLOW_PUSH_CREATED,
-            "allow_push_updated" => (bool) static::$ALLOW_PUSH_UPDATED,
-            "allow_push_deleted" => (bool) static::$ALLOW_PUSH_DELETED,
+            "allow_push_created" => static::$allowPushCreated,
+            "allow_push_updated" => static::$allowPushUpdated,
+            "allow_push_deleted" => static::$allowPushDeleted,
             //====================================================================//
             // Object Default Configuration
-            "enable_push_created" => (bool) static::$ENABLE_PUSH_CREATED,
-            "enable_push_updated" => (bool) static::$ENABLE_PUSH_UPDATED,
-            "enable_push_deleted" => (bool) static::$ENABLE_PUSH_DELETED,
-            "enable_pull_created" => (bool) static::$ENABLE_PULL_CREATED,
-            "enable_pull_updated" => (bool) static::$ENABLE_PULL_UPDATED,
-            "enable_pull_deleted" => (bool) static::$ENABLE_PULL_DELETED
+            "enable_push_created" => static::$enablePushCreated,
+            "enable_push_updated" => static::$enablePushUpdated,
+            "enable_push_deleted" => static::$enablePushDeleted,
+            "enable_pull_created" => static::$enablePullCreated,
+            "enable_pull_updated" => static::$enablePullUpdated,
+            "enable_pull_deleted" => static::$enablePullDeleted
         );
 
         //====================================================================//
