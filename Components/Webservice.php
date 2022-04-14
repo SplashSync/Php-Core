@@ -430,7 +430,7 @@ class Webservice
     {
         //====================================================================//
         // Analyze SOAP Results
-        if (!$response || ($response['result'] ?? false)) {
+        if (!$response || empty($response['result'] ?? false)) {
             return null;
         }
         //====================================================================//

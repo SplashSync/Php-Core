@@ -76,7 +76,7 @@ trait ObjectsCoreTrait
             //====================================================================//
             // Initialize Standard Class
             $className = SPLASH_CLASS_PREFIX.'\\Objects\\'.$objectType;
-            if (!is_subclass_of($className, ObjectInterface::class)) {
+            if (!class_exists($className) || !is_subclass_of($className, ObjectInterface::class)) {
                 throw new Exception('Invalid Object Class : '.$className);
             }
             self::core()->objects[$objectType] = new $className();

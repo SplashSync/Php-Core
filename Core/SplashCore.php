@@ -153,7 +153,7 @@ class SplashCore
         if (false == self::validate()->isValidConfigurator($className)) {
             return new NullConfigurator();
         }
-        if (!is_subclass_of($className, ConfiguratorInterface::class)) {
+        if (!class_exists($className) || !is_subclass_of($className, ConfiguratorInterface::class)) {
             return new NullConfigurator();
         }
         //====================================================================//

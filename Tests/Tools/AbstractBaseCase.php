@@ -549,7 +549,6 @@ abstract class AbstractBaseCase extends TestCase
             }
             $results[] = $task;
         } while (!empty($task));
-
         //====================================================================//
         //   Turn On Output Buffering Again
         ob_start();

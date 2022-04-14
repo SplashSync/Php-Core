@@ -75,7 +75,7 @@ trait WidgetsCoreTrait
             //====================================================================//
             // Initialize Class
             $className = SPLASH_CLASS_PREFIX.'\\Widgets\\'.$widgetType;
-            if (!is_subclass_of($className, WidgetInterface::class)) {
+            if (!class_exists($className) || !is_subclass_of($className, WidgetInterface::class)) {
                 throw new Exception('Invalid Widget Class : '.$className);
             }
             self::core()->widgets[$widgetType] = new $className();

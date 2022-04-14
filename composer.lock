@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d57b8a70280d85557c616bd34b389540",
+    "content-hash": "9006c451461386f3275cdc1fb0e5d5a1",
     "packages": [],
     "packages-dev": [
         {
@@ -552,7 +552,7 @@
         },
         {
             "name": "badpixxel/php-sdk",
-            "version": "dev-futur",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BadPixxel/Php-Sdk.git",
@@ -613,7 +613,7 @@
             "description": "Development Kit for Php Packages",
             "support": {
                 "issues": "https://github.com/BadPixxel/Php-Sdk/issues",
-                "source": "https://github.com/BadPixxel/Php-Sdk/tree/futur"
+                "source": "https://github.com/BadPixxel/Php-Sdk/tree/2.0.0"
             },
             "time": "2022-04-05T14:42:47+00:00"
         },
@@ -695,16 +695,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.2.11",
+            "version": "2.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "2f5bcf0480c13b4fa1ac490aa9344e4402507538"
+                "reference": "ba61e768b410736efe61df01b61f1ec44f51474f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/2f5bcf0480c13b4fa1ac490aa9344e4402507538",
-                "reference": "2f5bcf0480c13b4fa1ac490aa9344e4402507538",
+                "url": "https://api.github.com/repos/composer/composer/zipball/ba61e768b410736efe61df01b61f1ec44f51474f",
+                "reference": "ba61e768b410736efe61df01b61f1ec44f51474f",
                 "shasum": ""
             },
             "require": {
@@ -774,7 +774,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.2.11"
+                "source": "https://github.com/composer/composer/tree/2.2.12"
             },
             "funding": [
                 {
@@ -790,7 +790,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-01T20:00:52+00:00"
+            "time": "2022-04-13T14:42:25+00:00"
         },
         {
             "name": "composer/metadata-minifier",
@@ -1718,16 +1718,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.2.11",
+            "version": "5.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "2ab6744b7296ded80f8cc4f9509abbff393399aa"
+                "reference": "ad87d5a5ca981228e0e205c2bc7dfb8e24559b60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/2ab6744b7296ded80f8cc4f9509abbff393399aa",
-                "reference": "2ab6744b7296ded80f8cc4f9509abbff393399aa",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/ad87d5a5ca981228e0e205c2bc7dfb8e24559b60",
+                "reference": "ad87d5a5ca981228e0e205c2bc7dfb8e24559b60",
                 "shasum": ""
             },
             "require": {
@@ -1782,9 +1782,9 @@
             ],
             "support": {
                 "issues": "https://github.com/justinrainbow/json-schema/issues",
-                "source": "https://github.com/justinrainbow/json-schema/tree/5.2.11"
+                "source": "https://github.com/justinrainbow/json-schema/tree/5.2.12"
             },
-            "time": "2021-07-22T09:24:00+00:00"
+            "time": "2022-04-13T08:02:27+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6661,8 +6661,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "splash/console": 20,
-        "badpixxel/php-sdk": 20
+        "splash/console": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

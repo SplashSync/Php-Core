@@ -180,7 +180,7 @@ trait ObjectsAssertionsTrait
             is_array($data) || is_scalar($data),
             "Data is not a Scalar or Array (".print_r($data, true).")".$comment
         );
-        $this->assertTrue(
+        $this->assertNull(
             $className::validate($data),
             "Data is not a Valid Splash '".$type."'. (".print_r($data, true).")".$comment
         );
