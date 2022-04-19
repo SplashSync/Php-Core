@@ -323,7 +323,7 @@ class SplashCore
         //====================================================================//
         // Import Local Parameters
         foreach ($customConf as $key => $value) {
-            $config->{$key} = is_scalar($value) ? trim($value) : $value;
+            $config->{$key} = is_scalar($value) ? trim((string) $value) : $value;
         }
 
         return self::core()->conf;
@@ -356,8 +356,8 @@ class SplashCore
     //====================================================================//
 
     /**
-     * Ask for Server System Informations
-     * Informations may be overwritten by Local Module Class
+     * Ask for Server System Information
+     * Information may be overwritten by Local Module Class
      *
      * @throws Exception
      *
@@ -410,12 +410,12 @@ class SplashCore
         );
 
         //====================================================================//
-        // Server Informations
+        // Server Information
         $response->servertype = SPLASH_NAME;
         $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME');
 
         //====================================================================//
-        // Module Informations
+        // Module Information
         $response->moduleauthor = SPLASH_AUTHOR;
         $response->moduleversion = SPLASH_VERSION;
 
@@ -426,7 +426,7 @@ class SplashCore
         }
 
         //====================================================================//
-        // Merge Informations with Local Module Informations
+        // Merge Information with Local Module Information
         return self::local()->informations($response);
     }
 

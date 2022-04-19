@@ -592,7 +592,7 @@ class Webservice
         //====================================================================//
         // Run SOAP Call - Reverse Ping
         $ping = $testClient->call(SPL_S_PING, null, true);
-        if (empty($ping) || !isset($ping->result) || !$ping->result) {
+        if (empty($ping) || empty($ping['result'] ?? false)) {
             Splash::log()->err(Splash::trans('ErrReversePing', $testClient->host));
 
             return Splash::log()->err(Splash::trans('ErrReverseDebug', $this->getClientDebugLink()));
@@ -601,7 +601,7 @@ class Webservice
         //====================================================================//
         // Run SOAP Call - Reverse Connect
         $connect = $testClient->call(SPL_S_CONNECT, array());
-        if (empty($connect) || !isset($connect->result) || !$connect->result) {
+        if (empty($connect) || empty($connect['result'] ?? false)) {
             Splash::log()->err(Splash::trans('ErrReverseConnect', $testClient->host));
 
             return Splash::log()->err(Splash::trans('ErrReverseDebug', $this->getClientDebugLink()));

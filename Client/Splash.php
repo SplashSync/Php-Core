@@ -48,7 +48,7 @@ class Splash extends SplashCore
         // Run NuSOAP Call
         $result = self::ws()->call(SPL_S_PING, null, true);
         //====================================================================//
-        //  Messages Debug Informations
+        //  Messages Debug Information
         //====================================================================//
         if (self::configuration()->TraceTasks) {
             $total = sprintf('%.2f %s', 1000 * (microtime(true) - $intTimer), ' ms');
@@ -57,14 +57,14 @@ class Splash extends SplashCore
         }
         //====================================================================//
         // Analyze NuSOAP results
-        if ($result && isset($result->result) && (true == $result->result) && ($silent)) {
+        if ($result && !empty($result['result'] ?? false) && ($silent)) {
             self::log()->cleanLog();
 
             return true;
         }
         //====================================================================//
         // If Not Silent, Display result
-        if ($result && isset($result->result) && (true == $result->result)) {
+        if ($result && !empty($result['result'] ?? false)) {
             return self::log()->msg('Remote Client Ping Passed ('.self::ws()->url.')');
         }
 
@@ -96,7 +96,7 @@ class Splash extends SplashCore
         // Run NuSOAP Call
         $result = self::ws()->call(SPL_S_CONNECT);
         //====================================================================//
-        //  Messages Debug Informations
+        //  Messages Debug Information
         //====================================================================//
         if (self::configuration()->TraceTasks) {
             $total = sprintf('%.2f %s', 1000 * (microtime(true) - $initTimer), ' ms');
@@ -105,7 +105,7 @@ class Splash extends SplashCore
         }
         //====================================================================//
         // Analyze NuSOAP results
-        if (!$result || !isset($result->result) || (true != $result->result)) {
+        if (!$result || empty($result['result'] ?? false)) {
             return self::log()->err('Remote Client Connection Failed ('.self::ws()->url.')');
         }
         //====================================================================//
@@ -127,7 +127,7 @@ class Splash extends SplashCore
      * Submit an Update for a Local Object
      *
      * @param string           $objectType Object Type Name
-     * @param array|int|string $local      Local Object Ids or Array of Local Id
+     * @param array|int|string $local      Local Object Ids or Array of Local ID
      * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
      * @param string           $user       User Name
      * @param string           $comment    Operation Comment for Logs
