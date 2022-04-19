@@ -185,6 +185,6 @@ class ExtensionsManager
             $filenames = array_merge($filenames, FilesLoader::load($extDir, 'php'));
         }
 
-        return $filenames;
+        return array_reverse($filenames);
     }
 }

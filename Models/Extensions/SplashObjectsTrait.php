@@ -61,7 +61,7 @@ trait SplashObjectsTrait
         }
         //====================================================================//
         // Verify Class Implements ObjectInterface
-        if (is_subclass_of($classString, ObjectInterface::class)) {
+        if (is_subclass_of($classString, ObjectInterface::class) && !$classString::getIsDisabled()) {
             self::$objects[$filename] = $classString;
 
             return true;
