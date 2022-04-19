@@ -283,7 +283,7 @@ class SplashCore
             //====================================================================//
             // Import Local Parameters
             foreach ($localConf as $key => $value) {
-                $config->{$key} = trim($value);
+                $config->{$key} = is_scalar($value) ? trim($value) : $value;;
             }
         }
 
