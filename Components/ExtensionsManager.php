@@ -115,8 +115,18 @@ class ExtensionsManager
         }
         $loaded = true;
         //====================================================================//
-        // Walk on Paths
-        foreach (self::getExtensionsFilenames() as $filename => $fullPath) {
+        // Load File Paths
+        $files = self::getExtensionsFilenames();
+        //====================================================================//
+        // Walk on Paths to Autoloader
+        foreach ($files as $filename => $fullPath) {
+            if (self::registerAutoloadFile($fullPath)) {
+                unset($files[$filename]);
+            }
+        }
+        //====================================================================//
+        // Walk on Paths to Register Extensions
+        foreach ($files as $filename => $fullPath) {
             //====================================================================//
             // Register File
             self::$extensions[$filename] = $fullPath;
@@ -185,6 +195,25 @@ class ExtensionsManager
             $filenames = array_merge($filenames, FilesLoader::load($extDir, 'php'));
         }
 
-        return array_reverse($filenames);
+        return $filenames;
+    }
+
+    /**
+     * Check if File as a Class Autoloader
+     *
+     * @param string $fullPath
+     *
+     * @return bool
+     */
+    private static function registerAutoloadFile(string $fullPath): bool
+    {
+        //====================================================================//
+        // Check if Autoloader
+        if (false === strpos($fullPath, "autoload.php")) {
+            return false;
+        }
+        require_once $fullPath;
+
+        return true;
     }
 }
