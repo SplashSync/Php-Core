@@ -251,7 +251,7 @@ class XmlManager
         $key = is_numeric($key) ? $prefix.$key : $key;
         //====================================================================//
         // Keep Scalar Keys
-        return (string) preg_replace('/[^a-zA-Z0-9]/', '_', $key);
+        return (string) preg_replace('/[^a-zA-Z0-9\-]/', '_', $key);
     }
 
     /**
