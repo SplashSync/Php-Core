@@ -16,6 +16,7 @@
 namespace Splash\Models\Objects;
 
 use Splash\Components\ExtensionsManager;
+use Splash\Components\FieldsManager;
 
 /**
  * Build, Read & Write All Splash Extensions Fields
@@ -63,7 +64,15 @@ trait ExtensionFieldsTrait
         }
         //====================================================================//
         // Field Managed by Extensions
-        $this->out[$fieldName] = $result ? $fieldData : null;
+        if ($listName = FieldsManager::listName($fieldName)) {
+            $this->out[$listName] = array_replace_recursive(
+                $this->out[$listName] ?? array(),
+                $result ? ($fieldData ?? array()) : array()
+            );
+        } else {
+            $this->out[$fieldName] = $result ? $fieldData : null;
+        }
+
         unset($this->in[$key]);
     }
 
