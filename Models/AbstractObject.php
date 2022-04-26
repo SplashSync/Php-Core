@@ -18,7 +18,7 @@ namespace   Splash\Models;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * Base Class for class for Splash Objects.
+ * Base Class for Splash Objects.
  *
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
