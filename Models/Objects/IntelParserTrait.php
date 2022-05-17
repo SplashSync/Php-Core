@@ -168,9 +168,9 @@ trait IntelParserTrait
         Splash::log()->trace();
         //====================================================================//
         // Init Reading
-        $newObjectId = null;         // If Object Created, we MUST Return Object Id
-        $this->in = $list;        // Store List of Field to Write in Buffer
-        $this->isUpdated();             // Clear Updated Flag before Writing
+        $newObjectId = null;        // If Object Created, we MUST Return Object ID
+        $this->in = $list;          // Store List of Field to Write in Buffer
+        $this->isUpdated();         // Clear Updated Flag before Writing
 
         //====================================================================//
         // Load or Create Requested Object
