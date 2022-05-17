@@ -229,6 +229,6 @@ class Status
      */
     public static function isRefused(string $status)
     {
-        return in_array($status, self::getReturned(), true);
+        return in_array($status, self::getRefused(), true);
     }
 }
