@@ -161,9 +161,9 @@ class Status
     /**
      * Get a List of Draft Quotation Status Codes
      *
-     * @return array
+     * @return string[]
      */
-    public static function getDraft()
+    public static function getDraft(): array
     {
         return array(
             self::DRAFT,
@@ -183,7 +183,7 @@ class Status
     }
 
     /**
-     * Get a List of Approuved Quotation Status Codes
+     * Get a List of Approved Quotation Status Codes
      *
      * @return array
      */
@@ -196,7 +196,7 @@ class Status
     }
 
     /**
-     * Check if Quotation Status Code is Approuved
+     * Check if Quotation Status Code is Approved
      *
      * @param string $status Quotation Status Code
      *
@@ -205,6 +205,18 @@ class Status
     public static function isApprouved(string $status)
     {
         return in_array($status, self::getApprouved(), true);
+    }
+
+    /**
+     * Check if Quotation Status Code is Approved
+     *
+     * @param string $status Quotation Status Code
+     *
+     * @return bool
+     */
+    public static function isOrdered(string $status)
+    {
+        return (self::ORDERED == $status);
     }
 
     /**
