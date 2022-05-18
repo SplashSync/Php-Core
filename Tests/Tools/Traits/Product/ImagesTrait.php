@@ -374,7 +374,7 @@ trait ImagesTrait
             //====================================================================//
             //   Check if Image Data is Valid
             $validate = Image::validate($targetImage[$this->imageId]);
-            $this->assertTrue($validate, "Target Image définition Array is Invalid ".$validate);
+            $this->assertNull($validate, "Target Image définition Array is Invalid ".$validate);
             //====================================================================//
             //   Check if Image Flags are Set
             $this->assertArrayHasKey((string) $this->isVisibleId, $targetImage);

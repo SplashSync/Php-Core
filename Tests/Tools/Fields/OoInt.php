@@ -50,6 +50,7 @@ class OoInt implements FieldInterface
         }
         //==============================================================================
         //      Verify Data is an Integer
+        /** @phpstan-ignore-next-line  */
         if (intval($data) != $data) {
             return "Field Data is not an Integer.";
         }
