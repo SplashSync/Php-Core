@@ -50,7 +50,7 @@ class OoStream extends OoFile
     /**
      * {@inheritdoc}
      */
-    public static function fake(array $settings)
+    public static function fake(array $settings): array
     {
         //====================================================================//
         // Create a Fake File

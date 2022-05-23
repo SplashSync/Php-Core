@@ -78,8 +78,10 @@ class OoFile implements FieldInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return array
      */
-    public static function fake(array $settings)
+    public static function fake(array $settings): array
     {
         //====================================================================//
         // Image Faker Parameters

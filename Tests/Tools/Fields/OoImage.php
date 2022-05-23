@@ -82,8 +82,10 @@ class OoImage implements FieldInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return array
      */
-    public static function fake(array $settings)
+    public static function fake(array $settings): array
     {
         //====================================================================//
         // Image Faker Parameters
@@ -91,7 +93,6 @@ class OoImage implements FieldInterface
         $dir = dirname(dirname(dirname(__DIR__)))."/Resources/img/";
         $file = $settings["Images"][$index];
         $fullPath = $dir.$file;
-//        $Name       = "Fake Image " . substr(preg_replace('/[^A-Za-z0-9\-]/', '', utf8_encode(mt_rand())), 0, 3);
         $name = "Fake Image ".$index;
 
         //====================================================================//
