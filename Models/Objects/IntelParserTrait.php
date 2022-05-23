@@ -17,6 +17,7 @@ namespace   Splash\Models\Objects;
 
 use Splash\Components\ExtensionsManager;
 use Splash\Core\SplashCore      as Splash;
+use TypeError;
 
 /**
  * This class implements Intelligent Parser to Access Objects Data
@@ -259,9 +260,25 @@ trait IntelParserTrait
         $fields = $this->in;
         foreach ($fields as $fieldName => $fieldData) {
             //====================================================================//
+            // Replace Empty Stings by Null
+            $fieldData = ("" === $fieldData) ? null : $fieldData;
+            //====================================================================//
             // Write Requested Fields
             foreach ($this->identifySetMethods() as $method) {
-                $this->{$method}($fieldName, $fieldData);
+                try {
+                    $this->{$method}($fieldName, $fieldData);
+                } catch (TypeError $ex) {
+                    //====================================================================//
+                    // Detect Typed Fields Set Type Error
+                    // Setter Functions may for $fieldData types
+                    $exFile = $ex->getTrace()[0]['file'] ?? "";
+                    $exFunction = $ex->getTrace()[0]['function'] ?? "";
+                    if ((__FILE__ == $exFile) && ($exFunction == $method)) {
+                        continue;
+                    }
+
+                    throw $ex;
+                }
             }
         }
 
