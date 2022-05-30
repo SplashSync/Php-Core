@@ -113,7 +113,7 @@ abstract class AbstractBaseCase extends TestCase
             }
         }
 
-        return (empty($allowed) || !in_array($identifier, $allowed, true));
+        return (empty($allowed) || in_array($identifier, $allowed, true));
     }
 
     /**
