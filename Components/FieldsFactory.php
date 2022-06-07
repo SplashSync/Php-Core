@@ -713,12 +713,14 @@ class FieldsFactory
             $buffer[] = $field->toArray();
         }
         //====================================================================//
+        // Execute Configurators on Fields
+        $configuredBuffer = $this->executeConfigurators($buffer);
+        //====================================================================//
         // Reset Fields Factory
         $this->reset();
-
         //====================================================================//
         // Execute Configurators on Fields
-        return $this->executeConfigurators($buffer);
+        return $configuredBuffer;
     }
 
     //====================================================================//
