@@ -26,7 +26,7 @@ trait FieldsFactoryTrait
     /**
      * @var null|FieldsFactory
      */
-    private static ?FieldsFactory $fieldsFactory;
+    private static ?FieldsFactory $fieldsFactory = null;
 
     /**
      * Get a singleton FieldsFactory Class

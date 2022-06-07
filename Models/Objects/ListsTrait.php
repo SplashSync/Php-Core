@@ -25,7 +25,7 @@ trait ListsTrait
     /**
      * @var null|ListsHelper
      */
-    private static ?ListsHelper $listsHelper;
+    private static ?ListsHelper $listsHelper = null;
 
     /**
      * Get a singleton List Helper Class

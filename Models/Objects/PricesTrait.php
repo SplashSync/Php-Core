@@ -25,7 +25,7 @@ trait PricesTrait
     /**
      * @var null|PricesHelper
      */
-    private static ?PricesHelper $pricesHelper;
+    private static ?PricesHelper $pricesHelper = null;
 
     /**
      * Get a singleton Prices Helper Class

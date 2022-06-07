@@ -25,7 +25,7 @@ trait UnitsHelperTrait
     /**
      * @var null|UnitConverter
      */
-    private static ?UnitConverter $unitConverter;
+    private static ?UnitConverter $unitConverter = null;
 
     /**
      * Get a singleton Unit Converter Class

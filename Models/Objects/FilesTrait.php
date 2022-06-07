@@ -27,7 +27,7 @@ trait FilesTrait
      *
      * @var null|FilesHelper
      */
-    private static ?FilesHelper $filesHelper;
+    private static ?FilesHelper $filesHelper = null;
 
     /**
      * Get a singleton List Helper Class

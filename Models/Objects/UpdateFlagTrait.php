@@ -16,25 +16,25 @@
 namespace   Splash\Models\Objects;
 
 /**
- * @abstract    This class implements Objects Update Flag
+ * This class implements Objects Update Flag
  */
 trait UpdateFlagTrait
 {
     /**
      * Set Operations Updated Flag
      *
-     * @abstract This flag is set when an update is done during Set Operation.
-     *           Using this flag is useful to reduce exchanges with databases
+     * @note    This flag is set when an update is done during Set Operation.
+     *          Using this flag is useful to reduce exchanges with databases
      *
      * @var bool
      */
-    private $update = false;
+    private bool $update = false;
 
     /**
      * Set Custom Updated Flag
      *
-     * @abstract This flag is set when an update is done during Set Operation.
-     *           Using this flag is useful to reduce exchanges with databases
+     * @note    This flag is set when an update is done during Set Operation.
+     *          Using this flag is useful to reduce exchanges with databases
      *
      * @var bool
      */
@@ -45,13 +45,13 @@ trait UpdateFlagTrait
     //====================================================================//
 
     /**
-     * @abstract    Flag Object For Database Update
+     * Flag Object For Database Update
      *
-     * @param string $custom Custom Falg Name
+     * @param string $custom Custom Flag Name
      *
      * @return self
      */
-    protected function needUpdate($custom = "object")
+    protected function needUpdate(string $custom = "object"): self
     {
         if (self::isCustom($custom)) {
             $this->custom[$custom] = true;
@@ -63,13 +63,13 @@ trait UpdateFlagTrait
     }
 
     /**
-     * @abstract    Clear Update Flag
+     * Clear Update Flag
      *
-     * @param string $custom Custom Falg Name
+     * @param string $custom Custom Flag Name
      *
      * @return self
      */
-    protected function isUpdated($custom = "object")
+    protected function isUpdated(string $custom = "object"): self
     {
         if (self::isCustom($custom)) {
             $this->custom[$custom] = false;
@@ -81,34 +81,34 @@ trait UpdateFlagTrait
     }
 
     /**
-     * @abstract    is Database Update Needed
+     * Is Database Update Needed
      *
-     * @param string $custom Custom Falg Name
+     * @param string $custom Custom Flag Name
      *
      * @return bool
      */
-    protected function isToUpdate($custom = "object")
+    protected function isToUpdate(string $custom = "object"): bool
     {
         if (self::isCustom($custom)) {
-            return isset($this->custom[$custom]) ? $this->custom[$custom] : false;
+            return $this->custom[$custom] ?? false;
         }
 
         return $this->update;
     }
 
     /**
-     * @abstract    is Custom Flag Request
+     * Is Custom Flag Request
      *
-     * @param string $custom Custom Falg Name
+     * @param string $custom Custom Flag Name
      *
      * @return bool
      */
-    private function isCustom($custom)
+    private function isCustom(string $custom): bool
     {
         if ("object" == $custom) {
             return false;
         }
-        if (is_null($custom) || !is_scalar($custom) || empty($custom)) {
+        if (empty($custom)) {
             return false;
         }
 

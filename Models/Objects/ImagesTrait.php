@@ -27,7 +27,7 @@ trait ImagesTrait
      *
      * @var null|ImagesHelper
      */
-    private static ?ImagesHelper $imagesHelper;
+    private static ?ImagesHelper $imagesHelper = null;
 
     /**
      * Get a singleton List Helper Class

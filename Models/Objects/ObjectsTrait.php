@@ -25,7 +25,7 @@ trait ObjectsTrait
     /**
      * @var null|ObjectsHelper
      */
-    private static ?ObjectsHelper $objectsHelper;
+    private static ?ObjectsHelper $objectsHelper = null;
 
     /**
      * Get a singleton Objects Helper Class
