@@ -62,6 +62,7 @@ class OoVarchar implements FieldInterface
         //==============================================================================
         //      Apply Constraints
         self::applyLengthConstrains($settings, $data);
+        self::applyHtmlConstrains($settings, $data);
         self::applyCaseConstrains($settings, $data);
 
         return $data;
@@ -99,7 +100,7 @@ class OoVarchar implements FieldInterface
      *
      * @return void
      */
-    public static function applyLengthConstrains($settings, &$data)
+    public static function applyLengthConstrains(array $settings, string &$data)
     {
         //==============================================================================
         //      Apply Min Length Constraint
@@ -123,7 +124,7 @@ class OoVarchar implements FieldInterface
      *
      * @return void
      */
-    public static function applyCaseConstrains($settings, &$data)
+    public static function applyCaseConstrains(array $settings, string &$data)
     {
         //==============================================================================
         //      Apply Case Constraint
@@ -132,6 +133,23 @@ class OoVarchar implements FieldInterface
         }
         if (isset($settings["isUpperCase"]) && !empty($settings["isUpperCase"])) {
             $data = strtoupper($data);
+        }
+    }
+
+    /**
+     * Apply Case Constrains
+     *
+     * @param array  $settings User Defined Faker Settings
+     * @param string $data
+     *
+     * @return void
+     */
+    public static function applyHtmlConstrains(array $settings, string &$data)
+    {
+        //==============================================================================
+        //      Apply Case Constraint
+        if (isset($settings["isHtml"]) && !empty($settings["isHtml"])) {
+            $data = sprintf("<p>%s</p>", $data);
         }
     }
 }
