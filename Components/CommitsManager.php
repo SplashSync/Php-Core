@@ -571,7 +571,11 @@ class CommitsManager
         $options = array("allowed_classes" => array(CommitEvent::class, \DateTime::class));
         if (is_array($serialisedEvents)) {
             foreach ($serialisedEvents as $serialisedEvent) {
-                $event = unserialize($serialisedEvent, $options);
+                try {
+                    $event = unserialize($serialisedEvent, $options);
+                } catch (Exception $exception) {
+                    continue;
+                }
                 if ($event instanceof CommitEvent) {
                     $commitEvents[$event->getMd5()] = $event;
                 }
