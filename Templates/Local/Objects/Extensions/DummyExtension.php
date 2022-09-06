@@ -90,9 +90,9 @@ class DummyExtension implements ObjectExtensionInterface
                 //====================================================================//
                 // Data is Unchanged
                 return false;
-            //====================================================================//
-            // This field is NOT Managed by this Extension
             default:
+                //====================================================================//
+                // This field is NOT Managed by this Extension
                 return null;
         }
     }
