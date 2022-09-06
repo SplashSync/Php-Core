@@ -43,21 +43,21 @@ class Widgets implements RouterInterface
         // Execute Requested Task
         //====================================================================//
         switch ($task['name']) {
-            //====================================================================//
-            //  READING OF SERVER WIDGETS LIST
             case SPL_F_WIDGET_LIST:
+                //====================================================================//
+                //  READING OF SERVER WIDGETS LIST
                 $response['data'] = Splash::widgets();
 
                 break;
-            //====================================================================//
-            //  READING A WIDGET DEFINITION
             case SPL_F_WIDGET_DEFINITION:
+                //====================================================================//
+                //  READING A WIDGET DEFINITION
                 $response['data'] = Splash::widget($task['params']['type'] ?? "None")->description();
 
                 break;
-            //====================================================================//
-            //  READING A WIDGET CONTENTS
             case SPL_F_WIDGET_GET:
+                //====================================================================//
+                //  READING A WIDGET CONTENTS
                 $response['data'] = Splash::widget($task['params']['type'] ?? "None")
                     ->get($task['params']['params'] ?? array())
                 ;

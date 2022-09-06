@@ -156,7 +156,7 @@ class OoFile implements FieldInterface
         // Compare File CheckSum
         if (!isset($source['md5']) || !isset($target['md5'])
             || !isset($source['size']) || !isset($target['size'])
-            ) {
+        ) {
             return false;
         }
         if ($source['md5'] != $target['md5']) {

@@ -176,7 +176,7 @@ class OoImage implements FieldInterface
         // Safety Checks
         if (!isset($source['width']) || !isset($target['width'])
             || !isset($source['height']) || !isset($target['height'])
-            ) {
+        ) {
             return false;
         }
         //====================================================================//

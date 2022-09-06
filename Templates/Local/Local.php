@@ -67,16 +67,16 @@ class Local implements LocalClassInterface
         //====================================================================//
         /** @phpstan-ignore-next-line */
         if (defined('SPLASH_SERVER_MODE') && SPLASH_SERVER_MODE) {
+            //====================================================================//
+            // When Library is called in client mode ONLY
+            //====================================================================//
             // NOTHING TO DO
-        //====================================================================//
-        // When Library is called in client mode ONLY
-        //====================================================================//
         }
-        // NOTHING TO DO
 
         //====================================================================//
         // When Library is called in both client & server mode
         //====================================================================//
+        // NOTHING TO DO
 
         return true;
     }

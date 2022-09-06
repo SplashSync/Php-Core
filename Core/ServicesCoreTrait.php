@@ -159,6 +159,7 @@ trait ServicesCoreTrait
      * Access to NuSOAP WebService Communication Functions
      *
      * @return Webservice
+     *
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function ws(): Webservice

@@ -389,7 +389,7 @@ class SplashCore
         $response->longdesc = SPLASH_DESC;
 
         //====================================================================//
-        // Company Informations
+        // Company Information
         $response->company = null;
         $response->address = null;
         $response->zip = null;
@@ -527,6 +527,7 @@ class SplashCore
      * @param int    $type
      *
      * @return null|string
+     *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     public static function input(string $name, int $type = INPUT_SERVER): ?string

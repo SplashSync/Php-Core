@@ -36,6 +36,7 @@ class XmlManager
      * XMLWriter Class
      *
      * @var XMLWriter
+     *
      * @static
      */
     private static XMLWriter $xml;
