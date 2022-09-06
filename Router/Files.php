@@ -50,9 +50,9 @@ class Files implements RouterInterface
         //====================================================================//
         // Execute Action
         switch ($task['name']) {
-            //====================================================================//
-            //  READING A FILE INFORMATIONS
             case SPL_F_ISFILE:
+                //====================================================================//
+                //  READING A FILE INFORMATION'S
                 //====================================================================//
                 //  IF LOCAL SYSTEM PROVIDE FILES
                 $local = Splash::local();
@@ -67,9 +67,9 @@ class Files implements RouterInterface
                 $response['data'] = Splash::file()->isFile($inputs['path'], $inputs['md5']);
 
                 break;
-            //====================================================================//
-            //  READING A FILE CONTENTS
             case SPL_F_GETFILE:
+                //====================================================================//
+                //  READING A FILE CONTENTS
                 //====================================================================//
                 //  IF LOCAL SYSTEM PROVIDE FILES
                 $local = Splash::local();

@@ -105,16 +105,16 @@ class Objects implements RouterInterface
             Splash::log()->err("Object Router - Missing Task Parameters... ");
 
             return false;
-            //====================================================================//
-        // Verify Requested Object Type is Available
         }
+        //====================================================================//
+        // Verify Requested Object Type is Available
         if (empty($task['params']['type'])) {
             Splash::log()->err("Object Router - Missing Object Type... ");
 
             return false;
-            //====================================================================//
-        // Verify Requested Object Type is Valid
         }
+        //====================================================================//
+        // Verify Requested Object Type is Valid
         if (true != Splash::validate()->isValidObject($task['params']['type'])) {
             Splash::log()->err("Object Router - Object Type is Invalid... ");
 
@@ -145,24 +145,24 @@ class Objects implements RouterInterface
         // Execute Requested Task
         //====================================================================//
         switch ($task['name']) {
-            //====================================================================//
-            //  READING OF Object Description
-            //====================================================================//
             case SPL_F_DESC:
+                //====================================================================//
+                //  READING OF Object Description
+                //====================================================================//
                 $response['data'] = $objectClass->description();
 
                 break;
-            //====================================================================//
-            //  READING OF Available Fields
-            //====================================================================//
             case SPL_F_FIELDS:
+                //====================================================================//
+                //  READING OF Available Fields
+                //====================================================================//
                 $response['data'] = $objectClass->fields();
 
                 break;
-            //====================================================================//
-            //  READING OF OBJECT LIST
-            //====================================================================//
             case SPL_F_LIST:
+                //====================================================================//
+                //  READING OF OBJECT LIST
+                //====================================================================//
                 $filters = $task['params']['filters'] ?? null;
                 $params = $task['params']['params'] ?? array();
                 $response['data'] = $objectClass->objectsList($filters, $params ?: array());
@@ -204,24 +204,24 @@ class Objects implements RouterInterface
         // Execute Requested Task
         //====================================================================//
         switch ($task['name']) {
-            //====================================================================//
-            //  READING OF OBJECT DATA
-            //====================================================================//
             case SPL_F_GET:
+                //====================================================================//
+                //  READING OF OBJECT DATA
+                //====================================================================//
                 $response['data'] = self::doGet($objectClass, $objectId, $fields);
 
                 break;
-            //====================================================================//
-            //  WRITING OF OBJECT DATA
-            //====================================================================//
             case SPL_F_SET:
+                //====================================================================//
+                //  WRITING OF OBJECT DATA
+                //====================================================================//
                 $response['data'] = self::doSet($objectClass, $objectId, $fields);
 
                 break;
-            //====================================================================//
-            //  DELETE OF AN OBJECT
-            //====================================================================//
             case SPL_F_DEL:
+                //====================================================================//
+                //  DELETE OF AN OBJECT
+                //====================================================================//
                 $response['data'] = self::doDelete($objectClass, $objectId);
 
                 break;

@@ -15,6 +15,7 @@
 
 namespace   Splash\Router;
 
+use Exception;
 use Splash\Components\Router;
 use Splash\Core\SplashCore      as Splash;
 
@@ -26,6 +27,8 @@ class Admin implements RouterInterface
 {
     /**
      * {@inheritDoc}
+     *
+     * @throws Exception
      */
     public static function action(array $task): ?array
     {
@@ -39,32 +42,32 @@ class Admin implements RouterInterface
         $response = Router::getEmptyResponse($task);
 
         switch ($task['name']) {
-            //====================================================================//
-            //  READING OF SERVER OBJECT LIST
             case SPL_F_GET_OBJECTS:
+                //====================================================================//
+                //  READING OF SERVER OBJECT LIST
                 $response['data'] = Splash::objects();
                 $response['result'] = !empty($response['data']);
 
                 break;
-            //====================================================================//
-            //  READING OF SERVER WIDGETS LIST
             case SPL_F_GET_WIDGETS:
+                //====================================================================//
+                //  READING OF SERVER WIDGETS LIST
                 $response['data'] = Splash::widgets();
                 $response['result'] = !empty($response['data']);
 
                 break;
-            //====================================================================//
-            //  READING OF SERVER SELF-TEST RESULTS
             case SPL_F_GET_SELFTEST:
+                //====================================================================//
+                //  READING OF SERVER SELF-TEST RESULTS
                 $response['result'] = Splash::selfTest();
                 $response['data'] = $response['result'];
 
                 break;
-            //====================================================================//
-            //  READING OF SERVER INFORMATIONS
             case SPL_F_GET_INFOS:
+                //====================================================================//
+                //  READING OF SERVER INFORMATION
                 $response['data'] = Splash::informations();
-                $response['result'] = !empty($response['data']);
+                $response['result'] = !empty($response['data']->count());
 
                 break;
             default:
