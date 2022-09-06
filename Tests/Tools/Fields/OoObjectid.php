@@ -45,7 +45,7 @@ class OoObjectid implements FieldInterface
     {
         //==============================================================================
         //      Verify Data is Not Empty
-        if (empty($data) || ('0' === $data)) {
+        if (empty($data)) {
             return null;
         }
         //==============================================================================

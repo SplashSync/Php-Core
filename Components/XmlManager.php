@@ -300,6 +300,7 @@ class XmlManager
             }
             //====================================================================//
             // Append Array Element
+            /** @phpstan-ignore-next-line */
             $result[$elementName][] = self::simpleXmlToArray($node);
         }
         //====================================================================//
@@ -308,6 +309,7 @@ class XmlManager
             $result = (string) base64_decode((string) $element, true);
         }
 
+        /** @phpstan-ignore-next-line */
         return $result;
     }
 
@@ -351,6 +353,7 @@ class XmlManager
             // Convert Single Element to Array Element
             if (!is_array($result[$elementName])) {
                 $singleElement = $result[$elementName];       // Store First Element
+                /** @phpstan-ignore-next-line */
                 $result[$elementName] = array();              // Create New Array
                 $result[$elementName][] = $singleElement;     // Append To Array
             }
