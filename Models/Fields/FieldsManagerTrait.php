@@ -378,6 +378,7 @@ trait FieldsManagerTrait
      * @return null|array
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public static function filterData(array $objectData, array $filters = array()): ?array
     {
@@ -418,7 +419,10 @@ trait FieldsManagerTrait
         //====================================================================//
         // Process All List Fields Ids Filters
         foreach ($listFilters as $listName => $listFilter) {
-            $result[$listName] = self::filterListData($objectData[$listName], $listFilter);
+            $result[$listName] = is_array($objectData[$listName])
+                ? self::filterListData($objectData[$listName], $listFilter)
+                : null
+            ;
         }
 
         return $result;
