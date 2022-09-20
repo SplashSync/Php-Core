@@ -177,6 +177,8 @@ trait ObjectsFakerTrait
      * @throws Exception
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.CountInLoopExpression)
      */
     public function fakeListData(array $field): array
     {

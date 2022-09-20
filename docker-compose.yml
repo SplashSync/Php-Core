@@ -25,6 +25,15 @@ version: "3.5"
 services:
 
     ################################################################################
+    # PHP 8.1
+    php-8.1:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+        container_name: php-core-8.1
+        volumes:
+            - ./:/var/www/html
+            - vendor-php81:/var/www/html/vendor
+
+    ################################################################################
     # PHP 8.0
     php-8.0:
         image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
@@ -42,26 +51,7 @@ services:
             - ./:/var/www/html
             - vendor-php74:/var/www/html/vendor
 
-    ################################################################################
-    # PHP 7.3
-    php-7.3:
-        image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
-        container_name: php-core-7.3
-        volumes:
-            - ./:/var/www/html
-            - vendor-php73:/var/www/html/vendor
-
-    ################################################################################
-    # PHP 7.2
-    php-7.2:
-        image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
-        container_name: php-core-7.2
-        volumes:
-            - ./:/var/www/html
-            - vendor-php72:/var/www/html/vendor
-
 volumes:
+    vendor-php81: ~
     vendor-php80: ~
     vendor-php74: ~
-    vendor-php73: ~
-    vendor-php72: ~
