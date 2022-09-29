@@ -18,6 +18,7 @@ namespace Splash\Tests\WsObjects;
 use ArrayObject;
 use Exception;
 use Splash\Client\Splash;
+use Splash\Models\Fields\ObjectField;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
@@ -127,6 +128,7 @@ class O02FieldsTest extends ObjectsCase
         //====================================================================//
         foreach ($data as $fieldData) {
             $this->verifyFieldRequired($fieldData);
+            $this->verifyFieldPrimary($fieldData, $data);
             $this->verifyFieldMetaData($fieldData);
             $this->verifyFieldOptional($fieldData);
             $this->verifyFieldAssociations($fieldData, $data);
@@ -185,6 +187,48 @@ class O02FieldsTest extends ObjectsCase
         $this->assertArraySplashBool($field, "inlist", "Field In List Flag");
         $this->assertArraySplashArray($field, "choices", "Field Possible Values [key => xxx, value => yyy] ");
         $this->assertArraySplashArray($field, "options", "Field Faker Options [key => value]");
+    }
+
+    /**
+     * Verify Main Field Information are in right format
+     *
+     * @param array   $field
+     * @param array[] $fields
+     *
+     * @throws Exception
+     *
+     * @return void
+     */
+    public function verifyFieldPrimary(array $field, array $fields): void
+    {
+        //====================================================================//
+        // Check if Field is Flagged as Primary
+        if (!$field["primary"]) {
+            return;
+        }
+        //====================================================================//
+        // Verify Field is Also Required
+        $this->assertNotEmpty($field["required"], "Primary Field must also be Required");
+        //====================================================================//
+        // Verify Field Type Valid for Primary
+        $this->assertTrue(
+            in_array($field["type"], ObjectField::PRIMARY_TYPES, true),
+            sprintf("Primary field type '%s' is not allowed", $field["type"])
+        );
+        $this->assertNull(self::isListField($field["type"]));
+        $this->assertNull(self::isIdField($field["type"]));
+        //====================================================================//
+        // Verify Field is the Only Primary
+        foreach ($fields as $otherField) {
+            if (!$otherField["primary"]) {
+                continue;
+            }
+            $this->assertEquals(
+                $field["id"],
+                $otherField["id"],
+                sprintf("More than ONE primary field was found: %s", $otherField["id"])
+            );
+        }
     }
 
     /**

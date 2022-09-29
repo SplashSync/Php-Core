@@ -43,6 +43,16 @@ class ObjectField extends ArrayObject
     const META_ORIGIN_NODE_NAME = "SourceNodeName";        // Object Source Server Name
 
     //==============================================================================
+    //  Allowed Primary Fields Types
+    //==============================================================================
+
+    const PRIMARY_TYPES = array(
+        SPL_T_VARCHAR, SPL_T_TEXT,
+        SPL_T_EMAIL, SPL_T_PHONE, SPL_T_URL,
+        SPL_T_COUNTRY,
+    );
+
+    //==============================================================================
     //  Allowed Multi-lang Fields Types
     //==============================================================================
 
@@ -70,13 +80,15 @@ class ObjectField extends ArrayObject
         "desc" => null,                     //  Field Description (String)
         "group" => null,                    //  Field Section/Group (String)
         //==============================================================================
-        //      ACCES PROPS
+        //      ACCESS PROPS
         "required" => false,                //  Field is Required to Create a New Object (Bool)
         "read" => true,                     //  Field is Readable (Bool)
         "write" => true,                    //  Field is Writable (Bool)
         "inlist" => false,                  //  Field is Available in Object List Response (Bool)
+        "hlist" => false,                   //  Field is Available in Object List but Hidden (Bool)
         //==============================================================================
         //      SYNC MODE
+        "primary" => false,                 //  Field is a Primary Key (Bool)
         "syncmode" => self::MODE_BOTH,      //  Field Favorite Sync Mode (read|write|both)
         //==============================================================================
         //      SCHEMA.ORG IDENTIFICATION
@@ -414,6 +426,20 @@ class ObjectField extends ArrayObject
     }
 
     /**
+     * Set Field Primary Flag
+     *
+     * @param bool $primary
+     *
+     * @return self
+     */
+    public function setPrimary(bool $primary): self
+    {
+        $this->primary = $primary;
+
+        return $this;
+    }
+
+    /**
      * Set Field In Object List Flag
      *
      * @param bool $inlist
@@ -423,6 +449,23 @@ class ObjectField extends ArrayObject
     public function setIsListed(bool $inlist): self
     {
         $this->inlist = $inlist;
+
+        return $this;
+    }
+
+    /**
+     * Set Field In Hidden Object List Flag
+     *
+     * This field is in Objects List but Hidden.
+     * This improves reading of lists, but makes field usable for analyzes.
+     *
+     * @param bool $hlist
+     *
+     * @return self
+     */
+    public function setHiddenList(bool $hlist): self
+    {
+        $this->hlist = $hlist;
 
         return $this;
     }

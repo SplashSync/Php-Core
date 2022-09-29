@@ -123,7 +123,7 @@ trait ObjectsSetTestsTrait
         //   Generate Dummy New Object Data (Required Fields Only)
         $this->originData = null;
         $newData = $this->prepareForTesting($objectType, $field);
-        if (false == $newData) {
+        if (!$newData) {
             return true;
         }
         $this->originData = $newData;

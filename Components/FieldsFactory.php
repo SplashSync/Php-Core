@@ -236,6 +236,28 @@ class FieldsFactory
     }
 
     /**
+     * Update Current New Field set as primary key
+     *
+     * @param null|bool $isPrimary
+     *
+     * @return $this
+     */
+    public function isPrimary(?bool $isPrimary = true): self
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {
+            Splash::log()->err("ErrFieldsNoNew");
+        } else {
+            //====================================================================//
+            // Update New Field structure
+            $this->new->setPrimary((bool) $isPrimary);
+        }
+
+        return $this;
+    }
+
+    /**
      * Update Current New Field set as Read Only Field
      *
      * @param null|bool $isReadOnly
@@ -298,6 +320,31 @@ class FieldsFactory
             //====================================================================//
             // Update New Field structure
             $this->new->setIsListed((bool) $isListed);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set Field In Hidden Object List Flag
+     *
+     * This field is in Objects List but Hidden.
+     * This improves reading of lists, but makes field usable for analyzes.
+     *
+     * @param null|bool $hListed
+     *
+     * @return $this
+     */
+    public function isListHidden(?bool $hListed = true): self
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {
+            Splash::log()->err("ErrFieldsNoNew");
+        } else {
+            //====================================================================//
+            // Update New Field structure
+            $this->new->setHiddenList((bool) $hListed);
         }
 
         return $this;
@@ -684,8 +731,10 @@ class FieldsFactory
      *      read: null|bool|string,
      *      write: null|bool|string,
      *      inlist: null|bool|string,
+     *      hlist: null|bool|string,
      *      log: null|bool|string,
      *      notest: null|bool|string,
+     *      primary: null|bool|string,
      *      syncmode: string,
      *      itemprop: null|string,
      *      itemtype: null|string,
@@ -802,8 +851,10 @@ class FieldsFactory
      *      read: null|bool|string,
      *      write: null|bool|string,
      *      inlist: null|bool|string,
+     *      hlist: null|bool|string,
      *      log: null|bool|string,
      *      notest: null|bool|string,
+     *      primary: null|bool|string,
      *      syncmode: string,
      *      itemprop: null|string,
      *      itemtype: null|string,

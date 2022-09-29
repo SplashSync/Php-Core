@@ -19,7 +19,7 @@ use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    This Class is a Generator for Widget Blocks Contents
+ * This Class is a Generator for Widget Blocks Contents
  *
  * @author      B. Paquier <contact@splashsync.com>
  */

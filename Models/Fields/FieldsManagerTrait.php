@@ -95,6 +95,45 @@ trait FieldsManagerTrait
     }
 
     /**
+     * Find Primary Field Definition in a List
+     *
+     * @param array[] $fieldsList Object Field List
+     *
+     * @return null|array
+     */
+    public static function findPrimaryField(array $fieldsList): ?array
+    {
+        $primaryFields = self::findPrimaryFields($fieldsList);
+
+        if (1 != count($primaryFields)) {
+            return null;
+        }
+
+        return array_shift($primaryFields);
+    }
+
+    /**
+     * Find All Primary Fields in a List
+     *
+     * @param array[] $fieldsList Object Field List
+     *
+     * @return array<string, array>
+     */
+    public static function findPrimaryFields(array $fieldsList): array
+    {
+        $primaryFields = array();
+        //==============================================================================
+        // Walk on Given Fields
+        foreach ($fieldsList as $field) {
+            if (!empty($field["primary"])) {
+                $primaryFields[(string) $field["id"]] = $field;
+            }
+        }
+
+        return $primaryFields;
+    }
+
+    /**
      * Find a Field Definition in List by ID
      *
      * @param array[] $fieldsList Object Field List

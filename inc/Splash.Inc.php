@@ -261,11 +261,12 @@ define("SPL_F_GET_WIDGETS", 'widgets');  // Get List of Available Widgets
 //====================================================================//
 //  Available Functions
 //====================================================================//
-define("SPL_F_OBJECTS", 'Objects');         // Get List of Available Objects
-define("SPL_F_COMMIT", 'Commit');          // Commit Object Change on Server
-define("SPL_F_DESC", 'Description');     // Read Object Description
-define("SPL_F_FIELDS", 'Fields');          // Read Object Available Fields List
-define("SPL_F_LIST", 'ObjectsList');     // Read Object List
+define("SPL_F_OBJECTS", 'Objects');     // Get List of Available Objects
+define("SPL_F_COMMIT", 'Commit');       // Commit Object Change on Server
+define("SPL_F_DESC", 'Description');    // Read Object Description
+define("SPL_F_FIELDS", 'Fields');       // Read Object Available Fields List
+define("SPL_F_LIST", 'ObjectsList');    // Read Object List
+define("SPL_F_IDENTIFY", 'Identify');   // Identify Object by Primary Keys
 define("SPL_F_GET", 'Get');             // Read Object Data
 define("SPL_F_SET", 'Set');             // Write Object Data
 define("SPL_F_DEL", 'Delete');          // Delete An Object

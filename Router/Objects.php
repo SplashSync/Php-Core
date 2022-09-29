@@ -19,6 +19,7 @@ use Exception;
 use Splash\Components\Router;
 use Splash\Core\SplashCore      as Splash;
 use Splash\Models\Objects\ObjectInterface;
+use Splash\Models\Objects\PrimaryKeysAwareInterface;
 
 /**
  * Server Request Routing Class, Execute/Route actions on Objects Service Requests.
@@ -61,6 +62,9 @@ class Objects implements RouterInterface
         }
         if (in_array($task['name'], array( SPL_F_GET , SPL_F_SET , SPL_F_DEL ), true)) {
             return self::doSyncActions($task);
+        }
+        if (in_array($task['name'], array( SPL_F_IDENTIFY ), true)) {
+            return self::doPrimaryActions($task);
         }
         if (SPL_F_COMMIT === $task['name']) {
             Splash::log()->war("Objects - Requested task not found => ".$task['name']);
@@ -231,6 +235,43 @@ class Objects implements RouterInterface
     }
 
     /**
+     * Execute Objects Primary Keys Actions
+     *
+     * @param array $task
+     *
+     * @throws Exception
+     *
+     * @return array
+     */
+    private static function doPrimaryActions(array $task): array
+    {
+        //====================================================================//
+        // Initial Response
+        $response = Router::getEmptyResponse($task);
+
+        //====================================================================//
+        // Load Parameters
+        $objectClass = Splash::object($task['params']['type']);
+        $keys = $task['params']['keys'] ?? null;
+
+        //====================================================================//
+        // Execute Requested Task
+        //====================================================================//
+        switch ($task['name']) {
+            case SPL_F_IDENTIFY:
+                //====================================================================//
+                //  IDENTIFY OBJECT BY PRIMARY KEYS
+                //====================================================================//
+                $response['data'] = self::doIdentify($objectClass, $keys);
+                $response['result'] = true;
+
+                return $response;
+        }
+
+        return self::checkResponse($response);
+    }
+
+    /**
      * Get Objects List Action
      *
      * @param array $task
@@ -320,5 +361,25 @@ class Objects implements RouterInterface
         //====================================================================//
         // Delete Data on local system
         return $objectClass->delete($objectId);
+    }
+
+    /**
+     * Do Object Identification by Primary Keys
+     *
+     * @param ObjectInterface       $objectClass
+     * @param array<string, string> $keys        Primary Keys List
+     *
+     * @return null|string
+     */
+    private static function doIdentify(ObjectInterface $objectClass, array $keys): ?string
+    {
+        //====================================================================//
+        // Verify Object is Primary Keys Aware
+        if (!$objectClass instanceof PrimaryKeysAwareInterface) {
+            return null;
+        }
+        //====================================================================//
+        // Read Data from local system
+        return  $objectClass->getByPrimary($keys);
     }
 }
