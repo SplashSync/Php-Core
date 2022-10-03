@@ -84,6 +84,7 @@ class ObjectField extends ArrayObject
         "required" => false,                //  Field is Required to Create a New Object (Bool)
         "read" => true,                     //  Field is Readable (Bool)
         "write" => true,                    //  Field is Writable (Bool)
+        "index" => false,                   //  Field Should be Indexed for Text Search (Bool)
         "inlist" => false,                  //  Field is Available in Object List Response (Bool)
         "hlist" => false,                   //  Field is Available in Object List but Hidden (Bool)
         //==============================================================================
@@ -285,9 +286,12 @@ class ObjectField extends ArrayObject
      *          required: null|bool|string,
      *          read: null|bool|string,
      *          write: null|bool|string,
+     *          index: null|bool|string,
      *          inlist: null|bool|string,
+     *          hlist: null|bool|string,
      *          log: null|bool|string,
      *          notest: null|bool|string,
+     *          primary: null|bool|string,
      *          syncmode: string,
      *          itemprop: null|string,
      *          itemtype: null|string,
@@ -421,6 +425,20 @@ class ObjectField extends ArrayObject
     public function setWrite(bool $write): self
     {
         $this->write = $write;
+
+        return $this;
+    }
+
+    /**
+     * Set Field Should be Indexed Flag
+     *
+     * @param bool $index
+     *
+     * @return self
+     */
+    public function setIndex(bool $index): self
+    {
+        $this->index = $index;
 
         return $this;
     }

@@ -850,6 +850,7 @@ class FieldsFactory
      *      required: null|bool|string,
      *      read: null|bool|string,
      *      write: null|bool|string,
+     *      index: null|bool|string,
      *      inlist: null|bool|string,
      *      hlist: null|bool|string,
      *      log: null|bool|string,

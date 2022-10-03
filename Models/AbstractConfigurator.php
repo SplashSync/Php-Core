@@ -258,6 +258,9 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         // Field Favorite Sync Mode
         self::updateFieldStrVal($field, $values, "syncmode");
         //====================================================================//
+        // Field Primary Key Flag
+        self::updateFieldStrVal($field, $values, "primary");
+        //====================================================================//
         // Field is Required Flag
         self::updateFieldBoolVal($field, $values, "required");
         //====================================================================//
@@ -267,8 +270,14 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         // Field Write Allowed
         self::updateFieldBoolVal($field, $values, "write");
         //====================================================================//
+        // Field Indexing Flag
+        self::updateFieldBoolVal($field, $values, "index");
+        //====================================================================//
         // Field is Listed Flag
         self::updateFieldBoolVal($field, $values, "inlist");
+        //====================================================================//
+        // Field is Listed Hidden Flag
+        self::updateFieldBoolVal($field, $values, "hlist");
         //====================================================================//
         // Field is Logged Flag
         self::updateFieldBoolVal($field, $values, "log");
