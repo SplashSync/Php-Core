@@ -35,12 +35,12 @@ interface PrimaryKeysAwareInterface
      * If One AND Only One Object is Identified
      * this function must return its ID, else NULL
      *
+     * This Feature is Optional but Highly recommended for
+     * Objects alike Products(SKU), Users (Email), and more...
+     *
      * @param array<string, string> $keys Primary Keys List
      *
      * @return null|string
-     *
-     * @note    This Feature is Optional but Highly recommended for
-     *          Objects alike Products(SKU), Users (Email), and more...
      *
      * @since 2.0.0
      */
