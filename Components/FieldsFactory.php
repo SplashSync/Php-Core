@@ -258,6 +258,28 @@ class FieldsFactory
     }
 
     /**
+     * Update Current New Field set as indexed
+     *
+     * @param null|bool $isIndexed
+     *
+     * @return $this
+     */
+    public function isIndexed(?bool $isIndexed = true): self
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify a new Field Exists
+        if (empty($this->new)) {
+            Splash::log()->err("ErrFieldsNoNew");
+        } else {
+            //====================================================================//
+            // Update New Field structure
+            $this->new->setIndex((bool) $isIndexed);
+        }
+
+        return $this;
+    }
+
+    /**
      * Update Current New Field set as Read Only Field
      *
      * @param null|bool $isReadOnly
