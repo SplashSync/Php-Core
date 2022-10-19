@@ -65,8 +65,9 @@ class O08PrimaryTest extends ObjectsCase
         //====================================================================//
         //   Generate Dummy New Object Data (Required Fields Only)
         $newData = $this->prepareForTesting($objectType, $field);
-        $this->assertIsArray($newData);
-        $this->assertNotEmpty($newData);
+        if (!$newData) {
+            return;
+        }
         //====================================================================//
         //   Execute Create Test
         $objectId = $this->setObjectFromModule($objectType, $newData);
