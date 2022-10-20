@@ -73,7 +73,7 @@ class ListsHelper
         }
         //====================================================================//
         // Create List Array If Needed
-        if (!array_key_exists($listName, $buffer)) {
+        if (!isset($buffer[$listName])) {
             $buffer[$listName] = array();
         }
         //====================================================================//
@@ -96,12 +96,12 @@ class ListsHelper
     {
         //====================================================================//
         // Create List Array If Needed
-        if (!array_key_exists($listName, $buffer)) {
+        if (!isset($buffer[$listName])) {
             $buffer[$listName] = array();
         }
         //====================================================================//
         // Create Line Array If Needed
-        if (!array_key_exists($key, $buffer[$listName])) {
+        if (!isset($buffer[$listName][$key])) {
             $buffer[$listName][$key] = array();
         }
         //====================================================================//
