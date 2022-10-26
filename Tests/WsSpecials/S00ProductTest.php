@@ -319,9 +319,6 @@ class S00ProductTest extends ObjectsCase
             $field = $altName ?: $name;
         }
         $this->assertNotEmpty($field);
-        if (is_null($field)) {
-            return null;
-        }
         //====================================================================//
         //  Generated Object Data
         $fakeData = $this->generateObjectData($objectType, $field, $unique);

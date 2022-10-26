@@ -308,9 +308,6 @@ trait ImagesTrait
         //====================================================================//
         //   Check Required Fields
         $this->assertNotEmpty($image);
-        if (is_null($image)) {
-            return array();
-        }
         //====================================================================//
         //   Build Images List
         $images = array();

@@ -37,7 +37,7 @@ class CommitsManager
     /**
      * List of all Commits done inside this current session
      *
-     * @var array
+     * @var array[]
      */
     private static array $committed = array();
 
@@ -204,7 +204,7 @@ class CommitsManager
     /**
      * Get List of Session Committed Objects
      *
-     * @return array
+     * @return array[]
      */
     public static function getSessionCommitted(): array
     {

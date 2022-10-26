@@ -75,9 +75,6 @@ trait VariantsTrait
         //   Verify Product Base Name
         $field = self::findFieldByTag($this->fields, static::$itemProp, "Variants");
         $this->assertNotEmpty($field);
-        if (is_null($field)) {
-            return array();
-        }
         //====================================================================//
         //   Generate Product Splash Object Id
         if (is_null($variantProductId)) {
@@ -103,9 +100,6 @@ trait VariantsTrait
         //   Load Required Fields
         $code = self::findFieldByTag($this->fields, static::$itemProp, static::$attrCode);
         $this->assertNotEmpty($code);
-        if (is_null($code)) {
-            return array();
-        }
         $result = array();
         //====================================================================//
         // IF TESTED SYSTEM DEFINE POSSIBLE VARIATIONS CODES
