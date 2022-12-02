@@ -81,7 +81,7 @@ class SOAPInterface implements CommunicationInterface
         //====================================================================//
         // FIX Socket Timeout if necessary
         if (ini_get('default_socket_timeout') < Splash::configuration()->WsTimout) {
-            ini_set('default_socket_timeout', Splash::configuration()->WsTimout + 1);
+            ini_set('default_socket_timeout', (string) (Splash::configuration()->WsTimout + 1));
         }
 
         //====================================================================//
