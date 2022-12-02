@@ -26,6 +26,7 @@ use Splash\Configurator\JsonConfigurator;
 use Splash\Configurator\NullConfigurator;
 use Splash\Local\Local;
 use Splash\Models\ConfiguratorInterface;
+use Splash\Models\Helpers\SplashUrlHelper;
 use Splash\Models\LocalClassInterface;
 
 //====================================================================//
@@ -307,6 +308,9 @@ class SplashCore
             $localConf = array();
         }
         //====================================================================//
+        // Complete Local Configuration with ENV Variables
+        SplashUrlHelper::completeParameters($localConf);
+        //====================================================================//
         // Validate Local Parameters
         if (self::validate()->isValidLocalParameterArray($localConf)) {
             //====================================================================//
@@ -540,14 +544,24 @@ class SplashCore
         }
         //====================================================================//
         // Fallback Reading
-        if ((INPUT_SERVER === $type) && isset($_SERVER[$name]) && is_scalar($_SERVER[$name])) {
-            return (string) $_SERVER[$name];
-        }
-        if ((INPUT_GET === $type) && isset($_GET[$name]) && is_scalar($_GET[$name])) {
-            return (string) $_GET[$name];
+        switch ($type) {
+            case INPUT_SERVER:
+                $value = $_SERVER[$name] ?? null;
+
+                break;
+            case INPUT_GET:
+                $value = $_GET[$name] ?? null;
+
+                break;
+            case INPUT_ENV:
+                $value = $_ENV[$name] ?? null;
+
+                break;
+            default:
+                return null;
         }
 
-        return null;
+        return is_scalar($value) ? (string) $value : null;
     }
 
     /**

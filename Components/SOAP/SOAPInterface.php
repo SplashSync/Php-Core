@@ -79,6 +79,12 @@ class SOAPInterface implements CommunicationInterface
         );
 
         //====================================================================//
+        // FIX Socket Timeout if necessary
+        if (ini_get('default_socket_timeout') < Splash::configuration()->WsTimout) {
+            ini_set('default_socket_timeout', Splash::configuration()->WsTimout + 1);
+        }
+
+        //====================================================================//
         // Complete Options with Http Auth if Needed
         if (is_scalar($httpUser) && !empty($httpUser) && is_scalar($httpPwd) && !empty($httpPwd)) {
             $this->options["login"] = $httpUser;
