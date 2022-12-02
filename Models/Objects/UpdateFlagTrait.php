@@ -49,17 +49,15 @@ trait UpdateFlagTrait
      *
      * @param string $custom Custom Flag Name
      *
-     * @return self
+     * @return void
      */
-    protected function needUpdate(string $custom = "object"): self
+    protected function needUpdate(string $custom = "object"): void
     {
         if (self::isCustom($custom)) {
             $this->custom[$custom] = true;
         } else {
             $this->update = true;
         }
-
-        return $this;
     }
 
     /**
@@ -67,17 +65,15 @@ trait UpdateFlagTrait
      *
      * @param string $custom Custom Flag Name
      *
-     * @return self
+     * @return void
      */
-    protected function isUpdated(string $custom = "object"): self
+    protected function isUpdated(string $custom = "object"): void
     {
         if (self::isCustom($custom)) {
             $this->custom[$custom] = false;
         } else {
             $this->update = false;
         }
-
-        return $this;
     }
 
     /**
