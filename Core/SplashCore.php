@@ -345,6 +345,16 @@ class SplashCore
     }
 
     /**
+     * Check if Framework Instanced in Travis CI/CD Mode
+     *
+     * @return bool
+     */
+    public static function isTravisMode(): bool
+    {
+        return empty(self::input("SPLASH_TRAVIS"));
+    }
+
+    /**
      * Check if Framework Instanced in Server Mode
      *
      * @return bool
