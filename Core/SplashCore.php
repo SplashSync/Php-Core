@@ -351,7 +351,7 @@ class SplashCore
      */
     public static function isTravisMode(): bool
     {
-        return empty(self::input("SPLASH_TRAVIS"));
+        return !empty(self::input("SPLASH_TRAVIS"));
     }
 
     /**
