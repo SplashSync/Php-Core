@@ -17,6 +17,7 @@ namespace Splash\Tests\Core;
 
 use ArrayObject;
 use Splash\Core\SplashCore     as Splash;
+use Splash\Models\Helpers\SplashUrlHelper;
 use Splash\Tests\Tools\TestCase;
 
 /**
@@ -36,6 +37,10 @@ class C11LocalCoreClassTest extends TestCase
         //====================================================================//
 
         $parameters = Splash::local()->parameters();
+
+        //====================================================================//
+        // Complete Local Configuration with ENV Variables
+        SplashUrlHelper::completeParameters($parameters);
 
         //====================================================================//
         //   Verify Parameters
