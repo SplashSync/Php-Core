@@ -57,9 +57,15 @@ class Widgets implements RouterInterface
                 break;
             case SPL_F_WIDGET_GET:
                 //====================================================================//
+                // Parse Widget Parameters
+                $parameters = is_array($task['params']['params'] ?? null)
+                    ? $task['params']['params']
+                    : array()
+                ;
+                //====================================================================//
                 //  READING A WIDGET CONTENTS
                 $response['data'] = Splash::widget($task['params']['type'] ?? "None")
-                    ->get($task['params']['params'] ?? array())
+                    ->get($parameters)
                 ;
 
                 break;
