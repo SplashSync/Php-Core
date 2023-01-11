@@ -544,10 +544,10 @@ abstract class AbstractBaseCase extends TestCase
         $results = array();
         do {
             $task = Splash::ws()->getNextResult($data);
-            if (!$task) {
+            if (!$task || !isset($task['data'])) {
                 continue;
             }
-            $results[] = $task;
+            $results[] = $task['data'];
         } while (!empty($task));
         //====================================================================//
         //   Turn On Output Buffering Again
