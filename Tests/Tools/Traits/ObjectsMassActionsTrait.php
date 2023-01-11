@@ -300,6 +300,7 @@ trait ObjectsMassActionsTrait
             //====================================================================//
             //   Verify Object Id Is Not Empty
             $this->assertNotEmpty($this->objectsIds[$i], 'Mass Create '.$i.': New Object Id is Empty');
+            $this->assertIsString($this->objectsIds[$i], 'Mass Create '.$i.': New Object Id is Not a String');
             $this->assertEmpty(Splash::log()->err, 'Mass Create '.$i.': Errors Returned');
         }
         //====================================================================//
@@ -372,6 +373,7 @@ trait ObjectsMassActionsTrait
             //====================================================================//
             //   Verify Object Id Is Not Empty
             $this->assertNotEmpty($response, 'Mass Update '.$i.': Response Object Id is Empty');
+            $this->assertIsString($this->objectsIds[$i], 'Mass Update '.$i.': New Object Id is Not a String');
             $this->assertEquals($this->objectsIds[$i], $response, 'Mass Update '.$i.': Object Id is Different!!??');
             $this->assertEmpty(Splash::log()->err, 'Mass Create '.$i.': Errors Returned');
             //====================================================================//

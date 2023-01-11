@@ -603,14 +603,14 @@ abstract class AbstractBaseCase extends TestCase
      * @param string $description Task Description
      * @param array  $parameters  Task Parameters
      *
-     * @return null|array
+     * @return null|array|bool|string
      */
     protected function genericFastAction(
         string $service,
         string $action,
         string $description,
         array $parameters = array(true)
-    ): ?array {
+    ) {
         //====================================================================//
         //   Prepare Request Data
         Splash::ws()->addTask($action, $parameters, $description);
