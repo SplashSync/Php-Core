@@ -543,7 +543,7 @@ abstract class AbstractBaseCase extends TestCase
         //   Extract Task Results
         $results = array();
         do {
-            $task = Splash::ws()->getNextResult($data);
+            $task = Splash::ws()->getNextTask($data);
             if (!$task || !isset($task['data'])) {
                 continue;
             }
