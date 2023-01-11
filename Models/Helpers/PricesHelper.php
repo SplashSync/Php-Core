@@ -77,17 +77,17 @@ class PricesHelper
     /**
      * Compare Two Price Array
      *
-     * @param array $price1    Price field Array
-     * @param array $price2    Price field Array
+     * @param mixed $price1    Price field Array
+     * @param mixed $price2    Price field Array
      * @param int   $precision Number of Decimals to Check
      *
      * @return bool
      */
-    public static function compare(array $price1, array $price2, int $precision = 6): bool
+    public static function compare($price1, $price2, int $precision = 6): bool
     {
         //====================================================================//
         // Check Both Prices are valid
-        if (!self::isValid($price1) || !self::isValid($price2)) {
+        if (!($price1 = self::isValid($price1)) || !($price2 = self::isValid($price2))) {
             Splash::log()->war(__FUNCTION__." : Given Prices are invalid");
             if (!self::isValid($price1)) {
                 Splash::log()->www(__FUNCTION__." Price 1", $price1);
