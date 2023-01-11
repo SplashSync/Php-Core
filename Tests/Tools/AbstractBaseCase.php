@@ -628,7 +628,7 @@ abstract class AbstractBaseCase extends TestCase
         $this->assertNotEmpty($data, "Response Data is Empty or Malformed");
         $this->assertIsArray($data, "Response Data is Not an Array");
         $this->assertArrayHasKey("result", $data, "Request Result is Missing");
-        $this->assertEmpty($data['result'], "Expect Errors but Request Result is True, Why??");
+        $this->assertNotEmpty($data['result'], "Request Result is not True, Why??");
         //====================================================================//
         //   Extract Task Result
         $task = array_shift($data['tasks']);
