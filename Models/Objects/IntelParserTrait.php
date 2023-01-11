@@ -263,6 +263,15 @@ trait IntelParserTrait
      */
     abstract protected function create();
 
+    /**
+     * Update Request Object
+     *
+     * @param bool $needed Is This Update Needed
+     *
+     * @return false|string Object ID
+     */
+    abstract protected function update(bool $needed): ?string;
+
     //====================================================================//
     //  TOOLING FUNCTIONS
     //====================================================================//
