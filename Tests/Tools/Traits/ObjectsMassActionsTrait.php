@@ -28,35 +28,35 @@ trait ObjectsMassActionsTrait
      *
      * @var bool
      */
-    protected $fromModule = false;
+    protected bool $fromModule = false;
 
     /**
      * Number of Tested Objects Actions
      *
      * @var int
      */
-    protected $maxTested = 10;
+    protected int $maxTested = 10;
 
     /**
      * Number of Objects in a Batch Request
      *
      * @var int
      */
-    protected $batchSize = 5;
+    protected int $batchSize = 5;
 
     /**
      * Test Objects After Action?
      *
      * @var bool
      */
-    protected $verify = true;
+    protected bool $verify = true;
 
     /**
      * Storage for Tested Objects Ids
      *
      * @var array
      */
-    protected $objectsIds = array();
+    protected array $objectsIds = array();
 
     /**
      * Storage for Tested Objects Set Data
@@ -77,21 +77,21 @@ trait ObjectsMassActionsTrait
      *
      * @var array
      */
-    protected $customFieldsData = array();
+    protected array $customFieldsData = array();
 
     /**
      * Number of Objects Before Actions
      *
      * @var int
      */
-    protected $countBefore = 0;
+    protected int $countBefore = 0;
 
     /**
      * Number of Objects After Actions
      *
      * @var int
      */
-    protected $countAfter = 0;
+    protected int $countAfter = 0;
 
     //==============================================================================
     //      COMPLETE TESTS EXECUTION FUNCTIONS
@@ -267,7 +267,7 @@ trait ObjectsMassActionsTrait
         //====================================================================//
         //   Generate Dummy New Object Data (All RW & Tested Fields Only)
         $newData = $this->prepareForTesting($objectType);
-        if (false == $newData) {
+        if (!$newData) {
             return true;
         }
 
@@ -769,7 +769,7 @@ trait ObjectsMassActionsTrait
             //   Verify Object not Present anymore
             $fields = $this->reduceFieldList(Splash::object($objectType)->fields(), true, false);
             $getResponse = Splash::object($objectType)->get($objectIds[$i], $fields);
-            $this->assertFalse($getResponse, 'Object Not Delete, I can still read it!!');
+            $this->assertNull($getResponse, 'Object Not Delete, I can still read it!!');
         }
     }
 
