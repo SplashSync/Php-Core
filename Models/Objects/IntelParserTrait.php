@@ -244,6 +244,26 @@ trait IntelParserTrait
     }
 
     //====================================================================//
+    // Mandatory Interfaces Functions
+    //====================================================================//
+
+    /**
+     * Load Request Object
+     *
+     * @param string $objectId Object id
+     *
+     * @return null|object
+     */
+    abstract protected function load(string $objectId);
+
+    /**
+     * Create Request Object
+     *
+     * @return null|object
+     */
+    abstract protected function create();
+
+    //====================================================================//
     //  TOOLING FUNCTIONS
     //====================================================================//
 

@@ -15,7 +15,6 @@
 
 namespace   Splash\Models\Helpers;
 
-use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
@@ -28,36 +27,34 @@ class PricesHelper
      *
      * @param null|float $taxExcl Price Without VAT (Or Null if Price Send with VAT)
      * @param float      $vat     VAT percentile
-     * @param float      $taxIncl Price With VAT
+     * @param null|float $taxIncl Price With VAT
      * @param string     $code    Price Currency Code
      * @param string     $symbol  Price Currency Symbol
      * @param string     $name    Price Currency Name
      *
-     * @return array|string
+     * @return null|array
      */
-    public static function encode($taxExcl, $vat, $taxIncl = null, $code = "", $symbol = "", $name = "")
-    {
+    public static function encode(
+        ?float $taxExcl,
+        float $vat,
+        float $taxIncl = null,
+        string $code = "",
+        string $symbol = "",
+        string $name = ""
+    ): ?array {
         //====================================================================//
         // Safety Checks
         if (!is_float($taxExcl) && !is_float($taxIncl)) {
-            Splash::log()->err("ErrPriceInvalid", __FUNCTION__);
-
-            return "Error Invalid Price";
+            return Splash::log()->errNull("ErrPriceInvalid", __FUNCTION__);
         }
         if (is_float($taxExcl) && is_float($taxIncl)) {
-            Splash::log()->err("ErrPriceBothValues", __FUNCTION__);
-
-            return "Error Too Much Input Values";
+            return Splash::log()->errNull("ErrPriceBothValues", __FUNCTION__);
         }
-        if (!is_float($vat)) {
-            Splash::log()->err("ErrPriceNoVATValue", __FUNCTION__);
-
-            return "Error Invalid VAT";
+        if ($vat < 0.0) {
+            return Splash::log()->errNull("ErrPriceNoVATValue", __FUNCTION__);
         }
         if (empty($code)) {
-            Splash::log()->err("ErrPriceNoCurrCode", __FUNCTION__);
-
-            return "Error no Currency Code";
+            return Splash::log()->errNull("ErrPriceNoCurrCode", __FUNCTION__);
         }
         //====================================================================//
         // Build Price Array
@@ -86,7 +83,7 @@ class PricesHelper
      *
      * @return bool
      */
-    public static function compare($price1, $price2, $precision = 6)
+    public static function compare(array $price1, array $price2, int $precision = 6): bool
     {
         //====================================================================//
         // Check Both Prices are valid
@@ -120,7 +117,7 @@ class PricesHelper
      *
      * @return bool
      */
-    public static function compareAmounts($price1, $price2, $precision = 6)
+    public static function compareAmounts(array $price1, array $price2, int $precision = 6): bool
     {
         //====================================================================//
         // Build Compare Delta
@@ -159,30 +156,27 @@ class PricesHelper
      *
      * @param mixed $price Price field definition Array
      *
-     * @return bool
+     * @return null|array
      */
-    public static function isValid($price)
+    public static function isValid($price): ?array
     {
-        //====================================================================//
-        // Check Contents Available
-        if (!is_array($price) && !($price instanceof ArrayObject)) {
-            return false;
+        if (!is_array($price)) {
+            return null;
         }
-        /** @var array|ArrayObject $price */
         if (!isset($price["base"])) {
-            return false;
+            return null;
         }
         if (!isset($price["ht"]) || !isset($price["ttc"]) || !isset($price["vat"])) {
-            return false;
+            return null;
         }
         if (!self::isValidAmount($price)) {
-            return false;
+            return null;
         }
         if (!self::isValidCurrency($price)) {
-            return false;
+            return null;
         }
 
-        return true;
+        return $price;
     }
 
     /**
@@ -191,16 +185,16 @@ class PricesHelper
      * @param array  $price Price field definition Array
      * @param string $key   Data Key
      *
-     * @return false|float
+     * @return null|float
      */
-    public static function extract($price, $key = "ht")
+    public static function extract(array $price, string $key = "ht"): ?float
     {
         // Check Contents
         if (!isset($price[$key])) {
-            return false;
+            return null;
         }
         if (!empty($price[$key]) && !is_numeric($price[$key])) {
-            return false;
+            return null;
         }
         // Return Result
         return (float) $price[$key];
@@ -211,11 +205,11 @@ class PricesHelper
      *
      * @param array $price Price field definition Array
      *
-     * @return false|float
+     * @return null|float
      */
-    public static function taxExcluded($price)
+    public static function taxExcluded(array $price): ?float
     {
-        return self::extract($price, 'ht');
+        return self::extract($price);
     }
 
     /**
@@ -223,9 +217,9 @@ class PricesHelper
      *
      * @param array $price Price field definition Array
      *
-     * @return false|float
+     * @return null|float
      */
-    public static function taxIncluded($price)
+    public static function taxIncluded(array $price): ?float
     {
         return self::extract($price, 'ttc');
     }
@@ -235,9 +229,9 @@ class PricesHelper
      *
      * @param array $price Price field definition Array
      *
-     * @return false|float
+     * @return null|float
      */
-    public static function taxPercent($price)
+    public static function taxPercent(array $price): ?float
     {
         return self::extract($price, 'vat');
     }
@@ -249,7 +243,7 @@ class PricesHelper
      *
      * @return float
      */
-    public static function taxRatio($price)
+    public static function taxRatio($price): float
     {
         return (float) self::extract($price, 'vat') / 100;
     }
@@ -259,9 +253,9 @@ class PricesHelper
      *
      * @param array $price Price field definition Array
      *
-     * @return false|float
+     * @return null|float
      */
-    public static function taxAmount($price)
+    public static function taxAmount(array $price): ?float
     {
         return self::extract($price, 'tax');
     }
@@ -269,11 +263,11 @@ class PricesHelper
     /**
      * Verify Price Array Amount Infos are Available
      *
-     * @param array|ArrayObject $price Price field definition Array
+     * @param array $price Price field definition Array
      *
      * @return bool
      */
-    private static function isValidAmount($price)
+    private static function isValidAmount(array $price): bool
     {
         //====================================================================//
         // Check Contents Type
@@ -293,11 +287,11 @@ class PricesHelper
     /**
      * Verify Price Array Currency Infos are Available
      *
-     * @param array|ArrayObject $price Price field definition Array
+     * @param array $price Price field definition Array
      *
      * @return bool
      */
-    private static function isValidCurrency($price)
+    private static function isValidCurrency(array $price): bool
     {
         //====================================================================//
         // Check Contents Available
