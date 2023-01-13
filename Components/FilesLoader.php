@@ -36,7 +36,7 @@ class FilesLoader
         //====================================================================//
         // Scan for Files in Folder
         $files = array_diff(
-            scandir($dir, 1) ?: array(),
+            scandir($dir, SCANDIR_SORT_DESCENDING) ?: array(),
             array('..', '.', 'index.php', 'index.html')
         );
         foreach ($files as $file) {
