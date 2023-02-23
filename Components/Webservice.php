@@ -40,7 +40,7 @@ class Webservice
      *
      * @var string
      */
-    public string $url;
+    public string $url = self::SPLASHHOST;
 
     /**
      * Remote Server Address
