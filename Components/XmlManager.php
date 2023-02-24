@@ -351,7 +351,7 @@ class XmlManager
             // Element Already Exists => Store as Array Element
             //====================================================================//
             // Convert Single Element to Array Element
-            if (!is_array($result[$elementName])) {
+            if (!is_array($result->{$elementName})) {
                 $singleElement = $result[$elementName];       // Store First Element
                 /** @phpstan-ignore-next-line */
                 $result[$elementName] = array();              // Create New Array
