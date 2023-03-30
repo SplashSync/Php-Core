@@ -22,7 +22,7 @@
 //====================================================================//
 // Global Definitions
 //====================================================================//
-define("SPLASH_VERSION", '2.0.0');
+define("SPLASH_VERSION", '2.0.1');
 define("SPLASH_NAME", 'Splash Php Client Module');
 define("SPLASH_DESC", 'Splash Open-Source & Universal Synchronisation WebService.');
 define("SPLASH_AUTHOR", 'Splash Official <www.splashsync.com>');
