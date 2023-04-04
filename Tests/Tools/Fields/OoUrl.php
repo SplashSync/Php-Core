@@ -54,9 +54,9 @@ class OoUrl extends OoVarchar implements FieldInterface
 
         //==============================================================================
         //      Verify Data is a Valid URI
-//        if (!filter_var($Data, FILTER_VALIDATE_URL) !== False) {
-//            return "Field Data is not a Valid Url";
-//        }
+        //        if (!filter_var($Data, FILTER_VALIDATE_URL) !== False) {
+        //            return "Field Data is not a Valid Url";
+        //        }
 
         return null;
     }

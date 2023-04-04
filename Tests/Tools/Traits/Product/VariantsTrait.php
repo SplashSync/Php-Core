@@ -44,11 +44,11 @@ trait VariantsTrait
             if ("Product" != $field[1]) {
                 continue;
             }
-//            //====================================================================//
-//            // DEBUG => Focus on a Specific Fields
-//            if ($field[2]['id'] != "image@images") {
-//                continue;
-//            }
+            //            //====================================================================//
+            //            // DEBUG => Focus on a Specific Fields
+            //            if ($field[2]['id'] != "image@images") {
+            //                continue;
+            //            }
             $fields[$index] = $field;
         }
         if (empty($fields)) {
