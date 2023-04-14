@@ -215,7 +215,7 @@ class XmlManager
             }
             //====================================================================//
             // Insert Data
-            $xml->writeElement($key, base64_encode($value));
+            $xml->writeElement($key, base64_encode((string) $value));
         }
     }
 
