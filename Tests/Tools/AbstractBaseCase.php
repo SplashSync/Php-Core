@@ -54,8 +54,9 @@ abstract class AbstractBaseCase extends TestCase
         //====================================================================//
         //   Filter Tested Sequence Name  =>> Skip
         if (!isset($allowed)) {
-            if (defined("SPLASH_SEQUENCE") && is_string(SPLASH_SEQUENCE)) {
-                $allowed = (array) explode(",", SPLASH_SEQUENCE);
+            $sequences = Splash::constant("SPLASH_SEQUENCE") ?? Splash::env("SPLASH_SEQUENCE");
+            if ($sequences) {
+                $allowed = (array) explode(",", $sequences);
             } else {
                 $allowed = array();
             }
@@ -75,10 +76,11 @@ abstract class AbstractBaseCase extends TestCase
      */
     public static function isAllowedObjectType(string $objectType): bool
     {
+        $types = Splash::constant("SPLASH_TYPES") ?? Splash::env("SPLASH_TYPES");
         //====================================================================//
         //   Filter Tested Object Types  =>> Skip
-        if (defined("SPLASH_TYPES") && is_string(SPLASH_TYPES)) {
-            $allowed = (array) explode(",", SPLASH_TYPES);
+        if ($types) {
+            $allowed = (array) explode(",", $types);
             if (!empty($allowed) && !in_array($objectType, $allowed, true)) {
                 return false;
             }
@@ -106,8 +108,9 @@ abstract class AbstractBaseCase extends TestCase
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
         if (!isset($allowed)) {
-            if (defined("SPLASH_FIELDS") && is_string(SPLASH_FIELDS)) {
-                $allowed = (array) explode(",", SPLASH_FIELDS);
+            $fields = Splash::constant("SPLASH_FIELDS") ?? Splash::env("SPLASH_FIELDS");
+            if ($fields) {
+                $allowed = (array) explode(",", $fields);
             } else {
                 $allowed = array();
             }

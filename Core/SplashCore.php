@@ -45,6 +45,7 @@ class SplashCore
     use ObjectsCoreTrait;
     use WidgetsCoreTrait;
     use ServicesCoreTrait;
+    use ToolsCoreTrait;
 
     /**
      * Static Class Storage
@@ -533,65 +534,6 @@ class SplashCore
     //====================================================================//
     //  VARIOUS TOOLING METHODS
     //====================================================================//
-
-    /**
-     * Secured reading of Server SuperGlobals
-     *
-     * @param string $name
-     * @param int    $type
-     *
-     * @return null|string
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    public static function input(string $name, int $type = INPUT_SERVER): ?string
-    {
-        //====================================================================//
-        // Standard Safe Reading
-        $result = filter_input($type, $name);
-        if (is_scalar($result)) {
-            return (string) $result;
-        }
-        //====================================================================//
-        // Fallback Reading
-        switch ($type) {
-            case INPUT_SERVER:
-                $value = $_SERVER[$name] ?? null;
-
-                break;
-            case INPUT_GET:
-                $value = $_GET[$name] ?? null;
-
-                break;
-            case INPUT_ENV:
-                $value = $_ENV[$name] ?? null;
-
-                break;
-            default:
-                return null;
-        }
-
-        return is_scalar($value) ? (string) $value : null;
-    }
-
-    /**
-     * Secured counting of Mixed Values
-     *
-     * @param mixed $value
-     *
-     * @return int
-     */
-    public static function count($value): int
-    {
-        if (is_null($value)) {
-            return 0;
-        }
-        if (is_scalar($value) || is_object($value)) {
-            return 1;
-        }
-
-        return is_countable($value) ? count($value) : 1;
-    }
 
     /**
      * Fully Restart Splash Module
