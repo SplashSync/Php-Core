@@ -39,8 +39,7 @@
         "php":                              "^7.4|^8.0",
         "ext-simplexml":                    "*",
         "ext-xmlwriter":                    "*",
-        "ext-libxml":                       "*",
-        "ext-iconv":                        "*"
+        "ext-libxml":                       "*"
     },
 
     "require-dev": {

@@ -52,8 +52,12 @@ class C61StringConverterTest extends TestCase
                 "a_a_a_a_a_d_e_e_e_e_i_i_i_i_o_o_o_o_o_o_u_u_u_u_ae_c_ss"
             ),
             "SpecialChars" => array(
-                "& / \\ < > & @ ^ $ £ € , ; : ! .",
-                "__________________gbp_eur__________"
+                "& / \\ < > & @ ^ $ , ; : ! .",
+                "___________________________"
+            ),
+            "MoneyChars" => array(
+                " £ € ",
+                "_gbp_eur_"
             ),
         );
     }

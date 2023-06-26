@@ -15,22 +15,31 @@
 
 namespace Splash\Components;
 
+use Normalizer;
+
 /**
  * Simple String Converter
  */
 class StringConverter
 {
+    const CANONICAL_CHARS = array(
+        "€" => "eur", "£" => "gbp",
+        "ð" => "d",
+        "ø" => "o", "ò" => "o",
+        "æ" => "ae", "ß" => "ss",
+    );
+
     /**
      * Convert any string to Canonical Code
      */
     public static function canonicalString(?string $input): ?string
     {
         //====================================================================//
+        // Replace Money Chars
+        $input = strtr((string) $input, self::CANONICAL_CHARS);
+        //====================================================================//
         // Remove any Accent Chars
-        if (extension_loaded("iconv")) {
-            $input = iconv('UTF-8', 'ASCII//TRANSLIT', (string) $input) ?: $input;
-            $input = utf8_encode((string) $input);
-        }
+        $input = preg_replace('/\pM*/u', '', (string) normalizer_normalize($input, Normalizer::FORM_D));
         //====================================================================//
         // Replace All Special Chars
         $input = preg_replace('#[^A-Za-z0-9]#', '_', (string) $input);
