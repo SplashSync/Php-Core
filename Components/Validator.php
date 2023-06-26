@@ -483,7 +483,7 @@ class Validator
             return $isValid;
         }
 
-        $extensions = array('xml', 'soap', 'curl', 'json');
+        $extensions = array('xml', 'soap', 'curl', 'json', 'iconv');
         foreach ($extensions as $extension) {
             if (!extension_loaded($extension)) {
                 return $isValid = Splash::log()->err(

@@ -189,9 +189,9 @@ class Webservice
         //====================================================================//
         if (!$noEncryption) {
             $out = $this->crypt('encrypt', $serial, (string) $this->key, (string) $this->id);
-        //====================================================================//
-        // Else, switch to base64
         } else {
+            //====================================================================//
+            // Else, switch to base64
             $out = base64_encode($serial);
         }
 
@@ -226,9 +226,9 @@ class Webservice
         //====================================================================//
         if (!empty($data) && !$noEncryption) {
             $decode = $this->crypt('decrypt', $data, (string) $this->key, (string) $this->id);
-        //====================================================================//
-        // Else, switch from base64
         } else {
+            //====================================================================//
+            // Else, switch from base64
             $decode = base64_decode($data, true);
         }
 
@@ -698,9 +698,9 @@ class Webservice
             $out = base64_encode(
                 (string) openssl_encrypt($data, Splash::configuration()->WsCrypt, $cryptKey, 0, $cryptIv)
             );
-        //====================================================================//
-        // Open SSL Decryption
         } else {
+            //====================================================================//
+            // Open SSL Decryption
             $out = openssl_decrypt(
                 (string) base64_decode($data, true),
                 Splash::configuration()->WsCrypt,

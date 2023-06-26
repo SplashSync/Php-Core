@@ -80,7 +80,7 @@ trait ObjectsDataTrait
      * @param array       $block2  Raw Data to Compare
      * @param null|string $comment Comment on this Test
      *
-     *@throws Exception
+     * @throws Exception
      *
      * @return bool
      */
@@ -111,10 +111,9 @@ trait ObjectsDataTrait
                     $data2,
                     $comment."->".$field['id']
                 );
-
-            //====================================================================//
-            // Compare Single Fields
             } else {
+                //====================================================================//
+                // Compare Single Fields
                 $this->assertIsArray($data1);
                 $this->assertIsArray($data2);
                 $result = $this->compareField(

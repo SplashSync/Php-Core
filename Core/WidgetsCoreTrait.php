@@ -16,8 +16,6 @@
 namespace   Splash\Core;
 
 use Exception;
-use Splash\Components\Router;
-use Splash\Local\Local;
 use Splash\Models\Widgets\WidgetInterface;
 use Splash\Models\WidgetsProviderInterface;
 

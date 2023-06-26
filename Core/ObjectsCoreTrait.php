@@ -18,8 +18,6 @@ namespace   Splash\Core;
 use Exception;
 use Splash\Components\ExtensionsManager;
 use Splash\Components\FilesLoader;
-use Splash\Components\Router;
-use Splash\Local\Local;
 use Splash\Models\Objects\ObjectInterface;
 use Splash\Models\ObjectsProviderInterface;
 

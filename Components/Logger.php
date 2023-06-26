@@ -653,9 +653,9 @@ class Logger
         // If Current Log is Empty
         if (!isset($this->{$logType})) {
             $this->{$logType} = $logArray;
-        //====================================================================//
-        // Really merge Logs
         } else {
+            //====================================================================//
+            // Really Merge Logs
             foreach ($logArray as $message) {
                 $this->{$logType}[] = $message;
             }

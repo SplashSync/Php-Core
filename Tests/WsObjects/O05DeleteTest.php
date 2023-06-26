@@ -236,7 +236,7 @@ class O05DeleteTest extends ObjectsCase
      * @param null|string  $objectId
      * @param array|scalar $data
      *
-     *@throws Exception
+     * @throws Exception
      *
      * @return void
      */

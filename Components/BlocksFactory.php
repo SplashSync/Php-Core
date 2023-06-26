@@ -66,12 +66,12 @@ class BlocksFactory
     }
 
     /**
-     *  @abstract   Set Block Data Array Key
+     * Set Block Data Array Key
      *
-     *  @param      string      $name
-     *  @param      array|string       $value
+     * @param string       $name
+     * @param array|string $value
      *
-     *  @return     $this
+     * @return $this
      */
     public function setData($name, $value)
     {
@@ -85,12 +85,12 @@ class BlocksFactory
     }
 
     /**
-     *  @abstract   Extract Block Data From Content Input Array
+     * Extract Block Data From Content Input Array
      *
-     *  @param      array       $input
-     *  @param      string      $index
+     * @param array  $input
+     * @param string $index
      *
-     *  @return     $this
+     * @return $this
      */
     public function extractData($input, $index)
     {
@@ -102,12 +102,12 @@ class BlocksFactory
     }
 
     /**
-     *  @abstract   Set Block Options Array Key
+     * Set Block Options Array Key
      *
-     *  @param      string      $name
-     *  @param      array       $value
+     * @param string $name
+     * @param array  $value
      *
-     *  @return     $this
+     * @return $this
      */
     public function setOption($name, $value)
     {
@@ -150,12 +150,12 @@ class BlocksFactory
     //====================================================================//
 
     /**
-     *  @abstract   Create a new Text Block
+     * Create a new Text Block
      *
-     *  @param      string      $text           Block Content Text
-     *  @param      array       $blockOptions   Block Options
+     * @param string $text         Block Content Text
+     * @param array  $blockOptions Block Options
      *
-     *  @return     $this
+     * @return $this
      */
     public function addTextBlock($text, $blockOptions = self::COMMONS_OPTIONS)
     {
@@ -170,16 +170,16 @@ class BlocksFactory
     //====================================================================//
 
     /**
-     *  @abstract   Create a new Notification Block
+     * Create a new Notification Block
      *
-     *  @param      array   $contents           Block Contents
-     *                          ["error"]       Error Message
-     *                          ["warning"]     Warning Message
-     *                          ["info"]        Info Message
-     *                          ["success"]     Success Message
-     *  @param      array   $blockOptions       Block Options
+     * @param array $contents     Block Contents
+     *                            ["error"]       Error Message
+     *                            ["warning"]     Warning Message
+     *                            ["info"]        Info Message
+     *                            ["success"]     Success Message
+     * @param array $blockOptions Block Options
      *
-     *  @return     $this
+     * @return $this
      */
     public function addNotificationsBlock($contents, $blockOptions = self::COMMONS_OPTIONS)
     {
@@ -209,12 +209,12 @@ class BlocksFactory
     //====================================================================//
 
     /**
-     *  @abstract   Create a new Table Block
+     * Create a new Table Block
      *
-     *  @param      array   $contents           Array of Rows Contents (Text or Html)
-     *  @param      array   $blockOptions       Block Options
+     * @param array $contents     Array of Rows Contents (Text or Html)
+     * @param array $blockOptions Block Options
      *
-     *  @return     $this
+     * @return $this
      */
     public function addTableBlock($contents, $blockOptions = self::COMMONS_OPTIONS)
     {
@@ -229,12 +229,12 @@ class BlocksFactory
     //====================================================================//
 
     /**
-     *  @abstract   Create a new Table Block
+     * Create a new Table Block
      *
-     *  @param      array   $contents           Array of Rows Contents (Text or Html)
-     *  @param      array   $blockOptions       Block Options
+     * @param array $contents     Array of Rows Contents (Text or Html)
+     * @param array $blockOptions Block Options
      *
-     *  @return     $this
+     * @return $this
      */
     public function addSparkInfoBlock($contents, $blockOptions = self::COMMONS_OPTIONS)
     {
@@ -321,12 +321,12 @@ class BlocksFactory
     //====================================================================//
 
     /**
-     *  @abstract   Create a new block with default parameters
+     * Create a new block with default parameters
      *
-     *  @param      string      $blockType       Standard Widget Block Type
-     *  @param      array       $blockOptions    Block Options
+     * @param string $blockType    Standard Widget Block Type
+     * @param array  $blockOptions Block Options
      *
-     *  @return     $this
+     * @return $this
      */
     private function addBlock($blockType, $blockOptions = null)
     {
@@ -355,9 +355,9 @@ class BlocksFactory
     }
 
     /**
-     *  @abstract   Save Current New Block in list & Clean
+     * Save Current New Block in list & Clean
      *
-     *  @return     bool
+     * @return bool
      */
     private function commit()
     {

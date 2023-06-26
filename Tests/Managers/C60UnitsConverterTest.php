@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Splash\Components\UnitConverter as Unit;
 
 /**
- * Componants Test Suite - Unit Converter Verifications
+ * Components Test Suite - Unit Converter Verifications
  */
 class C60UnitsConverterTest extends TestCase
 {

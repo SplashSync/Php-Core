@@ -204,9 +204,9 @@ class SplashServer
             //====================================================================//
             // Process methods & Return the results.
             Splash::com()->handle();
-        //====================================================================//
-        // Non Fatal Error
         } else {
+            //====================================================================//
+            // Non Fatal Error
             Splash::log()->war($error["message"]." on File ".$error["file"]." Line ".$error["line"]);
         }
     }

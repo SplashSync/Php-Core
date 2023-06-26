@@ -81,7 +81,7 @@ abstract class AbstractBaseCase extends TestCase
         //   Filter Tested Object Types  =>> Skip
         if ($types) {
             $allowed = (array) explode(",", $types);
-            if (!empty($allowed) && !in_array($objectType, $allowed, true)) {
+            if (!in_array($objectType, $allowed, true)) {
                 return false;
             }
         }
