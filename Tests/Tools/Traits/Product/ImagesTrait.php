@@ -365,6 +365,7 @@ trait ImagesTrait
         //   Walk on Target Images List
         $position = -1;
         foreach ($this->targetImages as $targetImage) {
+            $this->assertIsArray($targetImage);
             //====================================================================//
             //   Check if Image Data is Set
             $this->assertArrayHasKey((string) $this->imageId, $targetImage);
