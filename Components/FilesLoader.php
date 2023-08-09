@@ -36,28 +36,24 @@ class FilesLoader
         //====================================================================//
         // Scan for Files in Folder
         $files = array_diff(
-            scandir($dir, SCANDIR_SORT_ASCENDING) ?: array(),
-            array('..', '.', 'index.php', 'index.html')
+            scandir($dir, SCANDIR_SORT_DESCENDING) ?: array(),
+            array('..', '.', 'index.php', 'index.html', 'toto')
         );
         //====================================================================//
-        // Load All Files in Folder
-        foreach ($files as $file) {
-            if (is_file($file)) {
-                $filenames = array_merge(
-                    $filenames,
-                    self::loadFile($dir, $file, $ext, $depth)
-                );
-            }
+        // Execute Autoloader First
+        if (in_array("autoload.php", $files, true)) {
+            $filenames = array_merge(
+                $filenames,
+                self::loadFile($dir, "autoload.php", $ext, $depth)
+            );
         }
         //====================================================================//
-        // Load All Directories in Folder
+        // Load All Directories & Files in Folder
         foreach ($files as $file) {
-            if (is_dir($file)) {
-                $filenames = array_merge(
-                    $filenames,
-                    self::loadFile($dir, $file, $ext, $depth)
-                );
-            }
+            $filenames = array_merge(
+                $filenames,
+                self::loadFile($dir, $file, $ext, $depth)
+            );
         }
 
         return $filenames;
