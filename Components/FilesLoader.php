@@ -36,14 +36,28 @@ class FilesLoader
         //====================================================================//
         // Scan for Files in Folder
         $files = array_diff(
-            scandir($dir, SCANDIR_SORT_DESCENDING) ?: array(),
+            scandir($dir, SCANDIR_SORT_ASCENDING) ?: array(),
             array('..', '.', 'index.php', 'index.html')
         );
+        //====================================================================//
+        // Load All Files in Folder
         foreach ($files as $file) {
-            $filenames = array_merge(
-                $filenames,
-                self::loadFile($dir, $file, $ext, $depth)
-            );
+            if (is_file($file)) {
+                $filenames = array_merge(
+                    $filenames,
+                    self::loadFile($dir, $file, $ext, $depth)
+                );
+            }
+        }
+        //====================================================================//
+        // Load All Directories in Folder
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                $filenames = array_merge(
+                    $filenames,
+                    self::loadFile($dir, $file, $ext, $depth)
+                );
+            }
         }
 
         return $filenames;
