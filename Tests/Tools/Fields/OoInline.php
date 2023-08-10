@@ -42,12 +42,39 @@ class OoInline extends OoVarchar implements FieldInterface
      */
     public static function fake(array $settings)
     {
-        $fakeData = array();
+        //==============================================================================
+        //      Generate Random Values
+        $data = array();
         $max = (int) rand(2, 6);
         for ($i = 0; $i < $max; $i++) {
-            $fakeData[] = OoVarchar::fake($settings);
+            $data[] = OoVarchar::fake($settings);
         }
+        //==============================================================================
+        //      Apply Constraints
+        self::applyOrderedConstrains($settings, $data);
 
-        return InlineHelper::fromArray($fakeData);
+        return InlineHelper::fromArray($data);
+    }
+
+    /**
+     * Apply Ordered Constrains
+     *
+     * @param array $settings User Defined Faker Settings
+     * @param array $data
+     *
+     * @return void
+     */
+    public static function applyOrderedConstrains(array $settings, array &$data): void
+    {
+        //==============================================================================
+        //      Apply Ordered Constraint
+        if (isset($settings["isOrdered"]) && !empty($settings["isOrdered"])) {
+            sort($data);
+        }
+        //==============================================================================
+        //      Apply Ordered Reverse Constraint
+        if (isset($settings["isOrderedReverse"]) && !empty($settings["isOrderedReverse"])) {
+            rsort($data);
+        }
     }
 }
