@@ -87,6 +87,7 @@ class OoVarchar implements FieldInterface
         if (!is_scalar($source) || !is_scalar($target)) {
             return false;
         }
+
         //====================================================================//
         //  Raw text Compare
         return $source === $target;

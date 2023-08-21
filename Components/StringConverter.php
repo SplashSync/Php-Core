@@ -46,6 +46,7 @@ class StringConverter
         //====================================================================//
         // Convert to Lower
         $input = strtolower((string) $input);
+
         //====================================================================//
         // Safety Check => Empty String
         return $input ?: null;

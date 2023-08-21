@@ -226,6 +226,7 @@ class Validator
         if (!$this->isValidLocalClass()) {
             return false;
         }
+
         //====================================================================//
         // Check if Object Manager has NOT Override
         try {
@@ -350,6 +351,7 @@ class Validator
         if (!$this->isValidLocalClass()) {
             return false;
         }
+
         //====================================================================//
         // Check if Widget Manager has NOT Overrides
         try {
@@ -656,6 +658,7 @@ class Validator
         if (false == $this->isValidLocalPath()) {
             return false;
         }
+
         //====================================================================//
         // Verify Object File Exist
         try {

@@ -34,6 +34,7 @@ class ChecksumHelper
         if (is_null($input) || !self::isValid($input)) {
             return null;
         }
+
         //====================================================================//
         // return Encoded CheckSum
         return self::getEncoded($input);
@@ -65,6 +66,7 @@ class ChecksumHelper
         if (is_null($input) || !self::isValid($input)) {
             return null;
         }
+
         //====================================================================//
         // return Encoded CheckSum
         return self::getDebug($input);
@@ -115,6 +117,7 @@ class ChecksumHelper
         //====================================================================//
         // Sort this Array by Keys
         ksort($input);
+
         //====================================================================//
         // Serialize Array & Encode Checksum
         return md5(strtolower(serialize($input)));

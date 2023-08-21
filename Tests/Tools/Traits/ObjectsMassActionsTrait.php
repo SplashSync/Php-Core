@@ -810,6 +810,7 @@ trait ObjectsMassActionsTrait
         //====================================================================//
         // Store Number of Objects Before Test
         $this->countBefore = $this->countAvailableObjects($objectType);
+
         //====================================================================//
         // Return Generated Object Data
         return $this->inputData;

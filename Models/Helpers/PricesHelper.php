@@ -103,6 +103,7 @@ class PricesHelper
         if (((bool) $price1["base"]) != ((bool) $price2["base"])) {
             return false;
         }
+
         //====================================================================//
         // Compare Price
         return self::compareAmounts($price1, $price2, $precision);
@@ -146,6 +147,7 @@ class PricesHelper
         if ($price1["code"] !== $price2["code"]) {
             return false;
         }
+
         //====================================================================//
         // Prices Are Identical
         return true;
@@ -196,6 +198,7 @@ class PricesHelper
         if (!empty($price[$key]) && !is_numeric($price[$key])) {
             return null;
         }
+
         // Return Result
         return (float) $price[$key];
     }

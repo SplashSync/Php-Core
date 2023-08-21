@@ -108,6 +108,7 @@ trait ObjectsValidatorTrait
         if (!is_array($data) && !is_scalar($data)) {
             return "Field is not Array or Scalar...";
         }
+
         //====================================================================//
         // Verify Single Field Data Type is Valid
         return $className::validate($data);

@@ -75,6 +75,7 @@ class OoDate extends OoVarchar implements FieldInterface
         $date = new DateTime("now");
         $date->modify('-'.mt_rand(1, 24).' months');
         $date->modify('-'.mt_rand(1, 30).' days');
+
         //==============================================================================
         //      Return DateTime is Right Format
         return $date->format(SPL_T_DATECAST);

@@ -106,6 +106,7 @@ class Router
         //====================================================================//
         // Build Complete Task Batch Information Array
         $output['tasksinfos'] = $this->getBatchInfos();
+
         //====================================================================//
         // Return Global Batch Result
         return $this->count == $this->success;
@@ -132,6 +133,7 @@ class Router
         //====================================================================//
         // Increment Tried Tasks Counter
         ++$this->count;
+
         //====================================================================//
         // Tasks Execution
         try {

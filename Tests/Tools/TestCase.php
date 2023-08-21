@@ -53,6 +53,7 @@ if (class_exists("PHPUnit\\Framework\\TestCase")) {
             //====================================================================//
             // OutPut Splash Logs
             fwrite(STDOUT, Splash::log()->getConsoleLog());
+
             //====================================================================//
             // OutPut Phpunit Exception
             throw $exception;

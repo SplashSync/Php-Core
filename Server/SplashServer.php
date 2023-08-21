@@ -104,6 +104,7 @@ class SplashServer
         // Execute Request
         //====================================================================//
         Splash::log()->msg("Connection Successful (".Splash::getName()." V".Splash::getVersion().")");
+
         //====================================================================//
         // Transmit Answers To Master
         //====================================================================//
@@ -356,6 +357,7 @@ class SplashServer
         if ((true != self::receive($data)) || !self::$inputs) {
             return self::transmit(false);
         }
+
         //====================================================================//
         // Execute Request
         //====================================================================//

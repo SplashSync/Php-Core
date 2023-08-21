@@ -414,6 +414,7 @@ class Webservice
         //====================================================================//
         // Extract Next Task From Buffer
         $task = self::getNextTask($response);
+
         //====================================================================//
         // Return Task Data
         return $task['data'] ?? null;
@@ -438,6 +439,7 @@ class Webservice
         if (empty($response['tasks'] ?? null)) {
             return null;
         }
+
         //====================================================================//
         // Shift Task Array
         return array_shift($response['tasks']);
@@ -860,6 +862,7 @@ class Webservice
             //====================================================================//
             //  Add Information to Debug Log
             Splash::log()->deb("[WS] Id='".print_r($this->id, true)."'");
+
             //====================================================================//
             //  Error Message
             return Splash::log()->err('ErrWsNoResponse', $this->outputs['service'] ?? "", $this->url);

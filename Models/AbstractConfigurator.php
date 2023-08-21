@@ -61,6 +61,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
             //====================================================================//
             // Remove Unsecure Parameters
             self::secureParameters($customParameters);
+
             //====================================================================//
             // Return Custom Parameters
             return $customParameters;
@@ -220,6 +221,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         if (is_null($key2)) {
             return $config[$key1];
         }
+
         //====================================================================//
         // Check Second Configuration Key Exists
         return $config[$key1][$key2] ?? null;

@@ -208,6 +208,7 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         // Lock This Object To Avoid Being Selected for Linking
         $this->setCurrentObject($objectType, $objectId);
+
         //====================================================================//
         // Return Object Id
         return $objectId;
@@ -250,6 +251,7 @@ trait ObjectsSetTestsTrait
         //====================================================================//
         // Lock This Object To Avoid Being Selected for Linking
         $this->setCurrentObject($objectType, $objectId);
+
         //====================================================================//
         // Return Object Id
         return $objectId;
@@ -388,6 +390,7 @@ trait ObjectsSetTestsTrait
         if (!$this->verifyTestIsAllowed($objectType, $field)) {
             return null;
         }
+
         //====================================================================//
         // Return Generated Object Data
         return $this->generateObjectData($objectType, $field, $unique);

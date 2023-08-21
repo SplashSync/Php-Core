@@ -41,6 +41,7 @@ trait ImagesTrait
         if (!isset(self::$imagesHelper)) {
             self::$imagesHelper = new ImagesHelper();
         }
+
         //====================================================================//
         // Return Helper Class
         return self::$imagesHelper;

@@ -39,6 +39,7 @@ trait ListsTrait
         if (!isset(self::$listsHelper)) {
             self::$listsHelper = new ListsHelper();
         }
+
         //====================================================================//
         // Return Helper Class
         return self::$listsHelper;

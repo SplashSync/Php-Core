@@ -42,6 +42,7 @@ class InlineHelper
         if (($data instanceof ArrayObject)) {
             $data = $data->getArrayCopy();
         }
+
         //====================================================================//
         // Create & Return Field Data as Json String
         return  (string) json_encode(array_values($data), JSON_UNESCAPED_UNICODE, 1);
@@ -61,6 +62,7 @@ class InlineHelper
         if (empty($data)) {
             return "[]";
         }
+
         //====================================================================//
         // Create & Return Field Data as Json String
         return self::fromArray((array) $data);

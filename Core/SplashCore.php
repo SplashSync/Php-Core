@@ -197,6 +197,7 @@ class SplashCore
         //====================================================================//
         // Load Local Includes
         self::core()->localcore->Includes();
+
         //====================================================================//
         // Return Local Class
         return self::core()->localcore;
@@ -233,6 +234,7 @@ class SplashCore
         //====================================================================//
         // Create A Reflection Class of Local Class
         $reflector = new ReflectionClass(get_class(self::local()));
+
         //====================================================================//
         // Return Class Local Path
         return dirname((string) $reflector->getFileName());
@@ -492,6 +494,7 @@ class SplashCore
         if (self::isServerMode() || !empty(self::input('SPLASH_TRAVIS'))) {
             return true;
         }
+
         //====================================================================//
         //  Verify Server Webservice Connection
         return self::ws()->selfTest();

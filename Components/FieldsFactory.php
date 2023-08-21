@@ -789,6 +789,7 @@ class FieldsFactory
         //====================================================================//
         // Reset Fields Factory
         $this->reset();
+
         //====================================================================//
         // Execute Configurators on Fields
         return $configuredBuffer;

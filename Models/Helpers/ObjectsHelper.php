@@ -98,6 +98,7 @@ class ObjectsHelper
         if (!$objectType || !$objectId) {
             return null;
         }
+
         //====================================================================//
         // Load Splash Object
         try {
@@ -124,6 +125,7 @@ class ObjectsHelper
         if (!empty($objectClass) && !($remoteObject instanceof $objectClass)) {
             return null;
         }
+
         //====================================================================//
         // Return Remote Object
         return   $remoteObject;

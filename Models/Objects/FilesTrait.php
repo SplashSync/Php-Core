@@ -41,6 +41,7 @@ trait FilesTrait
         if (!isset(self::$filesHelper)) {
             self::$filesHelper = new FilesHelper();
         }
+
         //====================================================================//
         // Return Helper Class
         return self::$filesHelper;

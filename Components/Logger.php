@@ -332,6 +332,7 @@ class Logger
         //====================================================================//
         // Build Error Trace
         $trace = (new Exception())->getTrace()[1];
+
         //====================================================================//
         // Push Error to Log
         return  self::err("ErrLocalTpl", $trace["class"] ?? '', $trace["function"], $text);
@@ -349,6 +350,7 @@ class Logger
         //====================================================================//
         // Build Warning Trace
         $trace = (new Exception())->getTrace()[1];
+
         //====================================================================//
         // Push Warning to Log
         return  self::war("WarLocalTpl", $trace["class"] ?? '', $trace["function"], $text);
@@ -366,6 +368,7 @@ class Logger
         //====================================================================//
         // Build Warning Trace
         $trace = (new Exception())->getTrace()[1];
+
         //====================================================================//
         // Push Warning to Log
         return  self::war("WarLocalClass", $trace["class"] ?? '', $trace["function"], get_class($object));
@@ -450,6 +453,7 @@ class Logger
         //====================================================================//
         //  Load Translation File
         Splash::translator()->load('main');
+
         //====================================================================//
         // Push Trace to Log
         return  $this->deb("DebTraceMsg", $trace["class"] ?? '', $trace["function"]);
@@ -682,6 +686,7 @@ class Logger
         var_dump($var);                 // Dumps information about a variable
         $html = ob_get_contents();      // Read the contents of the output buffer
         ob_end_clean();                 // Clean (erase) the output buffer and turn off output buffering
+
         //====================================================================//
         // Return Contents
         return '<PRE>'.$html.'</PRE>';

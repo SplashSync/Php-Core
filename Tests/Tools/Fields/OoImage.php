@@ -151,6 +151,7 @@ class OoImage implements FieldInterface
             if (empty($target['resized'])) {
                 return OoFile::compareMd5($source, $target);
             }
+
             //====================================================================//
             // Compare Image Dims
             return self::compareDims($source, $target);

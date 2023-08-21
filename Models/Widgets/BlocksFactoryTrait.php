@@ -41,6 +41,7 @@ trait BlocksFactoryTrait
         if (!isset(self::$blocksFactory)) {
             self::$blocksFactory = new BlocksFactory();
         }
+
         //====================================================================//
         // Return Helper Class
         return self::$blocksFactory;

@@ -83,10 +83,12 @@ class DummyExtension implements ObjectExtensionInterface
                     // Update Object Data
                     /** @phpstan-ignore-next-line */
                     $object->my_custom_field = $fieldData;
+
                     //====================================================================//
                     // Tells Splash data was Updated
                     return true;
                 }
+
                 //====================================================================//
                 // Data is Unchanged
                 return false;

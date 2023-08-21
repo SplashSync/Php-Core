@@ -40,6 +40,7 @@ trait ChecksumTrait
         }
         // Initialize Class
         self::$ChecksumHelper = new ChecksumHelper();
+
         // Return Helper Class
         return self::$ChecksumHelper;
     }

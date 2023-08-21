@@ -61,6 +61,7 @@ class FileManager
         //====================================================================//
         // Execute Task
         $response = Splash::ws()->call(SPL_S_FILE);
+
         //====================================================================//
         // Return First Task Result
         return Splash::ws()->getNextResult($response);
@@ -180,6 +181,7 @@ class FileManager
             return Splash::log()->errNull("ErrFileReadable", $fileName);
         }
         Splash::log()->deb("MsgFileRead", $fileName);
+
         //====================================================================//
         // Read File Contents
         return base64_encode((string) file_get_contents($fileName));

@@ -317,6 +317,7 @@ trait GenericFieldsTrait
         if (!$object || !method_exists($object, "getId") || !$object->getId()) {
             return null;
         }
+
         //====================================================================//
         // Return Object Id
         return (string) $object->getId();

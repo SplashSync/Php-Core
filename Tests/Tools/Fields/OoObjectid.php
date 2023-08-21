@@ -79,6 +79,7 @@ class OoObjectid implements FieldInterface
         if (empty($objectType)) {
             return null;
         }
+
         //====================================================================//
         // Get Object List
         try {

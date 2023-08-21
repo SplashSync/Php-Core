@@ -39,6 +39,7 @@ trait PricesTrait
         if (!isset(self::$pricesHelper)) {
             self::$pricesHelper = new PricesHelper();
         }
+
         //====================================================================//
         // Return Helper Class
         return self::$pricesHelper;

@@ -161,6 +161,7 @@ class Translator
         //====================================================================//
         // Crypt string into HTML
         $str = htmlentities($str, ENT_QUOTES);
+
         //====================================================================//
         // Restore HTML tags
         return str_replace(array('__lt__','__gt__','__quot__'), array('<','>','"',), $str);

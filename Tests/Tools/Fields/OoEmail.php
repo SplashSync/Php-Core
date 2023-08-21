@@ -107,6 +107,7 @@ class OoEmail extends OoVarchar implements FieldInterface
         if (!is_scalar($source) || !is_scalar($target)) {
             return false;
         }
+
         //====================================================================//
         //  Raw text Compare
         return strtolower((string) $source) === strtolower((string) $target);

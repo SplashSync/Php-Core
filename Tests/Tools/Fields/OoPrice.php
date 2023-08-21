@@ -136,6 +136,7 @@ class OoPrice implements FieldInterface
         if (!self::compareCurrency($source, $target)) {
             return false;
         }
+
         //====================================================================//
         // Prices Are Identical
         return true;

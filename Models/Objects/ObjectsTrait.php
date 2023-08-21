@@ -39,6 +39,7 @@ trait ObjectsTrait
         if (!isset(self::$objectsHelper)) {
             self::$objectsHelper = new ObjectsHelper();
         }
+
         //====================================================================//
         // Return Helper Class
         return self::$objectsHelper;

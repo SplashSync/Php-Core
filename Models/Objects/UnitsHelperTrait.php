@@ -39,6 +39,7 @@ trait UnitsHelperTrait
         if (!isset(self::$unitConverter)) {
             self::$unitConverter = new UnitConverter();
         }
+
         //====================================================================//
         // Return Helper Class
         return self::$unitConverter;

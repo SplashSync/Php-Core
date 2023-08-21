@@ -98,6 +98,7 @@ class CommitsManager
 
             return true;
         }
+
         //====================================================================//
         // Execute Server Commit
         return self::executeCommit($commitEvent);
@@ -246,6 +247,7 @@ class CommitsManager
         if (!isset(self::$waitingEvents)) {
             self::$waitingEvents = self::getCache();
         }
+
         //====================================================================//
         // Return Events
         return self::$waitingEvents;
@@ -423,6 +425,7 @@ class CommitsManager
         //====================================================================//
         // Execute Task
         $response = Splash::ws()->call(SPL_S_OBJECTS);
+
         //====================================================================//
         // Analyze results
         return self::isCommitSuccess($response);

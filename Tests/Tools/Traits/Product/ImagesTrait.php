@@ -249,6 +249,7 @@ trait ImagesTrait
 
             return $image;
         }
+
         //====================================================================//
         //   Images not Found
         return null;

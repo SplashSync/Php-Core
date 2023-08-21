@@ -228,6 +228,7 @@ trait FieldsManagerTrait
         if (empty($result)) {
             return null;
         }
+
         //====================================================================//
         // Return Field Identifier
         return $result['fieldname'];
@@ -248,6 +249,7 @@ trait FieldsManagerTrait
         if (empty($result)) {
             return null;
         }
+
         //====================================================================//
         // Return List Name
         return $result['listname'];
@@ -324,6 +326,7 @@ trait FieldsManagerTrait
         if (empty($result)) {
             return null;
         }
+
         //====================================================================//
         // Return List Name
         return $result['ObjectId'];
@@ -344,6 +347,7 @@ trait FieldsManagerTrait
         if (empty($result)) {
             return null;
         }
+
         //====================================================================//
         // Return Field Identifier
         return $result['ObjectType'];

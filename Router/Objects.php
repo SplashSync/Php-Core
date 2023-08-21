@@ -288,6 +288,7 @@ class Objects implements RouterInterface
         //====================================================================//
         // Read Objects Types List from Local System
         $response['data'] = Splash::objects();
+
         //====================================================================//
         // Return Response
         return self::checkResponse($response);
@@ -335,6 +336,7 @@ class Objects implements RouterInterface
         //====================================================================//
         // Release Lock for this object
         $objectClass->unLock($objectId);
+
         //====================================================================//
         // Return Response
         return $objectData;
@@ -358,6 +360,7 @@ class Objects implements RouterInterface
         //====================================================================//
         // Take Lock for this object => No Commit Allowed for this Object
         $objectClass->lock($objectId);
+
         //====================================================================//
         // Delete Data on local system
         return $objectClass->delete($objectId);
@@ -378,6 +381,7 @@ class Objects implements RouterInterface
         if (!$objectClass instanceof PrimaryKeysAwareInterface) {
             return null;
         }
+
         //====================================================================//
         // Read Data from local system
         return  $objectClass->getByPrimary($keys);

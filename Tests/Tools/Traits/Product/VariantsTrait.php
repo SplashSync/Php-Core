@@ -80,6 +80,7 @@ trait VariantsTrait
         if (is_null($variantProductId)) {
             return array(ListsHelper::listName($field['id']) => array());
         }
+
         //====================================================================//
         //   Return Field Value
         return array(ListsHelper::listName($field['id']) => array(array(

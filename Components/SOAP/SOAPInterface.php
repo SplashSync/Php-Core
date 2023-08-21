@@ -106,6 +106,7 @@ class SOAPInterface implements CommunicationInterface
         //====================================================================//
         // Log Call Informations in debug buffer
         Splash::log()->deb("[SOAP] Call Url= '".$this->location."' Service='".$service."'");
+
         //====================================================================//
         // Execute Php SOAP Call
         try {
@@ -119,6 +120,7 @@ class SOAPInterface implements CommunicationInterface
             //====================================================================//
             //  Debug Informations
             Splash::log()->deb('[SOAP] Fault Details= '.$response->getTraceAsString());
+
             //====================================================================//
             //  Error Message
             return Splash::log()->errNull('ErrWsNuSOAPFault', $response->getCode(), $response->getMessage());

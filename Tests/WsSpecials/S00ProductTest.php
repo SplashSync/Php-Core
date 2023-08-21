@@ -348,6 +348,7 @@ class S00ProductTest extends ObjectsCase
             // Variant Attribute Value
             $this->fields = array_merge($this->fields, $this->findMultiFields(static::$attrValue, $fields));
         }
+
         //====================================================================//
         // Return Generated Object Data
         return array_merge($fakeData, $this->currentVariation, $this->currentImages);

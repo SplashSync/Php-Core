@@ -46,6 +46,7 @@ class ListsHelper
         if (empty($fieldName)) {
             return null;
         }
+
         //====================================================================//
         // Create & Return List Field Id Data String
         return   $fieldName.LISTSPLIT.$listName;
@@ -76,6 +77,7 @@ class ListsHelper
         if (!array_key_exists($listName, $buffer)) {
             $buffer[$listName] = array();
         }
+
         //====================================================================//
         // decode Field Name
         return $this->fieldName($fieldName);

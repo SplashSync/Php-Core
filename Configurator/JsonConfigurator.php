@@ -71,6 +71,7 @@ class JsonConfigurator extends AbstractConfigurator implements ConfiguratorInter
         //====================================================================//
         //  Load Module Configuration
         $cfg = Splash::configuration();
+
         //====================================================================//
         //  Check if Custom Configuration Path is Defined
         try {

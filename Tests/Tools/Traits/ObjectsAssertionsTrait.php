@@ -517,6 +517,7 @@ trait ObjectsAssertionsTrait
         //====================================================================//
         //   Ensure Fields List is Loaded
         $this->assertNotEmpty($this->fields, "Objects Fields List is Empty! Did you load it?");
+
         //====================================================================//
         //   Touch this Field
         return FieldsManager::findFieldByTag($this->fields, $itemType, $itemProp);

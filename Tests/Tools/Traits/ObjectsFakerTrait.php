@@ -267,6 +267,7 @@ trait ObjectsFakerTrait
                 return $choiceValue;
             }
         }
+
         //====================================================================//
         // Generate Single Field Data Type is Valid
         return $className::fake(array_replace_recursive($this->settings, $options));

@@ -48,6 +48,7 @@ class OoLang extends OoVarchar implements FieldInterface
             //==============================================================================
             //      Select Random Language
             $index = rand(0, count($settings["Langs"]) - 1);
+
             //==============================================================================
             //      Return Language Code
             return $settings["Langs"][$index];
