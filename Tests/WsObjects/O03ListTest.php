@@ -161,8 +161,8 @@ class O03ListTest extends ObjectsCase
     /**
      * Verify Metadata are Available
      *
-     * @param array  $data
-     * @param string $objectType
+     * @param array[] $data
+     * @param string  $objectType
      *
      * @return void
      */
