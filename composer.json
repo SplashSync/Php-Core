@@ -23,6 +23,9 @@
             "Splash\\": "",
             "Splash\\Local\\": "../../../Resources"
         },
+        "files": [
+            "inc/Splash.Inc.php"
+        ],
         "exclude-from-classmap": [
             "/Tests/"
         ]        
