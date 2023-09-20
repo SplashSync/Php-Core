@@ -13,16 +13,23 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Tools;
+namespace Splash\Tests\Tools\Traits;
 
-use PHPUnit\Framework\TestCase as BaseTestCase;
-
-/**
- * Base PhpUnit Test Class for Splash Modules Tests
- * May be overridden for Using Splash Core Test in Specific Environments
- */
-abstract class TestCase extends BaseTestCase
+trait InitializationTrait
 {
-    use Traits\ConsoleLogTrait;
-    use Traits\InitializationTrait;
+    /**
+     * {@inheritDoc}
+     */
+    public static function setUpBeforeClass(): void
+    {
+        /**
+         * Ensure Server Mode is Active
+         */
+        if (!defined("SPLASH_SERVER_MODE")) {
+            define("SPLASH_SERVER_MODE", true);
+        }
+
+        /** @phpstan-ignore-next-line  */
+        parent::setUpBeforeClass();
+    }
 }
