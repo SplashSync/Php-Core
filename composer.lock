@@ -560,16 +560,16 @@
         },
         {
             "name": "badpixxel/php-sdk",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BadPixxel/Php-Sdk.git",
-                "reference": "285d05785e4fb6eabd39b786cc5c95400feab15a"
+                "reference": "87e214e3630cf096e37562d53aed8f97b8785c5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BadPixxel/Php-Sdk/zipball/285d05785e4fb6eabd39b786cc5c95400feab15a",
-                "reference": "285d05785e4fb6eabd39b786cc5c95400feab15a",
+                "url": "https://api.github.com/repos/BadPixxel/Php-Sdk/zipball/87e214e3630cf096e37562d53aed8f97b8785c5d",
+                "reference": "87e214e3630cf096e37562d53aed8f97b8785c5d",
                 "shasum": ""
             },
             "require": {
@@ -620,9 +620,9 @@
             "description": "Development Kit for Php Packages",
             "support": {
                 "issues": "https://github.com/BadPixxel/Php-Sdk/issues",
-                "source": "https://github.com/BadPixxel/Php-Sdk/tree/2.1.0"
+                "source": "https://github.com/BadPixxel/Php-Sdk/tree/2.1.1"
             },
-            "time": "2023-09-18T21:15:54+00:00"
+            "time": "2023-09-20T21:56:51+00:00"
         },
         {
             "name": "composer/ca-bundle",
