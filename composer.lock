@@ -560,22 +560,22 @@
         },
         {
             "name": "badpixxel/php-sdk",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BadPixxel/Php-Sdk.git",
-                "reference": "ae496925e1141f990a9b2df7a09ee016b9af2137"
+                "reference": "285d05785e4fb6eabd39b786cc5c95400feab15a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BadPixxel/Php-Sdk/zipball/ae496925e1141f990a9b2df7a09ee016b9af2137",
-                "reference": "ae496925e1141f990a9b2df7a09ee016b9af2137",
+                "url": "https://api.github.com/repos/BadPixxel/Php-Sdk/zipball/285d05785e4fb6eabd39b786cc5c95400feab15a",
+                "reference": "285d05785e4fb6eabd39b786cc5c95400feab15a",
                 "shasum": ""
             },
             "require": {
                 "composer/composer": "^1.0|^2.0",
                 "friendsofphp/php-cs-fixer": ">2.10",
-                "friendsoftwig/twigcs": "^4.0|^5.0",
+                "friendsoftwig/twigcs": "^4.0|^5.0|^6.0",
                 "j13k/yaml-lint": "^1.1",
                 "php": "^7.2|^8.0",
                 "php-parallel-lint/php-parallel-lint": "^1.0",
@@ -586,8 +586,7 @@
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.0",
                 "phpstan/phpstan-symfony": "^1.0",
-                "phpunit/phpunit": "~7.0|~8.0|~9.0",
-                "sclable/xml-lint": "~0.3",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0",
                 "sebastian/phpcpd": ">3.0",
                 "seld/jsonlint": "^1.7",
                 "squizlabs/php_codesniffer": "^3.2"
@@ -621,9 +620,9 @@
             "description": "Development Kit for Php Packages",
             "support": {
                 "issues": "https://github.com/BadPixxel/Php-Sdk/issues",
-                "source": "https://github.com/BadPixxel/Php-Sdk/tree/2.0.0"
+                "source": "https://github.com/BadPixxel/Php-Sdk/tree/2.1.0"
             },
-            "time": "2022-04-05T14:42:47+00:00"
+            "time": "2023-09-18T21:15:54+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -1555,30 +1554,32 @@
         },
         {
             "name": "friendsoftwig/twigcs",
-            "version": "5.2.0",
+            "version": "6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/friendsoftwig/twigcs.git",
-                "reference": "5123655a918d232788da4d7b0545c9f75b08023a"
+                "reference": "da697cc1bf6bf22feb1d8dbefcbdb1451e6a35f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/friendsoftwig/twigcs/zipball/5123655a918d232788da4d7b0545c9f75b08023a",
-                "reference": "5123655a918d232788da4d7b0545c9f75b08023a",
+                "url": "https://api.github.com/repos/friendsoftwig/twigcs/zipball/da697cc1bf6bf22feb1d8dbefcbdb1451e6a35f6",
+                "reference": "da697cc1bf6bf22feb1d8dbefcbdb1451e6a35f6",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
+                "ext-hash": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-simplexml": "*",
-                "php": "^7.4 || ^8.0",
+                "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
                 "symfony/console": "^4.4 || ^5.3 || ^6.0",
                 "symfony/filesystem": "^4.4 || ^5.3 || ^6.0",
                 "symfony/finder": "^4.4 || ^5.3 || ^6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5.20"
+                "phpunit/phpunit": "^9.5.27",
+                "symfony/phpunit-bridge": "^6.2.3"
             },
             "bin": [
                 "bin/twigcs"
@@ -1602,9 +1603,9 @@
             "description": "Checkstyle automation for Twig",
             "support": {
                 "issues": "https://github.com/friendsoftwig/twigcs/issues",
-                "source": "https://github.com/friendsoftwig/twigcs/tree/5.2.0"
+                "source": "https://github.com/friendsoftwig/twigcs/tree/6.2.0"
             },
-            "time": "2022-04-28T11:29:58+00:00"
+            "time": "2023-01-13T16:02:00+00:00"
         },
         {
             "name": "gitonomy/gitlib",
@@ -2605,16 +2606,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.34",
+            "version": "1.10.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "7f806b6f1403e6914c778140e2ba07c293cb4901"
+                "reference": "e730e5facb75ffe09dfb229795e8c01a459f26c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7f806b6f1403e6914c778140e2ba07c293cb4901",
-                "reference": "7f806b6f1403e6914c778140e2ba07c293cb4901",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e730e5facb75ffe09dfb229795e8c01a459f26c3",
+                "reference": "e730e5facb75ffe09dfb229795e8c01a459f26c3",
                 "shasum": ""
             },
             "require": {
@@ -2663,7 +2664,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-13T09:49:47+00:00"
+            "time": "2023-09-19T15:27:56+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -2909,16 +2910,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.28",
+            "version": "9.2.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "7134a5ccaaf0f1c92a4f5501a6c9f98ac4dcc0ef"
+                "reference": "6a3a87ac2bbe33b25042753df8195ba4aa534c76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/7134a5ccaaf0f1c92a4f5501a6c9f98ac4dcc0ef",
-                "reference": "7134a5ccaaf0f1c92a4f5501a6c9f98ac4dcc0ef",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6a3a87ac2bbe33b25042753df8195ba4aa534c76",
+                "reference": "6a3a87ac2bbe33b25042753df8195ba4aa534c76",
                 "shasum": ""
             },
             "require": {
@@ -2975,7 +2976,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.28"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.29"
             },
             "funding": [
                 {
@@ -2983,7 +2984,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-12T14:36:20+00:00"
+            "time": "2023-09-19T04:57:46+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -3228,16 +3229,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.12",
+            "version": "9.6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a122c2ebd469b751d774aa0f613dc0d67697653f"
+                "reference": "f3d767f7f9e191eab4189abe41ab37797e30b1be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a122c2ebd469b751d774aa0f613dc0d67697653f",
-                "reference": "a122c2ebd469b751d774aa0f613dc0d67697653f",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f3d767f7f9e191eab4189abe41ab37797e30b1be",
+                "reference": "f3d767f7f9e191eab4189abe41ab37797e30b1be",
                 "shasum": ""
             },
             "require": {
@@ -3311,7 +3312,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.12"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.13"
             },
             "funding": [
                 {
@@ -3327,7 +3328,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-12T14:39:31+00:00"
+            "time": "2023-09-19T05:39:22+00:00"
         },
         {
             "name": "psr/container",
@@ -3554,64 +3555,6 @@
                 }
             ],
             "time": "2023-07-11T16:12:49+00:00"
-        },
-        {
-            "name": "sclable/xml-lint",
-            "version": "0.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sclable/xml-lint.git",
-                "reference": "5815d726cc80f6597e34e4e9eeec5830ebfbed0a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sclable/xml-lint/zipball/5815d726cc80f6597e34e4e9eeec5830ebfbed0a",
-                "reference": "5815d726cc80f6597e34e4e9eeec5830ebfbed0a",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "ext-libxml": "*",
-                "php": "7.4.*|8.0.*|8.1.*",
-                "symfony/console": "4.4.*|5.3.*|5.4.*|6.*",
-                "symfony/finder": "4.4.*|5.3.*|5.4.*|6.*"
-            },
-            "require-dev": {
-                "behat/behat": "^3.0",
-                "phpunit/phpunit": "^9.1"
-            },
-            "bin": [
-                "bin/xmllint"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "sclable\\xmlLint\\": "src/php/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Rutz",
-                    "email": "michael.rutz@sclable.com"
-                }
-            ],
-            "description": "A php cli tool to lint and validate xml files.",
-            "keywords": [
-                "cli",
-                "lint",
-                "xml",
-                "xml schema",
-                "xsd"
-            ],
-            "support": {
-                "issues": "https://github.com/sclable/xml-lint/issues",
-                "source": "https://github.com/sclable/xml-lint/tree/0.5.0"
-            },
-            "time": "2022-03-14T16:46:34+00:00"
         },
         {
             "name": "sebastian/cli-parser",
