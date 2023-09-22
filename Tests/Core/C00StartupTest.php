@@ -142,12 +142,13 @@ class C00StartupTest extends TestCase
 
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
-        if (defined("SPLASH_FIELDS") && SPLASH_FIELDS) {
+        $config = Splash::constant("SPLASH_FIELDS") ?? Splash::env("SPLASH_FIELDS");
+        if ($config) {
             /** @var array|false $fields */
-            $fields = explode(",", (string) SPLASH_FIELDS);
+            $fields = explode(",", $config);
             if (!empty($fields)) {
-                echo Logger::getConsoleLine((string) SPLASH_FIELDS, "- Fields Filter: ", Logger::CMD_COLOR_DEB);
-                echo Logger::getConsoleLine("!! TEST WILL FOCUS ON SPECIFIC FIELDS !!", "", Logger::CMD_COLOR_DEB);
+                echo Logger::getConsoleLine($config, "- Fields Filter: ", Logger::CMD_COLOR_DEB);
+                echo Logger::getConsoleLine("!! TEST WILL FOCUS ON SPECIFIC FIELDS !!", "", Logger::CMD_COLOR_WAR);
             }
         }
     }
