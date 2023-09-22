@@ -16,82 +16,109 @@
 ################################################################################
 
 ################################################################
-# Set any variables we need
-variables:
-  COMPOSER_MEMORY_LIMIT:        -1
-  SYMFONY_DEPRECATIONS_HELPER:  disabled
+# Include Pipeline Templates
+include:
+  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/php/defaults.yaml'
+  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/pages.yaml'
 
 ################################################################
-# Defined Pipeline Stages
-stages:
-  - tests
-  - deploy
-
-################################################################
-# Functional Tests
+# Quality Tests
 ################################################################
 
-.core_tests:    &core_tests
-    stage:      tests
-    tags:
-        - Dedicated
-    services:
-        - name: mysql
-    artifacts:
-        when: always
-        reports:
-            junit: "*-report.xml"
-    ################################################################################
-    # Install & Configure Environnement
-    before_script:
-        # Setup Travis
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
-        # Composer Build
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh | sh
-    ################################################################################
-    # Run Test Script
-    script:
-        # Execute Grumphp Testsuite
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-        - vendor/bin/phpunit
-    ################################################################################
-    # Run After Script
-    after_script:
-      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
+quality:php-8.2:
+    extends: .quality
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
 
-#tests:php-8.2:
-#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
-#    <<: *core_tests
-
-tests:php-8.1:
+quality:php-8.1:
+    extends: .quality
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    <<: *core_tests
 
-tests:php-8.0:
+quality:php-8.0:
+    extends: .quality
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    <<: *core_tests
 
-tests:php-7.4:
+quality:php-7.40:
+    extends: .quality
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-    <<: *core_tests
 
+#
 #################################################################
-## Build Documentation
+## Set any variables we need
+#variables:
+#  COMPOSER_MEMORY_LIMIT:        -1
+#  SYMFONY_DEPRECATIONS_HELPER:  disabled
+#
 #################################################################
-pages:
-    image:      registry.gitlab.com/splashsync/php-console:pages
-    stage:      deploy
-    tags:       ['Dedicated']
-    retry:      2
-    services:
-        - docker:dind
-    ################################################################################
-    # Run Test Script
-    script:
-        # Run Composer to Build deps
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
-        # Build Documentation
-        - php vendor/bin/grumphp run --tasks=build-docs
-    artifacts:
-        paths:
-            - public
+## Defined Pipeline Stages
+#stages:
+#  - tests
+#  - deploy
+#
+#################################################################
+## Functional Tests
+#################################################################
+#
+#.core_tests:    &core_tests
+#    stage:      tests
+#    tags:
+#        - Dedicated
+#    services:
+#        - name: mysql
+#    artifacts:
+#        when: always
+#        reports:
+#            junit: "*-report.xml"
+#    ################################################################################
+#    # Install & Configure Environnement
+#    before_script:
+#        # Setup Travis
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
+#        # Composer Build
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh | sh
+#    ################################################################################
+#    # Run Test Script
+#    script:
+#        # Execute Grumphp Testsuite
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
+#        - vendor/bin/phpunit
+#    ################################################################################
+#    # Run After Script
+#    after_script:
+#      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
+#
+##tests:php-8.2:
+##    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+##    <<: *core_tests
+#
+#tests:php-8.1:
+#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+#    <<: *core_tests
+#
+#tests:php-8.0:
+#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+#    <<: *core_tests
+#
+#tests:php-7.4:
+#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+#    <<: *core_tests
+#
+##################################################################
+### Build Documentation
+##################################################################
+#pages:
+#    image:      registry.gitlab.com/splashsync/php-console:pages
+#    stage:      deploy
+#    tags:       ['Dedicated']
+#    retry:      2
+#    services:
+#        - docker:dind
+#    ################################################################################
+#    # Run Test Script
+#    script:
+#        # Run Composer to Build deps
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
+#        # Build Documentation
+#        - php vendor/bin/grumphp run --tasks=build-docs
+#    artifacts:
+#        paths:
+#            - public
