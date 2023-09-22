@@ -134,7 +134,7 @@ class C00StartupTest extends TestCase
      *
      * @return void
      */
-    private function displayFilteredFields()
+    private function displayFilteredFields(): void
     {
         //====================================================================//
         //   FILTERED FIELDS
