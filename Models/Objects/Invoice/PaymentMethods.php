@@ -107,6 +107,11 @@ class PaymentMethods
     const GOOGLE = "GoogleCheckout";
 
     /**
+     * Amazon Payments
+     */
+    const AMAZON = "AmazonPay";
+
+    /**
      * Apple Pay
      */
     const APPLE = "ApplePay";
@@ -173,6 +178,7 @@ class PaymentMethods
             self::AMEX,
             self::PAYPAL,
             self::GOOGLE,
+            self::AMAZON,
             self::APPLE,
         );
     }
@@ -231,6 +237,7 @@ class PaymentMethods
         return array(
             self::PAYPAL,
             self::GOOGLE,
+            self::AMAZON,
             self::APPLE,
         );
     }
