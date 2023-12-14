@@ -107,7 +107,6 @@ class C71CommitsManagerTest extends ObjectsCase
             // Execute Simple Commit
             $this->assertEmpty(CommitsManager::getSessionCommitted());
             $this->assertTrue(CommitsManager::commit($objectType, $objectIds, $action));
-            /** @phpstan-ignore-next-line */
             $this->assertNotEmpty(CommitsManager::getSessionCommitted());
             $this->assertEmpty(CommitsManager::getWaitingEvents());
         }

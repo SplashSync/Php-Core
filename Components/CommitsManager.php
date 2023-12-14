@@ -206,6 +206,8 @@ class CommitsManager
      * Get List of Session Committed Objects
      *
      * @return array[]
+     *
+     * @phpstan-impure
      */
     public static function getSessionCommitted(): array
     {
