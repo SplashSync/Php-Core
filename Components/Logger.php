@@ -606,6 +606,21 @@ class Logger
         return true;
     }
 
+    /**
+     * Clean WebServer Logs Messages to keep only Limited Number of Messages
+     *
+     * @return true
+     */
+    public function slice(int $length = 50): bool
+    {
+        $this->err = array_slice($this->err, 0, $length);
+        $this->war = array_slice($this->war, 0, $length);
+        $this->msg = array_slice($this->msg, 0, $length);
+        $this->deb = array_slice($this->deb, 0, $length);
+
+        return true;
+    }
+
     //====================================================================//
     //  PRIVATE FUNCTIONS
     //====================================================================//
