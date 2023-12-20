@@ -795,6 +795,47 @@ class FieldsFactory
         return $configuredBuffer;
     }
 
+    /**
+     * Merge an Array of Fields on Field Factory
+     *
+     * @param array<string, array> $fields
+     *
+     * @return static
+     */
+    public function merge(array $fields): static
+    {
+        //====================================================================//
+        // Commit Last Created if not already done
+        $this->commit();
+        //====================================================================//
+        // Convert Fields To Array
+        foreach ($fields as $fieldId => $fieldValues) {
+            //====================================================================//
+            // Safety Checks - Field Id
+            if (!$fieldId || !is_string($fieldId) || !is_array($fieldValues)) {
+                continue;
+            }
+            //====================================================================//
+            // Safety Checks - Field Creation
+            if (!$this->has($fieldId) && (empty($fieldValues["type"] ?? null))) {
+                continue;
+            }
+            //====================================================================//
+            // Ensure Field Exists
+            $this->fields[$fieldId] ??= new ObjectField($fieldValues["type"]);
+            //====================================================================//
+            // Merge Field Definition
+            $this->fields[$fieldId]->exchangeArray(
+                array_replace_recursive(
+                    $this->fields[$fieldId]->getArrayCopy(),
+                    array_filter($fieldValues)
+                )
+            );
+        }
+
+        return $this;
+    }
+
     //====================================================================//
     //  FIELDS - CONFIGURATORS MANAGEMENT
     //====================================================================//
