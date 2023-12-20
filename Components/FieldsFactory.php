@@ -828,7 +828,11 @@ class FieldsFactory
             $this->fields[$fieldId]->exchangeArray(
                 array_replace_recursive(
                     $this->fields[$fieldId]->getArrayCopy(),
-                    array_filter($fieldValues)
+                    array_filter($fieldValues),
+                    array(
+                        "read" => $fieldValues["read"] ?? true,
+                        "write" => $fieldValues["write"] ?? true,
+                    ),
                 )
             );
         }
