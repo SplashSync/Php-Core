@@ -802,7 +802,7 @@ class FieldsFactory
      *
      * @return static
      */
-    public function merge(array $fields): static
+    public function merge(array $fields): self
     {
         //====================================================================//
         // Commit Last Created if not already done
