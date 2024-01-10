@@ -278,28 +278,28 @@ class ObjectField extends ArrayObject
      * Convert Field Definition to Array
      *
      * @return  array{
-     *          type: string,
-     *          id: string,
-     *          name: string,
-     *          desc: string,
-     *          group: string,
-     *          required: null|bool|string,
-     *          read: null|bool|string,
-     *          write: null|bool|string,
-     *          index: null|bool|string,
-     *          inlist: null|bool|string,
-     *          hlist: null|bool|string,
-     *          log: null|bool|string,
-     *          notest: null|bool|string,
-     *          primary: null|bool|string,
-     *          syncmode: string,
-     *          itemprop: null|string,
-     *          itemtype: null|string,
-     *          tag: null|string,
-     *          choices: null|array{ key: string, value: scalar},
-     *          asso: null|string[],
-     *          options: array<string, scalar>
-     *          }
+     *         type: string,
+     *         id: string,
+     *         name: string,
+     *         desc: string,
+     *         group: string,
+     *         required: null|bool|string,
+     *         read: null|bool|string,
+     *         write: null|bool|string,
+     *         index: null|bool|string,
+     *         inlist: null|bool|string,
+     *         hlist: null|bool|string,
+     *         log: null|bool|string,
+     *         notest: null|bool|string,
+     *         primary: null|bool|string,
+     *         syncmode: string,
+     *         itemprop: null|string,
+     *         itemtype: null|string,
+     *         tag: null|string,
+     *         choices: null|array{ key: string, value: scalar},
+     *         asso: null|string[],
+     *         options: array<string, scalar>
+     *         }
      */
     public function toArray(): array
     {

@@ -127,17 +127,17 @@ trait DatesManagerTrait
             case "m":
             default:
                 $this->labelFormat = "Y-m";
-                $this->dateInterval = new \DateInterval("P1M");
+                $this->dateInterval = new DateInterval("P1M");
 
                 break;
             case "d":
                 $this->labelFormat = "Y-m-d";
-                $this->dateInterval = new \DateInterval("P1D");
+                $this->dateInterval = new DateInterval("P1D");
 
                 break;
             case "h":
                 $this->labelFormat = "Y-m-d H:00";
-                $this->dateInterval = new \DateInterval("PT1H");
+                $this->dateInterval = new DateInterval("PT1H");
 
                 break;
         }

@@ -50,25 +50,25 @@ interface ObjectInterface
      * @return22 array<string, array<string, scalar|array<string, scalar>>> List of all available fields
      *
      * @return  array<array{
-     *          type: string,
-     *          id: string,
-     *          name: string,
-     *          desc: string,
-     *          group: string,
-     *          required: null|bool|string,
-     *          read: null|bool|string,
-     *          write: null|bool|string,
-     *          inlist: null|bool|string,
-     *          log: null|bool|string,
-     *          notest: null|bool|string,
-     *          syncmode: string,
-     *          itemprop: null|string,
-     *          itemtype: null|string,
-     *          tag: null|string,
-     *          choices: null|array{ key: string, value: scalar},
-     *          asso: null|string[],
-     *          options: array<string, scalar>
-     *          }>
+     *         type: string,
+     *         id: string,
+     *         name: string,
+     *         desc: string,
+     *         group: string,
+     *         required: null|bool|string,
+     *         read: null|bool|string,
+     *         write: null|bool|string,
+     *         inlist: null|bool|string,
+     *         log: null|bool|string,
+     *         notest: null|bool|string,
+     *         syncmode: string,
+     *         itemprop: null|string,
+     *         itemtype: null|string,
+     *         tag: null|string,
+     *         choices: null|array{ key: string, value: scalar},
+     *         asso: null|string[],
+     *         options: array<string, scalar>
+     *         }>
      */
     public function fields(): array;
 
