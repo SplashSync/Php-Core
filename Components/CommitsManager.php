@@ -118,7 +118,9 @@ class CommitsManager
             //====================================================================//
             //  Check If Apcu is Active
             if (!empty(Splash::configuration()->WsPostCommit) && !self::hasApcuFeature()) {
-                Splash::log()->war("NoWsIntelCommitApcu");
+                if (!self::isCliMode()) {
+                    Splash::log()->war("NoWsIntelCommitApcu");
+                }
             }
 
             return true;
@@ -151,6 +153,11 @@ class CommitsManager
         //  Init Already Done
         if (isset(self::$intelCommitMode)) {
             return self::$intelCommitMode;
+        }
+        //====================================================================//
+        //  Disable Post Commit if executed in CLI Mode
+        if (self::isCliMode()) {
+            return self::$intelCommitMode = false;
         }
         //====================================================================//
         //  Check if Post Commit Mode is Active
@@ -396,13 +403,18 @@ class CommitsManager
             || !filter_var(ini_get('apc.enabled'), \FILTER_VALIDATE_BOOLEAN)) {
             return false;
         }
-        //====================================================================//
-        //  if We are on CLI
-        if ("cli" == \PHP_SAPI) {
-            return filter_var(ini_get('apc.enable_cli'), \FILTER_VALIDATE_BOOLEAN);
-        }
 
-        return true;
+        return self::isCliMode();
+    }
+
+    /**
+     * Check If Executed from CLI
+     *
+     * @return bool
+     */
+    protected static function isCliMode(): bool
+    {
+        return ("cli" == \PHP_SAPI);
     }
 
     //====================================================================//
