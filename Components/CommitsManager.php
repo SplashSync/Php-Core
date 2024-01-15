@@ -156,7 +156,7 @@ class CommitsManager
         }
         //====================================================================//
         //  Disable Post Commit if executed in CLI Mode
-        if (self::isCliMode()) {
+        if (self::isCliMode() && !Splash::isTravisMode()) {
             return self::$intelCommitMode = false;
         }
         //====================================================================//
@@ -403,8 +403,13 @@ class CommitsManager
             || !filter_var(ini_get('apc.enabled'), \FILTER_VALIDATE_BOOLEAN)) {
             return false;
         }
+        //====================================================================//
+        // If we are on CLI
+        if (self::isCliMode()) {
+            return filter_var(ini_get('apc.enable_cli'), \FILTER_VALIDATE_BOOLEAN);
+        }
 
-        return self::isCliMode();
+        return true;
     }
 
     /**
