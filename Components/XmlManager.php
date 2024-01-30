@@ -48,7 +48,7 @@ class XmlManager
     {
         //====================================================================//
         // Initialize XML Parser
-        self::$xml = new XmlWriter();
+        self::$xml = new XMLWriter();
         self::$xml->openMemory();
         self::$xml->startDocument('1.0');
         self::$xml->setIndent(true);
