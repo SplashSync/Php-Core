@@ -51,9 +51,10 @@ interface LocalClassInterface
      * This Function is called each time the module is loaded
      *
      * There may be different scenarios depending on if module is
-     * loaded as a library or as a NuSOAP Server.
+     * loaded as an embedded library or as Splash SOAP Client.
      *
      * This is triggered by global constant SPLASH_SERVER_MODE.
+     * You can check this flag using Splash::isServerMode function
      *
      * @return bool
      */

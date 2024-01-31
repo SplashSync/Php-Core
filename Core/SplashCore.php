@@ -95,12 +95,6 @@ class SplashCore
         }
 
         //====================================================================//
-        // Notice internal routines we are in server request mode
-        if (!defined('SPLASH_SERVER_MODE')) {
-            define('SPLASH_SERVER_MODE', 0);
-        }
-
-        //====================================================================//
         // Initialize Log & Debug
         self::$instance->log = new Logger($verbose);
     }
@@ -364,7 +358,6 @@ class SplashCore
      */
     public static function isServerMode(): bool
     {
-        /** @phpstan-ignore-next-line */
         return (defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE));
     }
 
