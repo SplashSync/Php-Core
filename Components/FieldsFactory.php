@@ -727,15 +727,21 @@ class FieldsFactory
     }
 
     /**
-     * Check if Field Id is Defined
-     *
-     * @param string $fieldId
-     *
-     * @return null|ObjectField
+     * Get Field by ID
      */
     public function get(string $fieldId): ?ObjectField
     {
         return $this->fields[$fieldId] ?? null;
+    }
+
+    /**
+     * Get All Fields
+     *
+     * @return ObjectField[]
+     */
+    public function getAll(): array
+    {
+        return $this->fields;
     }
 
     /**
