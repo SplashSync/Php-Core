@@ -21,7 +21,8 @@
     "autoload": {
         "psr-4": { 
             "Splash\\": "",
-            "Splash\\Local\\": "../../../Resources"
+            "Splash\\Local\\": "../../../Resources",
+            "Splash\\Models\\": "src/Models/"
         },
         "files": [
             "inc/Splash.Inc.php"
