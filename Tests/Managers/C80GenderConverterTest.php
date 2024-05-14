@@ -53,7 +53,7 @@ class C80GenderConverterTest extends TestCase
     /**
      * Generate Test Values Sets for Gender Type Converter Test
      *
-     * @return array<string[]>
+     * @return array<string, array<int, null|string>>
      */
     public function toSplashGenderTypesProvider(): array
     {
@@ -68,7 +68,7 @@ class C80GenderConverterTest extends TestCase
     /**
      * Generate Test Values Sets for Gender Type Converter Test
      *
-     * @return array<string[]>
+     * @return array<string, array<int, null|string>>
      */
     public function toAppGenderTypesProvider(): array
     {
