@@ -43,7 +43,7 @@ class C82FullnameParser extends TestCase
     /**
      * Generate Test Values Sets for Mass Conversion Test
      *
-     * @return array<string[]>
+     * @return array<string, array<int, null|array<string, string>|string>>
      */
     public function fullnameBuilderProvider(): array
     {
@@ -91,7 +91,7 @@ class C82FullnameParser extends TestCase
     /**
      * Generate Test Values Sets for Mass Conversion Test
      *
-     * @return array<string[]>
+     * @return array<string, array<int, array<string, string>>>.
      */
     public function fullnameDecoderProvider(): array
     {
@@ -113,6 +113,6 @@ class C82FullnameParser extends TestCase
                 "firstname" => "Giorno",
                 "lastname" => "",
             ),
-        ));
+            ));
     }
 }

@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Models\Objects;
 
 use Splash\Client\Splash;
@@ -35,7 +48,8 @@ trait FullnameTrait
     /**
      * Build Full Name
      *
-     * @param array|null $object
+     * @param null|array $object
+     *
      * @return void
      */
     public function buildFullName(?array $object): void
@@ -50,6 +64,7 @@ trait FullnameTrait
 
         if (empty($company)) {
             Splash::log()->war("Full Name Generation Error: Company Name is Empty");
+
             return;
         }
 
@@ -85,6 +100,7 @@ trait FullnameTrait
         // Detect Single Company Name
         if ((!str_contains($fullName, ' - ')) && (!str_contains($fullName, ', '))) {
             $result['name'] = $fullName;
+
             return $result;
         }
 
@@ -108,6 +124,7 @@ trait FullnameTrait
         } else {
             $result['firstname'] = $fullName;
         }
+
         return $result;
     }
 
@@ -117,7 +134,7 @@ trait FullnameTrait
         $firstname = $this->getFirstName() ?? "";
         $lastname = $this->getLastName() ?? "";
 
-        $this->buildFullName(["firstname" => $firstname, "lastname" => $lastname, "name" => $company]);
+        $this->buildFullName(array("firstname" => $firstname, "lastname" => $lastname, "name" => $company));
     }
 
     //====================================================================//
@@ -158,5 +175,4 @@ trait FullnameTrait
     {
         return $this->fullName;
     }
-
 }
