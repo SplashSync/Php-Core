@@ -16,15 +16,13 @@
 namespace Splash\Tests\Managers;
 
 use PHPUnit\Framework\TestCase;
-use Splash\Models\Objects\FullnameTrait;
+use Splash\Models\Helpers\FullNameParser;
 
 /**
  * Test suite for the Fullname Parser
  */
 class C82FullnameParser extends TestCase
 {
-    use FullnameTrait;
-
     //==============================================================================
     // Fullname Builder
     //==============================================================================
@@ -36,8 +34,13 @@ class C82FullnameParser extends TestCase
      */
     public function testFullnameBuilder(?array $source, ?string $target): void
     {
-        $this->buildFullName($source);
-        $this->assertSame($target, $this->getFullName());
+        $parser = new FullNameParser();
+        if (!empty($source)) {
+            $parser->setCompanyName($source['name'] ?? null)
+                ->setFirstName($source['firstname'] ?? null)
+                ->setLastName($source['lastname'] ?? null);
+        }
+        $this->assertSame($target, $parser->getFullName());
     }
 
     /**
@@ -64,12 +67,12 @@ class C82FullnameParser extends TestCase
                 "firstname" => "Giorno",
             ), "Giorno - Passione"),
 
-            "Empty" => array(array(), null),
+            "Empty" => array(array(), ''),
 
             "NoCompany" => array(array(
                 "firstname" => "Giorno",
                 "lastname" => "Giovanna",
-            ), null),
+            ), 'Giovanna, Giorno'),
         );
     }
 
@@ -82,10 +85,20 @@ class C82FullnameParser extends TestCase
      *
      * @dataProvider fullnameDecoderProvider
      */
-    public function testFullnameDecoder(?array $source): void
+    public function testFullnameDecoder(?string $source, ?array $target): void
     {
-        $this->buildFullName($source);
-        $this->assertSame($source, $this->decodeFullName());
+        $parser = new FullNameParser($source);
+
+        $this->assertSame($parser->getCompanyName(), $target['name'] ?? null);
+
+        if (!isset($target['firstname']) && isset($target['lastname'])) {
+            $this->assertSame($parser->getFirstName(), $target['lastname']);
+        } elseif (!isset($target['lastname']) && isset($target['firstname'])) {
+            $this->assertSame($parser->getFirstName(), $target['firstname']);
+        } else {
+            $this->assertSame($parser->getFirstName(), $target['firstname'] ?? null);
+            $this->assertSame($parser->getLastName(), $target['lastname'] ?? null);
+        }
     }
 
     /**
@@ -96,23 +109,27 @@ class C82FullnameParser extends TestCase
     public function fullnameDecoderProvider(): array
     {
         return array(
-            "CompleteFullname" => array(array(
-                "name" => "Passione",
-                "firstname" => "Giorno",
-                "lastname" => "Giovanna",
-            )),
-
-            "NoFirstname" => array(array(
-                "name" => "Passione",
-                "firstname" => "",
-                "lastname" => "Giovanna",
-            )),
-
-            "NoLastname" => array(array(
-                "name" => "Passione",
-                "firstname" => "Giorno",
-                "lastname" => "",
+            "CompleteFullname" => array('Giovanna, Giorno - Passione',
+                array(
+                    "name" => "Passione",
+                    "firstname" => "Giorno",
+                    "lastname" => "Giovanna",
+                )
             ),
-            ));
+
+            "NoFirstname" => array('Giovanna - Passione',
+                array(
+                    "name" => "Passione",
+                    "lastname" => "Giovanna",
+                )
+            ),
+
+            "NoLastname" => array('Giorno - Passione',
+                array(
+                    "name" => "Passione",
+                    "firstname" => "Giorno",
+                )
+            ),
+        );
     }
 }
