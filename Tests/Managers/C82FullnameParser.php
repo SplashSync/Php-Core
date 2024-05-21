@@ -104,7 +104,7 @@ class C82FullnameParser extends TestCase
     /**
      * Generate Test Values Sets for Mass Conversion Test
      *
-     * @return array<string, array<int, array<string, string>>>.
+     * @return array<string, array<int, array<string, string>|string>>.
      */
     public function fullnameDecoderProvider(): array
     {

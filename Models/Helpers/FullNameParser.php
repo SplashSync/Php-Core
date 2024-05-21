@@ -40,6 +40,7 @@ class FullNameParser
         // Detect Single Company Name
         if (!str_contains($fullName, ' - ') && !str_contains($fullName, ', ')) {
             $this->companyName = $fullName;
+
             return;
         }
 
@@ -67,6 +68,7 @@ class FullNameParser
     public function setCompanyName(?string $companyName): static
     {
         $this->companyName = $companyName;
+
         return $this;
     }
 
@@ -78,6 +80,7 @@ class FullNameParser
     public function setFirstName(?string $firstName): static
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -89,16 +92,18 @@ class FullNameParser
     public function setLastName(?string $lastName): static
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
     public function getFullName(): string
     {
-        $parts = array_filter([$this->lastName, $this->firstName]);
+        $parts = array_filter(array($this->lastName, $this->firstName));
         $name = implode(', ', $parts);
         if (!empty($this->companyName)) {
-            $name .= ' - ' . $this->companyName;
+            $name .= ' - '.$this->companyName;
         }
+
         return $name;
     }
 
@@ -117,4 +122,3 @@ class FullNameParser
         $factory->create('lastName')->description('Last Name');
     }
 }
-
