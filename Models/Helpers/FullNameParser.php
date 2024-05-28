@@ -52,7 +52,7 @@ class FullNameParser
      *
      * Set the Company Name
      */
-    public function setCompanyName(?string $companyName): static
+    public function setCompanyName(?string $companyName): self
     {
         $this->companyName = $companyName;
 
@@ -76,7 +76,7 @@ class FullNameParser
      *
      * Set the First Name
      */
-    public function setFirstName(?string $firstName): static
+    public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
 
@@ -100,7 +100,7 @@ class FullNameParser
      *
      * Set the Last Name
      */
-    public function setLastName(?string $lastName): static
+    public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
 
