@@ -23,6 +23,11 @@ class FullNameParser
     private ?string $firstName = null;
     private ?string $lastName = null;
 
+    /**
+     * @param null|string $fullName
+     *
+     * Class Constructor
+     */
     public function __construct(?string $fullName = null)
     {
         if ($fullName) {
@@ -30,7 +35,175 @@ class FullNameParser
         }
     }
 
-    public function decodeFullName(string $fullName): void
+    /**
+     * @return null|string
+     *
+     * Get the Company Name
+     */
+    public function getCompanyName(): ?string
+    {
+        return $this->companyName;
+    }
+
+    /**
+     * @param null|string $companyName
+     *
+     * @return $this
+     *
+     * Set the Company Name
+     */
+    public function setCompanyName(?string $companyName): static
+    {
+        $this->companyName = $companyName;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     *
+     * Get the First Name
+     */
+    public function getFirstName(): ?string
+    {
+        return $this->firstName ?: null;
+    }
+
+    /**
+     * @param null|string $firstName
+     *
+     * @return $this
+     *
+     * Set the First Name
+     */
+    public function setFirstName(?string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     *
+     * Get the Last Name
+     */
+    public function getLastName(): ?string
+    {
+        return $this->lastName ?: null;
+    }
+
+    /**
+     * @param null|string $lastName
+     *
+     * @return $this
+     *
+     * Set the Last Name
+     */
+    public function setLastName(?string $lastName): static
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     *
+     * Get the Full Name
+     */
+    public function getFullName(): ?string
+    {
+        $parts = array_filter(array($this->lastName, $this->firstName));
+        $fullname = implode(', ', $parts);
+
+        if (!empty($fullname) && str_contains($fullname, ', ')) {
+            $fullname .= " - ".$this->companyName;
+        } else {
+            $fullname = $this->companyName;
+        }
+
+        return $fullname;
+    }
+
+    /**
+     * @param FieldsFactory $factory
+     *
+     * @return void
+     *
+     * Register Full Name Fields
+     */
+    public static function registerFullNameFields(FieldsFactory $factory): void
+    {
+        self::registerCompanyNameField($factory);
+        self::registerFirstNameField($factory);
+        self::registerLastNameField($factory);
+    }
+
+    /**
+     * @param FieldsFactory $factory
+     *
+     * @return FieldsFactory
+     *
+     * Register Company Name Field
+     */
+    public static function registerCompanyNameField(FieldsFactory $factory): FieldsFactory
+    {
+        $factory->create(SPL_T_VARCHAR)
+            ->identifier("companyName")
+            ->description('Company Name')
+            ->microData("http://schema.org/Organization", "legalName")
+            ->isRequired()
+            ->isIndexed()
+        ;
+
+        return $factory;
+    }
+
+    /**
+     * @param FieldsFactory $factory
+     *
+     * @return void
+     *
+     * Register First Name Field
+     */
+    public static function registerFirstNameField(FieldsFactory $factory): void
+    {
+        $factory->create(SPL_T_VARCHAR)
+            ->identifier('firstName')
+            ->description('First Name')
+            ->microData("http://schema.org/Person", "familyName")
+            ->association("firstName", "lastName")
+            ->isLogged()
+        ;
+    }
+
+    /**
+     * @param FieldsFactory $factory
+     *
+     * @return void
+     *
+     * Register Last Name Field
+     */
+    public static function registerLastNameField(FieldsFactory $factory): void
+    {
+        $factory->create(SPL_T_VARCHAR)
+            ->identifier('lastName')
+            ->description('Last Name')
+            ->microData("http://schema.org/Person", "givenName")
+            ->association("firstName", "lastName")
+            ->isLogged()
+        ;
+    }
+
+    /**
+     * @param string $fullName
+     *
+     * @return void
+     *
+     * Decode the fullname into companyName, firstName and lastName
+     */
+    protected function decodeFullName(string $fullName): void
     {
         // Init
         $this->companyName = null;
@@ -50,75 +223,10 @@ class FullNameParser
             $fullName = substr($fullName, 0, $pos);
         }
 
-        // Detect Last Name
+        // Detect Last Name and First Name
         if (false !== ($pos = strpos($fullName, ', '))) {
             $this->lastName = substr($fullName, 0, $pos);
-            $fullName = substr($fullName, $pos + 2);
+            $this->firstName = substr($fullName, $pos + 2);
         }
-
-        // Set remaining part as first name
-        $this->firstName = $fullName;
-    }
-
-    public function getCompanyName(): ?string
-    {
-        return $this->companyName;
-    }
-
-    public function setCompanyName(?string $companyName): static
-    {
-        $this->companyName = $companyName;
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(?string $firstName): static
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $lastName): static
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getFullName(): string
-    {
-        $parts = array_filter(array($this->lastName, $this->firstName));
-        $name = implode(', ', $parts);
-        if (!empty($this->companyName)) {
-            $name .= ' - '.$this->companyName;
-        }
-
-        return $name;
-    }
-
-    public static function registerCompanyNameField(FieldsFactory $factory): void
-    {
-        $factory->create('companyName')->description('Company Name');
-    }
-
-    public static function registerFirstNameField(FieldsFactory $factory): void
-    {
-        $factory->create('firstName')->description('First Name');
-    }
-
-    public static function registerLastNameField(FieldsFactory $factory): void
-    {
-        $factory->create('lastName')->description('Last Name');
     }
 }
