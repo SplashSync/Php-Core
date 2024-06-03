@@ -15,6 +15,8 @@
 
 namespace Splash\Models\Objects\ThirdParty;
 
+use Splash\Components\FieldsFactory;
+
 /**
  * Manage Access to ThirdParty & Address Contacts Civility Types
  */
@@ -80,5 +82,21 @@ class Civility
         }
 
         return $index;
+    }
+
+    /**
+     * Register User Civility Field
+     */
+    public static function registerCivilityField(FieldsFactory $factory, string $fieldId): FieldsFactory
+    {
+        $factory->create(SPL_T_VARCHAR)
+            ->identifier($fieldId)
+            ->name('Civility')
+            ->description('Civility Type')
+            ->microData("http://schema.org/Person", "gender")
+            ->addChoices(self::getChoices())
+        ;
+
+        return $factory;
     }
 }
