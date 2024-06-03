@@ -21,7 +21,7 @@ use Splash\Models\Helpers\FullNameParser;
 /**
  * Test suite for the FullName Parser
  */
-class C82FullNameParser extends TestCase
+class C81FullNameParser extends TestCase
 {
     //==============================================================================
     // FullName Builder
