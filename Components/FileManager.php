@@ -139,7 +139,7 @@ class FileManager
         //====================================================================//
         // Open File
         $fileHandle = fopen($path, "rb");
-        if (false == $fileHandle) {
+        if (!$fileHandle || empty(($filesize = (int) filesize($path)))) {
             return Splash::log()->errNull("ErrFileRead", __FUNCTION__, $path);
         }
         //====================================================================//
@@ -147,8 +147,8 @@ class FileManager
         $infos = array(
             "filename" => basename($path),
             "md5" => md5_file($path),
-            "size" => filesize($path),
-            "raw" => base64_encode((string) fread($fileHandle, (int) filesize($path))),
+            "size" => $filesize,
+            "raw" => base64_encode((string) fread($fileHandle, $filesize)),
         );
         fclose($fileHandle);
         Splash::log()->deb("MsgFileRead", __FUNCTION__, basename($path));
