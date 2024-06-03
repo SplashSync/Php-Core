@@ -17,27 +17,41 @@ namespace Splash\Models\Helpers;
 
 use Splash\Components\FieldsFactory;
 
+/**
+ * ThirdParty Helper to Store & Update Encoded Customers Names on a Single String
+ *
+ * Could be:
+ * - Company
+ * - Firstname, Lastname - Company
+ */
 class FullNameParser
 {
+    /**
+     * Temporary Company Name
+     */
     private ?string $companyName = null;
+
+    /**
+     * Temporary First Name
+     */
     private ?string $firstName = null;
+
+    /**
+     * Temporary Last Name
+     */
     private ?string $lastName = null;
 
     /**
-     * @param null|string $fullName
-     *
      * Class Constructor
      */
     public function __construct(?string $fullName = null)
     {
         if ($fullName) {
-            $this->decodeFullName($fullName);
+            $this->decode($fullName);
         }
     }
 
     /**
-     * @return null|string
-     *
      * Get the Company Name
      */
     public function getCompanyName(): ?string
@@ -46,10 +60,6 @@ class FullNameParser
     }
 
     /**
-     * @param null|string $companyName
-     *
-     * @return $this
-     *
      * Set the Company Name
      */
     public function setCompanyName(?string $companyName): self
@@ -60,8 +70,6 @@ class FullNameParser
     }
 
     /**
-     * @return null|string
-     *
      * Get the First Name
      */
     public function getFirstName(): ?string
@@ -70,10 +78,6 @@ class FullNameParser
     }
 
     /**
-     * @param null|string $firstName
-     *
-     * @return $this
-     *
      * Set the First Name
      */
     public function setFirstName(?string $firstName): self
@@ -84,8 +88,6 @@ class FullNameParser
     }
 
     /**
-     * @return null|string
-     *
      * Get the Last Name
      */
     public function getLastName(): ?string
@@ -94,10 +96,6 @@ class FullNameParser
     }
 
     /**
-     * @param null|string $lastName
-     *
-     * @return $this
-     *
      * Set the Last Name
      */
     public function setLastName(?string $lastName): self
@@ -108,29 +106,14 @@ class FullNameParser
     }
 
     /**
-     * @return null|string
-     *
      * Get the Full Name
      */
     public function getFullName(): ?string
     {
-        $parts = array_filter(array($this->lastName, $this->firstName));
-        $fullname = implode(', ', $parts);
-
-        if (!empty($fullname) && str_contains($fullname, ', ')) {
-            $fullname .= " - ".$this->companyName;
-        } else {
-            $fullname = $this->companyName;
-        }
-
-        return $fullname;
+        return $this->encode();
     }
 
     /**
-     * @param FieldsFactory $factory
-     *
-     * @return void
-     *
      * Register Full Name Fields
      */
     public static function registerFullNameFields(FieldsFactory $factory): void
@@ -141,10 +124,6 @@ class FullNameParser
     }
 
     /**
-     * @param FieldsFactory $factory
-     *
-     * @return FieldsFactory
-     *
      * Register Company Name Field
      */
     public static function registerCompanyNameField(FieldsFactory $factory): FieldsFactory
@@ -161,10 +140,6 @@ class FullNameParser
     }
 
     /**
-     * @param FieldsFactory $factory
-     *
-     * @return void
-     *
      * Register First Name Field
      */
     public static function registerFirstNameField(FieldsFactory $factory): void
@@ -179,10 +154,6 @@ class FullNameParser
     }
 
     /**
-     * @param FieldsFactory $factory
-     *
-     * @return void
-     *
      * Register Last Name Field
      */
     public static function registerLastNameField(FieldsFactory $factory): void
@@ -197,18 +168,31 @@ class FullNameParser
     }
 
     /**
-     * @param string $fullName
-     *
-     * @return void
-     *
-     * Decode the fullname into companyName, firstName and lastName
+     * Encode the Full name from companyName, firstName and lastName
      */
-    protected function decodeFullName(string $fullName): void
+    public function encode(): ?string
+    {
+        $fullName = null;
+
+        if (!empty($this->lastName) && !empty($this->firstName)) {
+            $fullName .= sprintf("%s, %s", $this->lastName, $this->firstName);
+        }
+
+        if (!empty($this->companyName)) {
+            $fullName .= $fullName ? " - " : "";
+            $fullName .= $this->companyName;
+        }
+
+        return $fullName;
+    }
+
+    /**
+     * Decode/Explode the Full name into companyName, firstName and lastName
+     */
+    protected function decode(string $fullName): void
     {
         // Init
-        $this->companyName = null;
-        $this->firstName = null;
-        $this->lastName = null;
+        $this->reset();
 
         // Detect Single Company Name
         if (!str_contains($fullName, ' - ') && !str_contains($fullName, ', ')) {
@@ -228,5 +212,13 @@ class FullNameParser
             $this->lastName = substr($fullName, 0, $pos);
             $this->firstName = substr($fullName, $pos + 2);
         }
+    }
+
+    /**
+     * Reset Storage
+     */
+    private function reset(): void
+    {
+        $this->companyName = $this->firstName = $this->lastName = null;
     }
 }

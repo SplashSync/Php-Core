@@ -19,21 +19,23 @@ use PHPUnit\Framework\TestCase;
 use Splash\Models\Helpers\FullNameParser;
 
 /**
- * Test suite for the Fullname Parser
+ * Test suite for the FullName Parser
  */
-class C82FullnameParser extends TestCase
+class C82FullNameParser extends TestCase
 {
     //==============================================================================
-    // Fullname Builder
+    // FullName Builder
     //==============================================================================
 
     /**
-     * Test of Fullname Builder
+     * Test of Full Name Helper
      *
-     * @dataProvider fullnameParserProvider
+     * @dataProvider fullNameParserProvider
      */
-    public function testFullnameParser(?array $source, ?string $target): void
+    public function testFullNameParser(?array $source, ?string $target): void
     {
+        //==============================================================================
+        // Validate Encoding Full Names
         $parserEncoder = new FullNameParser();
         if (!empty($source)) {
             $parserEncoder
@@ -44,6 +46,8 @@ class C82FullnameParser extends TestCase
         }
         $this->assertSame($target, $parserEncoder->getFullName());
 
+        //==============================================================================
+        // Validate Decoding Full Names
         $parserDecoder = new FullNameParser($target);
 
         if (!isset($source['firstname'])) {
@@ -67,27 +71,27 @@ class C82FullnameParser extends TestCase
      *
      * @return array<string, array<int, null|array<string, string>|string>>
      */
-    public function fullnameParserProvider(): array
+    public function fullNameParserProvider(): array
     {
         return array(
-            "CompleteFullname" => array(array(
+            "Complete FullName" => array(array(
                 "name" => "Passione",
                 "firstname" => "Giorno",
                 "lastname" => "Giovanna",
             ), "Giovanna, Giorno - Passione"),
 
-            "EmptyFirstname" => array(array(
+            "Empty FirstName" => array(array(
                 "name" => "Passione",
                 "firstname" => "",
                 "lastname" => "Giovanna",
             ), "Passione"),
 
-            "NoFirstname" => array(array(
+            "No FirstName" => array(array(
                 "name" => "Passione",
                 "lastname" => "Giovanna",
             ), "Passione"),
 
-            "EmptyLastname" => array(array(
+            "Empty LastName" => array(array(
                 "name" => "Passione",
                 "firstname" => "Giorno",
                 "lastname" => "",
