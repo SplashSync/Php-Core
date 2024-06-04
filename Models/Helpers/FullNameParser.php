@@ -29,7 +29,7 @@ class FullNameParser
     /**
      * Temporary Company Name
      */
-    private ?string $companyName = null;
+    private string $companyName = "";
 
     /**
      * Temporary First Name
@@ -44,17 +44,15 @@ class FullNameParser
     /**
      * Class Constructor
      */
-    public function __construct(?string $fullName = null)
+    public function __construct(string $fullName)
     {
-        if ($fullName) {
-            $this->decode($fullName);
-        }
+        $this->decode($fullName);
     }
 
     /**
      * Get the Company Name
      */
-    public function getCompanyName(): ?string
+    public function getCompanyName(): string
     {
         return $this->companyName;
     }
@@ -62,7 +60,7 @@ class FullNameParser
     /**
      * Set the Company Name
      */
-    public function setCompanyName(?string $companyName): self
+    public function setCompanyName(string $companyName): self
     {
         $this->companyName = $companyName;
 
@@ -108,7 +106,7 @@ class FullNameParser
     /**
      * Get the Full Name
      */
-    public function getFullName(): ?string
+    public function getFullName(): string
     {
         return $this->encode();
     }
@@ -170,9 +168,9 @@ class FullNameParser
     /**
      * Encode the Full name from companyName, firstName and lastName
      */
-    public function encode(): ?string
+    public function encode(): string
     {
-        $fullName = null;
+        $fullName = "";
 
         if (!empty($this->lastName) && !empty($this->firstName)) {
             $fullName .= sprintf("%s, %s", $this->lastName, $this->firstName);
@@ -219,6 +217,7 @@ class FullNameParser
      */
     private function reset(): void
     {
-        $this->companyName = $this->firstName = $this->lastName = null;
+        $this->companyName = "";
+        $this->firstName = $this->lastName = null;
     }
 }

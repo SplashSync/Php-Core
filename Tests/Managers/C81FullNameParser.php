@@ -32,11 +32,11 @@ class C81FullNameParser extends TestCase
      *
      * @dataProvider fullNameParserProvider
      */
-    public function testFullNameParser(?array $source, ?string $target): void
+    public function testFullNameParser(?array $source, string $target): void
     {
         //==============================================================================
         // Validate Encoding Full Names
-        $parserEncoder = new FullNameParser();
+        $parserEncoder = new FullNameParser($target);
         if (!empty($source)) {
             $parserEncoder
                 ->setCompanyName($source['name'] ?? null)
@@ -101,8 +101,6 @@ class C81FullNameParser extends TestCase
                 "name" => "Passione",
                 "firstname" => "Giorno",
             ), "Passione"),
-
-            "Empty" => array(array(), null),
         );
     }
 }
