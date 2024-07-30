@@ -387,7 +387,7 @@ trait IntelParserTrait
         //====================================================================//
         // Prepare List of Available Methods
         $result = array();
-        foreach (get_class_methods(__CLASS__) as $method) {
+        foreach (get_class_methods(static::class) as $method) {
             if (0 !== strpos($method, $prefix)) {
                 continue;
             }
