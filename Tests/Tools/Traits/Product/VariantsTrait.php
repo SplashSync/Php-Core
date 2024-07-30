@@ -171,7 +171,7 @@ trait VariantsTrait
         $attributesSet = array();
         //====================================================================//
         // Setup Attribute Type Code
-        OoVarchar::applyCaseConstrains($code['options'], $attributesCode);
+        OoVarchar::applyCaseConstrains($code['options'] ?: array(), $attributesCode);
         $attributesSet[self::lists()->fieldName($code['id'])] = $attributesCode;
 
         //====================================================================//
