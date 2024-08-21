@@ -16,6 +16,7 @@
 namespace Splash\Models\Fields;
 
 use ArrayObject;
+use Splash\Components\StringConverter;
 use Splash\Core\SplashCore as Splash;
 
 /**
@@ -344,7 +345,7 @@ class ObjectField extends ArrayObject
      */
     public function setName(string $name): self
     {
-        $this->name = $name;
+        $this->name = StringConverter::toUtf8($name);
 
         return $this;
     }
@@ -358,7 +359,7 @@ class ObjectField extends ArrayObject
      */
     public function setDesc(string $desc): self
     {
-        $this->desc = $desc;
+        $this->desc = StringConverter::toUtf8($desc);
 
         return $this;
     }
@@ -382,7 +383,7 @@ class ObjectField extends ArrayObject
      */
     public function setGroup(string $group): self
     {
-        $this->group = $group;
+        $this->group = StringConverter::toUtf8($group);
 
         return $this;
     }
@@ -543,7 +544,7 @@ class ObjectField extends ArrayObject
     {
         $this->choices[] = array(
             "key" => $value,
-            "value" => $description
+            "value" => StringConverter::toUtf8($description)
         );
 
         return $this;

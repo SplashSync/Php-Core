@@ -51,4 +51,12 @@ class StringConverter
         // Safety Check => Empty String
         return $input ?: null;
     }
+
+    /**
+     * Clean UTF8 Encoding for a String
+     */
+    public static function toUtf8(?string $input): ?string
+    {
+        return trim(str_replace("?", "", utf8_decode((string) $input))) ?: null;
+    }
 }
