@@ -17,7 +17,7 @@ namespace Splash\Tests\Core;
 
 use Exception;
 use Splash\Components\Logger;
-use Splash\Core\SplashCore     as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 use Splash\Tests\Tools\TestCase;
 

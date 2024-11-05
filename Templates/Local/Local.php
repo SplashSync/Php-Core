@@ -16,7 +16,7 @@
 namespace Splash\Templates\Local;
 
 use ArrayObject;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\LocalClassInterface;
 
 /**

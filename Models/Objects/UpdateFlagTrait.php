@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Models\Objects;
+namespace Splash\Models\Objects;
 
 /**
  * This class implements Objects Update Flag

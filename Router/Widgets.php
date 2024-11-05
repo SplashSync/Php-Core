@@ -13,10 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Router;
+namespace Splash\Router;
 
 use Splash\Components\Router;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Server Request Routing Class, Execute/Route actions on Widgets Service Requests.

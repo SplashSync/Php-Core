@@ -16,7 +16,7 @@
 namespace Splash\Tests\Core;
 
 use ArrayObject;
-use Splash\Core\SplashCore     as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\Helpers\SplashUrlHelper;
 use Splash\Tests\Tools\TestCase;
 

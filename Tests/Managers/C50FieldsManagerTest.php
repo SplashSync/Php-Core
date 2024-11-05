@@ -17,7 +17,7 @@ namespace Splash\Tests\Managers;
 
 use PHPUnit\Framework\TestCase;
 use Splash\Components\FieldsManager;
-use Splash\Core\SplashCore     as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Components Test Suite - Fields Manager Verifications

@@ -19,7 +19,7 @@
  * @author      B. Paquier <contact@splashsync.com>
  */
 
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Server\SplashServer;
 
 //====================================================================//

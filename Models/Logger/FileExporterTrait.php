@@ -15,7 +15,7 @@
 
 namespace Splash\Models\Logger;
 
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Splash Logger - File Exports Managment

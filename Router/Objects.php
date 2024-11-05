@@ -13,11 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Router;
+namespace Splash\Router;
 
 use Exception;
 use Splash\Components\Router;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\Objects\ObjectInterface;
 use Splash\Models\Objects\PrimaryKeysAwareInterface;
 

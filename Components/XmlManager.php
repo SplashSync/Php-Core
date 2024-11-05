@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Components;
+namespace Splash\Components;
 
 use ArrayObject;
 use Exception;

@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Components;
+namespace Splash\Components;
 
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\AbstractConfigurator;
 use Splash\Models\Fields\ObjectField;
 

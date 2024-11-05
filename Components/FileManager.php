@@ -17,9 +17,9 @@
  * Low Level Files Management Class
  */
 
-namespace   Splash\Components;
+namespace Splash\Components;
 
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Splash File Manager

@@ -15,7 +15,7 @@
 
 namespace Splash\Tests\Core;
 
-use Splash\Core\SplashCore     as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\LocalClassInterface;
 use Splash\Tests\Tools\TestCase;
 

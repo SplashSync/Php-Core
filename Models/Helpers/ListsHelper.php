@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Models\Helpers;
+namespace Splash\Models\Helpers;
 
 use Splash\Models\Fields\FieldsManagerTrait;
 

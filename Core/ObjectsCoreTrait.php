@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Core;
+namespace Splash\Core;
 
 use Exception;
 use Splash\Components\ExtensionsManager;

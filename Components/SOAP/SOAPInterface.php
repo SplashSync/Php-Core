@@ -18,7 +18,7 @@ namespace Splash\Components\SOAP;
 use Exception;
 use SoapClient;
 use SoapServer;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\CommunicationInterface;
 
 /**

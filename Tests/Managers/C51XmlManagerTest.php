@@ -17,7 +17,7 @@ namespace Splash\Tests\Managers;
 
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
-use Splash\Core\SplashCore     as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Components Test Suite - Xml Manager Verifications

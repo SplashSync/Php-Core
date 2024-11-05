@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Models\Helpers;
+namespace Splash\Models\Helpers;
 
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Helper for Images Fields Management

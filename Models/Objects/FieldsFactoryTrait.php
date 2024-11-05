@@ -13,10 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Models\Objects;
+namespace Splash\Models\Objects;
 
 use Splash\Components\FieldsFactory;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Implement Access to Fields Factory using Splash Static Class

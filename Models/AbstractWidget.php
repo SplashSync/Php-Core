@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Models;
+namespace Splash\Models;
 
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\Widgets\DatesManagerTrait;
 use Splash\Models\Widgets\WidgetInterface;
 

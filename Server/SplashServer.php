@@ -15,7 +15,7 @@
 
 namespace Splash\Server;
 
-use Splash\Core\SplashCore  as Splash;
+use Splash\Core\SplashCore as Splash;
 use Throwable;
 
 //====================================================================//

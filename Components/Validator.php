@@ -13,11 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Components;
+namespace Splash\Components;
 
 use ArrayObject;
 use Exception;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\ConfiguratorInterface;
 use Splash\Models\LocalClassInterface;
 use Splash\Models\Objects\ObjectInterface;

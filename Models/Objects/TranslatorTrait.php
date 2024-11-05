@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Models\Objects;
+namespace Splash\Models\Objects;
 
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * @abstract    Implement Translator Management using Splash Translator
