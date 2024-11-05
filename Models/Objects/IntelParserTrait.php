@@ -61,27 +61,6 @@ trait IntelParserTrait
      */
     protected object $object;
 
-    /**
-     * Buffer for All Available Class Fields Building Methods
-     *
-     * @var null|string[]
-     */
-    protected static ?array $classBuildMethods;
-
-    /**
-     * Buffer for All Available Class Getter Methods
-     *
-     * @var null|string[]
-     */
-    protected static ?array $classGetMethods;
-
-    /**
-     * Buffer for All Available Class Setter Methods
-     *
-     * @var null|string[]
-     */
-    protected static ?array $classSetMethods;
-
     //====================================================================//
     // Class Main Functions
     //====================================================================//
@@ -334,13 +313,14 @@ trait IntelParserTrait
      */
     private function identifyBuildMethods(): array
     {
+        static $methods;
         //====================================================================//
         // Load Methods From Cache
-        if (!isset(static::$classBuildMethods)) {
-            static::$classBuildMethods = self::identifyMethods("build");
+        if (!isset($methods)) {
+            $methods = static::identifyMethods("build");
         }
 
-        return static::$classBuildMethods;
+        return $methods;
     }
 
     /**
@@ -350,29 +330,31 @@ trait IntelParserTrait
      */
     private function identifyGetMethods(): array
     {
+        static $methods;
         //====================================================================//
         // Load Methods From Cache
-        if (!isset(static::$classGetMethods)) {
-            static::$classGetMethods = self::identifyMethods("get");
+        if (!isset($methods)) {
+            $methods = static::identifyMethods("get");
         }
 
-        return static::$classGetMethods;
+        return $methods;
     }
 
     /**
-     * Identify Generic Fields Getter Functions
+     * Identify Generic Fields Setter Functions
      *
      * @return array
      */
     private function identifySetMethods(): array
     {
+        static $methods;
         //====================================================================//
         // Load Methods From Cache
-        if (!isset(static::$classSetMethods)) {
-            static::$classSetMethods = self::identifyMethods("set");
+        if (!isset($methods)) {
+            $methods = static::identifyMethods("set");
         }
 
-        return static::$classSetMethods;
+        return $methods;
     }
 
     /**

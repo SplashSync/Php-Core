@@ -57,6 +57,6 @@ class StringConverter
      */
     public static function toUtf8(?string $input): ?string
     {
-        return trim(utf8_encode(str_replace("?", "", utf8_decode((string) $input)))) ?: null;
+        return trim(utf8_encode(utf8_decode((string) $input))) ?: null;
     }
 }
