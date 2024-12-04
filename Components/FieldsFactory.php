@@ -548,7 +548,7 @@ class FieldsFactory
     public function addChoices(array $fieldChoices): self
     {
         foreach ($fieldChoices as $value => $description) {
-            $this->addChoice($value, $description);
+            $this->addChoice($value, $description ?? "");
         }
 
         return $this;
