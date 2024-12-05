@@ -548,7 +548,10 @@ class FieldsFactory
     public function addChoices(array $fieldChoices): self
     {
         foreach ($fieldChoices as $value => $description) {
-            $this->addChoice($value, $description);
+            $this->addChoice(
+                (string) $value,
+                (string) ($description ?? ucfirst($value) ?: ucfirst($value))
+            );
         }
 
         return $this;
