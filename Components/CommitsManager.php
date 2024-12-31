@@ -597,7 +597,7 @@ class CommitsManager
         if (is_array($serialisedEvents)) {
             foreach ($serialisedEvents as $serialisedEvent) {
                 try {
-                    $event = unserialize($serialisedEvent, $options);
+                    $event = unserialize(trim($serialisedEvent), $options);
                 } catch (Exception $exception) {
                     continue;
                 }
