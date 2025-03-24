@@ -21,7 +21,7 @@
     "autoload": {
         "psr-4": { 
             "Splash\\":             "",
-            "Splash\\Core\\":       "src",
+            "Splash\\Framework\\":  "src",
             "Splash\\Local\\":      "../../../Resources"
         },
         "files": [
