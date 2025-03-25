@@ -76,22 +76,120 @@ define('SPL_A_UNLINK', 'unlink');    // Object Link Deleted
 // Sample :
 // $data["name"] = $value
 //====================================================================//
-define('SPL_T_BOOL', 'bool');               // Boolean, stored as 0 or 1
-define('SPL_T_INT', 'int');                 // Signed Integer
-define('SPL_T_DOUBLE', 'double');           // Signed Double, used for all float values
-define('SPL_T_VARCHAR', 'varchar');         // Short texts (Inf 256 char)
-define('SPL_T_TEXT', 'text');               // Long text
-define('SPL_T_EMAIL', 'email');             // Email Address
-define('SPL_T_PHONE', 'phone');             // Phone Number
-define('SPL_T_DATE', 'date');               // Day Timestamps
-define('SPL_T_DATECAST', 'Y-m-d');          // Day Timestamps Format
-define('SPL_T_DATETIME', 'datetime');       // Timestamps
-define('SPL_T_DATETIMECAST', 'Y-m-d H:i:s');// Timestamps Format
-define('SPL_T_LANG', 'lang');               // Iso Language code (en_US / fr_FR ...)
-define('SPL_T_COUNTRY', 'country');         // Iso country code (FR / US ...)
-define('SPL_T_STATE', 'state');             // Iso state code (CA / FR ...)
-define('SPL_T_CURRENCY', 'currency');       // Iso Currency code (EUR / USD ... )
-define('SPL_T_URL', 'url');                 // External Url
+
+/**
+ * Boolean, stored as 0 or 1
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_BOOL', 'bool');
+
+/**
+ * Signed Integer
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_INT', 'int');
+
+/**
+ * Signed Double, used for all float values
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_DOUBLE', 'double');
+
+/**
+ * Short texts (Inf 256 char)
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_VARCHAR', 'varchar');
+
+/**
+ * Long text
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_TEXT', 'text');
+
+/**
+ * Email Address
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_EMAIL', 'email');
+
+/**
+ * Phone Number
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_PHONE', 'phone');
+
+/**
+ * Day Timestamps
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_DATE', 'date');
+
+/**
+ * Date Timestamps Format
+ *
+ * @deprecated use \Splash\Models\Helpers\DatesHelper instead
+ */
+define('SPL_T_DATECAST', 'Y-m-d');
+
+/**
+ * Datetime Timestamps
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_DATETIME', 'datetime');
+
+/**
+ * Datetime Timestamps Format
+ *
+ * @deprecated use \Splash\Models\Helpers\DatesHelper instead
+ */
+define('SPL_T_DATETIMECAST', 'Y-m-d H:i:s');
+
+/**
+ * Iso Language code (en_US / fr_FR ...)
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_LANG', 'lang');
+
+/**
+ * Iso Language code (en_US / fr_FR ...)
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_COUNTRY', 'country');
+
+/**
+ * Iso state code (CA / FR ...)
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+
+define('SPL_T_STATE', 'state');
+
+/**
+ * Iso Currency code (EUR / USD ... )
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+
+define('SPL_T_CURRENCY', 'currency');
+
+/**
+ * External Url
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_URL', 'url');
 
 //====================================================================//
 //====================================================================//
@@ -99,125 +197,94 @@ define('SPL_T_URL', 'url');                 // External Url
 //====================================================================//
 //====================================================================//
 
-//====================================================================//
-// File Structure
-//====================================================================//
-// Sample :
-// $data["file"]["name"]        =>      File Name/Description
-// $data["file"]["file"]        =>      File Identifier to Require File from Server
-// $data["file"]["filename"]    =>      Filename with Extension
-// $data["file"]["path"]        =>      Full File path on client system
-// $data["file"]["url"]         =>      Complete Public Url, Usable for Direct Download
-// $data["file"]["md5"]         =>      File Md5 Checksum
-// $data["file"]["size"]        =>      File Size in Bytes
-//====================================================================//
+/**
+ * File Structure
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
 define('SPL_T_FILE', 'file');
 
-//====================================================================//
-// Image Structure
-//====================================================================//
-// Sample :
-// $data["image"]["name"]       =>      Image Name
-// $data["image"]["file"]       =>      Image Identifier to Require File from Server
-// $data["image"]["filename"]   =>      Image Filename with Extension
-// $data["image"]["path"]       =>      Image Full path on local system
-// $data["image"]["url"]        =>      Complete Public Url, Used to display image
-// $data["image"]["t_url"]      =>      Complete Thumb Public Url, Used to display image
-// $data["image"]["width"]      =>      Image Width In Px
-// $data["image"]["height"]     =>      Image Height In Px
-// $data["image"]["md5"]        =>      Image File Md5 Checksum
-// $data["image"]["size"]       =>      Image File Size
-//====================================================================//
+/**
+ * Image Structure
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
 define('SPL_T_IMG', 'image');
 
-//====================================================================//
-// Stream File Structure
-//====================================================================//
-// Sample :
-// $data["file"]["name"]        =>      File Name/Description
-// $data["file"]["file"]        =>      File Identifier to Require File from Server
-// $data["file"]["filename"]    =>      Filename with Extension
-// $data["file"]["path"]        =>      Full File path on client system
-// $data["file"]["url"]         =>      Complete Public Url, Usable for Direct Download
-// $data["file"]["md5"]         =>      File Md5 Checksum
-// $data["file"]["size"]        =>      File Size in Bytes
-// $data["file"]["ttl"]         =>      Time to Live (in Days)
-//====================================================================//
+/**
+ * Stream File Structure
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
 define('SPL_T_STREAM', 'stream');
 
-//====================================================================//
-// Multilangual Fields, Shared as Single Fields with Iso Language code #tag
-//====================================================================//
-// Sample :
-// $data["name"]["iso_code"]            =>      Value
-// Where name is field name and code is a valid SPL_T_LANG Iso Language Code
-//====================================================================//
-define('SPL_T_MVARCHAR', 'mvarchar');   // Mulitlangual Short texts (Inf 256 char)
-define('SPL_T_MTEXT', 'mtext');      // Mulitlangual Long text
+/**
+ * Multilingual Short texts (Inf 256 char)
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_MVARCHAR', 'mvarchar');
 
-//====================================================================//
-// Price Fields, Shared as an array including all price informations
-//====================================================================//
-// Price Definition Array
-// Sample : Required Informations
-// $data["price"]["base"]           =>  BOOL      Reference Price With or Without Tax? True => With VAT
-// $data["price"]["ht"]             =>  DOUBLE    Price Without Tax
-// $data["price"]["ttc"]            =>  DOUBLE    Price With Tax
-// $data["price"]["vat"]            =>  DOUBLE    VAT Tax in Percent
-// $data["price"]["tax"]            =>  DOUBLE    VAT Tax amount
-// Sample : Optionnal Informations
-// $data["price"]["symbol"]         =>  STRING    Currency Symbol
-// $data["price"]["code"]           =>  STRING    Currency Code
-// $data["price"]["name"]           =>  STRING    Currency Name
-// Where code field is a valid SPL_T_CURRENCY Iso Currency Code
-//====================================================================//
-define('SPL_T_PRICE', 'price');        // Price definition array
+/**
+ * Multilingual Long text
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_MTEXT', 'mtext');
+
+/**
+ * Price definition array
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_PRICE', 'price');
 
 //====================================================================//
 // Fields Lists
 //====================================================================//
-// Declared as SPL_T_XX@SPL_T_LIST
-// Shared as fieldname@listname
-// Multiple Fields may be attached to same List Name
-//====================================================================//
-define('SPL_T_LIST', 'list');             // Object List
-define('LISTSPLIT', '@');                // Object List Splitter
+
+/**
+ * List Field Definition
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_LIST', 'list');
+
+/**
+ * List Field Splitter
+ *
+ * @deprecated use \Splash\Models\Helpers\ListsHelper instead
+ */
+define('LISTSPLIT', '@');
 
 //====================================================================//
 // Inline Lists
 //====================================================================//
-// Store an Array of Values as a JSON String
-//
-// Example:
-//  - ["value1", "value2", "value3"]
-//
-//====================================================================//
+
+/**
+ * Inline Field Definition
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
 define('SPL_T_INLINE', 'inline');
 
 //====================================================================//
 // Object Identifier Field
 //====================================================================//
-// Declared as any other field type, this type is used to identify Objects
-// links between structures.
-//
-// How does it works :
-//
-//    - Identifier uses a specific format : ObjectId:@@:TypeName
-//      where ObjectId is Object Identifier on Local System and
-//      TypeName is the standard OsWs Type of this object.
-//      => ie : Product with Id 56 is : 56:@@:Products
-//
-//    - When reading an object, you can add Object identifiers field
-//      in any data structure, or list.
-//
-//    - Before Data CheckIn or CheckOut, OsWs Scan all data and :
-//      => Translate already linked object from Local to Remote Server
-//      => Import or Export Missing Objects on Local or Remote Server
-//      => Return Translated Objects Id to requested server
-//
-//====================================================================//
-define('SPL_T_ID', 'objectid');         // Object Id
-define('IDSPLIT', '::');               // Object Id Splitter
+
+/**
+ * Object Identifier Field
+ *
+ * @deprecated use \Splash\Framework\Dictionary\SplFields instead
+ */
+define('SPL_T_ID', 'objectid');
+
+/**
+ * Object Identifier Splitter
+ *
+ * @deprecated use \Splash\Models\Helpers\ObjectsHelper instead
+ */
+define('IDSPLIT', '::');
 
 //====================================================================//
 //====================================================================//
@@ -235,12 +302,48 @@ define('SPL_M_BOTH', 'sync-both');        // All modifications done are sync bet
 //==== Main Available WebServices                                 ====//
 //--------------------------------------------------------------------//
 //====================================================================//
-define('SPL_S_PING', "Ping");                   // Connexion tests, only to check availabilty & access of remote server
-define('SPL_S_CONNECT', "Connect");                // Connect to remote and read server informations
-define('SPL_S_ADMIN', "Admin");                  // Global Remote Shop information retrieval
-define('SPL_S_OBJECTS', "Objects");                // Common Data Transactions
-define('SPL_S_FILE', "Files");                  // Files exchenges functions
-define('SPL_S_WIDGETS', "Widgets");                // Information Blocks Retieval functions
+
+/**
+ * Connexion tests, only to check availability & access of remote server
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Services instead
+ */
+define('SPL_S_PING', "Ping");
+
+/**
+ * Connect to remote and read server information
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Services instead
+ */
+define('SPL_S_CONNECT', "Connect");
+
+/**
+ * Global Remote Shop information retrieval
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Services instead
+ */
+define('SPL_S_ADMIN', "Admin");
+
+/**
+ * Common Data Transactions
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Services instead
+ */
+define('SPL_S_OBJECTS', "Objects");
+
+/**
+ * Files exchanges functions
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Services instead
+ */
+define('SPL_S_FILE', "Files");
+
+/**
+ * Information Blocks Retrieval functions
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Services instead
+ */
+define('SPL_S_WIDGETS', "Widgets");
 
 //====================================================================//
 //--------------------------------------------------------------------//
@@ -249,10 +352,34 @@ define('SPL_S_WIDGETS', "Widgets");                // Information Blocks Retieva
 //====================================================================//
 //  Available Functions
 //====================================================================//
-define("SPL_F_GET_INFOS", 'infos');    // Get Server Informations (Name, Address and more...)
-define("SPL_F_GET_OBJECTS", 'objects');  // Get List of Available Objects
-define("SPL_F_GET_SELFTEST", 'selftest'); // Get Result of SelfTest Sequence
-define("SPL_F_GET_WIDGETS", 'widgets');  // Get List of Available Widgets
+
+/**
+ * Get Server Information (Name, Address and more...)
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplAdminMethods instead
+ */
+define("SPL_F_GET_INFOS", 'infos');
+
+/**
+ * Get List of Available Objects
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplAdminMethods instead
+ */
+define("SPL_F_GET_OBJECTS", 'objects');
+
+/**
+ * Get Result of SelfTest Sequence
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplAdminMethods instead
+ */
+define("SPL_F_GET_SELFTEST", 'selftest');
+
+/**
+ * Get List of Available Widgets
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplAdminMethods instead
+ */
+define("SPL_F_GET_WIDGETS", 'widgets');
 
 //====================================================================//
 //--------------------------------------------------------------------//
@@ -261,15 +388,70 @@ define("SPL_F_GET_WIDGETS", 'widgets');  // Get List of Available Widgets
 //====================================================================//
 //  Available Functions
 //====================================================================//
-define("SPL_F_OBJECTS", 'Objects');     // Get List of Available Objects
-define("SPL_F_COMMIT", 'Commit');       // Commit Object Change on Server
-define("SPL_F_DESC", 'Description');    // Read Object Description
-define("SPL_F_FIELDS", 'Fields');       // Read Object Available Fields List
-define("SPL_F_LIST", 'ObjectsList');    // Read Object List
-define("SPL_F_IDENTIFY", 'Identify');   // Identify Object by Primary Keys
-define("SPL_F_GET", 'Get');             // Read Object Data
-define("SPL_F_SET", 'Set');             // Write Object Data
-define("SPL_F_DEL", 'Delete');          // Delete An Object
+
+/**
+ * Get List of Available Objects
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplObjectMethods instead
+ */
+define("SPL_F_OBJECTS", 'Objects');
+
+/**
+ * Commit Object Change on Server
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplObjectMethods instead
+ */
+define("SPL_F_COMMIT", 'Commit');
+
+/**
+ * Read Object Description
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplObjectMethods instead
+ */
+define("SPL_F_DESC", 'Description');
+
+/**
+ * Read Available Fields for an  Object
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplObjectMethods instead
+ */
+define("SPL_F_FIELDS", 'Fields');
+
+/**
+ * Read Objects List
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplObjectMethods instead
+ */
+
+define("SPL_F_LIST", 'ObjectsList');
+
+/**
+ * Identify Object by Primary Keys
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplObjectMethods instead
+ */
+define("SPL_F_IDENTIFY", 'Identify');
+
+/**
+ * Read Object Data
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplObjectMethods instead
+ */
+define("SPL_F_GET", 'Get');
+
+/**
+ * Write Object Data
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplObjectMethods instead
+ */
+define("SPL_F_SET", 'Set');
+
+/**
+ * Delete An Object
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplObjectMethods instead
+ */
+define("SPL_F_DEL", 'Delete');
 
 //====================================================================//
 //--------------------------------------------------------------------//
@@ -278,10 +460,34 @@ define("SPL_F_DEL", 'Delete');          // Delete An Object
 //====================================================================//
 //  Available Functions
 //====================================================================//
-define("SPL_F_ISFILE", 'isFile');          // Check if file exist
-define("SPL_F_GETFILE", 'ReadFile');        // Download file from slave
-define("SPL_F_SETFILE", 'SetFile');         // Upload file to slave
-define("SPL_F_DELFILE", 'DeleteFile');      // Delete file from slave
+
+/**
+ * Check if file exist
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplFilesMethods instead
+ */
+define("SPL_F_ISFILE", 'isFile');
+
+/**
+ * Download file from slave
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplFilesMethods instead
+ */
+define("SPL_F_GETFILE", 'ReadFile');
+
+/**
+ * Upload file to slave
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplFilesMethods instead
+ */
+define("SPL_F_SETFILE", 'SetFile');
+
+/**
+ * Delete file from slave
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplFilesMethods instead
+ */
+define("SPL_F_DELFILE", 'DeleteFile');
 
 //====================================================================//
 //--------------------------------------------------------------------//
@@ -290,6 +496,24 @@ define("SPL_F_DELFILE", 'DeleteFile');      // Delete file from slave
 //====================================================================//
 //  Available Functions
 //====================================================================//
-define("SPL_F_WIDGET_LIST", 'WidgetsList');     // Get List of Available Widgets
-define("SPL_F_WIDGET_DEFINITION", 'Description');     // Get Widget Definition
-define("SPL_F_WIDGET_GET", 'Get');             // Get Informations
+
+/**
+ * Get List of Available Widgets
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplWidgetsMethods instead
+ */
+define("SPL_F_WIDGET_LIST", 'WidgetsList');
+
+/**
+ * Get Widget Definition
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplWidgetsMethods instead
+ */
+define("SPL_F_WIDGET_DEFINITION", 'Description');
+
+/**
+ * Get Information
+ *
+ * @deprecated use \Splash\Framework\Dictionary\Methods\SplWidgetsMethods instead
+ */
+define("SPL_F_WIDGET_GET", 'Get');
