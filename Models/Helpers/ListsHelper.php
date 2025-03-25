@@ -24,6 +24,11 @@ class ListsHelper
 {
     use FieldsManagerTrait;
 
+    /**
+     * List Fields Type Splitter
+     */
+    const SPLIT = '@';
+
     //====================================================================//
     // FIELDS LIST IDENTIFIERS MANAGEMENT
     //====================================================================//
@@ -48,8 +53,8 @@ class ListsHelper
         }
 
         //====================================================================//
-        // Create & Return List Field Id Data String
-        return   $fieldName.LISTSPLIT.$listName;
+        // Create & Return List Field ID Data String
+        return   $fieldName.self::SPLIT.$listName;
     }
 
     //====================================================================//
@@ -108,7 +113,7 @@ class ListsHelper
         }
         //====================================================================//
         // Store Data in Array
-        $fieldIndex = explode(LISTSPLIT, $fieldName);
+        $fieldIndex = explode(self::SPLIT, $fieldName);
         $buffer[$listName][$key][$fieldIndex[0]] = $itemData;
     }
 }

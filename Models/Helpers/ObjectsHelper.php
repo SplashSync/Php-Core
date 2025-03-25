@@ -28,6 +28,11 @@ class ObjectsHelper
     use FieldsManagerTrait;
 
     /**
+     * Object Id Splitter
+     */
+    const SPLIT = '::';
+
+    /**
      * Create an Object Identifier String
      *
      * @param string $objectType Object Type Name.
@@ -48,7 +53,7 @@ class ObjectsHelper
 
         //====================================================================//
         // Create & Return Field Id Data String
-        return   $objectId.IDSPLIT.$objectType;
+        return   $objectId.self::SPLIT.$objectType;
     }
 
     /**
