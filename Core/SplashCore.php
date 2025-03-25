@@ -170,7 +170,7 @@ class SplashCore
      *
      * @return LocalClassInterface
      */
-    public static function local()
+    public static function local(): LocalClassInterface
     {
         //====================================================================//
         // Initialize Local Core Management Class
@@ -303,6 +303,7 @@ class SplashCore
             $localConf = self::local()->parameters();
         } catch (Exception $e) {
             $localConf = array();
+            self::log()->err($e->getMessage());
         }
         //====================================================================//
         // Complete Local Configuration with ENV Variables
