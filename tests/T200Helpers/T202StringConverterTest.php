@@ -13,15 +13,16 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Managers;
+namespace Splash\Core\Tests\T200Helpers;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
-use Splash\Components\StringConverter;
+use Splash\Core\Helpers\StringConverter;
 
 /**
- * Components Test Suite - String Converter Verifications
+ * Helpers Test Suite - String Converter Verifications
  */
-class C61StringConverterTest extends TestCase
+class T202StringConverterTest extends TestCase
 {
     //==============================================================================
     // Canonical String
@@ -34,7 +35,7 @@ class C61StringConverterTest extends TestCase
      */
     public function testCanonicalString(string $source, string $target): void
     {
-        $this->assertSame($target, StringConverter::canonicalString($source));
+        Assert::assertSame($target, StringConverter::canonicalString($source));
     }
 
     /**

@@ -13,20 +13,17 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Managers;
+namespace Splash\Core\Tests\T200Helpers;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
-use Splash\Models\Helpers\FullNameParser;
+use Splash\Core\Helpers\FullNameParser;
 
 /**
- * Test suite for the FullName Parser
+ * Helpers Test Suite -  FullName Parser
  */
-class C81FullNameParser extends TestCase
+class T201FullNameParser extends TestCase
 {
-    //==============================================================================
-    // FullName Builder
-    //==============================================================================
-
     /**
      * Test of Full Name Helper
      *
@@ -44,7 +41,7 @@ class C81FullNameParser extends TestCase
                 ->setLastName($source['lastname'] ?? null)
             ;
         }
-        $this->assertSame($target, $parserEncoder->getFullName());
+        Assert::assertSame($target, $parserEncoder->getFullName());
 
         //==============================================================================
         // Validate Decoding Full Names
@@ -58,11 +55,11 @@ class C81FullNameParser extends TestCase
 
         $this->assertSame($source['name'] ?? null, $parserDecoder->getCompanyName());
         if (!empty($source['firstname'] && !empty($source['lastname']))) {
-            $this->assertSame($source['firstname'], $parserDecoder->getFirstName());
-            $this->assertSame($source['lastname'], $parserDecoder->getLastName());
+            Assert::assertSame($source['firstname'], $parserDecoder->getFirstName());
+            Assert::assertSame($source['lastname'], $parserDecoder->getLastName());
         } else {
-            $this->assertNull($parserDecoder->getFirstName());
-            $this->assertNull($parserDecoder->getLastName());
+            Assert::assertNull($parserDecoder->getFirstName());
+            Assert::assertNull($parserDecoder->getLastName());
         }
     }
 
