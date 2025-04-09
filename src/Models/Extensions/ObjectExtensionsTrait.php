@@ -13,11 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Extensions;
+namespace Splash\Core\Models\Extensions;
 
-use Splash\Components\FieldsFactory;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\ObjectExtensionInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\FieldsFactory;
+use Splash\Core\Interfaces\Extensions\ObjectExtensionInterface;
 
 /**
  * Manage Loading & Access to Splash Objects Extensions

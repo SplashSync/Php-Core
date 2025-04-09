@@ -13,11 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Extensions;
+namespace Splash\Core\Models\Extensions;
 
-use Splash\Components\FieldsFactory;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\AbstractConfigurator;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\FieldsFactory;
+use Splash\Core\Models\AbstractConfigurator;
 
 /**
  * Manage Loading & Execution of Splash Extended Configurators

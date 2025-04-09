@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Extensions;
+namespace Splash\Core\Models\Extensions;
 
-use Splash\Models\Objects\ObjectInterface;
+use Splash\Core\Interfaces\Object\ObjectInterface;
 
 /**
  * Manage Access to Additional Splash Objects Classes
