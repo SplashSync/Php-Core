@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models;
+namespace Splash\Core\Interfaces\Local;
 
 use ArrayObject;
 
@@ -22,12 +22,6 @@ use ArrayObject;
  */
 interface LocalClassInterface
 {
-    //====================================================================//
-    // *******************************************************************//
-    //  MANDATORY CORE MODULE LOCAL FUNCTIONS
-    // *******************************************************************//
-    //====================================================================//
-
     /**
      *  Return Local Server Parameters as Array
      *
@@ -103,9 +97,9 @@ interface LocalClassInterface
      * This function called on each initialization of module's tests sequences.
      * Its aim is to list different configurations for testing on local system.
      *
-     * If Name = List, Result must be an array including list of Sequences Names.
+     * If Name null of 'List', Result must be an array including list of Sequences Names.
      *
-     * If Name = ASequenceName, Function will Set up Sequence on Local System.
+     * If Name = a SequenceName, Function will Set up Sequence on Local System.
      *
      * @param null|string $name
      *
@@ -123,9 +117,7 @@ interface LocalClassInterface
      *
      * Result must be an array including parameters as strings or array.
      *
-     * @see Splash\Tests\Tools\ObjectsCase::settings for objects tests settings
-     *
-     * @return array $parameters
+     * @return array<string, null|array|scalar> $parameters
      */
     public function testParameters(): array;
 }

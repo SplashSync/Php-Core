@@ -13,8 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models;
+namespace Splash\Core\Interfaces\Extensions;
 
+/**
+ * Interface for filtering Splash Object Types and checking if an object is filtered.
+ */
 interface ObjectFilterInterface
 {
     /**

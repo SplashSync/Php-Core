@@ -13,33 +13,33 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models;
+namespace Splash\Core\Interfaces\Local;
 
 use Exception;
-use Splash\Models\Objects\ObjectInterface;
+use Splash\Core\Models\Widgets\WidgetInterface;
 
 /**
  * Local Objects Provider Interface.
  * Used to Override Core Objects Mapper (by Files)
  */
-interface ObjectsProviderInterface
+interface WidgetsProviderInterface
 {
     /**
-     * Build list of Available Objects
+     * Build list of Available Widgets
      *
      * @return string[]
      */
-    public function objects(): array;
+    public function widgets(): array;
 
     /**
-     * Get Splash Specific Object Class
-     * This function is a router for all local object classes & functions
+     * Get Splash Widgets Class
+     * This function is a router for all local Widgets classes & functions
      *
-     * @param string $objectType Specify Object Class Name
+     * @param string $widgetType Specify Widgets Type Name
      *
      * @throws Exception
      *
-     * @return ObjectInterface
+     * @return WidgetInterface
      */
-    public function object(string $objectType): ObjectInterface;
+    public function widget(string $widgetType): WidgetInterface;
 }

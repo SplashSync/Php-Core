@@ -13,10 +13,13 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models;
+namespace Splash\Core\Interfaces\Extensions;
 
-use Splash\Components\FieldsFactory;
+use Splash\Core\Components\FieldsFactory;
 
+/**
+ * Defines methods for extending Splash objects.
+ */
 interface ObjectExtensionInterface
 {
     /**
