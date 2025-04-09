@@ -19,7 +19,7 @@ use Exception;
 use Splash\Core\Client\Splash;
 use Splash\Core\Dictionary\SplDefinition;
 use Splash\Core\Interfaces\Local\WidgetsProviderInterface;
-use Splash\Core\Models\Widgets\WidgetInterface;
+use Splash\Core\Interfaces\Widgets\WidgetInterface;
 
 /**
  * Collection of Validator Methods Focused on Widgets Classes

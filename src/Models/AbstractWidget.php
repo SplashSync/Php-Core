@@ -16,8 +16,8 @@
 namespace Splash\Core\Models;
 
 use Splash\Core\Client\Splash;
+use Splash\Core\Interfaces\Widgets\WidgetInterface;
 use Splash\Core\Models\Widgets\DatesManagerTrait;
-use Splash\Core\Models\Widgets\WidgetInterface;
 
 /**
  * This class is a base class for all Splash Widgets.

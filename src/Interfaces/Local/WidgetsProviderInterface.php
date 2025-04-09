@@ -16,7 +16,7 @@
 namespace Splash\Core\Interfaces\Local;
 
 use Exception;
-use Splash\Core\Models\Widgets\WidgetInterface;
+use Splash\Core\Interfaces\Widgets\WidgetInterface;
 
 /**
  * Local Objects Provider Interface.

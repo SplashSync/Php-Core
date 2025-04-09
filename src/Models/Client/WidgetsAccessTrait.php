@@ -19,7 +19,7 @@ use Exception;
 use Splash\Core\Components\FilesLoader;
 use Splash\Core\Dictionary\SplDefinition;
 use Splash\Core\Interfaces\Local\WidgetsProviderInterface;
-use Splash\Core\Models\Widgets\WidgetInterface;
+use Splash\Core\Interfaces\Widgets\WidgetInterface;
 
 /**
  * Core Functions for Access to Splash Widgets
