@@ -13,16 +13,15 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Widgets;
+namespace Splash\Core\Models\Widgets;
 
 use DateInterval;
 use DateTime;
 use Exception;
+use Splash\Core\Helpers\DatesHelper;
 
 /**
  * Date Management for Splash Widgets.
- *
- * @author      B. Paquier <contact@splashsync.com>
  */
 trait DatesManagerTrait
 {
@@ -60,21 +59,21 @@ trait DatesManagerTrait
      *
      * @return void
      */
-    protected function importDates(array $params)
+    protected function importDates(array $params): void
     {
         //====================================================================//
         //  Import Dates Parameters
-        if (isset($params["DateStart"]) && !empty($params["DateStart"])) {
+        if (!empty($params["DateStart"])) {
             $this->dateStart = $params["DateStart"];
         } else {
-            $this->dateStart = (new DateTime("first day of this month"))->format(SPL_T_DATECAST);
+            $this->dateStart = DatesHelper::toDateStr(new DateTime("first day of this month"));
         }
-        if (isset($params["DateEnd"]) && !empty($params["DateEnd"])) {
+        if (!empty($params["DateEnd"])) {
             $this->dateEnd = $params["DateEnd"];
         } else {
-            $this->dateEnd = (new DateTime("last day of this month"))->format(SPL_T_DATECAST);
+            $this->dateEnd = DatesHelper::toDateStr((new DateTime("last day of this month")));
         }
-        if (isset($params["GroupBy"]) && !empty($params["GroupBy"])) {
+        if (!empty($params["GroupBy"])) {
             $this->groupBy = $params["GroupBy"];
         } else {
             $this->groupBy = "d";
@@ -107,7 +106,7 @@ trait DatesManagerTrait
 
             $outputs[] = array(
                 "label" => $current->format($this->labelFormat),
-                "value" => (isset($inputs[$key]) ? $inputs[$key] : 0),
+                "value" => ($inputs[$key] ?? 0),
             );
 
             $current = $start->add($this->dateInterval);
@@ -119,7 +118,7 @@ trait DatesManagerTrait
     /**
      * @return void
      */
-    private function importDatesFormat()
+    private function importDatesFormat(): void
     {
         //====================================================================//
         //  Generate Dates Formater String

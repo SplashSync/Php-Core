@@ -13,10 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Widgets;
+namespace Splash\Core\Models\Widgets;
 
-use Splash\Components\BlocksFactory;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Components\BlocksFactory;
 
 /**
  * Implement Access to Block Factory using Splash Static Class
