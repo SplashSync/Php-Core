@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects\Quotation;
+namespace Splash\Core\Dictionary\Objects\Quotation;
 
 /**
  * Customers Quotations Status List

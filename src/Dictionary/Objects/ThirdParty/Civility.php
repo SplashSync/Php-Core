@@ -13,9 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects\ThirdParty;
+namespace Splash\Core\Dictionary\Objects\ThirdParty;
 
-use Splash\Components\FieldsFactory;
+use Splash\Core\Components\FieldsFactory;
+use Splash\Core\Dictionary\SplFields;
 
 /**
  * Manage Access to ThirdParty & Address Contacts Civility Types
@@ -89,7 +90,7 @@ class Civility
      */
     public static function registerCivilityField(FieldsFactory $factory, string $fieldId): FieldsFactory
     {
-        $factory->create(SPL_T_VARCHAR)
+        $factory->create(SplFields::VARCHAR)
             ->identifier($fieldId)
             ->name('Civility')
             ->description('Civility Type')

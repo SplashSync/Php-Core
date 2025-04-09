@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects\Invoice;
+namespace Splash\Core\Dictionary\Objects\Invoice;
 
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Splash Generic Payment Methods List

@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects\Order;
+namespace Splash\Core\Dictionary\Objects\Order;
 
 /**
  * Customers Orders Status List
