@@ -13,12 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
-use ArrayObject;
 use Exception;
-use Splash\Core\SplashCore as Splash;
-use Splash\Router\RouterInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Interfaces\Server\RouterInterface;
 
 /**
  * Server Request Routing Class, Execute/Route actions on Splash Server requests.

@@ -13,11 +13,13 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
-use ArrayObject;
-use Splash\Core\SplashCore as Splash;
-use Splash\Server\SplashServer;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplDefinition;
+use Splash\Core\Dictionary\SplServices;
+use Splash\Core\Helpers\System\ServerInfos;
+use Splash\Core\Server\SplashServer;
 
 /**
  * This Class Manage Low Level SOAP & NUSOAP WebService Requests
@@ -29,25 +31,18 @@ class Webservice
     //====================================================================//
 
     /**
-     * Default Url for Splash Sync Server
-     *
-     * @var string
-     */
-    const SPLASHHOST = 'www.splashsync.com/ws/soap';
-
-    /**
      * Webservice Call Url
      *
      * @var string
      */
-    public string $url = self::SPLASHHOST;
+    public string $url = SplDefinition::HOST;
 
     /**
      * Remote Server Address
      *
      * @var string
      */
-    protected string $host = self::SPLASHHOST;
+    protected string $host = SplDefinition::HOST;
 
     /**
      * Unique Client Identifier (+8 Char)
@@ -133,7 +128,7 @@ class Webservice
         if (!empty(Splash::configuration()->WsHost)) {
             $this->host = Splash::configuration()->WsHost;
         } else {
-            $this->host = self::SPLASHHOST;
+            $this->host = SplDefinition::HOST;
         }
 
         //====================================================================//
@@ -445,71 +440,6 @@ class Webservice
         return array_shift($response['tasks']);
     }
 
-    //====================================================================//
-    //  INFORMATION RETRIEVAL
-    //====================================================================//
-
-    /**
-     * Return Server Information
-     *
-     * @return array
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    public function getServerInfos(): array
-    {
-        //====================================================================//
-        // Init Result Array
-        $response = array();
-
-        //====================================================================//
-        // INFO - Server Language Type
-        $response['ServerType'] = 'PHP';
-        // INFO - Server Language Version
-        $response['ServerVersion'] = PHP_VERSION;
-        // INFO - Server Protocol Version
-        $response['ProtocolVersion'] = SPL_PROTOCOL;
-        //====================================================================//
-        // INFO - Current Url
-        $response['Self'] = Splash::input('PHP_SELF');
-        // INFO - Server IP Address
-        $response['ServerAddress'] = Splash::input('SERVER_ADDR');
-        // Read System Folder without symlinks
-        $response['ServerRoot'] = realpath((string) Splash::input('DOCUMENT_ROOT'));
-        // INFO - Browser User Agent
-        $response['UserAgent'] = Splash::input('HTTP_USER_AGENT');
-        // Current Splash WebService Component
-        $response['WsMethod'] = Splash::configuration()->WsMethod;
-
-        //====================================================================//
-        // Server Urls
-        //====================================================================//
-        // CRITICAL - Server Host Name
-        $response['ServerHost'] = $this->getServerName();
-
-        //====================================================================//
-        // Server IPv4 Address
-        $response['ServerIP'] = Splash::input('SERVER_ADDR');
-
-        //====================================================================//
-        // Server WebService Path
-        if (isset(Splash::configuration()->ServerPath)) {
-            $response['ServerPath'] = Splash::configuration()->ServerPath;
-        } elseif (!empty($response['ServerRoot'])) {
-            $fullPath = dirname(__DIR__);
-            $relPath = explode((string) $response['ServerRoot'], $fullPath);
-            if (is_array($relPath) && isset($relPath[1])) {
-                $response['ServerPath'] = $relPath[1].'/soap.php';
-            } else {
-                $response['ServerPath'] = null;
-            }
-        } else {
-            $response['ServerPath'] = null;
-        }
-
-        return $response;
-    }
-
     /**
      * Return Server Outputs Buffer
      *
@@ -518,50 +448,6 @@ class Webservice
     public function getOutputBuffer(): array
     {
         return $this->outputs;
-    }
-
-    /**
-     * Safe Get Client Server Url
-     *
-     * @return string
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    public function getServerName(): string
-    {
-        //====================================================================//
-        // Check if Server Name is Overriden by Application Module
-        if (isset(Splash::configuration()->ServerHost)) {
-            return Splash::configuration()->ServerHost;
-        }
-        //====================================================================//
-        // Check if Available with Secured Reading
-        if (!empty(Splash::input('SERVER_NAME'))) {
-            return Splash::input('SERVER_NAME');
-        }
-        //====================================================================//
-        // Fallback to Unsecured Mode (Required for Phpunit)
-        if (isset($_SERVER['SERVER_NAME'])) {
-            return $_SERVER['SERVER_NAME'];
-        }
-
-        return '';
-    }
-
-    /**
-     * Get Client Server Schema (http or https)
-     *
-     * @return string
-     */
-    public function getServerScheme(): string
-    {
-        if ((!empty(Splash::input('REQUEST_SCHEME')) && ('https' == Splash::input('REQUEST_SCHEME'))) ||
-             (!empty(Splash::input('HTTPS')) && ('on' == Splash::input('HTTPS'))) ||
-             (!empty(Splash::input('SERVER_PORT')) && ('443' == Splash::input('SERVER_PORT')))) {
-            return 'https';
-        }
-
-        return 'http';
     }
 
     //====================================================================//
@@ -593,7 +479,7 @@ class Webservice
 
         //====================================================================//
         // Run SOAP Call - Reverse Ping
-        $ping = $testClient->call(SPL_S_PING, null, true);
+        $ping = $testClient->call(SplServices::PING, null, true);
         if (empty($ping) || empty($ping['result'] ?? false)) {
             Splash::log()->err(Splash::trans('ErrReversePing', $testClient->host));
 
@@ -602,7 +488,7 @@ class Webservice
 
         //====================================================================//
         // Run SOAP Call - Reverse Connect
-        $connect = $testClient->call(SPL_S_CONNECT, array());
+        $connect = $testClient->call(SplServices::CONNECT, array());
         if (empty($connect) || empty($connect['result'] ?? false)) {
             Splash::log()->err(Splash::trans('ErrReverseConnect', $testClient->host));
 
@@ -766,7 +652,7 @@ class Webservice
         // Prepare Data Output Buffer
         //====================================================================//
         // Fill buffer with Server Core infos
-        $this->outputs['server'] = $this->getServerInfos();
+        $this->outputs['server'] = ServerInfos::getInfos();
         // Remote Service to call
         $this->outputs['service'] = $service;
         // Share Debug Flag with Server
@@ -880,15 +766,15 @@ class Webservice
     {
         //====================================================================//
         // Fetch Server Informations
-        $serverInfos = $this->getServerInfos();
+        $host = ServerInfos::getServerName();
+        $path = ServerInfos::getServerPath();
         //====================================================================//
         // Build Server Url
-        $host = $serverInfos['ServerHost'];
         if ((false !== strpos($host, 'http://')) || (false !== strpos($host, 'https://'))) {
-            return $host.$serverInfos['ServerPath'];
+            return $host.$path;
         }
 
-        return $this->getServerScheme().'://'.$host.$serverInfos['ServerPath'];
+        return ServerInfos::getScheme().'://'.$host.$path;
     }
 
     /**

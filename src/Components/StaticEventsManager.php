@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Framework\Tools;
+namespace Splash\Core\Components;
 
 /**
  * Minimal Events Manager for Splash Micro Framework

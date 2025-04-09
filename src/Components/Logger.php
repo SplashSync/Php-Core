@@ -13,11 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
 use Exception;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\Logger as Traits;
+use Splash\Core\Client\Splash;
+use Splash\Core\Models\Logger as LoggerTraits;
 use Throwable;
 
 /**
@@ -32,9 +32,9 @@ use Throwable;
  */
 class Logger
 {
-    use Traits\HtmlExportsTrait;
-    use Traits\ConsoleExporterTrait;
-    use Traits\FileExporterTrait;
+    use LoggerTraits\HtmlExportsTrait;
+    use LoggerTraits\ConsoleExporterTrait;
+    use LoggerTraits\FileExporterTrait;
 
     const CMD_COLOR_ERR = 31;
     const CMD_COLOR_MSG = 32;

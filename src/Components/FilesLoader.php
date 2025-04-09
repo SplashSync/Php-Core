@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
 /**
  * Manage Loading of PHP Files from Folders
@@ -37,7 +37,7 @@ class FilesLoader
         // Scan for Files in Folder
         $files = array_diff(
             scandir($dir, SCANDIR_SORT_DESCENDING) ?: array(),
-            array('..', '.', 'index.php', 'index.html', 'toto')
+            array('..', '.', 'index.php', 'index.html')
         );
         //====================================================================//
         // Execute Autoloader First
