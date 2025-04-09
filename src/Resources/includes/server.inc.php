@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-use Splash\Server\SplashServer;
+use Splash\Core\Server\SplashServer;
 
 //====================================================================//
 //   WebService Available Functions
@@ -22,22 +22,22 @@ use Splash\Server\SplashServer;
 /**
  * Minimal Test of Webservice connexion
  *
- * @return mixed WebService Packaged Data Outputs or NUSOAP Error
+ * @return null|string WebService Packaged Data Outputs or SOAP Error
  */
-function Ping()
+function Ping(): ?string
 {
     return SplashServer::ping();
 }
 
 /**
- * Connect Webservice and fetch server informations
+ * Connect Webservice and fetch server information
  *
  * @param string $id   WebService Node Identifier
  * @param string $data WebService Packaged Data Inputs
  *
- * @return mixed WebService Packaged Data Outputs or NUSOAP Error
+ * @return null|string WebService Packaged Data Outputs or SOAP Error
  */
-function Connect($id, $data)
+function Connect(string $id, string $data): ?string
 {
     $server = new SplashServer();
 
@@ -50,9 +50,9 @@ function Connect($id, $data)
  * @param string $id   WebService Node Identifier
  * @param string $data WebService Packaged Data Inputs
  *
- * @return mixed WebService Packaged Data Outputs or NUSOAP Error
+ * @return null|string WebService Packaged Data Outputs or NUSOAP Error
  */
-function Admin($id, $data)
+function Admin(string $id, string $data): ?string
 {
     $server = new SplashServer();
 
@@ -65,9 +65,9 @@ function Admin($id, $data)
  * @param string $id   WebService Node Identifier
  * @param string $data WebService Packaged Data Inputs
  *
- * @return mixed WebService Packaged Data Outputs or NUSOAP Error
+ * @return null|string WebService Packaged Data Outputs or NUSOAP Error
  */
-function Objects($id, $data)
+function Objects(string $id, string $data): ?string
 {
     $server = new SplashServer();
 
@@ -80,9 +80,9 @@ function Objects($id, $data)
  * @param string $id   WebService Node Identifier
  * @param string $data WebService Packaged Data Inputs
  *
- * @return mixed WebService Packaged Data Outputs or NUSOAP Error
+ * @return null|string WebService Packaged Data Outputs or NUSOAP Error
  */
-function Files($id, $data)
+function Files(string $id, string $data): ?string
 {
     $server = new SplashServer();
 
@@ -95,9 +95,9 @@ function Files($id, $data)
  * @param string $id   WebService Node Identifier
  * @param string $data WebService Packaged Data Inputs
  *
- * @return mixed WebService Packaged Data Outputs or NUSOAP Error
+ * @return null|string WebService Packaged Data Outputs or NUSOAP Error
  */
-function Widgets($id, $data)
+function Widgets(string $id, string $data): ?string
 {
     $server = new SplashServer();
 
