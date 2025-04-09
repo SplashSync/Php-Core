@@ -13,9 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models;
+namespace Splash\Core\Models;
 
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Fields\ObjectField;
+use Splash\Core\Interfaces\ConfiguratorInterface;
+use Splash\Framework\Dictionary\Fields\SplFieldProps as Props;
 
 /**
  * Abstract Configurator
@@ -302,7 +305,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     {
         //====================================================================//
         // Detect Travis from SERVER CONSTANTS => Allow Unsecure for Testing
-        if (!empty(Splash::input('SPLASH_TRAVIS'))) {
+        if (Splash::isCiCdMode()) {
             return;
         }
         //====================================================================//
@@ -359,13 +362,13 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     private static function updateFieldMeta(array &$field, array $values): void
     {
         // Update Field Meta ItemType
-        self::updateFieldStrVal($field, $values, "itemtype");
+        self::updateFieldStrVal($field, $values, Props::MICRODATA_URL);
         // Update Field Meta ItemProp
-        self::updateFieldStrVal($field, $values, "itemprop");
+        self::updateFieldStrVal($field, $values, Props::MICRODATA_PROP);
         // Update Field Meta Tag
-        if (isset($values["itemprop"]) || isset($values["itemtype"])) {
-            if (is_string($field["itemprop"]) && is_string($field["itemtype"])) {
-                $field["tag"] = md5($field["itemprop"].IDSPLIT.$field["itemtype"]);
+        if (isset($values[Props::MICRODATA_PROP]) || isset($values[Props::MICRODATA_URL])) {
+            if (is_string($field[Props::MICRODATA_PROP]) && is_string($field[Props::MICRODATA_URL])) {
+                $field[Props::TAG] = ObjectField::toTag($field[Props::MICRODATA_URL], $field[Props::MICRODATA_PROP]);
             }
         }
     }
@@ -380,12 +383,12 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      */
     private static function updateFieldChoices(array &$field, array $values): void
     {
-        if (!isset($values["choices"]) || !is_iterable($values["choices"])) {
+        if (!isset($values[Props::CHOICES]) || !is_iterable($values[Props::CHOICES])) {
             return;
         }
-        $field["choices"] = array();
-        foreach ($values["choices"] as $description => $value) {
-            $field["choices"][] = array(
+        $field[Props::CHOICES] = array();
+        foreach ($values[Props::CHOICES] as $description => $value) {
+            $field[Props::CHOICES][] = array(
                 "key" => $value,
                 "value" => $description
             );

@@ -13,23 +13,20 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models;
+namespace Splash\Core\Models;
 
 use ReflectionClass;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Interfaces\Object\ObjectInterface;
 
 /**
  * Base Class for Splash Objects.
  */
-abstract class AbstractObject implements Objects\ObjectInterface
+abstract class AbstractObject implements ObjectInterface
 {
     use Objects\FieldsFactoryTrait;
     use Objects\LockTrait;
     use Objects\TranslatorTrait;
-    use Objects\PricesTrait;
-    use Objects\ImagesTrait;
-    use Objects\ObjectsTrait;
-    use Objects\ListsTrait;
 
     /**
      * Object Disable Flag. Override this flag to disable Object.

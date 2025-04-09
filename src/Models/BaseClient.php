@@ -13,46 +13,37 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Core;
+namespace Splash\Core\Models;
 
 use ArrayObject;
 use Exception;
-use ReflectionClass;
-use Splash\Components\CommitsManager;
-use Splash\Components\ExtensionsManager;
-use Splash\Components\Logger;
-use Splash\Components\Webservice;
-use Splash\Configurator\JsonConfigurator;
-use Splash\Configurator\NullConfigurator;
-use Splash\Local\Local;
-use Splash\Models\ConfiguratorInterface;
-use Splash\Models\Helpers\SplashUrlHelper;
-use Splash\Models\LocalClassInterface;
-
-//====================================================================//
-//********************************************************************//
-//====================================================================//
-//  SPLASH REMOTE FRAMEWORK CORE CLASS
-//====================================================================//
-//********************************************************************//
-//====================================================================//
+use Splash\Core\Components\CommitsManager;
+use Splash\Core\Components\ExtensionsManager;
+use Splash\Core\Components\Logger;
+use Splash\Core\Configurator\JsonConfigurator;
+use Splash\Core\Configurator\NullConfigurator;
+use Splash\Core\Dictionary\SplDefinition;
+use Splash\Core\Helpers\System\ConfigFromEnv;
+use Splash\Core\Interfaces\ConfiguratorInterface;
 
 /**
- * Simple & Core Functions for Splash & Slaves Classes
+ * Foundation Class for Splash Client & Server
  */
-class SplashCore
+class BaseClient
 {
-    use ObjectsCoreTrait;
-    use WidgetsCoreTrait;
-    use ServicesCoreTrait;
-    use ToolsCoreTrait;
+    use Client\LocalClassTrait;
+    use Client\ObjectsAccessTrait;
+    use Client\WidgetsAccessTrait;
+    use Client\ServicesTrait;
+    use Client\SystemTrait;
+    use Client\ToolsTrait;
 
     /**
      * Static Class Storage
      *
-     * @var null|SplashCore
+     * @var null|BaseClient
      */
-    protected static ?SplashCore $instance;
+    protected static ?BaseClient $instance;
 
     /**
      * Module Configuration
@@ -60,13 +51,6 @@ class SplashCore
      * @var null|ArrayObject
      */
     protected ?ArrayObject $conf;
-
-    /**
-     * Splash Local Core Class
-     *
-     * @var LocalClassInterface
-     */
-    protected LocalClassInterface $localcore;
 
     /**
      * Splash Configurator Class Instance
@@ -83,17 +67,6 @@ class SplashCore
     public function __construct(bool $verbose = false)
     {
         self::$instance = $this;
-
-        //====================================================================//
-        // Include Splash Constants Definitions
-        require_once dirname(__FILE__, 2).'/inc/defines.inc.php';
-
-        //====================================================================//
-        // Include Splash Constants Definitions
-        if (!defined('SPL_PROTOCOL')) {
-            require_once dirname(__FILE__, 2).'/inc/Splash.Inc.php';
-        }
-
         //====================================================================//
         // Initialize Log & Debug
         self::$instance->log = new Logger($verbose);
@@ -108,8 +81,6 @@ class SplashCore
      * Get a singleton Core Class
      *
      * Access to all most commons Module Functions
-     *
-     * @return self
      */
     public static function core(): self
     {
@@ -160,81 +131,6 @@ class SplashCore
     }
 
     //====================================================================//
-    //  LOCAL CLASS MANAGEMENT
-    //====================================================================//
-
-    /**
-     * Access Server Local Class
-     *
-     * @throws Exception
-     *
-     * @return LocalClassInterface
-     */
-    public static function local(): LocalClassInterface
-    {
-        //====================================================================//
-        // Initialize Local Core Management Class
-        if (isset(self::core()->localcore)) {
-            return self::core()->localcore;
-        }
-        //====================================================================//
-        // Verify Local Core Class Exist & is Valid
-        if (!self::validate()->isValidLocalClass()) {
-            throw new Exception('You requested access to Local Class, but it is Invalid...');
-        }
-        //====================================================================//
-        // Initialize Class
-        self::core()->localcore = new Local();
-        //====================================================================//
-        //  Load Translation File
-        self::translator()->load('local');
-        //====================================================================//
-        // Load Local Includes
-        self::core()->localcore->Includes();
-
-        //====================================================================//
-        // Return Local Class
-        return self::core()->localcore;
-    }
-
-    /**
-     * Force Server Local Class
-     *
-     * @param LocalClassInterface $localClass Name of New Local Class to Use
-     *
-     * @return void
-     */
-    public static function setLocalClass(LocalClassInterface $localClass)
-    {
-        //====================================================================//
-        // Force Local Core Management Class
-        self::core()->localcore = $localClass;
-    }
-
-    /**
-     * Detect Real Path of Current Module Local Class
-     *
-     * @throws Exception
-     *
-     * @return null|string
-     */
-    public static function getLocalPath(): ?string
-    {
-        //====================================================================//
-        // Safety Check => Verify Local Class is Valid
-        if (null == self::local()) {
-            return null;
-        }
-        //====================================================================//
-        // Create A Reflection Class of Local Class
-        $reflector = new ReflectionClass(get_class(self::local()));
-
-        //====================================================================//
-        // Return Class Local Path
-        return dirname((string) $reflector->getFileName());
-    }
-
-    //====================================================================//
     //  MICRO-FRAMEWORK CONFIGURATION
     //====================================================================//
 
@@ -265,24 +161,24 @@ class SplashCore
         // Load Module Core Configuration from Definition File
         //====================================================================//
         // Translations Parameters
-        $config->DefaultLanguage = SPLASH_DF_LANG;
+        $config->DefaultLanguage = SplDefinition::DF_LANG;
 
         //====================================================================//
         // WebService Core Parameters
-        $config->WsMethod = SPLASH_WS_METHOD;
-        $config->WsTimout = SPLASH_TIMEOUT;
-        $config->WsCrypt = SPLASH_CRYPT_METHOD;
-        $config->WsEncode = SPLASH_ENCODE;
-        $config->WsHost = 'www.splashsync.com/ws/soap';
+        $config->WsMethod = SplDefinition::WS_METHOD;
+        $config->WsTimout = SplDefinition::TIMEOUT;
+        $config->WsCrypt = SplDefinition::CRYPT_METHOD;
+        $config->WsEncode = SplDefinition::ENCODE;
+        $config->WsHost = SplDefinition::HOST;
         $config->WsPostCommit = true;
 
         //====================================================================//
         // Activity Logging Parameters
-        $config->Logging = SPLASH_LOGGING;
-        $config->TraceIn = SPLASH_TRACE_IN;
-        $config->TraceOut = SPLASH_TRACE_OUT;
-        $config->TraceTasks = SPLASH_TRACE_TASKS;
-        $config->SmartNotify = SPLASH_SMART_NOTIFY;
+        $config->Logging = SplDefinition::LOGGING;
+        $config->TraceIn = SplDefinition::TRACE_IN;
+        $config->TraceOut = SplDefinition::TRACE_OUT;
+        $config->TraceTasks = SplDefinition::TRACE_TASKS;
+        $config->SmartNotify = SplDefinition::SMART_NOTIFY;
 
         //====================================================================//
         // Custom Objects Extensions
@@ -307,10 +203,10 @@ class SplashCore
         }
         //====================================================================//
         // Complete Local Configuration with ENV Variables
-        SplashUrlHelper::completeParameters($localConf);
+        ConfigFromEnv::complete($localConf);
         //====================================================================//
         // Validate Local Parameters
-        if (self::validate()->isValidLocalParameterArray($localConf)) {
+        if (self::validate()->isValidParameterArray($localConf)) {
             //====================================================================//
             // Import Local Parameters
             foreach ($localConf as $key => $value) {
@@ -331,44 +227,13 @@ class SplashCore
         return self::core()->conf;
     }
 
-    /**
-     * Check if Framework Instanced in Debug Mode
-     * Used for PhpUnit Tests
-     *
-     * @return bool
-     */
-    public static function isDebugMode(): bool
-    {
-        return (defined('SPLASH_DEBUG') && !empty(SPLASH_DEBUG));
-    }
-
-    /**
-     * Check if Framework Instanced in Travis CI/CD Mode
-     *
-     * @return bool
-     */
-    public static function isTravisMode(): bool
-    {
-        return !empty(self::input("SPLASH_TRAVIS"));
-    }
-
-    /**
-     * Check if Framework Instanced in Server Mode
-     *
-     * @return bool
-     */
-    public static function isServerMode(): bool
-    {
-        return (defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE));
-    }
-
     //====================================================================//
     // WEBSERVICE FUNCTIONS
     //====================================================================//
 
     /**
      * Ask for Server System Information
-     * Information may be overwritten by Local Module Class
+     * May be overwritten by Local Module Class
      *
      * @throws Exception
      *
@@ -396,8 +261,8 @@ class SplashCore
 
         //====================================================================//
         // Server General Description
-        $response->shortdesc = SPLASH_NAME.' '.SPLASH_VERSION;
-        $response->longdesc = SPLASH_DESC;
+        $response->shortdesc = SplDefinition::NAME.' '.SplDefinition::VERSION;
+        $response->longdesc = SplDefinition::DESC;
 
         //====================================================================//
         // Company Information
@@ -422,13 +287,13 @@ class SplashCore
 
         //====================================================================//
         // Server Information
-        $response->servertype = SPLASH_NAME;
+        $response->servertype = SplDefinition::NAME;
         $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME');
 
         //====================================================================//
         // Module Information
-        $response->moduleauthor = SPLASH_AUTHOR;
-        $response->moduleversion = SPLASH_VERSION;
+        $response->moduleauthor = SplDefinition::AUTHOR;
+        $response->moduleversion = SplDefinition::VERSION;
 
         //====================================================================//
         // Verify Local Module Class Is Valid
@@ -505,7 +370,7 @@ class SplashCore
      */
     public static function getName(): string
     {
-        return SPLASH_NAME;
+        return SplDefinition::NAME;
     }
 
     /**
@@ -515,7 +380,7 @@ class SplashCore
      */
     public static function getDesc(): string
     {
-        return SPLASH_DESC;
+        return SplDefinition::DESC;
     }
 
     /**
@@ -525,7 +390,7 @@ class SplashCore
      */
     public static function getVersion(): string
     {
-        return SPLASH_VERSION;
+        return SplDefinition::VERSION;
     }
 
     //====================================================================//

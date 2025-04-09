@@ -13,11 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models;
+namespace Splash\Core\Models;
 
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\Widgets\DatesManagerTrait;
-use Splash\Models\Widgets\WidgetInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Models\Widgets\DatesManagerTrait;
+use Splash\Core\Models\Widgets\WidgetInterface;
 
 /**
  * This class is a base class for all Splash Widgets.
