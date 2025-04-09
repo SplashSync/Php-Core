@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Configurator;
+namespace Splash\Core\Configurator;
 
-use Splash\Models\ConfiguratorInterface;
+use Splash\Core\Interfaces\ConfiguratorInterface;
 
 /**
  * Null Configurator to for Empty Configuration

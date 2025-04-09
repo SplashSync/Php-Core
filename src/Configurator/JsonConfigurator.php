@@ -13,12 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Configurator;
+namespace Splash\Core\Configurator;
 
 use Exception;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\AbstractConfigurator;
-use Splash\Models\ConfiguratorInterface;
+use Splash\Core\Interfaces\ConfiguratorInterface;
+use Splash\Core\Models\AbstractConfigurator;
+use Splash\Core\Client\Splash;
 
 /**
  * Use Json Configurator to Load Configuration from a Local Json File
