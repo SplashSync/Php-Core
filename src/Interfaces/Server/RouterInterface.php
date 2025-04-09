@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Router;
+namespace Splash\Core\Interfaces\Server;
 
 /**
  * Splash Router Interface
@@ -27,5 +27,5 @@ interface RouterInterface
      *
      * @return null|array Task results, or False if KO
      */
-    public static function action(array$task): ?array;
+    public static function action(array $task): ?array;
 }

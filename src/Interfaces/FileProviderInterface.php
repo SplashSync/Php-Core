@@ -13,10 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models;
+namespace Splash\Core\Interfaces;
 
 /**
  * Local System File Provider Class Interface
+ *
+ * This Interface is used by Local Class to read files from Splash Server
  */
 interface FileProviderInterface
 {
