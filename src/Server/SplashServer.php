@@ -13,14 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Server;
+namespace Splash\Core\Server;
 
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Helpers\System\ServerInfos;
 use Throwable;
-
-//====================================================================//
-//  SPLASH SERVER CLASS
-//====================================================================//
 
 /**
  * Splash Sync Server. Manage Splash Requests & Responses.
@@ -88,22 +85,26 @@ class SplashServer
     public static function connect(string $id, string $data): ?string
     {
         //====================================================================//
-        // Verify Node Id
+        // Verify Node ID
         //====================================================================//
         if (Splash::configuration()->WsIdentifier !== $id) {
             return null;
         }
         self::init();
         //====================================================================//
-        // Unpack NuSOAP Request
+        // Unpack SOAP Request
         //====================================================================//
-        if (true != self::receive($data)) {
+        if (!self::receive($data)) {
             return null;
         }
         //====================================================================//
         // Execute Request
         //====================================================================//
-        Splash::log()->msg("Connection Successful (".Splash::getName()." V".Splash::getVersion().")");
+        Splash::log()->msg(sprintf(
+            "Connection Requested (%s V%s)",
+            Splash::getName(),
+            Splash::getVersion()
+        ));
 
         //====================================================================//
         // Transmit Answers To Master
@@ -229,14 +230,11 @@ class SplashServer
             //====================================================================//
             // Output Server Informations
             $html .= Splash::log()->getHtmlListItem("Server Informations");
-            $html .= "<PRE>".print_r(Splash::ws()->getServerInfos(), true)."</PRE>";
+            $html .= "<PRE>".print_r(ServerInfos::getInfos(), true)."</PRE>";
 
             //====================================================================//
-            // Verify PHP Version
-            Splash::validate()->isValidPHPVersion();
-            //====================================================================//
-            // Verify PHP Extensions
-            Splash::validate()->isValidPHPExtensions();
+            // Verify System Configuration
+            Splash::validate()->isValidSystem();
             //====================================================================//
             // Verify SOAP Method
             Splash::validate()->isValidSOAPMethod();
@@ -244,7 +242,7 @@ class SplashServer
             // Execute Splash Local SelfTest
             Splash::selfTest();
             //====================================================================//
-            //  Verify Server Webservice Connection
+            // Verify Server Webservice Connection
             Splash::ws()->selfTest();
         } catch (\Exception $ex) {
             echo $ex->getMessage();
@@ -294,7 +292,7 @@ class SplashServer
         }
         //====================================================================//
         // Fill Static Server Informations To Output
-        self::$outputs['server'] = Splash::ws()->getServerInfos();
+        self::$outputs['server'] = ServerInfos::getInfos();
 
         return true;
     }
@@ -354,7 +352,7 @@ class SplashServer
         //====================================================================//
         // Unpack NuSOAP Request
         //====================================================================//
-        if ((true != self::receive($data)) || !self::$inputs) {
+        if (!self::receive($data) || !self::$inputs) {
             return self::transmit(false);
         }
 

@@ -13,11 +13,13 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Router;
+namespace Splash\Core\Server\Router;
 
 use Exception;
-use Splash\Components\Router;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\Router;
+use Splash\Core\Dictionary\Methods\SplAdminMethods as Methods;
+use Splash\Core\Interfaces\Server\RouterInterface;
 
 /**
  * Server Request Routing Class, Execute/Route actions on Admin Service Requests.
@@ -42,28 +44,28 @@ class Admin implements RouterInterface
         $response = Router::getEmptyResponse($task);
 
         switch ($task['name']) {
-            case SPL_F_GET_OBJECTS:
+            case Methods::OBJECTS:
                 //====================================================================//
                 //  READING OF SERVER OBJECT LIST
                 $response['data'] = Splash::objects();
                 $response['result'] = !empty($response['data']);
 
                 break;
-            case SPL_F_GET_WIDGETS:
+            case Methods::WIDGETS:
                 //====================================================================//
                 //  READING OF SERVER WIDGETS LIST
                 $response['data'] = Splash::widgets();
                 $response['result'] = !empty($response['data']);
 
                 break;
-            case SPL_F_GET_SELFTEST:
+            case Methods::SELF_TEST:
                 //====================================================================//
                 //  READING OF SERVER SELF-TEST RESULTS
                 $response['result'] = Splash::selfTest();
                 $response['data'] = $response['result'];
 
                 break;
-            case SPL_F_GET_INFOS:
+            case Methods::INFOS:
                 //====================================================================//
                 //  READING OF SERVER INFORMATION
                 $response['data'] = Splash::informations();

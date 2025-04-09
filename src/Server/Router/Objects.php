@@ -13,13 +13,15 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Router;
+namespace Splash\Core\Server\Router;
 
 use Exception;
-use Splash\Components\Router;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\Objects\ObjectInterface;
-use Splash\Models\Objects\PrimaryKeysAwareInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\Router;
+use Splash\Core\Dictionary\Methods\SplObjectMethods as Methods;
+use Splash\Core\Interfaces\Object\ObjectInterface;
+use Splash\Core\Interfaces\Object\PrimaryKeysAwareInterface;
+use Splash\Core\Interfaces\Server\RouterInterface;
 
 /**
  * Server Request Routing Class, Execute/Route actions on Objects Service Requests.
@@ -42,7 +44,7 @@ class Objects implements RouterInterface
         //====================================================================//
         //  READING OF SERVER OBJECT LIST
         //====================================================================//
-        if (SPL_F_OBJECTS === $task['name']) {
+        if (Methods::OBJECTS === $task['name']) {
             return self::doObjects($task);
         }
 
@@ -57,16 +59,16 @@ class Objects implements RouterInterface
         //====================================================================//
         // Execute Admin Actions
         //====================================================================//
-        if (in_array($task['name'], array( SPL_F_DESC , SPL_F_FIELDS , SPL_F_LIST ), true)) {
+        if (in_array($task['name'], array( Methods::DESC, Methods::FIELDS , Methods::LIST ), true)) {
             return self::doAdminActions($task);
         }
-        if (in_array($task['name'], array( SPL_F_GET , SPL_F_SET , SPL_F_DEL ), true)) {
+        if (in_array($task['name'], array( Methods::GET , Methods::SET , Methods::DEL ), true)) {
             return self::doSyncActions($task);
         }
-        if (in_array($task['name'], array( SPL_F_IDENTIFY ), true)) {
+        if (in_array($task['name'], array( Methods::IDENTIFY ), true)) {
             return self::doPrimaryActions($task);
         }
-        if (SPL_F_COMMIT === $task['name']) {
+        if (Methods::COMMIT === $task['name']) {
             Splash::log()->war("Objects - Requested task not found => ".$task['name']);
 
             return Router::getEmptyResponse($task);
@@ -119,7 +121,7 @@ class Objects implements RouterInterface
         }
         //====================================================================//
         // Verify Requested Object Type is Valid
-        if (true != Splash::validate()->isValidObject($task['params']['type'])) {
+        if (!Splash::validate()->isValidObject($task['params']['type'])) {
             Splash::log()->err("Object Router - Object Type is Invalid... ");
 
             return false;
@@ -149,21 +151,21 @@ class Objects implements RouterInterface
         // Execute Requested Task
         //====================================================================//
         switch ($task['name']) {
-            case SPL_F_DESC:
+            case Methods::DESC:
                 //====================================================================//
                 //  READING OF Object Description
                 //====================================================================//
                 $response['data'] = $objectClass->description();
 
                 break;
-            case SPL_F_FIELDS:
+            case Methods::FIELDS:
                 //====================================================================//
                 //  READING OF Available Fields
                 //====================================================================//
                 $response['data'] = $objectClass->fields();
 
                 break;
-            case SPL_F_LIST:
+            case Methods::LIST:
                 //====================================================================//
                 //  READING OF OBJECT LIST
                 //====================================================================//
@@ -208,21 +210,21 @@ class Objects implements RouterInterface
         // Execute Requested Task
         //====================================================================//
         switch ($task['name']) {
-            case SPL_F_GET:
+            case Methods::GET:
                 //====================================================================//
                 //  READING OF OBJECT DATA
                 //====================================================================//
                 $response['data'] = self::doGet($objectClass, $objectId, $fields);
 
                 break;
-            case SPL_F_SET:
+            case Methods::SET:
                 //====================================================================//
                 //  WRITING OF OBJECT DATA
                 //====================================================================//
                 $response['data'] = self::doSet($objectClass, $objectId, $fields);
 
                 break;
-            case SPL_F_DEL:
+            case Methods::DEL:
                 //====================================================================//
                 //  DELETE OF AN OBJECT
                 //====================================================================//
@@ -258,7 +260,7 @@ class Objects implements RouterInterface
         // Execute Requested Task
         //====================================================================//
         switch ($task['name']) {
-            case SPL_F_IDENTIFY:
+            case Methods::IDENTIFY:
                 //====================================================================//
                 //  IDENTIFY OBJECT BY PRIMARY KEYS
                 //====================================================================//

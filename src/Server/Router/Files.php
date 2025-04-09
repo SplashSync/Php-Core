@@ -13,12 +13,14 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Router;
+namespace Splash\Core\Server\Router;
 
 use Exception;
-use Splash\Components\Router;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\FileProviderInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\Router;
+use Splash\Core\Dictionary\Methods\SplFilesMethods as Methods;
+use Splash\Core\Interfaces\FileProviderInterface;
+use Splash\Core\Interfaces\Server\RouterInterface;
 
 /**
  * Server Request Routing Class, Execute/Route actions on Files Service Requests.
@@ -50,7 +52,7 @@ class Files implements RouterInterface
         //====================================================================//
         // Execute Action
         switch ($task['name']) {
-            case SPL_F_ISFILE:
+            case Methods::EXISTS:
                 //====================================================================//
                 //  READING A FILE INFORMATION'S
                 //====================================================================//
@@ -67,7 +69,7 @@ class Files implements RouterInterface
                 $response['data'] = Splash::file()->isFile($inputs['path'], $inputs['md5']);
 
                 break;
-            case SPL_F_GETFILE:
+            case Methods::GET:
                 //====================================================================//
                 //  READING A FILE CONTENTS
                 //====================================================================//
@@ -101,9 +103,9 @@ class Files implements RouterInterface
      *
      * @param array $task Full Task Request Array
      *
-     * @return array|false
+     * @return null|array
      */
-    private static function validateInputs(array $task)
+    private static function validateInputs(array $task): ?array
     {
         //====================================================================//
         // Safety Check - Minimal Parameters
@@ -112,7 +114,7 @@ class Files implements RouterInterface
         if (empty($task['params'])) {
             Splash::log()->err('File Router - Missing Task Parameters... ');
 
-            return false;
+            return null;
         }
         //====================================================================//
         // Verify Requested File Path is Available
@@ -120,21 +122,21 @@ class Files implements RouterInterface
         if (!$filePath) {
             Splash::log()->err('File Router - Missing File Path... ');
 
-            return false;
+            return null;
         }
         //====================================================================//
         // Verify Requested File Md5 is Available (but Says File Missing, for safety)
         if (empty($task['params']['md5'])) {
             Splash::log()->err('File Router - Missing File Path... ');
 
-            return false;
+            return null;
         }
         //====================================================================//
         // Verify Requested Object Type is Valid
-        if (true != Splash::validate()->isValidLocalClass()) {
+        if (!Splash::validate()->isValidLocalClass()) {
             Splash::log()->err('File Router - Local Core Class is Invalid... ');
 
-            return false;
+            return null;
         }
 
         //====================================================================//
@@ -154,10 +156,10 @@ class Files implements RouterInterface
      */
     private static function detectFilePath(array $params): ?string
     {
-        if (isset($params['path']) && !empty($params['path'])) {
+        if (!empty($params['path'])) {
             return (string) $params['path'];
         }
-        if (isset($params['file']) && !empty($params['file'])) {
+        if (!empty($params['file'])) {
             return (string) $params['file'];
         }
 

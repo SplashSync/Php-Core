@@ -13,10 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Router;
+namespace Splash\Core\Server\Router;
 
-use Splash\Components\Router;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\Router;
+use Splash\Core\Dictionary\Methods\SplWidgetsMethods as Methods;
+use Splash\Core\Interfaces\Server\RouterInterface;
 
 /**
  * Server Request Routing Class, Execute/Route actions on Widgets Service Requests.
@@ -43,19 +45,19 @@ class Widgets implements RouterInterface
         // Execute Requested Task
         //====================================================================//
         switch ($task['name']) {
-            case SPL_F_WIDGET_LIST:
+            case Methods::LIST:
                 //====================================================================//
                 //  READING OF SERVER WIDGETS LIST
                 $response['data'] = Splash::widgets();
 
                 break;
-            case SPL_F_WIDGET_DEFINITION:
+            case Methods::DEFINITION:
                 //====================================================================//
                 //  READING A WIDGET DEFINITION
                 $response['data'] = Splash::widget($task['params']['type'] ?? "None")->description();
 
                 break;
-            case SPL_F_WIDGET_GET:
+            case Methods::GET:
                 //====================================================================//
                 // Parse Widget Parameters
                 $parameters = is_array($task['params']['params'] ?? null)
