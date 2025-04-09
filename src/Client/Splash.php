@@ -13,28 +13,21 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Client;
+namespace Splash\Core\Client;
 
-use Splash\Components\CommitsManager;
-use Splash\Core\SplashCore;
+use Splash\Core\Components\CommitsManager;
+use Splash\Core\Dictionary\SplServices;
+use Splash\Core\Models\BaseClient;
 
 /**
  * Main User Client Class for Using Splash Webservice Module
  */
-class Splash extends SplashCore
+class Splash extends BaseClient
 {
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-    //----  PING WEBSERVICE FUNCTIONS                                 ----//
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-
     /**
-     * Check Connexion with NuSOAP Client
+     * Check Connexion with Splash Server
      *
      * @param bool $silent No message display if non errors
-     *
-     * @return bool
      */
     public static function ping(bool $silent = false): bool
     {
@@ -46,7 +39,7 @@ class Splash extends SplashCore
         $intTimer = microtime(true);
         //====================================================================//
         // Run NuSOAP Call
-        $result = self::ws()->call(SPL_S_PING, null, true);
+        $result = self::ws()->call(SplServices::PING, null, true);
         //====================================================================//
         //  Messages Debug Information
         //====================================================================//
@@ -56,7 +49,7 @@ class Splash extends SplashCore
             self::log()->war('Splash - Ping : '.$total);
         }
         //====================================================================//
-        // Analyze NuSOAP results
+        // Analyze SOAP results
         if ($result && !empty($result['result'] ?? false) && ($silent)) {
             self::log()->cleanLog();
 
@@ -71,18 +64,10 @@ class Splash extends SplashCore
         return self::log()->err('Remote Client Ping Failed ('.self::ws()->url.')');
     }
 
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-    //----  CONNECT WEBSERVICE FUNCTIONS                              ----//
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-
     /**
-     * Check Connexion with NuSOAP Client
+     * Check Connexion with Splash Server
      *
      * @param bool $silent No message display if non errors
-     *
-     * @return bool
      */
     public static function connect(bool $silent = false): bool
     {
@@ -94,7 +79,7 @@ class Splash extends SplashCore
         $initTimer = microtime(true);
         //====================================================================//
         // Run NuSOAP Call
-        $result = self::ws()->call(SPL_S_CONNECT);
+        $result = self::ws()->call(SplServices::CONNECT);
         //====================================================================//
         //  Messages Debug Information
         //====================================================================//
@@ -117,22 +102,14 @@ class Splash extends SplashCore
         return true;
     }
 
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-    //---- USER MAIN FUNCTIONS                                        ----//
-    //--------------------------------------------------------------------//
-    //--------------------------------------------------------------------//
-
     /**
      * Submit an Update for a Local Object
      *
      * @param string           $objectType Object Type Name
      * @param array|int|string $local      Local Object Ids or Array of Local ID
-     * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string           $action     Action Type (See SplOperations)
      * @param string           $user       User Name
      * @param string           $comment    Operation Comment for Logs
-     *
-     * @return bool
      */
     public static function commit(
         string $objectType,

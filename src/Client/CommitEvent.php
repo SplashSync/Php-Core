@@ -13,12 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Client;
+namespace Splash\Core\Client;
 
 use DateTime;
 use Exception;
-use Splash\Components\ExtensionsManager;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Components\ExtensionsManager;
+use Splash\Core\Dictionary\SplOperations;
 
 /**
  * Storage for Splash Module Objects Commits Events
@@ -38,7 +38,7 @@ class CommitEvent
     private string $type;
 
     /**
-     * Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * Action Type (See SplOperations)
      *
      * @var string
      */
@@ -94,7 +94,7 @@ class CommitEvent
      *
      * @param string                    $objectType Object Type Name
      * @param int|int[]|string|string[] $objectIds  Local Objects Ids
-     * @param string                    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string                    $action     Action Type (See SplOperations)
      * @param string                    $user       User Name
      * @param string                    $comment    Operation Comment for Logs
      */
@@ -246,7 +246,7 @@ class CommitEvent
         }
         //====================================================================//
         // Verify Create Object is Locked ==> No Action on this Node
-        if ((SPL_A_CREATE === $this->action) && $splashObject->isLocked()) {
+        if ((SplOperations::CREATE === $this->action) && $splashObject->isLocked()) {
             return false;
         }
 
