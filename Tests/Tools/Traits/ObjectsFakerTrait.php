@@ -16,8 +16,8 @@
 namespace Splash\Tests\Tools\Traits;
 
 use Exception;
-use Splash\Client\Splash;
-use Splash\Models\Helpers\InlineHelper;
+use Splash\Core\Client\Splash;
+use Splash\Core\Helpers\InlineHelper;
 
 /**
  * Splash Test Tools - Objects Faker trait

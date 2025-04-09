@@ -16,7 +16,7 @@
 namespace Splash\Tests\Tools\Traits;
 
 use Exception;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Splash Test Tools - Objects Mass Actions Tests

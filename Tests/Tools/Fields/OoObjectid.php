@@ -15,8 +15,8 @@
 
 namespace Splash\Tests\Tools\Fields;
 
-use Splash\Client\Splash;
-use Splash\Models\Fields\FieldsManagerTrait;
+use Splash\Core\Client\Splash;
+use Splash\Core\Fields\FieldsManagerTrait;
 
 /**
  * Object ID Field : price definition Array

@@ -16,8 +16,8 @@
 namespace Splash\Tests\WsObjects;
 
 use Exception;
-use Splash\Client\Splash;
-use Splash\Components\CommitsManager;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\CommitsManager;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
@@ -186,6 +186,6 @@ class O04CreateTest extends ObjectsCase
         $this->addTestedObject($objectType, (string) $objectId);
         //====================================================================//
         //   Verify Object Change Was Committed
-        $this->assertIsLastCommitted(SPL_A_CREATE, $objectType, (string) $objectId);
+        $this->assertIsLastCommitted(SplOperations::CREATE, $objectType, (string) $objectId);
     }
 }

@@ -15,8 +15,8 @@
 
 namespace Splash\Tests\Tools\Traits;
 
-use Splash\Components\CommitsManager;
-use Splash\Components\FieldsManager;
+use Splash\Core\Components\CommitsManager;
+use Splash\Core\Components\FieldsManager;
 use Splash\Tests\Tools\Fields\FieldInterface;
 
 /**

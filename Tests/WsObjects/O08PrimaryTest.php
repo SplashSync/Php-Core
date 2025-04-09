@@ -16,7 +16,7 @@
 namespace Splash\Tests\WsObjects;
 
 use Exception;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Tests\Tools\Traits\ObjectPrimaryTestsTrait;
 use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;

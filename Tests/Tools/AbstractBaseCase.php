@@ -17,7 +17,7 @@ namespace Splash\Tests\Tools;
 
 use ArrayObject;
 use Exception;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Abstract Base Class for Splash Modules Tests

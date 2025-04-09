@@ -15,7 +15,7 @@
 
 namespace Splash\Tests\Tools\Traits;
 
-use Splash\Models\Fields\FieldsManagerTrait;
+use Splash\Core\Fields\FieldsManagerTrait;
 use Splash\Tests\Tools\Fields\FieldInterface;
 
 /**

@@ -16,9 +16,9 @@
 namespace Splash\Tests\Tools\Traits\Product;
 
 use Exception;
-use Splash\Client\Splash;
-use Splash\Models\Helpers\ListsHelper;
-use Splash\Models\Helpers\ObjectsHelper;
+use Splash\Core\Client\Splash;
+use Splash\Core\Helpers\ListsHelper;
+use Splash\Core\Helpers\ObjectsHelper;
 use Splash\Tests\Tools\Fields\OoVarchar;
 
 /**

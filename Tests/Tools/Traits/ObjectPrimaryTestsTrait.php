@@ -16,8 +16,8 @@
 namespace Splash\Tests\Tools\Traits;
 
 use Exception;
-use Splash\Client\Splash;
-use Splash\Models\Objects\PrimaryKeysAwareInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Interfaces\Object\PrimaryKeysAwareInterface;
 
 trait ObjectPrimaryTestsTrait
 {

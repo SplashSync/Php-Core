@@ -16,8 +16,8 @@
 namespace Splash\Tests\Core;
 
 use Exception;
-use Splash\Components\Logger;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Components\Logger;
+use Splash\Core\Models\Core\AbstractClient as Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 use Splash\Tests\Tools\TestCase;
 
@@ -85,7 +85,7 @@ class C00StartupTest extends TestCase
         //====================================================================//
         //   TESTED OBJECTS
         //====================================================================//
-        $objectTypes = Splash::objects();
+        $objectTypes = AbstractClient::objects();
         foreach ($objectTypes as $key => $objectType) {
             //====================================================================//
             //   Filter Tested Object Types  =>> Skip
@@ -112,8 +112,8 @@ class C00StartupTest extends TestCase
         //====================================================================//
         // Check if Local Tests Sequences are defined
         $testSequences = "None";
-        if (!empty(Splash::local()->testSequences("List"))) {
-            $testSequences = Splash::local()->testSequences("List");
+        if (!empty(AbstractClient::local()->testSequences("List"))) {
+            $testSequences = AbstractClient::local()->testSequences("List");
         }
         if ("None" === $testSequences) {
             return;
@@ -142,7 +142,7 @@ class C00StartupTest extends TestCase
 
         //====================================================================//
         //   Filter Tested Object Fields  =>> Skip
-        $config = Splash::constant("SPLASH_FIELDS") ?? Splash::env("SPLASH_FIELDS");
+        $config = AbstractClient::constant("SPLASH_FIELDS") ?? AbstractClient::env("SPLASH_FIELDS");
         if ($config) {
             /** @var array|false $fields */
             $fields = explode(",", $config);

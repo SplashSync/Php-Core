@@ -16,7 +16,7 @@
 namespace Splash\Tests\WsAdmin;
 
 use Exception;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 use Splash\Tests\Tools\AbstractBaseCase;
 
 /**

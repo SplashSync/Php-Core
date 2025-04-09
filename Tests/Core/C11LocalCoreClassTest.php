@@ -16,8 +16,7 @@
 namespace Splash\Tests\Core;
 
 use ArrayObject;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\Helpers\SplashUrlHelper;
+use Splash\Core\Helpers\System\ConfigFromEnv;
 use Splash\Tests\Tools\TestCase;
 
 /**
@@ -36,11 +35,11 @@ class C11LocalCoreClassTest extends TestCase
         //   VERIFY LOCAL PARAMETERS READING
         //====================================================================//
 
-        $parameters = Splash::local()->parameters();
+        $parameters = AbstractClient::local()->parameters();
 
         //====================================================================//
         // Complete Local Configuration with ENV Variables
-        SplashUrlHelper::completeParameters($parameters);
+        ConfigFromEnv::complete($parameters);
 
         //====================================================================//
         //   Verify Parameters
@@ -54,7 +53,7 @@ class C11LocalCoreClassTest extends TestCase
         //====================================================================//
         //   Verify Module Parsing
         $this->assertTrue(
-            Splash::validate()->isValidLocalParameterArray($parameters),
+            AbstractClient::validate()->isValidLocalParameterArray($parameters),
             "Local Parameter Module's Verifictaion failled."
         );
     }
@@ -68,7 +67,7 @@ class C11LocalCoreClassTest extends TestCase
         //   VERIFY LOCAL INCLUDES PASS & REPEATABLE
         //====================================================================//
         for ($i = 0; $i < 5; $i++) {
-            $this->assertTrue(Splash::local()->includes(), "Local Include Must Return True & be repeatable.");
+            $this->assertTrue(AbstractClient::local()->includes(), "Local Include Must Return True & be repeatable.");
         }
     }
 
@@ -81,7 +80,7 @@ class C11LocalCoreClassTest extends TestCase
         //   VERIFY LOCAL SELFTEST PASS & REPEATABLE
         //====================================================================//
         for ($i = 0; $i < 5; $i++) {
-            $this->assertTrue(Splash::local()->selfTest(), "Local SelfTest Must Return True (Passed) & be repeatable.");
+            $this->assertTrue(AbstractClient::local()->selfTest(), "Local SelfTest Must Return True (Passed) & be repeatable.");
         }
     }
 
@@ -100,7 +99,7 @@ class C11LocalCoreClassTest extends TestCase
 
         //====================================================================//
         // Fetch Informations
-        $output = Splash::local()->informations($input);
+        $output = AbstractClient::local()->informations($input);
 
         //====================================================================//
         //   Verify Informations
@@ -120,6 +119,6 @@ class C11LocalCoreClassTest extends TestCase
 
         //====================================================================//
         //   Verify Module Parsing
-        $this->assertNotEmpty(Splash::informations(), "Module Informations Reading failled.");
+        $this->assertNotEmpty(AbstractClient::informations(), "Module Informations Reading failled.");
     }
 }

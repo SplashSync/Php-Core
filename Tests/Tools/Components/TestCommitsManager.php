@@ -15,8 +15,8 @@
 
 namespace Splash\Tests\Tools\Components;
 
-use Splash\Client\CommitEvent;
-use Splash\Components\CommitsManager;
+use Splash\Core\Client\CommitEvent;
+use Splash\Core\Components\CommitsManager;
 
 class TestCommitsManager extends CommitsManager
 {

@@ -15,10 +15,9 @@
 
 namespace Splash\Tests\WsObjects;
 
-use ArrayObject;
 use Exception;
-use Splash\Client\Splash;
-use Splash\Models\Fields\ObjectField;
+use Splash\Core\Client\Splash;
+use Splash\Core\Fields\ObjectField;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**

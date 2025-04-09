@@ -15,7 +15,7 @@
 
 namespace Splash\Tests\Tools\Fields;
 
-use Splash\Models\Helpers\InlineHelper;
+use Splash\Core\Helpers\InlineHelper;
 
 /**
  * Inline Field : Inline Simple Json List

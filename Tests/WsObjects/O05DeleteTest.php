@@ -16,8 +16,8 @@
 namespace Splash\Tests\WsObjects;
 
 use Exception;
-use Splash\Client\Splash;
-use Splash\Components\CommitsManager;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\CommitsManager;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
@@ -248,7 +248,7 @@ class O05DeleteTest extends ObjectsCase
         $this->assertNotEmpty($data, "Object Delete Response is Not True");
         //====================================================================//
         //   Verify Object Change Was Committed
-        $this->assertIsLastCommitted(SPL_A_DELETE, $objectType, (string) $objectId);
+        $this->assertIsLastCommitted(SplOperations::DELETE, $objectType, (string) $objectId);
         //====================================================================//
         //   Verify Repeating Delete as Same Result
         $repeatedResponse = Splash::object($objectType)->delete((string) $objectId);

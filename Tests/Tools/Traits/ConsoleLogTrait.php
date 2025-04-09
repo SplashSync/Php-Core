@@ -15,7 +15,7 @@
 
 namespace Splash\Tests\Tools\Traits;
 
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 use Throwable;
 
 /**

@@ -16,8 +16,8 @@
 namespace Splash\Tests\Tools\Traits;
 
 use Exception;
-use Splash\Client\Splash;
-use Splash\Components\CommitsManager;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\CommitsManager;
 
 /**
  * Splash Test Tools - Objects Fields Management
@@ -201,7 +201,7 @@ trait ObjectsSetTestsTrait
         $this->assertIsString($objectId, 'Returned New Object Id is Empty');
         //====================================================================//
         //   Verify Response
-        $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $objectData);
+        $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SplOperations::UPDATE : SplOperations::CREATE), $objectData);
         //====================================================================//
         // UnLock New Objects To Avoid Action Commit
         Splash::object($objectType)->unLock();
@@ -244,7 +244,7 @@ trait ObjectsSetTestsTrait
         $this->assertIsString($objectId, 'Returned New Object Id is Empty');
         //====================================================================//
         //   Verify Response
-        $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SPL_A_UPDATE : SPL_A_CREATE), $objectData);
+        $this->verifySetResponse($objectType, $objectId, ($forceObjectId ? SplOperations::UPDATE : SplOperations::CREATE), $objectData);
         //====================================================================//
         // UnLock New Objects To Avoid Action Commit
         Splash::object($objectType)->unLock();

@@ -16,8 +16,7 @@
 namespace Splash\Tests\Managers;
 
 use PHPUnit\Framework\TestCase;
-use Splash\Components\FieldsManager;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Components\FieldsManager;
 
 /**
  * Components Test Suite - Fields Manager Verifications
@@ -37,7 +36,7 @@ class C50FieldsManagerTest extends TestCase
         parent::setUp();
         //====================================================================//
         // BOOT MODULE
-        Splash::core();
+        AbstractClient::core();
     }
 
     //==============================================================================
@@ -156,7 +155,7 @@ class C50FieldsManagerTest extends TestCase
     {
         //====================================================================//
         // BOOT MODULE
-        Splash::core();
+        AbstractClient::core();
 
         return array(
             array(null,                 null),

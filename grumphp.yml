@@ -20,15 +20,10 @@
 # Override Config. for Php Core Module
 parameters:
     mode:               "splashsync"
-    exclude:            ['vendor', "nusoap.php", 'soap.php', 'Components/NuSOAP', 'Templates/Local/Objects/Dummy']
-    # Php Cs Fixer
-    csfixer-config:     "Resources/phpcs/cs.%mode%.php"
-    # Php Stan
-    stan-config:        "./Resources/phpstan/phpstan.neon"
-#     stan-level:        8
+    exclude:            ['vendor', "nusoap.php", 'soap.php', 'src/Components/NuSOAP', 'Templates/Local/Objects/Dummy', 'Tests']
 
     # For Building Splash Documentation
-    doc-src:            '/Resources/docs'
+    doc-src:            'src/Resources/docs'
     doc-target:         '/public'
     doc-contents:       ["splash-faq"]
 
