@@ -13,10 +13,22 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Core;
+namespace Splash\Core\Models\Client;
 
-trait ToolsCoreTrait
+use Splash\Core\Client\Splash;
+
+/**
+ * Collection of Framework Tooling Methods
+ */
+trait ToolsTrait
 {
+    /**
+     * Temporary Storage for Test Inputs
+     *
+     * @var array<string, null|string>
+     */
+    private static array $testInputs = array();
+
     /**
      * Secured reading of Constants
      *
@@ -62,6 +74,11 @@ trait ToolsCoreTrait
     public static function input(string $name, int $type = INPUT_SERVER): ?string
     {
         //====================================================================//
+        // Replace Values for PhpUnit Testing
+        if (Splash::isDebugMode() && array_key_exists($name, self::$testInputs)) {
+            return self::$testInputs[$name];
+        }
+        //====================================================================//
         // Standard Safe Reading
         $result = filter_input($type, $name);
         if (is_scalar($result)) {
@@ -87,6 +104,16 @@ trait ToolsCoreTrait
         }
 
         return is_scalar($value) ? (string) $value : null;
+    }
+
+    /**
+     * Mock / Force reading of Server SuperGlobals
+     */
+    public static function mockInputs(string $name, ?string $value): void
+    {
+        if (Splash::isDebugMode()) {
+            self::$testInputs[$name] = $value;
+        }
     }
 
     /**

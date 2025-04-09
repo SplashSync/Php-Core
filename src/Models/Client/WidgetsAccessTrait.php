@@ -13,24 +13,18 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Core;
+namespace Splash\Core\Models\Client;
 
 use Exception;
-use Splash\Models\Widgets\WidgetInterface;
-use Splash\Models\WidgetsProviderInterface;
-
-//====================================================================//
-//********************************************************************//
-//====================================================================//
-//  SPLASH REMOTE FRAMEWORK CORE CLASS
-//====================================================================//
-//********************************************************************//
-//====================================================================//
+use Splash\Core\Components\FilesLoader;
+use Splash\Core\Dictionary\SplDefinition;
+use Splash\Core\Interfaces\Local\WidgetsProviderInterface;
+use Splash\Core\Models\Widgets\WidgetInterface;
 
 /**
  * Core Functions for Access to Splash Widgets
  */
-trait WidgetsCoreTrait
+trait WidgetsAccessTrait
 {
     /**
      * Splash Widgets Class Buffer
@@ -41,13 +35,12 @@ trait WidgetsCoreTrait
 
     /**
      * Get Specific Widget Class
+     *
      * This function is a router for all local widgets classes & functions
      *
      * @param string $widgetType Local Widget Class Name
      *
      * @throws Exception
-     *
-     * @return WidgetInterface
      */
     public static function widget(string $widgetType): WidgetInterface
     {
@@ -56,23 +49,22 @@ trait WidgetsCoreTrait
         if (array_key_exists($widgetType, self::core()->widgets)) {
             return self::core()->widgets[$widgetType];
         }
-
         //====================================================================//
         // Verify if Widget Class is Valid
         if (!self::validate()->isValidWidget($widgetType)) {
             throw new Exception('You requested access to an Invalid Widget Type : '.$widgetType);
         }
-
         //====================================================================//
         // Check if Widget Manager is Override
-        if (self::local() instanceof WidgetsProviderInterface) {
+        $local = self::local();
+        if ($local instanceof WidgetsProviderInterface) {
             //====================================================================//
             // Initialize Local Widget Manager
-            self::core()->widgets[$widgetType] = self::local()->widget($widgetType);
+            self::core()->widgets[$widgetType] = $local->widget($widgetType);
         } else {
             //====================================================================//
             // Initialize Class
-            $className = SPLASH_CLASS_PREFIX.'\\Widgets\\'.$widgetType;
+            $className = SplDefinition::WIDGETS_PREFIX.$widgetType;
             if (!class_exists($className) || !is_subclass_of($className, WidgetInterface::class)) {
                 throw new Exception('Invalid Widget Class : '.$className);
             }
@@ -80,7 +72,7 @@ trait WidgetsCoreTrait
         }
 
         //====================================================================//
-        //  Load Translation File
+        // Load Translation File
         self::translator()->load('widgets');
 
         return self::core()->widgets[$widgetType];
@@ -97,30 +89,18 @@ trait WidgetsCoreTrait
     {
         //====================================================================//
         // Check if Widget Manager has Overrides
-        if (self::local() instanceof WidgetsProviderInterface) {
-            return self::local()->widgets();
+        $local = self::local();
+        if ($local instanceof WidgetsProviderInterface) {
+            return $local->widgets();
         }
         $widgetTypes = array();
         //====================================================================//
-        // Safety Check => Verify Objects Folder Exists
-        $path = self::getLocalPath().'/Widgets';
-        if (!is_dir($path)) {
-            return $widgetTypes;
-        }
-        //====================================================================//
-        // Scan Local Objects Folder
-        $scan = scandir($path, 1);
-        if (false == $scan) {
-            return $widgetTypes;
-        }
-        //====================================================================//
-        // Scan Each File in Folder
-        $files = array_diff($scan, array('..', '.', 'index.php', 'index.html'));
-        foreach ($files as $filename) {
-            $className = pathinfo($path.'/'.$filename, PATHINFO_FILENAME);
+        // Load Objects from Local Objects Path
+        $files = FilesLoader::load(self::getLocalPath().'/Widgets', 'php', 0);
+        foreach (array_keys($files) as $className) {
             //====================================================================//
             // Verify ClassName is a Valid Object File
-            if (false == self::validate()->isValidWidget($className)) {
+            if (!self::validate()->isValidWidget($className)) {
                 continue;
             }
             $widgetTypes[] = $className;

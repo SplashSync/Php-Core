@@ -13,31 +13,23 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Core;
+namespace Splash\Core\Models\Client;
 
-use Splash\Components\FileManager;
-use Splash\Components\Logger;
-use Splash\Components\NuSOAP\NuSOAPInterface;
-use Splash\Components\Router;
-use Splash\Components\SOAP\SOAPInterface;
-use Splash\Components\Translator;
-use Splash\Components\Validator;
-use Splash\Components\Webservice;
-use Splash\Components\XmlManager;
-use Splash\Models\CommunicationInterface;
-
-//====================================================================//
-//********************************************************************//
-//====================================================================//
-//  SPLASH REMOTE FRAMEWORK CORE CLASS
-//====================================================================//
-//********************************************************************//
-//====================================================================//
+use Splash\Core\Components\FileManager;
+use Splash\Core\Components\Logger;
+use Splash\Core\Components\NuSOAP\NuSOAPInterface;
+use Splash\Core\Components\Router;
+use Splash\Core\Components\SOAP\SOAPInterface;
+use Splash\Core\Components\Translator;
+use Splash\Core\Components\Validator;
+use Splash\Core\Components\Webservice;
+use Splash\Core\Components\XmlManager;
+use Splash\Core\Interfaces\CommunicationInterface;
 
 /**
  * Simple & Core Functions for Services Classes
  */
-trait ServicesCoreTrait
+trait ServicesTrait
 {
     /**
      * Splash Webservice Component

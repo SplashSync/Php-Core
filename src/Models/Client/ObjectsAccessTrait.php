@@ -13,26 +13,19 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Core;
+namespace Splash\Core\Models\Client;
 
 use Exception;
-use Splash\Components\ExtensionsManager;
-use Splash\Components\FilesLoader;
-use Splash\Models\Objects\ObjectInterface;
-use Splash\Models\ObjectsProviderInterface;
-
-//====================================================================//
-//********************************************************************//
-//====================================================================//
-//  SPLASH REMOTE FRAMEWORK CORE CLASS
-//====================================================================//
-//********************************************************************//
-//====================================================================//
+use Splash\Core\Components\ExtensionsManager;
+use Splash\Core\Components\FilesLoader;
+use Splash\Core\Dictionary\SplDefinition;
+use Splash\Core\Interfaces\Local\ObjectsProviderInterface;
+use Splash\Core\Interfaces\Object\ObjectInterface;
 
 /**
  * Core Functions for Access to Splash Objects
  */
-trait ObjectsCoreTrait
+trait ObjectsAccessTrait
 {
     /**
      * Splash Objects Class Buffer
@@ -43,13 +36,12 @@ trait ObjectsCoreTrait
 
     /**
      * Get Specific Object Class
+     *
      * This function is a router for all local object classes & functions
      *
      * @param string $objectType Local Object Class Name
      *
      * @throws Exception
-     *
-     * @return ObjectInterface
      */
     public static function object(string $objectType): ObjectInterface
     {
@@ -66,14 +58,15 @@ trait ObjectsCoreTrait
 
         //====================================================================//
         // Check if Object Manager has Override
-        if (self::local() instanceof ObjectsProviderInterface) {
+        $local = self::local();
+        if ($local instanceof ObjectsProviderInterface) {
             //====================================================================//
             // Initialize Local Object Manager
-            self::core()->objects[$objectType] = self::local()->object($objectType);
+            self::core()->objects[$objectType] = $local->object($objectType);
         } else {
             //====================================================================//
             // Initialize Standard Class
-            $className = SPLASH_CLASS_PREFIX.'\\Objects\\'.$objectType;
+            $className = SplDefinition::OBJECTS_PREFIX.$objectType;
             if (!class_exists($className) || !is_subclass_of($className, ObjectInterface::class)) {
                 throw new Exception('Invalid Object Class : '.$className);
             }
@@ -81,7 +74,7 @@ trait ObjectsCoreTrait
         }
 
         //====================================================================//
-        //  Load Translation File
+        // Load Translation File
         self::translator()->load('objects');
 
         return self::core()->objects[$objectType];
@@ -98,8 +91,9 @@ trait ObjectsCoreTrait
     {
         //====================================================================//
         // Check if Object Manager has Overrides
-        if (self::local() instanceof ObjectsProviderInterface) {
-            return self::local()->objects();
+        $local = self::local();
+        if ($local instanceof ObjectsProviderInterface) {
+            return $local->objects();
         }
         $objectsList = array();
         //====================================================================//
@@ -108,12 +102,14 @@ trait ObjectsCoreTrait
         foreach (array_keys($files) as $className) {
             //====================================================================//
             // Verify ClassName is a Valid Object File
-            if (false == self::validate()->isValidObject($className)) {
+            if (!self::validate()->isValidObject($className)) {
                 continue;
             }
             $objectsList[] = $className;
         }
 
+        //====================================================================//
+        // Load Objects from Extensions
         return array_merge($objectsList, array_keys(ExtensionsManager::getObjects()));
     }
 }
