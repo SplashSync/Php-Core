@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
-use Splash\Models\Fields\FieldsManagerTrait;
+use Splash\Core\Fields\FieldsManagerTrait;
 
 /**
  * Fields Definition & Data Manager

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,12 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components\NuSOAP;
+namespace Splash\Core\Components\NuSOAP;
 
 use nusoap_client;
 use nusoap_server;
-use Splash\Core\SplashCore      as Splash;
-use Splash\Models\CommunicationInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Interfaces\CommunicationInterface;
 
 /**
  * Communication Interface Class for NuSOAP Webservice
@@ -71,7 +71,7 @@ class NuSOAPInterface implements CommunicationInterface
         //====================================================================//
         // Define Timeout for client response
         $this->client->response_timeout = Splash::configuration()->WsTimout;
-        
+
         return $this;
     }
 

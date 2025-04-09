@@ -13,12 +13,14 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
 use DateTime;
 use Exception;
-use Splash\Client\CommitEvent;
-use Splash\Client\Splash;
+use Splash\Core\Client\CommitEvent;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\Methods\SplObjectMethods as Methods;
+use Splash\Core\Dictionary\SplServices;
 
 /**
  * Splash Webservice Changes Commit Manager
@@ -53,7 +55,7 @@ class CommitsManager
      *
      * @param string                    $objectType Object Type Name
      * @param int|int[]|string|string[] $local      Local Object IDs or Array of Local Ids
-     * @param string                    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string                    $action     Action Type (See SplOperations)
      * @param string                    $user       User Name
      * @param string                    $comment    Operation Comment for Historic
      *
@@ -304,7 +306,7 @@ class CommitsManager
      *
      * @param string                    $objectType Object Type Name
      * @param int|int[]|string|string[] $local      Object Local ID or Array of Local IDs
-     * @param string                    $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string                    $action     Action Type (See SplOperations)
      * @param null|string               $user       User Name
      * @param null|string               $comment    Operation Comment for logs
      *
@@ -440,10 +442,10 @@ class CommitsManager
         Splash::log()->trace();
         //====================================================================//
         // Add Task to Ws Task List
-        Splash::ws()->addTask(SPL_F_COMMIT, $commitEvent->toArray(), $commitEvent->getDescription());
+        Splash::ws()->addTask(Methods::COMMIT, $commitEvent->toArray(), $commitEvent->getDescription());
         //====================================================================//
         // Execute Task
-        $response = Splash::ws()->call(SPL_S_OBJECTS);
+        $response = Splash::ws()->call(SplServices::OBJECTS);
 
         //====================================================================//
         // Analyze results

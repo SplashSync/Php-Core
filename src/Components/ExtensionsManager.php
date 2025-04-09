@@ -13,10 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\Extensions;
+use Splash\Core\Client\Splash;
+use Splash\Core\Models\Extensions;
 
 /**
  * Manage Objects User Extensions
@@ -33,7 +33,7 @@ class ExtensionsManager
      *
      * @var array<string, string>
      */
-    private static $extensions = array();
+    private static array $extensions = array();
 
     /**
      * Self Tests of Splash Extensions Configuration

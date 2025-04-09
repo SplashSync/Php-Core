@@ -13,13 +13,14 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components\SOAP;
+namespace Splash\Core\Components\SOAP;
 
 use Exception;
 use SoapClient;
 use SoapServer;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\CommunicationInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplServices;
+use Splash\Core\Interfaces\CommunicationInterface;
 
 /**
  * Communication Interface Class for PHP SOAP Webservice
@@ -67,7 +68,8 @@ class SOAPInterface implements CommunicationInterface
         //====================================================================//
         // Store Client Url
         $this->uri = Splash::input('SERVER_NAME')
-                ?: Splash::configuration()->WsHost;
+                ?: Splash::configuration()->WsHost
+        ;
 
         //====================================================================//
         // Build Options Array
@@ -145,12 +147,12 @@ class SOAPInterface implements CommunicationInterface
         ));
         //====================================================================//
         // Register a method available for clients
-        $this->server->addFunction(SPL_S_PING);        // Check Slave Availability
-        $this->server->addFunction(SPL_S_CONNECT);      // Verify Connection Parameters
-        $this->server->addFunction(SPL_S_ADMIN);        // Administrative requests
-        $this->server->addFunction(SPL_S_OBJECTS);      // Main Object management requests
-        $this->server->addFunction(SPL_S_FILE);         // Files management requests
-        $this->server->addFunction(SPL_S_WIDGETS);      // Informations requests
+        $this->server->addFunction(SplServices::PING);         // Check Slave Availability
+        $this->server->addFunction(SplServices::CONNECT);      // Verify Connection Parameters
+        $this->server->addFunction(SplServices::ADMIN);        // Administrative requests
+        $this->server->addFunction(SplServices::OBJECTS);      // Main Object management requests
+        $this->server->addFunction(SplServices::FILE);         // Files management requests
+        $this->server->addFunction(SplServices::WIDGETS);      // Informations requests
     }
 
     /**

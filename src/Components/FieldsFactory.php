@@ -13,11 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\AbstractConfigurator;
-use Splash\Models\Fields\ObjectField;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\Fields\SplSyncMode;
+use Splash\Core\Fields\ObjectField;
+use Splash\Core\Models\AbstractConfigurator;
 
 /**
  * This Class is a Generator for Objects Fields Definition
@@ -26,29 +27,6 @@ use Splash\Models\Fields\ObjectField;
  */
 class FieldsFactory
 {
-    //==============================================================================
-    //  Favorites Sync Modes
-    //==============================================================================
-
-    const MODE_BOTH = ObjectField::MODE_BOTH;
-    const MODE_READ = ObjectField::MODE_READ;
-    const MODE_WRITE = ObjectField::MODE_WRITE;
-    const MODE_NONE = ObjectField::MODE_NONE;
-
-    //==============================================================================
-    //  Meta Data Access MicroDatas
-    //==============================================================================
-
-    const META_URL = ObjectField::META_URL;                             // Splash Specific Schemas Url.
-    const META_OBJECTID = ObjectField::META_OBJECTID;                   // Splash Object Id.
-    const META_DATECREATED = ObjectField::META_DATECREATED;             // Splash Object Create Date.
-    const META_ORIGIN_NODE_ID = ObjectField::META_ORIGIN_NODE_ID;       // Object Source Server Identifier
-    const META_ORIGIN_NODE_NAME = ObjectField::META_ORIGIN_NODE_NAME;   // Object Source Server Name
-
-    //====================================================================//
-    // Data Storage
-    //====================================================================//
-
     /**
      * New Object Field Storage
      *
@@ -461,7 +439,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->setSyncMode(self::MODE_READ);
+            $this->new->setSyncMode(SplSyncMode::READ);
         }
 
         return $this;
@@ -481,7 +459,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->setSyncMode(self::MODE_WRITE);
+            $this->new->setSyncMode(SplSyncMode::WRITE);
         }
 
         return $this;
@@ -501,7 +479,7 @@ class FieldsFactory
         } else {
             //====================================================================//
             // Update New Field structure
-            $this->new->setSyncMode(self::MODE_NONE);
+            $this->new->setSyncMode(SplSyncMode::NONE);
         }
 
         return $this;

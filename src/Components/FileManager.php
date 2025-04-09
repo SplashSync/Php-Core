@@ -17,9 +17,11 @@
  * Low Level Files Management Class
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\Methods\SplFilesMethods as Methods;
+use Splash\Core\Dictionary\SplServices;
 
 /**
  * Splash File Manager
@@ -54,13 +56,13 @@ class FileManager
         //====================================================================//
         // Add Task to Ws Task List
         Splash::ws()->addTask(
-            SPL_F_GETFILE,
+            Methods::GET,
             array("file" => $file, "md5" => $md5),
             Splash::trans("MsgSchRemoteReadFile", (string) $file)
         );
         //====================================================================//
         // Execute Task
-        $response = Splash::ws()->call(SPL_S_FILE);
+        $response = Splash::ws()->call(SplServices::FILE);
 
         //====================================================================//
         // Return First Task Result
