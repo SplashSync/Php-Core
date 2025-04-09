@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects;
+namespace Splash\Core\Models\Objects;
 
 /**
  * This class implements Objects Update Flag
@@ -36,9 +36,9 @@ trait UpdateFlagTrait
      * @note    This flag is set when an update is done during Set Operation.
      *          Using this flag is useful to reduce exchanges with databases
      *
-     * @var bool
+     * @var array<string, bool>
      */
-    private $custom = array();
+    private array $custom = array();
 
     //====================================================================//
     //  Update Flag Management

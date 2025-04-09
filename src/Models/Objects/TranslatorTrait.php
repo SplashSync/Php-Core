@@ -13,12 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects;
+namespace Splash\Core\Models\Objects;
 
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 
 /**
- * @abstract    Implement Translator Management using Splash Translator
+ * Implement Translator Management using Splash Translator
  */
 trait TranslatorTrait
 {
@@ -59,7 +59,7 @@ trait TranslatorTrait
         string $param3 = '',
         string $param4 = '',
         int $maxsize = 0
-    ) {
+    ): string {
         return Splash::translator()->translate($key, $param1, $param2, $param3, $param4, $maxsize);
     }
 }

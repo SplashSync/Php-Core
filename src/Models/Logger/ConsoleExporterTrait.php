@@ -13,10 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Logger;
+namespace Splash\Core\Models\Logger;
 
 /**
- * Splash Logger - Console Exports Managment
+ * Splash Logger - Console Exports Management
  */
 trait ConsoleExporterTrait
 {

@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects;
+namespace Splash\Core\Models\Objects;
 
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Object Lock Management (Used to prevent unexpected Commit during remote actions)

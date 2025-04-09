@@ -13,31 +13,32 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects;
+namespace Splash\Core\Models\Objects;
 
 use DateTime;
 use Exception;
+use Splash\Core\Helpers\ObjectsHelper;
 
 /**
- * Generic Doctrine Objects Fields Read & Write Helper
+ * Generic Object Getters & Setters Fields Read & Write Helper
  */
 trait GenericFieldsTrait
 {
-    use ObjectsTrait;
+    use UpdateFlagTrait;
 
     /**
      * Field name to method Parsing Format
      *
      * @var string
      */
-    private static $methodFormat = "camelCase";
+    private static string $methodFormat = "camelCase";
 
     /**
      * Available Parsing methods
      *
-     * @var array
+     * @var string[]
      */
-    private static $allowedFormats = array(
+    private static array $allowedFormats = array(
         "camelCase", "PascalCase", "snake_case"
     );
 
@@ -53,13 +54,14 @@ trait GenericFieldsTrait
     protected function getGenericObject(string $fieldName, string $objectType, string $objectName = "object"): self
     {
         //====================================================================//
-        // Load Pointed Object Id
+        // Load Pointed Object ID
         $objectId = $this->getObjectId($fieldName, $objectName);
         //====================================================================//
         // Push Object Id to Buffer
         $this->out[$fieldName] = $objectId
-                ? self::objects()->encode($objectType, $objectId)
-                : null;
+            ? ObjectsHelper::encode($objectType, $objectId)
+            : null
+        ;
 
         return $this;
     }
@@ -76,9 +78,9 @@ trait GenericFieldsTrait
      */
     protected function setGenericObject(
         string $fieldName,
-        $fieldData,
+        mixed  $fieldData,
         string $objectName = "object",
-        bool $nullable = true
+        bool   $nullable = true
     ): self {
         //====================================================================//
         // Load New Object Id

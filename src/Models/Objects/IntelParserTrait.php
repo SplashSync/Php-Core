@@ -13,10 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects;
+namespace Splash\Core\Models\Objects;
 
-use Splash\Components\ExtensionsManager;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\ExtensionsManager;
+use Splash\Core\Helpers\ListsHelper;
 use TypeError;
 
 /**
@@ -393,7 +394,7 @@ trait IntelParserTrait
     {
         //====================================================================//
         // Detect List Field Names
-        if (!method_exists($this, "Lists") || !self::lists()->listName($fieldId)) {
+        if (!method_exists($this, "Lists") || !ListsHelper::listName($fieldId)) {
             //====================================================================//
             // Simple Field is Required but not available
             if (empty($this->in[$fieldId])) {
@@ -404,8 +405,8 @@ trait IntelParserTrait
         }
         //====================================================================//
         // List Field is required
-        $listName = self::lists()->listName($fieldId);
-        $fieldName = self::lists()->fieldName($fieldId);
+        $listName = ListsHelper::listName($fieldId);
+        $fieldName = ListsHelper::fieldName($fieldId);
         //====================================================================//
         // Check List is available
         if (empty($this->in[$listName])) {

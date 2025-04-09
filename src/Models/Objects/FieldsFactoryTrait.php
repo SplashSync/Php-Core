@@ -13,10 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects;
+namespace Splash\Core\Models\Objects;
 
-use Splash\Components\FieldsFactory;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\FieldsFactory;
 
 /**
  * Implement Access to Fields Factory using Splash Static Class
@@ -31,8 +31,6 @@ trait FieldsFactoryTrait
     /**
      * Get a singleton FieldsFactory Class
      * Access to Object Fields Creation Functions
-     *
-     * @return FieldsFactory
      */
     public static function fieldsFactory(): FieldsFactory
     {

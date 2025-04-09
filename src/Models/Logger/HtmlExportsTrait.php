@@ -13,10 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Logger;
+namespace Splash\Core\Models\Logger;
 
 /**
- * Splash Logger - Html Exports Managment
+ * Splash Logger - Html Exports Management
  */
 trait HtmlExportsTrait
 {

@@ -13,10 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects;
+namespace Splash\Core\Models\Objects;
 
-use Splash\Components\ExtensionsManager;
-use Splash\Components\FieldsManager;
+use Splash\Core\Components\ExtensionsManager;
+use Splash\Core\Components\FieldsManager;
 
 /**
  * Build, Read & Write All Splash Extensions Fields

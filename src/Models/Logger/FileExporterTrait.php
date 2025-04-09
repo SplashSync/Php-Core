@@ -13,12 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Logger;
+namespace Splash\Core\Models\Logger;
 
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 
 /**
- * Splash Logger - File Exports Managment
+ * Splash Logger - File Exports Management
  */
 trait FileExporterTrait
 {
@@ -39,10 +39,7 @@ trait FileExporterTrait
         }
         //====================================================================//
         // Detect Log File Directory
-        $logfile = dirname(__DIR__).'/splash.log';
-        if (defined('SPLASH_DIR') && realpath(SPLASH_DIR)) {
-            $logfile = realpath(SPLASH_DIR).'/splash.log';
-        }
+        $logfile = Splash::getLocalPath().'/splash.log';
         //====================================================================//
         // Open Log File
         $fileFd = @fopen($logfile, 'a+');
@@ -70,7 +67,7 @@ trait FileExporterTrait
     {
         //====================================================================//
         // Safety Check
-        if (false == Splash::configuration()->Logging) {
+        if (empty(Splash::configuration()->Logging)) {
             return true;
         }
         //====================================================================//
