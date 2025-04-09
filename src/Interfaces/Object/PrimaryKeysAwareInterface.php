@@ -13,20 +13,16 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects;
+namespace Splash\Core\Interfaces\Object;
 
 /**
  * Splash Objects Primary Keys Aware Interface
- *
- * This is Interface add Primary Keys Features to Splash Objects
  * This is Interface is Optional
+ *
+ * This Interface add Primary Keys Features to Splash any Object
  */
 interface PrimaryKeysAwareInterface
 {
-    //====================================================================//
-    // Object Primary Keys Management
-    //====================================================================//
-
     /**
      * Identify Object Using Primary Keys
      *
