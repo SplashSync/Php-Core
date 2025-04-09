@@ -20,7 +20,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Splash\Core\Client\Splash;
 use Splash\Core\Interfaces\Local\LocalClassInterface;
-use Splash\Core\Models\Widgets\WidgetInterface;
+use Splash\Core\Interfaces\Widgets\WidgetInterface;
 
 /**
  * Core Test Suite - Verify Widgets Availability & Methods
