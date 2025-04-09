@@ -1,0 +1,170 @@
+<?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
+namespace Splash\Local;
+
+use ArrayObject;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplDefinition;
+use Splash\Core\Helpers\System\ConfigFromEnv;
+use Splash\Core\Interfaces\Local\LocalClassInterface;
+use Splash\Core\Models\BaseClient;
+
+/**
+ * Php Core Local Class for Testing
+ */
+class Local implements LocalClassInterface
+{
+    //====================================================================//
+    // General Class Variables
+    // Place Here Any SPECIFIC Variable for your Core Module Class
+    //====================================================================//
+
+    //====================================================================//
+    // Class Constructor
+    //====================================================================//
+
+    /**
+     * Class Constructor (Used only if locally necessary)
+     */
+    public function __construct()
+    {
+        //====================================================================//
+        // Place Here Any SPECIFIC Initialisation Code
+        //====================================================================//
+    }
+
+    //====================================================================//
+    // *******************************************************************//
+    //  MANDATORY CORE MODULE LOCAL FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
+
+    /**
+     * {@inheritDoc}
+     */
+    public function parameters(): array
+    {
+        //====================================================================//
+        // Setup default connexion if not defined by Env
+        if (empty(Splash::input(ConfigFromEnv::CONNEXION, INPUT_ENV))) {
+            return array(
+                "WsIdentifier" => "ThisIsCoreModuleWsIdentifier",
+                "WsEncryptionKey" => "ThisIsCoreModuleWsEncryptionKey",
+            );
+        }
+
+        return array();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function includes(): bool
+    {
+        //====================================================================//
+        // When Library is called in server mode ONLY
+        //====================================================================//
+        if (BaseClient::isServerMode()) {
+            //====================================================================//
+            // When Library is called in client mode ONLY
+            //====================================================================//
+            // NOTHING TO DO
+        }
+
+        //====================================================================//
+        // When Library is called in both client & server mode
+        //====================================================================//
+        // NOTHING TO DO
+
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function selfTest(): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function informations(ArrayObject $informations): ArrayObject
+    {
+        //====================================================================//
+        // Company Informations
+        $informations->company = "...";
+        $informations->address = "...";
+        $informations->zip = "...";
+        $informations->town = "...";
+        $informations->country = "...";
+        $informations->www = "...";
+        $informations->email = "...";
+        $informations->phone = "...";
+
+        //====================================================================//
+        // Server Logo & Images
+        $informations->icoraw = BaseClient::file()->readFileContents(
+            dirname(__DIR__, 3)."/img/Splash-ico.png"
+        );
+        $informations->logourl = "https://www.splashsync.com/bundles/theme/img/splash-logo.png";
+
+        //====================================================================//
+        // Server Informations
+        $informations->servertype = "Splash Php Core";
+        $informations->serverurl = "https://www.splashsync.com";
+
+        //====================================================================//
+        // Current Module Version
+        $informations->moduleversion = SplDefinition::VERSION;
+
+        return $informations;
+    }
+
+    //====================================================================//
+    // *******************************************************************//
+    //  OPTIONAl CORE MODULE LOCAL FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
+
+    /**
+     * {@inheritDoc}
+     */
+    public function testSequences(string $name = null): array
+    {
+        switch ($name) {
+            case "Sequence1":
+            case "Sequence2":
+                // DO SEQUENCE SETUP
+                return array();
+            case "List":
+                return array("Sequence1", "Sequence2" );
+        }
+
+        return array();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function testParameters(): array
+    {
+        //====================================================================//
+        // Init Parameters Array
+        return array();
+    }
+}

@@ -13,17 +13,13 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Helpers;
+namespace Splash\Local\Widgets;
 
-class DatesHelper
+use Splash\Core\Templates\Local\Widgets\SelfTestTemplate;
+
+/**
+ * Flat Config SelfTest
+ */
+class SelfTest extends SelfTestTemplate
 {
-    /**
-     * Date / Day Only Timestamps Format for Splash
-     */
-    const DATE_CAST = 'Y-m-d';
-
-    /**
-     * Datetime Day + Hour Timestamps Format for Splash
-     */
-    const DATETIME_CAST = 'Y-m-d H:i:s';
 }
