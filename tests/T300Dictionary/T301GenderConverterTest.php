@@ -13,15 +13,16 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Managers;
+namespace Splash\Core\Tests\T300Dictionary;
 
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
-use Splash\Models\Objects\ThirdParty\Civility;
+use Splash\Core\Dictionary\Objects\ThirdParty\Civility;
 
 /**
- * Models Test Suite - ThirdParty Gender Converter Verifications
+ * Dictionary Test Suite - ThirdParty Gender Converter Verifications
  */
-class C80GenderConverterTest extends TestCase
+class T301GenderConverterTest extends TestCase
 {
     //==============================================================================
     // Gender Converters
@@ -34,7 +35,7 @@ class C80GenderConverterTest extends TestCase
      */
     public function testToSplashMethod(string $source, ?string $target): void
     {
-        $this->assertSame($target, Civility::toSplash($source));
+        Assert::assertSame($target, Civility::toSplash($source));
     }
 
     /**
@@ -44,7 +45,7 @@ class C80GenderConverterTest extends TestCase
      */
     public function testToAppMethod(string $source, ?string $target): void
     {
-        $this->assertSame(
+        Assert::assertSame(
             $target,
             Civility::toApp($source)
         );
