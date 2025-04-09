@@ -13,14 +13,14 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Tools\Traits;
+namespace Splash\Core\Models\PhpUnit;
 
 use ReflectionException;
 
 /**
  * Invoke Private Class Methods during Test Cases
  */
-trait MethodInvokerTrait
+trait PrivateMethodInvokerTrait
 {
     /**
      * Call protected/private method of a class.
