@@ -13,21 +13,21 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Helpers;
+namespace Splash\Core\Helpers;
 
 /**
- * @abstract    Helper for Building Checksum for Objects, Array, and more...
+ * Helper for Building Checksum for Objects, Array, and more...
  */
 class ChecksumHelper
 {
     /**
-     * @abstract    Compute Md5 CheckSum from Object Attributes
+     * Compute Md5 CheckSum from Object Attributes
      *
-     * @param array $input Array of Object Data ($Code => $Value)
+     * @param null|array $input Array of Object Data ($Code => $Value)
      *
-     * @return null|string Unik Md5 Checksum
+     * @return null|string Unique Md5 Checksum
      */
-    public static function fromArray($input = null)
+    public static function fromArray(array $input = null): ?string
     {
         //====================================================================//
         // Safety Check
@@ -41,11 +41,11 @@ class ChecksumHelper
     }
 
     /**
-     * @abstract    Compute Md5 CheckSum from Arguments
+     * Compute Md5 CheckSum from Arguments
      *
-     * @return null|string Unik Md5 Checksum
+     * @return null|string Unique Md5 Checksum
      */
-    public static function fromValues()
+    public static function fromValues(): ?string
     {
         //====================================================================//
         // Return Encoded CheckSum from Function Args
@@ -53,13 +53,13 @@ class ChecksumHelper
     }
 
     /**
-     * @abstract    Compute Debug CheckSum String from Object Attributes
+     * Compute Debug CheckSum String from Object Attributes
      *
-     * @param array $input Array of Object Data ($Code => $Value)
+     * @param array|null $input Array of Object Data ($Code => $Value)
      *
-     * @return null|string Unik String Checksum
+     * @return null|string Unique String Checksum
      */
-    public static function debugFromArray($input = null)
+    public static function debugFromArray(array $input = null): ?string
     {
         //====================================================================//
         // Safety Check
@@ -73,11 +73,11 @@ class ChecksumHelper
     }
 
     /**
-     * @abstract    Compute Debug CheckSum String from Arguments
+     * Compute Debug CheckSum String from Arguments
      *
-     * @return null|string Unik String Checksum
+     * @return null|string Unique String Checksum
      */
-    public static function debugFromValues()
+    public static function debugFromValues(): ?string
     {
         //====================================================================//
         // Return Debug CheckSum String from Function Args
@@ -85,17 +85,12 @@ class ChecksumHelper
     }
 
     /**
-     * @abstract    Verify inputs
+     * Verify inputs
      *
-     * @param array $input Array of Object Data ($Code => $Value)
-     *
-     * @return bool
+     * @param array $input Array of Object Data ($code => $value)
      */
-    private static function isValid($input)
+    private static function isValid(array $input): bool
     {
-        if (!is_array($input)) {
-            return false;
-        }
         foreach ($input as $value) {
             if (!is_scalar($value)) {
                 return false;
@@ -106,13 +101,13 @@ class ChecksumHelper
     }
 
     /**
-     * @abstract    Encode CheckSum from Array
+     * Encode CheckSum from Array
      *
      * @param array $input Array of Object Data ($Code => $Value)
      *
-     * @return string Unik Md5 Checksum
+     * @return string Unique Md5 Checksum
      */
-    private static function getEncoded($input)
+    private static function getEncoded(array $input): string
     {
         //====================================================================//
         // Sort this Array by Keys
@@ -124,13 +119,13 @@ class ChecksumHelper
     }
 
     /**
-     * @abstract    Encode CheckSum from Array
+     * Encode CheckSum from Array
      *
-     * @param array $input Array of Object Data ($Code => $Value)
+     * @param array $input Array of Object Data ($code => $value)
      *
-     * @return string Unik String Checksum
+     * @return string Unique String Checksum
      */
-    private static function getDebug($input)
+    private static function getDebug(array $input): string
     {
         //====================================================================//
         // Sort this Array by Keys

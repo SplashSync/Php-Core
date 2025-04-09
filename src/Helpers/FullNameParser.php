@@ -13,9 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Helpers;
+namespace Splash\Core\Helpers;
 
-use Splash\Components\FieldsFactory;
+use Splash\Core\Components\FieldsFactory;
+use Splash\Core\Dictionary\SplFields;
 
 /**
  * ThirdParty Helper to Store & Update Encoded Customers Names on a Single String
@@ -128,7 +129,7 @@ class FullNameParser
      */
     public static function registerCompanyNameField(FieldsFactory $factory): FieldsFactory
     {
-        $factory->create(SPL_T_VARCHAR)
+        $factory->create(SplFields::VARCHAR)
             ->identifier("companyName")
             ->description('Company Name')
             ->microData("http://schema.org/Organization", "legalName")
@@ -144,7 +145,7 @@ class FullNameParser
      */
     public static function registerFirstNameField(FieldsFactory $factory): void
     {
-        $factory->create(SPL_T_VARCHAR)
+        $factory->create(SplFields::VARCHAR)
             ->identifier('firstName')
             ->description('First Name')
             ->microData("http://schema.org/Person", "familyName")
@@ -158,7 +159,7 @@ class FullNameParser
      */
     public static function registerLastNameField(FieldsFactory $factory): void
     {
-        $factory->create(SPL_T_VARCHAR)
+        $factory->create(SplFields::VARCHAR)
             ->identifier('lastName')
             ->description('Last Name')
             ->microData("http://schema.org/Person", "givenName")

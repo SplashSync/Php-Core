@@ -13,12 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Helpers;
+namespace Splash\Core\Helpers;
 
-use Splash\Client\Splash;
-use Splash\Models\AbstractObject;
-use Splash\Models\Fields\FieldsManagerTrait;
-use Splash\Models\Objects\IntelParserTrait;
+use Splash\Core\Client\Splash;
+use Splash\Core\Fields\FieldsManagerTrait;
+use Splash\Core\Models\AbstractObject;
+use Splash\Core\Models\Objects\IntelParserTrait;
 
 /**
  * Helper for Objects Fields Management

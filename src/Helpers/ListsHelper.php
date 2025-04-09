@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Helpers;
+namespace Splash\Core\Helpers;
 
-use Splash\Models\Fields\FieldsManagerTrait;
+use Splash\Core\Fields\FieldsManagerTrait;
 
 /**
  * Helper for List Fields Management
@@ -41,7 +41,7 @@ class ListsHelper
      *
      * @return null|string
      */
-    public function encode(string $listName, string $fieldName): ?string
+    public static function encode(string $listName, string $fieldName): ?string
     {
         //====================================================================//
         // Safety Checks
@@ -54,7 +54,7 @@ class ListsHelper
 
         //====================================================================//
         // Create & Return List Field ID Data String
-        return   $fieldName.self::SPLIT.$listName;
+        return $fieldName.self::SPLIT.$listName;
     }
 
     //====================================================================//

@@ -13,11 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Helpers;
+namespace Splash\Core\Helpers;
 
 use Exception;
-use Splash\Components\CommitsManager;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\CommitsManager;
 
 /**
  * Helper for PhpUnit Tests
@@ -30,7 +30,7 @@ class TestHelper
      *
      * @param string           $objectType Object Type Name
      * @param array|int|string $local      Object Local ID or Array of Local ID
-     * @param string           $action     Action Type (SPL_A_UPDATE, or SPL_A_CREATE, or SPL_A_DELETE)
+     * @param string           $action     Action Type (See SplOperations)
      * @param null|string      $user       User Name
      * @param null|string      $comment    Operation Comment for Logs
      *
