@@ -13,22 +13,25 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Managers;
+namespace Splash\Core\Tests\T400Components;
 
-use Exception;
 use ReflectionClass;
-use Splash\Client\CommitEvent;
-use Splash\Client\Splash;
-use Splash\Components\Webservice;
+use Splash\Core\Client\CommitEvent;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\Webservice;
+use Splash\Core\Dictionary\SplOperations;
+use Splash\Core\Models\PhpUnit\ObjectsProviderAwareTrait;
+use Splash\Core\Models\PhpUnit\PrivateMethodInvokerTrait;
 use Splash\Tests\Tools\Components\TestCommitsManager as CommitsManager;
 use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * Components Test Suite - Commits Manager Verifications
  */
-class C71CommitsManagerTest extends ObjectsCase
+class T404CommitsManagerTest extends ObjectsCase
 {
-    use \Splash\Tests\Tools\Traits\MethodInvokerTrait;
+    use PrivateMethodInvokerTrait;
+    use ObjectsProviderAwareTrait;
 
     //==============================================================================
     // MAIN COMMIT FEATURES
@@ -38,19 +41,9 @@ class C71CommitsManagerTest extends ObjectsCase
      * Verify Commit Manager Core Functions
      *
      * @dataProvider dummyCommitsProvider
-     *
-     * @param string $testSequence
-     * @param string $objectType
-     *
-     * @throws Exception
-     *
-     * @return void
      */
-    public function testCoreFunctions(string $testSequence, string $objectType): void
+    public function testCoreFunctions(string $objectType): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Safety Check
         $this->assertNotEmpty(Splash::objects());
@@ -66,20 +59,12 @@ class C71CommitsManagerTest extends ObjectsCase
      *
      * @dataProvider dummyCommitsProvider
      *
-     * @param string          $testSequence
      * @param string          $objectType
      * @param string|string[] $objectIds
      * @param string          $action
-     *
-     * @throws Exception
-     *
-     * @return void
      */
-    public function testGenericCommit(string $testSequence, string $objectType, $objectIds, string $action): void
+    public function testGenericCommit(string $objectType, $objectIds, string $action): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Test Success Commits.
         $okResponses = array(
@@ -142,19 +127,11 @@ class C71CommitsManagerTest extends ObjectsCase
      *
      * @dataProvider dummyCommitsProvider
      *
-     * @param string          $testSequence
      * @param string          $objectType
      * @param string|string[] $objectIds
-     *
-     * @throws Exception
-     *
-     * @return void
      */
-    public function testPostCommitStorage(string $testSequence, string $objectType, $objectIds): void
+    public function testPostCommitStorage(string $objectType, $objectIds): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Setup Mock WebService
         $webserviceMock = $this->assertMockWebserviceSetup();
@@ -164,13 +141,13 @@ class C71CommitsManagerTest extends ObjectsCase
         //==============================================================================
         // Test Commit
         CommitsManager::reset();
-        $firstSessionEvent = new CommitEvent($objectType, $objectIds, SPL_A_CREATE, "", "");
-        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SPL_A_CREATE, "", ""));
-        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SPL_A_UPDATE, "", ""));
-        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SPL_A_DELETE, "", ""));
-        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SPL_A_CREATE, "", ""));
-        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SPL_A_UPDATE, "", ""));
-        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SPL_A_DELETE, "", ""));
+        $firstSessionEvent = new CommitEvent($objectType, $objectIds, SplOperations::CREATE, "", "");
+        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SplOperations::CREATE, "", ""));
+        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SplOperations::UPDATE, "", ""));
+        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SplOperations::DELETE, "", ""));
+        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SplOperations::CREATE, "", ""));
+        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SplOperations::UPDATE, "", ""));
+        CommitsManager::addWaitingEvent(new CommitEvent($objectType, $objectIds, SplOperations::DELETE, "", ""));
         //==============================================================================
         // Verify Waiting Events
         $waitingEvents = CommitsManager::getWaitingEvents();
@@ -180,12 +157,12 @@ class C71CommitsManagerTest extends ObjectsCase
 
         $firstEvent = array_shift($waitingEvents);
         $this->assertInstanceOf(CommitEvent::class, $firstEvent);
-        $this->assertEquals(SPL_A_CREATE, $firstEvent->getAction());
+        $this->assertEquals(SplOperations::CREATE, $firstEvent->getAction());
         $this->assertEquals($firstSessionEvent->getObjectIds(), $firstEvent->getObjectIds());
 
         $lastEvent = array_pop($waitingEvents);
         $this->assertInstanceOf(CommitEvent::class, $lastEvent);
-        $this->assertEquals(SPL_A_DELETE, $lastEvent->getAction());
+        $this->assertEquals(SplOperations::DELETE, $lastEvent->getAction());
         $this->assertEquals($firstSessionEvent->getObjectIds(), $lastEvent->getObjectIds());
         //==============================================================================
         // Reset Commits Manager
@@ -212,20 +189,12 @@ class C71CommitsManagerTest extends ObjectsCase
      *
      * @dataProvider dummyCommitsProvider
      *
-     * @param string          $testSequence
      * @param string          $objectType
      * @param string|string[] $objectIds
      * @param string          $action
-     *
-     * @throws Exception
-     *
-     * @return void
      */
-    public function testPostCommitSuccess(string $testSequence, string $objectType, $objectIds, string $action): void
+    public function testPostCommitSuccess(string $objectType, $objectIds, string $action): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Setup Mock WebService TO WORK
         $webserviceMock = $this->assertMockWebserviceSetup();
@@ -255,20 +224,12 @@ class C71CommitsManagerTest extends ObjectsCase
      *
      * @dataProvider dummyCommitsProvider
      *
-     * @param string          $testSequence
      * @param string          $objectType
      * @param string|string[] $objectIds
      * @param string          $action
-     *
-     * @throws Exception
-     *
-     * @return void
      */
-    public function testPostCommitFail(string $testSequence, string $objectType, $objectIds, string $action): void
+    public function testPostCommitFail(string $objectType, $objectIds, string $action): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Setup Mock WebService TO FAIL
         $webserviceMock = $this->assertMockWebserviceSetup();
@@ -318,20 +279,12 @@ class C71CommitsManagerTest extends ObjectsCase
      *
      * @dataProvider dummyCommitsProvider
      *
-     * @param string          $testSequence
      * @param string          $objectType
      * @param string|string[] $objectIds
      * @param string          $action
-     *
-     * @throws Exception
-     *
-     * @return void
      */
-    public function testPostCommitObsolete(string $testSequence, string $objectType, $objectIds, string $action): void
+    public function testPostCommitObsolete(string $objectType, $objectIds, string $action): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Setup Mock WebService TO FAIL
         $webserviceMock = $this->assertMockWebserviceSetup();
@@ -367,7 +320,7 @@ class C71CommitsManagerTest extends ObjectsCase
     //==============================================================================
 
     /**
-     * @throws Exception
+     * Generate Dummy Commits Dataset
      *
      * @return array[]
      */
@@ -378,21 +331,20 @@ class C71CommitsManagerTest extends ObjectsCase
         Splash::core();
         //====================================================================//
         // Configure
-        $objectTypes = $this->objectTypesProvider();
-        $actions = array(SPL_A_CREATE, SPL_A_UPDATE, SPL_A_DELETE);
+        $objectTypes = $this->simpleObjectTypesProvider();
+        $actions = array(SplOperations::CREATE, SplOperations::UPDATE, SplOperations::DELETE);
         //====================================================================//
         // Build Simple Dummy Commits
         $dummyCommits = array();
         foreach ($objectTypes as $objectType) {
             foreach ($actions as $action) {
-                $key = $objectType[0]." ".ucfirst($objectType[1])." ".ucfirst($action);
+                $key = ucfirst($objectType[0])." ".ucfirst($action);
                 $dummyCommits[$key] = array(
                     $objectType[0],
-                    $objectType[1],
-                    uniqid($objectType[1]),
+                    uniqid($objectType[0]),
                     $action,
                     "Test User",
-                    sprintf("Comment for %s, %s Test", $objectType[1], ucfirst($action)),
+                    sprintf("Comment for %s, %s Test", $objectType[0], ucfirst($action)),
                 );
             }
         }
@@ -400,14 +352,13 @@ class C71CommitsManagerTest extends ObjectsCase
         // Build Multi Dummy Commits
         foreach ($objectTypes as $objectType) {
             foreach ($actions as $action) {
-                $key = $objectType[0]." ".ucfirst($objectType[1])." ".ucfirst($action)." Multi";
+                $key = ucfirst($objectType[0])." ".ucfirst($action)." Multi";
                 $dummyCommits[$key] = array(
                     $objectType[0],
-                    $objectType[1],
-                    array(uniqid($objectType[1]), uniqid($objectType[1]), uniqid($objectType[1])),
+                    array(uniqid($objectType[0]), uniqid($objectType[0]), uniqid($objectType[0])),
                     $action,
                     "Test User",
-                    sprintf("Comment for %s, %s Test", $objectType[1], ucfirst($action)),
+                    sprintf("Comment for %s, %s Test", $objectType[0], ucfirst($action)),
                 );
             }
         }
@@ -426,8 +377,6 @@ class C71CommitsManagerTest extends ObjectsCase
 
     /**
      * Setup Mock Webservice Component
-     *
-     * @return Webservice
      */
     protected function assertMockWebserviceSetup(): Webservice
     {
@@ -447,8 +396,6 @@ class C71CommitsManagerTest extends ObjectsCase
 
     /**
      * Force All Commit Events to be ready Again
-     *
-     * @return void
      */
     protected function assertAllEventsAreReadyAgain(): void
     {
@@ -471,8 +418,6 @@ class C71CommitsManagerTest extends ObjectsCase
 
     /**
      * Setup Mock Webservice Component
-     *
-     * @return void
      */
     protected function assertWaitingEventsListIsEmpty(): void
     {

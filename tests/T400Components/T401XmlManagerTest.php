@@ -13,19 +13,20 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Managers;
+namespace Splash\Core\Tests\T400Components;
 
 use ArrayObject;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Components Test Suite - Xml Manager Verifications
  */
-class C51XmlManagerTest extends TestCase
+class T401XmlManagerTest extends TestCase
 {
     /**
-     * @return void
+     * Initialize Framework before testing
      */
     protected function setUp(): void
     {
@@ -40,26 +41,24 @@ class C51XmlManagerTest extends TestCase
     //==============================================================================
 
     /**
+     * Test Xml Encoding from ArrayObject
+     *
      * @dataProvider xmlSamplesProvider
-     *
-     * @param array $input
-     *
-     * @return void
      */
-    public function testArrayObjectEncoding(array $input)
+    public function testArrayObjectEncoding(array $input): void
     {
-        $this->assertNotEmpty($input);
+        Assert::assertNotEmpty($input);
         $input = new ArrayObject($input, ArrayObject::STD_PROP_LIST);
         //==============================================================================
         // Encode to Xml
         $encoded = Splash::xml()->objectToXml($input);
-        $this->assertNotEmpty($encoded);
-        $this->assertIsString($encoded);
+        Assert::assertNotEmpty($encoded);
+        Assert::assertIsString($encoded);
         //==============================================================================
         // Decode from Xml
         $decoded = Splash::xml()->xmlToArrayObject($encoded);
-        $this->assertNotEmpty($decoded);
-        $this->assertInstanceOf(ArrayObject::class, $decoded);
+        Assert::assertNotEmpty($decoded);
+        Assert::assertInstanceOf(ArrayObject::class, $decoded);
         //==============================================================================
         // Verify
         $this->compareValues($input->getArrayCopy(), $decoded->getArrayCopy());
@@ -70,32 +69,32 @@ class C51XmlManagerTest extends TestCase
     //==============================================================================
 
     /**
+     * Test Xml Encoding from Array
+     *
      * @dataProvider xmlSamplesProvider
-     *
-     * @param array $input
-     *
-     * @return void
      */
-    public function testArrayEncoding(array $input)
+    public function testArrayEncoding(array $input): void
     {
         $this->assertNotEmpty($input);
         //==============================================================================
         // Encode to Xml
         $encoded = Splash::xml()->arrayToXml($input);
-        $this->assertNotEmpty($encoded);
-        $this->assertIsString($encoded);
+        Assert::assertNotEmpty($encoded);
+        Assert::assertIsString($encoded);
         //==============================================================================
         // Decode from Xml
         $decoded = Splash::xml()->xmlToArray($encoded);
-        $this->assertNotEmpty($decoded);
-        $this->assertIsArray($decoded);
+        Assert::assertNotEmpty($decoded);
+        Assert::assertIsArray($decoded);
         //==============================================================================
         // Verify
         $this->compareValues($input, $decoded);
     }
 
     /**
-     * @return array
+     * Sample Xml Data to Encode / Decode
+     *
+     * @return array[]
      */
     public function xmlSamplesProvider(): array
     {
@@ -148,12 +147,9 @@ class C51XmlManagerTest extends TestCase
     }
 
     /**
-     * @param array $input
-     * @param array $output
-     *
-     * @return void
+     * Compare Encoded / Decoded Values with Original
      */
-    private function compareValues(array $input, array $output)
+    private function compareValues(array $input, array $output): void
     {
         //==============================================================================
         // Only Compare Values
@@ -165,7 +161,7 @@ class C51XmlManagerTest extends TestCase
             //==============================================================================
             // If Array or ArrayObject
             if (is_iterable($value)) {
-                $this->assertIsIterable($outputValues[$index]);
+                Assert::assertIsIterable($outputValues[$index]);
                 $this->compareValues((array)$value, (array) $outputValues[$index]);
 
                 continue;
@@ -173,7 +169,7 @@ class C51XmlManagerTest extends TestCase
             //==============================================================================
             // If Simple Value
             if ($value != $outputValues[$index]) {
-                $this->assertEquals($value, $outputValues[$index]);
+                Assert::assertEquals($value, $outputValues[$index]);
             }
         }
     }

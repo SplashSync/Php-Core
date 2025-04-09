@@ -13,58 +13,49 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Managers;
+namespace Splash\Core\Tests\T400Components;
 
 use DateTime;
-use Exception;
-use Splash\Client\CommitEvent;
-use Splash\Client\Splash;
-use Splash\Models\Objects\ObjectInterface;
-use Splash\Tests\Tools\ObjectsCase;
+use PHPUnit\Framework\TestCase;
+use Splash\Core\Client\CommitEvent;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplOperations;
+use Splash\Core\Interfaces\Object\ObjectInterface;
+use Splash\Core\Models\PhpUnit\ObjectsProviderAwareTrait;
 
 /**
  * Components Test Suite - Commit Event Verifications
  */
-class C70CommitEventTest extends ObjectsCase
+class T403CommitEventTest extends TestCase
 {
-    use \Splash\Tests\Tools\Traits\MethodInvokerTrait;
+    use ObjectsProviderAwareTrait;
 
     /**
      * Verify Commit Manager Core Functions
      *
-     * @dataProvider objectTypesProvider
-     *
-     * @param string $testSequence
-     * @param string $objectType
-     *
-     * @throws Exception
-     *
-     * @return void
+     * @dataProvider simpleObjectTypesProvider
      */
-    public function testMainFeatures(string $testSequence, string $objectType): void
+    public function testMainFeatures(string $objectType): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Create an Event
         $objectId = random_int((int) 1E3, (int)  1E5);
         $commitEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_UPDATE,
+            SplOperations::UPDATE,
             "PhpUnit",
             ""
         );
         //==============================================================================
         // Basic Getters
         $this->assertEquals($objectType, $commitEvent->getObjectType());
-        $this->assertEquals(SPL_A_UPDATE, $commitEvent->getAction());
+        $this->assertEquals(SplOperations::UPDATE, $commitEvent->getAction());
         $this->assertEquals(array((string) $objectId), $commitEvent->getObjectIds());
         $this->assertEquals(
             array(
                 "type" => $objectType,
-                "action" => SPL_A_UPDATE,
+                "action" => SplOperations::UPDATE,
                 "id" => array((string) $objectId),
                 "user" => "PhpUnit",
                 "comment" => "",
@@ -79,20 +70,10 @@ class C70CommitEventTest extends ObjectsCase
     /**
      * Verify Commit Event Locks Management
      *
-     * @dataProvider objectTypesProvider
-     *
-     * @param string $testSequence
-     * @param string $objectType
-     *
-     * @throws Exception
-     *
-     * @return void
+     * @dataProvider simpleObjectTypesProvider
      */
-    public function testLockFeature(string $testSequence, string $objectType): void
+    public function testLockFeature(string $objectType): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Create an Event
         $objectId = array(
@@ -103,21 +84,21 @@ class C70CommitEventTest extends ObjectsCase
         $createEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_CREATE,
+            SplOperations::CREATE,
             "PhpUnit",
             ""
         );
         $updateEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_UPDATE,
+            SplOperations::UPDATE,
             "PhpUnit",
             ""
         );
         $deleteEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_DELETE,
+            SplOperations::DELETE,
             "PhpUnit",
             ""
         );
@@ -155,41 +136,31 @@ class C70CommitEventTest extends ObjectsCase
     /**
      * Verify Commit Event Locks Management
      *
-     * @dataProvider objectTypesProvider
-     *
-     * @param string $testSequence
-     * @param string $objectType
-     *
-     * @throws Exception
-     *
-     * @return void
+     * @dataProvider simpleObjectTypesProvider
      */
-    public function testLockCreateFeature(string $testSequence, string $objectType): void
+    public function testLockCreateFeature(string $objectType): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Create an Event
         $objectId = (string) random_int((int) 1E3, (int)  1E5);
         $createEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_CREATE,
+            SplOperations::CREATE,
             "PhpUnit",
             ""
         );
         $updateEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_UPDATE,
+            SplOperations::UPDATE,
             "PhpUnit",
             ""
         );
         $deleteEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_DELETE,
+            SplOperations::DELETE,
             "PhpUnit",
             ""
         );
@@ -226,48 +197,38 @@ class C70CommitEventTest extends ObjectsCase
     /**
      * Verify Commit Event Md5 Builder
      *
-     * @dataProvider objectTypesProvider
-     *
-     * @param string $testSequence
-     * @param string $objectType
-     *
-     * @throws Exception
-     *
-     * @return void
+     * @dataProvider simpleObjectTypesProvider
      */
-    public function testMd5Feature(string $testSequence, string $objectType): void
+    public function testMd5Feature(string $objectType): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Create Events
         $objectId = random_int((int) 1E3, (int) 1E5);
         $baseEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_UPDATE,
+            SplOperations::UPDATE,
             "PhpUnit",
             ""
         );
         $sameObjectEvent = new CommitEvent(
             $objectType,
             array((int) $objectId),
-            SPL_A_UPDATE,
+            SplOperations::UPDATE,
             "PhpUnit",
             ""
         );
         $diffObjectEvent = new CommitEvent(
             $objectType,
             $objectId + 1,
-            SPL_A_UPDATE,
+            SplOperations::UPDATE,
             "PhpUnit",
             ""
         );
         $actionEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_CREATE,
+            SplOperations::CREATE,
             "PhpUnit",
             ""
         );
@@ -275,7 +236,7 @@ class C70CommitEventTest extends ObjectsCase
         $wdIdEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_UPDATE,
+            SplOperations::UPDATE,
             "PhpUnit",
             ""
         );
@@ -290,27 +251,17 @@ class C70CommitEventTest extends ObjectsCase
     /**
      * Verify Commit Event Retry Feature
      *
-     * @dataProvider objectTypesProvider
-     *
-     * @param string $testSequence
-     * @param string $objectType
-     *
-     * @throws Exception
-     *
-     * @return void
+     * @dataProvider simpleObjectTypesProvider
      */
-    public function testRetryFeature(string $testSequence, string $objectType): void
+    public function testRetryFeature(string $objectType): void
     {
-        //==============================================================================
-        // Init
-        $this->loadLocalTestSequence($testSequence);
         //==============================================================================
         // Create Events
         $objectId = random_int((int) 1E3, (int) 1E5);
         $commitEvent = new CommitEvent(
             $objectType,
             $objectId,
-            SPL_A_UPDATE,
+            SplOperations::UPDATE,
             "PhpUnit",
             ""
         );
