@@ -13,34 +13,30 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Core\Dictionary\Methods;
+namespace Splash\Core\Dictionary\Fields;
 
 /**
- * List of Available Webservice Client Methods for Widgets Service
+ * Dictionary for Splash Field Preferred Synchronisation Mode
  */
-class SplWidgetsMethods
+class SplSyncMode
 {
     /**
-     * Get List of Available Widgets
+     * Both => Field Prefers Bi directional synchronisation
      */
-    public const LIST = 'WidgetsList';
+    const BOTH = "both";
 
     /**
-     * Get Widget Definition
+     * Read => Field Prefers being only read & exported to other servers
      */
-    public const DEFINITION = 'Description';
+    const READ = "export";
 
     /**
-     * Get Information
+     * Write => Field Prefers being only written & imported from other servers
      */
-    public const GET = 'Get';
+    const WRITE = "import";
 
     /**
-     * List of All Available Methods
+     * None => Ok! Field Prefers being left unchanged, without any synchronization
      */
-    public const ALL = array(
-        self::LIST,
-        self::DEFINITION,
-        self::GET,
-    );
+    const NONE = "none";
 }

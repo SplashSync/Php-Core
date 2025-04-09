@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Framework\Dictionary\Methods;
+namespace Splash\Core\Dictionary\Methods;
 
 /**
  * List of Available Webservice Client Methods for Files Service

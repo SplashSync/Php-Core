@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Framework\Dictionary\Methods;
+namespace Splash\Core\Dictionary\Methods;
 
 /**
  * List of Available Webservice Client Methods for Objects Service
@@ -59,6 +59,11 @@ class SplObjectMethods
      * Delete An Object
      */
     public const DEL = 'Delete';
+
+    /**
+     * Commit Object Change on Splash Server
+     */
+    public const COMMIT = 'Commit';
 
     /**
      * List of All Available Methods
