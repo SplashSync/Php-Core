@@ -16,8 +16,20 @@
 >
 
     <testsuites>
-        <testsuite name="Managers">
-            <directory>Tests/Managers</directory>
+        <testsuite name="Core">
+            <directory>tests/T100Core</directory>
+        </testsuite>
+        <testsuite name="Helpers">
+            <directory>tests/T200Helpers</directory>
+        </testsuite>
+        <testsuite name="Dictionary">
+            <directory>tests/T300Dictionary</directory>
+        </testsuite>
+        <testsuite name="Components">
+            <directory>tests/T400Components</directory>
+        </testsuite>
+        <testsuite name="All">
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
@@ -27,6 +39,7 @@
 
     <php>
         <env    name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+        <const  name="SPLASH_DEBUG" value="true" />
     </php>
     
 </phpunit>

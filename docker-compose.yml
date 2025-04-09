@@ -18,49 +18,104 @@
 
 ################################################################################
 # Docker Compose File
+#
+# Static IPs from Local Splash Servers
+#    172.169.3.74    	php74.php-core.local
+#    172.169.3.80    	php80.php-core.local
+#    172.169.3.81    	php81.php-core.local
+#    172.169.3.82    	php82.php-core.local
+#    172.169.3.83    	php83.php-core.local
+
 ################################################################################
 
-version: "3.5"
-
 services:
+
+    ################################################################################
+    # PHP 8.3
+    php-8.3:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+        container_name: php83.php-core.local
+        hostname:       php83.php-core.local
+        volumes:
+            - ./:/var/www/html
+            - vendor-php83:/var/www/html/vendor
+        environment:
+            SPLASH_CONNEXION:   "http://WsId:WsKey@php83.php-core.local/soap.php"
+            SPLASH_ENDPOINT:    "http://php83.php-core.local/soap.php"
+        networks:
+            default:    { ipv4_address: 172.169.3.83 }
 
     ################################################################################
     # PHP 8.2
     php-8.2:
         image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
-        container_name: php-core-8.2
+        container_name: php82.php-core.local
+        hostname:       php82.php-core.local
         volumes:
             - ./:/var/www/html
             - vendor-php82:/var/www/html/vendor
+        environment:
+            SPLASH_CONNEXION:   "http://WsId:WsKey@php82.php-core.local/soap.php"
+            SPLASH_ENDPOINT:    "http://php82.php-core.local/soap.php"
+        networks:
+            default:    { ipv4_address: 172.169.3.82 }
 
     ################################################################################
     # PHP 8.1
     php-8.1:
         image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-        container_name: php-core-8.1
+        container_name: php81.php-core.local
+        hostname:       php81.php-core.local
         volumes:
             - ./:/var/www/html
             - vendor-php81:/var/www/html/vendor
+        environment:
+            SPLASH_CONNEXION:   "http://WsId:WsKey@php81.php-core.local/soap.php"
+            SPLASH_ENDPOINT:    "http://php81.php-core.local/soap.php"
+        networks:
+            default:    { ipv4_address: 172.169.3.81 }
 
     ################################################################################
     # PHP 8.0
     php-8.0:
         image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-        container_name: php-core-8.0
+        container_name: php80.php-core.local
+        hostname:       php80.php-core.local
         volumes:
             - ./:/var/www/html
             - vendor-php80:/var/www/html/vendor
+        environment:
+            SPLASH_CONNEXION:   "http://WsId:WsKey@php80.php-core.local/soap.php"
+            SPLASH_ENDPOINT:    "http://php80.php-core.local/soap.php"
+        networks:
+            default:    { ipv4_address: 172.169.3.80 }
 
     ################################################################################
     # PHP 7.4
     php-7.4:
         image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-        container_name: php-core-7.4
+        container_name: php74.php-core.local
+        hostname:       php74.php-core.local
         volumes:
             - ./:/var/www/html
             - vendor-php74:/var/www/html/vendor
+        environment:
+            SPLASH_CONNEXION:   "http://WsId:WsKey@php74.php-core.local/soap.php"
+            SPLASH_ENDPOINT:    "http://php74.php-core.local/soap.php"
+        networks:
+            default:    { ipv4_address: 172.169.3.74 }
+
+networks:
+    ################################################################################
+    # Default Private Network
+    default:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.169.3.0/24
 
 volumes:
+    vendor-php83: ~
     vendor-php82: ~
     vendor-php81: ~
     vendor-php80: ~

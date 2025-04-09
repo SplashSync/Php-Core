@@ -19,19 +19,15 @@
     ],
 
     "autoload": {
-        "psr-4": { 
-            "Splash\\":             "",
-            "Splash\\Framework\\":  "src",
-            "Splash\\Local\\":      "../../../Resources"
-        },
-        "files": [
-            "inc/Splash.Inc.php"
-        ]
+        "psr-4": {
+            "Splash\\Core\\":       "src"
+        }
     },
     
     "autoload-dev": {
         "psr-4": {
-            "Splash\\Local\\": "Resources/grumphp"
+            "Splash\\Local\\":              "local",
+            "Splash\\Core\\Tests\\":        "tests"
         }
     },
 
@@ -47,12 +43,12 @@
         "ext-soap":                         "*",
         "ext-curl":                         "*",
         "ext-apcu":                         "*",
-        "splash/console":                   "dev-master",
-        "badpixxel/php-sdk":                "~2.0"
+        "badpixxel/php-sdk":                "^2.0|^3.0",
+        "phpunit/phpunit":                  "^9.0"
     },
     
     "archive": {
-        "exclude": ["/docs"]
+        "exclude": ["/docs", "/local", "/tests"]
     },
     "config": {
         "allow-plugins": {

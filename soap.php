@@ -15,12 +15,10 @@
 
 /**
  * This is Head include file for Splash PHP Module on WebService Request
- *
- * @author      B. Paquier <contact@splashsync.com>
  */
 
-use Splash\Core\SplashCore as Splash;
-use Splash\Server\SplashServer;
+use Splash\Core\Client\Splash;
+use Splash\Core\Server\SplashServer;
 
 //====================================================================//
 // Disable Response Caching
@@ -28,10 +26,15 @@ header("Cache-Control: max-age=0, private, no-cache, no-store, must-revalidate, 
 
 //====================================================================//
 // Splash Module & Dependencies Autoloader
-require_once(dirname(dirname(dirname(__FILE__)))."/autoload.php");
+if (is_file(dirname(__FILE__)."/vendor/autoload.php")) {
+    require_once(dirname(__FILE__)."/vendor/autoload.php");
+} elseif (is_file(dirname(__FILE__, 3)."/autoload.php")) {
+    require_once(dirname(__FILE__, 3)."/autoload.php");
+}
+
 //====================================================================//
 // Setup Php Specific Settings
-ini_set('display_errors', "0");
+//ini_set('display_errors', "0");
 error_reporting(E_ERROR);
 //====================================================================//
 // Notice internal routines we are in server request mode
@@ -50,8 +53,8 @@ if ($userAgent && (false !== strpos($userAgent, "SOAP"))) {
     // Clean Output Buffer
     ob_clean();
     //====================================================================//
-    //   Declare WebService Available Functions
-    require_once(dirname(__FILE__)."/inc/server.inc.php");
+    // Declare WebService Available Functions
+    require_once(dirname(__FILE__)."/src/Resources/includes/server.inc.php");
     Splash::log()->deb("Splash Started In Server Mode");
     //====================================================================//
     // Build SOAP Server & Register a method available for clients
