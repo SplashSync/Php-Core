@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Framework\Dictionary;
+namespace Splash\Core\Dictionary;
 
 /**
  * Dictionary for All Splash Fields Types Names
