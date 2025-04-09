@@ -13,11 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Local\Objects;
+namespace Splash\Core\Templates\Local\Objects;
 
-use Splash\Models\AbstractObject;
-use Splash\Models\Objects\IntelParserTrait;
-use Splash\Models\Objects\SimpleFieldsTrait;
+use Splash\Core\Models\AbstractObject;
+use Splash\Core\Models\Objects\IntelParserTrait;
+use Splash\Core\Models\Objects\SimpleFieldsTrait;
 use stdClass;
 
 /**
@@ -36,9 +36,9 @@ class Dummy extends AbstractObject
     use SimpleFieldsTrait;
 
     /**
-     * @var stdClass
+     * @phpstan-var stdClass
      */
-    protected $object;
+    protected object $object;
 
     //====================================================================//
     // Object Definition Parameters
@@ -56,14 +56,14 @@ class Dummy extends AbstractObject
      *
      * {@inheritdoc}
      */
-    protected static string $description = "Dolibarr Dummy Object";
+    protected static string $description = "Sample Dummy Object";
 
     /**
      * Object Icon (FontAwesome or Glyph ico tag)
      *
      * {@inheritdoc}
      */
-    protected static $ico = "fa fa-magic";
+    protected static string $ico = "fa fa-magic";
 
     //====================================================================//
     // Object CRUD Methods

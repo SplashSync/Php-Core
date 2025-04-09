@@ -13,10 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Local\Objects\Filters;
+namespace Splash\Core\Templates\Local\Objects\Filters;
 
-use Splash\Client\Splash;
-use Splash\Models\ObjectFilterInterface;
+use Splash\Core\Interfaces\Extensions\ObjectFilterInterface;
 
 /**
  * TEMPLATE - Dummy Objects Filter

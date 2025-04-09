@@ -13,9 +13,9 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Local\Configurators;
+namespace Splash\Core\Templates\Local\Configurators;
 
-use Splash\Models\AbstractConfigurator;
+use Splash\Core\Models\AbstractConfigurator;
 
 /**
  * TEMPLATE - Dummy Objects Configurator

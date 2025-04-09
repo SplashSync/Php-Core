@@ -13,11 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Templates\Widgets;
+namespace Splash\Core\Templates\Local\Widgets;
 
 use Exception;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\AbstractWidget;
+use Splash\Core\Client\Splash;
+use Splash\Core\Models\AbstractWidget;
 
 /**
  * SelfTest Template Widget for Splash Modules

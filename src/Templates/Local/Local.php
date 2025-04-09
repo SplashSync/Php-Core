@@ -13,11 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Templates\Local;
+namespace Splash\Core\Templates\Local;
 
 use ArrayObject;
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\LocalClassInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplDefinition;
+use Splash\Core\Interfaces\Local\LocalClassInterface;
 
 /**
  * Local System Core Management Class
@@ -94,37 +95,33 @@ class Local implements LocalClassInterface
     public function informations(ArrayObject $informations): ArrayObject
     {
         //====================================================================//
-        // Init Response Object
-        $response = $informations;
-
-        //====================================================================//
         // Company Informations
-        $response->company = "...";
-        $response->address = "...";
-        $response->zip = "...";
-        $response->town = "...";
-        $response->country = "...";
-        $response->www = "...";
-        $response->email = "...";
-        $response->phone = "...";
+        $informations->company = "...";
+        $informations->address = "...";
+        $informations->zip = "...";
+        $informations->town = "...";
+        $informations->country = "...";
+        $informations->www = "...";
+        $informations->email = "...";
+        $informations->phone = "...";
 
         //====================================================================//
         // Server Logo & Images
-        $response->icoraw = Splash::file()->readFileContents(
-            dirname(dirname(__DIR__))."/img/Splash-ico.png"
+        $informations->icoraw = Splash::file()->readFileContents(
+            dirname(__DIR__, 3)."/img/Splash-ico.png"
         );
-        $response->logourl = "https://www.splashsync.com/bundles/theme/img/splash-logo.png";
+        $informations->logourl = "https://www.splashsync.com/bundles/theme/img/splash-logo.png";
 
         //====================================================================//
         // Server Informations
-        $response->servertype = "Splash Php Core";
-        $response->serverurl = "https://www.splashsync.com";
+        $informations->servertype = "Splash Php Core";
+        $informations->serverurl = "https://www.splashsync.com";
 
         //====================================================================//
         // Current Module Version
-        $response->moduleversion = SPLASH_VERSION;
+        $informations->moduleversion = SplDefinition::VERSION;
 
-        return $response;
+        return $informations;
     }
 
     //====================================================================//
@@ -140,6 +137,7 @@ class Local implements LocalClassInterface
     {
         switch ($name) {
             case "Sequence1":
+            case "Sequence2":
                 // DO SEQUENCE SETUP
                 return array();
             case "List":

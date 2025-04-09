@@ -13,10 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Local\Objects\Extensions;
+namespace Splash\Core\Templates\Local\Objects\Extensions;
 
-use Splash\Components\FieldsFactory;
-use Splash\Models\ObjectExtensionInterface;
+use Splash\Core\Components\FieldsFactory;
+use Splash\Core\Dictionary\SplFields;
+use Splash\Core\Interfaces\Extensions\ObjectExtensionInterface;
 
 /**
  * TEMPLATE - Dummy Objects Extension
@@ -42,7 +43,7 @@ class DummyExtension implements ObjectExtensionInterface
      */
     public function buildExtendedFields(string $objectType, FieldsFactory $factory): void
     {
-        $factory->create(SPL_T_VARCHAR)
+        $factory->create(SplFields::VARCHAR)
             ->identifier("my_custom_field")
             ->name("My Custom Field")
         ;
