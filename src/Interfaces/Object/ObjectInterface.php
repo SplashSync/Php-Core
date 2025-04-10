@@ -13,13 +13,13 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Objects;
+namespace Splash\Core\Interfaces\Object;
 
 /**
  * Splash Objects Interface
+ * It must be Implemented for ALL Objects Available on Splash
  *
  * This is the Core Interface for Generic for All Splash Objects
- * It must be Implemented for ALL Objects Available on Splash
  */
 interface ObjectInterface
 {

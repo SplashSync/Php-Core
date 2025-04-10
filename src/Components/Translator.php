@@ -13,10 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Components;
+namespace Splash\Core\Components;
 
-use Exception;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Dictionary\SplDefinition;
+use Splash\Core\Client\Splash;
 
 /**
  * Splash Core Integrated Translation Management Class.
@@ -102,8 +102,8 @@ class Translator
         if (null == $isForced) {
             //====================================================================//
             // Load English Language Fallback Translations
-            if (SPLASH_DF_LANG != $language) {
-                $this->load($fileName, SPLASH_DF_LANG);
+            if (SplDefinition::DF_LANG != $language) {
+                $this->load($fileName, SplDefinition::DF_LANG);
             }
 
             //====================================================================//
@@ -191,18 +191,25 @@ class Translator
             $fileName = $regs[1];
             $isLocal = $regs[2];
         }
-
         //====================================================================//
         // Directory of translation files
         if (!empty($isLocal)) {
-            try {
-                return Splash::getLocalPath()."/Translations/".$language."/".$fileName.".ini";
-            } catch (Exception $ex) {
-                return dirname(__FILE__, 2)."/langs/".$language."/".$fileName.".ini";
-            }
+            return sprintf(
+                "%s/Translations/%s/%s.ini",
+                Splash::getLocalPath(),
+                $language,
+                $fileName
+            );
         }
 
-        return dirname(__FILE__, 2)."/langs/".$language."/".$fileName.".ini";
+        //====================================================================//
+        // Build default path for translation files
+        return sprintf(
+            "%s/Resources/translations/%s/%s.ini",
+            dirname(__FILE__, 2),
+            $language,
+            $fileName
+        );
     }
 
     /**
