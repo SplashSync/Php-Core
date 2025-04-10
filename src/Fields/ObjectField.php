@@ -13,44 +13,29 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Fields;
+namespace Splash\Core\Fields;
 
 use ArrayObject;
-use Splash\Components\StringConverter;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\Fields\SplSyncMode;
+use Splash\Core\Dictionary\SplFields;
+use Splash\Core\Helpers\ListsHelper;
+use Splash\Core\Helpers\ObjectsHelper;
+use Splash\Core\Helpers\StringConverter;
+use Splash\Core\Interfaces\Fields\FieldInterface;
+use Splash\Core\Models\Fields\FieldCoreTrait;
 
 /**
  * Splash Object Field Definition
  */
-class ObjectField extends ArrayObject
+class ObjectField extends ArrayObject implements FieldInterface
 {
-    //==============================================================================
-    //  Favorites Sync Modes
-    //==============================================================================
-
-    const MODE_BOTH = "both";
-    const MODE_READ = "export";
-    const MODE_WRITE = "import";
-    const MODE_NONE = "none";
-
-    //==============================================================================
-    //  Meta Data Access MicroDatas
-    //==============================================================================
-
-    const META_URL = "http://splashync.com/schemas";       // Splash Specific Schemas Url.
-    const META_OBJECTID = "ObjectId";                      // Splash Object Id.
-    const META_DATECREATED = "DateCreated";                // Splash Object Create Date.
-    const META_ORIGIN_NODE_ID = "SourceNodeId";            // Object Source Server Identifier
-    const META_ORIGIN_NODE_NAME = "SourceNodeName";        // Object Source Server Name
-
-    //==============================================================================
-    //  Allowed Primary Fields Types
-    //==============================================================================
+    use FieldCoreTrait;
 
     const PRIMARY_TYPES = array(
-        SPL_T_VARCHAR, SPL_T_TEXT,
-        SPL_T_EMAIL, SPL_T_PHONE, SPL_T_URL,
-        SPL_T_COUNTRY,
+        SplFields::VARCHAR, SplFields::TEXT,
+        SplFields::EMAIL, SplFields::PHONE, SplFields::URL,
+        SplFields::COUNTRY,
     );
 
     //==============================================================================
@@ -58,9 +43,9 @@ class ObjectField extends ArrayObject
     //==============================================================================
 
     const MULTILANG_TYPES = array(
-        SPL_T_VARCHAR, SPL_T_TEXT, SPL_T_INLINE,
-        SPL_T_BOOL, SPL_T_INT, SPL_T_DOUBLE,
-        SPL_T_URL
+        SplFields::VARCHAR, SplFields::TEXT, SplFields::INLINE,
+        SplFields::BOOL, SplFields::INT, SplFields::DOUBLE,
+        SplFields::URL
     );
 
     //==============================================================================
@@ -91,7 +76,7 @@ class ObjectField extends ArrayObject
         //==============================================================================
         //      SYNC MODE
         "primary" => false,                 //  Field is a Primary Key (Bool)
-        "syncmode" => self::MODE_BOTH,      //  Field Favorite Sync Mode (read|write|both)
+        "syncmode" => SplSyncMode::BOTH,      //  Field Favorite Sync Mode (read|write|both)
         //==============================================================================
         //      SCHEMA.ORG IDENTIFICATION
         "itemprop" => null,                 //  Field Unique Schema.Org "Like" Property Name
@@ -115,12 +100,15 @@ class ObjectField extends ArrayObject
     //==============================================================================
 
     /**
-     * Class Constructor
+     * @inheritdoc
      */
-    public function __construct(string $type)
+    public function __construct(string $type, ?string $identifier = null)
     {
         parent::__construct(self::$default, ArrayObject::ARRAY_AS_PROPS);
         $this->setType($type);
+        if (!empty($identifier)) {
+            $this->setIdentifier($identifier);
+        }
     }
 
     /**
@@ -139,10 +127,10 @@ class ObjectField extends ArrayObject
         }
         //====================================================================//
         // Update New Field Identifier
-        $this->setIdentifier($this->id.LISTSPLIT.$listName);
+        $this->setIdentifier((string) ListsHelper::encode($listName, $this->id));
         //====================================================================//
         // Update New Field Type
-        $this->setType($this->type.LISTSPLIT.SPL_T_LIST);
+        $this->setType((string) ListsHelper::encode(SplFields::LIST, $this->type));
 
         return $this;
     }
@@ -160,10 +148,23 @@ class ObjectField extends ArrayObject
         $this
             ->setItemType($itemType)
             ->setItemProp($itemProp)
-            ->setTag($itemProp.IDSPLIT.$itemType)
+            ->setTag(self::toTag($itemType, $itemProp))
         ;
 
         return $this;
+    }
+
+    /**
+     * Build Field Tag from Metadata
+     *
+     * @param string $itemType
+     * @param string $itemProp
+     *
+     * @return string
+     */
+    public static function toTag(string $itemType, string $itemProp): string
+    {
+        return md5((string) ObjectsHelper::encode($itemType, $itemProp));
     }
 
     /**
@@ -312,81 +313,8 @@ class ObjectField extends ArrayObject
     //  Generic Setters
     //==============================================================================
 
-    /**
-     * Set Field Identifier
-     *
-     * @param string $id
-     *
-     * @return self
-     */
-    public function setIdentifier(string $id): self
-    {
-        $this->id = $id;
 
-        return $this;
-    }
 
-    /**
-     * Get Field Identifier
-     *
-     * @return string
-     */
-    public function getIdentifier(): string
-    {
-        return (string) $this->id;
-    }
-
-    /**
-     * Set Field Name
-     *
-     * @param string $name
-     *
-     * @return self
-     */
-    public function setName(string $name): self
-    {
-        $this->name = StringConverter::toUtf8($name);
-
-        return $this;
-    }
-
-    /**
-     * Set Field Description
-     *
-     * @param string $desc
-     *
-     * @return self
-     */
-    public function setDesc(string $desc): self
-    {
-        $this->desc = StringConverter::toUtf8($desc);
-
-        return $this;
-    }
-
-    /**
-     * Check if Description Already Set
-     *
-     * @return bool
-     */
-    public function hasDesc(): bool
-    {
-        return !empty($this->desc);
-    }
-
-    /**
-     * Set Field Group Name
-     *
-     * @param string $group
-     *
-     * @return self
-     */
-    public function setGroup(string $group): self
-    {
-        $this->group = StringConverter::toUtf8($group);
-
-        return $this;
-    }
 
     /**
      * Set Field Required Flag
@@ -636,6 +564,8 @@ class ObjectField extends ArrayObject
      */
     private function setTag(string $tag): void
     {
-        $this->tag = md5($tag);
+        $this->tag = $tag;
     }
+
+
 }

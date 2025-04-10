@@ -13,9 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Models\Fields;
+namespace Splash\Core\Fields;
 
 use ArrayObject;
+use Splash\Core\Helpers\ListsHelper;
+use Splash\Core\Helpers\ObjectsHelper;
 
 /**
  * Fields Definition & Data Manager
@@ -60,7 +62,7 @@ trait FieldsManagerTrait
     public static function filterFieldListByTag(array $fieldsList, string $itemType, string $itemProp): array
     {
         $result = array();
-        $tag = md5($itemProp.IDSPLIT.$itemType);
+        $tag = ObjectField::toTag($itemType, $itemProp);
 
         foreach ($fieldsList as $field) {
             if ($field["tag"] !== $tag) {
@@ -203,7 +205,7 @@ trait FieldsManagerTrait
         }
         //====================================================================//
         // Detects Lists
-        $list = explode(LISTSPLIT, $fieldType);
+        $list = explode(ListsHelper::SPLIT, $fieldType);
         if (is_array($list) && (2 == count($list))) {
             //====================================================================//
             // If List Detected, Prepare Field List Information Array
@@ -298,7 +300,7 @@ trait FieldsManagerTrait
         }
         //====================================================================//
         // Detects ObjectId
-        $list = explode(IDSPLIT, $fieldId);
+        $list = explode(ObjectsHelper::SPLIT, $fieldId);
         if (is_array($list) && (2 == count($list))) {
             //====================================================================//
             // If List Detected, Prepare Field List Information Array
