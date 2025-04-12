@@ -22,15 +22,32 @@ use Splash\Core\Dictionary\SplFields;
 use Splash\Core\Helpers\ListsHelper;
 use Splash\Core\Helpers\ObjectsHelper;
 use Splash\Core\Helpers\StringConverter;
+use Splash\Core\Dictionary\Fields\SplFieldProps;
 use Splash\Core\Interfaces\Fields\FieldInterface;
 use Splash\Core\Models\Fields\FieldCoreTrait;
+use Splash\Core\Models\Fields\FieldMetadataTrait;
+use Splash\Core\Models\Fields\FieldOptionsTrait;
+use Splash\Core\Models\Fields\FieldSynchronizationTrait;
+use Splash\Core\Models\Fields\FieldListingTrait;
+use Splash\Core\Models\Fields\FieldSyncModeTrait;
+use Splash\Core\Models\Fields\FieldTestTrait;
+use Splash\Core\Models\Fields\FieldValidationTrait;
 
 /**
  * Splash Object Field Definition
+ *
+ * @phpstan-import-type FIELD from FieldInterface
  */
 class ObjectField extends ArrayObject implements FieldInterface
 {
     use FieldCoreTrait;
+    use FieldSynchronizationTrait;
+    use FieldSyncModeTrait;
+    use FieldMetadataTrait;
+    use FieldListingTrait;
+    use FieldOptionsTrait;
+    use FieldTestTrait;
+    use FieldValidationTrait;
 
     const PRIMARY_TYPES = array(
         SplFields::VARCHAR, SplFields::TEXT,
@@ -111,139 +128,13 @@ class ObjectField extends ArrayObject implements FieldInterface
         }
     }
 
-    /**
-     * Push Field Inside a List
-     *
-     * @param string $listName
-     *
-     * @return self
-     */
-    public function setInlist(string $listName): self
-    {
-        //====================================================================//
-        // Safety Checks ==> Verify List Name Not Empty
-        if (empty($listName)) {
-            return $this;
-        }
-        //====================================================================//
-        // Update New Field Identifier
-        $this->setIdentifier((string) ListsHelper::encode($listName, $this->id));
-        //====================================================================//
-        // Update New Field Type
-        $this->setType((string) ListsHelper::encode(SplFields::LIST, $this->type));
 
-        return $this;
-    }
 
-    /**
-     * Set Metadata for Auto-Mapping
-     *
-     * @param string $itemType
-     * @param string $itemProp
-     *
-     * @return self
-     */
-    public function setMicroData(string $itemType, string $itemProp): self
-    {
-        $this
-            ->setItemType($itemType)
-            ->setItemProp($itemProp)
-            ->setTag(self::toTag($itemType, $itemProp))
-        ;
 
-        return $this;
-    }
 
-    /**
-     * Build Field Tag from Metadata
-     *
-     * @param string $itemType
-     * @param string $itemProp
-     *
-     * @return string
-     */
-    public static function toTag(string $itemType, string $itemProp): string
-    {
-        return md5((string) ObjectsHelper::encode($itemType, $itemProp));
-    }
 
-    /**
-     * Configure for Multi-Lang
-     *
-     * @param null|string $isoCode Language ISO Code (i.e en_US | fr_FR)
-     *
-     * @return $this
-     */
-    public function setMultiLang(?string $isoCode, bool $isDefault): self
-    {
-        //====================================================================//
-        // Safety Checks ==> Verify Language ISO Code
-        if (!ObjectField::isValidIsoCode((string) $isoCode)) {
-            return $this;
-        }
-        //====================================================================//
-        // Safety Checks ==> Verify Field Type is Allowed
-        if (!in_array($this->type, self::MULTILANG_TYPES, true)) {
-            Splash::log()->err("ErrFieldsWrongLang");
-            Splash::log()->err("Received: ".$this->type);
 
-            return $this;
-        }
-        //====================================================================//
-        // Default Language ==> Only Setup Language Option
-        $this->addOption("language", (string) $isoCode);
-        //====================================================================//
-        // Other Language ==> Complete Field Setup
-        if (!$isDefault) {
-            $this->setIdentifier($this->id."_".$isoCode);
-            if (!empty($this->itemtype)) {
-                $this->setMicroData($this->itemtype."/".$isoCode, $this->itemprop);
-            }
-        }
 
-        return $this;
-    }
-
-    /**
-     * Verify an Iso Language Code
-     *
-     * @param string $isoCode Language ISO Code (i.e en_US | fr_FR)
-     *
-     * @return bool
-     */
-    public static function isValidIsoCode(string $isoCode): bool
-    {
-        if ((strlen($isoCode) < 2) || (strlen($isoCode) > 5)) {
-            return Splash::log()->err("Language ISO Code is Invalid: ".$isoCode);
-        }
-
-        return true;
-    }
-
-    /**
-     * Verify a Field Id
-     *
-     * @param string $fieldId Field Identifier
-     *
-     * @return bool
-     */
-    public static function isValidIdentifier(string $fieldId): bool
-    {
-        //====================================================================//
-        // Field Id is Not Empty
-        if (empty($fieldId)) {
-            return Splash::log()->err("ErrFieldsNoId");
-        }
-        //====================================================================//
-        // Verify - Field Id includes No Spécial Chars
-        if ($fieldId !== preg_replace('/[^a-zA-Z0-9-_@]/u', '', $fieldId)) {
-            Splash::log()->war("ErrFieldsInvalidId", $fieldId);
-
-            return false;
-        }
-
-        return true;
-    }
 
     /**
      * Validate Field Definition
@@ -279,34 +170,69 @@ class ObjectField extends ArrayObject implements FieldInterface
     /**
      * Convert Field Definition to Array
      *
-     * @return  array{
-     *         type: string,
-     *         id: string,
-     *         name: string,
-     *         desc: string,
-     *         group: string,
-     *         required: null|bool|string,
-     *         read: null|bool|string,
-     *         write: null|bool|string,
-     *         index: null|bool|string,
-     *         inlist: null|bool|string,
-     *         hlist: null|bool|string,
-     *         log: null|bool|string,
-     *         notest: null|bool|string,
-     *         primary: null|bool|string,
-     *         syncmode: string,
-     *         itemprop: null|string,
-     *         itemtype: null|string,
-     *         tag: null|string,
-     *         choices: null|array{ key: string, value: scalar},
-     *         asso: null|string[],
-     *         options: array<string, scalar>
-     *         }
+     * @return FIELD
      */
     public function toArray(): array
     {
-        /** @phpstan-ignore-next-line */
-        return $this->getArrayCopy();
+        return array(
+            //==============================================================================
+            //      GENERAL FIELD PROPS
+            //==============================================================================
+            //  Field Format Type Name
+            SplFieldProps::TYPE => $this->getType(),
+            //  Field Object Unique Identifier
+            "id" => $this->getIdentifier(),
+            //  Field Humanized Name (String)
+            "name" => $this->getName(),
+            //  Field Description (String)
+            "desc" => $this->getDesc(),
+            //  Field Section/Group (String)
+            "group" => $this->getGroup(),
+            //==============================================================================
+            //      ACCESS PROPS
+            //==============================================================================
+            //  Field is Required to Create a New Object (Bool)
+            "required" => $this->isRequired(),
+            //  Field is Readable (Bool)
+            "read" => $this->isRead(),
+            //  Field is Writable (Bool)
+            "write" => $this->isWrite(),
+            //  Field Should be Indexed for Text Search (Bool)
+            "index" => $this->isIndex(),
+            //  Field is Available in Object List Response (Bool)
+            "inlist" => $this->isListed(),
+            //  Field is Available in Object List but Hidden (Bool)
+            "hlist" => $this->isListHidden(),
+            //  Field is To Log (Bool)
+            "log" => $this->isLogged(),
+            //==============================================================================
+            // SYNC MODE
+            //==============================================================================
+            //  Field is a Primary Key (Bool)
+            "primary" => $this->isPrimary(),
+            //  Field Favorite Sync Mode (read|write|both)
+            "syncmode" => $this->getSyncMode(),
+            //==============================================================================
+            // METADATA
+            //==============================================================================
+            //  Field Unique Schema.Org Object Url
+            "itemtype" => $this->getItemtype(),
+            //  Field Unique Schema.Org "Like" Property Name
+            "itemprop" => $this->getItemprop(),
+            //  Field Unique Linker Tags (Self-Generated)
+            "tag" => $this->getTag(),
+            //==============================================================================
+            // TESTING PROPS
+            //==============================================================================
+            //  Possible Values used in Editor & Debugger Only  (Array)
+            "choices" => $this->getChoices(),
+            //  Associated Fields. Fields to Generate with this field.
+            "asso" => $this->getAssociations(),
+            //  Fields Constraints to Generate Fake Data during Tests
+            "options" => $this->getOptions(),
+            //  Do No Perform Tests for this Field
+            "notest" => $this->isNotTested(),
+        );
     }
 
     //==============================================================================
@@ -316,256 +242,13 @@ class ObjectField extends ArrayObject implements FieldInterface
 
 
 
-    /**
-     * Set Field Required Flag
-     *
-     * @param bool $required
-     *
-     * @return self
-     */
-    public function setRequired(bool $required): self
-    {
-        $this->required = $required;
 
-        return $this;
-    }
 
-    /**
-     * Set Field Readable Flag
-     *
-     * @param bool $read
-     *
-     * @return self
-     */
-    public function setRead(bool $read): self
-    {
-        $this->read = $read;
 
-        return $this;
-    }
 
-    /**
-     * Set Field Writable Flag
-     *
-     * @param bool $write
-     *
-     * @return self
-     */
-    public function setWrite(bool $write): self
-    {
-        $this->write = $write;
 
-        return $this;
-    }
 
-    /**
-     * Set Field Should be Indexed Flag
-     *
-     * @param bool $index
-     *
-     * @return self
-     */
-    public function setIndex(bool $index): self
-    {
-        $this->index = $index;
 
-        return $this;
-    }
-
-    /**
-     * Set Field Primary Flag
-     *
-     * @param bool $primary
-     *
-     * @return self
-     */
-    public function setPrimary(bool $primary): self
-    {
-        $this->primary = $primary;
-
-        return $this;
-    }
-
-    /**
-     * Set Field In Object List Flag
-     *
-     * @param bool $inlist
-     *
-     * @return self
-     */
-    public function setIsListed(bool $inlist): self
-    {
-        $this->inlist = $inlist;
-
-        return $this;
-    }
-
-    /**
-     * Set Field In Hidden Object List Flag
-     *
-     * This field is in Objects List but Hidden.
-     * This improves reading of lists, but makes field usable for analyzes.
-     *
-     * @param bool $hlist
-     *
-     * @return self
-     */
-    public function setHiddenList(bool $hlist): self
-    {
-        $this->hlist = $hlist;
-
-        return $this;
-    }
-
-    /**
-     * Set Field Recommended for Logging Flag
-     *
-     * @param bool $log
-     *
-     * @return self
-     */
-    public function setIsLogged(bool $log): self
-    {
-        $this->log = $log;
-
-        return $this;
-    }
-
-    /**
-     * Set Field Excluded from General Unit Tests
-     * May be tested by Custom Tests Suites
-     *
-     * @param bool $noTest
-     *
-     * @return self
-     */
-    public function setIsNotTested(bool $noTest): self
-    {
-        $this->notest = $noTest;
-
-        return $this;
-    }
-
-    /**
-     * Set Field Preferred Sync Mode
-     *
-     * @param string $syncMode
-     *
-     * @return self
-     */
-    public function setSyncMode(string $syncMode): self
-    {
-        $this->syncmode = $syncMode;
-
-        return $this;
-    }
-
-    /**
-     * Add Field Possible Key/Value Choice
-     *
-     * @param string $value
-     * @param string $description
-     *
-     * @return self
-     */
-    public function addChoice(string $value, string $description): self
-    {
-        $this->choices[] = array(
-            "key" => $value,
-            "value" => StringConverter::toUtf8($description)
-        );
-
-        return $this;
-    }
-
-    /**
-     * Set list of associated fields
-     *
-     * @param array $association
-     *
-     * @return self
-     */
-    public function setAssociation(array $association): self
-    {
-        $this->asso = $association;
-
-        return $this;
-    }
-
-    /**
-     * Add an Option for Units Tests
-     *
-     * @param string                $key
-     * @param bool|float|int|string $value
-     *
-     * @return self
-     */
-    public function addOption(string $key, $value = true): self
-    {
-        //====================================================================//
-        // Safety Checks ==> Verify Key
-        if (empty($key)) {
-            Splash::log()->err("Field Option Type Cannot be Empty");
-        } else {
-            //====================================================================//
-            // Update New Field structure
-            $this->options[$key] = $value;
-        }
-
-        return $this;
-    }
-
-    //==============================================================================
-    //  Private Setters
-    //==============================================================================
-
-    /**
-     * Set Field Type
-     *
-     * @param string $type
-     */
-    private function setType(string $type): void
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * Set Metadata Type for Auto-Mapping
-     *
-     * @param string $itemType
-     *
-     * @return self
-     */
-    private function setItemType(string $itemType): self
-    {
-        $this->itemtype = $itemType;
-
-        return $this;
-    }
-
-    /**
-     * Set Metadata Property for Auto-Mapping
-     *
-     * @param string $itemProp
-     *
-     * @return self
-     */
-    private function setItemProp(string $itemProp): self
-    {
-        $this->itemprop = $itemProp;
-
-        return $this;
-    }
-
-    /**
-     * Set Field Auto-mapping Tag
-     *
-     * @param string $tag
-     */
-    private function setTag(string $tag): void
-    {
-        $this->tag = $tag;
-    }
 
 
 }
