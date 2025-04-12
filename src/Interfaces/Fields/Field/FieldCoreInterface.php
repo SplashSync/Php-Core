@@ -1,0 +1,85 @@
+<?php
+
+namespace Splash\Core\Interfaces\Fields\Field;
+
+/**
+ * Interface for Splash Object Field Core Definition
+ */
+interface FieldCoreInterface
+{
+    /**
+     * Set Field Identifier
+     */
+    public function setIdentifier(string $id): static;
+
+    /**
+     * Get Field Identifier
+     */
+    public function getIdentifier(): string;
+
+    /**
+     * Set Field Type
+     */
+    public function setType(string $type): static;
+
+    /**
+     * Get Field Name
+     */
+    public function getType(): string;
+
+    /**
+     * Set Field Name
+     */
+    public function setName(string $name): static;
+
+    /**
+     * Get Field Name
+     */
+    public function getName(): string;
+
+    /**
+     * Set Field Description
+     */
+    public function setDesc(string $desc): static;
+
+    /**
+     * Get Field Description
+     */
+    public function getDesc(): ?string;
+
+    /**
+     * Set Field Group Name
+     */
+    public function setGroup(string $group): static;
+
+    /**
+     * Get Field Group Name
+     */
+    public function getGroup(): ?string;
+
+    /**
+     * Push Field Inside a List
+     */
+    public function setInlist(string $listName): static;
+
+    /**
+     * Check if Field is Inside a List
+     */
+    public function isInlist(): bool;
+
+    /**
+     * If in List => Field List Name
+     */
+    public function getListName(): ?string;
+
+    /**
+     * If in List => Field Final Field Name
+     */
+    public function getListFieldName(): ?string;
+
+    /**
+     * If in List => Field Final Field Type
+     */
+    public function getListFieldType(): ?string;
+
+}
