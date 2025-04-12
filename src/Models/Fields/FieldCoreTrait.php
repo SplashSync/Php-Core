@@ -2,6 +2,9 @@
 
 namespace Splash\Core\Models\Fields;
 
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplFields;
+use Splash\Core\Helpers\ListsHelper;
 use Splash\Core\Helpers\StringConverter;
 
 /**
@@ -13,6 +16,11 @@ trait FieldCoreTrait
      * Field Identifier
      */
     private string $id;
+
+    /**
+     * Field Type
+     */
+    private string $type;
 
     /**
      * Field Name
@@ -45,6 +53,22 @@ trait FieldCoreTrait
     public function getIdentifier(): string
     {
         return $this->id ?? "";
+    }
+
+    /**
+     * @inheritdoc
+     */
+    private function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     /**
@@ -100,4 +124,64 @@ trait FieldCoreTrait
     {
         return $this->group;
     }
+
+    //==============================================================================
+    // LIST FIELD Management
+    //==============================================================================
+
+    /**
+     * Push Field Inside a List
+     */
+    public function setInlist(string $listName): static
+    {
+        //====================================================================//
+        // Safety Checks ==> Verify List Name Not Empty
+        if (empty($listName)) {
+            return $this;
+        }
+        //====================================================================//
+        // Update New Field Identifier
+        $fieldId = ListsHelper::fieldName($this->id) ?? $this->id;
+        $this->setIdentifier((string) ListsHelper::encode($listName, $fieldId));
+        //====================================================================//
+        // Update New Field Type
+        $fieldType = ListsHelper::fieldName($this->type) ?? $this->type;
+        $this->setType((string) ListsHelper::encode(SplFields::LIST, $fieldType));
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isInlist(): bool
+    {
+        return ListsHelper::isList($this->type);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getListName(): ?string
+    {
+        return ListsHelper::listName($this->id);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getListFieldName(): ?string
+    {
+        return ListsHelper::fieldName($this->id);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getListFieldType(): ?string
+    {
+        return ListsHelper::fieldName($this->type);
+    }
+
+
 }

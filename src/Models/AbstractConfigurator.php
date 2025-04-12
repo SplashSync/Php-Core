@@ -18,7 +18,7 @@ namespace Splash\Core\Models;
 use Splash\Core\Client\Splash;
 use Splash\Core\Fields\ObjectField;
 use Splash\Core\Interfaces\ConfiguratorInterface;
-use Splash\Framework\Dictionary\Fields\SplFieldProps as Props;
+use Splash\Core\Dictionary\Fields\SplFieldProps as Props;
 
 /**
  * Abstract Configurator
