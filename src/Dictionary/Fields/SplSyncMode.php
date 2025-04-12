@@ -39,4 +39,28 @@ class SplSyncMode
      * None => Ok! Field Prefers being left unchanged, without any synchronization
      */
     const NONE = "none";
+
+    /**
+     * Get All Available Synchronisation Modes
+     *
+     * @return string[]
+     */
+    static public function getAll(): array
+    {
+        return array(
+            self::BOTH,
+            self::READ,
+            self::WRITE,
+            self::NONE,
+        );
+    }
+
+    /**
+     * Check if Synchronisation Mode is Valid
+     */
+    static public function isValid(string $syncMode): bool
+    {
+        return in_array($syncMode, self::getAll());
+    }
+
 }
