@@ -189,73 +189,7 @@ trait FieldsManagerTrait
     //      LISTS FIELDS MANAGEMENT
     //==============================================================================
 
-    /**
-     * Check if this id is a list identifier
-     *
-     * @param null|string $fieldType Data Type Name String
-     *
-     * @return null|array<string, string> Exploded List field Array or False
-     */
-    public static function isListField(?string $fieldType): ?array
-    {
-        //====================================================================//
-        // Safety Check
-        if (empty($fieldType)) {
-            return null;
-        }
-        //====================================================================//
-        // Detects Lists
-        $list = explode(ListsHelper::SPLIT, $fieldType);
-        if (is_array($list) && (2 == count($list))) {
-            //====================================================================//
-            // If List Detected, Prepare Field List Information Array
-            return array('fieldname' => $list[0], 'listname' => $list[1]);
-        }
 
-        return null;
-    }
-
-    /**
-     * Retrieve Field Identifier from a List Field String
-     *
-     * @param null|string $listFieldName List Field Identifier String
-     *
-     * @return null|string
-     */
-    public static function fieldName(?string $listFieldName): ?string
-    {
-        //====================================================================//
-        // Decode
-        $result = self::isListField($listFieldName);
-        if (empty($result)) {
-            return null;
-        }
-
-        //====================================================================//
-        // Return Field Identifier
-        return $result['fieldname'];
-    }
-
-    /**
-     * Retrieve List Name from an List Field String
-     *
-     * @param null|string $listFieldName List Field Identifier String
-     *
-     * @return null|string
-     */
-    public static function listName(?string $listFieldName): ?string
-    {
-        //====================================================================//
-        // Decode
-        $result = self::isListField($listFieldName);
-        if (empty($result)) {
-            return null;
-        }
-
-        //====================================================================//
-        // Return List Name
-        return $result['listname'];
-    }
 
     /**
      * Retrieve Base Field Type from Field Type|Id String
