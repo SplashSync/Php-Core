@@ -15,19 +15,25 @@
 
 namespace Splash\Core\Helpers;
 
-use Splash\Core\Fields\FieldsManagerTrait;
-
 /**
  * Helper for List Fields Management
  */
 class ListsHelper
 {
-    use FieldsManagerTrait;
-
     /**
      * List Fields Type Splitter
      */
     const SPLIT = '@';
+
+    /**
+     * List Name Prop
+     */
+    const LIST_NAME = 'listName';
+
+    /**
+     * Field Name Prop
+     */
+    const FIELD_NAME = 'fieldName';
 
     //====================================================================//
     // FIELDS LIST IDENTIFIERS MANAGEMENT
@@ -55,6 +61,42 @@ class ListsHelper
         //====================================================================//
         // Create & Return List Field ID Data String
         return $fieldName.self::SPLIT.$listName;
+    }
+
+    /**
+     * Check if a Field ID or Type is a List Identifier
+     *
+     * @param null|string $fieldType Data Type Name String
+     *
+     * @return bool
+     */
+    public static function isList(?string $fieldType): bool
+    {
+        return is_array(self::explode($fieldType));
+    }
+
+    /**
+     * Retrieve Field Identifier from a List Field String
+     *
+     * @param null|string $listFieldName List Field Identifier String
+     *
+     * @return null|string
+     */
+    public static function fieldName(?string $listFieldName): ?string
+    {
+        return self::explode($listFieldName)[self::FIELD_NAME] ?? null;
+    }
+
+    /**
+     * Retrieve List Name from an List Field String
+     *
+     * @param null|string $listFieldName List Field Identifier String
+     *
+     * @return null|string
+     */
+    public static function listName(?string $listFieldName): ?string
+    {
+        return self::explode($listFieldName)[self::LIST_NAME] ?? null;
     }
 
     //====================================================================//
@@ -115,5 +157,34 @@ class ListsHelper
         // Store Data in Array
         $fieldIndex = explode(self::SPLIT, $fieldName);
         $buffer[$listName][$key][$fieldIndex[0]] = $itemData;
+    }
+
+    /**
+     * Check if a Field ID or Type is a List Identifier
+     *
+     * @param null|string $fieldType Data Type Name String
+     *
+     * @return null|array<string, string> Exploded List field Array or Null
+     */
+    private static function explode(?string $fieldType): ?array
+    {
+        //====================================================================//
+        // Safety Check
+        if (empty($fieldType)) {
+            return null;
+        }
+        //====================================================================//
+        // Detects Lists
+        $list = explode(self::SPLIT, $fieldType);
+        if (is_array($list) && (2 == count($list))) {
+            //====================================================================//
+            // If List Detected, Prepare Field List Information Array
+            return array(
+                self::FIELD_NAME => $list[0],
+                self::LIST_NAME => $list[1]
+            );
+        }
+
+        return null;
     }
 }
