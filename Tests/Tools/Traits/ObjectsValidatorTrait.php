@@ -15,7 +15,6 @@
 
 namespace Splash\Tests\Tools\Traits;
 
-use Splash\Core\Fields\FieldsManagerTrait;
 use Splash\Tests\Tools\Fields\FieldInterface;
 
 /**
@@ -23,8 +22,6 @@ use Splash\Tests\Tools\Fields\FieldInterface;
  */
 trait ObjectsValidatorTrait
 {
-    use FieldsManagerTrait;
-
     /**
      * Fields Classes Name Prefix
      *

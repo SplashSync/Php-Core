@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Core\Tests\T100Core;
+namespace Splash\Core\Tests\T100Core\T100Framework;
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;

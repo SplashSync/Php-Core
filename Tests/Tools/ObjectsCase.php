@@ -17,14 +17,12 @@ namespace Splash\Tests\Tools;
 
 use Exception;
 use Splash\Core\Client\Splash;
-use Splash\Core\Fields\FieldsManagerTrait;
 
 /**
  * Splash Test Tools - Objects Test Case Base Class
  */
 class ObjectsCase extends AbstractBaseCase
 {
-    use FieldsManagerTrait;
     use Traits\ObjectsDataTrait;
     use Traits\ObjectsFakerTrait;
 

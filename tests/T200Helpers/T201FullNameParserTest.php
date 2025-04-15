@@ -22,7 +22,7 @@ use Splash\Core\Helpers\FullNameParser;
 /**
  * Helpers Test Suite -  FullName Parser
  */
-class T201FullNameParser extends TestCase
+class T201FullNameParserTest extends TestCase
 {
     /**
      * Test of Full Name Helper

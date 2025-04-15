@@ -23,7 +23,7 @@ use Splash\Core\Helpers\System\ServerInfos;
 /**
  * Helpers Test Suite - Test of System Information Collector
  */
-class T203SystemInfosTest extends TestCase
+class T205SystemInfosTest extends TestCase
 {
     /**
      * Test getServerName method when Splash configuration provides ServerHost
