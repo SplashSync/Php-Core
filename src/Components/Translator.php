@@ -15,8 +15,8 @@
 
 namespace Splash\Core\Components;
 
-use Splash\Core\Dictionary\SplDefinition;
 use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplDefinition;
 
 /**
  * Splash Core Integrated Translation Management Class.
