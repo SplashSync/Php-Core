@@ -16,9 +16,8 @@
 namespace Splash\Core\Models;
 
 use Splash\Core\Client\Splash;
-use Splash\Core\Fields\ObjectField;
+use Splash\Core\Fields\FieldsCollection;
 use Splash\Core\Interfaces\ConfiguratorInterface;
-use Splash\Core\Dictionary\Fields\SplFieldProps as Props;
 
 /**
  * Abstract Configurator
@@ -156,6 +155,24 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
     {
         Splash::log()->trace();
         //====================================================================//
+        // Convert Fields List to Collection
+        $fieldsCollection = FieldsCollection::fromArray($fields);
+        //====================================================================//
+        // Apply Overrides
+        $fieldsCollection = $this->overrideFieldsCollection($objectType, $fieldsCollection);
+
+        //====================================================================//
+        // Revert Fields List to Array
+        return $fieldsCollection->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function overrideFieldsCollection(string $objectType, FieldsCollection $fields): FieldsCollection
+    {
+        Splash::log()->trace();
+        //====================================================================//
         // Check if Configuration is Empty
         if (empty($this->getConfiguration())) {
             return $fields;
@@ -169,24 +186,25 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
             return $fields;
         }
         //====================================================================//
-        // Walk on Defined Fields
-        foreach ($fields as $index => $field) {
+        // Walk on Defined Overrides
+        foreach ($overrides as $fieldId => $fieldOverrides) {
             //====================================================================//
-            // Check if Configuration Key Exists
-            if (!isset($overrides[$field["id"]])) {
+            // Check if this Field Exists
+            if (!$field = $fields->get($fieldId)) {
                 continue;
             }
-            $fieldOverrides = $overrides[$field["id"]];
+
+            print_r($fieldId);
             //====================================================================//
             // Check if Field Shall be Excluded
             if (!empty($fieldOverrides["excluded"] ?? false)) {
-                unset($fields[$index]);
+                $fields->remove($fieldId);
 
                 continue;
             }
             //====================================================================//
             // Update Field Definition
-            $fields[$index] = self::updateField($field, $fieldOverrides);
+            $field->update($fieldOverrides);
         }
 
         return $fields;
@@ -230,66 +248,6 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
         return $config[$key1][$key2] ?? null;
     }
 
-    /**
-     * Override a Field Definition
-     *
-     * @param array $field  Original Field Definition
-     * @param array $values Custom Values to Write
-     *
-     * @return array
-     */
-    protected static function updateField(array $field, array $values): array
-    {
-        Splash::log()->trace();
-        //====================================================================//
-        // Field Type
-        self::updateFieldStrVal($field, $values, "type");
-        //====================================================================//
-        // Field Name
-        self::updateFieldStrVal($field, $values, "name");
-        //====================================================================//
-        // Field Description
-        self::updateFieldStrVal($field, $values, "desc");
-        //====================================================================//
-        // Field Group
-        self::updateFieldStrVal($field, $values, "group");
-        //====================================================================//
-        // Field MetaData
-        self::updateFieldMeta($field, $values);
-        //====================================================================//
-        // Field Choices
-        self::updateFieldChoices($field, $values);
-        //====================================================================//
-        // Field Favorite Sync Mode
-        self::updateFieldStrVal($field, $values, "syncmode");
-        //====================================================================//
-        // Field Primary Key Flag
-        self::updateFieldStrVal($field, $values, "primary");
-        //====================================================================//
-        // Field is Required Flag
-        self::updateFieldBoolVal($field, $values, "required");
-        //====================================================================//
-        // Field Read Allowed
-        self::updateFieldBoolVal($field, $values, "read");
-        //====================================================================//
-        // Field Write Allowed
-        self::updateFieldBoolVal($field, $values, "write");
-        //====================================================================//
-        // Field Indexing Flag
-        self::updateFieldBoolVal($field, $values, "index");
-        //====================================================================//
-        // Field is Listed Flag
-        self::updateFieldBoolVal($field, $values, "inlist");
-        //====================================================================//
-        // Field is Listed Hidden Flag
-        self::updateFieldBoolVal($field, $values, "hlist");
-        //====================================================================//
-        // Field is Logged Flag
-        self::updateFieldBoolVal($field, $values, "log");
-
-        return $field;
-    }
-
     //====================================================================//
     // PRIVATE FUNCTIONS
     //====================================================================//
@@ -316,82 +274,6 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
             if (isset($parameters[$index])) {
                 unset($parameters[$index]);
             }
-        }
-    }
-
-    /**
-     * Override a Field String Definition
-     *
-     * @param array  $field  Original Field Definition
-     * @param array  $values Custom Values to Write
-     * @param string $key    String Values Key
-     *
-     * @return void
-     */
-    private static function updateFieldStrVal(array &$field, array $values, string $key): void
-    {
-        if (isset($values[$key]) && is_string($values[$key])) {
-            $field[$key] = $values[$key];
-        }
-    }
-
-    /**
-     * Override a Field Bool Definition
-     *
-     * @param array  $field  Original Field Definition
-     * @param array  $values Custom Values to Write
-     * @param string $key    String Values Key
-     *
-     * @return void
-     */
-    private static function updateFieldBoolVal(array &$field, array $values, string $key): void
-    {
-        if (isset($values[$key]) && is_scalar($values[$key])) {
-            $field[$key] = (bool) $values[$key];
-        }
-    }
-
-    /**
-     * Override a Field Meta Definition
-     *
-     * @param array $field  Original Field Definition
-     * @param array $values Custom Values to Write
-     *
-     * @return void
-     */
-    private static function updateFieldMeta(array &$field, array $values): void
-    {
-        // Update Field Meta ItemType
-        self::updateFieldStrVal($field, $values, Props::MICRODATA_URL);
-        // Update Field Meta ItemProp
-        self::updateFieldStrVal($field, $values, Props::MICRODATA_PROP);
-        // Update Field Meta Tag
-        if (isset($values[Props::MICRODATA_PROP]) || isset($values[Props::MICRODATA_URL])) {
-            if (is_string($field[Props::MICRODATA_PROP]) && is_string($field[Props::MICRODATA_URL])) {
-                $field[Props::TAG] = ObjectField::toTag($field[Props::MICRODATA_URL], $field[Props::MICRODATA_PROP]);
-            }
-        }
-    }
-
-    /**
-     * Override a Field Meta Definition
-     *
-     * @param array $field  Original Field Definition
-     * @param array $values Custom Values to Write
-     *
-     * @return void
-     */
-    private static function updateFieldChoices(array &$field, array $values): void
-    {
-        if (!isset($values[Props::CHOICES]) || !is_iterable($values[Props::CHOICES])) {
-            return;
-        }
-        $field[Props::CHOICES] = array();
-        foreach ($values[Props::CHOICES] as $description => $value) {
-            $field[Props::CHOICES][] = array(
-                "key" => $value,
-                "value" => $description
-            );
         }
     }
 }

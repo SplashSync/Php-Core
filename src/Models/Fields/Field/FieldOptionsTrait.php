@@ -1,20 +1,36 @@
 <?php
 
-namespace Splash\Core\Models\Fields;
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
+namespace Splash\Core\Models\Fields\Field;
 
 use Splash\Core\Client\Splash;
-use Splash\Core\Dictionary\SplFields;
+use Splash\Core\Dictionary\Fields\SplFieldProps as Props;
 use Splash\Core\Helpers\StringConverter;
+use Splash\Core\Interfaces\Fields\FieldInterface;
 
 /**
  * Splash Object Field Options
+ *
+ * @phpstan-import-type RAW_CHOICE from FieldInterface
  */
 trait FieldOptionsTrait
 {
     /**
      * Field Possible Values
      *
-     * @var array<string, array{key: string, value:string}>
+     * @var array<int|string, RAW_CHOICE>
      */
     private array $choices = array();
 
@@ -28,7 +44,7 @@ trait FieldOptionsTrait
     /**
      * @inheritdoc
      */
-    public function setMultiLang(?string $isoCode, bool $isDefault): self
+    public function setMultiLang(?string $isoCode, bool $isDefault): static
     {
         //====================================================================//
         // Safety Checks ==> Verify Language ISO Code
@@ -84,7 +100,7 @@ trait FieldOptionsTrait
     {
         $this->choices[] = array(
             "key" => $value,
-            "value" => StringConverter::toUtf8($description)
+            "value" => (string) StringConverter::toUtf8($description)
         );
 
         return $this;
@@ -110,8 +126,14 @@ trait FieldOptionsTrait
 
     /**
      * @inheritDoc
-     *
-     * @return array<string, string>
+     */
+    public function getRawChoices(): array
+    {
+        return $this->choices;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getChoices(): array
     {
@@ -132,5 +154,60 @@ trait FieldOptionsTrait
         return $this->options;
     }
 
+    /**
+     * Import / Override Field Options Definition
+     *
+     * @param array<string, mixed> $values Custom Values to Write
+     */
+    protected function updateOptionsValues(array $values): static
+    {
+        //==============================================================================
+        // Import Field Options
+        $options = $values[Props::OPTIONS] ?? null;
+        if (is_iterable($options)) {
+            foreach ($options as $key => $value) {
+                if ($key && $value && is_string($key) && is_scalar($value)) {
+                    $this->addOption($key, $value);
+                }
+            }
+        }
 
+        return $this;
+    }
+
+    /**
+     * Import / Override Field Options Definition
+     *
+     * @param array<string, mixed> $values Custom Values to Write
+     *
+     * @SuppressWarnings(CyclomaticComplexity)
+     */
+    protected function updateChoicesValues(array $values): static
+    {
+        //==============================================================================
+        // Import Field Choices
+        $choices = $values[Props::CHOICES] ?? null;
+        if (!is_iterable($choices)) {
+            return $this;
+        }
+        $this->setChoices(array());
+        foreach ($choices as $key => $choiceValue) {
+            //==============================================================================
+            // Raw Choices Received
+            if ($key && $choiceValue && is_string($key) && is_string($choiceValue)) {
+                $this->addChoice($key, $choiceValue);
+            }
+            //==============================================================================
+            // Structured Choices Received
+            if (is_array($choiceValue)) {
+                $structKey = $choiceValue["key"] ?? null;
+                $structValue = $choiceValue["value"] ?? null;
+                if ($structKey && $structValue && is_string($structKey) && is_string($structValue)) {
+                    $this->addChoice($structKey, $structValue);
+                }
+            }
+        }
+
+        return $this;
+    }
 }
