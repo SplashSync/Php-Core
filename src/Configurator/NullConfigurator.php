@@ -15,6 +15,7 @@
 
 namespace Splash\Core\Configurator;
 
+use Splash\Core\Fields\FieldsCollection;
 use Splash\Core\Interfaces\ConfiguratorInterface;
 
 /**
@@ -76,6 +77,16 @@ class NullConfigurator implements ConfiguratorInterface
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function overrideFields(string $objectType, array $fields): array
+    {
+        return $fields;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function overrideFieldsCollection(string $objectType, FieldsCollection $fields): FieldsCollection
     {
         return $fields;
     }

@@ -45,7 +45,7 @@ class SplSyncMode
      *
      * @return string[]
      */
-    static public function getAll(): array
+    public static function getAll(): array
     {
         return array(
             self::BOTH,
@@ -58,9 +58,8 @@ class SplSyncMode
     /**
      * Check if Synchronisation Mode is Valid
      */
-    static public function isValid(string $syncMode): bool
+    public static function isValid(string $syncMode): bool
     {
-        return in_array($syncMode, self::getAll());
+        return in_array($syncMode, self::getAll(), true);
     }
-
 }

@@ -15,6 +15,8 @@
 
 namespace Splash\Core\Dictionary;
 
+use Splash\Core\Helpers\ListsHelper;
+
 /**
  * Dictionary for All Splash Fields Types Names
  */
@@ -216,4 +218,47 @@ class SplFields
      *  - ThirdParty with ID 33 is : 33::ThirdParty
      */
     const ID = 'objectid';
+
+    /**
+     * Get All Available Field Types
+     *
+     * @return string[]
+     */
+    public static function getAll(): array
+    {
+        return array(
+            self::VARCHAR,
+            self::TEXT,
+            self::BOOL,
+            self::INT,
+            self::DOUBLE,
+            self::EMAIL,
+            self::PHONE,
+            self::DATE,
+            self::DATETIME,
+            self::LANG,
+            self::COUNTRY,
+            self::STATE,
+            self::CURRENCY,
+            self::URL,
+            self::FILE,
+            self::IMG,
+            self::STREAM,
+            self::M_VARCHAR,
+            self::M_TEXT,
+            self::PRICE,
+            self::INLINE,
+            self::ID,
+        );
+    }
+
+    /**
+     * Check if Field Type is Valid
+     */
+    public static function isValid(string $type): bool
+    {
+        ListsHelper::fieldName($type) ?? $type;
+
+        return !empty($type) && in_array($type, self::getAll(), true);
+    }
 }
