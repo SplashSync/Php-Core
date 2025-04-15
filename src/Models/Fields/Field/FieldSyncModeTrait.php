@@ -32,7 +32,7 @@ trait FieldSyncModeTrait
     /**
      * @inheritDoc
      */
-    public function setSyncMode(string $syncMode): static
+    public function setSyncMode(string $syncMode): self
     {
         if (!SplSyncMode::isValid($syncMode)) {
             Splash::log()->err("Invalid Sync Mode for Field ".$this->getName());
@@ -88,7 +88,7 @@ trait FieldSyncModeTrait
      *
      * @param array<string, mixed> $values Custom Values to Write
      */
-    protected function updateSyncModeValues(array $values): static
+    protected function updateSyncModeValues(array $values): self
     {
         $this->updateStringValue($values, Props::SYNC_MODE, fn ($value) => $this->setSyncMode($value));
 

@@ -50,7 +50,7 @@ abstract class AbstractFieldTestCase extends TestCase
         string $property,
         callable $getter,
         callable $setter,
-        bool $default = false,
+        bool $default = false
     ): void {
         //====================================================================//
         // Default Value
@@ -91,7 +91,7 @@ abstract class AbstractFieldTestCase extends TestCase
         string $property,
         callable $getter,
         callable $setter,
-        ?string $default = null,
+        ?string $default = null
     ): void {
         $strValue = uniqid(ucfirst($property));
         //====================================================================//

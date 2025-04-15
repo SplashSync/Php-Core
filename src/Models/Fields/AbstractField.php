@@ -147,7 +147,7 @@ abstract class AbstractField implements FieldInterface
      *
      * @throws Exception
      */
-    public static function fromArray(array $values): static
+    public static function fromArray(array $values): self
     {
         //==============================================================================
         // Safety Check
@@ -169,7 +169,7 @@ abstract class AbstractField implements FieldInterface
     /**
      * Update of Field Definition from an Array of Values
      */
-    public function update(array $values): static
+    public function update(array $values): self
     {
         $this
             ->updateCoreValues($values)

@@ -23,7 +23,7 @@ interface FieldCoreInterface
     /**
      * Set Field Identifier
      */
-    public function setIdentifier(string $id): static;
+    public function setIdentifier(string $id): self;
 
     /**
      * Get Field Identifier
@@ -38,7 +38,7 @@ interface FieldCoreInterface
     /**
      * Set Field Name
      */
-    public function setName(string $name): static;
+    public function setName(string $name): self;
 
     /**
      * Get Field Name
@@ -48,7 +48,7 @@ interface FieldCoreInterface
     /**
      * Set Field Description
      */
-    public function setDesc(string $desc): static;
+    public function setDesc(string $desc): self;
 
     /**
      * Get Field Description
@@ -58,7 +58,7 @@ interface FieldCoreInterface
     /**
      * Set Field Group Name
      */
-    public function setGroup(string $group): static;
+    public function setGroup(string $group): self;
 
     /**
      * Get Field Group Name
@@ -68,7 +68,7 @@ interface FieldCoreInterface
     /**
      * Push Field Inside a List
      */
-    public function setInlist(string $listName): static;
+    public function setInlist(string $listName): self;
 
     /**
      * Check if Field is Inside a List

@@ -56,7 +56,7 @@ trait FieldSynchronizationTrait
     /**
      * @inheritDoc
      */
-    public function setRequired(bool $required): static
+    public function setRequired(bool $required): self
     {
         $this->required = $required;
 
@@ -74,7 +74,7 @@ trait FieldSynchronizationTrait
     /**
      * @inheritDoc
      */
-    public function setRead(bool $read): static
+    public function setRead(bool $read): self
     {
         $this->read = $read;
 
@@ -92,7 +92,7 @@ trait FieldSynchronizationTrait
     /**
      * @inheritDoc
      */
-    public function setWrite(bool $write): static
+    public function setWrite(bool $write): self
     {
         $this->write = $write;
 
@@ -110,7 +110,7 @@ trait FieldSynchronizationTrait
     /**
      * @inheritDoc
      */
-    public function setIndex(bool $index): static
+    public function setIndex(bool $index): self
     {
         $this->index = $index;
 
@@ -128,7 +128,7 @@ trait FieldSynchronizationTrait
     /**
      * @inheritDoc
      */
-    public function setPrimary(bool $primary): static
+    public function setPrimary(bool $primary): self
     {
         //====================================================================//
         // Safety Checks ==> Verify Field Type is Allowed
@@ -156,7 +156,7 @@ trait FieldSynchronizationTrait
     /**
      * @inheritDoc
      */
-    public function setLogged(bool $logged): static
+    public function setLogged(bool $logged): self
     {
         $this->log = $logged;
 
@@ -180,7 +180,7 @@ trait FieldSynchronizationTrait
      *
      * @param array<string, mixed> $values Custom Values to Write
      */
-    protected function updateSynchronizationValues(array $values): static
+    protected function updateSynchronizationValues(array $values): self
     {
         $this->updateBooleanValue($values, Props::REQUIRED, fn ($value) => $this->setRequired($value));
         $this->updateBooleanValue($values, Props::READ, fn ($value) => $this->setRead($value));

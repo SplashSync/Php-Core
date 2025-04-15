@@ -37,7 +37,7 @@ trait FieldTestTrait
     /**
      * @inheritDoc
      */
-    public function addAssociation(string $fieldId): static
+    public function addAssociation(string $fieldId): self
     {
         $this->associations[] = $fieldId;
         $this->associations = array_unique($this->associations);
@@ -48,7 +48,7 @@ trait FieldTestTrait
     /**
      * @inheritDoc
      */
-    public function setAssociations(array $fieldIds): static
+    public function setAssociations(array $fieldIds): self
     {
         $this->associations = array_unique($fieldIds);
 
@@ -66,7 +66,7 @@ trait FieldTestTrait
     /**
      * @inheritDoc
      */
-    public function setNotTested(bool $noTests): static
+    public function setNotTested(bool $noTests): self
     {
         $this->noTests = $noTests;
 
@@ -86,7 +86,7 @@ trait FieldTestTrait
      *
      * @param array<string, mixed> $values Custom Values to Write
      */
-    protected function updateTestValues(array $values): static
+    protected function updateTestValues(array $values): self
     {
         //==============================================================================
         // Import Associated Fields

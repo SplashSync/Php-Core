@@ -83,7 +83,7 @@ class FieldsFactory
     /**
      * Save Current Edited Field & Apply Configurators
      */
-    public function build(): static
+    public function build(): self
     {
         //====================================================================//
         // Commit Last Created if not already done
@@ -134,7 +134,7 @@ class FieldsFactory
     /**
      * Validate & Push Current Edited Field to Collection
      */
-    protected function commit(): static
+    protected function commit(): self
     {
         //====================================================================//
         // Safety Checks

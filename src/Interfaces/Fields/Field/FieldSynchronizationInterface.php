@@ -24,7 +24,7 @@ interface FieldSynchronizationInterface
      * Set Field Required Flag
      * Field is Required to Create a New Object (Bool)
      */
-    public function setRequired(bool $required): static;
+    public function setRequired(bool $required): self;
 
     /**
      * Get Field Required Flag
@@ -35,7 +35,7 @@ interface FieldSynchronizationInterface
     /**
      * Set Field Readable Flag
      */
-    public function setRead(bool $read): static;
+    public function setRead(bool $read): self;
 
     /**
      * Get Field Readable Flag
@@ -45,7 +45,7 @@ interface FieldSynchronizationInterface
     /**
      * Set Field Writable Flag
      */
-    public function setWrite(bool $write): static;
+    public function setWrite(bool $write): self;
 
     /**
      * Get Field Writable Flag
@@ -56,7 +56,7 @@ interface FieldSynchronizationInterface
      * Set Field Should be Indexed Flag
      * Field Should be Indexed for Text Search (Bool)
      */
-    public function setIndex(bool $index): static;
+    public function setIndex(bool $index): self;
 
     /**
      * Set Field Should be Indexed Flag
@@ -67,7 +67,7 @@ interface FieldSynchronizationInterface
     /**
      * Set Field Primary Flag
      */
-    public function setPrimary(bool $primary): static;
+    public function setPrimary(bool $primary): self;
 
     /**
      * Get Field Primary Flag
@@ -77,7 +77,7 @@ interface FieldSynchronizationInterface
     /**
      * Set Field Versioning / Archive Flag
      */
-    public function setLogged(bool $logged): static;
+    public function setLogged(bool $logged): self;
 
     /**
      * Get Field Versioning / Archive Flag

@@ -31,9 +31,11 @@ trait FactoryMetadataTrait
     /**
      * Signify Server Current New Field Prefer Read & Write Mode
      */
-    public function setPreferBoth(): static
+    public function setPreferBoth(): self
     {
-        $this->current()?->setSyncMode(SplSyncMode::BOTH);
+        if ($current = $this->current()) {
+            $current->setSyncMode(SplSyncMode::BOTH);
+        }
 
         return $this;
     }
@@ -41,9 +43,11 @@ trait FactoryMetadataTrait
     /**
      * Signify Server Current New Field Prefer ReadOnly Mode
      */
-    public function setPreferRead(): static
+    public function setPreferRead(): self
     {
-        $this->current()?->setSyncMode(SplSyncMode::READ);
+        if ($current = $this->current()) {
+            $current->setSyncMode(SplSyncMode::READ);
+        }
 
         return $this;
     }
@@ -51,9 +55,11 @@ trait FactoryMetadataTrait
     /**
      * Signify Server Current New Field Prefer WriteOnly Mode
      */
-    public function setPreferWrite(): static
+    public function setPreferWrite(): self
     {
-        $this->current()?->setSyncMode(SplSyncMode::WRITE);
+        if ($current = $this->current()) {
+            $current->setSyncMode(SplSyncMode::WRITE);
+        }
 
         return $this;
     }
@@ -61,9 +67,11 @@ trait FactoryMetadataTrait
     /**
      * Signify Server Current New Field Prefer No Sync Mode
      */
-    public function setPreferNone(): static
+    public function setPreferNone(): self
     {
-        $this->current()?->setSyncMode(SplSyncMode::NONE);
+        if ($current = $this->current()) {
+            $current->setSyncMode(SplSyncMode::NONE);
+        }
 
         return $this;
     }
@@ -77,12 +85,12 @@ trait FactoryMetadataTrait
      *
      * @param string $itemType Field Microdata Type Url
      * @param string $itemProp Field Microdata Property Name
-     *
-     * @return $this
      */
     public function microData(string $itemType, string $itemProp): self
     {
-        $this->current()?->setMicroData($itemType, $itemProp);
+        if ($current = $this->current()) {
+            $current->setMicroData($itemType, $itemProp);
+        }
 
         return $this;
     }
@@ -96,7 +104,7 @@ trait FactoryMetadataTrait
      *
      * @param array $fieldChoices Possible Choice Array (Value => Description)
      */
-    public function addChoices(array $fieldChoices): static
+    public function addChoices(array $fieldChoices): self
     {
         foreach ($fieldChoices as $value => $description) {
             $this->addChoice(
@@ -114,9 +122,11 @@ trait FactoryMetadataTrait
      * @param string $value       Possible Choice Value
      * @param string $description Choice Description for Display (Will Be Translated if Possible)
      */
-    public function addChoice(string $value, string $description): static
+    public function addChoice(string $value, string $description): self
     {
-        $this->current()?->addChoice($value, Splash::trans(trim($description)));
+        if ($current = $this->current()) {
+            $current->addChoice($value, Splash::trans(trim($description)));
+        }
 
         return $this;
     }
@@ -159,12 +169,14 @@ trait FactoryMetadataTrait
      *
      * @param string $isoCode Language ISO Code (i.e en_US | fr_FR)
      */
-    public function setMultiLang(string $isoCode): static
+    public function setMultiLang(string $isoCode): self
     {
-        $this->current()?->setMultiLang(
-            $isoCode,
-            $this->isDefaultLanguage($isoCode)
-        );
+        if ($current = $this->current()) {
+            $current->setMultiLang(
+                $isoCode,
+                $this->isDefaultLanguage($isoCode)
+            );
+        }
 
         return $this;
     }
@@ -176,7 +188,7 @@ trait FactoryMetadataTrait
     /**
      * Update Current New Field set list of associated fields
      */
-    public function association(): static
+    public function association(): self
     {
         $associations = array();
         foreach (func_get_args()?: array() as $association) {
@@ -184,7 +196,9 @@ trait FactoryMetadataTrait
                 $associations[] = $association;
             }
         }
-        $this->current()?->setAssociations($associations);
+        if ($current = $this->current()) {
+            $current->setAssociations($associations);
+        }
 
         return $this;
     }
@@ -194,7 +208,7 @@ trait FactoryMetadataTrait
      *
      * @param array $fieldOptions Array of Options (Type => Value)
      */
-    public function addOptions(array $fieldOptions): static
+    public function addOptions(array $fieldOptions): self
     {
         foreach ($fieldOptions as $type => $value) {
             $this->addOption($type, $value);
@@ -209,9 +223,11 @@ trait FactoryMetadataTrait
      * @param string                $key   Constrain Type
      * @param bool|float|int|string $value Constrain Value
      */
-    public function addOption(string $key, $value = true): static
+    public function addOption(string $key, $value = true): self
     {
-        $this->current()?->addOption($key, $value);
+        if ($current = $this->current()) {
+            $current->addOption($key, $value);
+        }
 
         return $this;
     }

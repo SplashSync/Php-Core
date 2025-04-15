@@ -23,7 +23,7 @@ interface FieldSyncModeInterface
     /**
      * Set Field Preferred Synchronisation Mode
      */
-    public function setSyncMode(string $syncMode): static;
+    public function setSyncMode(string $syncMode): self;
 
     /**
      * Get Field Preferred Synchronisation Mode

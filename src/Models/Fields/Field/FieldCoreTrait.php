@@ -53,7 +53,7 @@ trait FieldCoreTrait
     /**
      * @inheritdoc
      */
-    public function setIdentifier(string $id): static
+    public function setIdentifier(string $id): self
     {
         $this->id = $id;
 
@@ -79,7 +79,7 @@ trait FieldCoreTrait
     /**
      * @inheritdoc
      */
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = (string) StringConverter::toUtf8($name);
         if (empty($this->getDesc())) {
@@ -100,7 +100,7 @@ trait FieldCoreTrait
     /**
      * @inheritDoc
      */
-    public function setDesc(string $desc): static
+    public function setDesc(string $desc): self
     {
         $this->desc = StringConverter::toUtf8($desc);
 
@@ -118,7 +118,7 @@ trait FieldCoreTrait
     /**
      * @inheritDoc
      */
-    public function setGroup(string $group): static
+    public function setGroup(string $group): self
     {
         $this->group = StringConverter::toUtf8($group);
 
@@ -140,7 +140,7 @@ trait FieldCoreTrait
     /**
      * Push Field Inside a List
      */
-    public function setInlist(string $listName): static
+    public function setInlist(string $listName): self
     {
         //====================================================================//
         // Safety Checks ==> Verify List Name Not Empty
@@ -210,7 +210,7 @@ trait FieldCoreTrait
      *
      * @note Field Identifier is NEVER Updated
      */
-    protected function updateCoreValues(array $values): static
+    protected function updateCoreValues(array $values): self
     {
         $this->updateStringValue($values, Props::TYPE, fn ($value) => $this->setType($value));
         $this->updateStringValue($values, Props::NAME, fn ($value) => $this->setName($value));

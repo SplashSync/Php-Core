@@ -41,7 +41,7 @@ trait FieldMetadataTrait
     /**
      * Set Metadata for Auto-Mapping
      */
-    public function setMicroData(string $itemType, string $itemProp): static
+    public function setMicroData(string $itemType, string $itemProp): self
     {
         if (!$itemType && !$itemProp) {
             $this->itemType = null;
@@ -88,7 +88,7 @@ trait FieldMetadataTrait
     /**
      * @inheritDoc
      */
-    public function setTag(?string $tag): static
+    public function setTag(?string $tag): self
     {
         $this->tag = $tag;
 
@@ -116,7 +116,7 @@ trait FieldMetadataTrait
      *
      * @param array<string, mixed> $values Custom Values to Write
      */
-    protected function updateMetadataValues(array $values): static
+    protected function updateMetadataValues(array $values): self
     {
         //==============================================================================
         // Get Updated Field Metadata

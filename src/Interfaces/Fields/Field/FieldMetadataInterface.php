@@ -23,7 +23,7 @@ interface FieldMetadataInterface
     /**
      * Set Metadata for Auto-Mapping
      */
-    public function setMicroData(string $itemType, string $itemProp): static;
+    public function setMicroData(string $itemType, string $itemProp): self;
 
     /**
      * Get Tag from Metadata
@@ -43,7 +43,7 @@ interface FieldMetadataInterface
     /**
      * Set Field Auto-Mapping Tag
      */
-    public function setTag(?string $tag): static;
+    public function setTag(?string $tag): self;
 
     /**
      * Get Field Auto-Mapping Tag

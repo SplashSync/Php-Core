@@ -74,7 +74,7 @@ class FieldsCollection extends ArrayIterator implements FieldsCollectionInterfac
     /**
      * Add a Field to Collection
      */
-    public function add(AbstractField $field): static
+    public function add(AbstractField $field): self
     {
         $this->offsetSet((string) $field, $field);
 
@@ -108,7 +108,7 @@ class FieldsCollection extends ArrayIterator implements FieldsCollectionInterfac
     /**
      * Remove a Field from Collection
      */
-    public function remove(string $fieldId): static
+    public function remove(string $fieldId): self
     {
         if ($this->offsetExists($fieldId)) {
             $this->offsetUnset($fieldId);

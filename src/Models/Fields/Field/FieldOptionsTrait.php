@@ -44,7 +44,7 @@ trait FieldOptionsTrait
     /**
      * @inheritdoc
      */
-    public function setMultiLang(?string $isoCode, bool $isDefault): static
+    public function setMultiLang(?string $isoCode, bool $isDefault): self
     {
         //====================================================================//
         // Safety Checks ==> Verify Language ISO Code
@@ -81,7 +81,7 @@ trait FieldOptionsTrait
     /**
      * @inheritDoc
      */
-    public function setChoices(array $choices): static
+    public function setChoices(array $choices): self
     {
         foreach ($choices as $value => $description) {
             $this->addChoice(
@@ -96,7 +96,7 @@ trait FieldOptionsTrait
     /**
      * @inheritDoc
      */
-    public function addChoice(string $value, string $description): static
+    public function addChoice(string $value, string $description): self
     {
         $this->choices[] = array(
             "key" => $value,
@@ -109,7 +109,7 @@ trait FieldOptionsTrait
     /**
      * @inheritDoc
      */
-    public function addOption(string $key, $value = true): static
+    public function addOption(string $key, $value = true): self
     {
         //====================================================================//
         // Safety Checks ==> Verify Key
@@ -159,7 +159,7 @@ trait FieldOptionsTrait
      *
      * @param array<string, mixed> $values Custom Values to Write
      */
-    protected function updateOptionsValues(array $values): static
+    protected function updateOptionsValues(array $values): self
     {
         //==============================================================================
         // Import Field Options
@@ -182,7 +182,7 @@ trait FieldOptionsTrait
      *
      * @SuppressWarnings(CyclomaticComplexity)
      */
-    protected function updateChoicesValues(array $values): static
+    protected function updateChoicesValues(array $values): self
     {
         //==============================================================================
         // Import Field Choices

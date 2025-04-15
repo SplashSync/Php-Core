@@ -35,9 +35,11 @@ trait FactoryCoreTrait
      *
      * @param string $fieldId Local Data Identifier (Must be unique on local machine)
      */
-    public function identifier(string $fieldId): static
+    public function identifier(string $fieldId): self
     {
-        $this->current()?->setIdentifier($fieldId);
+        if ($current = $this->current()) {
+            $current->setIdentifier($fieldId);
+        }
 
         return $this;
     }
@@ -47,9 +49,11 @@ trait FactoryCoreTrait
      *
      * @param string $fieldName Data Name
      */
-    public function name(string $fieldName): static
+    public function name(string $fieldName): self
     {
-        $this->current()?->setName($fieldName);
+        if ($current = $this->current()) {
+            $current->setName($fieldName);
+        }
 
         return $this;
     }
@@ -59,9 +63,11 @@ trait FactoryCoreTrait
      *
      * @param string $fieldDesc Data Description (Will Be Translated if Possible)
      */
-    public function description(string $fieldDesc): static
+    public function description(string $fieldDesc): self
     {
-        $this->current()?->setDesc(Splash::trans(trim($fieldDesc)));
+        if ($current = $this->current()) {
+            $current->setDesc(Splash::trans(trim($fieldDesc)));
+        }
 
         return $this;
     }
@@ -71,9 +77,11 @@ trait FactoryCoreTrait
      *
      * @param string $fieldGroup Data Group (Will Be Translated if Possible)
      */
-    public function group(string $fieldGroup): static
+    public function group(string $fieldGroup): self
     {
-        $this->current()?->setGroup(Splash::trans(trim($fieldGroup)));
+        if ($current = $this->current()) {
+            $current->setGroup(Splash::trans(trim($fieldGroup)));
+        }
 
         return $this;
     }
@@ -85,9 +93,11 @@ trait FactoryCoreTrait
     /**
      * Update Current New Field set as required for creation
      */
-    public function isRequired(?bool $isRequired = true): static
+    public function isRequired(?bool $isRequired = true): self
     {
-        $this->current()?->setRequired((bool) $isRequired);
+        if ($current = $this->current()) {
+            $current->setRequired((bool) $isRequired);
+        }
 
         return $this;
     }
@@ -95,9 +105,11 @@ trait FactoryCoreTrait
     /**
      * Update Current New Field set as primary key
      */
-    public function isPrimary(?bool $isPrimary = true): static
+    public function isPrimary(?bool $isPrimary = true): self
     {
-        $this->current()?->setPrimary((bool) $isPrimary);
+        if ($current = $this->current()) {
+            $current->setPrimary((bool) $isPrimary);
+        }
 
         return $this;
     }
@@ -105,9 +117,11 @@ trait FactoryCoreTrait
     /**
      * Update Current New Field set as indexed
      */
-    public function isIndexed(?bool $isIndexed = true): static
+    public function isIndexed(?bool $isIndexed = true): self
     {
-        $this->current()?->setIndex((bool) $isIndexed);
+        if ($current = $this->current()) {
+            $current->setIndex((bool) $isIndexed);
+        }
 
         return $this;
     }
@@ -115,10 +129,12 @@ trait FactoryCoreTrait
     /**
      * Update Current New Field set as Read Only Field
      */
-    public function isReadOnly(?bool $isReadOnly = true): static
+    public function isReadOnly(?bool $isReadOnly = true): self
     {
         if ($isReadOnly) {
-            $this->current()?->setRead(true)->setWrite(false);
+            if ($current = $this->current()) {
+                $current->setRead(true)->setWrite(false);
+            }
         }
 
         return $this;
@@ -127,10 +143,12 @@ trait FactoryCoreTrait
     /**
      * Update Current New Field set as Write Only Field
      */
-    public function isWriteOnly(?bool $isWriteOnly = true): static
+    public function isWriteOnly(?bool $isWriteOnly = true): self
     {
         if ($isWriteOnly) {
-            $this->current()?->setRead(false)->setWrite(true);
+            if ($current = $this->current()) {
+                $current->setRead(false)->setWrite(true);
+            }
         }
 
         return $this;
@@ -139,9 +157,11 @@ trait FactoryCoreTrait
     /**
      * Update Current New Field set as available in Objects List
      */
-    public function isListed(?bool $isListed = true): static
+    public function isListed(?bool $isListed = true): self
     {
-        $this->current()?->setListed((bool) $isListed);
+        if ($current = $this->current()) {
+            $current->setListed((bool) $isListed);
+        }
 
         return $this;
     }
@@ -153,12 +173,12 @@ trait FactoryCoreTrait
      * This improves reading of lists, but makes field usable for analyzes.
      *
      * @param null|bool $listHidden
-     *
-     * @return $this
      */
-    public function isListHidden(?bool $listHidden = true): static
+    public function isListHidden(?bool $listHidden = true): self
     {
-        $this->current()?->setListHidden((bool) $listHidden);
+        if ($current = $this->current()) {
+            $current->setListHidden((bool) $listHidden);
+        }
 
         return $this;
     }
@@ -166,9 +186,11 @@ trait FactoryCoreTrait
     /**
      * Update Current New Field set as recommended for logging
      */
-    public function isLogged(?bool $isLogged = true): static
+    public function isLogged(?bool $isLogged = true): self
     {
-        $this->current()?->setLogged((bool) $isLogged);
+        if ($current = $this->current()) {
+            $current->setLogged((bool) $isLogged);
+        }
 
         return $this;
     }
@@ -177,9 +199,11 @@ trait FactoryCoreTrait
      * Update Current New Field to Set Field Excluded from General Unit Tests
      * May be tested by Custom Tests Suites
      */
-    public function isNotTested(?bool $isNoTest = true): static
+    public function isNotTested(?bool $isNoTest = true): self
     {
-        $this->current()?->setNotTested((bool) $isNoTest);
+        if ($current = $this->current()) {
+            $current->setNotTested((bool) $isNoTest);
+        }
 
         return $this;
     }
@@ -191,9 +215,11 @@ trait FactoryCoreTrait
     /**
      * Update Current New Field set as it inside a list
      */
-    public function inList(string $listName): static
+    public function inList(string $listName): self
     {
-        $this->current()?->setInlist($listName);
+        if ($current = $this->current()) {
+            $current->setInlist($listName);
+        }
 
         return $this;
     }

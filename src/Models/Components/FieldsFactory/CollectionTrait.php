@@ -104,7 +104,7 @@ trait CollectionTrait
     /**
      * Merge an Array of Fields on Field Factory
      */
-    public function merge(FieldsCollection $fields): static
+    public function merge(FieldsCollection $fields): self
     {
         //====================================================================//
         // Commit Last Created if not already done
@@ -121,7 +121,7 @@ trait CollectionTrait
      *
      * @param array<string, FIELD> $fields
      */
-    public function mergeArray(array $fields): static
+    public function mergeArray(array $fields): self
     {
         return $this->merge(FieldsCollection::fromArray($fields));
     }

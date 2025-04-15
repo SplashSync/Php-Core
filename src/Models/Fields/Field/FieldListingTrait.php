@@ -35,7 +35,7 @@ trait FieldListingTrait
     /**
      * @inheritDoc
      */
-    public function setListed(bool $listed): static
+    public function setListed(bool $listed): self
     {
         $this->listed = $listed;
 
@@ -53,7 +53,7 @@ trait FieldListingTrait
     /**
      * @inheritDoc
      */
-    public function setListHidden(bool $listHidden): static
+    public function setListHidden(bool $listHidden): self
     {
         $this->listHidden = $listHidden;
 
@@ -77,7 +77,7 @@ trait FieldListingTrait
      *
      * @param array<string, mixed> $values Custom Values to Write
      */
-    protected function updateListingValues(array $values): static
+    protected function updateListingValues(array $values): self
     {
         $this->updateBooleanValue($values, Props::IN_LIST, fn ($value) => $this->setListed($value));
         $this->updateBooleanValue($values, Props::HIDDEN_IN_LIST, fn ($value) => $this->setListHidden($value));

@@ -87,7 +87,9 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         // Mark Field as Required
         $randField->setRequired(true);
         Assert::assertTrue($randField->isRequired());
-        Assert::assertTrue($collection->get($randFieldId)?->isRequired());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertTrue($collectionField->isRequired());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterRequired();
@@ -123,7 +125,9 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         // Mark Field as Required
         $randField->setRead(false);
         Assert::assertFalse($randField->isRead());
-        Assert::assertFalse($collection->get($randFieldId)?->isRead());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertFalse($collectionField->isRead());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterRead();
@@ -157,7 +161,9 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         // Mark Field as Required
         $randField->setWrite(false);
         Assert::assertFalse($randField->isWrite());
-        Assert::assertFalse($collection->get($randFieldId)?->isWrite());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertFalse($collectionField->isWrite());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterWrite();
@@ -231,7 +237,9 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         // Mark Field as Required
         $randField->setPrimary(true);
         Assert::assertTrue($randField->isPrimary());
-        Assert::assertTrue($collection->get($randFieldId)?->isPrimary());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertTrue($collectionField->isPrimary());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterPrimary();
@@ -269,7 +277,9 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         // Mark Field as Indexed
         $randField->setIndex(true);
         Assert::assertTrue($randField->isIndex());
-        Assert::assertTrue($collection->get($randFieldId)?->isIndex());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertTrue($collectionField->isIndex());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterIndexed();
@@ -305,7 +315,9 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         // Mark Field as Logged
         $randField->setLogged(true);
         Assert::assertTrue($randField->isLogged());
-        Assert::assertTrue($collection->get($randFieldId)?->isLogged());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertTrue($collectionField->isLogged());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterLogged();
@@ -342,7 +354,9 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         $group = uniqid('group_');
         $randField->setGroup($group);
         Assert::assertEquals($group, $randField->getGroup());
-        Assert::assertEquals($group, $collection->get($randFieldId)?->getGroup());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertEquals($group, $collectionField->getGroup());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterGroup($group);
@@ -381,10 +395,13 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         // Mark Field with Microdata
         $randField->setMicroData($itemType, $itemProp);
         Assert::assertEquals($itemType, $randField->getItemType());
-        Assert::assertEquals($itemType, $collection->get($randFieldId)?->getItemType());
         Assert::assertEquals($itemProp, $randField->getItemProp());
-        Assert::assertEquals($itemProp, $collection->get($randFieldId)?->getItemProp());
-        Assert::assertNotEmpty($collection->get($randFieldId)?->getTag());
+        Assert::assertNotEmpty($randField->getTag());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertEquals($itemType, $collectionField->getItemType());
+        Assert::assertEquals($itemProp, $collectionField->getItemProp());
+        Assert::assertNotEmpty($collectionField->getTag());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterMetadata($itemType, $itemProp);
@@ -422,10 +439,11 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         Assert::assertInstanceOf(AbstractField::class, $randField);
         //====================================================================//
         // Mark Field as Tagged
-
         $randField->setTag($tag);
         Assert::assertEquals($tag, $randField->getTag());
-        Assert::assertEquals($tag, $collection->get($randFieldId)?->getTag());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertEquals($tag, $collectionField->getTag());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterTag($tag);
@@ -462,7 +480,9 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         // Mark Field as Listed
         $randField->setListed(true);
         Assert::assertTrue($randField->isListed());
-        Assert::assertTrue($collection->get($randFieldId)?->isListed());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertTrue($collectionField->isListed());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterListed();
@@ -534,7 +554,9 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         // Mark Field as Tested
         $randField->setNotTested(true);
         Assert::assertTrue($randField->isNotTested());
-        Assert::assertTrue($collection->get($randFieldId)?->isNotTested());
+        $collectionField = $collection->get($randFieldId);
+        Assert::assertInstanceOf(AbstractField::class, $collectionField);
+        Assert::assertTrue($collectionField->isNotTested());
         //====================================================================//
         // Get Filtered Collection
         $filteredCollection = $collection->filterNotTested();

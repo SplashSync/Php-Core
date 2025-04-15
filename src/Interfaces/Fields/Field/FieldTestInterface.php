@@ -23,14 +23,14 @@ interface FieldTestInterface
     /**
      * Add Associated Field. Fields to Generate with this field.
      */
-    public function addAssociation(string $fieldId): static;
+    public function addAssociation(string $fieldId): self;
 
     /**
      * Set Associated Fields. Fields to Generate with this field.
      *
      * @param string[] $fieldIds
      */
-    public function setAssociations(array $fieldIds): static;
+    public function setAssociations(array $fieldIds): self;
 
     /**
      * Get Associated Fields. Fields to Generate with this field.
@@ -43,7 +43,7 @@ interface FieldTestInterface
      * Set Field Not Tested Flag
      * Do No Perform Set Tests for this Field
      */
-    public function setNotTested(bool $noTests): static;
+    public function setNotTested(bool $noTests): self;
 
     /**
      * Get Field Not Tested Flag

@@ -24,7 +24,7 @@ interface FieldListingInterface
      * Set Field is In Object List Flag
      * This field is available in Objects List.
      */
-    public function setListed(bool $listed): static;
+    public function setListed(bool $listed): self;
 
     /**
      * Get Field is In Object List Flag
@@ -38,7 +38,7 @@ interface FieldListingInterface
      * This field is in Objects List but Hidden.
      * This improves reading of lists, but makes field usable for analyzes.
      */
-    public function setListHidden(bool $listHidden): static;
+    public function setListHidden(bool $listHidden): self;
 
     /**
      * Get Field In Hidden Object List Flag

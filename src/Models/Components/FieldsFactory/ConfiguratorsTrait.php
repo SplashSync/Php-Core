@@ -35,7 +35,7 @@ trait ConfiguratorsTrait
     /**
      * Register a Configurator for Fields Override
      */
-    public function registerConfigurator(string $objectType, AbstractConfigurator $configurator): static
+    public function registerConfigurator(string $objectType, AbstractConfigurator $configurator): self
     {
         $this->configurators[] = array(
             "objectType" => $objectType,

@@ -92,8 +92,12 @@ class T133FieldsConfiguratorTest extends TestCase
             array(Props::ID => "field1", Props::TYPE => SplFields::VARCHAR),
             array(Props::ID => "field2", Props::TYPE => SplFields::BOOL),
         ));
-        Assert::assertEquals(SplFields::VARCHAR, $fields->get("field1")?->getType());
-        Assert::assertEquals(SplFields::BOOL, $fields->get("field2")?->getType());
+        $field1 = $fields->get("field1");
+        Assert::assertInstanceOf(AbstractField::class, $field1);
+        Assert::assertEquals(SplFields::VARCHAR, $field1->getType());
+        $field2 = $fields->get("field2");
+        Assert::assertInstanceOf(AbstractField::class, $field2);
+        Assert::assertEquals(SplFields::BOOL, $field2->getType());
         Assert::assertNull($fields->get("field3"));
 
         //====================================================================//
