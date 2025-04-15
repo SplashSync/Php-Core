@@ -55,7 +55,7 @@ class ChecksumHelper
     /**
      * Compute Debug CheckSum String from Object Attributes
      *
-     * @param array|null $input Array of Object Data ($Code => $Value)
+     * @param null|array $input Array of Object Data ($Code => $Value)
      *
      * @return null|string Unique String Checksum
      */

@@ -15,8 +15,8 @@
 
 namespace Splash\Core\Helpers;
 
+use Exception;
 use Splash\Core\Client\Splash;
-use Splash\Core\Fields\FieldsManagerTrait;
 use Splash\Core\Models\AbstractObject;
 use Splash\Core\Models\Objects\IntelParserTrait;
 
@@ -25,12 +25,20 @@ use Splash\Core\Models\Objects\IntelParserTrait;
  */
 class ObjectsHelper
 {
-    use FieldsManagerTrait;
-
     /**
      * Object Id Splitter
      */
     const SPLIT = '::';
+
+    /**
+     * Object ID Prop
+     */
+    const ID = 'ObjectId';
+
+    /**
+     * Object Type Prop
+     */
+    const TYPE = 'ObjectType';
 
     /**
      * Create an Object Identifier String
@@ -59,31 +67,23 @@ class ObjectsHelper
     /**
      * Retrieve Identifier from an Object Identifier String
      *
-     * @param string $objectId Object Identifier String.
-     *
-     * @return null|string
+     * @param string $fieldId Object Identifier String.
      *
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
-    public static function id(string $objectId): ?string
+    public static function id(string $fieldId): ?string
     {
-        //====================================================================//
-        // Forward to Fields Manager
-        return self::objectId($objectId);
+        return self::explode($fieldId)[self::ID] ?? null;
     }
 
     /**
      * Retrieve Object Type Name from an Object Identifier String
      *
-     * @param string $objectId Object Identifier String.
-     *
-     * @return null|string
+     * @param string $fieldId Object Identifier String.
      */
-    public static function type(string $objectId): ?string
+    public static function type(string $fieldId): ?string
     {
-        //====================================================================//
-        // Forward to Fields Manager
-        return   self::objectType($objectId);
+        return self::explode($fieldId)[self::TYPE] ?? null;
     }
 
     /**
@@ -98,8 +98,8 @@ class ObjectsHelper
     {
         //====================================================================//
         // Decode Object Type & Id
-        $objectType = self::objectType($fieldData);
-        $objectId = self::objectId($fieldData);
+        $objectId = self::id($fieldData);
+        $objectType = self::type($fieldData);
         if (!$objectType || !$objectId) {
             return null;
         }
@@ -108,7 +108,7 @@ class ObjectsHelper
         // Load Splash Object
         try {
             $splashObject = Splash::object($objectType);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
         //====================================================================//
@@ -133,6 +133,35 @@ class ObjectsHelper
 
         //====================================================================//
         // Return Remote Object
-        return   $remoteObject;
+        return $remoteObject;
+    }
+
+    /**
+     * Identify if field is Object Identifier Data & Decode Field
+     *
+     * @param null|string $fieldId ObjectId Field String
+     *
+     * @return null|array
+     */
+    private static function explode(?string $fieldId): ?array
+    {
+        //====================================================================//
+        // Safety Check
+        if (empty($fieldId)) {
+            return null;
+        }
+        //====================================================================//
+        // Detects ObjectId
+        $list = explode(self::SPLIT, $fieldId);
+        if (is_array($list) && (2 == count($list))) {
+            //====================================================================//
+            // If List Detected, Prepare Field List Information Array
+            $result[self::ID] = $list[0];
+            $result[self::TYPE] = $list[1];
+
+            return $result;
+        }
+
+        return null;
     }
 }
