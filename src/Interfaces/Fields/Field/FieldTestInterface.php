@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Core\Interfaces\Fields\Field;
 
 /**
@@ -10,13 +23,12 @@ interface FieldTestInterface
     /**
      * Add Associated Field. Fields to Generate with this field.
      */
-    public function addAssociation(array $fieldId): static;
+    public function addAssociation(string $fieldId): static;
 
     /**
      * Set Associated Fields. Fields to Generate with this field.
      *
      * @param string[] $fieldIds
-     *
      */
     public function setAssociations(array $fieldIds): static;
 

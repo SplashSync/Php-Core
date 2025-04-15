@@ -15,6 +15,8 @@
 
 namespace Splash\Core\Interfaces;
 
+use Splash\Core\Fields\FieldsCollection;
+
 /**
  * Splash Module Configurator Interface
  * Define Required Implementation for Splash Module Configurator Classes
@@ -71,13 +73,26 @@ interface ConfiguratorInterface
     public function overrideDescription(string $objectType, array $description): array;
 
     /**
-     * Override Object Fields Array using Field Factory
+     * Override an Object Fields Array
+     *
      * This Event is Triggered by Object Class during Field Publish Action
      *
      * @param string  $objectType Local Object Type Name
-     * @param array[] $fields     Current Object Fields List
+     * @param array[] $fields     Object Fields List
      *
      * @return array
      */
     public function overrideFields(string $objectType, array $fields): array;
+
+    /**
+     * Override an Object Fields Collection
+     *
+     * This Event is Triggered by Object Class during Field Publish Action
+     *
+     * @param string           $objectType Local Object Type Name
+     * @param FieldsCollection $fields     Object Fields Collection
+     *
+     * @return FieldsCollection
+     */
+    public function overrideFieldsCollection(string $objectType, FieldsCollection $fields): FieldsCollection;
 }

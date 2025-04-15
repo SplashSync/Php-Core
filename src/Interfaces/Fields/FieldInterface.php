@@ -1,23 +1,37 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Core\Interfaces\Fields;
 
 use Splash\Core\Interfaces\Fields\Field\FieldCoreInterface;
+use Splash\Core\Interfaces\Fields\Field\FieldListingInterface;
 use Splash\Core\Interfaces\Fields\Field\FieldMetadataInterface;
 use Splash\Core\Interfaces\Fields\Field\FieldOptionsInterface;
 use Splash\Core\Interfaces\Fields\Field\FieldSynchronizationInterface;
-use Splash\Core\Interfaces\Fields\Field\FieldListingInterface;
 use Splash\Core\Interfaces\Fields\Field\FieldSyncModeInterface;
 use Splash\Core\Interfaces\Fields\Field\FieldTestInterface;
 
 /**
  * Interface for Splash Object Field Definition
  *
- * @template FIELD of array{
+ * @phpstan-type RAW_CHOICE array{key: string, value: string}
+ * @phpstan-type FIELD array{
  *          type: string,
  *          id: string,
  *          name: string,
- *          desc: string,
+ *          desc: null|string,
  *          group: null|string,
  *          required: null|bool|string,
  *          read: null|bool|string,
@@ -32,7 +46,7 @@ use Splash\Core\Interfaces\Fields\Field\FieldTestInterface;
  *          itemprop: null|string,
  *          itemtype: null|string,
  *          tag: null|string,
- *          choices: null|array{key: string, value: scalar},
+ *          choices: null|array<int|string, RAW_CHOICE>,
  *          asso: null|string[],
  *          options: array<string, scalar>
  *  }
@@ -49,8 +63,8 @@ interface FieldInterface extends
     /**
      * Field Constructor
      *
-     * @param string $type Field Type Code
-     * @param string|null $identifier Field Identifier
+     * @param string      $type       Field Type Code
+     * @param null|string $identifier Field Identifier
      */
     public function __construct(string $type, ?string $identifier = null);
 }
