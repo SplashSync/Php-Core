@@ -23,7 +23,7 @@ parameters:
     exclude:            ['vendor', "nusoap.php", 'soap.php', 'src/Components/NuSOAP', 'Templates/Local/Objects/Dummy', 'Tests']
 
     # For Building Splash Documentation
-    doc-src:            'src/Resources/docs'
+    doc-src:            '/src/Resources/docs'
     doc-target:         '/public'
     doc-contents:       ["splash-faq"]
 
