@@ -15,20 +15,20 @@
 
 namespace Splash\Core\Tests\T400Components;
 
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Splash\Core\Client\CommitEvent;
 use Splash\Core\Client\Splash;
 use Splash\Core\Components\Webservice;
 use Splash\Core\Dictionary\SplOperations;
+use Splash\Core\Models\PhpUnit\Components\TestCommitsManager as CommitsManager;
 use Splash\Core\Models\PhpUnit\ObjectsProviderAwareTrait;
 use Splash\Core\Models\PhpUnit\PrivateMethodInvokerTrait;
-use Splash\Tests\Tools\Components\TestCommitsManager as CommitsManager;
-use Splash\Tests\Tools\ObjectsCase;
 
 /**
  * Components Test Suite - Commits Manager Verifications
  */
-class T404CommitsManagerTest extends ObjectsCase
+class T404CommitsManagerTest extends TestCase
 {
     use PrivateMethodInvokerTrait;
     use ObjectsProviderAwareTrait;

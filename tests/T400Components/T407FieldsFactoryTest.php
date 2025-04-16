@@ -19,6 +19,8 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Splash\Core\Components\FieldsFactory;
 use Splash\Core\Dictionary\SplFields;
+use Splash\Core\Models\Fields\AbstractField;
+use Splash\Local\Fields\Templates\DummyTemplate;
 
 /**
  * Components Test Suite - Fields Factory Verifications
@@ -77,5 +79,29 @@ class T407FieldsFactoryTest extends TestCase
         Assert::assertCount(4, $factory->build()->getCollection());
         Assert::assertCount(4, $factory->toArray());
         Assert::assertCount(4, $factory->publish() ?? array());
+    }
+
+    public function testCreateFromTemplate(): void
+    {
+        $factory = new FieldsFactory();
+
+        //====================================================================//
+        // Create from a Dummy Template
+        $factory->createFromTemplate("testFieldId", DummyTemplate::class);
+        //====================================================================//
+        // Verify
+        Assert::assertCount(1, $factory->build()->getCollection());
+        Assert::assertCount(1, $factory->toArray());
+        $templateField = $factory->get("testFieldId");
+        Assert::assertInstanceOf(AbstractField::class, $templateField);
+        Assert::assertEquals(SplFields::TEXT, $templateField->getType());
+        Assert::assertEquals("Dummy Field", $templateField->getName());
+        Assert::assertCount(1, $factory->publish() ?? array());
+
+        //====================================================================//
+        // Create from a Dummy Template
+        $factory->createFromTemplate("invalidFieldId", AbstractField::class);
+        Assert::assertCount(0, $factory->build()->getCollection());
+        Assert::assertCount(0, $factory->toArray());
     }
 }
