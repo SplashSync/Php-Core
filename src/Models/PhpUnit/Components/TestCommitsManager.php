@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Tools\Components;
+namespace Splash\Core\Models\PhpUnit\Components;
 
 use Splash\Core\Client\CommitEvent;
 use Splash\Core\Components\CommitsManager;
