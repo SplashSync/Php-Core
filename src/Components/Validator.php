@@ -107,7 +107,7 @@ class Validator
     {
         if (false !== strpos($infos['ServerHost'], 'localhost')) {
             Splash::log()->war(Splash::trans('WarIsLocalhostServer'));
-        } elseif (false !== strpos($infos['ServerIP'], '127.0.0.1')) {
+        } elseif (false !== strpos($infos['ServerIP'] ?? "", '127.0.0.1')) {
             Splash::log()->war(Splash::trans('WarIsLocalhostServer'));
         }
 

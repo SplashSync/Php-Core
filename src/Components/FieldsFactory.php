@@ -22,6 +22,7 @@ use Splash\Core\Models\Components\FieldsFactory\CollectionTrait;
 use Splash\Core\Models\Components\FieldsFactory\ConfiguratorsTrait;
 use Splash\Core\Models\Components\FieldsFactory\FactoryCoreTrait;
 use Splash\Core\Models\Components\FieldsFactory\FactoryMetadataTrait;
+use Splash\Core\Models\Components\FieldsFactory\FactoryTemplateTrait;
 
 /**
  * This Class is a Generator for Objects Fields Definition
@@ -34,6 +35,7 @@ class FieldsFactory
 {
     use FactoryCoreTrait;
     use FactoryMetadataTrait;
+    use FactoryTemplateTrait;
     use CollectionTrait;
     use ConfiguratorsTrait;
 
@@ -42,7 +44,7 @@ class FieldsFactory
      *
      * @var null|string
      */
-    private ?string $dfLanguage;
+    private ?string $dfLanguage = null;
 
     //====================================================================//
     //  FIELDS :: DATA TYPES DEFINITION
@@ -54,8 +56,6 @@ class FieldsFactory
      * @param string      $fieldType Standard Data Type
      * @param null|string $fieldId   Local Data Identifier (Shall be unique on local machine)
      * @param null|string $fieldName Data Name (Will Be Translated by Splash if Possible)
-     *
-     * @return $this
      */
     public function create(string $fieldType, string $fieldId = null, string $fieldName = null): self
     {
