@@ -78,7 +78,7 @@ trait CollectionTrait
     public function resetCollection(): void
     {
         $this->current = null;
-        $this->fields ??= new FieldsCollection();
+        $this->fields = new FieldsCollection();
     }
 
     /**
