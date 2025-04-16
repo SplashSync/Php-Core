@@ -21,24 +21,72 @@ include:
   - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/php/defaults.yaml'
 
 ################################################################
+# Defined Pipeline Stages
+stages:
+  - Php-7.4
+  - Php-8.0
+  - Php-8.1
+  - Php-8.2
+  - Php-8.3
+  - Builds
+
+################################################################
 # Quality Tests
 ################################################################
 
+quality:php-8.3:
+    extends:  .quality
+    stage:    Php-8.3
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+
 quality:php-8.2:
-    extends: .quality
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+    extends:  .quality
+    stage:    Php-8.2
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
 
 quality:php-8.1:
-    extends: .quality
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    extends:  .quality
+    stage:    Php-8.1
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
 
 quality:php-8.0:
-    extends: .quality
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+    extends:  .quality
+    stage:    Php-8.0
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
 
 quality:php-7.4:
-    extends: .quality
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+    extends:  .quality
+    stage:    Php-7.4
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+
+################################################################
+# Functional Tests
+################################################################
+
+functional:php-8.3:
+    extends:  .functional
+    stage:    Php-8.3
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+
+functional:php-8.2:
+    extends:  .functional
+    stage:    Php-8.2
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+
+functional:php-8.1:
+    extends:  .functional
+    stage:    Php-8.1
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+
+functional:php-8.0:
+    extends:  .functional
+    stage:    Php-8.0
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+
+functional:php-7.4:
+    extends:  .functional
+    stage:    Php-7.4
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
 
 ################################################################
 # Build Documentation
