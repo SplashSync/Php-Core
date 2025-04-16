@@ -194,7 +194,6 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
                 continue;
             }
 
-            print_r($fieldId);
             //====================================================================//
             // Check if Field Shall be Excluded
             if (!empty($fieldOverrides["excluded"] ?? false)) {
