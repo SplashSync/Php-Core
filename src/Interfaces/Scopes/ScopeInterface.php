@@ -1,0 +1,62 @@
+<?php
+
+namespace Splash\Core\Interfaces\Scopes;
+
+use Splash\Core\Interfaces\Fields\FieldConstraintInterface;
+
+/**
+ * Interface for Server Scope Definition
+ */
+interface ScopeInterface
+{
+    const DF_LANG = "en_US";
+
+    /**
+     * Scope Constructor
+     */
+    public function __construct();
+
+    /**
+     * Get Scope Identification Code
+     */
+    public static function getCode(): string;
+
+    /**
+     * Get Name
+     */
+    public function getName(string $isoLang = null): string;
+
+    /**
+     * Get Short Description
+     */
+    public function getShortDescription(string $isoLang = null): string;
+
+    /**
+     * Get Markdown Description
+     * -> Field Documentation / Description as Markdown Text
+     */
+    public function getMdDescription(string $isoLang = null): string;
+
+    /**
+     * Get Technical Description
+     */
+    public function getTechnicalDescription(): string;
+
+    /**
+     * Get the list of Splash Object Types Impacted by this Scope
+     *
+     * @return string[]
+     */
+    public function getImpactedTypes(): array;
+
+    /**
+     * Get the list of Object Fields Constraints for this Scope
+     * -> Fields Constraints are there to check Object Fields definitions
+     * -> It doesn't execute any functional test
+     * -> It's used to check if a field is compatible with this scope
+     * -> In case of chainable scope, the first defined constraint is used
+     *
+     * @return array<string, FieldConstraintInterface>
+     */
+    public function getFieldConstraints(): array;
+}

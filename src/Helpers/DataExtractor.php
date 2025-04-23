@@ -73,7 +73,7 @@ class DataExtractor
      * Filter an Object Data Block to keep only given Fields
      *
      * @param array    $objectData Object Data Block
-     * @param string[] $fieldIds   Array of Fields Ids
+     * @param string[] $fieldIds   Array of Fields IDs
      *
      * @return null|array
      *
@@ -107,6 +107,24 @@ class DataExtractor
         }
 
         return $result;
+    }
+
+    /**
+     * Filter an Object Data Block to keep only one Field
+     *
+     * @param array    $objectData Object Data Block
+     * @param string $fieldId   Field ID
+     *
+     * @return null|scalar|array
+     */
+    public static function filterOneData(array $objectData, string $fieldId)
+    {
+        $fieldData = self::filterData($objectData, array($fieldId));
+        if (1 == count($fieldData)) {
+            return array_shift($fieldData);
+        }
+
+        return null;
     }
 
     /**

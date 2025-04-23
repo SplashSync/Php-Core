@@ -17,6 +17,7 @@ namespace Splash\Core\Models\Components\FieldsFactory;
 
 use Splash\Core\Client\Splash;
 use Splash\Core\Dictionary\SplFields;
+use Splash\Core\Helpers\FieldTemplatesHelper;
 use Splash\Core\Interfaces\Fields\FieldTemplateInterface;
 
 trait FactoryTemplateTrait
@@ -51,8 +52,8 @@ trait FactoryTemplateTrait
     public function template(string $template): self
     {
         //====================================================================//
-        // Safety Check
-        if (!class_exists($template) || !is_subclass_of($template, FieldTemplateInterface::class)) {
+        // Safety Check - Template Exists
+        if (!$fieldTemplate = FieldTemplatesHelper::fromClass($template)) {
             Splash::log()->err(
                 sprintf("Unable to apply Field Template %s: Wrong Class", $template)
             );
@@ -63,8 +64,7 @@ trait FactoryTemplateTrait
         //====================================================================//
         // Apply Template Configuration
         if ($current = $this->current()) {
-            $templateObject = new $template();
-            $current->update($templateObject->getConfiguration($this->dfLanguage));
+            $current->update($fieldTemplate->getConfiguration($this->dfLanguage));
         }
 
         return $this;

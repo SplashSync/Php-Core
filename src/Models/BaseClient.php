@@ -34,6 +34,7 @@ class BaseClient
     use Client\LocalClassTrait;
     use Client\ObjectsAccessTrait;
     use Client\WidgetsAccessTrait;
+    use Client\ScopesTrait;
     use Client\ServicesTrait;
     use Client\SystemTrait;
     use Client\ToolsTrait;
@@ -286,6 +287,10 @@ class BaseClient
         );
 
         //====================================================================//
+        // Available Scopes
+        $response->scopes = array();
+
+        //====================================================================//
         // Server Information
         $response->servertype = SplDefinition::NAME;
         $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME');
@@ -360,7 +365,7 @@ class BaseClient
     }
 
     //====================================================================//
-    //  COMMON CLASS INFORMATIONS
+    //  COMMON CLASS INFORMATION
     //====================================================================//
 
     /**

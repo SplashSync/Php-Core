@@ -216,7 +216,7 @@ class Router
         }
         //====================================================================//
         // Safety Check - Verify Router Exists
-        $routerClass = '\\Splash\\Router\\'.ucwords($router);
+        $routerClass = '\\Splash\\Core\\Server\\Router\\'.ucwords($router);
         if (!class_exists($routerClass)) {
             return Splash::log()->errNull(
                 "Unable to perform requested tasks,"

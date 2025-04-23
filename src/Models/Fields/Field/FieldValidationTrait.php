@@ -94,7 +94,7 @@ trait FieldValidationTrait
     /**
      * Verify Field Type Allow Primary Flag
      */
-    protected static function isValidPrimaryType(string $type): bool
+    public static function isValidPrimaryType(string $type): bool
     {
         static $types = array(
             SplFields::VARCHAR, SplFields::TEXT,

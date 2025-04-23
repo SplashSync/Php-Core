@@ -56,5 +56,5 @@ class SplMetadata
      *
      * @since 2026 !
      */
-    const PRESENCE = "SourceNodeName";
+    const PRESENCE = "Presence";
 }

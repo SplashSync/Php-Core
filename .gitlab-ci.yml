@@ -28,11 +28,17 @@ stages:
   - Php-8.1
   - Php-8.2
   - Php-8.3
+  - Php-8.4
   - Builds
 
 ################################################################
 # Quality Tests
 ################################################################
+
+quality:php-8.4:
+    extends:  .quality
+    stage:    Php-8.4
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.4
 
 quality:php-8.3:
     extends:  .quality
@@ -62,6 +68,11 @@ quality:php-7.4:
 ################################################################
 # Functional Tests
 ################################################################
+
+functional:php-8.4:
+    extends:  .functional
+    stage:    Php-8.4
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-8.4
 
 functional:php-8.3:
     extends:  .functional
@@ -94,6 +105,7 @@ functional:php-7.4:
 pages:
     image:      registry.gitlab.com/splashsync/php-console:pages
     stage:      Builds
+    allow_failure: true
     tags:       ['Dedicated']
     services:
         - docker:dind

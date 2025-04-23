@@ -112,11 +112,11 @@ class ListsHelper
      *
      * @return null|string
      */
-    public function initOutput(array &$buffer, string $listName, string $fieldName): ?string
+    public static function initOutput(array &$buffer, string $listName, string $fieldName): ?string
     {
         //====================================================================//
         // Check List Name
-        if ($this->listName($fieldName) !== $listName) {
+        if (self::listName($fieldName) !== $listName) {
             return null;
         }
         //====================================================================//
@@ -127,7 +127,7 @@ class ListsHelper
 
         //====================================================================//
         // decode Field Name
-        return $this->fieldName($fieldName);
+        return self::fieldName($fieldName);
     }
 
     /**
@@ -141,7 +141,7 @@ class ListsHelper
      *
      * @return void
      */
-    public function insert(array &$buffer, string $listName, string $fieldName, $key, $itemData): void
+    public static function insert(array &$buffer, string $listName, string $fieldName, $key, $itemData): void
     {
         //====================================================================//
         // Create List Array If Needed

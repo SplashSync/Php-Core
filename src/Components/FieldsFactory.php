@@ -61,7 +61,7 @@ class FieldsFactory
     {
         //====================================================================//
         // Commit Last Created if not already done
-        if ($this->current()) {
+        if ($this->current(true)) {
             $this->commit();
         }
         //====================================================================//

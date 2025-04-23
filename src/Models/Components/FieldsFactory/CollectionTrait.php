@@ -41,14 +41,14 @@ trait CollectionTrait
     private FieldsCollection $fields;
 
     /**
-     * Get Current Edited Field
+     * Get Currently Edited Field
      */
-    public function current(): ?ObjectField
+    public function current(bool $silent = false): ?ObjectField
     {
         //====================================================================//
         // Safety Checks ==> Verify a new Field Exists
         if (empty($this->current)) {
-            return Splash::log()->errNull("ErrFieldsNoNew");
+            return $silent ? null : Splash::log()->errNull("ErrFieldsNoNew");
         }
 
         return $this->current;

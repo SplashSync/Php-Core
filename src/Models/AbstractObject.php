@@ -18,6 +18,7 @@ namespace Splash\Core\Models;
 use ReflectionClass;
 use Splash\Core\Client\Splash;
 use Splash\Core\Interfaces\Object\ObjectInterface;
+use Splash\Core\Dictionary\Objects\SplObjectProps as Props;
 
 /**
  * Base Class for Splash Objects.
@@ -131,7 +132,7 @@ abstract class AbstractObject implements ObjectInterface
     protected static bool $enablePullDeleted = true;
 
     //====================================================================//
-    //  COMMON CLASS INFORMATIONS
+    //  COMMON CLASS INFORMATION
     //====================================================================//
 
     /**
@@ -200,28 +201,28 @@ abstract class AbstractObject implements ObjectInterface
             // General Object definition
             //====================================================================//
             // Object Type Name
-            "type" => $this->getType(),
+            Props::TYPE => $this->getType(),
             // Object Display Name
-            "name" => $this->getName(),
+            Props::NAME => $this->getName(),
             // Object Description
-            "description" => $this->getDesc(),
-            // Object Icon Class (Font Awesome or Glyph. ie "fa fa-user")
-            "icon" => $this->getIcon(),
+            Props::DESC => $this->getDesc(),
+            // Object Icon Class (Font Awesome or Glyph. i.e. "fa fa-user")
+            Props::ICON => $this->getIcon(),
             // Is This Object Enabled or Not?
-            "disabled" => $this->isDisabled(),
+            Props::DISABLED => $this->isDisabled(),
             //====================================================================//
             // Object Limitations
-            "allow_push_created" => static::$allowPushCreated,
-            "allow_push_updated" => static::$allowPushUpdated,
-            "allow_push_deleted" => static::$allowPushDeleted,
+            Props::ALLOW_CREATE => static::$allowPushCreated,
+            Props::ALLOW_UPDATE => static::$allowPushUpdated,
+            Props::ALLOW_DELETE => static::$allowPushDeleted,
             //====================================================================//
             // Object Default Configuration
-            "enable_push_created" => static::$enablePushCreated,
-            "enable_push_updated" => static::$enablePushUpdated,
-            "enable_push_deleted" => static::$enablePushDeleted,
-            "enable_pull_created" => static::$enablePullCreated,
-            "enable_pull_updated" => static::$enablePullUpdated,
-            "enable_pull_deleted" => static::$enablePullDeleted
+            Props::PUSH_CREATED => static::$enablePushCreated,
+            Props::PUSH_UPDATED => static::$enablePushUpdated,
+            Props::PUSH_DELETED => static::$enablePushDeleted,
+            Props::PULL_CREATED => static::$enablePullCreated,
+            Props::PULL_UPDATED => static::$enablePullUpdated,
+            Props::PULL_DELETED => static::$enablePullDeleted
         );
 
         //====================================================================//
