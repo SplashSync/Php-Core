@@ -18,7 +18,6 @@ namespace Splash\Core\Models\Components\FieldsFactory;
 use Splash\Core\Client\Splash;
 use Splash\Core\Dictionary\SplFields;
 use Splash\Core\Helpers\FieldTemplatesHelper;
-use Splash\Core\Interfaces\Fields\FieldTemplateInterface;
 
 trait FactoryTemplateTrait
 {

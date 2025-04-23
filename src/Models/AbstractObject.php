@@ -17,8 +17,8 @@ namespace Splash\Core\Models;
 
 use ReflectionClass;
 use Splash\Core\Client\Splash;
-use Splash\Core\Interfaces\Object\ObjectInterface;
 use Splash\Core\Dictionary\Objects\SplObjectProps as Props;
+use Splash\Core\Interfaces\Object\ObjectInterface;
 
 /**
  * Base Class for Splash Objects.

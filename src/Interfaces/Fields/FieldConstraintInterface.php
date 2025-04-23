@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Core\Interfaces\Fields;
 
 interface FieldConstraintInterface
@@ -36,7 +49,6 @@ interface FieldConstraintInterface
 
     /**
      * Mark Field Constraint as Improvement
-     *
      */
     public function isImprovement(): bool;
 
@@ -75,7 +87,6 @@ interface FieldConstraintInterface
      * @return null|bool Skipp test if null
      */
     public function isWrite(): ?bool;
-
 
     /**
      * Shall this field be written?

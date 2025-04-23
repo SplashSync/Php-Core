@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Core\Helpers;
 
 use Splash\Core\Interfaces\Scopes\ScopeInterface;
@@ -21,7 +34,7 @@ class ScopesHelper
         $className = self::toClass($scopeCode);
         //====================================================================//
         // Ensure Class Exists
-        if(!class_exists($className) || !is_subclass_of($className, ScopeInterface::class)) {
+        if (!$className || !class_exists($className) || !is_subclass_of($className, ScopeInterface::class)) {
             return null;
         }
 
@@ -38,7 +51,7 @@ class ScopesHelper
         //====================================================================//
         // Convert PHP Class Name to Code
         $codeParts = array_map(
-            fn(string $part) => strtolower($part),
+            fn (string $part) => strtolower($part),
             explode("\\", $scopeClass)
         );
 
@@ -69,10 +82,12 @@ class ScopesHelper
     public static function toClass(string $scopeCode): ?string
     {
         $classParts = array_map(
-            fn(string $part) => ucfirst($part),
+            fn (string $part) => ucfirst($part),
             explode(".", $scopeCode)
         );
+        /** @var null|string $className */
+        $className = implode("\\", $classParts);
 
-        return implode("\\", $classParts) ?: null;
+        return !empty($className) ? $className : null;
     }
 }

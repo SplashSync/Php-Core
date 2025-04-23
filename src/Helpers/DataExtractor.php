@@ -74,13 +74,8 @@ class DataExtractor
      *
      * @param array    $objectData Object Data Block
      * @param string[] $fieldIds   Array of Fields IDs
-     *
-     * @return null|array
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public static function filterData(array $objectData, array $fieldIds): ?array
+    public static function filterData(array $objectData, array $fieldIds): array
     {
         $result = array();
         //====================================================================//
@@ -112,10 +107,10 @@ class DataExtractor
     /**
      * Filter an Object Data Block to keep only one Field
      *
-     * @param array    $objectData Object Data Block
-     * @param string $fieldId   Field ID
+     * @param array  $objectData Object Data Block
+     * @param string $fieldId    Field ID
      *
-     * @return null|scalar|array
+     * @return null|array|scalar
      */
     public static function filterOneData(array $objectData, string $fieldId)
     {
