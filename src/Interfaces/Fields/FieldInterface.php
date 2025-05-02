@@ -67,4 +67,10 @@ interface FieldInterface extends
      * @param null|string $identifier Field Identifier
      */
     public function __construct(string $type, ?string $identifier = null);
+
+    /**
+     * (NATIVE) Convert Field to String
+     *  => Return Field ID
+     */
+    public function __toString(): string;
 }
