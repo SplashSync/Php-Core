@@ -107,7 +107,7 @@ class NuSOAPInterface implements CommunicationInterface
         //     Splash::log()->www("[NuSOAP] Raw Response", htmlspecialchars($this->client->response, ENT_QUOTES));
         // }
 
-        return $response;
+        return json_encode($response);
     }
 
     //====================================================================//
