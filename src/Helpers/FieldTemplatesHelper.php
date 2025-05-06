@@ -23,6 +23,35 @@ use Splash\Core\Interfaces\Fields\FieldTemplateInterface;
 class FieldTemplatesHelper
 {
     /**
+     * Get Field Template Identification Code
+     *
+     * @param class-string $templateClass Field Template Class
+     */
+    public static function getCode(string $templateClass): string
+    {
+        return StringConverter::getCode($templateClass);
+    }
+
+    /**
+     * Get Field Template Definition from Code
+     *
+     * @param string $templateCode Field Template Code
+     */
+    public static function fromCode(string $templateCode): ?FieldTemplateInterface
+    {
+        //====================================================================//
+        // Convert Code into PHP Class Name
+        $className = StringConverter::toClass($templateCode);
+        //====================================================================//
+        // Ensure Class Exists
+        if (!$className || !class_exists($className) || !is_subclass_of($className, FieldTemplateInterface::class)) {
+            return null;
+        }
+
+        return new $className();
+    }
+
+    /**
      * Get Field Template from Class
      *
      * @param class-string $template Field Template Class

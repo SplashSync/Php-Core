@@ -28,6 +28,11 @@ interface FieldTemplateInterface
     public function __construct();
 
     /**
+     * Get Code
+     */
+    public static function getCode(): string;
+
+    /**
      * Get Name
      */
     public function getName(string $isoLang = null): string;

@@ -21,6 +21,11 @@ namespace Splash\Core\Dictionary\Fields;
 class SplFieldConstraints
 {
     /**
+     * Code of Field template to use for configuring this Field
+     */
+    public const TEMPLATE = "tmpl";
+
+    /**
      * Apply a Min length Constraint to Varchar Field
      */
     public const LENGTH_MIN = "minLength";

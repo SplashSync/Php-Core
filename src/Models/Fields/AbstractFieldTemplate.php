@@ -16,6 +16,7 @@
 namespace Splash\Core\Models\Fields;
 
 use Splash\Core\Dictionary\Fields\SplFieldProps;
+use Splash\Core\Helpers\FieldTemplatesHelper;
 use Splash\Core\Interfaces\Fields\FieldTemplateInterface;
 
 abstract class AbstractFieldTemplate implements FieldTemplateInterface
@@ -25,6 +26,14 @@ abstract class AbstractFieldTemplate implements FieldTemplateInterface
      */
     public function __construct()
     {
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getCode(): string
+    {
+        return FieldTemplatesHelper::getCode(static::class);
     }
 
     /**

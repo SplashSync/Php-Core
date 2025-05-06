@@ -31,7 +31,7 @@ class ScopesHelper
     {
         //====================================================================//
         // Convert Code into PHP Class Name
-        $className = self::toClass($scopeCode);
+        $className = StringConverter::toClass($scopeCode);
         //====================================================================//
         // Ensure Class Exists
         if (!$className || !class_exists($className) || !is_subclass_of($className, ScopeInterface::class)) {
@@ -48,14 +48,7 @@ class ScopesHelper
      */
     public static function getCode(string $scopeClass): string
     {
-        //====================================================================//
-        // Convert PHP Class Name to Code
-        $codeParts = array_map(
-            fn (string $part) => strtolower($part),
-            explode("\\", $scopeClass)
-        );
-
-        return implode(".", $codeParts);
+        return StringConverter::getCode($scopeClass);
     }
 
     /**
@@ -72,22 +65,5 @@ class ScopesHelper
         }
 
         return new $scopeClass();
-    }
-
-    /**
-     * Convert Scope Code to PHP Classname
-     *
-     * @param string $scopeCode Server Scope Code
-     */
-    public static function toClass(string $scopeCode): ?string
-    {
-        $classParts = array_map(
-            fn (string $part) => ucfirst($part),
-            explode(".", $scopeCode)
-        );
-        /** @var null|string $className */
-        $className = implode("\\", $classParts);
-
-        return !empty($className) ? $className : null;
     }
 }

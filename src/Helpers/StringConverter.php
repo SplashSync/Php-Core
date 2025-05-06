@@ -59,4 +59,40 @@ class StringConverter
     {
         return trim((string) $input) ?: null;
     }
+
+    /**
+     * Get a Class String to Identification Code
+     *
+     * @param class-string $theClass Class Name to Convert
+     */
+    public static function getCode(string $theClass): string
+    {
+        //====================================================================//
+        // Convert PHP Class Name to Code
+        $codeParts = array_map(
+            fn (string $part) => strtolower($part),
+            explode("\\", $theClass)
+        );
+
+        return implode(".", $codeParts);
+    }
+
+    /**
+     * Convert Class Code to PHP Class Name
+     *
+     * @param string $theCode Class Code to Convert
+     *
+     * @return null|class-string PHP Class Name
+     */
+    public static function toClass(string $theCode): ?string
+    {
+        $classParts = array_map(
+            fn (string $part) => ucfirst($part),
+            explode(".", $theCode)
+        );
+        /** @var null|string $theClass */
+        $theClass = implode("\\", $classParts);
+
+        return (!empty($theClass) && class_exists($theClass)) ? $theClass : null;
+    }
 }
