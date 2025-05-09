@@ -65,6 +65,18 @@ class ObjectsHelper
     }
 
     /**
+     * Check if a Field ID or Type is an Object Identifier
+     *
+     * @param null|string $fieldType Data Type Name String
+     *
+     * @return bool
+     */
+    public static function isIdField(?string $fieldType): bool
+    {
+        return is_array(self::explode($fieldType));
+    }
+
+    /**
      * Retrieve Identifier from an Object Identifier String
      *
      * @param string $fieldId Object Identifier String.
