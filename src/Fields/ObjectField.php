@@ -38,7 +38,7 @@ class ObjectField extends AbstractField
         $fieldId = ListsHelper::fieldName($fieldId) ?? $fieldId;
         //====================================================================//
         // Detect Objects Id Fields
-        $fieldId = ObjectsHelper::type((string) $fieldId) ?? $fieldId;
+        $fieldId = ObjectsHelper::id((string) $fieldId) ?? $fieldId;
 
         return $fieldId ?: null;
     }
