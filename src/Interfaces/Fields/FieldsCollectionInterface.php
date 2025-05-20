@@ -20,6 +20,7 @@ use Iterator;
 use Splash\Core\Interfaces\Fields\Collection\FieldsActionsInterface;
 use Splash\Core\Interfaces\Fields\Collection\FieldsFilteringInterface;
 use Splash\Core\Interfaces\Fields\Collection\FieldsFinderInterface;
+use Splash\Core\Interfaces\Fields\Collection\FieldsGroupsInterface;
 use Splash\Core\Models\Fields\AbstractField;
 
 /**
@@ -32,7 +33,8 @@ interface FieldsCollectionInterface extends
     Countable,
     FieldsFilteringInterface,
     FieldsActionsInterface,
-    FieldsFinderInterface
+    FieldsFinderInterface,
+    FieldsGroupsInterface
 {
     /**
      * Get a Field from Collection

@@ -118,7 +118,7 @@ trait FilteringTrait
     {
         return new FilteredCollection(
             $this,
-            fn (AbstractField $field) => ($group == $field->getGroup())
+            fn (AbstractField $field) => ($group == $this->getGroupName($field))
         );
     }
 

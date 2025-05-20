@@ -20,6 +20,7 @@ use Splash\Core\Interfaces\Fields\FieldsCollectionInterface;
 use Splash\Core\Models\Fields\AbstractField;
 use Splash\Core\Models\Fields\Collections\FilteringTrait;
 use Splash\Core\Models\Fields\Collections\FinderTrait;
+use Splash\Core\Models\Fields\Collections\GroupsTrait;
 
 /**
  * Automated Storage Class for Objects Fields Collection
@@ -28,6 +29,7 @@ class FilteredCollection extends CallbackFilterIterator implements FieldsCollect
 {
     use FilteringTrait;
     use FinderTrait;
+    use GroupsTrait;
 
     /**
      * Count Number of Available Fields
