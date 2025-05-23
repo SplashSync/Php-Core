@@ -176,11 +176,6 @@ class DataExtractor
                 }
             }
         }
-        //====================================================================//
-        // Extract Item Data for Field
-        if (empty(array_filter($fieldData))) {
-            return array();
-        }
 
         return array(
             $listName => $fieldData
