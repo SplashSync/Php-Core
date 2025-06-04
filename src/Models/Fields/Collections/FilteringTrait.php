@@ -16,6 +16,7 @@
 namespace Splash\Core\Models\Fields\Collections;
 
 use Splash\Core\Fields\FilteredCollection;
+use Splash\Core\Fields\ObjectField;
 use Splash\Core\Models\Fields\AbstractField;
 
 /**
@@ -119,6 +120,28 @@ trait FilteringTrait
         return new FilteredCollection(
             $this,
             fn (AbstractField $field) => ($group == $this->getGroupName($field))
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function filterType(string $type): FilteredCollection
+    {
+        return new FilteredCollection(
+            $this,
+            fn (AbstractField $field) => ($type == $field->getType())
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function filterBaseType(string $baseType): FilteredCollection
+    {
+        return new FilteredCollection(
+            $this,
+            fn (AbstractField $field) => ($baseType == ObjectField::baseType($field->getType()))
         );
     }
 

@@ -70,6 +70,16 @@ interface FieldsFilteringInterface
     public function filterGroup(string $group): FilteredCollection;
 
     /**
+     * Filter Fields that have Given Data Type
+     */
+    public function filterType(string $type): FilteredCollection;
+
+    /**
+     * Filter Fields that have Given Data Base Type
+     */
+    public function filterBaseType(string $baseType): FilteredCollection;
+
+    /**
      * Filter Fields that have Specified Metadata
      */
     public function filterMetadata(string $itemType, string $itemProp): FilteredCollection;
