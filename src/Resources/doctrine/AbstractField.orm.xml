@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping
+        xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+
+        <mapped-superclass name="Splash\Core\Models\Fields\AbstractField">
+
+            <!-- Field Core Options -->
+            <field name="id"    column="identifier"     type="string" length="255" />
+            <field name="type"  column="type_name"      type="string" length="255" />
+            <field name="name"  column="name"           type="string" length="255" />
+            <field name="desc"  column="description"    type="text"   nullable="true" />
+            <field name="group" column="group_name"     type="string" length="255" nullable="true" />
+
+            <!-- Field Synchronization Options -->
+            <field name="required"  column="is_required"   type="boolean" />
+            <field name="read"      column="is_read"       type="boolean" />
+            <field name="write"     column="is_write"      type="boolean" />
+            <field name="index"     column="is_index"      type="boolean" />
+            <field name="primary"   column="is_primary"    type="boolean" />
+            <field name="log"       column="is_log"        type="boolean" />
+
+            <!-- Field Listing Options -->
+            <field name="listed"        column="listed"         type="boolean" />
+            <field name="listHidden"    column="list_hidden"    type="boolean" />
+
+            <!-- Field Metadata Options -->
+            <field name="itemType"  column="item_type"  type="string" length="255" nullable="true" />
+            <field name="itemProp"  column="item_prop"  type="string" length="255" nullable="true" />
+            <field name="tag"       column="tag"        type="string" length="128" nullable="true" />
+
+            <!-- Field SyncMode Options -->
+            <field name="syncMode"    column="sync_mode" type="string" length="50" />
+
+            <!-- Field Options Options -->
+            <field name="choices"    column="choices" type="json" />
+            <field name="options"    column="options" type="json" />
+
+            <!-- Field Test Options -->
+            <field name="associations"  column="associations"   type="json" />
+            <field name="noTests"       column="no_tests"       type="boolean" />
+
+        </mapped-superclass>
+
+</doctrine-mapping>
