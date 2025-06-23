@@ -117,6 +117,10 @@ trait FilteringTrait
      */
     public function filterGroup(string $group): FilteredCollection
     {
+        //==============================================================================
+        // Format Group Name
+        $group = ucwords(html_entity_decode($group));
+
         return new FilteredCollection(
             $this,
             fn (AbstractField $field) => ($group == $this->getGroupName($field))
