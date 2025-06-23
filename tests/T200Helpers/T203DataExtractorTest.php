@@ -121,7 +121,9 @@ class T203DataExtractorTest extends TestCase
             ),
             "Invalid List" => array(
                 "fieldIds" => array("WrongFieldId@list"),
-                "response" => array()
+                "response" => array(
+                    "list" => array()
+                )
             ),
             "Simple1" => array(
                 "fieldIds" => array("SimpleField1"),
