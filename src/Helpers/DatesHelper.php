@@ -32,7 +32,7 @@ class DatesHelper
     /**
      * Convert DateTime to formated Splash Date String
      */
-    public static function toDateStr(DateTime $date, string $format = null): string
+    public static function toDateStr(DateTime $date, ?string $format = null): string
     {
         $format ??= self::DATE_CAST;
 

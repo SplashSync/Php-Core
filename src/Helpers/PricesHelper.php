@@ -37,7 +37,7 @@ class PricesHelper
     public static function encode(
         ?float $taxExcl,
         float $vat,
-        float $taxIncl = null,
+        ?float $taxIncl = null,
         string $code = "",
         string $symbol = "",
         string $name = ""
