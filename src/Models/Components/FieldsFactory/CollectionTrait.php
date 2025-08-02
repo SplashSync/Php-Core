@@ -90,7 +90,7 @@ trait CollectionTrait
      */
     public function has(string $fieldId): bool
     {
-        return $this->fields->has($fieldId);
+        return $this->getCollection()->has($fieldId);
     }
 
     /**
@@ -98,7 +98,7 @@ trait CollectionTrait
      */
     public function get(string $fieldId): ?AbstractField
     {
-        return $this->fields->get($fieldId);
+        return $this->getCollection()->get($fieldId);
     }
 
     /**
@@ -111,7 +111,7 @@ trait CollectionTrait
         $this->commit();
         //====================================================================//
         // Merge Fields with Current Collection
-        $this->fields->merge($fields);
+        $this->getCollection()->merge($fields);
 
         return $this;
     }
