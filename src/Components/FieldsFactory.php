@@ -138,7 +138,7 @@ class FieldsFactory
     {
         //====================================================================//
         // Safety Checks
-        if (!$current = $this->current()) {
+        if (!$current = $this->current(true)) {
             return $this;
         }
         //====================================================================//
