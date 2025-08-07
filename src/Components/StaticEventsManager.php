@@ -83,7 +83,7 @@ class StaticEventsManager
      *
      * @param null|string $context The context to clear (null to clear all contexts).
      */
-    public static function clearCallbacks(string $context = null): void
+    public static function clearCallbacks(?string $context = null): void
     {
         if (null === $context) {
             //====================================================================//
