@@ -54,16 +54,16 @@ class FieldTemplatesHelper
     /**
      * Get Field Template from Class
      *
-     * @param class-string $template Field Template Class
+     * @param string $templateClass Field Template Class
      */
-    public static function fromClass(string $template): ?FieldTemplateInterface
+    public static function fromClass(string $templateClass): ?FieldTemplateInterface
     {
         //====================================================================//
         // Safety Check
-        if (!class_exists($template) || !is_subclass_of($template, FieldTemplateInterface::class)) {
+        if (!class_exists($templateClass) || !is_subclass_of($templateClass, FieldTemplateInterface::class)) {
             return null;
         }
 
-        return new $template();
+        return new $templateClass();
     }
 }
