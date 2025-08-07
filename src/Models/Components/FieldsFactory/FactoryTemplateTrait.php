@@ -47,7 +47,7 @@ trait FactoryTemplateTrait
     /**
      * Setup Currently Edited Field From Field Template
      *
-     * @param class-string $template Field Template Class
+     * @param string $template Field Template Class or Code
      */
     public function template(string $template): self
     {
