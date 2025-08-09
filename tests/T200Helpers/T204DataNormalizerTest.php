@@ -28,11 +28,13 @@ class T204DataNormalizerTest extends TestCase
     /**
      * Test Normalizing Blocks of Data / Fields.
      *
+     * @param array|ArrayObject $inFields
+     *
      * @dataProvider normalizeDataProvider
      *
      * @group ServiceLevel
      */
-    public function testNormalizeFunction(array|ArrayObject $inFields, array $outFields): void
+    public function testNormalizeFunction($inFields, array $outFields): void
     {
         Assert::assertNotEquals(serialize($outFields), serialize($inFields));
         //====================================================================//
