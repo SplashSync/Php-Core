@@ -112,7 +112,7 @@ class Webservice
     //====================================================================//
 
     /**
-     * Initialise Class with webservice parameters
+     * Initialize Class with webservice parameters
      *
      * @return bool
      */
@@ -273,7 +273,7 @@ class Webservice
      */
     public function call(
         string $service,
-        array $tasks = null,
+        ?array $tasks = null,
         bool $noEncryption = false,
         bool $clean = true
     ): ?array {
@@ -332,7 +332,7 @@ class Webservice
      */
     public function simulate(
         string $service,
-        array $tasks = null,
+        ?array $tasks = null,
         bool $noEncryption = false,
         bool $clean = true
     ): ?string {
@@ -765,7 +765,7 @@ class Webservice
     private function getClientUrl(): string
     {
         //====================================================================//
-        // Fetch Server Informations
+        // Fetch Server Information
         $host = ServerInfos::getServerName();
         $path = ServerInfos::getServerPath();
         //====================================================================//
