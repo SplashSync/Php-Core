@@ -103,9 +103,9 @@ class FieldsFactory
     /**
      * Save Current New Field in list & Clean current new field
      *
-     * @phpstan-return  null|array<string, FIELD>
-     *
      * @return null|array<string, array>
+     *
+     * @phpstan-return  null|array<string, FIELD>
      */
     public function publish(): ?array
     {

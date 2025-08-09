@@ -28,9 +28,9 @@ interface FieldsActionsInterface
     /**
      * Convert Fields Collection to Array of Fields Definition
      *
-     * @phpstan-return array<string, FIELD>
-     *
      * @return array<string, array>
+     *
+     * @phpstan-return array<string, FIELD>
      */
     public function toArray(): array;
 
