@@ -326,7 +326,7 @@ class BlocksFactory
      *
      * @return $this
      */
-    private function addBlock(string $blockType, array $blockOptions = null): self
+    private function addBlock(string $blockType, ?array $blockOptions = null): self
     {
         //====================================================================//
         // Commit Last Created if not already done

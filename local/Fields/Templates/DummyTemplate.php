@@ -24,7 +24,7 @@ class DummyTemplate extends AbstractFieldTemplate
     /**
      * @inheritDoc
      */
-    public function getName(string $isoLang = null): string
+    public function getName(?string $isoLang = null): string
     {
         return "Dummy Field";
     }
@@ -32,7 +32,7 @@ class DummyTemplate extends AbstractFieldTemplate
     /**
      * @inheritDoc
      */
-    public function getShortDescription(string $isoLang = null): string
+    public function getShortDescription(?string $isoLang = null): string
     {
         return "Just a Dummy Field Template";
     }

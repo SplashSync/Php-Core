@@ -26,7 +26,7 @@ class SystemChecker
     /**
      * Verify PHP Version is Compatible.
      */
-    public static function isValidPHPVersion(string $version = null, bool $silent = false): bool
+    public static function isValidPHPVersion(?string $version = null, bool $silent = false): bool
     {
         //====================================================================//
         // Use System Configuration by Default
@@ -58,7 +58,7 @@ class SystemChecker
      *
      * @param string[] $extensions
      */
-    public static function isValidPHPExtensions(array $extensions = null, bool $silent = false): bool
+    public static function isValidPHPExtensions(?array $extensions = null, bool $silent = false): bool
     {
         static $isValid;
 

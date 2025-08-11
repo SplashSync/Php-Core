@@ -55,7 +55,7 @@ class Translator
      *
      * @return bool
      */
-    public function load(string $fileName, string $language = null): bool
+    public function load(string $fileName, ?string $language = null): bool
     {
         //====================================================================//
         // Check if File is Already in Cache

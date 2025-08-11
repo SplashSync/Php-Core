@@ -27,7 +27,7 @@ class ChecksumHelper
      *
      * @return null|string Unique Md5 Checksum
      */
-    public static function fromArray(array $input = null): ?string
+    public static function fromArray(?array $input = null): ?string
     {
         //====================================================================//
         // Safety Check
@@ -59,7 +59,7 @@ class ChecksumHelper
      *
      * @return null|string Unique String Checksum
      */
-    public static function debugFromArray(array $input = null): ?string
+    public static function debugFromArray(?array $input = null): ?string
     {
         //====================================================================//
         // Safety Check

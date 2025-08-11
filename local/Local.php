@@ -144,7 +144,7 @@ class Local implements LocalClassInterface
     /**
      * {@inheritDoc}
      */
-    public function testSequences(string $name = null): array
+    public function testSequences(?string $name = null): array
     {
         switch ($name) {
             case "Sequence1":

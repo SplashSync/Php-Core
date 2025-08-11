@@ -56,7 +56,7 @@ class Civility
     /**
      * Convert App Civility to Splash Normalized Value
      */
-    public static function toSplash(?string $input, array $map = null): ?string
+    public static function toSplash(?string $input, ?array $map = null): ?string
     {
         if (null === $input) {
             return null;
@@ -70,7 +70,7 @@ class Civility
     /**
      * Convert Splash Gender Type to Sellsy Civility
      */
-    public static function toApp(?string $genderType, array $map = null): ?string
+    public static function toApp(?string $genderType, ?array $map = null): ?string
     {
         if (null === $genderType) {
             return null;

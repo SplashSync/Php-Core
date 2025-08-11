@@ -57,7 +57,7 @@ class FieldsFactory
      * @param null|string $fieldId   Local Data Identifier (Shall be unique on local machine)
      * @param null|string $fieldName Data Name (Will Be Translated by Splash if Possible)
      */
-    public function create(string $fieldType, string $fieldId = null, string $fieldName = null): self
+    public function create(string $fieldType, ?string $fieldId = null, ?string $fieldName = null): self
     {
         //====================================================================//
         // Commit Last Created if not already done

@@ -106,7 +106,7 @@ class ObjectsHelper
      *
      * @return null|AbstractObject
      */
-    public static function load(string $fieldData, string $objectClass = null): ?AbstractObject
+    public static function load(string $fieldData, ?string $objectClass = null): ?AbstractObject
     {
         //====================================================================//
         // Decode Object Type & Id
