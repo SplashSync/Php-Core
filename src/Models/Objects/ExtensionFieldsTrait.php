@@ -16,7 +16,7 @@
 namespace Splash\Core\Models\Objects;
 
 use Splash\Core\Components\ExtensionsManager;
-use Splash\Core\Components\FieldsManager;
+use Splash\Core\Helpers\ListsHelper;
 
 /**
  * Build, Read & Write All Splash Extensions Fields
@@ -64,7 +64,7 @@ trait ExtensionFieldsTrait
         }
         //====================================================================//
         // Field Managed by Extensions
-        if ($listName = FieldsManager::listName($fieldName)) {
+        if ($listName = ListsHelper::listName($fieldName)) {
             $this->out[$listName] = array_replace_recursive(
                 $this->out[$listName] ?? array(),
                 $result ? ($fieldData ?? array()) : array()
