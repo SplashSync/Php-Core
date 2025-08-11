@@ -118,7 +118,7 @@ class Dummy extends AbstractObject
     /**
      * {@inheritdoc}
      */
-    public function delete(string $objectId = null): bool
+    public function delete(?string $objectId = null): bool
     {
         //====================================================================//
         // Delete Object in Database
