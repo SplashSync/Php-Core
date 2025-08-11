@@ -25,10 +25,26 @@
 #    172.169.3.81    	php81.php-core.local
 #    172.169.3.82    	php82.php-core.local
 #    172.169.3.83    	php83.php-core.local
+#    172.169.3.84    	php84.php-core.local
 
 ################################################################################
 
 services:
+
+    ################################################################################
+    # PHP 8.4
+    php-8.4:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.4
+        container_name: php84.php-core.local
+        hostname:       php84.php-core.local
+        volumes:
+            - ./:/var/www/html
+            - vendor-php84:/var/www/html/vendor
+        environment:
+            SPLASH_CONNEXION:   "http://WsId:WsKey@php84.php-core.local/soap.php"
+            SPLASH_ENDPOINT:    "http://php84.php-core.local/soap.php"
+        networks:
+            default:    { ipv4_address: 172.169.3.84 }
 
     ################################################################################
     # PHP 8.3
@@ -115,6 +131,7 @@ networks:
                 - subnet: 172.169.3.0/24
 
 volumes:
+    vendor-php84: ~
     vendor-php83: ~
     vendor-php82: ~
     vendor-php81: ~
