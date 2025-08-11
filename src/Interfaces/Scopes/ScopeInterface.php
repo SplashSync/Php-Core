@@ -37,18 +37,18 @@ interface ScopeInterface
     /**
      * Get Name
      */
-    public function getName(string $isoLang = null): string;
+    public function getName(?string $isoLang = null): string;
 
     /**
      * Get Short Description
      */
-    public function getShortDescription(string $isoLang = null): string;
+    public function getShortDescription(?string $isoLang = null): string;
 
     /**
      * Get Markdown Description
      * -> Field Documentation / Description as Markdown Text
      */
-    public function getMdDescription(string $isoLang = null): string;
+    public function getMdDescription(?string $isoLang = null): string;
 
     /**
      * Get Technical Description

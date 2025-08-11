@@ -32,12 +32,12 @@ interface ChainableInterface
      *
      * @return array<string, ScopeInterface>
      */
-    public function getChildren(string $objectType = null): array;
+    public function getChildren(?string $objectType = null): array;
 
     /**
      * Get All Children Scopes (Recursive)
      *
      * @return array<string, ScopeInterface>
      */
-    public function getAllChildren(string $objectType = null): array;
+    public function getAllChildren(?string $objectType = null): array;
 }

@@ -105,7 +105,7 @@ interface LocalClassInterface
      *
      * @return array $Sequences
      */
-    public function testSequences(string $name = null): array;
+    public function testSequences(?string $name = null): array;
 
     /**
      * Return Local Server Test Parameters as Array

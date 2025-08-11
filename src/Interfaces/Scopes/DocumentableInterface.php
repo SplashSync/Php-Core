@@ -29,5 +29,5 @@ interface DocumentableInterface
      * Get Markdown Description
      * -> Field Documentation / Description as Markdown Text
      */
-    public function getMdDescription(string $isoLang = null): string;
+    public function getMdDescription(?string $isoLang = null): string;
 }

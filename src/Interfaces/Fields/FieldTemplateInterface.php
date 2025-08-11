@@ -35,25 +35,25 @@ interface FieldTemplateInterface
     /**
      * Get Name
      */
-    public function getName(string $isoLang = null): string;
+    public function getName(?string $isoLang = null): string;
 
     /**
      * Get Short Description
      */
-    public function getShortDescription(string $isoLang = null): string;
+    public function getShortDescription(?string $isoLang = null): string;
 
     /**
      * Get Field Configuration to Apply
      *
      * @return array<string, array|scalar>
      */
-    public function getConfiguration(string $isoLang = null): array;
+    public function getConfiguration(?string $isoLang = null): array;
 
     /**
      * Get Markdown Description
      * -> Field Documentation / Description as Markdown Text
      */
-    public function getMdDescription(string $isoLang = null): string;
+    public function getMdDescription(?string $isoLang = null): string;
 
     /**
      * Get Technical Description
