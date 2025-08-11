@@ -53,7 +53,7 @@ trait HtmlExportsTrait
      *
      * @return string
      */
-    public function getHtmlListItem(string $message, string $type = null): string
+    public function getHtmlListItem(string $message, ?string $type = null): string
     {
         switch ($type) {
             case 'Error':

@@ -29,7 +29,7 @@ trait FactoryTemplateTrait
      * @param class-string $template  Field Template Class
      * @param null|string  $fieldName Data Name (Will Be Translated by Splash if Possible)
      */
-    public function createFromTemplate(string $fieldId, string $template, string $fieldName = null): self
+    public function createFromTemplate(string $fieldId, string $template, ?string $fieldName = null): self
     {
         $this
             ->create(SplFields::VARCHAR, $fieldId)

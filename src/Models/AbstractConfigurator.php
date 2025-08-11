@@ -221,7 +221,7 @@ abstract class AbstractConfigurator implements ConfiguratorInterface
      *
      * @return null|array|bool|string
      */
-    protected function getConfigurationValue(string $key1, string $key2 = null)
+    protected function getConfigurationValue(string $key1, ?string $key2 = null)
     {
         //====================================================================//
         // Load Configuration from Configurator

@@ -39,7 +39,7 @@ abstract class AbstractFieldTemplate implements FieldTemplateInterface
     /**
      * @inheritDoc
      */
-    public function getConfiguration(string $isoLang = null): array
+    public function getConfiguration(?string $isoLang = null): array
     {
         $isoLang ??= self::DF_LANG;
 
@@ -55,7 +55,7 @@ abstract class AbstractFieldTemplate implements FieldTemplateInterface
     /**
      * @inheritDoc
      */
-    public function getMdDescription(string $isoLang = null): string
+    public function getMdDescription(?string $isoLang = null): string
     {
         return $this->getShortDescription($isoLang);
     }

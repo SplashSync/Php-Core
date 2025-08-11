@@ -39,7 +39,7 @@ abstract class AbstractScope implements ScopeInterface, ChainableInterface
     /**
      * @inheritDoc
      */
-    public function getMdDescription(string $isoLang = null): string
+    public function getMdDescription(?string $isoLang = null): string
     {
         return $this->getShortDescription($isoLang);
     }
@@ -63,7 +63,7 @@ abstract class AbstractScope implements ScopeInterface, ChainableInterface
     /**
      * @inheritDoc
      */
-    public function getChildren(string $objectType = null): array
+    public function getChildren(?string $objectType = null): array
     {
         $children = array();
         foreach ($this->getChildCodes() as $childCode) {
@@ -88,7 +88,7 @@ abstract class AbstractScope implements ScopeInterface, ChainableInterface
     /**
      * @inheritDoc
      */
-    public function getAllChildren(string $objectType = null): array
+    public function getAllChildren(?string $objectType = null): array
     {
         $children = $this->getChildren($objectType);
         foreach ($children as $child) {
