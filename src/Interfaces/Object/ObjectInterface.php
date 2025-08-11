@@ -92,7 +92,7 @@ interface ObjectInterface
      *
      * @since 1.0.0
      */
-    public function objectsList(string $filter = null, array $params = array()): array;
+    public function objectsList(?string $filter = null, array $params = array()): array;
 
     /**
      * Read Requested Object Data
