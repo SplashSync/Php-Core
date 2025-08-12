@@ -15,6 +15,10 @@
 
 namespace Splash\Core\Models\Fields;
 
+use Exception;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\Fields\SplFieldProps;
+use Splash\Core\Helpers\FieldTemplatesHelper;
 use Splash\Core\Interfaces\Fields\FieldConstraintInterface;
 use Splash\Core\Interfaces\Fields\FieldTemplateInterface;
 
@@ -90,8 +94,108 @@ abstract class AbstractFieldConstraint implements FieldConstraintInterface
     /**
      * @inheritDoc
      */
-    public function fromTemplate(FieldTemplateInterface $template): FieldConstraintInterface
+    public static function fromTemplateCode(
+        string $templateCodeOrClass,
+        ?string $isoLang = null
+    ): FieldConstraintInterface {
+        //====================================================================//
+        // Safety Check - Template Exists
+        if (!$fieldTemplate = FieldTemplatesHelper::resolve($templateCodeOrClass)) {
+            Splash::log()->err(
+                sprintf("Unable to detect Field Template %s: Wrong Code or Class", $templateCodeOrClass)
+            );
+
+            return (new static("Not Found", $templateCodeOrClass))->setRequired(true);
+        }
+
+        //====================================================================//
+        // Configure Field Constraint from Template
+        return self::fromTemplate($fieldTemplate, $isoLang);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function fromTemplate(
+        FieldTemplateInterface $template,
+        ?string $isoLang = null
+    ): FieldConstraintInterface {
+        //====================================================================//
+        // Get Field Template Configuration
+        $configuration = $template->getConfiguration($isoLang);
+        //====================================================================//
+        // Safety Check - Template Define Microdata
+        $itemType = $configuration[SplFieldProps::MICRODATA_URL] ?? null;
+        $itemProp = $configuration[SplFieldProps::MICRODATA_PROP] ?? null;
+        if (!$itemType || !$itemProp || !is_scalar($itemType) || !is_scalar($itemProp)) {
+            Splash::log()->err(
+                sprintf("Unable to create Field Constraint %s: No Microdata Defined", get_class($template))
+            );
+
+            return (new static("Invalid Template", $template->getName($isoLang)))->setRequired(true);
+        }
+        //====================================================================//
+        // Create Field Constraint
+        $fieldConstraint = new static((string) $itemType, (string) $itemProp);
+        //====================================================================//
+        // Default: Mark Field Constraint as Optional
+        // This prevents throwing an Exception when Field is not mandatory
+        $fieldConstraint->setOptional();
+
+        //====================================================================//
+        // Configure Field Constraint
+        return $fieldConstraint->configure($configuration);
+    }
+
+    /**
+     * @inerhitDoc
+     *
+     * @SuppressWarnings(CyclomaticComplexity)
+     * @SuppressWarnings(NPathComplexity)
+     */
+    public function configure(array $configuration): self
     {
+        //====================================================================//
+        // Field Format Constraint
+        if (!is_null($format = $configuration[SplFieldProps::TYPE] ?? null) && is_scalar($format)) {
+            $this->setFormat((string) $format);
+        }
+        //====================================================================//
+        // Field Flags Constraints
+        if (!is_null($required = $configuration[SplFieldProps::REQUIRED] ?? null) && is_bool($required)) {
+            $this->setRequired($required);
+        }
+        if (!is_null($primary = $configuration[SplFieldProps::PRIMARY] ?? null) && is_bool($primary)) {
+            $this->setPrimary($primary);
+        }
+        if (!is_null($indexed = $configuration[SplFieldProps::INDEX] ?? null) && is_bool($indexed)) {
+            $this->setIndexed($indexed);
+        }
+        if (!is_null($read = $configuration[SplFieldProps::READ] ?? null) && is_bool($read)) {
+            $this->setRead($read);
+        }
+        if (!is_null($write = $configuration[SplFieldProps::WRITE] ?? null) && is_bool($write)) {
+            $this->setWrite($write);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @inerhitDoc
+     */
+    public function reset(): self
+    {
+        $this->optional = false;
+        $this->improvement = false;
+        $this->required = null;
+        $this->read = null;
+        $this->write = null;
+        $this->primary = null;
+        $this->indexed = null;
+        $this->logged = null;
+        $this->format = null;
+
         return $this;
     }
 

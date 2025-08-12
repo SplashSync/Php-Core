@@ -23,9 +23,20 @@ interface FieldConstraintInterface
     public function __construct(string $itemType, string $itemProp);
 
     /**
+     * Create a new Field Constraint from a Field Template Code or Class
+     */
+    public static function fromTemplateCode(
+        string $templateCodeOrClass,
+        ?string $isoLang = null
+    ): FieldConstraintInterface;
+
+    /**
      * Create a new Field Constraint from a Field Template
      */
-    public function fromTemplate(FieldTemplateInterface $template): FieldConstraintInterface;
+    public static function fromTemplate(
+        FieldTemplateInterface $template,
+        ?string $isoLang = null
+    ): FieldConstraintInterface;
 
     /**
      * Target Field Item Type
@@ -36,6 +47,18 @@ interface FieldConstraintInterface
      * Target Field Item Prop
      */
     public function getItemProp(): string;
+
+    /**
+     * Import an Array Configuration to a Template
+     *
+     * @param array<string, array|scalar> $configuration
+     */
+    public function configure(array $configuration): self;
+
+    /**
+     * Reset Field Constraint Configuration
+     */
+    public function reset(): self;
 
     /**
      * Mark Field as Optional
