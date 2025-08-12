@@ -67,6 +67,7 @@ abstract class AbstractFieldTemplate implements FieldTemplateInterface
     {
         return $this->getShortDescription();
     }
+
     /**
      * Get Field Core Configuration to Apply
      *
