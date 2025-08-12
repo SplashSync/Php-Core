@@ -53,12 +53,9 @@ trait FactoryTemplateTrait
     {
         //====================================================================//
         // Safety Check - Template Exists
-        $fieldTemplate = FieldTemplatesHelper::fromClass($template)
-            ?? FieldTemplatesHelper::fromCode($template)
-        ;
-        if (!$fieldTemplate) {
+        if (!$fieldTemplate = FieldTemplatesHelper::resolve($template)) {
             Splash::log()->err(
-                sprintf("Unable to apply Field Template %s: Wrong Class", $template)
+                sprintf("Unable to apply Field Template %s: Wrong Code or Class", $template)
             );
 
             return $this;
