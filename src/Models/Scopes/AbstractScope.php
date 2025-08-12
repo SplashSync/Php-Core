@@ -15,6 +15,7 @@
 
 namespace Splash\Core\Models\Scopes;
 
+use Splash\Core\Fields\FieldConstraint;
 use Splash\Core\Helpers\ScopesHelper;
 use Splash\Core\Interfaces\Scopes\ChainableInterface;
 use Splash\Core\Interfaces\Scopes\ScopeInterface;
@@ -76,7 +77,9 @@ abstract class AbstractScope implements ScopeInterface, ChainableInterface
             //====================================================================//
             // Filter on Impacted Object Types
             if ($objectType && !in_array($objectType, $child->getImpactedTypes(), true)) {
-                continue;
+                if (!in_array("*", $child->getImpactedTypes(), true)) {
+                    continue;
+                }
             }
 
             $children[$child->getCode()] = $child;
@@ -98,5 +101,34 @@ abstract class AbstractScope implements ScopeInterface, ChainableInterface
         }
 
         return $children;
+    }
+
+    /**
+     * Generate Field Constraints from Class Constants
+     *
+     * @param class-string $dictionary
+     */
+    protected function getFieldConstraintsFromClassConstants(string $dictionary): array
+    {
+        //====================================================================//
+        // Extract All Constraints from Class Constants
+        try {
+            $constants = (new \ReflectionClass($dictionary))->getConstants();
+        } catch (\ReflectionException $e) {
+            $constants = array();
+        }
+
+        $constraints = array();
+        //====================================================================//
+        // Walk on Class Constants
+        foreach ($constants as $name => $codeOrClass) {
+            if (!$codeOrClass || !is_string($codeOrClass)) {
+                continue;
+            }
+            $name = sprintf("%s Definition", ucwords(str_replace("_", " ", strtolower($name))));
+            $constraints[$name] = FieldConstraint::fromTemplateCode($codeOrClass);
+        }
+
+        return $constraints;
     }
 }
