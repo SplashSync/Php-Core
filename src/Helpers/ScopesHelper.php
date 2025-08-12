@@ -66,7 +66,7 @@ class ScopesHelper
     /**
      * Get Scope Definition from Class
      *
-     * @param class-string $scopeClass Server Scope Class
+     * @param string $scopeClass Server Scope Class
      */
     public static function fromClass(string $scopeClass): ?ScopeInterface
     {
