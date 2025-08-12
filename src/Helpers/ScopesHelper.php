@@ -23,6 +23,18 @@ use Splash\Core\Interfaces\Scopes\ScopeInterface;
 class ScopesHelper
 {
     /**
+     * Get Scope Definition from Code or Class
+     *
+     * @param string $scopeCodeOrClass Feature Scope Code or Class
+     */
+    public static function resolve(string $scopeCodeOrClass): ?ScopeInterface
+    {
+        return self::fromClass($scopeCodeOrClass)
+            ?? self::fromCode($scopeCodeOrClass)
+        ;
+    }
+
+    /**
      * Get Scope Definition from Code
      *
      * @param string $scopeCode Server Scope Code
