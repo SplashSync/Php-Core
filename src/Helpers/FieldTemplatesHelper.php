@@ -33,6 +33,18 @@ class FieldTemplatesHelper
     }
 
     /**
+     * Get Field Template Definition from Code or Class
+     *
+     * @param string $templateCodeOrClass Field Template Code or Class
+     */
+    public static function resolve(string $templateCodeOrClass): ?FieldTemplateInterface
+    {
+        return self::fromClass($templateCodeOrClass)
+            ?? self::fromCode($templateCodeOrClass)
+        ;
+    }
+
+    /**
      * Get Field Template Definition from Code
      *
      * @param string $templateCode Field Template Code
