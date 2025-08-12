@@ -83,6 +83,7 @@ trait FieldOptionsTrait
      */
     public function setChoices(array $choices): self
     {
+        $this->choices = array();
         foreach ($choices as $value => $description) {
             $this->addChoice(
                 (string) $value,
