@@ -19,6 +19,7 @@
 # Include Pipeline Templates
 include:
   - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/3.0/gitlab/php/defaults.yaml'
+  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/3.0/gitlab/pages.yaml'
 
 ################################################################
 # Defined Pipeline Stages
@@ -99,23 +100,23 @@ functional:php-7.4:
     stage:    Php-7.4
     image:    registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
 
-################################################################
-# Build Documentation
-################################################################
-pages:
-    image:      registry.gitlab.com/splashsync/php-console:pages
-    stage:      Builds
-    allow_failure: true
-    tags:       ['Dedicated']
-    services:
-        - docker:dind
-    ################################################################################
-    # Run Test Script
-    script:
-        # Run Composer to Build deps
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
-        # Build Documentation
-        - php vendor/bin/grumphp run --tasks=build-docs
-    artifacts:
-        paths:
-            - public
+#################################################################
+## Build Documentation
+#################################################################
+#pages:
+#    image:      registry.gitlab.com/splashsync/php-console:pages
+#    stage:      Builds
+#    allow_failure: true
+#    tags:       ['Dedicated']
+#    services:
+#        - docker:dind
+#    ################################################################################
+#    # Run Test Script
+#    script:
+#        # Run Composer to Build deps
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
+#        # Build Documentation
+#        - php vendor/bin/grumphp run --tasks=build-docs
+#    artifacts:
+#        paths:
+#            - public
