@@ -279,11 +279,11 @@ class BaseClient
         //====================================================================//
         // Server Logo & Ico
         $response->icoraw = self::file()->readFileContents(
-            dirname(__FILE__, 2).'/img/Splash-ico.png'
+            dirname(__DIR__, 2).'/img/Splash-ico.png'
         );
         $response->logourl = null;
         $response->logoraw = self::file()->readFileContents(
-            dirname(__FILE__, 2).'/img/Splash-ico.jpg'
+            dirname(__DIR__, 2).'/img/Splash-ico.jpg'
         );
 
         //====================================================================//
