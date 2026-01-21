@@ -17,6 +17,7 @@ namespace Splash\Core\Models\Objects;
 
 use DateTime;
 use Exception;
+use Splash\Core\Helpers\DatesHelper;
 use Splash\Core\Helpers\ObjectsHelper;
 
 /**
@@ -207,7 +208,7 @@ trait GenericFieldsTrait
     protected function getGenericDate(string $fieldName, string $objectName = "object"): self
     {
         $date = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
-        $this->out[$fieldName] = $date ? $date->format(SPL_T_DATECAST) : "";
+        $this->out[$fieldName] = ($date instanceof DateTime) ? DatesHelper::toDateStr($date) : "";
 
         return $this;
     }
@@ -228,7 +229,7 @@ trait GenericFieldsTrait
         //====================================================================//
         //  Compare Field Data
         $current = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
-        if (($current instanceof DateTime) && ($current->format(SPL_T_DATECAST) == $fieldData)) {
+        if (($current instanceof DateTime) && (DatesHelper::toDateStr($current) == $fieldData)) {
             return $this;
         }
         //====================================================================//
@@ -250,7 +251,7 @@ trait GenericFieldsTrait
     protected function getGenericDateTime(string $fieldName, string $objectName = "object"): self
     {
         $date = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
-        $this->out[$fieldName] = $date ? $date->format(SPL_T_DATETIMECAST) : "";
+        $this->out[$fieldName] = ($date instanceof DateTime) ? DatesHelper::toDateTimeStr($date) : "";
 
         return $this;
     }
@@ -271,7 +272,7 @@ trait GenericFieldsTrait
         //====================================================================//
         //  Compare Field Data
         $current = $this->{$objectName}->{ "get".self::toMethod($fieldName)}();
-        if (($current instanceof DateTime) && ($current->format(SPL_T_DATETIMECAST) == $fieldData)) {
+        if (($current instanceof DateTime) && (DatesHelper::toDateTimeStr($current) == $fieldData)) {
             return $this;
         }
         //====================================================================//
