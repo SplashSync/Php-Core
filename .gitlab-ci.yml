@@ -18,7 +18,7 @@
 ################################################################
 # Include Pipeline Templates
 include:
-  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/php/defaults.yaml'
+  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/2.0/gitlab/php/defaults.yaml'
 
 ################################################################
 # Quality Tests
@@ -40,22 +40,3 @@ quality:php-7.4:
     extends: .quality
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
 
-################################################################
-# Build Documentation
-################################################################
-pages:
-    image:      registry.gitlab.com/splashsync/php-console:pages
-    stage:      Builds
-    tags:       ['Dedicated']
-    services:
-        - docker:dind
-    ################################################################################
-    # Run Test Script
-    script:
-        # Run Composer to Build deps
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
-        # Build Documentation
-        - php vendor/bin/grumphp run --tasks=build-docs
-    artifacts:
-        paths:
-            - public
