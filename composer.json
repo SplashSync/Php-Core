@@ -47,7 +47,7 @@
         "ext-soap":                         "*",
         "ext-curl":                         "*",
         "ext-apcu":                         "*",
-        "splash/console":                   "dev-master",
+        "splash/console":                   "^2.0",
         "badpixxel/php-sdk":                "~2.0"
     },
     
