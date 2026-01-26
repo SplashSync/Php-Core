@@ -1,25 +1,74 @@
 [![N|Solid](https://github.com/SplashSync/Php-Core/raw/master/img/github.jpg)](https://www.splashsync.com)
 
-# Splash Php-Core Module
-Splash Core Module for PHP Applications.
-This module was coded to be integrated as a library on all PHP Applications Modules.
-It is designed as a complete toolbox for Splash PHP Clients Modules.  
+# Splash Php-Core
+
+Core library for building Splash Sync connectors in PHP.
+
+## What is Splash Sync?
+
+Splash Sync is a universal data synchronization framework. Connectors built with this library can exchange data (Products, Orders, Customers, etc.) between any application and the Splash ecosystem.
 
 ## Features
-- Automatically detect Module configuration on most platforms 
-- All Client operations are merged in a single static class *Splash::*
-- Provide base classes for creating Objects,Widgets & More...
+
+- Base classes for Objects and Widgets
+- Fluent API for field definitions
+- Helpers for complex fields (prices, images, files)
+- Auto-discovery of fields and getters/setters with `IntelParserTrait`
+- Object extensions and filters
 
 ## Installation
-Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
 
 ```bash
-$ composer require splash/phpcore
+composer require splash/phpcore
 ```
 
-This command requires you to have Composer installed globally, as explained
-in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
-of the Composer documentation.
+## Requirements
+
+- PHP 7.4+ (8.x recommended)
+- Extensions: xml, soap, simplexml, xmlwriter, libxml
+
+## Documentation
+
+See the [full documentation](docs/index.md) for:
+
+- [Getting Started](docs/01-getting-started/installation.md)
+- [Building Objects](docs/02-objects/overview.md)
+- [Extensions & Filters](docs/03-extensions/index.md)
+- [Widgets](docs/04-widgets/overview.md)
+- [Helpers Reference](docs/05-helpers/index.md)
+- [Testing](docs/06-testing/index.md)
+
+## Quick Example
+
+```php
+<?php
+
+namespace Splash\Local\Objects;
+
+use Splash\Core\Models\AbstractObject;
+use Splash\Core\Models\Objects\IntelParserTrait;
+
+class ThirdParty extends AbstractObject
+{
+    use IntelParserTrait;
+    use ThirdParty\CrudTrait;
+    use ThirdParty\CoreTrait;
+
+    protected static string $name = "Third Party";
+    protected static string $description = "Customer or Supplier";
+    protected static string $ico = "fa fa-user";
+}
+```
+
+## Ecosystem
+
+| Package | Description |
+|---------|-------------|
+| [Toolkit](https://gitlab.com/SplashTools/Toolkit) | Development environment (CLI/Docker) |
+| [Php-Bundle](https://github.com/SplashSync/Php-Bundle) | Symfony integration |
+| [OpenAPI](https://gitlab.com/SplashTools/OpenApi) | REST API connectors |
+| [Metadata](https://gitlab.com/SplashTools/Metadata) | PHP 8 attributes support |
+
+## License
 
 This module is part of [SplashSync](https://splashsync.com) project.

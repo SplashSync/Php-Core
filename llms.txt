@@ -1,0 +1,79 @@
+# Splash Php-Core
+
+> Core library for building Splash Sync connectors in PHP
+
+Splash Php-Core provides base classes, interfaces, and field systems for synchronizing data (Products, Orders, Customers, etc.) between applications and the Splash ecosystem.
+
+## Documentation
+
+Full documentation: docs/
+
+- docs/index.md - Main documentation entry point
+- docs/01-getting-started/installation.md - Requirements and setup
+- docs/01-getting-started/local-class.md - Local Class configuration
+- docs/02-objects/overview.md - Objects overview
+- docs/02-objects/fields.md - Field definitions
+- docs/02-objects/fields-complex.md - Price, Image, File fields
+- docs/02-objects/crud.md - CRUD operations
+- docs/02-objects/lists.md - List/collection fields
+- docs/02-objects/advanced.md - Optimization techniques
+- docs/03-extensions/index.md - Object extensions and filters
+- docs/04-widgets/overview.md - Dashboard widgets
+- docs/05-helpers/index.md - Helper classes reference
+- docs/06-testing/index.md - Testing your connector
+- docs/07-ecosystem/index.md - Related packages
+
+## Key Concepts
+
+### Local Class
+Entry point for your connector. Implements `LocalClassInterface` at `Splash\Local\Local`.
+
+### Objects
+Data types that can be synchronized. Extend `AbstractObject`, use `IntelParserTrait`.
+
+### Fields
+Define what data can be synchronized using `FieldsFactory` fluent API.
+
+### Widgets
+Dashboard components. Extend `AbstractWidget`.
+
+## Quick Start
+
+```php
+// Local Class: Splash\Local\Local
+class Local implements LocalClassInterface
+{
+    public function parameters(): array
+    {
+        return array(
+            "WsIdentifier" => "your-server-id",
+            "WsEncryptionKey" => "your-key",
+        );
+    }
+}
+
+// Object: Splash\Local\Objects\ThirdParty
+class ThirdParty extends AbstractObject
+{
+    use IntelParserTrait;
+    use ThirdParty\CrudTrait;
+    use ThirdParty\CoreTrait;
+}
+```
+
+## Helpers
+
+- PricesHelper - Price encoding with tax calculations
+- ObjectsHelper - Object ID links (e.g., "123::ThirdParty")
+- DatesHelper - Date formatting
+- FilesHelper - File metadata
+- ImagesHelper - Image metadata
+- ListsHelper - Collection field operations
+- InlineHelper - Array to JSON conversion
+
+## Related Packages
+
+- splash/toolkit - Development environment
+- splash/php-bundle - Symfony integration
+- splash/openapi - REST API connectors
+- splash/metadata - PHP 8 attributes
