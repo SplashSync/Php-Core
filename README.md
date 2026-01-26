@@ -1,4 +1,4 @@
-[![N|Solid](https://github.com/SplashSync/Php-Core/raw/master/img/github.jpg)](https://www.splashsync.com)
+[![N|Solid](https://github.com/SplashSync/Php-Core/raw/3.0/img/github.jpg)](https://www.splashsync.com)
 
 # Splash Php-Core
 
