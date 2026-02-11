@@ -68,13 +68,8 @@ class StringConverter
     public static function getCode(string $theClass): string
     {
         //====================================================================//
-        // Convert PHP Class Name to Code
-        $codeParts = array_map(
-            fn (string $part) => strtolower($part),
-            explode("\\", $theClass)
-        );
-
-        return implode(".", $codeParts);
+        // Convert PHP Class Name to Code (preserve original casing)
+        return implode(".", explode("\\", $theClass));
     }
 
     /**
@@ -86,12 +81,9 @@ class StringConverter
      */
     public static function toClass(string $theCode): ?string
     {
-        $classParts = array_map(
-            fn (string $part) => ucfirst($part),
-            explode(".", $theCode)
-        );
-        /** @var null|string $theClass */
-        $theClass = implode("\\", $classParts);
+        //====================================================================//
+        // Convert Code to PHP Class Name (direct replacement, no case change)
+        $theClass = str_replace(".", "\\", $theCode);
 
         return (!empty($theClass) && class_exists($theClass)) ? $theClass : null;
     }
