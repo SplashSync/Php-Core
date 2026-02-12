@@ -45,13 +45,13 @@ class ListsHelper
      * @param string $listName  Field List Name.
      * @param string $fieldName Field Identifier
      *
+     * @return null|string
+     *
      * @phpstan-return (
      *     $listName is non-empty-string
      *     ? ($fieldName is non-empty-string ? non-empty-string : null)
      *     : null
      * )
-     *
-     * @return null|string
      */
     public static function encode(string $listName, string $fieldName): ?string
     {
