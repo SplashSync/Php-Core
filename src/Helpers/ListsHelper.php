@@ -45,7 +45,11 @@ class ListsHelper
      * @param string $listName  Field List Name.
      * @param string $fieldName Field Identifier
      *
-     * @phpstan-return ($listName is non-empty-string ? ($fieldName is non-empty-string ? string : null) : null)
+     * @phpstan-return (
+     *     $listName is non-empty-string
+     *     ? ($fieldName is non-empty-string ? non-empty-string : null)
+     *     : null
+     * )
      *
      * @return null|string
      */

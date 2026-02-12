@@ -46,7 +46,11 @@ class ObjectsHelper
      * @param string $objectType Object Type Name.
      * @param string $objectId   Object Identifier
      *
-     * @phpstan-return ($objectType is non-empty-string ? ($objectId is non-empty-string ? string : null) : null)
+     * @phpstan-return (
+     *     $objectType is non-empty-string
+     *     ? ($objectId is non-empty-string ? non-empty-string : null)
+     *     : null
+     * )
      *
      * @return null|string
      */
