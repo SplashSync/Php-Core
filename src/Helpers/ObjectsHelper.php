@@ -46,6 +46,8 @@ class ObjectsHelper
      * @param string $objectType Object Type Name.
      * @param string $objectId   Object Identifier
      *
+     * @phpstan-return ($objectType is non-empty-string ? ($objectId is non-empty-string ? string : null) : null)
+     *
      * @return null|string
      */
     public static function encode(string $objectType, string $objectId): ?string
