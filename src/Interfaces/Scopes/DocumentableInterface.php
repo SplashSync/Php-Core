@@ -28,6 +28,8 @@ interface DocumentableInterface
 
     /**
      * Get Technical Description
+     * -> Detailed technical description as Markdown text
+     * -> Used by AI agents and developer tooling to understand scope behavior
      */
     public function getTechnicalDescription(): string;
 
