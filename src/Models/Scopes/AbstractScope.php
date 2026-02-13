@@ -18,9 +18,10 @@ namespace Splash\Core\Models\Scopes;
 use Splash\Core\Fields\FieldConstraint;
 use Splash\Core\Helpers\ScopesHelper;
 use Splash\Core\Interfaces\Scopes\ChainableInterface;
+use Splash\Core\Interfaces\Scopes\DocumentableInterface;
 use Splash\Core\Interfaces\Scopes\ScopeInterface;
 
-abstract class AbstractScope implements ScopeInterface, ChainableInterface
+abstract class AbstractScope implements ScopeInterface, ChainableInterface, DocumentableInterface
 {
     /**
      * @inheritDoc
@@ -51,6 +52,30 @@ abstract class AbstractScope implements ScopeInterface, ChainableInterface
     public function getTechnicalDescription(): string
     {
         return $this->getShortDescription();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIconCode(): string
+    {
+        return "fa-puzzle-piece";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getExtraIconCode(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSvgIcon(): ?string
+    {
+        return null;
     }
 
     /**

@@ -16,18 +16,31 @@
 namespace Splash\Core\Interfaces\Scopes;
 
 /**
- * Interface for Server Scope Documentation
+ * Interface for Server Scope Documentation & Rendering
  */
 interface DocumentableInterface
 {
-    /**
-     * Get Icon Class
-     */
-    public function getIconClass(): string;
-
     /**
      * Get Markdown Description
      * -> Field Documentation / Description as Markdown Text
      */
     public function getMdDescription(?string $isoLang = null): string;
+
+    /**
+     * Get Technical Description
+     */
+    public function getTechnicalDescription(): string;
+
+    /**
+     * Get Extra Icon Code
+     * -> Second icon displayed bottom-right of the scope vignette
+     * -> FontAwesome icon name only, e.g. "fa-box-open"
+     */
+    public function getExtraIconCode(): ?string;
+
+    /**
+     * Get SVG Icon
+     * -> SVG icon content for custom scopes
+     */
+    public function getSvgIcon(): ?string;
 }

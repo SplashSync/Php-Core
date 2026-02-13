@@ -45,15 +45,10 @@ interface ScopeInterface
     public function getShortDescription(?string $isoLang = null): string;
 
     /**
-     * Get Markdown Description
-     * -> Field Documentation / Description as Markdown Text
+     * Get Scope Icon Code
+     * -> FontAwesome icon name only, e.g. "fa-box-open"
      */
-    public function getMdDescription(?string $isoLang = null): string;
-
-    /**
-     * Get Technical Description
-     */
-    public function getTechnicalDescription(): string;
+    public function getIconCode(): string;
 
     /**
      * Get the list of Splash Object Types Impacted by this Scope
