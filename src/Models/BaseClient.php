@@ -236,6 +236,9 @@ class BaseClient
      * Ask for Server System Information
      * May be overwritten by Local Module Class
      *
+     * @SuppressWarnings(Superglobals)
+     *  => filter_input is incompatible with servers using worker mode
+     *
      * @throws Exception
      *
      * @return ArrayObject Array including all server information
@@ -293,7 +296,7 @@ class BaseClient
         //====================================================================//
         // Server Information
         $response->servertype = SplDefinition::NAME;
-        $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME');
+        $response->serverurl = filter_var($_SERVER['SERVER_NAME'] ?? '');
 
         //====================================================================//
         // Module Information
@@ -338,7 +341,7 @@ class BaseClient
             return false;
         }
         //====================================================================//
-        //  Verify Detected Server Informations
+        //  Verify Detected Server Information
         if (!self::validate()->isValidServerInfos()) {
             return false;
         }
