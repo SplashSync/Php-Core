@@ -18,6 +18,7 @@ namespace Splash\Core\Components\NuSOAP;
 use nusoap_client;
 use nusoap_server;
 use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplServices;
 use Splash\Core\Interfaces\CommunicationInterface;
 
 /**
@@ -28,12 +29,12 @@ class NuSOAPInterface implements CommunicationInterface
     /**
      * @var nusoap_client
      */
-    protected $client;
+    protected nusoap_client $client;
 
     /**
      * @var nusoap_server
      */
-    protected $server;
+    protected ?nusoap_server $server = null;
 
     //====================================================================//
     // WEBSERVICE CLIENT SIDE
@@ -46,7 +47,7 @@ class NuSOAPInterface implements CommunicationInterface
     {
         //====================================================================//
         // Include NuSOAP Classes
-        require_once dirname(__FILE__).'/nusoap.php';
+        require_once dirname(__DIR__, 3).'/libs/nusoap/nusoap.php';
         //====================================================================//
         // Initiate new NuSoap Client
         $this->client = new nusoap_client($targetUrl);
@@ -81,16 +82,16 @@ class NuSOAPInterface implements CommunicationInterface
     public function call(string $service, array $data): ?string
     {
         //====================================================================//
-        // Log Call Informations in debug buffer
+        // Log Call Information in debug buffer
         Splash::log()->deb("[NuSOAP] Call Url= '".$this->client->endpoint."' Service='".$service."'");
         //====================================================================//
         // Execute NuSOAP Call
         $response = $this->client->call($service, $data);
         //====================================================================//
         // Decode & Store NuSOAP Errors if present
-        if (isset($this->client->fault) && !empty($this->client->fault)) {
+        if (!empty($this->client->fault)) {
             //====================================================================//
-            //  Debug Informations
+            //  Debug Information
             Splash::log()->deb("[NuSOAP] Fault Details='".$this->client->faultdetail."'");
             //====================================================================//
             //  Log Error Message
@@ -107,7 +108,7 @@ class NuSOAPInterface implements CommunicationInterface
         //     Splash::log()->www("[NuSOAP] Raw Response", htmlspecialchars($this->client->response, ENT_QUOTES));
         // }
 
-        return $response;
+        return is_scalar($response) ? (string) $response : null;
     }
 
     //====================================================================//
@@ -121,18 +122,18 @@ class NuSOAPInterface implements CommunicationInterface
     {
         //====================================================================//
         // Include NuSOAP Classes
-        require_once dirname(__FILE__).'/nusoap.php';
+        require_once dirname(__DIR__, 3).'/libs/nusoap/nusoap.php';
         //====================================================================//
         // Initialize NuSOAP Server Class
         $this->server = new nusoap_server();
         //====================================================================//
         // Register a method available for clients
-        $this->server->register(SPL_S_PING);           // Check Availability
-        $this->server->register(SPL_S_CONNECT);         // Verify Connection Parameters
-        $this->server->register(SPL_S_ADMIN);           // Administrative requests
-        $this->server->register(SPL_S_OBJECTS);         // Main Object management requests
-        $this->server->register(SPL_S_FILE);            // Files management requests
-        $this->server->register(SPL_S_WIDGETS);         // Informations requests
+        $this->server->register(SplServices::PING);            // Check Availability
+        $this->server->register(SplServices::CONNECT);         // Verify Connection Parameters
+        $this->server->register(SplServices::ADMIN);           // Administrative requests
+        $this->server->register(SplServices::OBJECTS);         // Main Object management requests
+        $this->server->register(SplServices::FILE);            // Files management requests
+        $this->server->register(SplServices::WIDGETS);         // Information requests
     }
 
     /**
@@ -150,6 +151,11 @@ class NuSOAPInterface implements CommunicationInterface
      */
     public function fault(array $error): void
     {
+        //====================================================================//
+        // Safety Check
+        if (empty($this->server)) {
+            return;
+        }
         //====================================================================//
         // Detect If Any Response Message Exists.
         if (!empty($this->server->response)) {
