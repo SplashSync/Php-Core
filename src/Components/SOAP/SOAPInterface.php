@@ -106,7 +106,7 @@ class SOAPInterface implements CommunicationInterface
     public function call(string $service, array $data): ?string
     {
         //====================================================================//
-        // Log Call Informations in debug buffer
+        // Log Call Information in debug buffer
         Splash::log()->deb("[SOAP] Call Url= '".$this->location."' Service='".$service."'");
 
         //====================================================================//
@@ -120,7 +120,7 @@ class SOAPInterface implements CommunicationInterface
         // Decode & Store Generic SOAP Errors if present
         if ($response instanceof Exception) {
             //====================================================================//
-            //  Debug Informations
+            //  Debug Information
             Splash::log()->deb('[SOAP] Fault Details= '.$response->getTraceAsString());
 
             //====================================================================//
@@ -152,7 +152,7 @@ class SOAPInterface implements CommunicationInterface
         $this->server->addFunction(SplServices::ADMIN);        // Administrative requests
         $this->server->addFunction(SplServices::OBJECTS);      // Main Object management requests
         $this->server->addFunction(SplServices::FILE);         // Files management requests
-        $this->server->addFunction(SplServices::WIDGETS);      // Informations requests
+        $this->server->addFunction(SplServices::WIDGETS);      // Information requests
     }
 
     /**
