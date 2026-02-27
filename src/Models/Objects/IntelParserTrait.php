@@ -315,13 +315,11 @@ trait IntelParserTrait
     private function identifyBuildMethods(): array
     {
         static $methods;
-        //====================================================================//
-        // Load Methods From Cache
-        if (!isset($methods)) {
-            $methods = static::identifyMethods("build");
-        }
 
-        return $methods;
+        $methods ??= array();
+        $methods[static::class] = static::identifyMethods("build");
+
+        return $methods[static::class];
     }
 
     /**
@@ -332,13 +330,11 @@ trait IntelParserTrait
     private function identifyGetMethods(): array
     {
         static $methods;
-        //====================================================================//
-        // Load Methods From Cache
-        if (!isset($methods)) {
-            $methods = static::identifyMethods("get");
-        }
 
-        return $methods;
+        $methods ??= array();
+        $methods[static::class] = static::identifyMethods("get");
+
+        return $methods[static::class];
     }
 
     /**
@@ -349,13 +345,11 @@ trait IntelParserTrait
     private function identifySetMethods(): array
     {
         static $methods;
-        //====================================================================//
-        // Load Methods From Cache
-        if (!isset($methods)) {
-            $methods = static::identifyMethods("set");
-        }
 
-        return $methods;
+        $methods ??= array();
+        $methods[static::class] = static::identifyMethods("set");
+
+        return $methods[static::class];
     }
 
     /**
