@@ -76,7 +76,7 @@ class FieldsCollection extends ArrayIterator implements FieldsCollectionInterfac
     /**
      * Add a Field to Collection
      */
-    public function add(AbstractField $field): self
+    public function add(AbstractField $field): static
     {
         $this->offsetSet((string) $field, $field);
 
