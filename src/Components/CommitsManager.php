@@ -376,8 +376,8 @@ class CommitsManager
     protected static function isTravisMode(CommitEvent $commitEvent): bool
     {
         //====================================================================//
-        // Detect Travis from SERVER CONSTANTS
-        if (empty(Splash::input('SPLASH_TRAVIS'))) {
+        // Detect CI/CD - Travis Mode from SERVER CONSTANTS
+        if (Splash::isCiCdMode()) {
             return false;
         }
         //====================================================================//
