@@ -96,7 +96,7 @@ trait ToolsTrait
 
                 break;
             case INPUT_ENV:
-                $value = $_ENV[$name] ?? null;
+                $value = $_ENV[$name] ?? getenv($name) ?: null;
 
                 break;
             default:
