@@ -178,7 +178,7 @@ class DataExtractor
         }
 
         return array(
-            $listName => $fieldData
+            $listName => array_values($fieldData)
         );
     }
 }

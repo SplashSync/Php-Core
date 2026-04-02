@@ -87,17 +87,17 @@ class T203DataExtractorTest extends TestCase
         // Extract List Field Data
         Assert::assertEquals(
             array(
-                'item-1' => '1A',
-                'item-2' => '2A',
-                'item-3' => '3A'
+                0 => '1A',
+                1 => '2A',
+                2 => '3A'
             ),
             DataExtractor::extractField(self::SAMPLE_DATA, "fieldA@list1")
         );
         Assert::assertEquals(
             array(
-                'item-1' => '1B',
-                'item-2' => null,
-                'item-3' => '3B'
+                0 => '1B',
+                1 => null,
+                2 => '3B'
             ),
             DataExtractor::extractField(self::SAMPLE_DATA, "fieldB@list3")
         );
@@ -144,9 +144,9 @@ class T203DataExtractorTest extends TestCase
                 "fieldIds" => array("fieldA@list1"),
                 "response" => array(
                     "list1" => array(
-                        "item-1" => array("fieldA" => "1A"),
-                        "item-2" => array("fieldA" => "2A"),
-                        "item-3" => array("fieldA" => "3A"),
+                        0 => array("fieldA" => "1A"),
+                        1 => array("fieldA" => "2A"),
+                        2 => array("fieldA" => "3A"),
                     ),
                 )
             ),
@@ -154,9 +154,9 @@ class T203DataExtractorTest extends TestCase
                 "fieldIds" => array("fieldA@list1", "fieldB@list1"),
                 "response" => array(
                     "list1" => array(
-                        "item-1" => array("fieldA" => "1A", "fieldB" => "1B"),
-                        "item-2" => array("fieldA" => "2A", "fieldB" => "2B"),
-                        "item-3" => array("fieldA" => "3A", "fieldB" => "3B"),
+                        0 => array("fieldA" => "1A", "fieldB" => "1B"),
+                        1 => array("fieldA" => "2A", "fieldB" => "2B"),
+                        2 => array("fieldA" => "3A", "fieldB" => "3B"),
                     ),
                 )
             ),
@@ -164,9 +164,9 @@ class T203DataExtractorTest extends TestCase
                 "fieldIds" => array("fieldA@list3"),
                 "response" => array(
                     "list3" => array(
-                        "item-1" => array(),
-                        "item-2" => array("fieldA" => "2A"),
-                        "item-3" => array("fieldA" => "3A"),
+                        0 => array(),
+                        1 => array("fieldA" => "2A"),
+                        2 => array("fieldA" => "3A"),
                     ),
                 )
             ),
@@ -176,9 +176,9 @@ class T203DataExtractorTest extends TestCase
                     "SimpleField1" => "SimpleValue1",
                     "SimpleField3" => "SimpleValue3",
                     "list2" => array(
-                        "item-1" => array("fieldA" => "1A", "fieldB" => "1B"),
-                        "item-2" => array("fieldA" => "2A", "fieldB" => "2B"),
-                        "item-3" => array("fieldA" => "3A", "fieldB" => "3B"),
+                        0 => array("fieldA" => "1A", "fieldB" => "1B"),
+                        1 => array("fieldA" => "2A", "fieldB" => "2B"),
+                        2 => array("fieldA" => "3A", "fieldB" => "3B"),
                     ),
                 )
             ),
