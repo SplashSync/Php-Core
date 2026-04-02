@@ -62,8 +62,8 @@ class DataExtractor
         //====================================================================//
         // Parse Raw List Data
         $result = array();
-        foreach ($listData as $key => $item) {
-            $result[$key] = $item[$fieldName] ?? null;
+        foreach ($listData as $item) {
+            $result[] = $item[$fieldName] ?? null;
         }
 
         return $result;
