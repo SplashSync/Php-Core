@@ -377,7 +377,7 @@ class CommitsManager
     {
         //====================================================================//
         // Detect CI/CD - Travis Mode from SERVER CONSTANTS
-        if (Splash::isCiCdMode()) {
+        if (!Splash::isCiCdMode()) {
             return false;
         }
         //====================================================================//
