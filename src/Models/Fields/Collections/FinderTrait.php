@@ -15,6 +15,8 @@
 
 namespace Splash\Core\Models\Fields\Collections;
 
+use Splash\Core\Dictionary\Fields\SplFieldProps;
+use Splash\Core\Helpers\FieldTemplatesHelper;
 use Splash\Core\Models\Fields\AbstractField;
 
 /**
@@ -52,5 +54,28 @@ trait FinderTrait
     public function findOneByTag(string $tag): ?AbstractField
     {
         return $this->filterTag($tag)->unique();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findOneByTemplate(string $templateCodeOrClass): ?AbstractField
+    {
+        //====================================================================//
+        // Load Field Template from Code or Class
+        if (!$variantList = FieldTemplatesHelper::resolve($templateCodeOrClass)) {
+            return null;
+        }
+        //====================================================================//
+        // Load Field Template Metadata
+        $itemType = $variantList->getConfiguration()[SplFieldProps::MICRODATA_URL] ?? null;
+        $itemProp = $variantList->getConfiguration()[SplFieldProps::MICRODATA_PROP] ?? null;
+        if (empty($itemType) || !is_string($itemType) || empty($itemProp) || !is_string($itemProp)) {
+            return null;
+        }
+
+        //====================================================================//
+        // Filter Fields by Metadata
+        return $this->findOneByMetadata($itemType, $itemProp);
     }
 }

@@ -49,4 +49,11 @@ interface FieldsFinderInterface
      * @phpstan-impure
      */
     public function findOneByTag(string $tag): ?AbstractField;
+
+    /**
+     * Find Field by Specified Template Code or Class
+     *
+     * @phpstan-impure
+     */
+    public function findOneByTemplate(string $templateCodeOrClass): ?AbstractField;
 }
