@@ -25,9 +25,9 @@ trait FactoryTemplateTrait
     /**
      * Create a new Field Definition from Template
      *
-     * @param string       $fieldId   Local Data Identifier (Shall be unique on local machine)
-     * @param class-string $template  Field Template Class
-     * @param null|string  $fieldName Data Name (Will Be Translated by Splash if Possible)
+     * @param string      $fieldId   Local Data Identifier (Shall be unique on local machine)
+     * @param string      $template  Field Template Class or Code
+     * @param null|string $fieldName Data Name (Will Be Translated by Splash if Possible)
      */
     public function createFromTemplate(string $fieldId, string $template, ?string $fieldName = null): self
     {
