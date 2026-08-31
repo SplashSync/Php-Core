@@ -120,15 +120,39 @@ trait FieldMetadataTrait
     {
         //==============================================================================
         // Get Updated Field Metadata
-        $itemType = $values[Props::MICRODATA_URL] ?? $this->getItemType();
-        $itemProp = $values[Props::MICRODATA_PROP] ?? $this->getItemProp();
-        if ($itemType && $itemProp && is_string($itemType) && is_string($itemProp)) {
+        $itemType = array_key_exists(Props::MICRODATA_URL, $values)
+            ? $values[Props::MICRODATA_URL]
+            : $this->getItemType()
+        ;
+        $itemProp = array_key_exists(Props::MICRODATA_PROP, $values)
+            ? $values[Props::MICRODATA_PROP]
+            : $this->getItemProp()
+        ;
+        //==============================================================================
+        // Update Field Metadata
+        if ((is_null($itemType) || is_scalar($itemType)) && (is_null($itemProp) || is_scalar($itemProp))) {
             //==============================================================================
             // Check if Metadata Updated
             if ($itemType != $this->getItemType() || $itemProp != $this->getItemProp()) {
-                $this->setMicroData($itemType, $itemProp);
+                $this->setMicroData((string) $itemType, (string) $itemProp);
             }
-        } else {
+        }
+
+        //==============================================================================
+        // Update Field Tag Only
+        return $this->updateMetadataTagValue($values);
+    }
+
+    /**
+     * Import / Override Field Metadata Tag Definition
+     *
+     * @param array<string, mixed> $values Custom Values to Write
+     */
+    private function updateMetadataTagValue(array $values): self
+    {
+        //==============================================================================
+        // Update Field Tag Only
+        if (empty($this->getTag()) && array_key_exists(Props::TAG, $values)) {
             //==============================================================================
             // Empty Metadata => Update Field Tag Only
             $this->updateStringValue($values, Props::TAG, fn ($value) => $this->setTag($value));
