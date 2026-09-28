@@ -18,6 +18,7 @@ namespace Splash\Core\Tests\T100Core\T120FieldsCollections;
 use PHPUnit\Framework\Assert;
 use Splash\Core\Dictionary\SplFields;
 use Splash\Core\Fields\FieldsCollection;
+use Splash\Core\Helpers\ListsHelper;
 use Splash\Core\Models\Fields\AbstractField;
 use Splash\Core\Tests\T100Core\T110ObjectFields\AbstractFieldTestCase;
 
@@ -413,6 +414,50 @@ class T122FieldCollectionFilteringTest extends AbstractFieldTestCase
         Assert::assertNotEmpty($filteredCollection->unique());
         Assert::assertCount(1, $collection->filterMetadata($itemType, $itemProp));
         Assert::assertNotEmpty($collection->findOneByMetadata($itemType, $itemProp));
+    }
+
+    /**
+     * Test Filtering on Fields Metadata when two fields share the same metadata:
+     * the same data exposed at object level and inside a list.
+     */
+    public function testFilterOnMetadataWithType(): void
+    {
+        $itemType = uniqid('https://schema.org/');
+        $itemProp = uniqid('Property');
+        $listType = (string) ListsHelper::encode(SplFields::LIST, SplFields::VARCHAR);
+        //====================================================================//
+        // Create and populate collection
+        $collection = new FieldsCollection();
+        for ($i = 0; $i < self::MAX; $i++) {
+            $collection->add(
+                $this->assertNewField(SplFields::VARCHAR, uniqid('field_'))
+            );
+        }
+        //====================================================================//
+        // Add Object Level Field & List Field with Same Metadata
+        $collection->add(
+            $this->assertNewField(SplFields::VARCHAR, "method")->setMicroData($itemType, $itemProp)
+        );
+        $collection->add(
+            $this->assertNewField($listType, "method@payments")->setMicroData($itemType, $itemProp)
+        );
+        //====================================================================//
+        // Without Type: both are found, none is unique
+        Assert::assertCount(2, $collection->filterMetadata($itemType, $itemProp));
+        Assert::assertNull($collection->findOneByMetadata($itemType, $itemProp));
+        //====================================================================//
+        // With Type: the right one is found
+        Assert::assertCount(1, $collection->filterMetadata($itemType, $itemProp, SplFields::VARCHAR));
+        $simple = $collection->findOneByMetadata($itemType, $itemProp, SplFields::VARCHAR);
+        Assert::assertInstanceOf(AbstractField::class, $simple);
+        Assert::assertEquals("method", $simple->getIdentifier());
+        $listed = $collection->findOneByMetadata($itemType, $itemProp, $listType);
+        Assert::assertInstanceOf(AbstractField::class, $listed);
+        Assert::assertEquals("method@payments", $listed->getIdentifier());
+        //====================================================================//
+        // With Another Type: nothing is found
+        Assert::assertCount(0, $collection->filterMetadata($itemType, $itemProp, SplFields::BOOL));
+        Assert::assertNull($collection->findOneByMetadata($itemType, $itemProp, SplFields::BOOL));
     }
 
     /**

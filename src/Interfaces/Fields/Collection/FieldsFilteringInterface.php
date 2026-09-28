@@ -81,8 +81,13 @@ interface FieldsFilteringInterface
 
     /**
      * Filter Fields that have Specified Metadata
+     *
+     * Metadata are compared as is: http & https urls are different types.
+     * When a type is given, only fields of this exact Splash type are kept.
+     * This is only needed when several fields share the same metadata,
+     * i.e. the same data exposed at object level and inside a list.
      */
-    public function filterMetadata(string $itemType, string $itemProp): FilteredCollection;
+    public function filterMetadata(string $itemType, string $itemProp, ?string $type = null): FilteredCollection;
 
     /**
      * Filter Fields that have Specified Tag

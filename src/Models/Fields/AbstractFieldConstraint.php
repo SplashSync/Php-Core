@@ -83,6 +83,11 @@ abstract class AbstractFieldConstraint implements FieldConstraintInterface
     private ?string $format = null;
 
     /**
+     * Splash type the field is searched with, null to search on metadata only
+     */
+    private ?string $type = null;
+
+    /**
      * @inheritDoc
      */
     public function __construct(string $itemType, string $itemProp)
@@ -195,6 +200,7 @@ abstract class AbstractFieldConstraint implements FieldConstraintInterface
         $this->indexed = null;
         $this->logged = null;
         $this->format = null;
+        $this->type = null;
 
         return $this;
     }
@@ -373,6 +379,24 @@ abstract class AbstractFieldConstraint implements FieldConstraintInterface
     public function setFormat(?string $format): self
     {
         $this->format = $format;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

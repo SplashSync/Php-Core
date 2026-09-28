@@ -152,11 +152,13 @@ trait FilteringTrait
     /**
      * @inheritDoc
      */
-    public function filterMetadata(string $itemType, string $itemProp): FilteredCollection
+    public function filterMetadata(string $itemType, string $itemProp, ?string $type = null): FilteredCollection
     {
         return new FilteredCollection(
             $this,
-            fn (AbstractField $field) => ($itemType == $field->getItemType() && $itemProp == $field->getItemProp())
+            fn (AbstractField $field) => ($itemType == $field->getItemType())
+                && ($itemProp == $field->getItemProp())
+                && (is_null($type) || ($type == $field->getType()))
         );
     }
 

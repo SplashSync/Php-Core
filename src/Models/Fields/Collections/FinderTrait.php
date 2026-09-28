@@ -43,9 +43,9 @@ trait FinderTrait
     /**
      * @inheritDoc
      */
-    public function findOneByMetadata(string $itemType, string $itemProp): ?AbstractField
+    public function findOneByMetadata(string $itemType, string $itemProp, ?string $type = null): ?AbstractField
     {
-        return $this->filterMetadata($itemType, $itemProp)->unique();
+        return $this->filterMetadata($itemType, $itemProp, $type)->unique();
     }
 
     /**

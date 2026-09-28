@@ -163,4 +163,19 @@ interface FieldConstraintInterface
      * Shall this field be in a specified format?
      */
     public function setFormat(?string $format): self;
+
+    /**
+     * Get the Splash type the field is searched with, null to search on metadata only
+     */
+    public function getType(): ?string;
+
+    /**
+     * Restrict the search of the field to a Splash type
+     *
+     * A field is normally identified by its metadata only. Set a type ONLY
+     * when several fields share the same metadata, so that the right one
+     * is picked: i.e. "varchar" for the object level field, "varchar@list"
+     * for the one inside a list.
+     */
+    public function setType(?string $type): self;
 }

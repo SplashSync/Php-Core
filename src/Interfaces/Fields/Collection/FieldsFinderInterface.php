@@ -37,11 +37,13 @@ interface FieldsFinderInterface
     public function findOneByPrimary(): ?AbstractField;
 
     /**
-     * Find Field by Specified Metadata
+     * Find Field by Specified Metadata, optionally restricted to a Splash type
+     *
+     * Returns a field only when exactly one matches.
      *
      * @phpstan-impure
      */
-    public function findOneByMetadata(string $itemType, string $itemProp): ?AbstractField;
+    public function findOneByMetadata(string $itemType, string $itemProp, ?string $type = null): ?AbstractField;
 
     /**
      * Find Field by Specified Tag
