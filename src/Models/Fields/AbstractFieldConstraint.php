@@ -88,6 +88,13 @@ abstract class AbstractFieldConstraint implements FieldConstraintInterface
     private ?string $type = null;
 
     /**
+     * Alternatives to this constraint: at least one of them must be satisfied
+     *
+     * @var FieldConstraintInterface[]
+     */
+    private array $alternatives = array();
+
+    /**
      * @inheritDoc
      */
     public function __construct(string $itemType, string $itemProp)
@@ -399,5 +406,23 @@ abstract class AbstractFieldConstraint implements FieldConstraintInterface
         $this->type = $type;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addAlternative(FieldConstraintInterface $alternative): self
+    {
+        $this->alternatives[] = $alternative;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAlternatives(): array
+    {
+        return $this->alternatives;
     }
 }

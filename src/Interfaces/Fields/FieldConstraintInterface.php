@@ -178,4 +178,21 @@ interface FieldConstraintInterface
      * for the one inside a list.
      */
     public function setType(?string $type): self;
+
+    /**
+     * Add an alternative to this constraint: at least one of them must be satisfied
+     *
+     * The same data may be exposed under different fields, i.e. a product
+     * identified by its link on an ERP or by its SKU on a WMS. The server
+     * must expose at least one of the alternatives; every alternative it
+     * exposes must respect its own flags. Optional applies to the group.
+     */
+    public function addAlternative(FieldConstraintInterface $alternative): self;
+
+    /**
+     * Get the alternatives of this constraint, empty when there are none
+     *
+     * @return FieldConstraintInterface[]
+     */
+    public function getAlternatives(): array;
 }
