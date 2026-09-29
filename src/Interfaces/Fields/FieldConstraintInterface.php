@@ -183,9 +183,9 @@ interface FieldConstraintInterface
      * Add an alternative to this constraint: at least one of them must be satisfied
      *
      * The same data may be exposed under different fields, i.e. a product
-     * identified by its link on an ERP or by its SKU on a WMS. The server
-     * must expose at least one of the alternatives; every alternative it
-     * exposes must respect its own flags. Optional applies to the group.
+     * identified by its link on an ERP or by its SKU on a WMS. The constraint
+     * is satisfied as soon as one alternative is exposed with the right
+     * flags, whatever the others. Optional applies to the group.
      */
     public function addAlternative(FieldConstraintInterface $alternative): self;
 
