@@ -95,6 +95,11 @@ abstract class AbstractFieldConstraint implements FieldConstraintInterface
     private array $alternatives = array();
 
     /**
+     * Code of the field template this constraint was built from, if any
+     */
+    private ?string $templateCode = null;
+
+    /**
      * @inheritDoc
      */
     public function __construct(string $itemType, string $itemProp)
@@ -153,6 +158,10 @@ abstract class AbstractFieldConstraint implements FieldConstraintInterface
         // Default: Mark Field Constraint as Optional
         // This prevents throwing an Exception when Field is not mandatory
         $fieldConstraint->setOptional();
+
+        //====================================================================//
+        // Keep Track of the Source Template
+        $fieldConstraint->setTemplateCode($template::getCode());
 
         //====================================================================//
         // Configure Field Constraint
@@ -424,5 +433,22 @@ abstract class AbstractFieldConstraint implements FieldConstraintInterface
     public function getAlternatives(): array
     {
         return $this->alternatives;
+    }
+    /**
+     * @inheritDoc
+     */
+    public function getTemplateCode(): ?string
+    {
+        return $this->templateCode;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTemplateCode(?string $templateCode): self
+    {
+        $this->templateCode = $templateCode;
+
+        return $this;
     }
 }

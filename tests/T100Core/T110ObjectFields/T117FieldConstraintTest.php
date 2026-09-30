@@ -19,9 +19,10 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Splash\Core\Dictionary\SplFields;
 use Splash\Core\Fields\FieldConstraint;
+use Splash\Local\Fields\Templates\DummyTemplate;
 
 /**
- * Test Field Constraints: lookup type & alternatives
+ * Test Field Constraints: lookup type, alternatives & source template
  */
 class T117FieldConstraintTest extends TestCase
 {
@@ -56,5 +57,25 @@ class T117FieldConstraintTest extends TestCase
         // Alternatives are structural: a reset keeps them
         $byId->reset();
         Assert::assertCount(1, $byId->getAlternatives());
+    }
+    /**
+     * Test a constraint built from a template keeps track of its code
+     */
+    public function testTemplateCode(): void
+    {
+        //====================================================================//
+        // A constraint created by hand has no source template
+        $manual = new FieldConstraint("http://schema.org/Product", "sku");
+        Assert::assertNull($manual->getTemplateCode());
+        //====================================================================//
+        // Built from a template, by instance or by code
+        $fromTemplate = FieldConstraint::fromTemplate(new DummyTemplate());
+        Assert::assertSame(DummyTemplate::getCode(), $fromTemplate->getTemplateCode());
+        $fromCode = FieldConstraint::fromTemplateCode(DummyTemplate::class);
+        Assert::assertSame(DummyTemplate::getCode(), $fromCode->getTemplateCode());
+        //====================================================================//
+        // The source template is structural: a reset keeps it
+        $fromCode->reset();
+        Assert::assertSame(DummyTemplate::getCode(), $fromCode->getTemplateCode());
     }
 }

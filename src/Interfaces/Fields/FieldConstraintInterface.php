@@ -195,4 +195,17 @@ interface FieldConstraintInterface
      * @return FieldConstraintInterface[]
      */
     public function getAlternatives(): array;
+
+    /**
+     * Get the code of the field template this constraint was built from
+     *
+     * Null for a constraint created by hand from its metadata. Informative
+     * only: the field is always searched by its metadata, never by this code.
+     */
+    public function getTemplateCode(): ?string;
+
+    /**
+     * Set the code of the field template this constraint was built from
+     */
+    public function setTemplateCode(?string $templateCode): self;
 }
