@@ -155,6 +155,31 @@ class ThirdParty extends AbstractObject
 | `isLogged()`     | Log changes to this field                    |
 | `isNotTested()`  | Exclude from automated tests                 |
 
+### Microdata & Auto-Mapping
+
+`microData($itemType, $itemProp)` tags the field for auto-mapping between servers: the tag is
+`md5(itemType + itemProp)`, and two fields connect when they carry the same tag. Prefer the
+templates of [splash/scopes](https://packagist.org/packages/splash/scopes), which fix the
+microdata for you.
+
+When a field moves to another microdata, its tag changes and the connections built on the old
+tag would be lost. Declare the former microdata as an **alternate tag**: the field keeps its
+new tag and still connects with servers using the old one.
+
+```php
+$this->fieldsFactory()->create(SplFields::OBJECT_ID)
+    ->identifier("customer")
+    ->microData("http://schema.org/Organization", "ID")          // current tag
+    ->alternateMicroData("http://schema.org/Invoice", "customer") // legacy tag, still connectable
+;
+```
+
+Alternate tags are stored in the `altTags` field option, as an INLINE list of md5 tags, so
+they travel with the field definition on every server. On the field object:
+`setAlternateTags()`, `addAlternateTag()`, `addAlternateMicroData()` and `getAlternateTags()`,
+which returns valid, unique tags without the field own tag. A template declares them through
+`SplFieldProps::OPTIONS => array(SplFieldConstraints::ALT_TAGS => InlineHelper::fromArray($tags))`.
+
 ## Field Groups
 
 Groups organize related fields together. In the Toolkit UI, each group becomes a **tab**.

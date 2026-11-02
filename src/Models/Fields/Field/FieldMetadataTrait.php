@@ -15,7 +15,9 @@
 
 namespace Splash\Core\Models\Fields\Field;
 
+use Splash\Core\Dictionary\Fields\SplFieldConstraints;
 use Splash\Core\Dictionary\Fields\SplFieldProps as Props;
+use Splash\Core\Helpers\InlineHelper;
 use Splash\Core\Helpers\ObjectsHelper;
 
 /**
@@ -112,6 +114,52 @@ trait FieldMetadataTrait
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setAlternateTags(array $tags): self
+    {
+        $tags = self::filterTags($tags, $this->tag);
+        if (empty($tags)) {
+            return $this->removeOption(SplFieldConstraints::ALT_TAGS);
+        }
+
+        return $this->addOption(SplFieldConstraints::ALT_TAGS, InlineHelper::fromArray($tags));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addAlternateTag(string $tag): self
+    {
+        return $this->setAlternateTags(array_merge($this->getAlternateTags(), array($tag)));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addAlternateMicroData(string $itemType, string $itemProp): self
+    {
+        if (!$itemType || !$itemProp) {
+            return $this;
+        }
+
+        return $this->addAlternateTag(self::toTag($itemType, $itemProp));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAlternateTags(): array
+    {
+        $raw = $this->getOptions()[SplFieldConstraints::ALT_TAGS] ?? null;
+        if (!is_string($raw)) {
+            return array();
+        }
+
+        return self::filterTags(InlineHelper::toArray($raw), $this->tag);
+    }
+
+    /**
      * Import / Override Field Metadata Definition
      *
      * @param array<string, mixed> $values Custom Values to Write
@@ -141,6 +189,26 @@ trait FieldMetadataTrait
         //==============================================================================
         // Update Field Tag Only
         return $this->updateMetadataTagValue($values);
+    }
+
+    /**
+     * Keep valid md5 tags only, unique, without the field own tag
+     *
+     * @param array<mixed> $tags Candidate tags
+     *
+     * @return string[]
+     */
+    private static function filterTags(array $tags, ?string $ownTag): array
+    {
+        $filtered = array();
+        foreach ($tags as $tag) {
+            if (!is_string($tag) || !preg_match('/^[a-f0-9]{32}$/', $tag) || ($tag === $ownTag)) {
+                continue;
+            }
+            $filtered[$tag] = $tag;
+        }
+
+        return array_values($filtered);
     }
 
     /**

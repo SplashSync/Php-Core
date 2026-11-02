@@ -26,6 +26,15 @@ class SplFieldConstraints
     public const TEMPLATE = "tmpl";
 
     /**
+     * Alternate auto-mapping tags of the field, as an INLINE list of md5 tags.
+     *
+     * The field keeps its own tag, but also connects with fields carrying one
+     * of these tags: used when a field moves to another microdata without
+     * breaking existing connections.
+     */
+    public const ALT_TAGS = "altTags";
+
+    /**
      * Apply a Min length Constraint to Varchar Field
      */
     public const LENGTH_MIN = "minLength";

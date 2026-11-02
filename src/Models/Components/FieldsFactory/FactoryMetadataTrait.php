@@ -95,6 +95,35 @@ trait FactoryMetadataTrait
         return $this;
     }
 
+    /**
+     * Add an Alternate Microdata to Current New Field: it also connects with this tag
+     *
+     * @param string $itemType Field Alternate Microdata Type Url
+     * @param string $itemProp Field Alternate Microdata Property Name
+     */
+    public function alternateMicroData(string $itemType, string $itemProp): self
+    {
+        if ($current = $this->current()) {
+            $current->addAlternateMicroData($itemType, $itemProp);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Replace Alternate Auto-Mapping Tags of Current New Field
+     *
+     * @param array<mixed> $tags Candidate md5 tags, invalid entries are dropped
+     */
+    public function alternateTags(array $tags): self
+    {
+        if ($current = $this->current()) {
+            $current->setAlternateTags($tags);
+        }
+
+        return $this;
+    }
+
     //==============================================================================
     //  FIELD SETUP - VALUES CHOICES
     //==============================================================================

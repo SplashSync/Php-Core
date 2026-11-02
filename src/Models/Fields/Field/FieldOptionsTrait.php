@@ -128,6 +128,16 @@ trait FieldOptionsTrait
     /**
      * @inheritDoc
      */
+    public function removeOption(string $key): self
+    {
+        unset($this->options[$key]);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getRawChoices(): array
     {
         return $this->choices;

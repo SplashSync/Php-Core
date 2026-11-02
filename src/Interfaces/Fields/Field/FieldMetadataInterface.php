@@ -54,4 +54,30 @@ interface FieldMetadataInterface
      * Has Field Auto-Mapping Tag
      */
     public function isTagged(): bool;
+
+    /**
+     * Replace Alternate Auto-Mapping Tags
+     *
+     * Invalid tags, duplicates and the field own tag are dropped.
+     *
+     * @param array<mixed> $tags Candidate md5 tags, invalid entries are dropped
+     */
+    public function setAlternateTags(array $tags): self;
+
+    /**
+     * Add an Alternate Auto-Mapping Tag
+     */
+    public function addAlternateTag(string $tag): self;
+
+    /**
+     * Add an Alternate Auto-Mapping Tag from its Metadata
+     */
+    public function addAlternateMicroData(string $itemType, string $itemProp): self;
+
+    /**
+     * Get Alternate Auto-Mapping Tags: valid, unique, without the field own tag
+     *
+     * @return string[]
+     */
+    public function getAlternateTags(): array;
 }

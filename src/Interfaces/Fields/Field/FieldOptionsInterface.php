@@ -64,6 +64,11 @@ interface FieldOptionsInterface
     public function addOption(string $key, $value = true): self;
 
     /**
+     * Remove a Field Option
+     */
+    public function removeOption(string $key): self;
+
+    /**
      * Get Field Options for Units Tests & More
      *
      * @return array<string, scalar>

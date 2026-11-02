@@ -18,8 +18,12 @@ namespace Splash\Core\Tests\T400Components;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Splash\Core\Components\FieldsFactory;
+use Splash\Core\Dictionary\Fields\SplFieldConstraints;
+use Splash\Core\Dictionary\Fields\SplFieldProps;
 use Splash\Core\Dictionary\SplFields;
+use Splash\Core\Helpers\InlineHelper;
 use Splash\Core\Models\Fields\AbstractField;
+use Splash\Local\Fields\Templates\AlternateTagsTemplate;
 use Splash\Local\Fields\Templates\DummyTemplate;
 
 /**
@@ -103,5 +107,74 @@ class T407FieldsFactoryTest extends TestCase
         $factory->createFromTemplate("invalidFieldId", AbstractField::class);
         Assert::assertCount(0, $factory->build()->getCollection());
         Assert::assertCount(0, $factory->toArray());
+    }
+
+    /**
+     * Alternate microdata and tags apply on the current field.
+     */
+    public function testAlternateMicroData(): void
+    {
+        $factory = new FieldsFactory();
+        $legacyTag = AbstractField::toTag("http://schema.org/Invoice", "customer");
+        $otherTag = AbstractField::toTag("http://schema.org/Order", "customer");
+
+        //====================================================================//
+        // Alternate microdata on the current field, own microdata ignored
+        $factory->create(SplFields::VARCHAR)
+            ->identifier("customer")
+            ->name("Customer")
+            ->microData("http://schema.org/Organization", "ID")
+            ->alternateMicroData("http://schema.org/Invoice", "customer")
+            ->alternateMicroData("http://schema.org/Organization", "ID")
+        ;
+        $current = $factory->current();
+        Assert::assertInstanceOf(AbstractField::class, $current);
+        Assert::assertSame(array($legacyTag), $current->getAlternateTags());
+        //====================================================================//
+        // Replace the whole list, then build
+        $factory->alternateTags(array($otherTag, $legacyTag));
+        $field = $factory->build()->get("customer");
+        Assert::assertInstanceOf(AbstractField::class, $field);
+        Assert::assertSame(array($otherTag, $legacyTag), $field->getAlternateTags());
+        //====================================================================//
+        // Without a current field, nothing happens
+        $empty = new FieldsFactory();
+        $empty->alternateMicroData("http://schema.org/Invoice", "customer")->alternateTags(array($otherTag));
+        Assert::assertCount(0, $empty->build()->getCollection());
+    }
+
+    /**
+     * A template declares alternate tags, applied and exported with the field.
+     */
+    public function testCreateFromTemplateWithAlternateTags(): void
+    {
+        $factory = new FieldsFactory();
+        $factory->createFromTemplate("customer", AlternateTagsTemplate::class);
+        $legacyTag = AbstractField::toTag(
+            AlternateTagsTemplate::ALT_ITEM_TYPE,
+            AlternateTagsTemplate::ALT_ITEM_PROP
+        );
+
+        $field = $factory->build()->get("customer");
+        Assert::assertInstanceOf(AbstractField::class, $field);
+        Assert::assertSame(
+            AbstractField::toTag(AlternateTagsTemplate::ITEM_TYPE, AlternateTagsTemplate::ITEM_PROP),
+            $field->getTag()
+        );
+        Assert::assertSame(array($legacyTag), $field->getAlternateTags());
+        //====================================================================//
+        // Exported with the field definition
+        $published = $factory->publish() ?? array();
+        Assert::assertCount(1, $published);
+        $rawField = reset($published);
+        Assert::assertIsArray($rawField);
+        Assert::assertSame(
+            array(SplFieldConstraints::TEMPLATE => AlternateTagsTemplate::getCode()),
+            array_diff_key($rawField[SplFieldProps::OPTIONS], array(SplFieldConstraints::ALT_TAGS => null))
+        );
+        Assert::assertSame(
+            InlineHelper::fromArray(array($legacyTag)),
+            $rawField[SplFieldProps::OPTIONS][SplFieldConstraints::ALT_TAGS]
+        );
     }
 }
