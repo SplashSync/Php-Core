@@ -159,9 +159,12 @@ class ExtensionsManager
         }
         //====================================================================//
         // Check if Class is this File
-        $reflexion = new \ReflectionClass($className);
+        $classFile = (new \ReflectionClass($className))->getFileName();
+        if (!$classFile) {
+            return null;
+        }
 
-        return ($fullPath == $reflexion->getFileName()) ? $className : null;
+        return self::isSameFile($fullPath, $classFile) ? $className : null;
     }
 
     /**
@@ -186,5 +189,25 @@ class ExtensionsManager
         }
 
         return $filenames;
+    }
+
+    /**
+     * Check if two Paths Point to the Same File
+     *
+     * Paths are resolved before comparison: the loader builds them from the
+     * configured folder, while PHP returns resolved paths with the system
+     * directory separator (backslashes on Windows).
+     *
+     * @param string $pathA
+     * @param string $pathB
+     *
+     * @return bool
+     */
+    private static function isSameFile(string $pathA, string $pathB): bool
+    {
+        $realA = realpath($pathA) ?: $pathA;
+        $realB = realpath($pathB) ?: $pathB;
+
+        return str_replace('\\', '/', $realA) === str_replace('\\', '/', $realB);
     }
 }

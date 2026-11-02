@@ -71,7 +71,7 @@ class FilesLoader
      */
     private static function loadFile(string $dir, string $filename, ?string $ext, int $depth): array
     {
-        $fullPath = $dir.'/'.$filename;
+        $fullPath = rtrim($dir, '/\\').DIRECTORY_SEPARATOR.$filename;
         $filenames = array();
         //====================================================================//
         // If Filename is a Directory
